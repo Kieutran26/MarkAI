@@ -1,0 +1,986 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vibecode Web — Lộ trình từ zero đến có web · markAI.vn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #f7f5f0;
+  --bg2:     #ede9e0;
+  --bg3:     #e4dfd5;
+  --ink:     #0d0d0d;
+  --ink2:    #444444;
+  --muted:   #888888;
+  --border:  #d4cfc5;
+  --accent:  #E8410A;
+  --accent2: #C93508;
+  --serif:   'Instrument Serif', serif;
+  --mono:    'DM Mono', monospace;
+  --sans:    'DM Sans', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+a { text-decoration: none; color: inherit; }
+img { display: block; max-width: 100%; }
+
+/* ─── NAV ─── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  height: 52px; background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2rem;
+}
+.nav-logo { font-family: var(--mono); font-size: 15px; font-weight: 500; letter-spacing: -.02em; }
+.nav-logo em { color: var(--accent); font-style: normal; }
+.nav-links { display: flex; align-items: center; height: 52px; list-style: none; }
+.nav-links a {
+  font-family: var(--mono); font-size: 12px; color: var(--muted);
+  padding: 0 1rem; height: 52px; display: flex; align-items: center;
+  border-left: 1px solid var(--border);
+  transition: color .15s, background .15s;
+  letter-spacing: .02em;
+}
+.nav-links a:hover { color: var(--ink); background: var(--bg2); }
+.nav-links a.active { color: var(--accent); }
+.nav-links a.disabled { color: var(--muted); opacity: .4; pointer-events: none; }
+.nav-free {
+  font-family: var(--mono); font-size: 11px; color: var(--accent);
+  display: flex; align-items: center; gap: 5px;
+  border-left: 1px solid var(--border); padding-left: 1rem; height: 52px;
+  letter-spacing: .02em;
+}
+.nav-star { display: inline-block; animation: spin 4s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ─── TICKER ─── */
+.ticker { height: 32px; background: var(--ink); overflow: hidden; display: flex; align-items: center; }
+.ticker-track { display: flex; white-space: nowrap; animation: tick 36s linear infinite; }
+.ticker-item { font-family: var(--mono); font-size: 10px; color: #555; padding: 0 2rem; letter-spacing: .06em; text-transform: uppercase; flex-shrink: 0; }
+.ticker-item b { color: var(--accent); }
+@keyframes tick { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+
+/* ─── HERO ─── */
+.hero {
+  border-bottom: 1px solid var(--border);
+}
+.hero-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 420px;
+  padding: 5rem 2rem 0;
+  gap: 4rem;
+  align-items: end;
+}
+.hero-eyebrow {
+  font-family: var(--mono); font-size: 11px; color: var(--muted);
+  letter-spacing: .08em; text-transform: uppercase;
+  margin-bottom: 1.4rem;
+  display: flex; align-items: center; gap: .5rem;
+}
+.hero-eyebrow span { color: var(--accent); }
+.hero-h1 {
+  font-family: var(--serif);
+  font-size: clamp(2.4rem, 4.5vw, 3.8rem);
+  line-height: 1.08; letter-spacing: -.02em;
+  margin-bottom: 1.4rem;
+}
+.hero-h1 .strike { text-decoration: line-through; color: var(--muted); font-style: italic; }
+.hero-h1 em { color: var(--accent); font-style: italic; }
+.hero-desc {
+  font-family: var(--sans); font-size: 15px; font-weight: 300;
+  color: var(--ink2); line-height: 1.75;
+  max-width: 500px; margin-bottom: 2rem;
+}
+.hero-ctas { display: flex; gap: .8rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
+.btn-primary {
+  font-family: var(--mono); font-size: 12px; letter-spacing: .02em;
+  background: var(--ink); color: var(--bg);
+  border: none; padding: 11px 22px; cursor: pointer;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+  transition: background .15s;
+}
+.btn-primary:hover { background: var(--accent); }
+.btn-ghost {
+  font-family: var(--mono); font-size: 12px; letter-spacing: .02em;
+  background: transparent; color: var(--ink);
+  border: 1px solid var(--border); padding: 10px 22px; cursor: pointer;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+  transition: border-color .15s;
+}
+.btn-ghost:hover { border-color: var(--ink); }
+.hero-note {
+  font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .02em;
+}
+
+/* Terminal */
+.hero-terminal-wrap {
+  align-self: end;
+}
+.hero-terminal {
+  background: var(--ink); border: 1px solid #2a2a2a;
+  border-bottom: none;
+}
+.term-bar {
+  background: #1a1a1a; border-bottom: 1px solid #2a2a2a;
+  height: 32px; display: flex; align-items: center; padding: 0 12px; gap: 6px;
+}
+.term-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+.term-dot.r { background: #FF5F57; }
+.term-dot.y { background: #FFBD2E; }
+.term-dot.g { background: #28CA41; }
+.term-url {
+  font-family: var(--mono); font-size: 11px; color: #555;
+  margin-left: auto; margin-right: auto; letter-spacing: .02em;
+}
+.term-body { padding: 1.4rem 1.5rem; font-family: var(--mono); font-size: 12.5px; line-height: 1.7; }
+.term-prompt { color: var(--accent); }
+.term-cmd { color: #ccc; }
+.term-comment { color: #555; font-style: italic; }
+.term-out { color: #28CA41; }
+.term-out-muted { color: #888; }
+.term-gap { height: .6rem; }
+.term-cursor {
+  display: inline-block; width: 7px; height: 13px;
+  background: var(--accent);
+  animation: blink .8s step-end infinite;
+  vertical-align: middle;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+.term-insight {
+  border-left: 2px solid var(--accent); padding: .7rem 1rem;
+  font-family: var(--mono); font-size: 11px; color: #888; line-height: 1.6;
+  margin: 0 1.5rem 1.5rem;
+}
+.term-insight b { color: var(--bg); }
+
+/* ─── STATS BAR ─── */
+.stats { display: flex; flex-wrap: wrap; border-bottom: 1px solid var(--border); }
+.stats-inner { max-width: 1200px; margin: 0 auto; width: 100%; display: flex; }
+.stat { flex: 1; min-width: 140px; padding: 1.8rem 2rem; border-right: 1px solid var(--border); }
+.stat:last-child { border-right: none; }
+.stat-num { font-family: var(--serif); font-size: 2.4rem; line-height: 1; margin-bottom: .3rem; }
+.stat-label { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .04em; }
+
+/* ─── SECTION COMMONS ─── */
+.section-full { border-bottom: 1px solid var(--border); }
+.section-inner { max-width: 1200px; margin: 0 auto; padding: 4rem 2rem; }
+.section-label { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 1rem; }
+.section-label span { color: var(--accent); margin-right: .4rem; }
+.section-heading { font-family: var(--serif); font-size: clamp(1.6rem, 3.5vw, 2.4rem); line-height: 1.12; }
+.section-heading em { color: var(--accent); font-style: italic; }
+.section-sub { font-family: var(--sans); font-size: 14px; font-weight: 300; color: var(--ink2); line-height: 1.7; max-width: 560px; margin-top: .8rem; }
+
+/* ─── OVERVIEW HEADER (dark) ─── */
+.path-header { background: var(--ink); border-bottom: 1px solid #1a1a1a; }
+.path-header-inner {
+  max-width: 1200px; margin: 0 auto;
+  padding: 4rem 2rem 3rem;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: end;
+}
+.badge { font-family: var(--mono); font-size: 10px; padding: 3px 9px; letter-spacing: .05em; text-transform: uppercase; }
+.badge-accent  { background: var(--accent); color: white; }
+.badge-dark    { background: var(--ink); color: var(--bg); border: 1px solid #333; }
+.badge-outline { border: 1px solid var(--border); color: var(--muted); background: transparent; }
+.badge-green   { background: #16a34a; color: white; }
+.badge-outline-dark { border: 1px solid #333; color: #555; background: transparent; }
+
+.path-header-badge { margin-bottom: 1.2rem; }
+.path-header-h2 {
+  font-family: var(--serif);
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  color: var(--bg); line-height: 1.1; letter-spacing: -.02em;
+  margin-bottom: .8rem;
+}
+.path-header-h2 em { color: var(--accent); font-style: italic; }
+.path-header-desc { font-family: var(--sans); font-size: 15px; font-weight: 300; color: #888; line-height: 1.7; }
+
+.path-header-right { display: flex; flex-direction: column; gap: 0; }
+.path-stat-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: .8rem 0; border-bottom: 1px solid #1a1a1a;
+}
+.path-stat-row:first-child { border-top: 1px solid #1a1a1a; }
+.path-stat-label { font-family: var(--mono); font-size: 10px; color: #555; letter-spacing: .04em; text-transform: uppercase; }
+.path-stat-value { font-family: var(--mono); font-size: 12px; color: #888; }
+.path-stat-value.accent { color: var(--accent); }
+
+/* ─── LỘ TRÌNH STEPS ─── */
+.path-steps { border-bottom: 1px solid var(--border); }
+.path-step {
+  display: grid; grid-template-columns: 80px 1fr auto;
+  border-bottom: 1px solid var(--border);
+  text-decoration: none; color: inherit;
+  transition: background .15s; cursor: pointer;
+  background: var(--bg);
+}
+.path-step:last-child { border-bottom: none; }
+.path-step:hover { background: var(--bg2); }
+.path-step.locked { opacity: .5; pointer-events: none; cursor: default; }
+
+.path-step-num {
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 1.8rem 0; gap: 3px; flex-shrink: 0;
+}
+.step-label { font-family: var(--mono); font-size: 9px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; }
+.step-num-big { font-family: var(--serif); font-size: 1.8rem; color: var(--ink); line-height: 1; }
+.path-step:hover .step-num-big { color: var(--accent); }
+
+.path-step-body {
+  padding: 1.8rem 2rem 1.8rem 2.5rem;
+  display: flex; flex-direction: column; gap: .5rem; justify-content: center;
+}
+.step-badges { display: flex; align-items: center; gap: .4rem; flex-wrap: wrap; }
+.step-title { font-family: var(--serif); font-size: 1.15rem; line-height: 1.3; }
+.step-desc { font-family: var(--sans); font-size: 13px; font-weight: 300; color: var(--ink2); line-height: 1.5; }
+.step-tags { display: flex; gap: .3rem; flex-wrap: wrap; margin-top: .2rem; }
+.step-tag {
+  font-family: var(--mono); font-size: 10px;
+  background: var(--bg2); border: 1px solid var(--border); color: var(--muted);
+  padding: 2px 8px;
+}
+.path-step:hover .step-tag { background: var(--bg3); }
+
+.step-arrow {
+  font-family: var(--mono); font-size: 14px; color: var(--muted);
+  align-self: center; padding: 0 2rem; flex-shrink: 0;
+  transition: transform .15s, color .15s;
+}
+.path-step:hover .step-arrow { transform: translateX(5px); color: var(--accent); }
+
+.path-steps-inner { max-width: 1200px; margin: 0 auto; border-left: 1px solid var(--border); border-right: 1px solid var(--border); }
+
+/* Sub-lesson count */
+.step-sub-count {
+  font-family: var(--mono); font-size: 10px; color: var(--muted);
+  padding: .2rem .6rem; border: 1px solid var(--border); background: var(--bg);
+}
+
+/* ─── MODULE PICKER ─── */
+.module-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--border);
+  margin-top: 2.5rem;
+}
+.module-card {
+  padding: 1.8rem; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  position: relative; opacity: .55;
+}
+.module-card:nth-child(4n) { border-right: none; }
+.module-card.available { opacity: 1; cursor: pointer; text-decoration: none; color: inherit; display: block; transition: background .15s; }
+.module-card.available:hover { background: var(--bg3); }
+.module-card.feedback { opacity: 1; cursor: pointer; text-decoration: none; color: inherit; display: block; transition: background .15s; background: var(--bg2); }
+.module-card.feedback:hover { background: var(--bg3); }
+.module-card-soon { position: absolute; top: 1rem; right: 1rem; font-family: var(--mono); font-size: 9px; color: var(--muted); letter-spacing: .04em; border: 1px solid var(--border); padding: 1px 6px; }
+.module-card-icon { font-size: 1.2rem; margin-bottom: .8rem; }
+.module-card-title { font-family: var(--serif); font-size: 1rem; line-height: 1.3; margin-bottom: .4rem; }
+.module-card-meta { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: .02em; }
+.module-card-badge { display: inline-block; font-family: var(--mono); font-size: 9px; color: #16a34a; border: 1px solid #16a34a; padding: 1px 6px; margin-bottom: .6rem; letter-spacing: .04em; }
+
+/* ─── PROMPT TEASER ─── */
+.prompt-teaser { background: var(--ink); border-bottom: 1px solid #1a1a1a; }
+.prompt-teaser-inner {
+  max-width: 1200px; margin: 0 auto; padding: 4rem 2rem;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start;
+}
+.prompt-label { font-family: var(--mono); font-size: 11px; color: #555; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 1rem; }
+.prompt-label span { color: var(--accent); }
+.prompt-h2 { font-family: var(--serif); font-size: clamp(1.6rem, 3vw, 2.2rem); color: var(--bg); line-height: 1.15; margin-bottom: .8rem; }
+.prompt-h2 em { color: var(--accent); font-style: italic; }
+.prompt-desc { font-family: var(--sans); font-size: 14px; font-weight: 300; color: #666; line-height: 1.7; margin-bottom: 1.8rem; }
+.prompt-ctas { display: flex; gap: .8rem; flex-wrap: wrap; }
+.btn-accent { background: var(--accent); color: white; font-family: var(--mono); font-size: 12px; letter-spacing: .02em; border: none; padding: 11px 22px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: background .15s; }
+.btn-accent:hover { background: var(--accent2); }
+.btn-ghost-inv { background: transparent; color: #888; border: 1px solid #2a2a2a; font-family: var(--mono); font-size: 12px; letter-spacing: .02em; padding: 10px 22px; cursor: pointer; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; transition: border-color .15s, color .15s; }
+.btn-ghost-inv:hover { color: white; border-color: #555; }
+
+.code-box { background: #0a0a0a; border: 1px solid #2a2a2a; padding: 1.5rem; }
+.code-box-header { font-family: var(--mono); font-size: 10px; color: #555; letter-spacing: .04em; text-transform: uppercase; margin-bottom: 1rem; padding-bottom: .8rem; border-bottom: 1px solid #1a1a1a; }
+.code-box pre { font-family: var(--mono); font-size: 12px; line-height: 1.8; white-space: pre-wrap; }
+.ck { color: var(--accent); } /* key */
+.cv { color: #98c379; }       /* value */
+.cc { color: #555; font-style: italic; } /* comment */
+.code-box-footer { font-family: var(--mono); font-size: 11px; color: #28CA41; margin-top: 1rem; padding-top: .8rem; border-top: 1px solid #1a1a1a; }
+
+/* ─── WHY FREE ─── */
+.why-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  border-top: 1px solid var(--border); margin-top: 2.5rem;
+}
+.why-card { padding: 2rem; border-right: 1px solid var(--border); }
+.why-card:last-child { border-right: none; }
+.why-icon { font-family: var(--mono); font-size: 11px; color: var(--accent); margin-bottom: .8rem; letter-spacing: .02em; }
+.why-title { font-family: var(--serif); font-size: 1.05rem; line-height: 1.3; margin-bottom: .5rem; }
+.why-desc { font-family: var(--sans); font-size: 13px; font-weight: 300; color: var(--ink2); line-height: 1.6; }
+
+/* ─── CTA FINAL ─── */
+.cta-section { background: var(--bg2); border-bottom: 1px solid var(--border); }
+.cta-inner {
+  max-width: 1200px; margin: 0 auto; padding: 5rem 2rem;
+  text-align: center;
+}
+.cta-h2 { font-family: var(--serif); font-size: clamp(1.8rem, 3.5vw, 2.8rem); line-height: 1.15; margin-bottom: .8rem; }
+.cta-h2 em { color: var(--accent); font-style: italic; }
+.cta-desc { font-family: var(--sans); font-size: 15px; font-weight: 300; color: var(--ink2); line-height: 1.7; margin-bottom: 2rem; }
+.cta-btns { display: flex; justify-content: center; gap: .8rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
+.cta-note { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+
+/* ─── FOOTER ─── */
+footer { border-top: 1px solid var(--border); }
+.footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; }
+.footer-col { padding: 2.5rem 2rem; border-right: 1px solid var(--border); }
+.footer-col:last-child { border-right: none; }
+.footer-logo { font-family: var(--mono); font-size: 15px; font-weight: 500; letter-spacing: -.02em; margin-bottom: .6rem; }
+.footer-logo em { color: var(--accent); font-style: normal; }
+.footer-tagline { font-family: var(--sans); font-size: 13px; font-weight: 300; color: var(--ink2); line-height: 1.6; max-width: 220px; }
+.footer-col-title { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 1rem; }
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: .5rem; }
+.footer-links a { font-family: var(--sans); font-size: 13px; font-weight: 300; color: var(--ink2); transition: color .15s; }
+.footer-links a:hover { color: var(--accent); }
+.footer-links .soon { opacity: .45; pointer-events: none; color: var(--muted); }
+.footer-bottom { max-width: 1200px; margin: 0 auto; border-top: 1px solid var(--border); padding: 1.2rem 2rem; display: flex; justify-content: space-between; align-items: center; }
+.footer-bottom-text { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 1024px) {
+  .module-grid { grid-template-columns: repeat(2, 1fr); }
+  .module-card:nth-child(4n) { border-right: 1px solid var(--border); }
+  .module-card:nth-child(2n) { border-right: none; }
+  .why-grid { grid-template-columns: repeat(2, 1fr); }
+  .why-card:nth-child(2n) { border-right: none; }
+  .why-card:nth-child(n+3) { border-top: 1px solid var(--border); }
+}
+@media (max-width: 768px) {
+  .hero-inner { grid-template-columns: 1fr; gap: 2rem; padding-bottom: 0; }
+  .hero-terminal-wrap { display: none; }
+  .path-header-inner { grid-template-columns: 1fr; gap: 2rem; }
+  .prompt-teaser-inner { grid-template-columns: 1fr; gap: 2rem; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .nav-links li:nth-child(n+4) { display: none; }
+  .stats-inner { flex-wrap: wrap; }
+  .stat { min-width: 50%; }
+}
+@media (max-width: 480px) {
+  nav, .section-inner, .path-header-inner, .hero-inner, .prompt-teaser-inner, .cta-inner, .footer-bottom { padding-left: 1.2rem; padding-right: 1.2rem; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .module-grid { grid-template-columns: 1fr; }
+  .module-card { border-right: none; }
+  .why-grid { grid-template-columns: 1fr; }
+  .why-card { border-right: none; border-bottom: 1px solid var(--border); }
+  .stats-inner { flex-direction: column; }
+  .stat { border-right: none; border-bottom: 1px solid var(--border); }
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ── -->
+<nav>
+  <a href="#" class="nav-logo">mark<em>AI</em></a>
+  <ul class="nav-links">
+    <li><a href="#" class="active">Vibecode</a></li>
+    <li><a href="#">Blog</a></li>
+    <li><a href="#">Tips</a></li>
+    <li><a href="#">Prompts</a></li>
+    <li><a href="#" class="disabled">Analytics</a></li>
+    <li><a href="#" class="disabled">Image</a></li>
+    <li><a href="#" class="disabled">Video</a></li>
+  </ul>
+  <div class="nav-free">
+    <span class="nav-star">✦</span> Miễn phí 100%
+  </div>
+</nav>
+
+<!-- ── TICKER ── -->
+<div class="ticker">
+  <div class="ticker-track" id="ticker">
+    <span class="ticker-item">✳ Vibecode ra mắt tháng 4/2026</span>
+    <span class="ticker-item">✳ 10 bài học · lộ trình từ <b>zero</b></span>
+    <span class="ticker-item">✳ <b>Miễn phí 100%</b> · mãi mãi</span>
+    <span class="ticker-item">✳ Analytics sắp ra</span>
+    <span class="ticker-item">✳ Generate Image sắp ra</span>
+    <span class="ticker-item">✳ Motion Video sắp ra</span>
+    <span class="ticker-item">✳ Blog · Tips · Prompt Library</span>
+    <span class="ticker-item">✳ Dành riêng dân Marketing Việt Nam</span>
+  </div>
+</div>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <p class="hero-eyebrow"><span>✳</span> Vibecode Web · Lộ trình từ zero · 2026</p>
+      <h1 class="hero-h1">
+        Tự build web<br>
+        không cần <span class="strike">lập trình.</span><br>
+        Chỉ cần <em>ý tưởng.</em>
+      </h1>
+      <p class="hero-desc">10 bài học thực chiến — từ tư duy đến deploy thật. Không cần nền tảng code. Không slide. Không lý thuyết suông. Học xong hôm nay, dùng được ngay hôm nay.</p>
+      <div class="hero-ctas">
+        <a href="#" class="btn-primary">Bắt đầu bài 01 →</a>
+        <a href="#lo-trinh" class="btn-ghost">Xem lộ trình</a>
+      </div>
+      <p class="hero-note">✳ miễn phí · không cần email · không tracking</p>
+    </div>
+
+    <!-- Terminal mockup -->
+    <div class="hero-terminal-wrap">
+      <div class="hero-terminal">
+        <div class="term-bar">
+          <span class="term-dot r"></span>
+          <span class="term-dot y"></span>
+          <span class="term-dot g"></span>
+          <span class="term-url">markai.vn/vibecode</span>
+        </div>
+        <div class="term-body">
+          <div><span class="term-prompt">❯</span> <span class="term-cmd">cursor .</span></div>
+          <div class="term-comment"># Mở project trong Cursor</div>
+          <div class="term-gap"></div>
+          <div><span class="term-prompt">❯</span> <span class="term-cmd">Tạo landing page giới thiệu sản phẩm mới,</span></div>
+          <div style="padding-left:1.2rem; color:#ccc;">nền trắng, có countdown 3 ngày,</div>
+          <div style="padding-left:1.2rem; color:#ccc;">form đăng ký email, responsive mobile.</div>
+          <div class="term-gap"></div>
+          <div class="term-out">✓ Đang tạo landing-page.tsx...</div>
+          <div class="term-out-muted">  — Hero section với countdown timer</div>
+          <div class="term-out-muted">  — Form email với validation</div>
+          <div class="term-out-muted">  — Mobile responsive layout</div>
+          <div class="term-gap"></div>
+          <div><span class="term-prompt">❯</span> <span class="term-cursor"></span></div>
+        </div>
+        <div class="term-insight">
+          <b>✳ Kết quả:</b> Landing page hoàn chỉnh<br>
+          trong 23 phút · 0 dòng code tự viết
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── STATS BAR ── -->
+<div class="stats">
+  <div class="stats-inner">
+    <div class="stat">
+      <div class="stat-num">10</div>
+      <div class="stat-label">Bài học · lộ trình vibecode</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">50+</div>
+      <div class="stat-label">Bài nhỏ · học từng phần</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">100%</div>
+      <div class="stat-label">Miễn phí · mãi mãi</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">0</div>
+      <div class="stat-label">Yêu cầu kiến thức code</div>
+    </div>
+  </div>
+</div>
+
+<!-- ── LỘ TRÌNH HEADER (dark) ── -->
+<div class="path-header" id="lo-trinh">
+  <div class="path-header-inner">
+    <div>
+      <div class="path-header-badge">
+        <span class="badge badge-accent">VIBECODE WEB ⚡</span>
+      </div>
+      <h2 class="path-header-h2">Từ <em>zero</em> đến có web<br>trong 1 buổi sáng.</h2>
+      <p class="path-header-desc">10 bài — từ tư duy đến deploy thực tế. Mỗi bài chia nhỏ thành 5–6 phần, đọc từng phần trong 5–10 phút.</p>
+    </div>
+    <div class="path-header-right">
+      <div class="path-stat-row">
+        <span class="path-stat-label">Tổng thời gian</span>
+        <span class="path-stat-value">~6 tiếng đọc</span>
+      </div>
+      <div class="path-stat-row">
+        <span class="path-stat-label">Số bài lớn</span>
+        <span class="path-stat-value">10 bài</span>
+      </div>
+      <div class="path-stat-row">
+        <span class="path-stat-label">Số bài nhỏ</span>
+        <span class="path-stat-value">52 bài nhỏ</span>
+      </div>
+      <div class="path-stat-row">
+        <span class="path-stat-label">Hình thức</span>
+        <span class="path-stat-value">Text · không video</span>
+      </div>
+      <div class="path-stat-row">
+        <span class="path-stat-label">Yêu cầu</span>
+        <span class="path-stat-value accent">Không cần nền tảng code</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── 10 STEPS ── -->
+<div class="path-steps">
+  <div class="path-steps-inner">
+
+    <!-- Bài 01 -->
+    <a href="#" class="path-step">
+      <div class="path-step-num">
+        <span class="step-label">BÀI</span>
+        <span class="step-num-big">01</span>
+      </div>
+      <div class="path-step-body">
+        <div class="step-badges">
+          <span class="badge badge-accent">BẮT ĐẦU ĐÂY</span>
+          <span class="badge badge-outline">~20 phút</span>
+          <span class="step-sub-count">5 bài nhỏ</span>
+        </div>
+        <div class="step-title">Vibecode là gì? Khó không? Giúp gì cho Marketer?</div>
+        <div class="step-desc">Tư duy vibecode, use case thực tế, và những thứ bạn không cần biết trước khi bắt đầu.</div>
+        <div class="step-tags">
+          <span class="step-tag">tư duy</span>
+          <span class="step-tag">use case</span>
+          <span class="step-tag">marketer</span>
+        </div>
+      </div>
+      <div class="step-arrow">→</div>
+    </a>
+
+    <!-- Bài 02 -->
+    <a href="#" class="path-step">
+      <div class="path-step-num">
+        <span class="step-label">BÀI</span>
+        <span class="step-num-big">02</span>
+      </div>
+      <div class="path-step-body">
+        <div class="step-badges">
+          <span class="badge badge-dark">NGÔN NGỮ</span>
+          <span class="badge badge-outline">~40 phút</span>
+          <span class="step-sub-count">6 bài nhỏ</span>
+        </div>
+        <div class="step-title">Từ ngữ chuyên ngành code & design — kèm GIF mô phỏng</div>
+        <div class="step-desc">Hiểu các từ kỹ thuật hay gặp khi làm việc với AI. Đọc một lần, không cần nhớ hết.</div>
+        <div class="step-tags">
+          <span class="step-tag">spacing</span>
+          <span class="step-tag">flexbox</span>
+          <span class="step-tag">grid</span>
+          <span class="step-tag">responsive</span>
+          <span class="step-tag">component</span>
+        </div>
+      </div>
+      <div class="step-arrow">→</div>
+    </a>
+
+    <!-- Bài 03 -->
+    <a href="#" class="path-step">
+      <div class="path-step-num">
+        <span class="step-label">BÀI</span>
+        <span class="step-num-big">03</span>
+      </div>
+      <div class="path-step-body">
+        <div class="step-badges">
+          <span class="badge badge-dark">SETUP</span>
+          <span class="badge badge-outline">~30 phút</span>
+          <span class="step-sub-count">6 bài nhỏ</span>
+        </div>
+        <div class="step-title">Cài gì vào máy để bắt đầu vibecode?</div>
+        <div class="step-desc">Hướng dẫn cài Node.js, VS Code, Cursor, Git, Claude Code — theo đúng thứ tự, không bỏ sót.</div>
+        <div class="step-tags">
+          <span class="step-tag">Node.js</span>
+          <span class="step-tag">Cursor</span>
+          <span class="step-tag">VS Code</span>
+          <span class="step-tag">Git</span>
+          <span class="step-tag">Claude Code</span>
+        </div>
+      </div>
+      <div class="step-arrow">→</div>
+    </a>
+
+    <!-- Bài 04 -->
+    <a href="#" class="path-step">
+      <div class="path-step-num">
+        <span class="step-label">BÀI</span>
+        <span class="step-num-big">04</span>
+      </div>
+      <div class="path-step-body">
+        <div class="step-badges">
+          <span class="badge badge-dark">CÔNG CỤ</span>
+          <span class="badge badge-outline">~35 phút</span>
+          <span class="step-sub-count">6 bài nhỏ</span>
+        </div>
+        <div class="step-title">Làm quen VS Code & Cursor — giao diện, phím tắt, cách đọc file</div>
+        <div class="step-desc">Từ màn hình lạ lẫm đến tự tin điều hướng project. Explorer, Terminal, Chat, Composer.</div>
+        <div class="step-tags">
+          <span class="step-tag">VS Code</span>
+          <span class="step-tag">Cursor</span>
+          <span class="step-tag">terminal</span>
+          <span class="step-tag">phím tắt</span>
+          <span class="step-tag">file tree</span>
+        </div>
+      </div>
+      <div class="step-arrow">→</div>
+    </a>
+
+    <!-- Bài 05 -->
+    <a href="#" class="path-step">
+      <div class="path-step-num">
+        <span class="step-label">BÀI</span>
+        <span class="step-num-big">05</span>
+      </div>
+      <div class="path-step-body">
+        <div class="step-badges">
+          <span class="badge badge-dark">CLAUDE CODE</span>
+          <span class="badge badge-outline">~30 phút</span>
+          <span class="step-sub-count">5 bài nhỏ</span>
+        </div>
+        <div class="step-title">Làm quen Claude Code — cách hoạt động, lệnh cơ bản, khi nào dùng</div>
+        <div class="step-desc">Claude Code khác Cursor ở điểm nào, và cách kết hợp cả hai để làm việc hiệu quả hơn.</div>
+        <div class="step-tags">
+          <span class="step-tag">Claude Code</span>
+          <span class="step-tag">CLI</span>
+          <span class="step-tag">terminal</span>
+          <span class="step-tag">workflow</span>
+        </div>
+      </div>
+      <div class="step-arrow">→</div>
+    </a>
+
+    <!-- Bài 06 -->
+    <a href="#" class="path-step">
+      <div class="path-step-num">
+        <span class="step-label">BÀI</span>
+        <span class="step-num-big">06</span>
+      </div>
+      <div class="path-step-body">
+        <div class="step-badges">
+          <span class="badge badge-dark">TOOLS</span>
+          <span class="badge badge-outline">~25 phút</span>
+          <span class="step-sub-count">6 bài nhỏ</span>
+        </div>
+        <div class="step-title">Công cụ & website hữu ích để vibecode ra web hoàn chỉnh</div>
+        <div class="step-desc">v0.dev, Bolt.new, Shadcn/ui, 21st.dev — biết cái nào làm gì, dùng lúc nào.</div>
+        <div class="step-tags">
+          <span class="step-tag">v0.dev</span>
+          <span class="step-tag">Bolt</span>
+          <span class="step-tag">Vercel</span>
+          <span class="step-tag">Shadcn</span>
+          <span class="step-tag">21st.dev</span>
+        </div>
+      </div>
+      <div class="step-arrow">→</div>
+    </a>
+
+    <!-- Bài 07 -->
+    <a href="#" class="path-step">
+      <div class="path-step-num">
+        <span class="step-label">BÀI</span>
+        <span class="step-num-big">07</span>
+      </div>
+      <div class="path-step-body">
+        <div class="step-badges">
+          <span class="badge badge-dark">PROMPT</span>
+          <span class="badge badge-outline">~35 phút</span>
+          <span class="step-sub-count">6 bài nhỏ</span>
+        </div>
+        <div class="step-title">Cách prompt cho AI hiểu để code đúng ý bạn</div>
+        <div class="step-desc">Cấu trúc prompt code tốt, mô tả UI cho AI, và 15 template prompt copy & dùng ngay.</div>
+        <div class="step-tags">
+          <span class="step-tag">prompt</span>
+          <span class="step-tag">Cursor AI</span>
+          <span class="step-tag">Claude Code</span>
+          <span class="step-tag">template</span>
+        </div>
+      </div>
+      <div class="step-arrow">→</div>
+    </a>
+
+    <!-- Bài 08 -->
+    <a href="#" class="path-step">
+      <div class="path-step-num">
+        <span class="step-label">BÀI</span>
+        <span class="step-num-big">08</span>
+      </div>
+      <div class="path-step-body">
+        <div class="step-badges">
+          <span class="badge badge-dark">DEBUG</span>
+          <span class="badge badge-outline">~30 phút</span>
+          <span class="step-sub-count">6 bài nhỏ</span>
+        </div>
+        <div class="step-title">Khi AI code sai — cách đọc lỗi & prompt vá lỗi</div>
+        <div class="step-desc">Đừng hoảng khi thấy đỏ màn hình. Đọc lỗi, paste đúng cách, biết khi nào nên undo.</div>
+        <div class="step-tags">
+          <span class="step-tag">debug</span>
+          <span class="step-tag">error</span>
+          <span class="step-tag">fix</span>
+          <span class="step-tag">undo</span>
+          <span class="step-tag">git</span>
+        </div>
+      </div>
+      <div class="step-arrow">→</div>
+    </a>
+
+    <!-- Bài 09 -->
+    <a href="#" class="path-step">
+      <div class="path-step-num">
+        <span class="step-label">BÀI</span>
+        <span class="step-num-big">09</span>
+      </div>
+      <div class="path-step-body">
+        <div class="step-badges">
+          <span class="badge badge-dark">WORKFLOW</span>
+          <span class="badge badge-outline">~45 phút</span>
+          <span class="step-sub-count">5 bài nhỏ</span>
+        </div>
+        <div class="step-title">Tạo Skills & Workflow cá nhân — cộng đồng đang share gì nhiều nhất?</div>
+        <div class="step-desc">Cursor Rules, CLAUDE.md, MCP — xây hệ thống để AI hiểu bạn mà không cần giải thích lại.</div>
+        <div class="step-tags">
+          <span class="step-tag">Cursor Rules</span>
+          <span class="step-tag">CLAUDE.md</span>
+          <span class="step-tag">MCP</span>
+          <span class="step-tag">workflow</span>
+        </div>
+      </div>
+      <div class="step-arrow">→</div>
+    </a>
+
+    <!-- Bài 10 -->
+    <a href="#" class="path-step">
+      <div class="path-step-num">
+        <span class="step-label">BÀI</span>
+        <span class="step-num-big">10</span>
+      </div>
+      <div class="path-step-body">
+        <div class="step-badges">
+          <span class="badge badge-dark">DEPLOY</span>
+          <span class="badge badge-outline">~50 phút</span>
+          <span class="badge badge-green">ĐÍCH ĐẾN</span>
+          <span class="step-sub-count">5 bài nhỏ</span>
+        </div>
+        <div class="step-title">Deploy + gắn PostHog & Google Search Console</div>
+        <div class="step-desc">Đưa web lên internet, gắn tracking, gắn domain riêng. Checklist trước khi share link.</div>
+        <div class="step-tags">
+          <span class="step-tag">Vercel</span>
+          <span class="step-tag">GitHub</span>
+          <span class="step-tag">PostHog</span>
+          <span class="step-tag">Search Console</span>
+          <span class="step-tag">domain</span>
+        </div>
+      </div>
+      <div class="step-arrow">→</div>
+    </a>
+
+  </div>
+</div>
+
+<!-- ── MODULE PICKER ── -->
+<div class="section-full" style="background: var(--bg2);">
+  <div class="section-inner">
+    <p class="section-label"><span>✳</span> 04 · các module học AI</p>
+    <div style="display:flex; justify-content:space-between; align-items:flex-end; flex-wrap:wrap; gap:1rem;">
+      <h2 class="section-heading">Web chỉ là bắt đầu. <em>Còn nhiều hơn nữa.</em></h2>
+      <p style="font-family:var(--mono); font-size:11px; color:var(--muted);">Chọn hướng học tiếp theo →</p>
+    </div>
+    <div class="module-grid">
+
+      <!-- Available -->
+      <a href="#" class="module-card available">
+        <div class="module-card-badge">✓ ĐANG MỞ</div>
+        <div class="module-card-icon">🌐</div>
+        <div class="module-card-title">Vibecode ra Web</div>
+        <div class="module-card-meta">Next.js · Tailwind · Vercel · 10 bài</div>
+      </a>
+
+      <!-- Sắp ra -->
+      <div class="module-card">
+        <span class="module-card-soon">Sắp ra</span>
+        <div class="module-card-icon">📱</div>
+        <div class="module-card-title">Vibecode ra App</div>
+        <div class="module-card-meta">React Native · Expo</div>
+      </div>
+
+      <div class="module-card">
+        <span class="module-card-soon">Sắp ra</span>
+        <div class="module-card-icon">🤖</div>
+        <div class="module-card-title">Vibecode ra Chatbot</div>
+        <div class="module-card-meta">Claude API · Telegram Bot</div>
+      </div>
+
+      <div class="module-card">
+        <span class="module-card-soon">Sắp ra</span>
+        <div class="module-card-icon">🛠</div>
+        <div class="module-card-title">Vibecode ra Tool nội bộ</div>
+        <div class="module-card-meta">Dashboard · Tracker · Form</div>
+      </div>
+
+      <div class="module-card">
+        <span class="module-card-soon">Sắp ra</span>
+        <div class="module-card-icon">📊</div>
+        <div class="module-card-title">Analytics với AI</div>
+        <div class="module-card-meta">GA4 · Looker · Claude</div>
+      </div>
+
+      <div class="module-card">
+        <span class="module-card-soon">Sắp ra</span>
+        <div class="module-card-icon">🎨</div>
+        <div class="module-card-title">Generate Image</div>
+        <div class="module-card-meta">Midjourney · Flux · Firefly</div>
+      </div>
+
+      <div class="module-card">
+        <span class="module-card-soon">Sắp ra</span>
+        <div class="module-card-icon">🎬</div>
+        <div class="module-card-title">Motion Video</div>
+        <div class="module-card-meta">Kling · Runway · HeyGen</div>
+      </div>
+
+      <!-- Feedback card -->
+      <a href="#" class="module-card feedback">
+        <div class="module-card-icon">💬</div>
+        <div class="module-card-title">Bạn muốn module gì tiếp theo?</div>
+        <div class="module-card-meta" style="margin-top:.5rem; color:var(--accent);">Góp ý →</div>
+      </a>
+
+    </div>
+  </div>
+</div>
+
+<!-- ── PROMPT TEASER ── -->
+<div class="prompt-teaser">
+  <div class="prompt-teaser-inner">
+    <div>
+      <p class="prompt-label"><span>✳</span> 150+ prompt thực chiến</p>
+      <h2 class="prompt-h2">Prompt sẵn dùng —<br><em>lấy về xài liền.</em></h2>
+      <p class="prompt-desc">Không cần viết prompt từ đầu. Thư viện 150+ prompt đã test thực tế — cho Vibecode, Analytics, Content, Ads, báo cáo tự động và nhiều hơn nữa.</p>
+      <div class="prompt-ctas">
+        <a href="#" class="btn-accent">Xem Prompt Library →</a>
+        <a href="#" class="btn-ghost-inv">Submit prompt của bạn</a>
+      </div>
+    </div>
+    <div>
+      <div class="code-box">
+        <div class="code-box-header">Prompt mẫu · Vibecode · Landing page</div>
+        <pre><span class="cc"># Tạo landing page campaign</span>
+
+<span class="ck">Mục đích:</span> <span class="cv">Ra mắt sản phẩm mới tháng 5</span>
+<span class="ck">Stack:</span>     <span class="cv">Next.js + Tailwind CSS</span>
+<span class="ck">Sections:</span>  <span class="cv">Hero → Features → CTA</span>
+
+<span class="ck">Hero:</span>
+  <span class="cv">- Headline chính: [tên sản phẩm]</span>
+  <span class="cv">- Subheadline: 1 câu lợi ích rõ</span>
+  <span class="cv">- CTA button: "Đăng ký ngay"</span>
+  <span class="cv">- Countdown timer: 3 ngày</span>
+
+<span class="ck">Yêu cầu:</span>
+  <span class="cv">- Mobile responsive</span>
+  <span class="cv">- Không dùng thư viện ngoài</span>
+  <span class="cv">- Dark mode support</span></pre>
+        <div class="code-box-footer">✓ Dùng với Cursor · Claude Code · v0.dev</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── TẠI SAO MIỄN PHÍ ── -->
+<div class="section-full">
+  <div class="section-inner">
+    <p class="section-label"><span>✳</span> 05 · triết lý markAI</p>
+    <h2 class="section-heading">Không phải freemium. <em>Miễn phí thật.</em></h2>
+    <div class="why-grid">
+      <div class="why-card">
+        <div class="why-icon">✳ Dành riêng</div>
+        <div class="why-title">Cho dân Marketing Việt Nam</div>
+        <div class="why-desc">Không học chung với dân tech. Ví dụ, use case, và ngôn ngữ — tất cả từ góc nhìn Marketing.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">✳ Thực chiến</div>
+        <div class="why-title">Học xong dùng được ngay</div>
+        <div class="why-desc">Không slide. Không lý thuyết suông. Mỗi bài kết thúc bằng thứ gì đó bạn có thể làm được luôn.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">✳ Cập nhật</div>
+        <div class="why-title">Mỗi tuần có nội dung mới</div>
+        <div class="why-desc">AI thay đổi nhanh. markAI cập nhật theo — tool mới, kỹ thuật mới, prompt mới liên tục.</div>
+      </div>
+      <div class="why-card">
+        <div class="why-icon">✳ Sạch</div>
+        <div class="why-title">Không quảng cáo · Không tracking</div>
+        <div class="why-desc">Không retargeting. Không bán data. Không email spam. Học xong, đi làm — không bị làm phiền.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── CTA FINAL ── -->
+<div class="cta-section">
+  <div class="cta-inner">
+    <h2 class="cta-h2">Thôi nào, <em>bắt đầu bài 01 đi.</em></h2>
+    <p class="cta-desc">20 phút. Không cần cài gì. Đọc xong biết ngay vibecode có phù hợp với bạn không.</p>
+    <div class="cta-btns">
+      <a href="#" class="btn-primary">Bắt đầu bài 01 →</a>
+      <a href="#lo-trinh" class="btn-ghost">Xem lại lộ trình</a>
+    </div>
+    <p class="cta-note">✳ hoàn toàn miễn phí · không cần email · không cần đăng ký</p>
+  </div>
+</div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <div class="footer-logo">mark<em>AI</em></div>
+      <p class="footer-tagline">Học AI ứng dụng dành riêng cho dân Marketing Việt Nam. Miễn phí mãi mãi.</p>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Vibecode</div>
+      <ul class="footer-links">
+        <li><a href="#">Bài 01 · Vibecode là gì?</a></li>
+        <li><a href="#">Bài 02 · Từ ngữ chuyên ngành</a></li>
+        <li><a href="#">Bài 03 · Cài đặt môi trường</a></li>
+        <li><a href="#">Bài 04 · VS Code & Cursor</a></li>
+        <li><a href="#">Bài 05–10</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Khám phá</div>
+      <ul class="footer-links">
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Tips & Mẹo</a></li>
+        <li><a href="#">Prompt Library</a></li>
+        <li><a href="#" class="soon">Analytics (sắp ra)</a></li>
+        <li><a href="#" class="soon">Generate Image (sắp ra)</a></li>
+        <li><a href="#" class="soon">Motion Video (sắp ra)</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">markAI</div>
+      <ul class="footer-links">
+        <li><a href="#">Về markAI</a></li>
+        <li><a href="#">Góp ý</a></li>
+        <li><a href="#">Báo lỗi</a></li>
+        <li><a href="#">Liên hệ</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-bottom-text">markAI.vn · Miễn phí · Không tracking · Không quảng cáo</span>
+    <span class="footer-bottom-text">✳ Dành riêng cho dân Marketing Việt Nam</span>
+  </div>
+</footer>
+
+<script>
+  // Ticker loop
+  const ticker = document.getElementById('ticker');
+  if (ticker) ticker.innerHTML += ticker.innerHTML;
+</script>
+
+</body>
+</html>
