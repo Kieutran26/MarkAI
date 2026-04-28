@@ -1,0 +1,23 @@
+{
+  "version": 1,
+  "skills": {
+    "ck:find-skills": {
+      "source": "claudekit/claudekit-engineer",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/find-skills/SKILL.md",
+      "computedHash": "714e7cd67d759856ec553e2ced5865b2a6f3b848854aa2c438911090c788e4cc"
+    },
+    "huashu-design": {
+      "source": "alchaincyf/huashu-design",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "computedHash": "aedfa8eedd540a46aaa74a8c113bef80c81c8ead52c6714fbc261b74c0aebf2e"
+    },
+    "impeccable": {
+      "source": "pbakaus/impeccable",
+      "sourceType": "github",
+      "skillPath": ".agents/skills/impeccable/SKILL.md",
+      "computedHash": "e79e353cebf42112c8a1431be100399219866d62467172b5be232cf8d0ac4091"
+    }
+  }
+}
