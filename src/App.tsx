@@ -12,7 +12,7 @@ import About from './pages/About';
 import Feedback from './pages/Feedback';
 import Report from './pages/Report';
 import Contact from './pages/Contact';
-import VibecodeCourse from './pages/VibecodeCourse';
+import VibecodePage from './pages/VibecodePage';
 import LessonPage from './pages/LessonPage';
 
 const ScrollToTop = () => {
@@ -41,7 +41,7 @@ export default function App() {
             <Route path="/feedback" element={<Feedback />} />
             <Route path="/report" element={<Report />} />
             <Route path="/contact" element={<Contact />} />
-            <Route path="/vibecode" element={<VibecodeCourse />} />
+            <Route path="/vibecode" element={<VibecodePage />} />
             <Route path="/vibecode/:slug" element={<LessonPage />} />
           </Routes>
         </main>

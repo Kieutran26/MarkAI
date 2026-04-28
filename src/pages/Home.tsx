@@ -199,7 +199,7 @@ const Vibecode = () => {
               return (
                 <motion.div key={idx} variants={itemVariants} className="relative">
                   <Link 
-                    to={`/lesson/${idx + 1}`} 
+                    to={idx === 0 ? '/vibecode/vibecode-la-gi' : `/lesson/${idx + 1}`} 
                     className="group relative flex flex-col bg-bg border border-border p-8 no-underline text-ink hover:bg-bg2 transition-all hover:-translate-y-1 hover:shadow-xl hover:border-accent h-full"
                   >
                     {/* Step Marker */}

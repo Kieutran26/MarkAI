@@ -991,7 +991,7 @@ export const lessons: Lesson[] = [
     tags: ['Vercel', 'GitHub', 'PostHog', 'Google Search Console', 'domain'],
     difficulty: 'Deploy · hoàn thiện',
     badgeExtra: 'ĐÍCH ĐẾN',
-    badgeExtraType: 'green',
+    badgeExtraType: 'green' as const,
     prevLesson: { id: 9, title: 'Tạo Skills & Workflow' },
     nextLesson: null,
     subLessons: [
