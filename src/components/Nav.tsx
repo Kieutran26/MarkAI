@@ -2,7 +2,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 export default function Nav() {
   const location = useLocation();
-  const isVibecodeActive = location.pathname === '/vibecode' || location.pathname.startsWith('/lesson');
+  const isVibecodeActive = location.pathname === '/vibecode' || location.pathname.startsWith('/vibecode/') || location.pathname.startsWith('/lesson');
   const isActive = (path: string) => location.pathname === path;
 
   return (

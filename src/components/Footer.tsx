@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { lessons } from '../lib/lessons';
 
 export default function Footer() {
   return (
@@ -15,10 +16,13 @@ export default function Footer() {
         <div>
           <div className="font-mono text-[11px] text-muted tracking-widest uppercase mb-6">VIBECODE</div>
           <ul className="flex flex-col gap-3 list-none p-0">
-            {["01 · Bắt đầu", "02 · Setup", "03 · Tools", "04 · Ngôn ngữ", "05 · Prompt", "06 · Workflow", "07 · Deploy"].map((link, i) => (
-              <li key={i}>
-                <Link to={`/lesson/${i + 1}`} className="font-mono text-[12px] text-ink2 hover:text-accent transition-colors no-underline">
-                  Bài {link}
+            {lessons.slice(0, 7).map((lesson) => (
+              <li key={lesson.id}>
+                <Link 
+                  to={`/vibecode/${lesson.slug}`} 
+                  className="font-mono text-[12px] text-ink2 hover:text-accent transition-colors no-underline"
+                >
+                  Bài {lesson.id.toString().padStart(2, '0')} · {lesson.title.split('—')[0].trim().slice(0, 20)}
                 </Link>
               </li>
             ))}

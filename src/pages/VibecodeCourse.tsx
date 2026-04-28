@@ -2,6 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { Play, CheckCircle2, ChevronRight, BookOpen, Clock, Award, ChevronDown, ChevronUp } from 'lucide-react';
+import { lessons } from '../lib/lessons';
+
+// Map chapter index to slug
+const slugMap = lessons.reduce((acc, lesson) => {
+  acc[lesson.id] = lesson.slug;
+  return acc;
+}, {} as Record<number, string>);
 
 interface Lesson {
   id: string;
@@ -209,7 +216,7 @@ const CurriculumChapter: React.FC<CurriculumChapterProps> = ({ chapter, index, i
               {chapter.lessons.map((lesson, lIdx) => (
                 <Link 
                   key={lIdx}
-                  to={`/lesson/${index + 1}`}
+                  to={`/vibecode/${slugMap[index + 1]}`}
                   className="group/lesson flex items-center gap-4 py-4 px-6 sm:px-8 border-b border-border/40 last:border-0 hover:bg-white transition-all no-underline"
                 >
                   <div className="font-mono text-[10px] text-muted group-hover/lesson:text-accent w-8 shrink-0">
@@ -299,7 +306,7 @@ export default function VibecodeCourse() {
                     </div>
                     
                     <Link 
-                      to={`/lesson/${lastLesson || 1}`}
+                      to={`/vibecode/${slugMap[lastLesson || 1]}`}
                       className="w-full bg-accent text-white no-underline py-4 font-mono text-[11px] uppercase tracking-widest hover:bg-white hover:text-accent transition-all flex items-center justify-center gap-3 shadow-lg shadow-accent/20"
                     >
                       {lastLesson ? 'Học tiếp ngay' : 'Bắt đầu ngay'} <ChevronRight className="w-3 h-3" />
@@ -378,7 +385,7 @@ export default function VibecodeCourse() {
       <section className="py-20 px-5 border-t border-border bg-white">
         <div className="max-w-[800px] mx-auto text-center">
           <h2 className="font-serif text-[2rem] mb-6 italic">Mọi thứ bạn cần để làm chủ website.</h2>
-          <Link to="/lesson/1" className="inline-block border border-ink px-10 py-4 font-mono text-[11px] uppercase tracking-widest hover:bg-ink hover:text-white transition-all no-underline">
+          <Link to="/vibecode/vibecode-la-gi" className="inline-block border border-ink px-10 py-4 font-mono text-[11px] uppercase tracking-widest hover:bg-ink hover:text-white transition-all no-underline">
             Ghi danh miễn phí
           </Link>
         </div>
