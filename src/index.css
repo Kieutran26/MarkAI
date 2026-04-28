@@ -1,0 +1,169 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
+
+:root {
+  --bg:      #f7f5f0;
+  --bg2:     #ede9e0;
+  --bg3:     #e4dfd5;
+  --ink:     #0d0d0d;
+  --ink2:    #444444;
+  --muted:   #888888;
+  --border:  #d4cfc5;
+  --accent:  #E8410A;
+  --accent2: #C93508;
+  
+  --serif:   'Instrument Serif', serif;
+  --mono:    'DM Mono', monospace;
+  --sans:    'DM Sans', sans-serif;
+}
+
+@theme {
+  --color-bg: var(--bg);
+  --color-bg2: var(--bg2);
+  --color-bg3: var(--bg3);
+  --color-ink: var(--ink);
+  --color-ink2: var(--ink2);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent2: var(--accent2);
+  
+  --font-serif: var(--serif);
+  --font-mono: var(--mono);
+  --font-sans: var(--sans);
+}
+
+body {
+  background-color: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Global Reset for Brutalist Design */
+*, *::before, *::after {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  border-color: var(--border);
+}
+
+/* Exception for terminal dots */
+.hero-terminal { background: var(--ink); border: 1px solid #2a2a2a; }
+.term-bar { background: #1a1a1a; border-bottom: 1px solid #2a2a2a; height: 32px; display: flex; align-items: center; padding: 0 12px; gap: 6px; }
+.term-dot {
+  width: 10px; height: 10px;
+  border-radius: 50% !important;
+}
+.term-dot.r { background: #FF5F57; }
+.term-dot.y { background: #FFBD2E; }
+.term-dot.g { background: #28CA41; }
+
+/* Buttons & Links */
+button, a { cursor: pointer; transition: all 0.15s ease; }
+
+/* Custom Typography & Patterns */
+.section-label { 
+  font-family: var(--mono); 
+  font-size: 11px; 
+  color: var(--muted); 
+  letter-spacing: 0.08em; 
+  text-transform: uppercase; 
+  margin-bottom: 1rem; 
+}
+.section-label span { color: var(--accent); margin-right: 0.4rem; }
+
+.section-heading { 
+  font-family: var(--serif); 
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem); 
+  line-height: 1.12; 
+}
+.section-heading em { color: var(--accent); font-style: italic; }
+
+.strike { text-decoration: line-through; color: var(--muted); font-style: italic; }
+
+.insight { 
+  font-family: var(--mono); 
+  font-size: 12px; 
+  border-left: 2px solid var(--accent) !important; 
+  padding-left: 0.9rem; 
+  line-height: 1.65; 
+  color: var(--ink2); 
+}
+
+/* Ticker */
+.ticker { height: 32px; background: var(--ink); overflow: hidden; display: flex; align-items: center; }
+.ticker-track { display: flex; align-items: center; white-space: nowrap; animation: tick 36s linear infinite; }
+.ticker-item { font-family: var(--mono); font-size: 10px; color: #555; padding: 0 2rem; letter-spacing: 0.06em; text-transform: uppercase; }
+.ticker-item b { color: var(--accent); }
+@keyframes tick { from { transform: translateX(0) } to { transform: translateX(-50%) } }
+
+/* Buttons */
+.btn-primary {
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.02em;
+  background: var(--ink); color: var(--bg);
+  border: none; padding: 11px 22px; cursor: pointer;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+  transition: background 0.15s;
+}
+.btn-primary:hover { background: var(--accent); }
+
+.btn-ghost {
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.02em;
+  background: transparent; color: var(--ink);
+  border: 1px solid var(--border) !important; padding: 10px 22px; cursor: pointer;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+  transition: border-color 0.15s;
+}
+.btn-ghost:hover { border-color: var(--ink) !important; }
+
+.btn-accent {
+  background: var(--accent); color: white;
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.02em;
+  border: none; padding: 11px 22px; cursor: pointer;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+  transition: background 0.15s;
+}
+.btn-accent:hover { background: var(--accent2); }
+
+.btn-ghost-inv {
+  font-family: var(--mono); font-size: 12px; letter-spacing: 0.02em;
+  background: transparent; color: #888;
+  border: 1px solid #2a2a2a !important; padding: 10px 22px; cursor: pointer;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+  transition: all 0.15s;
+}
+.btn-ghost-inv:hover { color: white; border-color: #555 !important; }
+
+/* Badges & Tags */
+.badge { font-family: var(--mono); font-size: 10px; padding: 2px 8px; letter-spacing: 0.04em; }
+.badge-dark { background: var(--ink); color: var(--bg); }
+.badge-accent { background: var(--accent); color: white; }
+.badge-outline { border: 1px solid var(--border) !important; color: var(--muted); background: transparent; }
+.badge-green { background: #16a34a; color: white; }
+.badge-soon { 
+  position: absolute; 
+  top: 1rem; 
+  right: 1rem; 
+  background: var(--bg3);
+  border: 1px solid var(--border) !important; 
+  color: var(--ink2); 
+  font-size: 9px; 
+  padding: 1px 6px;
+  font-family: var(--mono);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.step-tag {
+  font-family: var(--mono); font-size: 10px;
+  background: var(--bg2); border: 1px solid var(--border) !important; color: var(--muted);
+  padding: 2px 9px;
+}
+
+/* Spinner */
+.nav-free::before { content: '✦'; animation: spin 4s linear infinite; display: inline-block; margin-right: 4px; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Terminal Cursor */
+.term-cursor { display: inline-block; width: 8px; height: 14px; background: var(--accent); animation: blink 0.8s step-end infinite; }
+@keyframes blink { 0%, 100% { opacity: 1 } 50% { opacity: 0 } }
