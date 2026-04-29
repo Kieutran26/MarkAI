@@ -1,14 +1,14 @@
 import { useEffect, useRef } from 'react';
 
 const items = [
+  "✳ 150+ prompt đã test thực tế",
   "✳ Vibecode ra mắt tháng 4/2026",
-  "✳ 7 bài học lộ trình zero",
   "✳ Miễn phí 100%",
+  "✳ Claude · Cursor · ChatGPT · Gemini",
   "✳ Analytics sắp ra",
   "✳ Generate Image sắp ra",
-  "✳ Motion Video sắp ra",
-  "✳ Blog · Tips · Prompt Library",
-  "✳ Dành riêng dân Marketing"
+  "✳ Dành riêng dân Marketing",
+  "✳ Submit prompt của bạn"
 ];
 
 export default function Ticker() {
