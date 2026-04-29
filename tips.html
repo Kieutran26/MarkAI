@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tips & Mẹo — markAI.vn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:      #f7f5f0;
+    --bg2:     #ede9e0;
+    --bg3:     #e4dfd5;
+    --ink:     #0d0d0d;
+    --ink2:    #444444;
+    --muted:   #888888;
+    --border:  #d4cfc5;
+    --accent:  #E8410A;
+    --accent2: #C93508;
+    --serif:   'Instrument Serif', serif;
+    --mono:    'DM Mono', monospace;
+    --sans:    'DM Sans', sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-weight: 300;
+  }
+
+  a { text-decoration: none; color: inherit; }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    height: 52px; background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem;
+  }
+  .nav-logo { font-family: var(--mono); font-size: 15px; font-weight: 500; letter-spacing: -.02em; }
+  .nav-logo em { color: var(--accent); font-style: normal; }
+  .nav-links { display: flex; align-items: center; height: 52px; list-style: none; }
+  .nav-links a {
+    font-family: var(--mono); font-size: 12px; color: var(--muted);
+    padding: 0 1rem; height: 52px; display: flex; align-items: center;
+    border-left: 1px solid var(--border);
+    transition: color .15s, background .15s;
+    letter-spacing: .02em;
+  }
+  .nav-links a:hover { color: var(--ink); background: var(--bg2); }
+  .nav-links a.active { color: var(--accent); }
+  .nav-links a.disabled { color: var(--muted); opacity: .4; pointer-events: none; }
+  .nav-free {
+    font-family: var(--mono); font-size: 11px; color: var(--accent);
+    display: flex; align-items: center; gap: 5px; border-left: 1px solid var(--border);
+    padding: 0 1rem; height: 52px; letter-spacing: .02em;
+  }
+  .nav-free::before { content: '✦'; display: inline-block; animation: spin 4s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── TICKER ── */
+  .ticker { height: 32px; background: var(--ink); overflow: hidden; display: flex; align-items: center; }
+  .ticker-track { display: flex; white-space: nowrap; animation: tick 36s linear infinite; }
+  .ticker-item { font-family: var(--mono); font-size: 10px; color: #555; padding: 0 2rem; letter-spacing: .06em; text-transform: uppercase; }
+  .ticker-item b { color: var(--accent); }
+  @keyframes tick { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ── LAYOUT ── */
+  .section-full { border-bottom: 1px solid var(--border); }
+  .section-inner { max-width: 1200px; margin: 0 auto; padding: 4rem 2rem; }
+  .section-label { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 1rem; }
+  .section-label span { color: var(--accent); margin-right: .4rem; }
+  .section-heading { font-family: var(--serif); font-size: clamp(1.6rem, 3.5vw, 2.4rem); line-height: 1.12; }
+  .section-heading em { color: var(--accent); font-style: italic; }
+  .section-sub { font-family: var(--sans); font-size: 14px; font-weight: 300; line-height: 1.7; color: var(--ink2); max-width: 560px; margin-top: .8rem; }
+
+  /* ── HERO ── */
+  .tips-hero { padding: 4rem 2rem 3rem; border-bottom: 1px solid var(--border); }
+  .tips-hero-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .hero-eyebrow { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 1.2rem; }
+  .hero-h1 { font-family: var(--serif); font-size: clamp(2.4rem, 4.5vw, 3.8rem); line-height: 1.08; letter-spacing: -.025em; margin-bottom: 1.2rem; }
+  .hero-h1 em { color: var(--accent); font-style: italic; }
+  .hero-desc { font-family: var(--sans); font-size: 15px; font-weight: 300; line-height: 1.7; color: var(--ink2); margin-bottom: 2rem; max-width: 480px; }
+  .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1.2rem; }
+  .btn-primary {
+    font-family: var(--mono); font-size: 12px; letter-spacing: .02em;
+    background: var(--ink); color: var(--bg);
+    border: none; padding: 11px 22px; cursor: pointer;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+    transition: background .15s;
+  }
+  .btn-primary:hover { background: var(--accent); }
+  .btn-ghost {
+    font-family: var(--mono); font-size: 12px; letter-spacing: .02em;
+    background: transparent; color: var(--ink);
+    border: 1px solid var(--border); padding: 10px 22px; cursor: pointer;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+    transition: border-color .15s;
+  }
+  .btn-ghost:hover { border-color: var(--ink); }
+  .hero-note { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .02em; }
+
+  /* Hero right — stats & categories */
+  .hero-right { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--border); }
+  .hero-stat-row { display: grid; grid-template-columns: 1fr 1fr; }
+  .hero-stat { padding: 1.5rem 1.8rem; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+  .hero-stat:nth-child(2n) { border-right: none; }
+  .hero-stat:nth-last-child(-n+2) { border-bottom: none; }
+  .hero-stat-num { font-family: var(--serif); font-size: 2.2rem; line-height: 1; margin-bottom: .3rem; }
+  .hero-stat-label { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: .04em; }
+
+  /* ── FILTER BAR ── */
+  .filter-bar { border-bottom: 1px solid var(--border); position: sticky; top: 52px; z-index: 90; background: var(--bg); }
+  .filter-bar-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; overflow-x: auto; }
+  .filter-btn {
+    font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase;
+    padding: 0 1.4rem; height: 44px; color: var(--muted);
+    border-right: 1px solid var(--border); background: transparent;
+    cursor: pointer; white-space: nowrap; border-top: none; border-bottom: none; border-left: none;
+    transition: color .15s, background .15s;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .filter-btn:first-child { border-left: none; }
+  .filter-btn:hover { color: var(--ink); background: var(--bg2); }
+  .filter-btn.active { color: var(--accent); background: var(--bg2); }
+  .filter-count { font-family: var(--mono); font-size: 9px; color: var(--muted); background: var(--bg2); padding: 1px 5px; border: 1px solid var(--border); }
+  .filter-btn.active .filter-count { background: var(--accent); color: white; border-color: var(--accent); }
+
+  /* ── TIPS GRID ── */
+  .tips-grid-section { border-bottom: 1px solid var(--border); }
+  .tips-grid-inner { max-width: 1200px; margin: 0 auto; }
+  .tips-grid-header { display: flex; align-items: baseline; justify-content: space-between; padding: 3rem 2rem 2rem; border-bottom: 1px solid var(--border); }
+  .tips-grid-header-right { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .04em; transition: color .15s; cursor: pointer; }
+  .tips-grid-header-right:hover { color: var(--ink); }
+  .tips-grid { display: grid; grid-template-columns: repeat(3, 1fr); border-left: 1px solid var(--border); border-top: 1px solid var(--border); }
+
+  .tip-card {
+    padding: 2rem; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    cursor: pointer; position: relative; transition: background .15s;
+    display: flex; flex-direction: column; gap: 1rem;
+  }
+  .tip-card:hover { background: var(--bg2); }
+  .tip-card-top { display: flex; align-items: center; justify-content: space-between; }
+  .tip-num { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; }
+  .tip-category {
+    font-family: var(--mono); font-size: 10px; letter-spacing: .04em;
+    background: var(--ink); color: var(--bg);
+    padding: 2px 8px;
+  }
+  .tip-text { font-family: var(--serif); font-size: 1.05rem; line-height: 1.45; color: var(--ink); }
+  .tip-meta { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: .03em; margin-top: auto; }
+  .tip-arrow {
+    position: absolute; bottom: 1.5rem; right: 1.5rem;
+    font-family: var(--mono); font-size: 13px; color: var(--muted);
+    transition: transform .15s, color .15s;
+  }
+  .tip-card:hover .tip-arrow { transform: translateX(4px); color: var(--accent); }
+
+  /* Tip card HOT */
+  .tip-card.hot-card { background: var(--bg2); }
+  .badge { font-family: var(--mono); font-size: 10px; padding: 2px 8px; letter-spacing: .04em; }
+  .badge-accent { background: var(--accent); color: white; }
+  .badge-outline { border: 1px solid var(--border); color: var(--muted); background: transparent; }
+
+  /* ── INSIGHT BLOCKS (featured tips) ── */
+  .insight { font-family: var(--mono); font-size: 12px; border-left: 2px solid var(--accent); padding-left: .9rem; line-height: 1.65; color: var(--ink2); }
+
+  /* ── FEATURED TIP — dark ── */
+  .featured-section { background: var(--ink); border-bottom: 1px solid #1a1a1a; }
+  .featured-inner { max-width: 1200px; margin: 0 auto; padding: 4rem 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .featured-label { font-family: var(--mono); font-size: 11px; color: #555; letter-spacing: .08em; text-transform: uppercase; margin-bottom: 1rem; }
+  .featured-label span { color: var(--accent); }
+  .featured-h2 { font-family: var(--serif); font-size: clamp(1.8rem, 3.5vw, 2.8rem); color: var(--bg); line-height: 1.15; margin-bottom: 1rem; }
+  .featured-h2 em { color: var(--accent); font-style: italic; }
+  .featured-desc { font-family: var(--sans); font-size: 14px; font-weight: 300; color: #888; line-height: 1.7; margin-bottom: 2rem; }
+  .btn-accent {
+    font-family: var(--mono); font-size: 12px; letter-spacing: .02em;
+    background: var(--accent); color: white;
+    border: none; padding: 11px 22px; cursor: pointer;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+    transition: background .15s;
+  }
+  .btn-accent:hover { background: var(--accent2); }
+  .btn-ghost-inv {
+    font-family: var(--mono); font-size: 12px; letter-spacing: .02em;
+    background: transparent; color: #888;
+    border: 1px solid #2a2a2a; padding: 10px 22px; cursor: pointer;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
+    transition: border-color .15s, color .15s;
+  }
+  .btn-ghost-inv:hover { color: white; border-color: #555; }
+  .featured-right { display: flex; flex-direction: column; gap: 0; border: 1px solid #2a2a2a; }
+  .featured-tip-row {
+    padding: 1.5rem 1.8rem; border-bottom: 1px solid #2a2a2a;
+    display: flex; gap: 1.2rem; align-items: flex-start;
+    cursor: pointer; transition: background .15s;
+  }
+  .featured-tip-row:last-child { border-bottom: none; }
+  .featured-tip-row:hover { background: #1a1a1a; }
+  .featured-tip-num { font-family: var(--mono); font-size: 10px; color: #555; letter-spacing: .06em; flex-shrink: 0; padding-top: 3px; }
+  .featured-tip-text { font-family: var(--serif); font-size: 1rem; color: var(--bg); line-height: 1.45; }
+  .featured-tip-cat { font-family: var(--mono); font-size: 9px; color: #555; letter-spacing: .04em; text-transform: uppercase; margin-top: .3rem; }
+
+  /* ── WEEKLY PICK ── */
+  .weekly-section { border-bottom: 1px solid var(--border); background: var(--bg2); }
+  .weekly-inner { max-width: 1200px; margin: 0 auto; padding: 4rem 2rem; }
+  .weekly-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; border: 1px solid var(--border); margin-top: 2.5rem; }
+  .weekly-card {
+    padding: 2rem 2.5rem; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
+    transition: background .15s; cursor: pointer;
+  }
+  .weekly-card:nth-child(2n) { border-right: none; }
+  .weekly-card:nth-last-child(-n+2) { border-bottom: none; }
+  .weekly-card:hover { background: var(--bg3); }
+  .weekly-card-header { display: flex; align-items: center; gap: .8rem; margin-bottom: 1rem; }
+  .weekly-badge { font-family: var(--mono); font-size: 9px; letter-spacing: .06em; padding: 2px 7px; background: var(--bg); border: 1px solid var(--border); color: var(--muted); }
+  .weekly-title { font-family: var(--serif); font-size: 1.1rem; line-height: 1.4; margin-bottom: .6rem; }
+  .weekly-desc { font-family: var(--sans); font-size: 13px; font-weight: 300; color: var(--ink2); line-height: 1.6; }
+  .weekly-meta { font-family: var(--mono); font-size: 10px; color: var(--muted); margin-top: 1rem; letter-spacing: .03em; }
+
+  /* ── SUBMIT TIP ── */
+  .submit-section { border-bottom: 1px solid var(--border); }
+  .submit-inner { max-width: 1200px; margin: 0 auto; padding: 4rem 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .submit-left {}
+  .submit-form { border: 1px solid var(--border); }
+  .submit-form-header { padding: 1.2rem 1.5rem; border-bottom: 1px solid var(--border); background: var(--bg2); }
+  .submit-form-title { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; }
+  .submit-form-body { padding: 1.5rem; display: flex; flex-direction: column; gap: 1rem; }
+  .form-field { display: flex; flex-direction: column; gap: .4rem; }
+  .form-label { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; }
+  .form-input, .form-textarea, .form-select {
+    font-family: var(--mono); font-size: 12px; color: var(--ink);
+    background: var(--bg); border: 1px solid var(--border);
+    padding: .6rem .8rem; width: 100%; outline: none;
+    transition: border-color .15s;
+  }
+  .form-input:focus, .form-textarea:focus, .form-select:focus { border-color: var(--ink); }
+  .form-textarea { resize: vertical; min-height: 80px; line-height: 1.6; }
+  .form-submit { width: 100%; text-align: center; justify-content: center; }
+
+  /* ── ALL TIPS LIST ── */
+  .all-tips-section { border-bottom: 1px solid var(--border); }
+  .all-tips-inner { max-width: 1200px; margin: 0 auto; }
+  .all-tips-header { display: flex; align-items: baseline; justify-content: space-between; padding: 3rem 2rem 2rem; border-bottom: 1px solid var(--border); }
+  .tip-row {
+    display: grid; grid-template-columns: 64px 1fr auto;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none; color: inherit;
+    transition: background .15s; cursor: pointer;
+  }
+  .tip-row:hover { background: var(--bg2); }
+  .tip-row-num {
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding: 1.5rem 0; gap: 2px;
+  }
+  .tip-row-num-text { font-family: var(--mono); font-size: 9px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; }
+  .tip-row-num-big { font-family: var(--serif); font-size: 1.4rem; color: var(--ink); }
+  .tip-row-body { padding: 1.5rem 2rem; display: flex; flex-direction: column; gap: .4rem; }
+  .tip-row-title { font-family: var(--serif); font-size: 1rem; line-height: 1.4; }
+  .tip-row-meta { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: .03em; }
+  .tip-row-arrow {
+    font-family: var(--mono); font-size: 13px; color: var(--muted);
+    display: flex; align-items: center; padding: 0 2rem;
+    transition: transform .15s, color .15s;
+  }
+  .tip-row:hover .tip-row-arrow { transform: translateX(4px); color: var(--accent); }
+
+  /* ── CTA ── */
+  .cta-section { border-bottom: 1px solid var(--border); background: var(--bg2); }
+  .cta-inner { max-width: 1200px; margin: 0 auto; padding: 5rem 2rem; text-align: center; }
+  .cta-h2 { font-family: var(--serif); font-size: clamp(1.8rem, 3.5vw, 2.6rem); line-height: 1.15; margin-bottom: 1rem; }
+  .cta-h2 em { color: var(--accent); font-style: italic; }
+  .cta-desc { font-family: var(--sans); font-size: 14px; font-weight: 300; color: var(--ink2); max-width: 480px; margin: 0 auto 2rem; line-height: 1.7; }
+  .cta-buttons { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 1rem; }
+  .cta-note { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .03em; }
+
+  /* ── FOOTER ── */
+  footer { border-top: 1px solid var(--border); }
+  .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; padding: 3rem 2rem; gap: 2rem; border-bottom: 1px solid var(--border); }
+  .footer-col-title { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 1.2rem; }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: .6rem; }
+  .footer-col ul li a { font-family: var(--sans); font-size: 13px; font-weight: 300; color: var(--ink2); transition: color .15s; }
+  .footer-col ul li a:hover { color: var(--ink); }
+  .footer-col ul li a.soon { color: var(--muted); opacity: .5; pointer-events: none; }
+  .footer-logo { font-family: var(--mono); font-size: 16px; font-weight: 500; letter-spacing: -.02em; margin-bottom: .6rem; }
+  .footer-logo em { color: var(--accent); font-style: normal; }
+  .footer-tagline { font-family: var(--sans); font-size: 13px; font-weight: 300; color: var(--muted); line-height: 1.6; max-width: 220px; }
+  .footer-bottom { max-width: 1200px; margin: 0 auto; padding: 1.2rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: .5rem; }
+  .footer-bottom-text { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .03em; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .tips-hero-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .hero-right { display: none; }
+    .featured-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .submit-inner { grid-template-columns: 1fr; gap: 2rem; }
+    .tips-grid { grid-template-columns: repeat(2, 1fr); }
+    .weekly-grid { grid-template-columns: 1fr; }
+    .weekly-card:nth-child(2n) { border-right: 1px solid var(--border); }
+    .weekly-card:nth-last-child(-n+2) { border-bottom: 1px solid var(--border); }
+    .weekly-card:last-child { border-bottom: none; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    nav .nav-links li:nth-child(n+4) { display: none; }
+    .tip-row { grid-template-columns: 56px 1fr auto; }
+  }
+  @media (max-width: 480px) {
+    nav, .section-inner, .tips-hero, .featured-inner, .submit-inner, .all-tips-inner, .cta-inner, .footer-grid, .footer-bottom { padding-left: 1.2rem; padding-right: 1.2rem; }
+    .tips-grid { grid-template-columns: 1fr; }
+    footer .footer-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">mark<em>AI</em></a>
+  <ul class="nav-links">
+    <li><a href="#">Vibecode</a></li>
+    <li><a href="#">Blog</a></li>
+    <li><a href="#" class="active">Tips</a></li>
+    <li><a href="#">Prompts</a></li>
+    <li><a href="#" class="disabled">Analytics</a></li>
+    <li><a href="#" class="disabled">Image</a></li>
+    <li><a href="#" class="disabled">Video</a></li>
+  </ul>
+  <div class="nav-free">Miễn phí 100%</div>
+</nav>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track" id="ticker-track">
+    <span class="ticker-item">✳ Vibecode ra mắt tháng 4/2026</span>
+    <span class="ticker-item">✳ Tips mới mỗi tuần</span>
+    <span class="ticker-item">✳ Miễn phí 100%</span>
+    <span class="ticker-item">✳ Analytics sắp ra</span>
+    <span class="ticker-item">✳ Generate Image sắp ra</span>
+    <span class="ticker-item">✳ Motion Video sắp ra</span>
+    <span class="ticker-item">✳ Blog · Tips · Prompt Library</span>
+    <span class="ticker-item">✳ Dành riêng dân Marketing</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="tips-hero">
+  <div class="tips-hero-inner">
+    <div class="hero-left">
+      <p class="hero-eyebrow">✳ Tips & Mẹo · thực chiến · cập nhật hàng tuần</p>
+      <h1 class="hero-h1">Tips nhỏ,<br><em>impact lớn.</em></h1>
+      <p class="hero-desc">Mỗi tip là 1 mẹo thực dụng — đọc xong làm được ngay. Không lý thuyết, không vòng vo. Vibecode · Workflow · Deploy · AI Tools.</p>
+      <div class="hero-cta">
+        <a href="#tips-grid" class="btn-primary">Đọc tips mới nhất →</a>
+        <a href="#" class="btn-ghost">Submit tip của bạn</a>
+      </div>
+      <p class="hero-note">✳ miễn phí · không cần email · không tracking</p>
+    </div>
+    <div class="hero-right">
+      <div class="hero-stat-row">
+        <div class="hero-stat">
+          <div class="hero-stat-num">60+</div>
+          <div class="hero-stat-label">Tips đã publish</div>
+        </div>
+        <div class="hero-stat">
+          <div class="hero-stat-num">5</div>
+          <div class="hero-stat-label">Danh mục chủ đề</div>
+        </div>
+      </div>
+      <div class="hero-stat-row">
+        <div class="hero-stat" style="border-bottom:none;">
+          <div class="hero-stat-num">Mỗi tuần</div>
+          <div class="hero-stat-label">Tips mới thêm vào</div>
+        </div>
+        <div class="hero-stat" style="border-bottom:none;">
+          <div class="hero-stat-num">2 phút</div>
+          <div class="hero-stat-label">Đọc xong 1 tip</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <div class="filter-bar-inner">
+    <button class="filter-btn active">Tất cả <span class="filter-count">60</span></button>
+    <button class="filter-btn">Vibecode <span class="filter-count">24</span></button>
+    <button class="filter-btn">Workflow <span class="filter-count">12</span></button>
+    <button class="filter-btn">Deploy <span class="filter-count">8</span></button>
+    <button class="filter-btn">AI Tools <span class="filter-count">10</span></button>
+    <button class="filter-btn">Prompt <span class="filter-count">6</span></button>
+  </div>
+</div>
+
+<!-- FEATURED / HOT TIPS GRID -->
+<div class="tips-grid-section" id="tips-grid">
+  <div class="tips-grid-inner">
+    <div class="tips-grid-header">
+      <div>
+        <p class="section-label"><span>✳</span> 01 · hot tips tuần này</p>
+        <h2 class="section-heading">Tips <em>đang hot.</em></h2>
+      </div>
+      <a href="#" class="tips-grid-header-right">Xem tất cả tips →</a>
+    </div>
+    <div class="tips-grid">
+
+      <!-- Tip 1 — HOT -->
+      <div class="tip-card hot-card">
+        <div class="tip-card-top">
+          <span class="tip-num">TIP · 60</span>
+          <div style="display:flex;gap:.4rem;">
+            <span class="badge badge-accent">HOT</span>
+            <span class="tip-category">VIBECODE</span>
+          </div>
+        </div>
+        <div class="tip-text">Dùng <code style="font-family:var(--mono);font-size:.9em;background:var(--bg3);padding:1px 5px;">CLAUDE.md</code> để "nhớ" toàn bộ context dự án — không cần giải thích lại mỗi lần mở chat mới.</div>
+        <div style="margin-top:.5rem;">
+          <div class="insight">✳ Đặt file này ở root project, Claude sẽ đọc tự động mỗi session.</div>
+        </div>
+        <div class="tip-meta">Vibecode · 27·04·2026</div>
+        <span class="tip-arrow">→</span>
+      </div>
+
+      <!-- Tip 2 -->
+      <div class="tip-card">
+        <div class="tip-card-top">
+          <span class="tip-num">TIP · 59</span>
+          <span class="tip-category">WORKFLOW</span>
+        </div>
+        <div class="tip-text">Khi AI code sai, đừng xóa hết và bắt đầu lại. Thay vào đó: screenshot lỗi → paste vào chat → hỏi "tại sao lỗi này xảy ra?"</div>
+        <div class="tip-meta">Workflow · 25·04·2026</div>
+        <span class="tip-arrow">→</span>
+      </div>
+
+      <!-- Tip 3 -->
+      <div class="tip-card">
+        <div class="tip-card-top">
+          <span class="tip-num">TIP · 58</span>
+          <div style="display:flex;gap:.4rem;">
+            <span class="badge badge-outline">MỚI</span>
+            <span class="tip-category">DEPLOY</span>
+          </div>
+        </div>
+        <div class="tip-text">Vercel tự detect framework — không cần config gì thêm với Next.js. Chỉ cần kéo repo vào là xong.</div>
+        <div class="tip-meta">Deploy · 23·04·2026</div>
+        <span class="tip-arrow">→</span>
+      </div>
+
+      <!-- Tip 4 -->
+      <div class="tip-card">
+        <div class="tip-card-top">
+          <span class="tip-num">TIP · 57</span>
+          <span class="tip-category">AI TOOLS</span>
+        </div>
+        <div class="tip-text">v0.dev xuất code Tailwind sạch hơn Bolt — dùng v0 để làm UI, Bolt để prototype nhanh toàn app.</div>
+        <div class="tip-meta">AI Tools · 21·04·2026</div>
+        <span class="tip-arrow">→</span>
+      </div>
+
+      <!-- Tip 5 -->
+      <div class="tip-card">
+        <div class="tip-card-top">
+          <span class="tip-num">TIP · 56</span>
+          <span class="tip-category">PROMPT</span>
+        </div>
+        <div class="tip-text">Bắt đầu prompt bằng "Act as a senior frontend dev reviewing my code" — output sẽ cụ thể và có critique thật, không chỉ khen.</div>
+        <div class="tip-meta">Prompt · 18·04·2026</div>
+        <span class="tip-arrow">→</span>
+      </div>
+
+      <!-- Tip 6 -->
+      <div class="tip-card">
+        <div class="tip-card-top">
+          <span class="tip-num">TIP · 55</span>
+          <span class="tip-category">VIBECODE</span>
+        </div>
+        <div class="tip-text">Cursor Rules viết bằng tiếng Việt được — AI vẫn hiểu và follow đúng. Không cần dịch sang tiếng Anh.</div>
+        <div class="tip-meta">Vibecode · 16·04·2026</div>
+        <span class="tip-arrow">→</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- FEATURED TIPS — dark section -->
+<div class="featured-section">
+  <div class="featured-inner">
+    <div>
+      <p class="featured-label"><span>✳</span> 02 · tip của tuần</p>
+      <h2 class="featured-h2">Tips được chọn lọc —<br><em>đáng bookmark ngay.</em></h2>
+      <p class="featured-desc">Mỗi tuần mình chọn ra 1 tip "must-know" — loại tip mà biết sớm 1 ngày là tiết kiệm cả buổi làm việc.</p>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+        <a href="#" class="btn-accent">Xem tất cả tips →</a>
+        <a href="#" class="btn-ghost-inv">Submit tip của bạn</a>
+      </div>
+    </div>
+    <div class="featured-right">
+      <div class="featured-tip-row">
+        <div class="featured-tip-num">TIP · 60</div>
+        <div>
+          <div class="featured-tip-text">CLAUDE.md là "brain" của dự án — đặt đúng chỗ, AI sẽ nhớ hết context.</div>
+          <div class="featured-tip-cat">Vibecode · 27·04·2026</div>
+        </div>
+      </div>
+      <div class="featured-tip-row">
+        <div class="featured-tip-num">TIP · 54</div>
+        <div>
+          <div class="featured-tip-text">Khi bị lỗi "module not found" — 90% do quên chạy <code style="font-family:var(--mono);font-size:.85em;color:#98c379;">npm install</code> sau khi thêm package.</div>
+          <div class="featured-tip-cat">Vibecode · 14·04·2026</div>
+        </div>
+      </div>
+      <div class="featured-tip-row">
+        <div class="featured-tip-num">TIP · 48</div>
+        <div>
+          <div class="featured-tip-text">PostHog free tier là đủ để track 1 landing page — không cần trả phí gì cả.</div>
+          <div class="featured-tip-cat">Deploy · 02·04·2026</div>
+        </div>
+      </div>
+      <div class="featured-tip-row">
+        <div class="featured-tip-num">TIP · 42</div>
+        <div>
+          <div class="featured-tip-text">Đặt tên biến bằng tiếng Việt trong code cũng không sao — miễn là bạn đọc được và AI hiểu.</div>
+          <div class="featured-tip-cat">Workflow · 21·03·2026</div>
+        </div>
+      </div>
+      <div class="featured-tip-row" style="border-bottom:none;">
+        <div class="featured-tip-num">TIP · 38</div>
+        <div>
+          <div class="featured-tip-text">Dùng Cursor "Composer" mode thay vì "Chat" khi muốn sửa nhiều file cùng lúc.</div>
+          <div class="featured-tip-cat">Vibecode · 14·03·2026</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WEEKLY PICKS — cream section -->
+<div class="weekly-section">
+  <div class="weekly-inner">
+    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:0;">
+      <div>
+        <p class="section-label"><span>✳</span> 03 · theo chủ đề</p>
+        <h2 class="section-heading">Đọc theo <em>chủ đề bạn cần.</em></h2>
+      </div>
+    </div>
+    <div class="weekly-grid">
+      <div class="weekly-card">
+        <div class="weekly-card-header">
+          <span class="weekly-badge">VIBECODE</span>
+          <span style="font-family:var(--mono);font-size:10px;color:var(--muted);">24 tips</span>
+        </div>
+        <div class="weekly-title">Vibecode: từ mở Cursor đến deploy web</div>
+        <div class="weekly-desc">Tips thực chiến cho người mới bắt đầu vibecode — từ setup máy đến push code lên GitHub lần đầu.</div>
+        <div class="weekly-meta">Cursor · Claude Code · v0.dev · Vercel</div>
+      </div>
+      <div class="weekly-card">
+        <div class="weekly-card-header">
+          <span class="weekly-badge">WORKFLOW</span>
+          <span style="font-family:var(--mono);font-size:10px;color:var(--muted);">12 tips</span>
+        </div>
+        <div class="weekly-title">Workflow: làm ít hơn, ra nhiều hơn</div>
+        <div class="weekly-desc">Cách tổ chức Cursor Rules, CLAUDE.md và MCP để AI hiểu đúng ý bạn — không cần nhắc lại mỗi lần.</div>
+        <div class="weekly-meta">Cursor Rules · CLAUDE.md · MCP · Workflow</div>
+      </div>
+      <div class="weekly-card">
+        <div class="weekly-card-header">
+          <span class="weekly-badge">DEPLOY</span>
+          <span style="font-family:var(--mono);font-size:10px;color:var(--muted);">8 tips</span>
+        </div>
+        <div class="weekly-title">Deploy: web lên live trong 10 phút</div>
+        <div class="weekly-desc">Từ push GitHub đến domain custom — deploy Vercel, gắn analytics, cấu hình Search Console.</div>
+        <div class="weekly-meta">Vercel · GitHub · PostHog · Google Search Console</div>
+      </div>
+      <div class="weekly-card" style="border-bottom:none;">
+        <div class="weekly-card-header">
+          <span class="weekly-badge">AI TOOLS</span>
+          <span style="font-family:var(--mono);font-size:10px;color:var(--muted);">10 tips</span>
+        </div>
+        <div class="weekly-title">AI Tools: chọn đúng tool cho đúng việc</div>
+        <div class="weekly-desc">So sánh thực tế: khi nào dùng v0.dev, khi nào dùng Bolt, khi nào dùng Claude Code trực tiếp.</div>
+        <div class="weekly-meta">v0.dev · Bolt · Claude Code · Cursor · Shadcn</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ALL TIPS LIST -->
+<div class="all-tips-section">
+  <div class="all-tips-inner">
+    <div class="all-tips-header">
+      <div>
+        <p class="section-label"><span>✳</span> 04 · tất cả tips</p>
+        <h2 class="section-heading">Đọc hết — <em>đừng bỏ sót.</em></h2>
+      </div>
+      <span style="font-family:var(--mono);font-size:11px;color:var(--muted);">60 tips</span>
+    </div>
+
+    <a href="#" class="tip-row">
+      <div class="tip-row-num">
+        <span class="tip-row-num-text">TIP</span>
+        <span class="tip-row-num-big">60</span>
+      </div>
+      <div class="tip-row-body">
+        <div class="tip-row-title">CLAUDE.md — cách để AI nhớ toàn bộ context dự án của bạn</div>
+        <div class="tip-row-meta">VIBECODE · 27·04·2026 · 2 phút đọc</div>
+      </div>
+      <div class="tip-row-arrow">→</div>
+    </a>
+
+    <a href="#" class="tip-row">
+      <div class="tip-row-num">
+        <span class="tip-row-num-text">TIP</span>
+        <span class="tip-row-num-big">59</span>
+      </div>
+      <div class="tip-row-body">
+        <div class="tip-row-title">Đừng xóa hết khi AI code sai — hỏi lý do trước đã</div>
+        <div class="tip-row-meta">WORKFLOW · 25·04·2026 · 2 phút đọc</div>
+      </div>
+      <div class="tip-row-arrow">→</div>
+    </a>
+
+    <a href="#" class="tip-row">
+      <div class="tip-row-num">
+        <span class="tip-row-num-text">TIP</span>
+        <span class="tip-row-num-big">58</span>
+      </div>
+      <div class="tip-row-body">
+        <div class="tip-row-title">Vercel deploy Next.js: không cần config, kéo repo vào là chạy</div>
+        <div class="tip-row-meta">DEPLOY · 23·04·2026 · 2 phút đọc</div>
+      </div>
+      <div class="tip-row-arrow">→</div>
+    </a>
+
+    <a href="#" class="tip-row">
+      <div class="tip-row-num">
+        <span class="tip-row-num-text">TIP</span>
+        <span class="tip-row-num-big">57</span>
+      </div>
+      <div class="tip-row-body">
+        <div class="tip-row-title">v0.dev vs Bolt: dùng cái nào khi nào?</div>
+        <div class="tip-row-meta">AI TOOLS · 21·04·2026 · 2 phút đọc</div>
+      </div>
+      <div class="tip-row-arrow">→</div>
+    </a>
+
+    <a href="#" class="tip-row">
+      <div class="tip-row-num">
+        <span class="tip-row-num-text">TIP</span>
+        <span class="tip-row-num-big">56</span>
+      </div>
+      <div class="tip-row-body">
+        <div class="tip-row-title">Prompt "Act as a senior dev" — tại sao nó cho output tốt hơn?</div>
+        <div class="tip-row-meta">PROMPT · 18·04·2026 · 2 phút đọc</div>
+      </div>
+      <div class="tip-row-arrow">→</div>
+    </a>
+
+    <a href="#" class="tip-row">
+      <div class="tip-row-num">
+        <span class="tip-row-num-text">TIP</span>
+        <span class="tip-row-num-big">55</span>
+      </div>
+      <div class="tip-row-body">
+        <div class="tip-row-title">Cursor Rules bằng tiếng Việt — AI vẫn hiểu và follow đúng</div>
+        <div class="tip-row-meta">VIBECODE · 16·04·2026 · 2 phút đọc</div>
+      </div>
+      <div class="tip-row-arrow">→</div>
+    </a>
+
+    <a href="#" class="tip-row">
+      <div class="tip-row-num">
+        <span class="tip-row-num-text">TIP</span>
+        <span class="tip-row-num-big">54</span>
+      </div>
+      <div class="tip-row-body">
+        <div class="tip-row-title">"module not found" — nguyên nhân số 1 và cách fix trong 10 giây</div>
+        <div class="tip-row-meta">VIBECODE · 14·04·2026 · 2 phút đọc</div>
+      </div>
+      <div class="tip-row-arrow">→</div>
+    </a>
+
+    <a href="#" class="tip-row">
+      <div class="tip-row-num">
+        <span class="tip-row-num-text">TIP</span>
+        <span class="tip-row-num-big">53</span>
+      </div>
+      <div class="tip-row-body">
+        <div class="tip-row-title">Cách đặt câu hỏi cho AI để không bị câu trả lời chung chung</div>
+        <div class="tip-row-meta">PROMPT · 11·04·2026 · 2 phút đọc</div>
+      </div>
+      <div class="tip-row-arrow">→</div>
+    </a>
+
+    <!-- Load more -->
+    <div style="padding:2rem;text-align:center;border-top:1px solid var(--border);">
+      <a href="#" class="btn-ghost">Xem thêm 52 tips →</a>
+    </div>
+  </div>
+</div>
+
+<!-- SUBMIT TIP -->
+<div class="submit-section">
+  <div class="submit-inner">
+    <div class="submit-left">
+      <p class="section-label"><span>✳</span> 05 · cộng đồng</p>
+      <h2 class="section-heading">Bạn có tip hay?<br><em>Share với cộng đồng.</em></h2>
+      <p class="section-sub" style="margin-top:1rem;">Tips tốt nhất thường đến từ người đang làm thực tế — không phải từ tutorial. Nếu bạn có mẹo gì hữu ích, submit vào đây để mình review và publish.</p>
+      <div style="margin-top:2rem;display:flex;flex-direction:column;gap:.8rem;">
+        <div class="insight">✳ Tips được chọn sẽ credit tên bạn — dù chỉ là nickname.</div>
+        <div style="font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:.4rem;letter-spacing:.03em;">✳ Không cần đăng ký · không cần tài khoản · không tracking</div>
+      </div>
+    </div>
+    <div class="submit-right">
+      <div class="submit-form">
+        <div class="submit-form-header">
+          <div class="submit-form-title">✳ Submit tip mới</div>
+        </div>
+        <div class="submit-form-body">
+          <div class="form-field">
+            <label class="form-label">Nội dung tip</label>
+            <textarea class="form-textarea" placeholder="Tip của bạn — ngắn gọn, thực dụng, dùng được ngay..." rows="4"></textarea>
+          </div>
+          <div class="form-field">
+            <label class="form-label">Danh mục</label>
+            <select class="form-select">
+              <option value="">Chọn danh mục...</option>
+              <option>Vibecode</option>
+              <option>Workflow</option>
+              <option>Deploy</option>
+              <option>AI Tools</option>
+              <option>Prompt</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label class="form-label">Tên / Nickname (tùy chọn)</label>
+            <input type="text" class="form-input" placeholder="Để trống nếu muốn ẩn danh">
+          </div>
+          <button class="btn-primary form-submit">Submit tip →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="cta-inner">
+    <p class="section-label" style="justify-content:center;display:flex;gap:.4rem;"><span style="color:var(--accent);">✳</span> học thực chiến</p>
+    <h2 class="cta-h2">Đọc tips xong, thử <em>vibecode luôn đi.</em></h2>
+    <p class="cta-desc">Lộ trình 10 bài từ zero — từ cài Cursor đến deploy web hoàn chỉnh. Hoàn toàn miễn phí.</p>
+    <div class="cta-buttons">
+      <a href="#" class="btn-primary">Bắt đầu Vibecode →</a>
+      <a href="#" class="btn-ghost">Xem Prompt Library</a>
+    </div>
+    <p class="cta-note">✳ hoàn toàn miễn phí · không cần email · không cần đăng ký</p>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <div class="footer-logo">mark<em>AI</em>.vn</div>
+      <div class="footer-tagline">Học AI ứng dụng dành riêng cho dân Marketing Việt Nam. Miễn phí 100% · mãi mãi.</div>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Vibecode</div>
+      <ul>
+        <li><a href="#">Bài 01 — Vibecode là gì?</a></li>
+        <li><a href="#">Bài 02 — Từ ngữ code & design</a></li>
+        <li><a href="#">Bài 03 — Cài gì vào máy?</a></li>
+        <li><a href="#">Bài 04 — VS Code & Cursor</a></li>
+        <li><a href="#">Bài 05 — Claude Code</a></li>
+        <li><a href="#">Xem tất cả 10 bài →</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Khám phá</div>
+      <ul>
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Tips & Mẹo</a></li>
+        <li><a href="#">Prompt Library</a></li>
+        <li><a href="#" class="soon">Analytics (sắp ra)</a></li>
+        <li><a href="#" class="soon">Generate Image (sắp ra)</a></li>
+        <li><a href="#" class="soon">Motion Video (sắp ra)</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">markAI</div>
+      <ul>
+        <li><a href="#">Về markAI.vn</a></li>
+        <li><a href="#">Góp ý</a></li>
+        <li><a href="#">Báo lỗi</a></li>
+        <li><a href="#">Liên hệ</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-bottom-text">© 2026 markAI.vn · Miễn phí 100% · Không quảng cáo · Không tracking</span>
+    <span class="footer-bottom-text">Dành riêng cho dân Marketing Việt Nam ✳</span>
+  </div>
+</footer>
+
+<script>
+  // Ticker loop
+  const track = document.getElementById('ticker-track');
+  track.innerHTML += track.innerHTML;
+
+  // Filter bar interaction
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+</script>
+
+</body>
+</html>
