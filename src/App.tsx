@@ -5,6 +5,7 @@ import Footer from './components/Footer';
 import Ticker from './components/Ticker';
 import Home from './pages/Home';
 import Blog from './pages/Blog';
+import BlogDetail from './pages/BlogDetail';
 import Tips from './pages/Tips';
 import Prompts from './pages/Prompts';
 import Lesson from './pages/Lesson';
@@ -35,6 +36,7 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:slug" element={<BlogDetail />} />
             <Route path="/tips" element={<Tips />} />
             <Route path="/prompts" element={<Prompts />} />
             <Route path="/lesson/:id" element={<Lesson />} />
