@@ -1,46 +1,63 @@
+import type { MouseEvent } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 export default function Nav() {
   const location = useLocation();
-  const isVibecodeActive = location.pathname === '/vibecode' || 
-    location.pathname.startsWith('/vibecode/') || 
+  const isVibecodeActive =
+    location.pathname === '/vibecode' ||
+    location.pathname.startsWith('/vibecode/') ||
     location.pathname.startsWith('/lesson') ||
     location.pathname.includes('/bai-');
   const isActive = (path: string) => location.pathname === path;
 
+  const handleLogoClick = (event: MouseEvent<HTMLAnchorElement>) => {
+    if (location.pathname !== '/') {
+      return;
+    }
+
+    event.preventDefault();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <nav className="sticky top-0 z-50 h-[52px] bg-bg border-b border-border flex items-center justify-between px-4 md:px-8">
-      <Link to="/" className="font-mono text-[15px] font-medium tracking-tight no-underline text-ink">
+      <Link
+        to="/"
+        aria-label="Về trang chủ markAI"
+        title="Về trang chủ"
+        onClick={handleLogoClick}
+        className="shrink-0 font-mono text-[15px] font-medium tracking-tight no-underline text-ink"
+      >
         mark<span className="text-accent">AI</span>
       </Link>
       <ul className="hidden md:flex items-center h-full">
         <li>
-          <Link 
-            to="/vibecode" 
+          <Link
+            to="/vibecode"
             className={`font-mono text-[12px] px-4 h-[52px] flex items-center border-l border-border hover:bg-bg2 hover:text-ink transition-colors no-underline ${isVibecodeActive ? 'text-accent font-medium' : 'text-muted'}`}
           >
             Vibecode
           </Link>
         </li>
         <li>
-          <Link 
-            to="/blog" 
+          <Link
+            to="/blog"
             className={`font-mono text-[12px] px-4 h-[52px] flex items-center border-l border-border hover:bg-bg2 hover:text-ink transition-colors no-underline ${isActive('/blog') ? 'text-accent font-medium' : 'text-muted'}`}
           >
             Blog
           </Link>
         </li>
         <li>
-          <Link 
-            to="/tips" 
+          <Link
+            to="/tips"
             className={`font-mono text-[12px] px-4 h-[52px] flex items-center border-l border-border hover:bg-bg2 hover:text-ink transition-colors no-underline ${isActive('/tips') ? 'text-accent font-medium' : 'text-muted'}`}
           >
             Tips
           </Link>
         </li>
         <li>
-          <Link 
-            to="/prompts" 
+          <Link
+            to="/prompts"
             className={`font-mono text-[12px] px-4 h-[52px] flex items-center border-l border-border hover:bg-bg2 hover:text-ink transition-colors no-underline ${isActive('/prompts') ? 'text-accent font-medium' : 'text-muted'}`}
           >
             Prompts
