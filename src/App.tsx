@@ -13,7 +13,8 @@ import Feedback from './pages/Feedback';
 import Report from './pages/Report';
 import Contact from './pages/Contact';
 import VibecodePage from './pages/VibecodePage';
-import LessonPage from './pages/LessonPage';
+import LessonOverview from './pages/LessonOverview';
+import SubLessonPage from './pages/SubLessonPage';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -42,7 +43,8 @@ export default function App() {
             <Route path="/report" element={<Report />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/vibecode" element={<VibecodePage />} />
-            <Route path="/vibecode/:slug" element={<LessonPage />} />
+            <Route path="/vibecode/:lessonSlug" element={<LessonOverview />} />
+            <Route path="/vibecode/:lessonSlug/:subSlug" element={<SubLessonPage />} />
           </Routes>
         </main>
         <Footer />
