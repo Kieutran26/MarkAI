@@ -1,0 +1,1720 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>markAI Admin — Bảng điều khiển</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #f7f5f0;
+  --bg2:     #ede9e0;
+  --bg3:     #e4dfd5;
+  --ink:     #0d0d0d;
+  --ink2:    #444444;
+  --muted:   #888888;
+  --border:  #d4cfc5;
+  --accent:  #E8410A;
+  --accent2: #C93508;
+  --serif:   'Instrument Serif', serif;
+  --mono:    'DM Mono', monospace;
+  --sans:    'DM Sans', sans-serif;
+  --sidebar: 220px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+
+body {
+  font-family: var(--sans);
+  background: var(--bg);
+  color: var(--ink);
+  display: flex;
+  font-size: 14px;
+}
+
+/* ─── SIDEBAR ─── */
+.sidebar {
+  width: var(--sidebar);
+  height: 100vh;
+  position: fixed;
+  top: 0; left: 0;
+  background: var(--ink);
+  border-right: 1px solid #1a1a1a;
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+  overflow-y: auto;
+}
+
+.sidebar-logo {
+  height: 52px;
+  display: flex;
+  align-items: center;
+  padding: 0 1.2rem;
+  border-bottom: 1px solid #1a1a1a;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.sidebar-logo-text {
+  font-family: var(--mono);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--bg);
+  letter-spacing: -0.02em;
+}
+.sidebar-logo-text em { color: var(--accent); font-style: normal; }
+.sidebar-badge {
+  font-family: var(--mono);
+  font-size: 9px;
+  background: #1a1a1a;
+  color: #555;
+  padding: 2px 6px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  margin-left: auto;
+}
+
+.sidebar-section-label {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: #444;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  padding: .9rem 1.2rem .4rem;
+}
+
+.sidebar-nav { flex: 1; }
+
+.nav-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: .6rem 1.2rem;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: #666;
+  cursor: pointer;
+  transition: background .15s, color .15s;
+  border-left: 2px solid transparent;
+  text-decoration: none;
+  letter-spacing: .02em;
+}
+.nav-item:hover { background: #1a1a1a; color: var(--bg); }
+.nav-item.active { background: #1a1a1a; color: var(--bg); border-left-color: var(--accent); }
+.nav-item .nav-icon { font-size: 12px; width: 16px; text-align: center; flex-shrink: 0; }
+.nav-item .nav-count {
+  margin-left: auto;
+  font-size: 9px;
+  background: #2a2a2a;
+  color: #555;
+  padding: 1px 6px;
+  letter-spacing: .04em;
+}
+.nav-item.active .nav-count { background: var(--accent); color: white; }
+
+.sidebar-bottom {
+  border-top: 1px solid #1a1a1a;
+  padding: 1rem 1.2rem;
+  flex-shrink: 0;
+}
+.sidebar-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.user-avatar {
+  width: 28px; height: 28px;
+  background: var(--accent);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: white;
+  flex-shrink: 0;
+}
+.user-info { flex: 1; min-width: 0; }
+.user-name { font-family: var(--mono); font-size: 11px; color: var(--bg); display: block; }
+.user-role { font-family: var(--mono); font-size: 9px; color: #555; display: block; letter-spacing: .04em; }
+
+/* ─── MAIN ─── */
+.main {
+  margin-left: var(--sidebar);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* ─── TOP BAR ─── */
+.topbar {
+  height: 52px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  padding: 0 2rem;
+  gap: 1rem;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+.topbar-title {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: .04em;
+}
+.topbar-title strong { color: var(--ink); font-weight: 400; }
+.topbar-spacer { flex: 1; }
+.topbar-actions { display: flex; align-items: center; gap: 0; }
+.topbar-btn {
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 0 1rem;
+  height: 52px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border-left: 1px solid var(--border);
+  color: var(--muted);
+  cursor: pointer;
+  transition: background .15s, color .15s;
+  background: transparent;
+  border-top: none; border-right: none; border-bottom: none;
+  letter-spacing: .02em;
+}
+.topbar-btn:hover { background: var(--bg2); color: var(--ink); }
+.topbar-btn.primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.topbar-btn.primary:hover { background: var(--accent); border-color: var(--accent); }
+
+/* ─── CONTENT ─── */
+.content { flex: 1; overflow: auto; }
+.page { display: none; }
+.page.active { display: block; }
+
+/* ─── OVERVIEW PAGE ─── */
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  border-bottom: 1px solid var(--border);
+}
+.stat-card {
+  padding: 1.8rem 2rem;
+  border-right: 1px solid var(--border);
+}
+.stat-card:last-child { border-right: none; }
+.stat-num { font-family: var(--serif); font-size: 2.2rem; line-height: 1; margin-bottom: .4rem; }
+.stat-label { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; }
+.stat-delta { font-family: var(--mono); font-size: 10px; color: #16a34a; margin-top: .3rem; }
+
+.section-block {
+  border-bottom: 1px solid var(--border);
+}
+.section-header {
+  display: flex;
+  align-items: center;
+  padding: 1.2rem 2rem;
+  border-bottom: 1px solid var(--border);
+  gap: 1rem;
+}
+.section-header-title {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.section-header-title strong { color: var(--ink); }
+.section-header-spacer { flex: 1; }
+.section-header-action {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  cursor: pointer;
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  background: transparent;
+  transition: background .15s, color .15s;
+  letter-spacing: .02em;
+}
+.section-header-action:hover { background: var(--bg2); color: var(--ink); }
+
+/* ─── TABLE ─── */
+.table-wrap { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; }
+thead tr { border-bottom: 1px solid var(--border); }
+th {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  text-align: left;
+  padding: .8rem 2rem;
+  font-weight: 400;
+  background: var(--bg);
+  white-space: nowrap;
+}
+td {
+  padding: .9rem 2rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: middle;
+}
+tr:last-child td { border-bottom: none; }
+tr:hover td { background: var(--bg2); }
+.td-mono { font-family: var(--mono); font-size: 11px; color: var(--ink2); }
+.td-serif { font-family: var(--serif); font-size: .95rem; }
+.td-muted { font-family: var(--mono); font-size: 10px; color: var(--muted); }
+
+/* ─── BADGES ─── */
+.badge {
+  font-family: var(--mono);
+  font-size: 9px;
+  padding: 2px 8px;
+  letter-spacing: .05em;
+  display: inline-block;
+}
+.badge-accent { background: var(--accent); color: white; }
+.badge-dark    { background: var(--ink); color: var(--bg); }
+.badge-outline { border: 1px solid var(--border); color: var(--muted); }
+.badge-green   { background: #16a34a; color: white; }
+.badge-yellow  { background: #d97706; color: white; }
+
+/* ─── ROW ACTIONS ─── */
+.row-actions { display: flex; gap: 0; opacity: 0; transition: opacity .15s; }
+tr:hover .row-actions { opacity: 1; }
+.row-btn {
+  font-family: var(--mono);
+  font-size: 10px;
+  padding: 3px 10px;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--muted);
+  transition: background .15s, color .15s;
+  border-right: none;
+  letter-spacing: .02em;
+}
+.row-btn:last-child { border-right: 1px solid var(--border); }
+.row-btn:hover { background: var(--bg2); color: var(--ink); }
+.row-btn.danger:hover { background: #fee2e2; color: #dc2626; border-color: #dc2626; }
+.row-btn.primary:hover { background: var(--accent); color: white; border-color: var(--accent); }
+
+/* ─── KANBAN ─── */
+.kanban { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border-top: 1px solid var(--border); }
+.kanban-col { border-right: 1px solid var(--border); }
+.kanban-col:last-child { border-right: none; }
+.kanban-header {
+  padding: .8rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg);
+}
+.kanban-header-title { font-family: var(--mono); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.kanban-count { font-family: var(--mono); font-size: 9px; padding: 1px 6px; background: var(--bg2); color: var(--muted); }
+.kanban-items { padding: 1rem; display: flex; flex-direction: column; gap: 8px; }
+.kanban-card {
+  border: 1px solid var(--border);
+  padding: 1rem;
+  background: var(--bg);
+  cursor: pointer;
+  transition: background .15s;
+}
+.kanban-card:hover { background: var(--bg2); }
+.kanban-card-title { font-family: var(--serif); font-size: .9rem; line-height: 1.3; margin-bottom: .5rem; }
+.kanban-card-meta { font-family: var(--mono); font-size: 9px; color: var(--muted); display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+.kanban-add {
+  margin: 1rem;
+  border: 1px dashed var(--border);
+  padding: .6rem 1rem;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  cursor: pointer;
+  text-align: center;
+  transition: background .15s, color .15s;
+  letter-spacing: .04em;
+}
+.kanban-add:hover { background: var(--bg2); color: var(--ink); }
+
+/* ─── PROMPT LIBRARY ─── */
+.prompt-grid { display: grid; grid-template-columns: repeat(3, 1fr); }
+.prompt-card {
+  padding: 1.5rem;
+  border-right: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background .15s;
+  position: relative;
+}
+.prompt-card:nth-child(3n) { border-right: none; }
+.prompt-card:hover { background: var(--bg2); }
+.prompt-card-category { font-family: var(--mono); font-size: 9px; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; margin-bottom: .5rem; }
+.prompt-card-title { font-family: var(--serif); font-size: 1rem; margin-bottom: .5rem; line-height: 1.3; }
+.prompt-card-preview { font-family: var(--mono); font-size: 10px; color: var(--muted); line-height: 1.6; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.prompt-card-footer { margin-top: .8rem; display: flex; gap: 8px; align-items: center; }
+.prompt-arrow { position: absolute; bottom: 1.2rem; right: 1.2rem; font-family: var(--mono); font-size: 12px; color: var(--muted); transition: transform .15s, color .15s; }
+.prompt-card:hover .prompt-arrow { transform: translateX(4px); color: var(--accent); }
+
+/* ─── SETTINGS ─── */
+.settings-grid { display: grid; grid-template-columns: 220px 1fr; min-height: 600px; }
+.settings-nav { border-right: 1px solid var(--border); }
+.settings-nav-item {
+  padding: .8rem 1.5rem;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--muted);
+  cursor: pointer;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background .15s, color .15s;
+  border-left: 2px solid transparent;
+}
+.settings-nav-item:hover { background: var(--bg2); color: var(--ink); }
+.settings-nav-item.active { color: var(--accent); border-left-color: var(--accent); background: var(--bg); }
+
+.settings-panel { padding: 2rem; }
+.settings-group { margin-bottom: 2rem; border-bottom: 1px solid var(--border); padding-bottom: 2rem; }
+.settings-group:last-child { border-bottom: none; }
+.settings-group-title { font-family: var(--mono); font-size: 11px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+.form-row { display: grid; grid-template-columns: 200px 1fr; gap: 2rem; align-items: start; margin-bottom: 1rem; }
+.form-label { font-family: var(--mono); font-size: 11px; color: var(--ink2); padding-top: .6rem; }
+.form-sub { font-family: var(--sans); font-size: 12px; color: var(--muted); margin-top: .2rem; }
+input[type="text"], input[type="url"], textarea, select {
+  width: 100%;
+  font-family: var(--mono);
+  font-size: 12px;
+  padding: .55rem .8rem;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--ink);
+  outline: none;
+  transition: border-color .15s;
+}
+input:focus, textarea:focus, select:focus { border-color: var(--ink); }
+textarea { resize: vertical; min-height: 80px; }
+
+.toggle-row { display: flex; align-items: center; gap: 1rem; margin-bottom: .8rem; }
+.toggle {
+  width: 36px; height: 20px;
+  background: var(--border);
+  position: relative;
+  cursor: pointer;
+  transition: background .15s;
+  flex-shrink: 0;
+}
+.toggle.on { background: var(--accent); }
+.toggle::after {
+  content: '';
+  position: absolute;
+  top: 3px; left: 3px;
+  width: 14px; height: 14px;
+  background: white;
+  transition: transform .15s;
+}
+.toggle.on::after { transform: translateX(16px); }
+.toggle-label { font-family: var(--mono); font-size: 11px; color: var(--ink2); }
+.toggle-sub { font-family: var(--sans); font-size: 12px; color: var(--muted); }
+
+/* ─── PATH STEP EDITOR ─── */
+.step-editor-list { }
+.step-editor-row {
+  display: grid;
+  grid-template-columns: 60px 1fr auto;
+  border-bottom: 1px solid var(--border);
+  align-items: stretch;
+}
+.step-editor-num {
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0;
+  gap: 2px;
+}
+.step-num-label { font-family: var(--mono); font-size: 9px; color: var(--muted); letter-spacing: .06em; }
+.step-num-big { font-family: var(--serif); font-size: 1.5rem; color: var(--ink); }
+.step-editor-body { padding: 1.2rem 1.5rem; display: flex; flex-direction: column; gap: .5rem; }
+.step-editor-title { font-family: var(--serif); font-size: 1rem; color: var(--ink); }
+.step-editor-meta { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.step-editor-actions { display: flex; flex-direction: column; border-left: 1px solid var(--border); }
+.step-action-btn {
+  flex: 1;
+  padding: 0 1rem;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  cursor: pointer;
+  border: none;
+  border-bottom: 1px solid var(--border);
+  background: transparent;
+  transition: background .15s, color .15s;
+  white-space: nowrap;
+  letter-spacing: .02em;
+}
+.step-action-btn:last-child { border-bottom: none; }
+.step-action-btn:hover { background: var(--bg2); color: var(--ink); }
+.step-action-btn.edit:hover { color: var(--accent); }
+
+/* ─── MODAL ─── */
+.modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(13,13,13,.7);
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  width: 560px;
+  max-width: 95vw;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+.modal-header {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  gap: 1rem;
+}
+.modal-title { font-family: var(--mono); font-size: 12px; letter-spacing: .04em; }
+.modal-close {
+  margin-left: auto;
+  font-family: var(--mono);
+  font-size: 16px;
+  cursor: pointer;
+  color: var(--muted);
+  background: none;
+  border: none;
+  line-height: 1;
+  padding: 4px 8px;
+  transition: color .15s;
+}
+.modal-close:hover { color: var(--ink); }
+.modal-body { padding: 1.5rem; }
+.modal-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+.btn {
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 8px 18px;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--ink);
+  transition: background .15s;
+  letter-spacing: .02em;
+}
+.btn:hover { background: var(--bg2); }
+.btn.btn-primary { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.btn.btn-primary:hover { background: var(--accent); border-color: var(--accent); }
+.btn.btn-danger { background: #dc2626; color: white; border-color: #dc2626; }
+.btn.btn-danger:hover { background: #b91c1c; }
+
+/* ─── TICKER (mini) ─── */
+.mini-ticker {
+  background: var(--ink);
+  height: 28px;
+  overflow: hidden;
+  border-bottom: 1px solid #1a1a1a;
+}
+.mini-ticker-track {
+  display: flex;
+  white-space: nowrap;
+  animation: tick 30s linear infinite;
+}
+.mini-ticker-item {
+  font-family: var(--mono);
+  font-size: 9px;
+  color: #444;
+  padding: 0 1.5rem;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+.mini-ticker-item b { color: var(--accent); }
+@keyframes tick { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+/* ─── ACTIVITY FEED ─── */
+.activity-feed { }
+.activity-item {
+  display: flex;
+  gap: 1rem;
+  padding: .9rem 2rem;
+  border-bottom: 1px solid var(--border);
+  align-items: flex-start;
+}
+.activity-item:last-child { border-bottom: none; }
+.activity-dot {
+  width: 8px; height: 8px;
+  background: var(--border);
+  margin-top: 4px;
+  flex-shrink: 0;
+}
+.activity-dot.accent { background: var(--accent); }
+.activity-dot.green { background: #16a34a; }
+.activity-dot.yellow { background: #d97706; }
+.activity-text { font-family: var(--sans); font-size: 13px; color: var(--ink2); line-height: 1.5; flex: 1; }
+.activity-text strong { color: var(--ink); font-weight: 400; font-family: var(--mono); font-size: 11px; }
+.activity-time { font-family: var(--mono); font-size: 10px; color: var(--muted); white-space: nowrap; }
+
+/* ─── OVERVIEW LAYOUT ─── */
+.two-col { display: grid; grid-template-columns: 1fr 300px; }
+.two-col-main { border-right: 1px solid var(--border); }
+.two-col-side { }
+
+/* ─── QUICK STATS ROW (colored) ─── */
+.alert-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: .7rem 2rem;
+  background: #fff8f0;
+  border-bottom: 1px solid #fde8d0;
+  border-left: 3px solid var(--accent);
+}
+.alert-bar-text { font-family: var(--mono); font-size: 11px; color: #7c2d12; }
+
+/* ─── EMPTY STATE ─── */
+.empty-state {
+  padding: 3rem 2rem;
+  text-align: center;
+  border: 1px dashed var(--border);
+  margin: 2rem;
+  cursor: pointer;
+  transition: background .15s;
+}
+.empty-state:hover { background: var(--bg2); }
+.empty-title { font-family: var(--serif); font-size: 1.1rem; color: var(--muted); margin-bottom: .4rem; }
+.empty-sub { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: .04em; }
+
+/* scrollbar */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); }
+</style>
+</head>
+<body>
+
+<!-- ─── SIDEBAR ─── -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <span class="sidebar-logo-text">mark<em>AI</em></span>
+    <span class="sidebar-badge">Admin</span>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="sidebar-section-label">Tổng quan</div>
+    <a class="nav-item active" onclick="goto('overview',this)">
+      <span class="nav-icon">◈</span> Dashboard
+    </a>
+    <a class="nav-item" onclick="goto('activity',this)">
+      <span class="nav-icon">◎</span> Hoạt động
+    </a>
+
+    <div class="sidebar-section-label">Nội dung</div>
+    <a class="nav-item" onclick="goto('lessons',this)">
+      <span class="nav-icon">▤</span> Bài học Vibecode
+      <span class="nav-count">7</span>
+    </a>
+    <a class="nav-item" onclick="goto('blog',this)">
+      <span class="nav-icon">◷</span> Blog
+      <span class="nav-count">6</span>
+    </a>
+    <a class="nav-item" onclick="goto('tips',this)">
+      <span class="nav-icon">✳</span> Tips & Mẹo
+      <span class="nav-count">12</span>
+    </a>
+    <a class="nav-item" onclick="goto('prompts',this)">
+      <span class="nav-icon">⌘</span> Prompt Library
+      <span class="nav-count">150</span>
+    </a>
+
+    <div class="sidebar-section-label">Platform</div>
+    <a class="nav-item" onclick="goto('modules',this)">
+      <span class="nav-icon">⊞</span> Module Picker
+      <span class="nav-count">8</span>
+    </a>
+    <a class="nav-item" onclick="goto('ticker',this)">
+      <span class="nav-icon">↔</span> Ticker
+    </a>
+    <a class="nav-item" onclick="goto('nav-manage',this)">
+      <span class="nav-icon">≡</span> Navigation
+    </a>
+
+    <div class="sidebar-section-label">Cài đặt</div>
+    <a class="nav-item" onclick="goto('settings',this)">
+      <span class="nav-icon">◇</span> Cài đặt trang
+    </a>
+    <a class="nav-item" onclick="goto('deploy',this)">
+      <span class="nav-icon">↑</span> Deploy & Tích hợp
+    </a>
+  </nav>
+
+  <div class="sidebar-bottom">
+    <div class="sidebar-user">
+      <div class="user-avatar">A</div>
+      <div class="user-info">
+        <span class="user-name">Admin</span>
+        <span class="user-role">markAI · Super Admin</span>
+      </div>
+    </div>
+  </div>
+</aside>
+
+<!-- ─── MAIN ─── -->
+<div class="main">
+
+  <!-- TOP BAR -->
+  <div class="topbar" id="topbar">
+    <span class="topbar-title" id="topbar-title"><strong>Dashboard</strong> · Tổng quan</span>
+    <div class="topbar-spacer"></div>
+    <div class="topbar-actions">
+      <button class="topbar-btn" onclick="openModal('new-content')">+ Nội dung mới</button>
+      <button class="topbar-btn" onclick="window.open('#','_blank')">↗ Xem trang web</button>
+      <button class="topbar-btn primary" onclick="openModal('deploy-modal')">⬆ Deploy</button>
+    </div>
+  </div>
+
+  <!-- MINI TICKER -->
+  <div class="mini-ticker">
+    <div class="mini-ticker-track" id="adminTicker">
+      <span class="mini-ticker-item">◈ Admin Dashboard markAI.vn</span>
+      <span class="mini-ticker-item">· Vibecode Web: <b>7/7 bài</b> đã publish</span>
+      <span class="mini-ticker-item">· Blog: <b>6 bài viết</b> live</span>
+      <span class="mini-ticker-item">· Prompt Library: <b>150 prompts</b></span>
+      <span class="mini-ticker-item">· Tips: <b>12 tips</b> đang hiển thị</span>
+      <span class="mini-ticker-item">· Deploy: <b>Vercel</b> · last 2h ago</span>
+      <span class="mini-ticker-item">· Analytics: <b>PostHog</b> connected</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- PAGE: DASHBOARD -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="page active" id="page-overview">
+      <div class="overview-grid">
+        <div class="stat-card">
+          <div class="stat-num">7</div>
+          <div class="stat-label">Bài học Vibecode</div>
+          <div class="stat-delta">✓ 7/7 published</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">150</div>
+          <div class="stat-label">Prompts thư viện</div>
+          <div class="stat-delta" style="color:var(--muted)">+ 12 draft chờ duyệt</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">6</div>
+          <div class="stat-label">Blog bài viết</div>
+          <div class="stat-delta">✓ Tất cả live</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">8</div>
+          <div class="stat-label">Module trong roadmap</div>
+          <div class="stat-delta" style="color: #d97706">1 available · 7 sắp ra</div>
+        </div>
+      </div>
+
+      <div class="alert-bar">
+        <span class="alert-bar-text">✳ 3 tính năng sắp ra: Analytics · Generate Image · Motion Video — chưa có landing page. <span style="text-decoration:underline;cursor:pointer;" onclick="goto('modules', document.querySelector('[onclick*=\'modules\']'))">Quản lý →</span></span>
+      </div>
+
+      <div class="two-col">
+        <div class="two-col-main">
+          <!-- Bài học nhanh -->
+          <div class="section-block">
+            <div class="section-header">
+              <span class="section-header-title"><strong>Lộ trình Vibecode</strong> · 7 bài học</span>
+              <div class="section-header-spacer"></div>
+              <button class="section-header-action" onclick="goto('lessons', document.querySelector('[onclick*=\'lessons\']'))">Quản lý đầy đủ →</button>
+            </div>
+            <div class="step-editor-list">
+              <!-- Steps -->
+              <div class="step-editor-row">
+                <div class="step-editor-num">
+                  <span class="step-num-label">BÀI</span>
+                  <span class="step-num-big" style="color:var(--accent)">01</span>
+                </div>
+                <div class="step-editor-body">
+                  <div class="step-editor-title">Vibecode là gì? Khó không? Giúp gì cho Marketer?</div>
+                  <div class="step-editor-meta">
+                    <span class="badge badge-accent">BẮT ĐẦU ĐÂY</span>
+                    <span class="badge badge-outline">~20 phút</span>
+                    <span class="badge badge-green">Published</span>
+                    <span class="td-muted">tư duy · use case · marketer</span>
+                  </div>
+                </div>
+                <div class="step-editor-actions">
+                  <button class="step-action-btn edit" onclick="openModal('edit-step')">Sửa</button>
+                  <button class="step-action-btn">Ẩn</button>
+                </div>
+              </div>
+
+              <div class="step-editor-row">
+                <div class="step-editor-num">
+                  <span class="step-num-label">BÀI</span>
+                  <span class="step-num-big">02</span>
+                </div>
+                <div class="step-editor-body">
+                  <div class="step-editor-title">Cài gì vào máy để bắt đầu vibecode?</div>
+                  <div class="step-editor-meta">
+                    <span class="badge badge-dark">SETUP</span>
+                    <span class="badge badge-outline">~30 phút</span>
+                    <span class="badge badge-green">Published</span>
+                    <span class="td-muted">Node.js · Cursor · VS Code · Git</span>
+                  </div>
+                </div>
+                <div class="step-editor-actions">
+                  <button class="step-action-btn edit" onclick="openModal('edit-step')">Sửa</button>
+                  <button class="step-action-btn">Ẩn</button>
+                </div>
+              </div>
+
+              <div class="step-editor-row">
+                <div class="step-editor-num">
+                  <span class="step-num-label">BÀI</span>
+                  <span class="step-num-big">03</span>
+                </div>
+                <div class="step-editor-body">
+                  <div class="step-editor-title">Công cụ & website hữu ích để vibecode ra web hoàn chỉnh</div>
+                  <div class="step-editor-meta">
+                    <span class="badge badge-dark">TOOLS</span>
+                    <span class="badge badge-outline">~25 phút</span>
+                    <span class="badge badge-green">Published</span>
+                    <span class="td-muted">Cursor · v0.dev · Vercel · Bolt</span>
+                  </div>
+                </div>
+                <div class="step-editor-actions">
+                  <button class="step-action-btn edit" onclick="openModal('edit-step')">Sửa</button>
+                  <button class="step-action-btn">Ẩn</button>
+                </div>
+              </div>
+
+              <div class="step-editor-row" style="opacity:.7">
+                <div class="step-editor-num">
+                  <span class="step-num-label">BÀI</span>
+                  <span class="step-num-big">04–07</span>
+                </div>
+                <div class="step-editor-body">
+                  <div class="step-editor-title" style="font-size:.85rem;color:var(--muted)">Bài 04 · 05 · 06 · 07 đã publish đầy đủ</div>
+                  <div class="step-editor-meta"><span class="badge badge-green">All Published</span></div>
+                </div>
+                <div class="step-editor-actions">
+                  <button class="step-action-btn edit" onclick="goto('lessons', document.querySelector('[onclick*=\'lessons\']'))">Xem tất cả</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Blog preview -->
+          <div class="section-block">
+            <div class="section-header">
+              <span class="section-header-title"><strong>Blog</strong> · 6 bài mới nhất</span>
+              <div class="section-header-spacer"></div>
+              <button class="section-header-action" onclick="goto('blog', document.querySelector('[onclick*=\'blog\']'))">Quản lý →</button>
+            </div>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Tiêu đề</th>
+                    <th>Category</th>
+                    <th>Status</th>
+                    <th>Ngày</th>
+                    <th>Thao tác</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="td-serif">Vibecode từ A–Z cho người chưa biết code</td>
+                    <td><span class="badge badge-dark">VIBECODE</span></td>
+                    <td><span class="badge badge-green">Live</span></td>
+                    <td class="td-muted">20·04·2026</td>
+                    <td><div class="row-actions"><button class="row-btn primary" onclick="openModal('edit-blog')">Sửa</button><button class="row-btn danger">Xóa</button></div></td>
+                  </tr>
+                  <tr>
+                    <td class="td-serif">Deploy Vercel trong 10 phút — step by step</td>
+                    <td><span class="badge badge-dark">DEPLOY</span></td>
+                    <td><span class="badge badge-green">Live</span></td>
+                    <td class="td-muted">18·04·2026</td>
+                    <td><div class="row-actions"><button class="row-btn primary" onclick="openModal('edit-blog')">Sửa</button><button class="row-btn danger">Xóa</button></div></td>
+                  </tr>
+                  <tr>
+                    <td class="td-serif">Cursor vs VS Code — cái nào dành cho Marketer?</td>
+                    <td><span class="badge badge-dark">TOOL REVIEW</span></td>
+                    <td><span class="badge badge-yellow">Draft</span></td>
+                    <td class="td-muted">Draft</td>
+                    <td><div class="row-actions"><button class="row-btn primary" onclick="openModal('edit-blog')">Sửa</button><button class="row-btn">Publish</button><button class="row-btn danger">Xóa</button></div></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Activity feed -->
+        <div class="two-col-side">
+          <div class="section-header" style="border-bottom: 1px solid var(--border);">
+            <span class="section-header-title"><strong>Hoạt động gần đây</strong></span>
+          </div>
+          <div class="activity-feed">
+            <div class="activity-item">
+              <div class="activity-dot accent"></div>
+              <div class="activity-text">Đã deploy lên <strong>Vercel</strong> — build thành công</div>
+              <div class="activity-time">2h trước</div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot green"></div>
+              <div class="activity-text">Publish bài blog <strong>"Vibecode từ A–Z"</strong></div>
+              <div class="activity-time">5h trước</div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot"></div>
+              <div class="activity-text">Thêm <strong>12 prompts</strong> mới vào thư viện (draft)</div>
+              <div class="activity-time">1 ngày</div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot yellow"></div>
+              <div class="activity-text">Cập nhật nội dung bài <strong>Bài 05 — Prompt</strong></div>
+              <div class="activity-time">2 ngày</div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot green"></div>
+              <div class="activity-text">Thêm <strong>Tip #12</strong> vào Tips & Mẹo section</div>
+              <div class="activity-time">3 ngày</div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot accent"></div>
+              <div class="activity-text">Cập nhật <strong>Ticker</strong> — thêm dòng mới</div>
+              <div class="activity-time">4 ngày</div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot"></div>
+              <div class="activity-text">Tạo draft blog <strong>"Cursor vs VS Code"</strong></div>
+              <div class="activity-time">5 ngày</div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot green"></div>
+              <div class="activity-text">Hoàn thành lộ trình <strong>Bài 07 — Deploy</strong></div>
+              <div class="activity-time">1 tuần</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- PAGE: BÀI HỌC VIBECODE -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="page" id="page-lessons">
+      <div class="section-block">
+        <div class="section-header">
+          <span class="section-header-title"><strong>Bài học Vibecode</strong> · Lộ trình 7 bước</span>
+          <div class="section-header-spacer"></div>
+          <button class="section-header-action" onclick="openModal('new-lesson')">+ Thêm bài mới</button>
+        </div>
+      </div>
+      <div class="step-editor-list">
+        <div class="step-editor-row">
+          <div class="step-editor-num"><span class="step-num-label">BÀI</span><span class="step-num-big" style="color:var(--accent)">01</span></div>
+          <div class="step-editor-body">
+            <div class="step-editor-title">Vibecode là gì? Khó không? Giúp gì cho Marketer?</div>
+            <div class="step-editor-meta"><span class="badge badge-accent">BẮT ĐẦU ĐÂY</span><span class="badge badge-outline">~20 phút</span><span class="badge badge-green">Published</span><span class="td-muted">tư duy · use case · marketer</span></div>
+          </div>
+          <div class="step-editor-actions">
+            <button class="step-action-btn edit" onclick="openModal('edit-step')">Sửa</button>
+            <button class="step-action-btn">Sắp xếp</button>
+            <button class="step-action-btn danger">Ẩn</button>
+          </div>
+        </div>
+        <div class="step-editor-row">
+          <div class="step-editor-num"><span class="step-num-label">BÀI</span><span class="step-num-big">02</span></div>
+          <div class="step-editor-body">
+            <div class="step-editor-title">Cài gì vào máy để bắt đầu vibecode?</div>
+            <div class="step-editor-meta"><span class="badge badge-dark">SETUP</span><span class="badge badge-outline">~30 phút</span><span class="badge badge-green">Published</span><span class="td-muted">Node.js · Cursor · VS Code · Git · terminal</span></div>
+          </div>
+          <div class="step-editor-actions"><button class="step-action-btn edit" onclick="openModal('edit-step')">Sửa</button><button class="step-action-btn">Sắp xếp</button><button class="step-action-btn">Ẩn</button></div>
+        </div>
+        <div class="step-editor-row">
+          <div class="step-editor-num"><span class="step-num-label">BÀI</span><span class="step-num-big">03</span></div>
+          <div class="step-editor-body">
+            <div class="step-editor-title">Công cụ & website hữu ích để vibecode ra web hoàn chỉnh</div>
+            <div class="step-editor-meta"><span class="badge badge-dark">TOOLS</span><span class="badge badge-outline">~25 phút</span><span class="badge badge-green">Published</span><span class="td-muted">Cursor · v0.dev · Vercel · Bolt · Tailwind</span></div>
+          </div>
+          <div class="step-editor-actions"><button class="step-action-btn edit" onclick="openModal('edit-step')">Sửa</button><button class="step-action-btn">Sắp xếp</button><button class="step-action-btn">Ẩn</button></div>
+        </div>
+        <div class="step-editor-row">
+          <div class="step-editor-num"><span class="step-num-label">BÀI</span><span class="step-num-big">04</span></div>
+          <div class="step-editor-body">
+            <div class="step-editor-title">Từ ngữ chuyên ngành trong code & design — kèm GIF mô phỏng</div>
+            <div class="step-editor-meta"><span class="badge badge-dark">NGÔN NGỮ</span><span class="badge badge-outline">~40 phút</span><span class="badge badge-accent" style="background:#1d4ed8">GIF Demo</span><span class="badge badge-green">Published</span><span class="td-muted">spacing · flexbox · grid · responsive</span></div>
+          </div>
+          <div class="step-editor-actions"><button class="step-action-btn edit" onclick="openModal('edit-step')">Sửa</button><button class="step-action-btn">Sắp xếp</button><button class="step-action-btn">Ẩn</button></div>
+        </div>
+        <div class="step-editor-row">
+          <div class="step-editor-num"><span class="step-num-label">BÀI</span><span class="step-num-big">05</span></div>
+          <div class="step-editor-body">
+            <div class="step-editor-title">Cách prompt cho AI hiểu để code đúng ý bạn</div>
+            <div class="step-editor-meta"><span class="badge badge-dark">PROMPT</span><span class="badge badge-outline">~35 phút</span><span class="badge badge-green">Published</span><span class="td-muted">prompt · Cursor AI · Claude Code · template</span></div>
+          </div>
+          <div class="step-editor-actions"><button class="step-action-btn edit" onclick="openModal('edit-step')">Sửa</button><button class="step-action-btn">Sắp xếp</button><button class="step-action-btn">Ẩn</button></div>
+        </div>
+        <div class="step-editor-row">
+          <div class="step-editor-num"><span class="step-num-label">BÀI</span><span class="step-num-big">06</span></div>
+          <div class="step-editor-body">
+            <div class="step-editor-title">Tạo Skills & Workflow — cộng đồng đang share gì nhiều nhất?</div>
+            <div class="step-editor-meta"><span class="badge badge-dark">WORKFLOW</span><span class="badge badge-outline">~45 phút</span><span class="badge badge-green">Published</span><span class="td-muted">Cursor Rules · CLAUDE.md · MCP · community</span></div>
+          </div>
+          <div class="step-editor-actions"><button class="step-action-btn edit" onclick="openModal('edit-step')">Sửa</button><button class="step-action-btn">Sắp xếp</button><button class="step-action-btn">Ẩn</button></div>
+        </div>
+        <div class="step-editor-row">
+          <div class="step-editor-num"><span class="step-num-label">BÀI</span><span class="step-num-big">07</span></div>
+          <div class="step-editor-body">
+            <div class="step-editor-title">Deploy + gắn PostHog & Google Search Console</div>
+            <div class="step-editor-meta"><span class="badge badge-dark">DEPLOY</span><span class="badge badge-outline">~50 phút</span><span class="badge badge-green" style="background:#16a34a">ĐÍCH ĐẾN</span><span class="badge badge-green">Published</span><span class="td-muted">Vercel · GitHub · PostHog · Google Search Console</span></div>
+          </div>
+          <div class="step-editor-actions"><button class="step-action-btn edit" onclick="openModal('edit-step')">Sửa</button><button class="step-action-btn">Sắp xếp</button><button class="step-action-btn">Ẩn</button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- PAGE: BLOG -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="page" id="page-blog">
+      <div class="section-block">
+        <div class="section-header">
+          <span class="section-header-title"><strong>Blog</strong> · Tất cả bài viết</span>
+          <div class="section-header-spacer"></div>
+          <button class="section-header-action" onclick="openModal('edit-blog')">+ Bài viết mới</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>Tiêu đề</th><th>Category</th><th>Excerpt</th><th>Thời gian đọc</th><th>Status</th><th>Ngày</th><th>Thao tác</th></tr>
+          </thead>
+          <tbody>
+            <tr><td class="td-serif">Vibecode từ A–Z cho người chưa biết code</td><td><span class="badge badge-dark">VIBECODE</span></td><td class="td-muted" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Hướng dẫn toàn diện từ zero...</td><td class="td-mono">7 phút</td><td><span class="badge badge-green">Live</span></td><td class="td-muted">20·04·2026</td><td><div class="row-actions"><button class="row-btn primary" onclick="openModal('edit-blog')">Sửa</button><button class="row-btn danger">Xóa</button></div></td></tr>
+            <tr><td class="td-serif">Deploy Vercel trong 10 phút</td><td><span class="badge badge-dark">DEPLOY</span></td><td class="td-muted" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Từ localhost lên production...</td><td class="td-mono">5 phút</td><td><span class="badge badge-green">Live</span></td><td class="td-muted">18·04·2026</td><td><div class="row-actions"><button class="row-btn primary" onclick="openModal('edit-blog')">Sửa</button><button class="row-btn danger">Xóa</button></div></td></tr>
+            <tr><td class="td-serif">Cursor vs VS Code — cái nào dành cho Marketer?</td><td><span class="badge badge-dark">TOOL REVIEW</span></td><td class="td-muted" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">So sánh thực tế...</td><td class="td-mono">6 phút</td><td><span class="badge badge-yellow">Draft</span></td><td class="td-muted">—</td><td><div class="row-actions"><button class="row-btn primary" onclick="openModal('edit-blog')">Sửa</button><button class="row-btn">Publish</button><button class="row-btn danger">Xóa</button></div></td></tr>
+            <tr><td class="td-serif">PostHog cho Marketer — setup & đọc data</td><td><span class="badge badge-dark">ANALYTICS</span></td><td class="td-muted" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Cài PostHog trong 5 phút...</td><td class="td-mono">8 phút</td><td><span class="badge badge-green">Live</span></td><td class="td-muted">15·04·2026</td><td><div class="row-actions"><button class="row-btn primary" onclick="openModal('edit-blog')">Sửa</button><button class="row-btn danger">Xóa</button></div></td></tr>
+            <tr><td class="td-serif">MCP là gì? Tại sao dân Marketer cần biết?</td><td><span class="badge badge-dark">WORKFLOW</span></td><td class="td-muted" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Model Context Protocol...</td><td class="td-mono">4 phút</td><td><span class="badge badge-green">Live</span></td><td class="td-muted">12·04·2026</td><td><div class="row-actions"><button class="row-btn primary" onclick="openModal('edit-blog')">Sửa</button><button class="row-btn danger">Xóa</button></div></td></tr>
+            <tr><td class="td-serif">Case study: Landing page từ ý tưởng đến deploy 4 tiếng</td><td><span class="badge badge-dark">CASE STUDY</span></td><td class="td-muted" style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">Một marketer không biết code...</td><td class="td-mono">10 phút</td><td><span class="badge badge-green">Live</span></td><td class="td-muted">08·04·2026</td><td><div class="row-actions"><button class="row-btn primary" onclick="openModal('edit-blog')">Sửa</button><button class="row-btn danger">Xóa</button></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- PAGE: TIPS & MẸO -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="page" id="page-tips">
+      <div class="section-block">
+        <div class="section-header">
+          <span class="section-header-title"><strong>Tips & Mẹo</strong> · 12 tips</span>
+          <div class="section-header-spacer"></div>
+          <button class="section-header-action" onclick="openModal('edit-tip')">+ Thêm tip</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Nội dung tip</th><th>Category</th><th>Status</th><th>Thao tác</th></tr></thead>
+          <tbody id="tips-tbody">
+            <!-- JS will render -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- PAGE: PROMPT LIBRARY -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="page" id="page-prompts">
+      <div class="section-block">
+        <div class="section-header">
+          <span class="section-header-title"><strong>Prompt Library</strong> · 150 prompts · 12 chờ duyệt</span>
+          <div class="section-header-spacer"></div>
+          <button class="section-header-action" style="margin-right:8px;border-color:var(--accent);color:var(--accent)">✳ Duyệt draft (12)</button>
+          <button class="section-header-action" onclick="openModal('edit-prompt')">+ Thêm prompt</button>
+        </div>
+      </div>
+      <div class="prompt-grid">
+        <div class="prompt-card" onclick="openModal('edit-prompt')">
+          <div class="prompt-card-category">Vibecode · Cursor</div>
+          <div class="prompt-card-title">Tạo component Card đúng design system</div>
+          <div class="prompt-card-preview">Tạo card component với border 1px solid var(--border), hover bg2, font-serif title...</div>
+          <div class="prompt-card-footer"><span class="badge badge-green">Active</span><span class="td-muted">23 lượt dùng</span></div>
+          <span class="prompt-arrow">→</span>
+        </div>
+        <div class="prompt-card" onclick="openModal('edit-prompt')">
+          <div class="prompt-card-category">Deploy · Vercel</div>
+          <div class="prompt-card-title">Fix lỗi build Vercel — Next.js 15</div>
+          <div class="prompt-card-preview">Khi gặp lỗi build trên Vercel với Next.js 15, thêm prompt này để AI chẩn đoán...</div>
+          <div class="prompt-card-footer"><span class="badge badge-green">Active</span><span class="td-muted">18 lượt dùng</span></div>
+          <span class="prompt-arrow">→</span>
+        </div>
+        <div class="prompt-card" onclick="openModal('edit-prompt')">
+          <div class="prompt-card-category">Workflow · MCP</div>
+          <div class="prompt-card-title">Viết CLAUDE.md cho project web marketing</div>
+          <div class="prompt-card-preview">Tạo file CLAUDE.md với context đầy đủ về design system, folder structure...</div>
+          <div class="prompt-card-footer"><span class="badge badge-green">Active</span><span class="td-muted">31 lượt dùng</span></div>
+          <span class="prompt-arrow">→</span>
+        </div>
+        <div class="prompt-card" onclick="openModal('edit-prompt')">
+          <div class="prompt-card-category">Analytics · PostHog</div>
+          <div class="prompt-card-title">Đọc báo cáo PostHog với AI</div>
+          <div class="prompt-card-preview">Upload ảnh chụp màn dashboard PostHog và dùng Claude để phân tích...</div>
+          <div class="prompt-card-footer"><span class="badge badge-yellow">Draft</span><span class="td-muted">Chưa publish</span></div>
+          <span class="prompt-arrow">→</span>
+        </div>
+        <div class="prompt-card" onclick="openModal('edit-prompt')">
+          <div class="prompt-card-category">Vibecode · v0.dev</div>
+          <div class="prompt-card-title">Prompt tạo landing page với v0.dev</div>
+          <div class="prompt-card-preview">Dùng prompt này với v0.dev để tạo landing page có hero section, CTA, footer...</div>
+          <div class="prompt-card-footer"><span class="badge badge-green">Active</span><span class="td-muted">45 lượt dùng</span></div>
+          <span class="prompt-arrow">→</span>
+        </div>
+        <div class="prompt-card" onclick="openModal('edit-prompt')" style="background:var(--bg2); border: 1px dashed var(--border);">
+          <div class="prompt-card-category" style="color:var(--accent)">+ Thêm mới</div>
+          <div class="prompt-card-title" style="color:var(--muted)">Thêm prompt mới vào thư viện</div>
+          <div class="prompt-card-preview">Click để tạo prompt mới — điền category, tiêu đề, nội dung đầy đủ.</div>
+          <div class="prompt-card-footer"></div>
+          <span class="prompt-arrow" style="color:var(--accent)">+</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- PAGE: MODULE PICKER -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="page" id="page-modules">
+      <div class="section-block">
+        <div class="section-header">
+          <span class="section-header-title"><strong>Module Picker</strong> · Quản lý 8 modules</span>
+          <div class="section-header-spacer"></div>
+          <button class="section-header-action" onclick="openModal('edit-module')">+ Module mới</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Module</th><th>Tags/Tools</th><th>Trạng thái</th><th>Hiển thị</th><th>Thao tác</th></tr></thead>
+          <tbody>
+            <tr><td><span class="td-serif">✓ Vibecode ra Web</span></td><td class="td-muted">7 bài · đang học</td><td><span class="badge badge-green">Available</span></td><td><div class="toggle on" onclick="this.classList.toggle('on')"></div></td><td><div class="row-actions"><button class="row-btn primary" onclick="openModal('edit-module')">Sửa</button></div></td></tr>
+            <tr><td><span class="td-serif">Vibecode ra App</span></td><td class="td-muted">React Native · Expo</td><td><span class="badge badge-outline">Sắp ra</span></td><td><div class="toggle on" onclick="this.classList.toggle('on')"></div></td><td><div class="row-actions"><button class="row-btn primary" onclick="openModal('edit-module')">Sửa</button></div></td></tr>
+            <tr><td><span class="td-serif">Vibecode ra Chatbot</span></td><td class="td-muted">Claude API · Telegram Bot</td><td><span class="badge badge-outline">Sắp ra</span></td><td><div class="toggle on" onclick="this.classList.toggle('on')"></div></td><td><div class="row-actions"><button class="row-btn primary" onclick="openModal('edit-module')">Sửa</button></div></td></tr>
+            <tr><td><span class="td-serif">Vibecode ra Tool nội bộ</span></td><td class="td-muted">Dashboard · Tracker</td><td><span class="badge badge-outline">Sắp ra</span></td><td><div class="toggle on" onclick="this.classList.toggle('on')"></div></td><td><div class="row-actions"><button class="row-btn primary" onclick="openModal('edit-module')">Sửa</button></div></td></tr>
+            <tr><td><span class="td-serif">Analytics với AI</span></td><td class="td-muted">GA4 · Looker · Claude</td><td><span class="badge badge-outline">Sắp ra</span></td><td><div class="toggle on" onclick="this.classList.toggle('on')"></div></td><td><div class="row-actions"><button class="row-btn primary" onclick="openModal('edit-module')">Sửa</button></div></td></tr>
+            <tr><td><span class="td-serif">Generate Image</span></td><td class="td-muted">Midjourney · Flux · Firefly</td><td><span class="badge badge-outline">Sắp ra</span></td><td><div class="toggle on" onclick="this.classList.toggle('on')"></div></td><td><div class="row-actions"><button class="row-btn primary" onclick="openModal('edit-module')">Sửa</button></div></td></tr>
+            <tr><td><span class="td-serif">Motion Video</span></td><td class="td-muted">Kling · Runway · HeyGen</td><td><span class="badge badge-outline">Sắp ra</span></td><td><div class="toggle on" onclick="this.classList.toggle('on')"></div></td><td><div class="row-actions"><button class="row-btn primary" onclick="openModal('edit-module')">Sửa</button></div></td></tr>
+            <tr><td><span class="td-serif" style="color:var(--muted)">Card Góp ý</span></td><td class="td-muted">— link form góp ý</td><td><span class="badge badge-green">Active</span></td><td><div class="toggle on" onclick="this.classList.toggle('on')"></div></td><td><div class="row-actions"><button class="row-btn primary" onclick="openModal('edit-module')">Sửa</button></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- PAGE: TICKER -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="page" id="page-ticker">
+      <div class="section-block">
+        <div class="section-header">
+          <span class="section-header-title"><strong>Ticker</strong> · Dark scrolling bar</span>
+          <div class="section-header-spacer"></div>
+          <button class="section-header-action" onclick="openModal('edit-ticker-item')">+ Thêm item</button>
+        </div>
+      </div>
+      <div style="background:var(--ink);padding:1rem 2rem;border-bottom:1px solid #1a1a1a;">
+        <div style="font-family:var(--mono);font-size:10px;color:#555;margin-bottom:.5rem;letter-spacing:.06em;text-transform:uppercase;">Preview ticker hiện tại:</div>
+        <div class="mini-ticker" style="background:transparent;height:auto;overflow:visible;">
+          <div style="font-family:var(--mono);font-size:11px;color:#888;line-height:2;">
+            ✳ Vibecode ra mắt tháng 4/2026 · ✳ 7 bài học lộ trình zero · ✳ Miễn phí 100% · ✳ Analytics sắp ra · ✳ Generate Image sắp ra · ✳ Motion Video sắp ra · ✳ Blog · Tips · Prompt Library · ✳ Dành riêng dân Marketing
+          </div>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Nội dung</th><th>Hiển thị</th><th>Thao tác</th></tr></thead>
+          <tbody>
+            <tr><td class="td-mono">01</td><td class="td-sans">✳ Vibecode ra mắt tháng 4/2026</td><td><div class="toggle on" onclick="this.classList.toggle('on')"></div></td><td><div class="row-actions"><button class="row-btn primary" onclick="openModal('edit-ticker-item')">Sửa</button><button class="row-btn danger">Xóa</button></div></td></tr>
+            <tr><td class="td-mono">02</td><td class="td-sans">✳ 7 bài học lộ trình zero</td><td><div class="toggle on" onclick="this.classList.toggle('on')"></div></td><td><div class="row-actions"><button class="row-btn primary" onclick="openModal('edit-ticker-item')">Sửa</button><button class="row-btn danger">Xóa</button></div></td></tr>
+            <tr><td class="td-mono">03</td><td class="td-sans">✳ Miễn phí 100%</td><td><div class="toggle on" onclick="this.classList.toggle('on')"></div></td><td><div class="row-actions"><button class="row-btn primary" onclick="openModal('edit-ticker-item')">Sửa</button><button class="row-btn danger">Xóa</button></div></td></tr>
+            <tr><td class="td-mono">04</td><td class="td-sans">✳ Analytics sắp ra</td><td><div class="toggle on" onclick="this.classList.toggle('on')"></div></td><td><div class="row-actions"><button class="row-btn primary" onclick="openModal('edit-ticker-item')">Sửa</button><button class="row-btn danger">Xóa</button></div></td></tr>
+            <tr><td class="td-mono">05</td><td class="td-sans">✳ Generate Image sắp ra</td><td><div class="toggle on" onclick="this.classList.toggle('on')"></div></td><td><div class="row-actions"><button class="row-btn primary" onclick="openModal('edit-ticker-item')">Sửa</button><button class="row-btn danger">Xóa</button></div></td></tr>
+            <tr><td class="td-mono">06</td><td class="td-sans">✳ Motion Video sắp ra</td><td><div class="toggle on" onclick="this.classList.toggle('on')"></div></td><td><div class="row-actions"><button class="row-btn primary" onclick="openModal('edit-ticker-item')">Sửa</button><button class="row-btn danger">Xóa</button></div></td></tr>
+            <tr><td class="td-mono">07</td><td class="td-sans">✳ Blog · Tips · Prompt Library</td><td><div class="toggle on" onclick="this.classList.toggle('on')"></div></td><td><div class="row-actions"><button class="row-btn primary" onclick="openModal('edit-ticker-item')">Sửa</button><button class="row-btn danger">Xóa</button></div></td></tr>
+            <tr><td class="td-mono">08</td><td class="td-sans">✳ Dành riêng dân Marketing</td><td><div class="toggle on" onclick="this.classList.toggle('on')"></div></td><td><div class="row-actions"><button class="row-btn primary" onclick="openModal('edit-ticker-item')">Sửa</button><button class="row-btn danger">Xóa</button></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- PAGE: NAVIGATION -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="page" id="page-nav-manage">
+      <div class="section-block">
+        <div class="section-header">
+          <span class="section-header-title"><strong>Navigation</strong> · Quản lý menu</span>
+          <div class="section-header-spacer"></div>
+          <button class="section-header-action" onclick="openModal('edit-nav')">+ Thêm link</button>
+        </div>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>#</th><th>Label</th><th>URL</th><th>Trạng thái</th><th>Hiển thị</th><th>Thao tác</th></tr></thead>
+          <tbody>
+            <tr><td class="td-mono">01</td><td class="td-mono">Vibecode</td><td class="td-muted">#vibecode</td><td><span class="badge badge-green">Active</span></td><td><div class="toggle on" onclick="this.classList.toggle('on')"></div></td><td><div class="row-actions"><button class="row-btn primary" onclick="openModal('edit-nav')">Sửa</button></div></td></tr>
+            <tr><td class="td-mono">02</td><td class="td-mono">Blog</td><td class="td-muted">#blog</td><td><span class="badge badge-green">Active</span></td><td><div class="toggle on" onclick="this.classList.toggle('on')"></div></td><td><div class="row-actions"><button class="row-btn primary" onclick="openModal('edit-nav')">Sửa</button></div></td></tr>
+            <tr><td class="td-mono">03</td><td class="td-mono">Tips</td><td class="td-muted">#tips</td><td><span class="badge badge-green">Active</span></td><td><div class="toggle on" onclick="this.classList.toggle('on')"></div></td><td><div class="row-actions"><button class="row-btn primary" onclick="openModal('edit-nav')">Sửa</button></div></td></tr>
+            <tr><td class="td-mono">04</td><td class="td-mono">Prompts</td><td class="td-muted">#prompts</td><td><span class="badge badge-green">Active</span></td><td><div class="toggle on" onclick="this.classList.toggle('on')"></div></td><td><div class="row-actions"><button class="row-btn primary" onclick="openModal('edit-nav')">Sửa</button></div></td></tr>
+            <tr style="opacity:.6"><td class="td-mono">05</td><td class="td-mono" style="color:var(--muted)">Analytics</td><td class="td-muted">—</td><td><span class="badge badge-outline">Disabled</span></td><td><div class="toggle" onclick="this.classList.toggle('on')"></div></td><td><div class="row-actions"><button class="row-btn primary" onclick="openModal('edit-nav')">Sửa</button></div></td></tr>
+            <tr style="opacity:.6"><td class="td-mono">06</td><td class="td-mono" style="color:var(--muted)">Image</td><td class="td-muted">—</td><td><span class="badge badge-outline">Disabled</span></td><td><div class="toggle" onclick="this.classList.toggle('on')"></div></td><td><div class="row-actions"><button class="row-btn primary" onclick="openModal('edit-nav')">Sửa</button></div></td></tr>
+            <tr style="opacity:.6"><td class="td-mono">07</td><td class="td-mono" style="color:var(--muted)">Video</td><td class="td-muted">—</td><td><span class="badge badge-outline">Disabled</span></td><td><div class="toggle" onclick="this.classList.toggle('on')"></div></td><td><div class="row-actions"><button class="row-btn primary" onclick="openModal('edit-nav')">Sửa</button></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- PAGE: CÀI ĐẶT -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="page" id="page-settings">
+      <div class="settings-grid">
+        <div class="settings-nav">
+          <div class="settings-nav-item active" onclick="settingsTab(this,'s-general')"><span>◈</span> Tổng quan trang</div>
+          <div class="settings-nav-item" onclick="settingsTab(this,'s-hero')"><span>◎</span> Hero Section</div>
+          <div class="settings-nav-item" onclick="settingsTab(this,'s-stats')"><span>◷</span> Stats Bar</div>
+          <div class="settings-nav-item" onclick="settingsTab(this,'s-cta')"><span>→</span> CTA Section</div>
+          <div class="settings-nav-item" onclick="settingsTab(this,'s-footer')"><span>▤</span> Footer</div>
+          <div class="settings-nav-item" onclick="settingsTab(this,'s-why')"><span>✳</span> Tại sao miễn phí</div>
+        </div>
+        <div class="settings-panel">
+          <div id="s-general">
+            <div class="settings-group">
+              <div class="settings-group-title">Thông tin trang</div>
+              <div class="form-row"><div class="form-label">Tên trang<div class="form-sub">Hiển thị trên tab browser</div></div><input type="text" value="markAI.vn — Học AI ứng dụng cho dân Marketing"></div>
+              <div class="form-row"><div class="form-label">Domain<div class="form-sub">URL chính thức</div></div><input type="url" value="https://markai.vn"></div>
+              <div class="form-row"><div class="form-label">Meta description<div class="form-sub">SEO snippet, tối đa 160 ký tự</div></div><textarea>Nền tảng học AI ứng dụng miễn phí dành riêng cho dân Marketing Việt Nam. Vibecode, Analytics, Generate Image, Motion Video.</textarea></div>
+            </div>
+            <div class="settings-group">
+              <div class="settings-group-title">Tính năng hiển thị</div>
+              <div class="toggle-row"><div class="toggle on" onclick="this.classList.toggle('on')"></div><div><div class="toggle-label">Ticker bar</div><div class="toggle-sub">Dark scrolling bar phía dưới nav</div></div></div>
+              <div class="toggle-row"><div class="toggle on" onclick="this.classList.toggle('on')"></div><div><div class="toggle-label">Stats bar</div><div class="toggle-sub">4 số liệu phía dưới hero</div></div></div>
+              <div class="toggle-row"><div class="toggle on" onclick="this.classList.toggle('on')"></div><div><div class="toggle-label">Blog section</div><div class="toggle-sub">Grid 6 bài viết</div></div></div>
+              <div class="toggle-row"><div class="toggle on" onclick="this.classList.toggle('on')"></div><div><div class="toggle-label">Tips & Mẹo section</div><div class="toggle-sub">Grid 4 tip-card</div></div></div>
+              <div class="toggle-row"><div class="toggle on" onclick="this.classList.toggle('on')"></div><div><div class="toggle-label">Prompt Library teaser</div><div class="toggle-sub">Dark section giữa trang</div></div></div>
+              <div class="toggle-row"><div class="toggle on" onclick="this.classList.toggle('on')"></div><div><div class="toggle-label">Tại sao miễn phí section</div></div></div>
+            </div>
+            <div style="display:flex;gap:8px;padding-top:1rem;">
+              <button class="btn btn-primary">Lưu thay đổi</button>
+              <button class="btn">Huỷ</button>
+            </div>
+          </div>
+
+          <div id="s-hero" style="display:none">
+            <div class="settings-group">
+              <div class="settings-group-title">Hero — Cột trái</div>
+              <div class="form-row"><div class="form-label">Eyebrow text</div><input type="text" value="✳ AI cho dân Marketing · hoàn toàn miễn phí · 2026"></div>
+              <div class="form-row"><div class="form-label">H1 heading</div><textarea style="min-height:60px">Học AI không cần biết lập trình.</textarea></div>
+              <div class="form-row"><div class="form-label">Từ gạch bỏ<div class="form-sub">Phần strikethrough italic trong H1</div></div><input type="text" value="lập trình."></div>
+              <div class="form-row"><div class="form-label">Mô tả</div><textarea>Lộ trình từ zero: Vibecode web, Analytics, Generate Image, Motion Video. Thực chiến · tiếng Việt · không hàn lâm · dùng được ngay.</textarea></div>
+              <div class="form-row"><div class="form-label">CTA primary</div><input type="text" value="Bắt đầu Vibecode →"></div>
+              <div class="form-row"><div class="form-label">CTA ghost</div><input type="text" value="Đọc blog mới nhất"></div>
+              <div class="form-row"><div class="form-label">Note dưới CTA</div><input type="text" value="✳ miễn phí · không cần email · không tracking"></div>
+            </div>
+            <div style="display:flex;gap:8px;padding-top:1rem;">
+              <button class="btn btn-primary">Lưu thay đổi</button>
+              <button class="btn">Huỷ</button>
+            </div>
+          </div>
+
+          <div id="s-stats" style="display:none">
+            <div class="settings-group">
+              <div class="settings-group-title">Stats Bar — 4 số liệu</div>
+              <div class="form-row"><div class="form-label">Stat 01 · Số</div><input type="text" value="7 bài học vibecode"></div>
+              <div class="form-row"><div class="form-label">Stat 02 · Số</div><input type="text" value="4 hướng dẫn AI sắp ra"></div>
+              <div class="form-row"><div class="form-label">Stat 03 · Số</div><input type="text" value="100% miễn phí mãi mãi"></div>
+              <div class="form-row"><div class="form-label">Stat 04 · Số</div><input type="text" value="0 yêu cầu kiến thức code"></div>
+            </div>
+            <div style="display:flex;gap:8px;padding-top:1rem;">
+              <button class="btn btn-primary">Lưu thay đổi</button>
+            </div>
+          </div>
+
+          <div id="s-cta" style="display:none">
+            <div class="settings-group">
+              <div class="settings-group-title">CTA Section (cuối trang)</div>
+              <div class="form-row"><div class="form-label">Heading</div><textarea style="min-height:50px">Thôi nào, bắt đầu bài 01 đi.</textarea></div>
+              <div class="form-row"><div class="form-label">CTA primary</div><input type="text" value="Bắt đầu Bài 01 →"></div>
+              <div class="form-row"><div class="form-label">CTA ghost</div><input type="text" value="Đọc blog trước"></div>
+              <div class="form-row"><div class="form-label">Note</div><input type="text" value="✳ hoàn toàn miễn phí · không cần email · không cần đăng ký"></div>
+            </div>
+            <div style="display:flex;gap:8px;padding-top:1rem;">
+              <button class="btn btn-primary">Lưu thay đổi</button>
+            </div>
+          </div>
+
+          <div id="s-footer" style="display:none">
+            <div class="settings-group">
+              <div class="settings-group-title">Footer</div>
+              <div class="form-row"><div class="form-label">Tagline</div><input type="text" value="Học AI không cần biết lập trình."></div>
+              <div class="form-row"><div class="form-label">Copyright</div><input type="text" value="© 2026 markAI.vn · Hoàn toàn miễn phí"></div>
+            </div>
+            <div style="display:flex;gap:8px;padding-top:1rem;">
+              <button class="btn btn-primary">Lưu thay đổi</button>
+            </div>
+          </div>
+
+          <div id="s-why" style="display:none">
+            <div class="settings-group">
+              <div class="settings-group-title">Section "Tại sao miễn phí" — 4 card</div>
+              <div class="form-row"><div class="form-label">Card 01</div><input type="text" value="✳ Dành riêng cho dân Marketing"></div>
+              <div class="form-row"><div class="form-label">Card 02</div><input type="text" value="✳ Học xong dùng được ngay"></div>
+              <div class="form-row"><div class="form-label">Card 03</div><input type="text" value="✳ Cập nhật mỗi tuần"></div>
+              <div class="form-row"><div class="form-label">Card 04</div><input type="text" value="✳ Không quảng cáo · Không tracking"></div>
+            </div>
+            <div style="display:flex;gap:8px;padding-top:1rem;">
+              <button class="btn btn-primary">Lưu thay đổi</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- PAGE: DEPLOY -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="page" id="page-deploy">
+      <div class="section-block">
+        <div class="section-header">
+          <span class="section-header-title"><strong>Deploy & Tích hợp</strong></span>
+          <div class="section-header-spacer"></div>
+          <button class="topbar-btn primary" onclick="openModal('deploy-modal')" style="border:none;height:36px;padding:0 1.2rem;font-size:11px;cursor:pointer;">⬆ Deploy ngay</button>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);">
+        <div style="padding:2rem;border-right:1px solid var(--border);border-bottom:1px solid var(--border);">
+          <div style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.8rem;">Vercel</div>
+          <div style="font-family:var(--serif);font-size:1rem;margin-bottom:.5rem;">Production Deploy</div>
+          <div style="font-family:var(--mono);font-size:10px;color:#16a34a;margin-bottom:1rem;">● Ready · 2 giờ trước</div>
+          <div class="form-row" style="grid-template-columns:80px 1fr;gap:1rem;margin-bottom:.5rem;"><div class="form-label" style="font-size:10px;">Project</div><input type="text" value="markai-vn" style="font-size:11px;padding:.3rem .6rem;"></div>
+          <div class="form-row" style="grid-template-columns:80px 1fr;gap:1rem;"><div class="form-label" style="font-size:10px;">Branch</div><input type="text" value="main" style="font-size:11px;padding:.3rem .6rem;"></div>
+        </div>
+        <div style="padding:2rem;border-right:1px solid var(--border);border-bottom:1px solid var(--border);">
+          <div style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.8rem;">PostHog Analytics</div>
+          <div style="font-family:var(--serif);font-size:1rem;margin-bottom:.5rem;">Event Tracking</div>
+          <div style="font-family:var(--mono);font-size:10px;color:#16a34a;margin-bottom:1rem;">● Connected</div>
+          <div class="form-row" style="grid-template-columns:80px 1fr;gap:1rem;"><div class="form-label" style="font-size:10px;">API Key</div><input type="text" value="phc_••••••••••••••" style="font-size:11px;padding:.3rem .6rem;"></div>
+        </div>
+        <div style="padding:2rem;border-bottom:1px solid var(--border);">
+          <div style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.8rem;">Google Search Console</div>
+          <div style="font-family:var(--serif);font-size:1rem;margin-bottom:.5rem;">SEO Indexing</div>
+          <div style="font-family:var(--mono);font-size:10px;color:#16a34a;margin-bottom:1rem;">● Verified</div>
+          <div class="form-row" style="grid-template-columns:80px 1fr;gap:1rem;"><div class="form-label" style="font-size:10px;">Site URL</div><input type="text" value="https://markai.vn" style="font-size:11px;padding:.3rem .6rem;"></div>
+        </div>
+        <div style="padding:2rem;border-right:1px solid var(--border);">
+          <div style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.8rem;">Supabase Database</div>
+          <div style="font-family:var(--serif);font-size:1rem;margin-bottom:.5rem;">Backend & Storage</div>
+          <div style="font-family:var(--mono);font-size:10px;color:#16a34a;margin-bottom:1rem;">● Active</div>
+          <div class="form-row" style="grid-template-columns:80px 1fr;gap:1rem;"><div class="form-label" style="font-size:10px;">Project URL</div><input type="text" value="https://••••••.supabase.co" style="font-size:11px;padding:.3rem .6rem;"></div>
+        </div>
+        <div style="padding:2rem;border-right:1px solid var(--border);opacity:.5;">
+          <div style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.8rem;">GitHub</div>
+          <div style="font-family:var(--serif);font-size:1rem;margin-bottom:.5rem;">Source Control</div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-bottom:1rem;">○ Chưa kết nối</div>
+          <button class="btn">Kết nối GitHub →</button>
+        </div>
+        <div style="padding:2rem;opacity:.5;">
+          <div style="font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.8rem;">Custom Domain</div>
+          <div style="font-family:var(--serif);font-size:1rem;margin-bottom:.5rem;">markai.vn</div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--muted);margin-bottom:1rem;">○ DNS chưa verify</div>
+          <button class="btn">Kiểm tra DNS →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════════════════════════════ -->
+    <!-- PAGE: ACTIVITY -->
+    <!-- ═══════════════════════════════════════ -->
+    <div class="page" id="page-activity">
+      <div class="section-block">
+        <div class="section-header">
+          <span class="section-header-title"><strong>Lịch sử hoạt động</strong></span>
+        </div>
+      </div>
+      <div class="activity-feed">
+        <div class="activity-item"><div class="activity-dot accent"></div><div class="activity-text">Deploy production lên <strong>Vercel</strong> — build #42 thành công</div><div class="activity-time">Hôm nay 14:32</div></div>
+        <div class="activity-item"><div class="activity-dot green"></div><div class="activity-text">Publish bài blog <strong>"Vibecode từ A–Z cho người chưa biết code"</strong></div><div class="activity-time">Hôm nay 09:15</div></div>
+        <div class="activity-item"><div class="activity-dot"></div><div class="activity-text">Thêm 12 prompts mới vào thư viện (status: draft, chờ duyệt)</div><div class="activity-time">Hôm qua 16:20</div></div>
+        <div class="activity-item"><div class="activity-dot yellow"></div><div class="activity-text">Cập nhật nội dung <strong>Bài 05 — Prompt</strong>: bổ sung ví dụ thực tế</div><div class="activity-time">Hôm qua 11:05</div></div>
+        <div class="activity-item"><div class="activity-dot green"></div><div class="activity-text">Thêm <strong>Tip #12</strong> — "Dùng Cursor Tab để autocomplete nhanh hơn"</div><div class="activity-time">2 ngày trước</div></div>
+        <div class="activity-item"><div class="activity-dot accent"></div><div class="activity-text">Cập nhật Ticker — thêm 2 dòng mới về Analytics & Image</div><div class="activity-time">4 ngày trước</div></div>
+        <div class="activity-item"><div class="activity-dot"></div><div class="activity-text">Tạo draft blog <strong>"Cursor vs VS Code — cái nào dành cho Marketer?"</strong></div><div class="activity-time">5 ngày trước</div></div>
+        <div class="activity-item"><div class="activity-dot green"></div><div class="activity-text">Hoàn thành & publish <strong>Bài 07 — Deploy + PostHog + Google Search Console</strong></div><div class="activity-time">1 tuần trước</div></div>
+        <div class="activity-item"><div class="activity-dot green"></div><div class="activity-text">Hoàn thành & publish <strong>Bài 06 — Skills & Workflow</strong></div><div class="activity-time">1 tuần trước</div></div>
+        <div class="activity-item"><div class="activity-dot accent"></div><div class="activity-text">Deploy đầu tiên markai.vn lên Vercel thành công</div><div class="activity-time">2 tuần trước</div></div>
+      </div>
+    </div>
+
+  </div><!-- end .content -->
+</div><!-- end .main -->
+
+<!-- ════════════════════════════════════ -->
+<!-- MODALS -->
+<!-- ════════════════════════════════════ -->
+
+<!-- Edit Step Modal -->
+<div class="modal-overlay" id="modal-edit-step">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">SỬA BÀI HỌC · markAI Admin</span>
+      <button class="modal-close" onclick="closeModal('edit-step')">×</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex;flex-direction:column;gap:1rem;">
+        <div><div class="form-label" style="margin-bottom:.4rem;">Số bài</div><input type="text" value="01"></div>
+        <div><div class="form-label" style="margin-bottom:.4rem;">Badge (ví dụ: BẮT ĐẦU ĐÂY)</div><input type="text" value="BẮT ĐẦU ĐÂY"></div>
+        <div><div class="form-label" style="margin-bottom:.4rem;">Thời gian (~X phút)</div><input type="text" value="~20 phút"></div>
+        <div><div class="form-label" style="margin-bottom:.4rem;">Tiêu đề bài học</div><input type="text" value="Vibecode là gì? Khó không? Giúp gì cho Marketer?"></div>
+        <div><div class="form-label" style="margin-bottom:.4rem;">Mô tả ngắn</div><textarea>Hiểu vibecode là gì, tại sao dân marketing cần biết, và bắt đầu từ đâu.</textarea></div>
+        <div><div class="form-label" style="margin-bottom:.4rem;">Tags (cách nhau dấu ·)</div><input type="text" value="tư duy · use case · marketer"></div>
+        <div style="display:flex;align-items:center;gap:.8rem;">
+          <div class="form-label">Hiển thị</div>
+          <div class="toggle on" onclick="this.classList.toggle('on')"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal('edit-step')">Huỷ</button>
+      <button class="btn btn-primary" onclick="closeModal('edit-step')">Lưu thay đổi</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Blog Modal -->
+<div class="modal-overlay" id="modal-edit-blog">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">SỬA BÀI BLOG · markAI Admin</span>
+      <button class="modal-close" onclick="closeModal('edit-blog')">×</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex;flex-direction:column;gap:1rem;">
+        <div><div class="form-label" style="margin-bottom:.4rem;">Category</div>
+          <select><option>VIBECODE</option><option>DEPLOY</option><option>TOOL REVIEW</option><option>ANALYTICS</option><option>WORKFLOW</option><option>CASE STUDY</option></select>
+        </div>
+        <div><div class="form-label" style="margin-bottom:.4rem;">Tiêu đề</div><input type="text" value="Vibecode từ A–Z cho người chưa biết code"></div>
+        <div><div class="form-label" style="margin-bottom:.4rem;">Excerpt (2 dòng)</div><textarea style="min-height:60px">Hướng dẫn toàn diện từ zero — cách tư duy, công cụ, và thực hành đầu tiên.</textarea></div>
+        <div><div class="form-label" style="margin-bottom:.4rem;">Thời gian đọc (phút)</div><input type="text" value="7"></div>
+        <div style="display:flex;gap:1rem;">
+          <div style="flex:1;"><div class="form-label" style="margin-bottom:.4rem;">Status</div><select><option>Draft</option><option selected>Published</option></select></div>
+          <div style="flex:1;"><div class="form-label" style="margin-bottom:.4rem;">Ngày publish</div><input type="text" value="20·04·2026"></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger" onclick="closeModal('edit-blog')">Xóa bài</button>
+      <div style="flex:1"></div>
+      <button class="btn" onclick="closeModal('edit-blog')">Huỷ</button>
+      <button class="btn btn-primary" onclick="closeModal('edit-blog')">Lưu thay đổi</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Prompt Modal -->
+<div class="modal-overlay" id="modal-edit-prompt">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">SỬA PROMPT · markAI Admin</span>
+      <button class="modal-close" onclick="closeModal('edit-prompt')">×</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex;flex-direction:column;gap:1rem;">
+        <div><div class="form-label" style="margin-bottom:.4rem;">Category</div><input type="text" value="Vibecode · Cursor"></div>
+        <div><div class="form-label" style="margin-bottom:.4rem;">Tiêu đề prompt</div><input type="text" value="Tạo component Card đúng design system"></div>
+        <div><div class="form-label" style="margin-bottom:.4rem;">Nội dung prompt đầy đủ</div><textarea style="min-height:120px;font-size:11px;">Tạo card component với border 1px solid var(--border), hover bg2, font-serif title, font-sans description, không border-radius, không box-shadow...</textarea></div>
+        <div><div class="form-label" style="margin-bottom:.4rem;">Dùng với công cụ</div><input type="text" value="Cursor · Claude Code"></div>
+        <div style="display:flex;align-items:center;gap:.8rem;"><div class="form-label">Status: Published</div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal('edit-prompt')">Huỷ</button>
+      <button class="btn btn-primary" onclick="closeModal('edit-prompt')">Lưu thay đổi</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Module -->
+<div class="modal-overlay" id="modal-edit-module">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">SỬA MODULE · markAI Admin</span>
+      <button class="modal-close" onclick="closeModal('edit-module')">×</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex;flex-direction:column;gap:1rem;">
+        <div><div class="form-label" style="margin-bottom:.4rem;">Tên module</div><input type="text" value="Vibecode ra Web"></div>
+        <div><div class="form-label" style="margin-bottom:.4rem;">Meta / Tools</div><input type="text" value="7 bài · đang học"></div>
+        <div><div class="form-label" style="margin-bottom:.4rem;">Trạng thái</div><select><option>Available</option><option>Sắp ra</option></select></div>
+        <div style="display:flex;align-items:center;gap:.8rem;"><div class="form-label">Hiển thị trong grid</div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+        <div style="display:flex;align-items:center;gap:.8rem;"><div class="form-label">Clickable</div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal('edit-module')">Huỷ</button>
+      <button class="btn btn-primary" onclick="closeModal('edit-module')">Lưu</button>
+    </div>
+  </div>
+</div>
+
+<!-- Ticker item modal -->
+<div class="modal-overlay" id="modal-edit-ticker-item">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">SỬA TICKER ITEM · markAI Admin</span>
+      <button class="modal-close" onclick="closeModal('edit-ticker-item')">×</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex;flex-direction:column;gap:1rem;">
+        <div><div class="form-label" style="margin-bottom:.4rem;">Nội dung (bắt đầu bằng ✳)</div><input type="text" value="✳ Vibecode ra mắt tháng 4/2026"></div>
+        <div style="display:flex;align-items:center;gap:.8rem;"><div class="form-label">Hiển thị</div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger">Xóa item</button>
+      <div style="flex:1"></div>
+      <button class="btn" onclick="closeModal('edit-ticker-item')">Huỷ</button>
+      <button class="btn btn-primary" onclick="closeModal('edit-ticker-item')">Lưu</button>
+    </div>
+  </div>
+</div>
+
+<!-- Nav modal -->
+<div class="modal-overlay" id="modal-edit-nav">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">SỬA NAVIGATION LINK · markAI Admin</span>
+      <button class="modal-close" onclick="closeModal('edit-nav')">×</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex;flex-direction:column;gap:1rem;">
+        <div><div class="form-label" style="margin-bottom:.4rem;">Label hiển thị</div><input type="text" value="Vibecode"></div>
+        <div><div class="form-label" style="margin-bottom:.4rem;">URL / Anchor</div><input type="text" value="#vibecode"></div>
+        <div><div class="form-label" style="margin-bottom:.4rem;">Trạng thái</div><select><option>Active</option><option>Disabled (sắp ra)</option></select></div>
+        <div style="display:flex;align-items:center;gap:.8rem;"><div class="form-label">Hiển thị</div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal('edit-nav')">Huỷ</button>
+      <button class="btn btn-primary" onclick="closeModal('edit-nav')">Lưu</button>
+    </div>
+  </div>
+</div>
+
+<!-- New Lesson Modal -->
+<div class="modal-overlay" id="modal-new-lesson">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">THÊM BÀI HỌC MỚI · markAI Admin</span>
+      <button class="modal-close" onclick="closeModal('new-lesson')">×</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex;flex-direction:column;gap:1rem;">
+        <div><div class="form-label" style="margin-bottom:.4rem;">Số bài</div><input type="text" placeholder="08"></div>
+        <div><div class="form-label" style="margin-bottom:.4rem;">Badge</div><input type="text" placeholder="MỚI"></div>
+        <div><div class="form-label" style="margin-bottom:.4rem;">Thời gian</div><input type="text" placeholder="~30 phút"></div>
+        <div><div class="form-label" style="margin-bottom:.4rem;">Tiêu đề</div><input type="text" placeholder="Tiêu đề bài học mới..."></div>
+        <div><div class="form-label" style="margin-bottom:.4rem;">Mô tả</div><textarea placeholder="Mô tả ngắn 1-2 câu..."></textarea></div>
+        <div><div class="form-label" style="margin-bottom:.4rem;">Tags</div><input type="text" placeholder="tag1 · tag2 · tag3"></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal('new-lesson')">Huỷ</button>
+      <button class="btn btn-primary" onclick="closeModal('new-lesson')">Tạo bài học</button>
+    </div>
+  </div>
+</div>
+
+<!-- New Content Modal -->
+<div class="modal-overlay" id="modal-new-content">
+  <div class="modal" style="width:400px;">
+    <div class="modal-header">
+      <span class="modal-title">TẠO NỘI DUNG MỚI · markAI Admin</span>
+      <button class="modal-close" onclick="closeModal('new-content')">×</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <div onclick="closeModal('new-content');openModal('new-lesson')" style="padding:1rem;border:1px solid var(--border);cursor:pointer;transition:background .15s;" onmouseover="this.style.background='var(--bg2)'" onmouseout="this.style.background=''">
+          <div style="font-family:var(--mono);font-size:11px;margin-bottom:.3rem;">▤ Bài học Vibecode</div>
+          <div style="font-family:var(--sans);font-size:12px;color:var(--muted);">Thêm bài học mới vào lộ trình</div>
+        </div>
+        <div onclick="closeModal('new-content');openModal('edit-blog')" style="padding:1rem;border:1px solid var(--border);cursor:pointer;transition:background .15s;" onmouseover="this.style.background='var(--bg2)'" onmouseout="this.style.background=''">
+          <div style="font-family:var(--mono);font-size:11px;margin-bottom:.3rem;">◷ Bài blog mới</div>
+          <div style="font-family:var(--sans);font-size:12px;color:var(--muted);">Viết bài đăng blog</div>
+        </div>
+        <div onclick="closeModal('new-content');openModal('edit-tip')" style="padding:1rem;border:1px solid var(--border);cursor:pointer;transition:background .15s;" onmouseover="this.style.background='var(--bg2)'" onmouseout="this.style.background=''">
+          <div style="font-family:var(--mono);font-size:11px;margin-bottom:.3rem;">✳ Tips & Mẹo</div>
+          <div style="font-family:var(--sans);font-size:12px;color:var(--muted);">Thêm tip ngắn thực dụng</div>
+        </div>
+        <div onclick="closeModal('new-content');openModal('edit-prompt')" style="padding:1rem;border:1px solid var(--border);cursor:pointer;transition:background .15s;" onmouseover="this.style.background='var(--bg2)'" onmouseout="this.style.background=''">
+          <div style="font-family:var(--mono);font-size:11px;margin-bottom:.3rem;">⌘ Prompt mới</div>
+          <div style="font-family:var(--sans);font-size:12px;color:var(--muted);">Thêm vào Prompt Library</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Deploy Modal -->
+<div class="modal-overlay" id="modal-deploy-modal">
+  <div class="modal" style="width:420px;">
+    <div class="modal-header">
+      <span class="modal-title">DEPLOY LÊN VERCEL · markAI Admin</span>
+      <button class="modal-close" onclick="closeModal('deploy-modal')">×</button>
+    </div>
+    <div class="modal-body">
+      <div style="font-family:var(--mono);font-size:11px;color:var(--muted);margin-bottom:1rem;">Triển khai phiên bản mới nhất lên production</div>
+      <div style="background:var(--ink);padding:1rem;font-family:var(--mono);font-size:11px;color:#888;line-height:2;margin-bottom:1rem;">
+        <div style="color:#555;">$ vercel deploy --prod</div>
+        <div style="color:#28CA41;">✓ Connected to markai-vn</div>
+        <div style="color:#28CA41;">✓ Ready to deploy</div>
+        <div style="color:var(--accent);">▶ Nhấn Deploy để bắt đầu...</div>
+      </div>
+      <div style="font-family:var(--sans);font-size:12px;color:var(--muted);">Build time ước tính: ~45 giây</div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal('deploy-modal')">Huỷ</button>
+      <button class="btn btn-primary" onclick="closeModal('deploy-modal')">⬆ Deploy ngay</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Tip Modal -->
+<div class="modal-overlay" id="modal-edit-tip">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">THÊM / SỬA TIP · markAI Admin</span>
+      <button class="modal-close" onclick="closeModal('edit-tip')">×</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:flex;flex-direction:column;gap:1rem;">
+        <div><div class="form-label" style="margin-bottom:.4rem;">Số tip (#)</div><input type="text" placeholder="13"></div>
+        <div><div class="form-label" style="margin-bottom:.4rem;">Nội dung tip (1–2 câu)</div><textarea placeholder="Mẹo ngắn, thực dụng..."></textarea></div>
+        <div><div class="form-label" style="margin-bottom:.4rem;">Category</div><select><option>vibecode</option><option>deploy</option><option>workflow</option><option>tool</option><option>prompt</option></select></div>
+        <div style="display:flex;align-items:center;gap:.8rem;"><div class="form-label">Hiển thị</div><div class="toggle on" onclick="this.classList.toggle('on')"></div></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn" onclick="closeModal('edit-tip')">Huỷ</button>
+      <button class="btn btn-primary" onclick="closeModal('edit-tip')">Lưu tip</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── TIPS DATA ───
+const tipsData = [
+  { num: '01', text: 'Dùng Cursor Tab để autocomplete nhanh hơn — không cần gõ từng ký tự', cat: 'vibecode', on: true },
+  { num: '02', text: 'Prefix prompt bằng "Act as a senior frontend developer" để AI code chất hơn', cat: 'prompt', on: true },
+  { num: '03', text: 'Tạo file CLAUDE.md ngay từ đầu — tiết kiệm 50% context mỗi lần chat', cat: 'workflow', on: true },
+  { num: '04', text: 'Deploy Vercel bằng CLI: vercel --prod nhanh hơn dashboard', cat: 'deploy', on: true },
+  { num: '05', text: 'Dùng v0.dev cho UI prototype trước, rồi mới copy vào Cursor', cat: 'vibecode', on: true },
+  { num: '06', text: 'PostHog free tier: 1 triệu event/tháng — đủ cho project nhỏ', cat: 'tool', on: true },
+  { num: '07', text: 'Đặt tên biến tiếng Anh ngay từ đầu — AI hiểu tốt hơn nhiều', cat: 'vibecode', on: true },
+  { num: '08', text: 'Cursor Rules > .cursorrules: định nghĩa design system 1 lần, áp dụng mãi', cat: 'workflow', on: true },
+  { num: '09', text: 'Lỗi Vercel build? Copy toàn bộ error log dán thẳng cho AI — đừng tóm tắt', cat: 'deploy', on: true },
+  { num: '10', text: 'Mobile-first: thiết kế 375px trước, responsive lên desktop sau', cat: 'vibecode', on: false },
+  { num: '11', text: 'Google Search Console: submit sitemap.xml ngay sau deploy đầu tiên', cat: 'deploy', on: true },
+  { num: '12', text: 'Bolt.new nhanh hơn khi cần prototype nhanh — Cursor tốt hơn khi cần edit sâu', cat: 'tool', on: true },
+];
+
+function renderTips() {
+  const tbody = document.getElementById('tips-tbody');
+  if (!tbody) return;
+  tbody.innerHTML = tipsData.map(t => `
+    <tr>
+      <td class="td-mono">TIP · ${t.num}</td>
+      <td class="td-serif" style="font-size:.88rem;">${t.text}</td>
+      <td><span class="badge badge-outline" style="text-transform:uppercase;font-size:9px;">${t.cat}</span></td>
+      <td>${t.on ? '<span class="badge badge-green">Active</span>' : '<span class="badge badge-outline">Hidden</span>'}</td>
+      <td><div class="row-actions"><button class="row-btn primary" onclick="openModal('edit-tip')">Sửa</button><button class="row-btn danger">Xóa</button></div></td>
+    </tr>
+  `).join('');
+}
+renderTips();
+
+// ─── TICKER LOOP ───
+const t = document.getElementById('adminTicker');
+if (t) t.innerHTML += t.innerHTML;
+
+// ─── NAVIGATION ───
+function goto(pageId, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const page = document.getElementById('page-' + pageId);
+  if (page) page.classList.add('active');
+  if (el) el.classList.add('active');
+  const titles = {
+    'overview': ['Dashboard', 'Tổng quan'],
+    'activity': ['Hoạt động', 'Lịch sử'],
+    'lessons': ['Bài học Vibecode', 'Lộ trình 7 bước'],
+    'blog': ['Blog', 'Tất cả bài viết'],
+    'tips': ['Tips & Mẹo', '12 tips'],
+    'prompts': ['Prompt Library', '150+ prompts'],
+    'modules': ['Module Picker', '8 modules'],
+    'ticker': ['Ticker', 'Dark scrolling bar'],
+    'nav-manage': ['Navigation', 'Quản lý menu'],
+    'settings': ['Cài đặt trang', 'Tuỳ chỉnh nội dung'],
+    'deploy': ['Deploy & Tích hợp', 'Vercel · PostHog · Supabase'],
+  };
+  const t = titles[pageId] || ['markAI Admin', ''];
+  document.getElementById('topbar-title').innerHTML = `<strong>${t[0]}</strong> · ${t[1]}`;
+  if (pageId === 'tips') renderTips();
+}
+
+// ─── MODALS ───
+function openModal(id) {
+  document.getElementById('modal-' + id).classList.add('open');
+}
+function closeModal(id) {
+  document.getElementById('modal-' + id).classList.remove('open');
+}
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('open');
+  });
+});
+
+// ─── SETTINGS TABS ───
+function settingsTab(el, panelId) {
+  document.querySelectorAll('.settings-nav-item').forEach(i => i.classList.remove('active'));
+  el.classList.add('active');
+  document.querySelectorAll('#page-settings .settings-panel > div').forEach(p => p.style.display = 'none');
+  const panel = document.getElementById(panelId);
+  if (panel) panel.style.display = '';
+}
+</script>
+</body>
+</html>
