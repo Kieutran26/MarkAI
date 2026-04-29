@@ -17,7 +17,7 @@ export default function Nav() {
         <li>
           <Link 
             to="/vibecode" 
-            className={`font-mono text-[12px] px-4 h-[52px] flex items-center border-l border-border hover:bg-bg2 hover:text-ink transition-colors no-underline ${isVibecodeActive ? 'text-accent font-bold' : 'text-muted'}`}
+            className={`font-mono text-[12px] px-4 h-[52px] flex items-center border-l border-border hover:bg-bg2 hover:text-ink transition-colors no-underline ${isVibecodeActive ? 'text-accent font-medium' : 'text-muted'}`}
           >
             Vibecode
           </Link>
@@ -25,7 +25,7 @@ export default function Nav() {
         <li>
           <Link 
             to="/blog" 
-            className={`font-mono text-[12px] px-4 h-[52px] flex items-center border-l border-border hover:bg-bg2 hover:text-ink transition-colors no-underline ${isActive('/blog') ? 'text-accent' : 'text-muted'}`}
+            className={`font-mono text-[12px] px-4 h-[52px] flex items-center border-l border-border hover:bg-bg2 hover:text-ink transition-colors no-underline ${isActive('/blog') ? 'text-accent font-medium' : 'text-muted'}`}
           >
             Blog
           </Link>
@@ -33,7 +33,7 @@ export default function Nav() {
         <li>
           <Link 
             to="/tips" 
-            className={`font-mono text-[12px] px-4 h-[52px] flex items-center border-l border-border hover:bg-bg2 hover:text-ink transition-colors no-underline ${isActive('/tips') ? 'text-accent' : 'text-muted'}`}
+            className={`font-mono text-[12px] px-4 h-[52px] flex items-center border-l border-border hover:bg-bg2 hover:text-ink transition-colors no-underline ${isActive('/tips') ? 'text-accent font-medium' : 'text-muted'}`}
           >
             Tips
           </Link>
@@ -41,7 +41,7 @@ export default function Nav() {
         <li>
           <Link 
             to="/prompts" 
-            className={`font-mono text-[12px] px-4 h-[52px] flex items-center border-l border-border hover:bg-bg2 hover:text-ink transition-colors no-underline ${isActive('/prompts') ? 'text-accent' : 'text-muted'}`}
+            className={`font-mono text-[12px] px-4 h-[52px] flex items-center border-l border-border hover:bg-bg2 hover:text-ink transition-colors no-underline ${isActive('/prompts') ? 'text-accent font-medium' : 'text-muted'}`}
           >
             Prompts
           </Link>

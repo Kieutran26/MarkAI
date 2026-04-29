@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-const items = [
+const defaultItems = [
   "✳ 150+ prompt đã test thực tế",
   "✳ Vibecode ra mắt tháng 4/2026",
   "✳ Miễn phí 100%",
@@ -11,7 +11,11 @@ const items = [
   "✳ Submit prompt của bạn"
 ];
 
-export default function Ticker() {
+interface TickerProps {
+  items?: string[];
+}
+
+export default function Ticker({ items = defaultItems }: TickerProps) {
   const trackRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -20,7 +24,7 @@ export default function Ticker() {
       const originalHTML = track.innerHTML;
       track.innerHTML = originalHTML + originalHTML;
     }
-  }, []);
+  }, [items]);
 
   return (
     <div className="ticker">

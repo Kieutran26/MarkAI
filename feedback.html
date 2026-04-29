@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Góp ý module — markAI.vn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#f7f5f0;--bg2:#ede9e0;--bg3:#e4dfd5;--ink:#0d0d0d;--ink2:#444444;
+    --muted:#888888;--border:#d4cfc5;--accent:#E8410A;--accent2:#C93508;
+    --serif:'Instrument Serif',serif;--mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:300;}
+  a{text-decoration:none;color:inherit;}
+
+  nav{position:sticky;top:0;z-index:100;height:52px;background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;}
+  .nav-logo{font-family:var(--mono);font-size:15px;font-weight:500;letter-spacing:-.02em;}
+  .nav-logo em{color:var(--accent);font-style:normal;}
+  .nav-links{display:flex;align-items:center;height:52px;list-style:none;}
+  .nav-links a{font-family:var(--mono);font-size:12px;color:var(--muted);padding:0 1rem;height:52px;display:flex;align-items:center;border-left:1px solid var(--border);transition:color .15s,background .15s;letter-spacing:.02em;}
+  .nav-links a:hover{color:var(--ink);background:var(--bg2);}
+  .nav-links a.disabled{opacity:.4;pointer-events:none;}
+  .nav-free{font-family:var(--mono);font-size:11px;color:var(--accent);display:flex;align-items:center;gap:5px;border-left:1px solid var(--border);padding:0 1rem;height:52px;letter-spacing:.02em;}
+  .nav-free::before{content:'✦';display:inline-block;animation:spin 4s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .ticker{height:32px;background:var(--ink);overflow:hidden;display:flex;align-items:center;}
+  .ticker-track{display:flex;white-space:nowrap;animation:tick 36s linear infinite;}
+  .ticker-item{font-family:var(--mono);font-size:10px;color:#555;padding:0 2rem;letter-spacing:.06em;text-transform:uppercase;}
+  @keyframes tick{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+  .section-label{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1rem;}
+  .section-label span{color:var(--accent);margin-right:.4rem;}
+  .insight{font-family:var(--mono);font-size:12px;border-left:2px solid var(--accent);padding:.7rem .9rem;line-height:1.65;color:var(--ink2);background:var(--bg2);}
+  .insight strong{color:var(--ink);font-weight:500;}
+  .btn-primary{font-family:var(--mono);font-size:12px;letter-spacing:.02em;background:var(--ink);color:var(--bg);border:none;padding:11px 22px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:background .15s;width:100%;justify-content:center;}
+  .btn-primary:hover{background:var(--accent);}
+  .btn-ghost{font-family:var(--mono);font-size:12px;letter-spacing:.02em;background:transparent;color:var(--ink);border:1px solid var(--border);padding:10px 22px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:border-color .15s;}
+  .btn-ghost:hover{border-color:var(--ink);}
+
+  /* BREADCRUMB */
+  .breadcrumb{border-bottom:1px solid var(--border);}
+  .breadcrumb-inner{max-width:1200px;margin:0 auto;padding:.9rem 2rem;display:flex;align-items:center;gap:.5rem;}
+  .bc-item{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.04em;}
+  .bc-item a:hover{color:var(--ink);}
+  .bc-sep{font-family:var(--mono);font-size:11px;color:var(--border);}
+  .bc-item.current{color:var(--ink);}
+
+  /* HERO */
+  .hero{border-bottom:1px solid var(--border);}
+  .hero-inner{max-width:1200px;margin:0 auto;padding:4rem 2rem 5rem;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;}
+  .hero-eyebrow{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1.2rem;}
+  .hero-h1{font-family:var(--serif);font-size:clamp(2.2rem,4.5vw,3.6rem);line-height:1.08;letter-spacing:-.025em;margin-bottom:1.2rem;}
+  .hero-h1 em{color:var(--accent);font-style:italic;}
+  .hero-desc{font-family:var(--sans);font-size:15px;font-weight:300;line-height:1.75;color:var(--ink2);margin-bottom:2rem;}
+  .hero-note{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.02em;}
+
+  /* FORM SIDE */
+  .form-box{border:1px solid var(--border);}
+  .form-header{padding:1rem 1.4rem;border-bottom:1px solid var(--border);background:var(--bg2);display:flex;align-items:center;justify-content:space-between;}
+  .form-header-title{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;}
+  .form-header-step{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.04em;}
+  .form-body{padding:1.8rem;display:flex;flex-direction:column;gap:1.2rem;}
+  .form-field{display:flex;flex-direction:column;gap:.4rem;}
+  .form-label{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;}
+  .form-label .req{color:var(--accent);}
+  .form-input,.form-textarea,.form-select{font-family:var(--mono);font-size:12px;color:var(--ink);background:var(--bg);border:1px solid var(--border);padding:.7rem .9rem;width:100%;outline:none;transition:border-color .15s;}
+  .form-input:focus,.form-textarea:focus,.form-select:focus{border-color:var(--ink);}
+  .form-input::placeholder,.form-textarea::placeholder{color:var(--muted);}
+  .form-textarea{resize:vertical;min-height:100px;line-height:1.65;}
+  .form-row{display:grid;grid-template-columns:1fr 1fr;gap:.8rem;}
+  .form-hint{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.03em;line-height:1.5;}
+
+  /* RATING BUTTONS */
+  .rating-group{display:grid;grid-template-columns:repeat(5,1fr);gap:0;border:1px solid var(--border);}
+  .rating-btn{font-family:var(--mono);font-size:11px;color:var(--muted);padding:.7rem 0;text-align:center;cursor:pointer;border-right:1px solid var(--border);background:transparent;transition:background .15s,color .15s;}
+  .rating-btn:last-child{border-right:none;}
+  .rating-btn:hover,.rating-btn.active{background:var(--ink);color:var(--bg);}
+
+  /* MODULE PICKER */
+  .module-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--border);}
+  .module-btn{font-family:var(--mono);font-size:11px;color:var(--muted);padding:.8rem 1rem;border-right:1px solid var(--border);border-bottom:1px solid var(--border);cursor:pointer;background:transparent;transition:background .15s,color .15s;text-align:left;letter-spacing:.03em;}
+  .module-btn:nth-child(2n){border-right:none;}
+  .module-btn:nth-last-child(-n+2){border-bottom:none;}
+  .module-btn:hover,.module-btn.active{background:var(--bg2);color:var(--ink);}
+  .module-btn.active{background:var(--ink);color:var(--bg);}
+
+  /* HOW IT WORKS */
+  .how-section{border-bottom:1px solid var(--border);background:var(--bg2);}
+  .how-inner{max-width:1200px;margin:0 auto;padding:4rem 2rem;}
+  .how-grid{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--border);margin-top:2.5rem;}
+  .how-item{padding:2rem 1.8rem;border-right:1px solid var(--border);}
+  .how-item:last-child{border-right:none;}
+  .how-num{font-family:var(--serif);font-size:2.2rem;color:var(--accent);line-height:1;margin-bottom:.8rem;}
+  .how-title{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--ink);margin-bottom:.5rem;letter-spacing:.02em;}
+  .how-desc{font-family:var(--sans);font-size:13px;font-weight:300;color:var(--ink2);line-height:1.65;}
+
+  /* RECENT FEEDBACK — dark */
+  .recent-section{background:var(--ink);border-bottom:1px solid #1a1a1a;}
+  .recent-inner{max-width:1200px;margin:0 auto;padding:4rem 2rem;}
+  .recent-label{font-family:var(--mono);font-size:11px;color:#555;letter-spacing:.08em;text-transform:uppercase;margin-bottom:.6rem;}
+  .recent-label span{color:var(--accent);}
+  .recent-h2{font-family:var(--serif);font-size:clamp(1.6rem,3.5vw,2.2rem);color:var(--bg);line-height:1.12;margin-bottom:2.5rem;}
+  .recent-h2 em{color:var(--accent);font-style:italic;}
+  .recent-list{border:1px solid #2a2a2a;}
+  .recent-item{padding:1.4rem 1.8rem;border-bottom:1px solid #2a2a2a;display:grid;grid-template-columns:auto 1fr auto;gap:1.2rem;align-items:start;}
+  .recent-item:last-child{border-bottom:none;}
+  .recent-module{font-family:var(--mono);font-size:10px;background:#1a1a1a;color:#888;padding:2px 8px;letter-spacing:.04em;white-space:nowrap;height:fit-content;margin-top:3px;}
+  .recent-text{font-family:var(--sans);font-size:13px;font-weight:300;color:#aaa;line-height:1.6;}
+  .recent-text strong{color:var(--bg);font-weight:400;}
+  .recent-rating{font-family:var(--mono);font-size:10px;color:#555;letter-spacing:.04em;white-space:nowrap;}
+
+  /* FOOTER */
+  footer{border-top:1px solid var(--border);}
+  .footer-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;padding:3rem 2rem;gap:2rem;border-bottom:1px solid var(--border);}
+  .footer-logo{font-family:var(--mono);font-size:16px;font-weight:500;letter-spacing:-.02em;margin-bottom:.6rem;}
+  .footer-logo em{color:var(--accent);font-style:normal;}
+  .footer-tagline{font-family:var(--sans);font-size:13px;font-weight:300;color:var(--muted);line-height:1.6;max-width:220px;}
+  .footer-col-title{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1.2rem;}
+  .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.6rem;}
+  .footer-col ul li a{font-family:var(--sans);font-size:13px;font-weight:300;color:var(--ink2);transition:color .15s;}
+  .footer-col ul li a:hover{color:var(--ink);}
+  .footer-col ul li a.soon{color:var(--muted);opacity:.5;pointer-events:none;}
+  .footer-bottom{max-width:1200px;margin:0 auto;padding:1.2rem 2rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;}
+  .footer-bottom-text{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.03em;}
+
+  /* SUCCESS STATE */
+  .success-state{display:none;padding:3rem 2rem;text-align:center;border:1px solid var(--border);}
+  .success-state.show{display:block;}
+  .success-icon{font-family:var(--serif);font-size:3rem;color:var(--accent);margin-bottom:1rem;}
+  .success-title{font-family:var(--serif);font-size:1.4rem;margin-bottom:.6rem;}
+  .success-desc{font-family:var(--sans);font-size:13px;font-weight:300;color:var(--ink2);line-height:1.65;}
+
+  @media(max-width:768px){
+    .hero-inner{grid-template-columns:1fr;gap:2.5rem;}
+    .how-grid{grid-template-columns:1fr;}
+    .how-item{border-right:none;border-bottom:1px solid var(--border);}
+    .how-item:last-child{border-bottom:none;}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+    .form-row{grid-template-columns:1fr;}
+    .recent-item{grid-template-columns:1fr;gap:.5rem;}
+  }
+  @media(max-width:480px){
+    .hero-inner,.how-inner,.recent-inner,.footer-grid,.footer-bottom{padding-left:1.2rem;padding-right:1.2rem;}
+    .footer-grid{grid-template-columns:1fr;}
+    .module-grid{grid-template-columns:1fr;}
+    .module-btn{border-right:none;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">mark<em>AI</em></a>
+  <ul class="nav-links">
+    <li><a href="#">Vibecode</a></li>
+    <li><a href="#">Blog</a></li>
+    <li><a href="#">Tips</a></li>
+    <li><a href="#">Prompts</a></li>
+    <li><a href="#" class="disabled">Analytics</a></li>
+    <li><a href="#" class="disabled">Image</a></li>
+    <li><a href="#" class="disabled">Video</a></li>
+  </ul>
+  <div class="nav-free">Miễn phí 100%</div>
+</nav>
+
+<div class="ticker">
+  <div class="ticker-track" id="ticker-track">
+    <span class="ticker-item">✳ Mọi góp ý đều được đọc</span>
+    <span class="ticker-item">✳ Không có bot, không có template trả lời</span>
+    <span class="ticker-item">✳ Miễn phí 100%</span>
+    <span class="ticker-item">✳ Vibecode Web đang live</span>
+    <span class="ticker-item">✳ Analytics sắp ra</span>
+    <span class="ticker-item">✳ Generate Image sắp ra</span>
+    <span class="ticker-item">✳ Dành riêng dân Marketing</span>
+    <span class="ticker-item">✳ Bạn muốn học gì tiếp theo?</span>
+  </div>
+</div>
+
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <div class="bc-item"><a href="#">markAI.vn</a></div>
+    <div class="bc-sep">→</div>
+    <div class="bc-item current">Góp ý module</div>
+  </div>
+</div>
+
+<!-- HERO + FORM -->
+<div class="hero">
+  <div class="hero-inner">
+    <div>
+      <p class="hero-eyebrow">✳ Góp ý module · giúp mình làm tốt hơn</p>
+      <h1 class="hero-h1">Bạn muốn học<br><em>module nào tiếp?</em></h1>
+      <p class="hero-desc">markAI build theo những gì dân Marketing thực sự cần. Góp ý của bạn trực tiếp ảnh hưởng đến thứ tự ưu tiên — module nào nhiều người request nhất sẽ ra trước.</p>
+      <div class="insight" style="margin-bottom:1.5rem;">
+        <strong>✳ Thật sự được đọc.</strong> Không có bot xử lý. Mình đọc từng feedback và cập nhật roadmap dựa trên những gì nhận được.
+      </div>
+      <p class="hero-note">✳ không cần đăng ký · không lưu email · phản hồi ẩn danh</p>
+    </div>
+
+    <div>
+      <div class="form-box" id="form-box">
+        <div class="form-header">
+          <span class="form-header-title">✳ Gửi góp ý</span>
+          <span class="form-header-step">Bước 1 / 1</span>
+        </div>
+        <div class="form-body">
+          <div class="form-field">
+            <label class="form-label">Module bạn muốn góp ý <span class="req">*</span></label>
+            <div class="module-grid" id="module-grid">
+              <button class="module-btn" onclick="selectModule(this,'Vibecode Web')">Vibecode Web</button>
+              <button class="module-btn" onclick="selectModule(this,'Analytics')">Analytics</button>
+              <button class="module-btn" onclick="selectModule(this,'Generate Image')">Generate Image</button>
+              <button class="module-btn" onclick="selectModule(this,'Motion Video')">Motion Video</button>
+              <button class="module-btn" onclick="selectModule(this,'Prompt Library')">Prompt Library</button>
+              <button class="module-btn" onclick="selectModule(this,'Blog / Tips')">Blog / Tips</button>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label">Bạn đánh giá module này thế nào?</label>
+            <div class="rating-group" id="rating-group">
+              <button class="rating-btn" onclick="selectRating(this,'1')">1 — Tệ</button>
+              <button class="rating-btn" onclick="selectRating(this,'2')">2</button>
+              <button class="rating-btn" onclick="selectRating(this,'3')">3 — OK</button>
+              <button class="rating-btn" onclick="selectRating(this,'4')">4</button>
+              <button class="rating-btn" onclick="selectRating(this,'5')">5 — Tốt</button>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label">Bạn muốn nội dung nào được thêm vào? <span class="req">*</span></label>
+            <textarea class="form-textarea" id="feedback-content" placeholder="Ví dụ: Mình muốn có thêm bài về cách deploy lên custom domain, hoặc bài về MCP trong Cursor..." rows="4"></textarea>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label">Bạn đang làm ở lĩnh vực nào?</label>
+            <select class="form-select" id="feedback-role">
+              <option value="">Chọn lĩnh vực...</option>
+              <option>Brand Marketing</option>
+              <option>Performance Marketing</option>
+              <option>Content Marketing</option>
+              <option>Social Media</option>
+              <option>E-commerce / Growth</option>
+              <option>Marketing Manager / Lead</option>
+              <option>Freelancer / Agency</option>
+              <option>Khác</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label">Email (nếu muốn nhận thông báo khi module ra)</label>
+            <input type="email" class="form-input" id="feedback-email" placeholder="you@example.com">
+            <span class="form-hint">✳ Tùy chọn — không bắt buộc. Nếu để trống, góp ý hoàn toàn ẩn danh.</span>
+          </div>
+
+          <button class="btn-primary" onclick="submitFeedback()">Gửi góp ý →</button>
+        </div>
+      </div>
+
+      <div class="success-state" id="success-state">
+        <div class="success-icon">✳</div>
+        <div class="success-title">Cảm ơn bạn!</div>
+        <div class="success-desc">Góp ý của bạn đã được ghi nhận. Mình sẽ đọc và cập nhật roadmap dựa trên những phản hồi nhận được.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HOW IT WORKS -->
+<div class="how-section">
+  <div class="how-inner">
+    <p class="section-label"><span>✳</span> quy trình xử lý góp ý</p>
+    <h2 style="font-family:var(--serif);font-size:clamp(1.6rem,3.5vw,2.2rem);line-height:1.12;">Góp ý của bạn đi <em style="color:var(--accent);font-style:italic;">đến đâu.</em></h2>
+    <div class="how-grid">
+      <div class="how-item">
+        <div class="how-num">01</div>
+        <div class="how-title">Mình đọc trực tiếp</div>
+        <div class="how-desc">Không có hệ thống ticket, không có AI tóm tắt. Mình đọc từng feedback theo thứ tự nhận được — thường trong vòng 1-3 ngày.</div>
+      </div>
+      <div class="how-item">
+        <div class="how-num">02</div>
+        <div class="how-title">Cập nhật roadmap</div>
+        <div class="how-desc">Những request được nhắc nhiều nhất sẽ được ưu tiên. Roadmap trên trang "Về dự án" được cập nhật mỗi tháng dựa trên feedback thực tế.</div>
+      </div>
+      <div class="how-item">
+        <div class="how-num">03</div>
+        <div class="how-title">Thông báo khi có</div>
+        <div class="how-desc">Nếu bạn để lại email, mình sẽ thông báo khi module bạn request được publish. Không có newsletter, không spam — chỉ thông báo đúng việc.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RECENT FEEDBACK — dark -->
+<div class="recent-section">
+  <div class="recent-inner">
+    <p class="recent-label"><span>✳</span> góp ý gần đây</p>
+    <h2 class="recent-h2">Người khác đang<br><em>muốn học gì.</em></h2>
+    <div class="recent-list">
+      <div class="recent-item">
+        <span class="recent-module">ANALYTICS</span>
+        <div class="recent-text"><strong>"Mình rất mong có module Analytics</strong> — đặc biệt là cách đọc GA4 và tạo báo cáo tự động bằng Claude. Đây là thứ mình cần nhất trong công việc hiện tại."</div>
+        <span class="recent-rating">★★★★★</span>
+      </div>
+      <div class="recent-item">
+        <span class="recent-module">VIBECODE</span>
+        <div class="recent-text">"Bài Vibecode rất hay nhưng <strong>mình muốn có thêm bài về custom domain</strong> và cách gắn Supabase cho người hoàn toàn mới."</div>
+        <span class="recent-rating">★★★★☆</span>
+      </div>
+      <div class="recent-item">
+        <span class="recent-module">GEN IMAGE</span>
+        <div class="recent-text">"<strong>Cần lắm một bài về Generate Image</strong> cho campaign — workflow từ brief đến asset hoàn chỉnh. Mình đang mày mò Midjourney một mình mà không có hướng dẫn tiếng Việt."</div>
+        <span class="recent-rating">★★★★★</span>
+      </div>
+      <div class="recent-item" style="border-bottom:none;">
+        <span class="recent-module">PROMPT LIB</span>
+        <div class="recent-text">"Thư viện prompt rất hữu ích! <strong>Mình muốn có thêm prompt cho email Marketing</strong> và phân tích competitor — 2 thứ mình dùng hàng ngày."</div>
+        <span class="recent-rating">★★★★★</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col"><div class="footer-logo">mark<em>AI</em>.vn</div><div class="footer-tagline">Học AI ứng dụng dành riêng cho dân Marketing Việt Nam. Miễn phí 100% · mãi mãi.</div></div>
+    <div class="footer-col"><div class="footer-col-title">Vibecode</div><ul><li><a href="#">Bài 01 — Vibecode là gì?</a></li><li><a href="#">Bài 02 — Từ ngữ code</a></li><li><a href="#">Xem tất cả 10 bài →</a></li></ul></div>
+    <div class="footer-col"><div class="footer-col-title">Khám phá</div><ul><li><a href="#">Blog</a></li><li><a href="#">Tips & Mẹo</a></li><li><a href="#">Prompt Library</a></li></ul></div>
+    <div class="footer-col"><div class="footer-col-title">markAI</div><ul><li><a href="#">Về dự án này</a></li><li><a href="#">Góp ý module</a></li><li><a href="#">Báo lỗi</a></li><li><a href="#">Liên hệ tác giả</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-bottom-text">© 2026 markAI.vn · Miễn phí 100% · Không quảng cáo · Không tracking</span>
+    <span class="footer-bottom-text">Dành riêng cho dân Marketing Việt Nam ✳</span>
+  </div>
+</footer>
+
+<script>
+const t=document.getElementById('ticker-track');t.innerHTML+=t.innerHTML;
+let selectedModule='', selectedRating='';
+function selectModule(btn,val){
+  document.querySelectorAll('.module-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');selectedModule=val;
+}
+function selectRating(btn,val){
+  document.querySelectorAll('.rating-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');selectedRating=val;
+}
+function submitFeedback(){
+  const content=document.getElementById('feedback-content').value;
+  if(!selectedModule||!content.trim()){
+    alert('Vui lòng chọn module và điền nội dung góp ý.');return;
+  }
+  document.getElementById('form-box').style.display='none';
+  document.getElementById('success-state').classList.add('show');
+}
+</script>
+</body>
+</html>

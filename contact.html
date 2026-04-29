@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Liên hệ tác giả — markAI.vn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#f7f5f0;--bg2:#ede9e0;--bg3:#e4dfd5;--ink:#0d0d0d;--ink2:#444444;
+    --muted:#888888;--border:#d4cfc5;--accent:#E8410A;--accent2:#C93508;
+    --serif:'Instrument Serif',serif;--mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:300;}
+  a{text-decoration:none;color:inherit;}
+  nav{position:sticky;top:0;z-index:100;height:52px;background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;}
+  .nav-logo{font-family:var(--mono);font-size:15px;font-weight:500;letter-spacing:-.02em;}
+  .nav-logo em{color:var(--accent);font-style:normal;}
+  .nav-links{display:flex;align-items:center;height:52px;list-style:none;}
+  .nav-links a{font-family:var(--mono);font-size:12px;color:var(--muted);padding:0 1rem;height:52px;display:flex;align-items:center;border-left:1px solid var(--border);transition:color .15s,background .15s;letter-spacing:.02em;}
+  .nav-links a:hover{color:var(--ink);background:var(--bg2);}
+  .nav-links a.disabled{opacity:.4;pointer-events:none;}
+  .nav-free{font-family:var(--mono);font-size:11px;color:var(--accent);display:flex;align-items:center;gap:5px;border-left:1px solid var(--border);padding:0 1rem;height:52px;letter-spacing:.02em;}
+  .nav-free::before{content:'✦';display:inline-block;animation:spin 4s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .ticker{height:32px;background:var(--ink);overflow:hidden;display:flex;align-items:center;}
+  .ticker-track{display:flex;white-space:nowrap;animation:tick 36s linear infinite;}
+  .ticker-item{font-family:var(--mono);font-size:10px;color:#555;padding:0 2rem;letter-spacing:.06em;text-transform:uppercase;}
+  @keyframes tick{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+  .section-label{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1rem;}
+  .section-label span{color:var(--accent);margin-right:.4rem;}
+  .insight{font-family:var(--mono);font-size:12px;border-left:2px solid var(--accent);padding:.7rem .9rem;line-height:1.65;color:var(--ink2);background:var(--bg2);}
+  .insight strong{color:var(--ink);font-weight:500;}
+  .btn-primary{font-family:var(--mono);font-size:12px;letter-spacing:.02em;background:var(--ink);color:var(--bg);border:none;padding:11px 22px;cursor:pointer;display:inline-flex;align-items:center;gap:6px;transition:background .15s;width:100%;justify-content:center;}
+  .btn-primary:hover{background:var(--accent);}
+  .btn-ghost{font-family:var(--mono);font-size:12px;letter-spacing:.02em;background:transparent;color:var(--ink);border:1px solid var(--border);padding:10px 22px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:border-color .15s;}
+  .btn-ghost:hover{border-color:var(--ink);}
+
+  .breadcrumb{border-bottom:1px solid var(--border);}
+  .breadcrumb-inner{max-width:1200px;margin:0 auto;padding:.9rem 2rem;display:flex;align-items:center;gap:.5rem;}
+  .bc-item{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.04em;}
+  .bc-item a:hover{color:var(--ink);}
+  .bc-sep{font-family:var(--mono);font-size:11px;color:var(--border);}
+  .bc-item.current{color:var(--ink);}
+
+  /* HERO */
+  .hero{border-bottom:1px solid var(--border);}
+  .hero-inner{max-width:1200px;margin:0 auto;padding:4rem 2rem 5rem;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;}
+  .hero-eyebrow{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1.2rem;}
+  .hero-h1{font-family:var(--serif);font-size:clamp(2.2rem,4.5vw,3.6rem);line-height:1.08;letter-spacing:-.025em;margin-bottom:1.2rem;}
+  .hero-h1 em{color:var(--accent);font-style:italic;}
+  .hero-desc{font-family:var(--sans);font-size:15px;font-weight:300;line-height:1.75;color:var(--ink2);margin-bottom:2rem;}
+  .hero-note{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.02em;}
+
+  /* CONTACT CHANNELS */
+  .channels-box{border:1px solid var(--border);margin-bottom:1.5rem;}
+  .channels-header{padding:1rem 1.4rem;border-bottom:1px solid var(--border);background:var(--bg2);font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;}
+  .channel-item{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 1.4rem;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;}
+  .channel-item:last-child{border-bottom:none;}
+  .channel-item:hover{background:var(--bg2);}
+  .channel-left{display:flex;align-items:center;gap:1rem;}
+  .channel-icon{font-family:var(--mono);font-size:16px;width:36px;height:36px;background:var(--bg2);display:flex;align-items:center;justify-content:center;flex-shrink:0;border:1px solid var(--border);}
+  .channel-item:hover .channel-icon{background:var(--ink);color:var(--bg);}
+  .channel-info{}
+  .channel-name{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--ink);letter-spacing:.03em;margin-bottom:.2rem;}
+  .channel-desc{font-family:var(--sans);font-size:12px;font-weight:300;color:var(--muted);line-height:1.4;}
+  .channel-meta{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.04em;display:flex;align-items:center;gap:.4rem;}
+  .channel-tag{font-family:var(--mono);font-size:9px;padding:2px 6px;border:1px solid var(--border);color:var(--muted);}
+  .channel-tag.best{border-color:var(--accent);color:var(--accent);}
+
+  /* FORM */
+  .form-box{border:1px solid var(--border);}
+  .form-header{padding:1rem 1.4rem;border-bottom:1px solid var(--border);background:var(--bg2);display:flex;align-items:center;justify-content:space-between;}
+  .form-header-title{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;}
+  .form-body{padding:1.8rem;display:flex;flex-direction:column;gap:1.2rem;}
+  .form-field{display:flex;flex-direction:column;gap:.4rem;}
+  .form-label{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;}
+  .form-label .req{color:var(--accent);}
+  .form-input,.form-textarea,.form-select{font-family:var(--mono);font-size:12px;color:var(--ink);background:var(--bg);border:1px solid var(--border);padding:.7rem .9rem;width:100%;outline:none;transition:border-color .15s;}
+  .form-input:focus,.form-textarea:focus,.form-select:focus{border-color:var(--ink);}
+  .form-input::placeholder,.form-textarea::placeholder{color:var(--muted);}
+  .form-textarea{resize:vertical;line-height:1.65;}
+  .form-hint{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.03em;line-height:1.5;}
+
+  /* TOPIC SELECTOR */
+  .topic-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--border);}
+  .topic-btn{font-family:var(--mono);font-size:11px;color:var(--muted);padding:.8rem 1rem;border-right:1px solid var(--border);border-bottom:1px solid var(--border);cursor:pointer;background:transparent;transition:background .15s,color .15s;text-align:left;letter-spacing:.03em;}
+  .topic-btn:nth-child(2n){border-right:none;}
+  .topic-btn:nth-last-child(-n+2){border-bottom:none;}
+  .topic-btn:hover,.topic-btn.active{background:var(--bg2);color:var(--ink);}
+  .topic-btn.active{background:var(--ink);color:var(--bg);}
+
+  /* ABOUT — dark */
+  .about-section{background:var(--ink);border-bottom:1px solid #1a1a1a;}
+  .about-inner{max-width:1200px;margin:0 auto;padding:5rem 2rem;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;}
+  .about-label{font-family:var(--mono);font-size:11px;color:#555;letter-spacing:.08em;text-transform:uppercase;margin-bottom:1rem;}
+  .about-label span{color:var(--accent);}
+  .about-h2{font-family:var(--serif);font-size:clamp(1.8rem,3.5vw,2.6rem);color:var(--bg);line-height:1.12;margin-bottom:1.2rem;}
+  .about-h2 em{color:var(--accent);font-style:italic;}
+  .about-p{font-family:var(--sans);font-size:14px;font-weight:300;color:#888;line-height:1.75;margin-bottom:.9rem;}
+  .about-p strong{color:var(--bg);font-weight:400;}
+  .about-p:last-child{margin-bottom:0;}
+  .about-card{border:1px solid #2a2a2a;}
+  .about-card-header{padding:1rem 1.4rem;border-bottom:1px solid #2a2a2a;background:#0d0d0d;font-family:var(--mono);font-size:10px;color:#555;letter-spacing:.06em;text-transform:uppercase;}
+  .about-card-body{padding:1.8rem;}
+  .about-card-name{font-family:var(--serif);font-size:1.6rem;color:var(--bg);margin-bottom:.3rem;}
+  .about-card-role{font-family:var(--mono);font-size:11px;color:#555;letter-spacing:.04em;margin-bottom:1.4rem;}
+  .about-stat-row{display:grid;grid-template-columns:1fr 1fr;border:1px solid #2a2a2a;margin-top:1.2rem;}
+  .about-stat{padding:1rem 1.2rem;border-right:1px solid #2a2a2a;}
+  .about-stat:last-child{border-right:none;}
+  .about-stat-num{font-family:var(--serif);font-size:1.8rem;color:var(--bg);line-height:1;margin-bottom:.2rem;}
+  .about-stat-label{font-family:var(--mono);font-size:9px;color:#555;letter-spacing:.06em;text-transform:uppercase;}
+
+  /* FAQ */
+  .faq-section{border-bottom:1px solid var(--border);background:var(--bg2);}
+  .faq-inner{max-width:1200px;margin:0 auto;padding:4rem 2rem;}
+  .faq-list{border:1px solid var(--border);margin-top:2.5rem;}
+  .faq-item{border-bottom:1px solid var(--border);}
+  .faq-item:last-child{border-bottom:none;}
+  .faq-q{display:flex;align-items:center;justify-content:space-between;padding:1.3rem 1.6rem;cursor:pointer;transition:background .15s;gap:1rem;}
+  .faq-q:hover{background:var(--bg3);}
+  .faq-q-text{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--ink);letter-spacing:.02em;}
+  .faq-toggle{font-family:var(--mono);font-size:14px;color:var(--muted);flex-shrink:0;transition:transform .15s;}
+  .faq-item.open .faq-toggle{transform:rotate(45deg);color:var(--accent);}
+  .faq-a{display:none;padding:0 1.6rem 1.3rem;font-family:var(--sans);font-size:13px;font-weight:300;color:var(--ink2);line-height:1.7;}
+  .faq-item.open .faq-a{display:block;}
+
+  /* SUCCESS */
+  .success-state{display:none;padding:3rem 2rem;text-align:center;border:1px solid var(--border);}
+  .success-state.show{display:block;}
+  .success-icon{font-family:var(--serif);font-size:3rem;color:var(--accent);margin-bottom:1rem;}
+  .success-title{font-family:var(--serif);font-size:1.4rem;margin-bottom:.6rem;}
+  .success-desc{font-family:var(--sans);font-size:13px;font-weight:300;color:var(--ink2);line-height:1.65;}
+
+  footer{border-top:1px solid var(--border);}
+  .footer-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;padding:3rem 2rem;gap:2rem;border-bottom:1px solid var(--border);}
+  .footer-logo{font-family:var(--mono);font-size:16px;font-weight:500;letter-spacing:-.02em;margin-bottom:.6rem;}
+  .footer-logo em{color:var(--accent);font-style:normal;}
+  .footer-tagline{font-family:var(--sans);font-size:13px;font-weight:300;color:var(--muted);line-height:1.6;max-width:220px;}
+  .footer-col-title{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1.2rem;}
+  .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.6rem;}
+  .footer-col ul li a{font-family:var(--sans);font-size:13px;font-weight:300;color:var(--ink2);transition:color .15s;}
+  .footer-col ul li a:hover{color:var(--ink);}
+  .footer-col ul li a.soon{color:var(--muted);opacity:.5;pointer-events:none;}
+  .footer-bottom{max-width:1200px;margin:0 auto;padding:1.2rem 2rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;}
+  .footer-bottom-text{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.03em;}
+
+  @media(max-width:768px){
+    .hero-inner,.about-inner{grid-template-columns:1fr;gap:2.5rem;}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+    .topic-grid{grid-template-columns:1fr;}
+    .topic-btn{border-right:none;}
+  }
+  @media(max-width:480px){
+    .hero-inner,.about-inner,.faq-inner,.footer-grid,.footer-bottom{padding-left:1.2rem;padding-right:1.2rem;}
+    .footer-grid{grid-template-columns:1fr;}
+    .about-stat-row{grid-template-columns:1fr;}
+    .about-stat{border-right:none;border-bottom:1px solid #2a2a2a;}
+    .about-stat:last-child{border-bottom:none;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">mark<em>AI</em></a>
+  <ul class="nav-links">
+    <li><a href="#">Vibecode</a></li>
+    <li><a href="#">Blog</a></li>
+    <li><a href="#">Tips</a></li>
+    <li><a href="#">Prompts</a></li>
+    <li><a href="#" class="disabled">Analytics</a></li>
+    <li><a href="#" class="disabled">Image</a></li>
+    <li><a href="#" class="disabled">Video</a></li>
+  </ul>
+  <div class="nav-free">Miễn phí 100%</div>
+</nav>
+
+<div class="ticker">
+  <div class="ticker-track" id="ticker-track">
+    <span class="ticker-item">✳ Tất cả tin nhắn đều được đọc</span>
+    <span class="ticker-item">✳ Phản hồi trong 1-3 ngày</span>
+    <span class="ticker-item">✳ Miễn phí 100%</span>
+    <span class="ticker-item">✳ Không có bot trả lời</span>
+    <span class="ticker-item">✳ Vibecode Web đang live</span>
+    <span class="ticker-item">✳ Analytics sắp ra</span>
+    <span class="ticker-item">✳ Dành riêng dân Marketing</span>
+    <span class="ticker-item">✳ markAI.vn · một người build</span>
+  </div>
+</div>
+
+<div class="breadcrumb">
+  <div class="breadcrumb-inner">
+    <div class="bc-item"><a href="#">markAI.vn</a></div>
+    <div class="bc-sep">→</div>
+    <div class="bc-item current">Liên hệ tác giả</div>
+  </div>
+</div>
+
+<!-- HERO + FORM -->
+<div class="hero">
+  <div class="hero-inner">
+    <div>
+      <p class="hero-eyebrow">✳ Liên hệ tác giả · markAI.vn</p>
+      <h1 class="hero-h1">Nói chuyện<br><em>trực tiếp.</em></h1>
+      <p class="hero-desc">markAI được build và maintain bởi một người. Không có team support, không có chatbot — tin nhắn của bạn sẽ đến thẳng người tạo ra dự án này.</p>
+      <div class="insight" style="margin-bottom:1.5rem;">
+        <strong>✳ Thời gian phản hồi:</strong> Thường trong 1-3 ngày. Nếu bạn báo lỗi khẩn, dùng trang "Báo lỗi" để được xử lý nhanh hơn.
+      </div>
+
+      <div class="channels-box">
+        <div class="channels-header">✳ Cách liên hệ</div>
+        <a href="mailto:hello@markai.vn" class="channel-item">
+          <div class="channel-left">
+            <div class="channel-icon">@</div>
+            <div class="channel-info">
+              <div class="channel-name">Email</div>
+              <div class="channel-desc">hello@markai.vn</div>
+            </div>
+          </div>
+          <div class="channel-meta">
+            <span class="channel-tag best">Tốt nhất</span>
+            <span>1-3 ngày</span>
+          </div>
+        </a>
+        <a href="#form-box" class="channel-item">
+          <div class="channel-left">
+            <div class="channel-icon">✉</div>
+            <div class="channel-info">
+              <div class="channel-name">Form liên hệ</div>
+              <div class="channel-desc">Điền form bên phải — nhanh hơn email</div>
+            </div>
+          </div>
+          <div class="channel-meta">
+            <span>1-3 ngày</span>
+          </div>
+        </a>
+        <a href="#" class="channel-item">
+          <div class="channel-left">
+            <div class="channel-icon">in</div>
+            <div class="channel-info">
+              <div class="channel-name">LinkedIn</div>
+              <div class="channel-desc">markAI.vn (thỉnh thoảng check)</div>
+            </div>
+          </div>
+          <div class="channel-meta">
+            <span>3-7 ngày</span>
+          </div>
+        </a>
+      </div>
+
+      <p class="hero-note">✳ Không phù hợp để liên hệ: sales, partnership đề nghị thanh toán, hoặc "mình muốn mua quảng cáo". markAI không có kênh monetize.</p>
+    </div>
+
+    <!-- FORM -->
+    <div>
+      <div class="form-box" id="form-box">
+        <div class="form-header">
+          <span class="form-header-title">✳ Gửi tin nhắn</span>
+          <span style="font-family:var(--mono);font-size:10px;color:var(--muted);">Phản hồi 1-3 ngày</span>
+        </div>
+        <div class="form-body">
+
+          <div class="form-field">
+            <label class="form-label">Chủ đề liên hệ <span class="req">*</span></label>
+            <div class="topic-grid" id="topic-grid">
+              <button class="topic-btn" onclick="selectTopic(this,'Góp ý nội dung')">Góp ý nội dung</button>
+              <button class="topic-btn" onclick="selectTopic(this,'Hỏi về dự án')">Hỏi về dự án</button>
+              <button class="topic-btn" onclick="selectTopic(this,'Hợp tác / Chia sẻ')">Hợp tác / Chia sẻ</button>
+              <button class="topic-btn" onclick="selectTopic(this,'Câu hỏi kỹ thuật')">Câu hỏi kỹ thuật</button>
+              <button class="topic-btn" onclick="selectTopic(this,'Khác')">Khác</button>
+              <button class="topic-btn" onclick="selectTopic(this,'Chỉ muốn nói xin chào')">Chỉ muốn nói xin chào 👋</button>
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label">Tên bạn <span class="req">*</span></label>
+            <input type="text" class="form-input" id="contact-name" placeholder="Tên hoặc nickname...">
+          </div>
+
+          <div class="form-field">
+            <label class="form-label">Email <span class="req">*</span></label>
+            <input type="email" class="form-input" id="contact-email" placeholder="you@example.com">
+            <span class="form-hint">✳ Cần để mình phản hồi lại — không dùng cho mục đích khác.</span>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label">Tin nhắn <span class="req">*</span></label>
+            <textarea class="form-textarea" id="contact-msg" placeholder="Viết gì cũng được — không có template, không có form cứng nhắc..." rows="5"></textarea>
+          </div>
+
+          <div class="form-field">
+            <label class="form-label">Bạn đang làm ở lĩnh vực nào?</label>
+            <select class="form-select">
+              <option value="">Không cần điền nếu không muốn</option>
+              <option>Brand Marketing</option>
+              <option>Performance Marketing</option>
+              <option>Content Marketing</option>
+              <option>Social Media</option>
+              <option>E-commerce / Growth</option>
+              <option>Marketing Manager / Lead</option>
+              <option>Freelancer / Agency</option>
+              <option>Khác</option>
+            </select>
+          </div>
+
+          <button class="btn-primary" onclick="submitContact()">Gửi tin nhắn →</button>
+        </div>
+      </div>
+
+      <div class="success-state" id="success-state">
+        <div class="success-icon">✳</div>
+        <div class="success-title">Tin nhắn đã gửi!</div>
+        <div class="success-desc">Mình đã nhận được và sẽ phản hồi trong 1-3 ngày làm việc.<br><br>Cảm ơn bạn đã liên hệ — mọi tin nhắn đều được mình đọc trực tiếp.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT — dark -->
+<div class="about-section">
+  <div class="about-inner">
+    <div>
+      <p class="about-label"><span>✳</span> về tác giả</p>
+      <h2 class="about-h2">Người bạn đang<br><em>nhắn tin cho.</em></h2>
+      <p class="about-p">markAI.vn được build và maintain bởi một người — không có team, không có công ty. Tất cả nội dung, code, design và vận hành đều do một người thực hiện.</p>
+      <p class="about-p">Lý do dự án tồn tại: <strong>tôi là dân Marketing, tôi muốn học AI, và tôi không tìm được nơi phù hợp.</strong> Thay vì chờ đợi, tôi build.</p>
+      <p class="about-p">Mỗi tin nhắn bạn gửi đến tôi đọc thật. Không có AI tóm tắt, không có intern filter. Đây là lý do phản hồi hơi chậm — nhưng luôn thật.</p>
+    </div>
+    <div>
+      <div class="about-card">
+        <div class="about-card-header">✳ Tác giả markAI.vn</div>
+        <div class="about-card-body">
+          <div class="about-card-name">markAI Builder</div>
+          <div class="about-card-role">BUILDER · MARKETER · VIBE-CODER</div>
+          <div style="font-family:var(--sans);font-size:13px;font-weight:300;color:#888;line-height:1.7;margin-bottom:1.2rem;">
+            Dân Marketing chuyển sang vibecode. Build markAI.vn ban đêm sau giờ làm việc. Không có background kỹ thuật — tất cả học bằng cách làm thật.
+          </div>
+          <div style="font-family:var(--mono);font-size:11px;color:#555;display:flex;flex-direction:column;gap:.4rem;">
+            <span>✳ Email: hello@markai.vn</span>
+            <span>✳ Phản hồi: 1-3 ngày</span>
+            <span>✳ Timezone: GMT+7 (Hồ Chí Minh)</span>
+          </div>
+          <div class="about-stat-row">
+            <div class="about-stat">
+              <div class="about-stat-num">100%</div>
+              <div class="about-stat-label">Tin nhắn được đọc</div>
+            </div>
+            <div class="about-stat">
+              <div class="about-stat-num">1-3</div>
+              <div class="about-stat-label">Ngày phản hồi</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FAQ -->
+<div class="faq-section">
+  <div class="faq-inner">
+    <p class="section-label"><span>✳</span> câu hỏi thường gặp</p>
+    <h2 style="font-family:var(--serif);font-size:clamp(1.6rem,3.5vw,2.2rem);line-height:1.12;">Trước khi <em style="color:var(--accent);font-style:italic;">nhắn tin,</em> kiểm tra đây.</h2>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFAQ(this)">
+          <span class="faq-q-text">Tôi có thể xin content markAI về dùng cho dự án của mình không?</span>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-a">Được, nhưng cần ghi nguồn rõ ràng. Prompt trong library và nội dung bài học — bạn có thể dùng tự do cho học tập và làm việc cá nhân, miễn là không đăng lại dưới tên mình hoặc bán lại.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFAQ(this)">
+          <span class="faq-q-text">Tôi muốn contribute vào markAI — viết bài, tạo prompt, hoặc code — được không?</span>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-a">Rất hoan nghênh! Gửi email với tiêu đề "Contributor — [loại contribution]" và mô tả bạn muốn đóng góp gì. Mình sẽ phản hồi để bàn thêm. Hiện tại nhận: guest blog post (Marketing + AI), prompt chất lượng cao, và báo bug/typo.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFAQ(this)">
+          <span class="faq-q-text">markAI có nhận tài trợ hoặc đặt quảng cáo không?</span>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-a">Không. markAI không nhận tài trợ, không bán quảng cáo, không có affiliate link. Đây là cam kết dài hạn — không phải chiến lược phase đầu. Dự án chạy bằng thời gian cá nhân.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFAQ(this)">
+          <span class="faq-q-text">Tôi muốn học thêm ngoài những gì markAI có — bạn có thể gợi ý không?</span>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-a">Gửi câu hỏi cụ thể qua form liên hệ và mình sẽ cố gắng gợi ý tài nguyên phù hợp. Không phải mọi câu hỏi đều mình có câu trả lời, nhưng mình sẽ trả lời thật thay vì cho câu trả lời qua loa.</div>
+      </div>
+      <div class="faq-item" style="border-bottom:none;">
+        <div class="faq-q" onclick="toggleFAQ(this)">
+          <span class="faq-q-text">markAI sẽ luôn miễn phí chứ? Không có nguy cơ đột ngột đóng cửa?</span>
+          <span class="faq-toggle">+</span>
+        </div>
+        <div class="faq-a">Miễn phí là cam kết, không phải tạm thời. Chi phí vận hành dự án này rất thấp — domain + hosting. Không có investor yêu cầu return, không có team cần trả lương. Dự án sẽ chỉ đóng cửa nếu cá nhân mình không còn thời gian duy trì — và nếu điều đó xảy ra, mình sẽ thông báo trước.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col"><div class="footer-logo">mark<em>AI</em>.vn</div><div class="footer-tagline">Học AI ứng dụng dành riêng cho dân Marketing Việt Nam. Miễn phí 100% · mãi mãi.</div></div>
+    <div class="footer-col"><div class="footer-col-title">Vibecode</div><ul><li><a href="#">Bài 01 — Vibecode là gì?</a></li><li><a href="#">Bài 02 — Từ ngữ code</a></li><li><a href="#">Xem tất cả 10 bài →</a></li></ul></div>
+    <div class="footer-col"><div class="footer-col-title">Khám phá</div><ul><li><a href="#">Blog</a></li><li><a href="#">Tips & Mẹo</a></li><li><a href="#">Prompt Library</a></li></ul></div>
+    <div class="footer-col"><div class="footer-col-title">markAI</div><ul><li><a href="#">Về dự án này</a></li><li><a href="#">Góp ý module</a></li><li><a href="#">Báo lỗi</a></li><li><a href="#">Liên hệ tác giả</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-bottom-text">© 2026 markAI.vn · Miễn phí 100% · Không quảng cáo · Không tracking</span>
+    <span class="footer-bottom-text">Dành riêng cho dân Marketing Việt Nam ✳</span>
+  </div>
+</footer>
+
+<script>
+const t=document.getElementById('ticker-track');t.innerHTML+=t.innerHTML;
+let selTopic='';
+function selectTopic(btn,val){
+  document.querySelectorAll('.topic-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');selTopic=val;
+}
+function submitContact(){
+  const name=document.getElementById('contact-name').value;
+  const email=document.getElementById('contact-email').value;
+  const msg=document.getElementById('contact-msg').value;
+  if(!selTopic||!name.trim()||!email.trim()||!msg.trim()){
+    alert('Vui lòng điền đủ các trường bắt buộc (*).');return;
+  }
+  document.getElementById('form-box').style.display='none';
+  document.getElementById('success-state').classList.add('show');
+}
+function toggleFAQ(qEl){
+  const item=qEl.parentElement;
+  const wasOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+  if(!wasOpen)item.classList.add('open');
+}
+</script>
+</body>
+</html>

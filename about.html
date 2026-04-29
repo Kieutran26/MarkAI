@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Về dự án này — markAI.vn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#f7f5f0;--bg2:#ede9e0;--bg3:#e4dfd5;--ink:#0d0d0d;--ink2:#444444;
+    --muted:#888888;--border:#d4cfc5;--accent:#E8410A;--accent2:#C93508;
+    --serif:'Instrument Serif',serif;--mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-weight:300;}
+  a{text-decoration:none;color:inherit;}
+
+  /* NAV */
+  nav{position:sticky;top:0;z-index:100;height:52px;background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 2rem;}
+  .nav-logo{font-family:var(--mono);font-size:15px;font-weight:500;letter-spacing:-.02em;}
+  .nav-logo em{color:var(--accent);font-style:normal;}
+  .nav-links{display:flex;align-items:center;height:52px;list-style:none;}
+  .nav-links a{font-family:var(--mono);font-size:12px;color:var(--muted);padding:0 1rem;height:52px;display:flex;align-items:center;border-left:1px solid var(--border);transition:color .15s,background .15s;letter-spacing:.02em;}
+  .nav-links a:hover{color:var(--ink);background:var(--bg2);}
+  .nav-links a.disabled{opacity:.4;pointer-events:none;}
+  .nav-free{font-family:var(--mono);font-size:11px;color:var(--accent);display:flex;align-items:center;gap:5px;border-left:1px solid var(--border);padding:0 1rem;height:52px;letter-spacing:.02em;}
+  .nav-free::before{content:'✦';display:inline-block;animation:spin 4s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  /* TICKER */
+  .ticker{height:32px;background:var(--ink);overflow:hidden;display:flex;align-items:center;}
+  .ticker-track{display:flex;white-space:nowrap;animation:tick 36s linear infinite;}
+  .ticker-item{font-family:var(--mono);font-size:10px;color:#555;padding:0 2rem;letter-spacing:.06em;text-transform:uppercase;}
+  @keyframes tick{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+  /* SHARED */
+  .max-w{max-width:1200px;margin:0 auto;padding:0 2rem;}
+  .section-label{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1rem;}
+  .section-label span{color:var(--accent);margin-right:.4rem;}
+  .section-h2{font-family:var(--serif);font-size:clamp(1.6rem,3.5vw,2.4rem);line-height:1.12;}
+  .section-h2 em{color:var(--accent);font-style:italic;}
+  .insight{font-family:var(--mono);font-size:12px;border-left:2px solid var(--accent);padding:.7rem .9rem;line-height:1.65;color:var(--ink2);background:var(--bg2);}
+  .insight strong{color:var(--ink);font-weight:500;}
+  .btn-primary{font-family:var(--mono);font-size:12px;letter-spacing:.02em;background:var(--ink);color:var(--bg);border:none;padding:11px 22px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:background .15s;}
+  .btn-primary:hover{background:var(--accent);}
+  .btn-ghost{font-family:var(--mono);font-size:12px;letter-spacing:.02em;background:transparent;color:var(--ink);border:1px solid var(--border);padding:10px 22px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:border-color .15s;}
+  .btn-ghost:hover{border-color:var(--ink);}
+
+  /* HERO */
+  .hero{border-bottom:1px solid var(--border);}
+  .hero-inner{max-width:1200px;margin:0 auto;padding:5rem 2rem 4rem;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;}
+  .hero-eyebrow{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1.2rem;}
+  .hero-h1{font-family:var(--serif);font-size:clamp(2.4rem,5vw,4rem);line-height:1.06;letter-spacing:-.025em;margin-bottom:1.2rem;}
+  .hero-h1 em{color:var(--accent);font-style:italic;}
+  .hero-desc{font-family:var(--sans);font-size:15px;font-weight:300;line-height:1.75;color:var(--ink2);margin-bottom:2rem;max-width:500px;}
+  .hero-cta{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem;}
+  .hero-note{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.02em;}
+
+  /* HERO RIGHT — Manifesto box */
+  .manifesto-box{border:1px solid var(--border);}
+  .manifesto-header{padding:1rem 1.4rem;border-bottom:1px solid var(--border);background:var(--bg2);font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;}
+  .manifesto-item{padding:1.4rem 1.6rem;border-bottom:1px solid var(--border);display:flex;gap:1.2rem;align-items:flex-start;transition:background .15s;}
+  .manifesto-item:last-child{border-bottom:none;}
+  .manifesto-item:hover{background:var(--bg2);}
+  .manifesto-num{font-family:var(--mono);font-size:10px;color:var(--accent);font-weight:500;flex-shrink:0;padding-top:3px;letter-spacing:.04em;}
+  .manifesto-text{font-family:var(--sans);font-size:14px;font-weight:300;color:var(--ink2);line-height:1.65;}
+  .manifesto-text strong{color:var(--ink);font-weight:400;}
+
+  /* STATS */
+  .stats-section{border-bottom:1px solid var(--border);}
+  .stats-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);}
+  .stat-item{padding:2.5rem 2rem;border-right:1px solid var(--border);}
+  .stat-item:last-child{border-right:none;}
+  .stat-num{font-family:var(--serif);font-size:2.8rem;line-height:1;margin-bottom:.4rem;}
+  .stat-label{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;line-height:1.5;}
+
+  /* STORY SECTION */
+  .story-section{border-bottom:1px solid var(--border);}
+  .story-inner{max-width:1200px;margin:0 auto;padding:5rem 2rem;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;}
+  .story-body{display:flex;flex-direction:column;gap:1.2rem;}
+  .story-p{font-family:var(--sans);font-size:15px;font-weight:300;line-height:1.8;color:var(--ink2);}
+  .story-p strong{color:var(--ink);font-weight:400;}
+  .story-pull{font-family:var(--serif);font-size:1.35rem;line-height:1.5;color:var(--ink);padding:1.5rem 2rem;border-left:2px solid var(--ink);}
+  .story-pull em{color:var(--accent);font-style:italic;}
+
+  /* WHY FREE — dark */
+  .why-section{background:var(--ink);border-bottom:1px solid #1a1a1a;}
+  .why-inner{max-width:1200px;margin:0 auto;padding:5rem 2rem;display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start;}
+  .why-label{font-family:var(--mono);font-size:11px;color:#555;letter-spacing:.08em;text-transform:uppercase;margin-bottom:1rem;}
+  .why-label span{color:var(--accent);}
+  .why-h2{font-family:var(--serif);font-size:clamp(1.8rem,3.5vw,2.6rem);color:var(--bg);line-height:1.12;margin-bottom:1rem;}
+  .why-h2 em{color:var(--accent);font-style:italic;}
+  .why-desc{font-family:var(--sans);font-size:14px;font-weight:300;color:#888;line-height:1.75;}
+  .why-list{border:1px solid #2a2a2a;}
+  .why-item{padding:1.4rem 1.6rem;border-bottom:1px solid #2a2a2a;display:flex;gap:1rem;align-items:flex-start;}
+  .why-item:last-child{border-bottom:none;}
+  .why-icon{font-family:var(--mono);font-size:12px;color:var(--accent);flex-shrink:0;padding-top:2px;}
+  .why-item-text{font-family:var(--sans);font-size:14px;font-weight:300;color:#aaa;line-height:1.6;}
+  .why-item-text strong{color:var(--bg);font-weight:400;}
+
+  /* ROADMAP */
+  .roadmap-section{border-bottom:1px solid var(--border);}
+  .roadmap-inner{max-width:1200px;margin:0 auto;}
+  .roadmap-header{padding:3.5rem 2rem 2.5rem;border-bottom:1px solid var(--border);}
+  .roadmap-grid{display:grid;grid-template-columns:repeat(2,1fr);}
+  .roadmap-item{padding:2.5rem 2rem;border-right:1px solid var(--border);border-bottom:1px solid var(--border);transition:background .15s;}
+  .roadmap-item:nth-child(2n){border-right:none;}
+  .roadmap-item:nth-last-child(-n+2){border-bottom:none;}
+  .roadmap-item:hover{background:var(--bg2);}
+  .roadmap-item-status{font-family:var(--mono);font-size:10px;letter-spacing:.06em;padding:2px 8px;display:inline-flex;margin-bottom:1rem;}
+  .status-live{background:var(--accent);color:white;}
+  .status-soon{border:1px solid var(--border);color:var(--muted);}
+  .status-planning{border:1px solid var(--border);color:var(--muted);opacity:.6;}
+  .roadmap-item-title{font-family:var(--serif);font-size:1.15rem;line-height:1.35;margin-bottom:.5rem;}
+  .roadmap-item-desc{font-family:var(--sans);font-size:13px;font-weight:300;color:var(--ink2);line-height:1.65;}
+  .roadmap-item-tags{margin-top:1rem;display:flex;flex-wrap:wrap;gap:.4rem;}
+  .tag{font-family:var(--mono);font-size:9px;color:var(--muted);border:1px solid var(--border);padding:2px 7px;letter-spacing:.04em;}
+
+  /* TEAM */
+  .team-section{border-bottom:1px solid var(--border);background:var(--bg2);}
+  .team-inner{max-width:1200px;margin:0 auto;padding:5rem 2rem;}
+  .team-grid{display:grid;grid-template-columns:280px 1fr;gap:4rem;margin-top:3rem;align-items:start;border:1px solid var(--border);}
+  .team-photo{border-right:1px solid var(--border);padding:2.5rem 2rem;}
+  .team-avatar{width:80px;height:80px;background:var(--ink);display:flex;align-items:center;justify-content:center;margin-bottom:1.2rem;}
+  .team-avatar-text{font-family:var(--serif);font-size:2rem;color:var(--bg);}
+  .team-name{font-family:var(--serif);font-size:1.3rem;margin-bottom:.3rem;}
+  .team-role{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.04em;margin-bottom:1.2rem;}
+  .team-social{display:flex;flex-direction:column;gap:.5rem;}
+  .team-social a{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.03em;transition:color .15s;display:flex;align-items:center;gap:.4rem;}
+  .team-social a:hover{color:var(--ink);}
+  .team-bio{padding:2.5rem 2rem;}
+  .team-bio-p{font-family:var(--sans);font-size:14px;font-weight:300;line-height:1.8;color:var(--ink2);margin-bottom:1rem;}
+  .team-bio-p:last-child{margin-bottom:0;}
+  .team-bio-p strong{color:var(--ink);font-weight:400;}
+
+  /* CTA */
+  .cta-section{border-bottom:1px solid var(--border);}
+  .cta-inner{max-width:1200px;margin:0 auto;padding:5rem 2rem;text-align:center;}
+  .cta-h2{font-family:var(--serif);font-size:clamp(1.8rem,3.5vw,2.6rem);line-height:1.15;margin-bottom:1rem;}
+  .cta-h2 em{color:var(--accent);font-style:italic;}
+  .cta-desc{font-family:var(--sans);font-size:14px;font-weight:300;color:var(--ink2);max-width:480px;margin:0 auto 2rem;line-height:1.7;}
+  .cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;margin-bottom:1rem;}
+  .cta-note{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.03em;}
+
+  /* FOOTER */
+  footer{border-top:1px solid var(--border);}
+  .footer-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;padding:3rem 2rem;gap:2rem;border-bottom:1px solid var(--border);}
+  .footer-logo{font-family:var(--mono);font-size:16px;font-weight:500;letter-spacing:-.02em;margin-bottom:.6rem;}
+  .footer-logo em{color:var(--accent);font-style:normal;}
+  .footer-tagline{font-family:var(--sans);font-size:13px;font-weight:300;color:var(--muted);line-height:1.6;max-width:220px;}
+  .footer-col-title{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-bottom:1.2rem;}
+  .footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.6rem;}
+  .footer-col ul li a{font-family:var(--sans);font-size:13px;font-weight:300;color:var(--ink2);transition:color .15s;}
+  .footer-col ul li a:hover{color:var(--ink);}
+  .footer-col ul li a.soon{color:var(--muted);opacity:.5;pointer-events:none;}
+  .footer-bottom{max-width:1200px;margin:0 auto;padding:1.2rem 2rem;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem;}
+  .footer-bottom-text{font-family:var(--mono);font-size:11px;color:var(--muted);letter-spacing:.03em;}
+
+  @media(max-width:768px){
+    .hero-inner,.story-inner,.why-inner{grid-template-columns:1fr;gap:2.5rem;}
+    .stats-inner{grid-template-columns:1fr 1fr;}
+    .stat-item:nth-child(2){border-right:none;}
+    .stat-item:nth-child(3){border-right:1px solid var(--border);}
+    .stat-item:nth-child(4){border-right:none;}
+    .stat-item:nth-child(3),.stat-item:nth-child(4){border-top:1px solid var(--border);}
+    .roadmap-grid{grid-template-columns:1fr;}
+    .roadmap-item{border-right:none;}
+    .team-grid{grid-template-columns:1fr;}
+    .team-photo{border-right:none;border-bottom:1px solid var(--border);}
+    .footer-grid{grid-template-columns:1fr 1fr;}
+  }
+  @media(max-width:480px){
+    .hero-inner,.story-inner,.why-inner,.roadmap-inner,.team-inner,.cta-inner,.footer-grid,.footer-bottom{padding-left:1.2rem;padding-right:1.2rem;}
+    .stats-inner{grid-template-columns:1fr;}
+    .stat-item{border-right:none;border-bottom:1px solid var(--border);}
+    .footer-grid{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">mark<em>AI</em></a>
+  <ul class="nav-links">
+    <li><a href="#">Vibecode</a></li>
+    <li><a href="#">Blog</a></li>
+    <li><a href="#">Tips</a></li>
+    <li><a href="#">Prompts</a></li>
+    <li><a href="#" class="disabled">Analytics</a></li>
+    <li><a href="#" class="disabled">Image</a></li>
+    <li><a href="#" class="disabled">Video</a></li>
+  </ul>
+  <div class="nav-free">Miễn phí 100%</div>
+</nav>
+
+<div class="ticker">
+  <div class="ticker-track" id="ticker-track">
+    <span class="ticker-item">✳ Vibecode ra mắt tháng 4/2026</span>
+    <span class="ticker-item">✳ Miễn phí 100% · mãi mãi</span>
+    <span class="ticker-item">✳ Dành riêng dân Marketing Việt Nam</span>
+    <span class="ticker-item">✳ Analytics sắp ra</span>
+    <span class="ticker-item">✳ Generate Image sắp ra</span>
+    <span class="ticker-item">✳ Motion Video sắp ra</span>
+    <span class="ticker-item">✳ Blog · Tips · Prompt Library</span>
+    <span class="ticker-item">✳ Học xong dùng được ngay</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div>
+      <p class="hero-eyebrow">✳ Về dự án · markAI.vn · 2026</p>
+      <h1 class="hero-h1">Tại sao markAI<br>tồn tại <em>miễn phí.</em></h1>
+      <p class="hero-desc">markAI.vn là nền tảng học AI ứng dụng dành riêng cho dân Marketing Việt Nam. Không slide, không lý thuyết suông — học xong là dùng được ngay. Và mãi mãi miễn phí.</p>
+      <div class="hero-cta">
+        <a href="#" class="btn-primary">Bắt đầu học ngay →</a>
+        <a href="#" class="btn-ghost">Xem lộ trình</a>
+      </div>
+      <p class="hero-note">✳ không cần đăng ký · không cần email · không tracking</p>
+    </div>
+    <div>
+      <div class="manifesto-box">
+        <div class="manifesto-header">✳ Triết lý của markAI</div>
+        <div class="manifesto-item">
+          <span class="manifesto-num">01</span>
+          <div class="manifesto-text"><strong>Học xong dùng được ngay.</strong> Không có bài học nào kết thúc bằng "hiểu khái niệm" — tất cả đều kết thúc bằng sản phẩm thật.</div>
+        </div>
+        <div class="manifesto-item">
+          <span class="manifesto-num">02</span>
+          <div class="manifesto-text"><strong>Không hàn lâm.</strong> Không có thuật ngữ kỹ thuật nào xuất hiện mà không được giải thích bằng tiếng Việt dễ hiểu.</div>
+        </div>
+        <div class="manifesto-item">
+          <span class="manifesto-num">03</span>
+          <div class="manifesto-text"><strong>Kiến thức AI không nên có giá.</strong> Người làm Marketing xứng đáng có cùng quyền tiếp cận AI như dân tech.</div>
+        </div>
+        <div class="manifesto-item">
+          <span class="manifesto-num">04</span>
+          <div class="manifesto-text"><strong>Cập nhật liên tục.</strong> AI thay đổi từng tháng — nội dung markAI cũng vậy. Không có bài học nào bị để mốc.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-section">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <div class="stat-num">10</div>
+      <div class="stat-label">Bài học Vibecode<br>đang live</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">150+</div>
+      <div class="stat-label">Prompt trong<br>thư viện</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">0đ</div>
+      <div class="stat-label">Chi phí để học<br>mãi mãi</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-num">4</div>
+      <div class="stat-label">Module AI sắp<br>ra mắt</div>
+    </div>
+  </div>
+</div>
+
+<!-- STORY -->
+<div class="story-section">
+  <div class="story-inner">
+    <div>
+      <p class="section-label"><span>✳</span> 01 · câu chuyện</p>
+      <h2 class="section-h2">Bắt đầu từ<br><em>sự thất vọng.</em></h2>
+    </div>
+    <div class="story-body">
+      <p class="story-p">Năm 2024, AI bắt đầu xuất hiện khắp nơi trong các team Marketing. Nhưng phần lớn tài nguyên học AI đều dành cho dân tech — developer, data scientist, kỹ sư phần mềm.</p>
+      <p class="story-p">Dân Marketing muốn học thì phải vào các khóa học chung, nghe những khái niệm không liên quan đến công việc hàng ngày, hoặc tự mày mò từ đầu bằng tiếng Anh.</p>
+      <div class="story-pull">
+        "Tại sao không có nơi nào dạy AI <em>đúng cho Marketing,</em> đúng ngôn ngữ, đúng bối cảnh Việt Nam?"
+      </div>
+      <p class="story-p">markAI.vn ra đời từ câu hỏi đó. <strong>Một nơi duy nhất</strong> — dành riêng cho dân Marketing Việt Nam muốn học AI ứng dụng thực chiến, không phải AI lý thuyết.</p>
+      <div class="insight">
+        <strong>✳ Hiện tại:</strong> Lộ trình Vibecode Web (10 bài) đang live. Analytics, Generate Image và Motion Video đang trong quá trình phát triển.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WHY FREE -->
+<div class="why-section">
+  <div class="why-inner">
+    <div>
+      <p class="why-label"><span>✳</span> 02 · tại sao miễn phí</p>
+      <h2 class="why-h2">Không phải chiến lược.<br><em>Là quan điểm.</em></h2>
+      <p class="why-desc">markAI không miễn phí vì cần traffic. Miễn phí vì đây là quan điểm: kiến thức AI không nên là thứ người có tiền mới tiếp cận được.</p>
+    </div>
+    <div class="why-list">
+      <div class="why-item">
+        <span class="why-icon">✳</span>
+        <div class="why-item-text"><strong>Không quảng cáo.</strong> Không có banner, không có affiliate link, không có sponsor ảnh hưởng đến nội dung.</div>
+      </div>
+      <div class="why-item">
+        <span class="why-icon">✳</span>
+        <div class="why-item-text"><strong>Không tracking.</strong> Không Google Analytics, không Facebook Pixel, không retargeting. Bạn học mà không bị theo dõi.</div>
+      </div>
+      <div class="why-item">
+        <span class="why-icon">✳</span>
+        <div class="why-item-text"><strong>Không paywall.</strong> Mọi bài học, prompt, tips — tất cả đều public. Không có "premium tier", không có phần khoá.</div>
+      </div>
+      <div class="why-item">
+        <span class="why-icon">✳</span>
+        <div class="why-item-text"><strong>Mãi mãi.</strong> Cam kết này không thay đổi. Dự án này chạy bằng thời gian cá nhân — không có investor yêu cầu monetize.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ROADMAP -->
+<div class="roadmap-section">
+  <div class="roadmap-inner">
+    <div class="roadmap-header">
+      <p class="section-label"><span>✳</span> 03 · lộ trình</p>
+      <h2 class="section-h2">Đang build gì,<br><em>sắp ra gì.</em></h2>
+    </div>
+    <div class="roadmap-grid">
+      <div class="roadmap-item">
+        <span class="roadmap-item-status status-live">ĐANG LIVE</span>
+        <div class="roadmap-item-title">Vibecode Web — 10 bài</div>
+        <div class="roadmap-item-desc">Từ zero đến deploy web hoàn chỉnh. Cursor, Claude Code, Next.js, Vercel — không cần biết code trước.</div>
+        <div class="roadmap-item-tags">
+          <span class="tag">Cursor</span><span class="tag">Claude Code</span><span class="tag">Next.js</span><span class="tag">Vercel</span>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <span class="roadmap-item-status status-live">ĐANG LIVE</span>
+        <div class="roadmap-item-title">Prompt Library — 150+</div>
+        <div class="roadmap-item-desc">Thư viện prompt cho dân Marketing. Đã test thực tế, có biến thay thế, dùng được ngay với Claude · ChatGPT · Cursor.</div>
+        <div class="roadmap-item-tags">
+          <span class="tag">Claude</span><span class="tag">ChatGPT</span><span class="tag">Cursor</span>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <span class="roadmap-item-status status-soon">SẮP RA</span>
+        <div class="roadmap-item-title">Analytics với AI</div>
+        <div class="roadmap-item-desc">Đọc GA4, tạo báo cáo tự động, phân tích data Marketing với AI. Không cần biết SQL hay Python.</div>
+        <div class="roadmap-item-tags">
+          <span class="tag">GA4</span><span class="tag">Looker</span><span class="tag">Claude</span>
+        </div>
+      </div>
+      <div class="roadmap-item">
+        <span class="roadmap-item-status status-soon">SẮP RA</span>
+        <div class="roadmap-item-title">Generate Image — Visual Campaign</div>
+        <div class="roadmap-item-desc">Tạo visual cho campaign Marketing bằng AI. Midjourney, Flux, Firefly — từ brief đến asset hoàn chỉnh.</div>
+        <div class="roadmap-item-tags">
+          <span class="tag">Midjourney</span><span class="tag">Flux</span><span class="tag">Firefly</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- TEAM -->
+<div class="team-section">
+  <div class="team-inner">
+    <p class="section-label"><span>✳</span> 04 · tác giả</p>
+    <h2 class="section-h2">Người build <em>dự án này.</em></h2>
+    <div class="team-grid">
+      <div class="team-photo">
+        <div class="team-avatar"><span class="team-avatar-text">M</span></div>
+        <div class="team-name">markAI Team</div>
+        <div class="team-role">Builder · markAI.vn</div>
+        <div class="team-social">
+          <a href="#">✳ Liên hệ tác giả →</a>
+          <a href="#">✳ Góp ý module →</a>
+          <a href="#">✳ Báo lỗi →</a>
+        </div>
+      </div>
+      <div class="team-bio">
+        <p class="team-bio-p">markAI.vn được build và maintain bởi một người — không có team, không có công ty đứng sau. Tất cả nội dung, code và design đều do một người thực hiện.</p>
+        <p class="team-bio-p">Dự án này sinh ra vì <strong>tôi là dân Marketing và cũng muốn học AI</strong> — nhưng không tìm được nơi phù hợp. Thay vì chờ đợi, tôi quyết định tự build.</p>
+        <p class="team-bio-p">Nếu bạn thấy nội dung này hữu ích, cách tốt nhất để ủng hộ là <strong>chia sẻ với đồng nghiệp</strong> và gửi góp ý để mình làm tốt hơn.</p>
+        <div class="insight" style="margin-top:1.2rem;">
+          <strong>✳ Tất cả góp ý đều được đọc.</strong> Mình đọc từng email, từng feedback. Không có bot, không có template trả lời.
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section">
+  <div class="cta-inner">
+    <p class="section-label" style="display:flex;justify-content:center;gap:.4rem;"><span style="color:var(--accent);">✳</span> bắt đầu ngay</p>
+    <h2 class="cta-h2">Đọc xong rồi,<br><em>học thôi.</em></h2>
+    <p class="cta-desc">Lộ trình Vibecode Web 10 bài — từ zero đến có web deploy. Không cần biết code, không cần đăng ký, không cần trả tiền.</p>
+    <div class="cta-btns">
+      <a href="#" class="btn-primary">Bắt đầu Vibecode →</a>
+      <a href="#" class="btn-ghost">Xem Prompt Library</a>
+    </div>
+    <p class="cta-note">✳ hoàn toàn miễn phí · mãi mãi</p>
+  </div>
+</div>
+
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col"><div class="footer-logo">mark<em>AI</em>.vn</div><div class="footer-tagline">Học AI ứng dụng dành riêng cho dân Marketing Việt Nam. Miễn phí 100% · mãi mãi.</div></div>
+    <div class="footer-col"><div class="footer-col-title">Vibecode</div><ul><li><a href="#">Bài 01 — Vibecode là gì?</a></li><li><a href="#">Bài 02 — Từ ngữ code</a></li><li><a href="#">Bài 03 — Cài gì vào máy?</a></li><li><a href="#">Xem tất cả 10 bài →</a></li></ul></div>
+    <div class="footer-col"><div class="footer-col-title">Khám phá</div><ul><li><a href="#">Blog</a></li><li><a href="#">Tips & Mẹo</a></li><li><a href="#">Prompt Library</a></li><li><a href="#" class="soon">Analytics</a></li></ul></div>
+    <div class="footer-col"><div class="footer-col-title">markAI</div><ul><li><a href="#">Về dự án này</a></li><li><a href="#">Góp ý module</a></li><li><a href="#">Báo lỗi</a></li><li><a href="#">Liên hệ tác giả</a></li></ul></div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-bottom-text">© 2026 markAI.vn · Miễn phí 100% · Không quảng cáo · Không tracking</span>
+    <span class="footer-bottom-text">Dành riêng cho dân Marketing Việt Nam ✳</span>
+  </div>
+</footer>
+
+<script>
+const t=document.getElementById('ticker-track');t.innerHTML+=t.innerHTML;
+</script>
+</body>
+</html>
