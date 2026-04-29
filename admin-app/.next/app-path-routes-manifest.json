@@ -1,4 +1,14 @@
 {
   "/_not-found/page": "/_not-found",
-  "/page": "/"
+  "/activity/page": "/activity",
+  "/lessons/page": "/lessons",
+  "/modules/page": "/modules",
+  "/nav-manage/page": "/nav-manage",
+  "/deploy/page": "/deploy",
+  "/blog/page": "/blog",
+  "/page": "/",
+  "/prompts/page": "/prompts",
+  "/settings/page": "/settings",
+  "/ticker/page": "/ticker",
+  "/tips/page": "/tips"
 }

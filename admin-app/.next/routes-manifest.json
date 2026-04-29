@@ -31,6 +31,66 @@
       "regex": "^/_not\\-found(?:/)?$",
       "routeKeys": {},
       "namedRegex": "^/_not\\-found(?:/)?$"
+    },
+    {
+      "page": "/activity",
+      "regex": "^/activity(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/activity(?:/)?$"
+    },
+    {
+      "page": "/blog",
+      "regex": "^/blog(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/blog(?:/)?$"
+    },
+    {
+      "page": "/deploy",
+      "regex": "^/deploy(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/deploy(?:/)?$"
+    },
+    {
+      "page": "/lessons",
+      "regex": "^/lessons(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/lessons(?:/)?$"
+    },
+    {
+      "page": "/modules",
+      "regex": "^/modules(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/modules(?:/)?$"
+    },
+    {
+      "page": "/nav-manage",
+      "regex": "^/nav\\-manage(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/nav\\-manage(?:/)?$"
+    },
+    {
+      "page": "/prompts",
+      "regex": "^/prompts(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/prompts(?:/)?$"
+    },
+    {
+      "page": "/settings",
+      "regex": "^/settings(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/settings(?:/)?$"
+    },
+    {
+      "page": "/ticker",
+      "regex": "^/ticker(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/ticker(?:/)?$"
+    },
+    {
+      "page": "/tips",
+      "regex": "^/tips(?:/)?$",
+      "routeKeys": {},
+      "namedRegex": "^/tips(?:/)?$"
     }
   ],
   "dataRoutes": [],

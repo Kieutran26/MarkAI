@@ -1,23 +1,22 @@
 'use client'
 
+import { useAdminUi } from '@/app/components/AdminUiProvider'
 import Badge from '@/app/components/Badge'
 import { lessonsData } from '@/app/data/content'
 
-interface LessonsPageProps {
-  onOpenModal: (modalId: string) => void
-}
+export default function LessonsPage() {
+  const { openAdminModal } = useAdminUi()
 
-export default function LessonsPage({ onOpenModal }: LessonsPageProps) {
   return (
     <div className="page" id="page-lessons">
       <div className="section-block">
         <div className="section-header">
           <span className="section-header-title">
-            <strong>Bài học Vibecode</strong> · Lộ trình 7 bước
+            <strong>Bai hoc Vibecode</strong> · Lo trinh 7 buoc
           </span>
           <div className="section-header-spacer" />
-          <button className="section-header-action" onClick={() => onOpenModal('new-lesson')}>
-            + Thêm bài mới
+          <button className="section-header-action" onClick={() => openAdminModal('new-lesson')}>
+            + Them bai moi
           </button>
         </div>
       </div>
@@ -26,7 +25,7 @@ export default function LessonsPage({ onOpenModal }: LessonsPageProps) {
         {lessonsData.map((lesson) => (
           <div key={lesson.num} className="step-editor-row">
             <div className="step-editor-num">
-              <span className="step-num-label">BÀI</span>
+              <span className="step-num-label">BAI</span>
               <span className="step-num-big" style={{ color: lesson.isAccent ? 'var(--accent)' : 'var(--ink)' }}>
                 {lesson.num}
               </span>
@@ -46,9 +45,9 @@ export default function LessonsPage({ onOpenModal }: LessonsPageProps) {
               </div>
             </div>
             <div className="step-editor-actions">
-              <button className="step-action-btn edit" onClick={() => onOpenModal('edit-step')}>Sửa</button>
-              <button className="step-action-btn">Sắp xếp</button>
-              <button className="step-action-btn">Ẩn</button>
+              <button className="step-action-btn edit" onClick={() => openAdminModal('edit-step')}>Sua</button>
+              <button className="step-action-btn">Sap xep</button>
+              <button className="step-action-btn">An</button>
             </div>
           </div>
         ))}

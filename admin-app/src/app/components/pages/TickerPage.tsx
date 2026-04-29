@@ -1,13 +1,12 @@
 'use client'
 
+import { useAdminUi } from '@/app/components/AdminUiProvider'
 import Toggle from '@/app/components/Toggle'
 import { tickerData } from '@/app/data/content'
 
-interface TickerPageProps {
-  onOpenModal: (modalId: string) => void
-}
+export default function TickerPage() {
+  const { openAdminModal } = useAdminUi()
 
-export default function TickerPage({ onOpenModal }: TickerPageProps) {
   return (
     <div className="page" id="page-ticker">
       <div className="section-block">
@@ -16,20 +15,19 @@ export default function TickerPage({ onOpenModal }: TickerPageProps) {
             <strong>Ticker</strong> · Dark scrolling bar
           </span>
           <div className="section-header-spacer" />
-          <button className="section-header-action" onClick={() => onOpenModal('edit-ticker-item')}>
-            + Thêm item
+          <button className="section-header-action" onClick={() => openAdminModal('edit-ticker-item')}>
+            + Them item
           </button>
         </div>
       </div>
 
-      {/* Preview */}
       <div style={{ background: 'var(--ink)', padding: '1rem 2rem', borderBottom: '1px solid #1a1a1a' }}>
         <div style={{ fontFamily: 'var(--mono)', fontSize: '10px', color: '#555', marginBottom: '.5rem', letterSpacing: '.06em', textTransform: 'uppercase' }}>
-          Preview ticker hiện tại:
+          Preview ticker hien tai:
         </div>
         <div className="mini-ticker" style={{ background: 'transparent', height: 'auto', overflow: 'visible' }}>
           <div style={{ fontFamily: 'var(--mono)', fontSize: '11px', color: '#888', lineHeight: '2' }}>
-            ✳ Vibecode ra mắt tháng 4/2026 · ✳ 7 bài học lộ trình zero · ✳ Miễn phí 100% · ✳ Analytics sắp ra · ✳ Generate Image sắp ra · ✳ Motion Video sắp ra · ✳ Blog · Tips · Prompt Library · ✳ Dành riêng dân Marketing
+            ✳ Vibecode ra mat thang 4/2026 · ✳ 7 bai hoc lo trinh zero · ✳ Mien phi 100% · ✳ Analytics sap ra · ✳ Generate Image sap ra · ✳ Motion Video sap ra · ✳ Blog · Tips · Prompt Library · ✳ Danh rieng dan Marketing
           </div>
         </div>
       </div>
@@ -39,21 +37,21 @@ export default function TickerPage({ onOpenModal }: TickerPageProps) {
           <thead>
             <tr>
               <th>#</th>
-              <th>Nội dung</th>
-              <th>Hiển thị</th>
-              <th>Thao tác</th>
+              <th>Noi dung</th>
+              <th>Hien thi</th>
+              <th>Thao tac</th>
             </tr>
           </thead>
           <tbody>
-            {tickerData.map((item, i) => (
-              <tr key={i}>
+            {tickerData.map((item, index) => (
+              <tr key={index}>
                 <td className="td-mono">{item.num}</td>
                 <td className="td-sans">{item.text}</td>
                 <td><Toggle defaultOn={item.visible} /></td>
                 <td>
                   <div className="row-actions">
-                    <button className="row-btn primary" onClick={() => onOpenModal('edit-ticker-item')}>Sửa</button>
-                    <button className="row-btn danger">Xóa</button>
+                    <button className="row-btn primary" onClick={() => openAdminModal('edit-ticker-item')}>Sua</button>
+                    <button className="row-btn danger">Xoa</button>
                   </div>
                 </td>
               </tr>

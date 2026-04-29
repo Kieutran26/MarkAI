@@ -1,15 +1,11 @@
 'use client'
 
-import { useState } from 'react'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { navItems, navGroups } from '@/app/data/navigation'
 
-interface SidebarProps {
-  activePage: string
-  onNavigate: (pageId: string) => void
-}
-
-export default function Sidebar({ activePage, onNavigate }: SidebarProps) {
-  const [hoveredItem, setHoveredItem] = useState<string | null>(null)
+export default function Sidebar() {
+  const pathname = usePathname()
 
   return (
     <aside className="sidebar">
@@ -17,7 +13,7 @@ export default function Sidebar({ activePage, onNavigate }: SidebarProps) {
         <span className="sidebar-logo-text">mark<em>AI</em></span>
         <span className="sidebar-badge">Admin</span>
       </div>
-      
+
       <nav className="sidebar-nav">
         {navGroups.map((group) => (
           <div key={group.key}>
@@ -25,19 +21,17 @@ export default function Sidebar({ activePage, onNavigate }: SidebarProps) {
             {navItems
               .filter((item) => item.group === group.key)
               .map((item) => (
-                <div
+                <Link
                   key={item.id}
-                  className={`nav-item ${activePage === item.id ? 'active' : ''}`}
-                  onClick={() => onNavigate(item.id)}
-                  onMouseEnter={() => setHoveredItem(item.id)}
-                  onMouseLeave={() => setHoveredItem(null)}
+                  href={item.href}
+                  className={`nav-item ${pathname === item.href ? 'active' : ''}`}
                 >
                   <span className="nav-icon">{item.icon}</span>
                   {item.label}
                   {item.count !== undefined && (
                     <span className="nav-count">{item.count}</span>
                   )}
-                </div>
+                </Link>
               ))}
           </div>
         ))}

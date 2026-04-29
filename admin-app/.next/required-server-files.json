@@ -99,7 +99,7 @@
         "transform": "lodash/{{member}}"
       }
     },
-    "outputFileTracingRoot": "D:\\MarkAI-1",
+    "outputFileTracingRoot": "D:\\MarkAI-1\\admin-app",
     "experimental": {
       "useSkewCookie": false,
       "cacheLife": {
@@ -289,11 +289,11 @@
     "bundlePagesRouterDependencies": false,
     "configFileName": "next.config.js",
     "turbopack": {
-      "root": "D:\\MarkAI-1"
+      "root": "D:\\MarkAI-1\\admin-app"
     }
   },
   "appDir": "D:\\MarkAI-1\\admin-app",
-  "relativeAppDir": "admin-app",
+  "relativeAppDir": "",
   "files": [
     ".next\\routes-manifest.json",
     ".next\\server\\pages-manifest.json",
