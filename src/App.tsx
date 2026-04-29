@@ -6,7 +6,8 @@ import Ticker from './components/Ticker';
 import Home from './pages/Home';
 import Blog from './pages/Blog';
 import BlogDetail from './pages/BlogDetail';
-import Tips from './pages/Tips';
+import Tips from './pages/tips/Tips';
+import TipDetail from './pages/tips/TipDetail';
 import Prompts from './pages/Prompts';
 import Lesson from './pages/Lesson';
 import About from './pages/About';
@@ -38,6 +39,7 @@ export default function App() {
             <Route path="/blog" element={<Blog />} />
             <Route path="/blog/:slug" element={<BlogDetail />} />
             <Route path="/tips" element={<Tips />} />
+            <Route path="/tips/:slug" element={<TipDetail />} />
             <Route path="/prompts" element={<Prompts />} />
             <Route path="/lesson/:id" element={<Lesson />} />
             <Route path="/about" element={<About />} />
