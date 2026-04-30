@@ -5,12 +5,13 @@ import { getSubLessonsByLesson } from '../../lib/subLessons';
 interface ReaderSidebarProps {
   subLesson: SubLessonFull;
   lessonSlug: string;
+  subLessons?: SubLessonFull[];
   onClose?: () => void;
 }
 
-export default function ReaderSidebar({ subLesson, lessonSlug, onClose }: ReaderSidebarProps) {
+export default function ReaderSidebar({ subLesson, lessonSlug, subLessons, onClose }: ReaderSidebarProps) {
   const { id, lessonId, lessonTitle, totalSubs, currentIndex } = subLesson;
-  const allSubLessons = getSubLessonsByLesson(lessonSlug);
+  const allSubLessons = subLessons ?? getSubLessonsByLesson(lessonSlug);
 
   const handleClick = () => {
     if (onClose) onClose();

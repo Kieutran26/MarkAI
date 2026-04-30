@@ -12,6 +12,7 @@
     "admin:create": "tsx scripts/create-admin.ts",
     "import:course": "tsx scripts/import-course-json.ts",
     "migrate:vibecode": "tsx scripts/migrate-vibecode-course.ts",
+    "migrate:lesson-modules": "tsx scripts/migrate-lesson-modules.ts",
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit"
   },

@@ -13,6 +13,15 @@ export default function ContentBody({ content }: ContentBodyProps) {
     <div className="content-body">
       {content.map((block, index) => {
         switch (block.type) {
+          case 'html':
+            return (
+              <div
+                key={index}
+                className="content-html"
+                dangerouslySetInnerHTML={{ __html: block.html }}
+              />
+            );
+
           case 'p':
             return (
               <p

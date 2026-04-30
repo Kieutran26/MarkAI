@@ -2125,6 +2125,60 @@ button, a { cursor: pointer; transition: all 0.15s ease; }
   text-transform: uppercase;
   margin: 1.8rem 0 0.6rem;
 }
+.content-body .content-html h2,
+.content-body .content-html h3 {
+  font-family: var(--serif);
+  color: var(--ink);
+  line-height: 1.2;
+}
+.content-body .content-html h2 {
+  font-size: 1.9rem;
+  margin: 0 0 1rem;
+}
+.content-body .content-html h3 {
+  font-size: 1.25rem;
+  margin: 2.2rem 0 0.8rem;
+}
+.content-body .content-html ul,
+.content-body .content-html ol {
+  margin: 0 0 1.3rem 1.2rem;
+  color: var(--ink2);
+}
+.content-body .content-html li {
+  font-family: var(--sans);
+  font-size: 15px;
+  font-weight: 300;
+  line-height: 1.85;
+  margin-bottom: 0.55rem;
+}
+.content-body .content-html blockquote,
+.content-body .content-html pre {
+  border-left: 2px solid var(--accent);
+  background: var(--bg2);
+  margin: 1.8rem 0;
+  padding: 0.9rem 1.1rem;
+}
+.content-body .content-html blockquote {
+  font-family: var(--sans);
+  font-size: 15px;
+  font-style: italic;
+  color: var(--ink);
+  line-height: 1.8;
+}
+.content-body .content-html pre,
+.content-body .content-html code {
+  font-family: var(--mono);
+}
+.content-body .content-html pre {
+  font-size: 12px;
+  color: var(--ink2);
+  overflow-x: auto;
+}
+.content-body .content-html a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 0.14em;
+}
 
 /* Insight Block */
 .insight-block {

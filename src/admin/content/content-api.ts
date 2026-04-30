@@ -64,6 +64,37 @@ export function createLesson(payload: {
   return postAdminContent<{ item: { id: string } }>({ resource: 'lesson', action: 'create', ...payload });
 }
 
+export function createLessonModule(payload: {
+  lessonId: string;
+  slug: string;
+  moduleCode: string;
+  title: string;
+  summary: string;
+  status: AdminContentStatus;
+  sortOrder: number;
+  estimatedMinutes: number;
+}) {
+  return postAdminContent<{ item: { id: string } }>({ resource: 'lesson_module', action: 'create', ...payload });
+}
+
+export function updateLessonModule(payload: {
+  id: string;
+  lessonId: string;
+  slug: string;
+  moduleCode: string;
+  title: string;
+  summary: string;
+  status: AdminContentStatus;
+  sortOrder: number;
+  estimatedMinutes: number;
+}) {
+  return postAdminContent<{ item: { id: string } }>({ resource: 'lesson_module', action: 'update', ...payload });
+}
+
+export function deleteLessonModule(id: string) {
+  return postAdminContent<{ success: true }>({ resource: 'lesson_module', action: 'delete', id });
+}
+
 export function updateLesson(payload: {
   id: string;
   courseId: string;
@@ -83,6 +114,7 @@ export function deleteLesson(id: string) {
 
 export function createLessonBlock(payload: {
   lessonId: string;
+  moduleId: string;
   blockType: AdminBlockType;
   title: string;
   contentJson: Record<string, unknown>;
@@ -95,6 +127,7 @@ export function createLessonBlock(payload: {
 export function updateLessonBlock(payload: {
   id: string;
   lessonId: string;
+  moduleId: string;
   blockType: AdminBlockType;
   title: string;
   contentJson: Record<string, unknown>;

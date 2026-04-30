@@ -4,13 +4,16 @@ import { decorateJsonResponse } from './http-response';
 import {
   createCourse,
   createLesson,
+  createLessonModule,
   createLessonBlock,
   deleteCourse,
   deleteLesson,
+  deleteLessonModule,
   deleteLessonBlock,
   listAdminContentTree,
   updateCourse,
   updateLesson,
+  updateLessonModule,
   updateLessonBlock,
 } from '../services/admin-content-service';
 
@@ -154,10 +157,51 @@ export async function handleAdminContentRequest(req: AdminRequest, res: ServerRe
       }
     }
 
+    if (resource === 'lesson_module') {
+      if (action === 'create') {
+        const module = await createLessonModule({
+          lessonId: asString(body.lessonId),
+          slug: asString(body.slug),
+          moduleCode: asString(body.moduleCode),
+          title: asString(body.title),
+          summary: asNullableString(body.summary),
+          status: (asString(body.status) as 'draft' | 'published' | 'archived') || 'draft',
+          sortOrder: asNumber(body.sortOrder),
+          estimatedMinutes: asNumber(body.estimatedMinutes),
+        });
+        return response.status(201).json({ item: module });
+      }
+
+      if (action === 'update') {
+        const module = await updateLessonModule({
+          id: asString(body.id),
+          lessonId: asString(body.lessonId),
+          slug: asString(body.slug),
+          moduleCode: asString(body.moduleCode),
+          title: asString(body.title),
+          summary: asNullableString(body.summary),
+          status: (asString(body.status) as 'draft' | 'published' | 'archived') || 'draft',
+          sortOrder: asNumber(body.sortOrder),
+          estimatedMinutes: asNumber(body.estimatedMinutes),
+        });
+        return module
+          ? response.status(200).json({ item: module })
+          : response.status(404).json({ message: 'Khong tim thay module.' });
+      }
+
+      if (action === 'delete') {
+        const deleted = await deleteLessonModule(asString(body.id));
+        return deleted
+          ? response.status(200).json({ success: true })
+          : response.status(404).json({ message: 'Khong tim thay module.' });
+      }
+    }
+
     if (resource === 'lesson_block') {
       if (action === 'create') {
         const block = await createLessonBlock({
           lessonId: asString(body.lessonId),
+          moduleId: asString(body.moduleId),
           blockType: parseBlockType(body.blockType),
           title: asNullableString(body.title),
           contentJson: typeof body.contentJson === 'object' && body.contentJson ? (body.contentJson as Record<string, unknown>) : {},
@@ -171,6 +215,7 @@ export async function handleAdminContentRequest(req: AdminRequest, res: ServerRe
         const block = await updateLessonBlock({
           id: asString(body.id),
           lessonId: asString(body.lessonId),
+          moduleId: asString(body.moduleId),
           blockType: parseBlockType(body.blockType),
           title: asNullableString(body.title),
           contentJson: typeof body.contentJson === 'object' && body.contentJson ? (body.contentJson as Record<string, unknown>) : {},

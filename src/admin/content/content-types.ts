@@ -4,6 +4,7 @@ export type AdminBlockType = 'text' | 'video' | 'code' | 'interactive_image';
 export type AdminLessonBlock = {
   id: string;
   lessonId: string;
+  moduleId: string;
   blockType: AdminBlockType;
   title: string | null;
   contentJson: Record<string, unknown>;
@@ -11,6 +12,21 @@ export type AdminLessonBlock = {
   isRequired: boolean;
   createdAt: string;
   updatedAt: string;
+};
+
+export type AdminLessonModule = {
+  id: string;
+  lessonId: string;
+  slug: string;
+  moduleCode: string;
+  title: string;
+  summary: string | null;
+  status: AdminContentStatus;
+  sortOrder: number;
+  estimatedMinutes: number;
+  createdAt: string;
+  updatedAt: string;
+  blocks: AdminLessonBlock[];
 };
 
 export type AdminLesson = {
@@ -27,7 +43,7 @@ export type AdminLesson = {
   publishedAt: string | null;
   createdAt: string;
   updatedAt: string;
-  blocks: AdminLessonBlock[];
+  modules: AdminLessonModule[];
 };
 
 export type AdminCourse = {

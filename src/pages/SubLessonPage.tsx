@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { getSubLessonBySlug } from '../lib/subLessons';
 import { getLessonBySlug } from '../lib/lessons';
+import { fetchPublicLesson } from '../lib/public-lesson-api';
+import { findSubLessonFromSlug, mapPublicLessonToSubLessons } from '../lib/public-lesson-mapper';
+import type { SubLessonFull } from '../lib/subLessons';
 import LessonTopbar from '../components/reader/LessonTopbar';
 import ReaderSidebar from '../components/reader/ReaderSidebar';
 import ContentHeader from '../components/reader/ContentHeader';
@@ -11,16 +14,40 @@ import ContentFooter from '../components/reader/ContentFooter';
 export default function SubLessonPage() {
   const params = useParams();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [dbSubLessons, setDbSubLessons] = useState<SubLessonFull[] | null>(null);
 
   const lessonSlug = params.lessonSlug || '';
   const subSlug = params.subSlug || '';
-
-  const subLesson = getSubLessonBySlug(lessonSlug, subSlug);
+  const fallbackSubLesson = getSubLessonBySlug(lessonSlug, subSlug);
+  const dbSubLesson = dbSubLessons ? findSubLessonFromSlug(dbSubLessons, subSlug) : null;
+  const subLesson = dbSubLesson ?? fallbackSubLesson;
 
   useEffect(() => {
     window.scrollTo(0, 0);
     setSidebarOpen(false);
   }, [lessonSlug, subSlug]);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    fetchPublicLesson(lessonSlug)
+      .then((payload) => {
+        if (cancelled) return;
+        const mapped = mapPublicLessonToSubLessons(payload);
+        setDbSubLessons(mapped.length ? mapped : null);
+      })
+      .catch(() => {
+        if (!cancelled) setDbSubLessons(null);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [lessonSlug]);
+
+  useEffect(() => {
+    setDbSubLessons(null);
+  }, [lessonSlug]);
 
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
@@ -59,6 +86,7 @@ export default function SubLessonPage() {
         <ReaderSidebar
           subLesson={subLesson}
           lessonSlug={lessonSlug}
+          subLessons={dbSubLessons ?? undefined}
           onClose={() => setSidebarOpen(false)}
         />
 
