@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 import { handleAdminContentRequest } from './http/admin-content-controller';
+import { handleLessonPreviewRequest } from './http/lesson-preview-controller';
 import { serverConfig } from './config';
 import { closePool } from './db';
 import adminAuthRoutes from './routes/admin-auth-routes';
@@ -14,6 +15,7 @@ app.get('/api/health', (_req, res) => {
 });
 
 app.use('/api/admin/auth', adminAuthRoutes);
+app.get('/api/lesson-preview/:previewToken', handleLessonPreviewRequest);
 app.all('/api/admin/content', (req, res) => {
   void handleAdminContentRequest(req as never, res);
 });

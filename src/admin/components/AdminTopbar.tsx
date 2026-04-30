@@ -18,15 +18,15 @@ export default function AdminTopbar() {
       </span>
       <div className="topbar-spacer" />
       <div className="topbar-actions">
-        <span className="topbar-user">Xin chào, {user?.displayName ?? 'Admin'}</span>
+        <span className="topbar-user">Xin chao, {user?.displayName ?? 'Admin'}</span>
         <button className="topbar-btn" onClick={() => openAdminModal('new-content')}>
-          + Nội dung mới
+          + Noi dung moi
         </button>
         <button className="topbar-btn" onClick={() => window.open('https://markai.vn', '_blank')}>
           ↗ Xem trang web
         </button>
         <button className="topbar-btn" onClick={() => void logout()}>
-          Đăng xuất
+          Dang xuat
         </button>
         <button className="topbar-btn primary" onClick={() => openAdminModal('deploy-modal')}>
           ↑ Deploy
