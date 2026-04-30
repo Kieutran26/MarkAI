@@ -1,4 +1,5 @@
 interface UseCaseListProps {
+  key?: string | number;
   items: {
     icon: string;
     title: string;

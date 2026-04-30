@@ -1,36 +1,24 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { getLessonBySlug, lessons, getLessonSlug } from '../lib/lessons';
-import LessonHero from '../components/lesson/LessonHero';
+import { getLessonBySlug, getLessonSlug } from '../lib/lessons';
 import LessonLayout from '../components/lesson/LessonLayout';
-import SubLesson from '../components/lesson/SubLesson';
-import NextUp from '../components/lesson/NextUp';
 
 export default function VibecodeLesson() {
   const { slug } = useParams<{ slug: string }>();
   const [lesson, setLesson] = useState(getLessonBySlug(slug || 'vibecode-la-gi'));
 
   useEffect(() => {
-    if (slug) {
-      const foundLesson = getLessonBySlug(slug);
-      setLesson(foundLesson);
-      window.scrollTo(0, 0);
-      
-      // Save progress and update title
-      if (foundLesson) {
-        localStorage.setItem('lesson_progress', String(foundLesson.id));
-        document.title = `${foundLesson.title} · markAI.vn`;
-      }
-    }
-  }, [slug]);
+    if (!slug) return;
 
-  // Duplicate ticker content for smooth loop
-  useEffect(() => {
-    const ticker = document.getElementById('ticker');
-    if (ticker && ticker.innerHTML) {
-      ticker.innerHTML += ticker.innerHTML;
-    }
-  }, []);
+    const foundLesson = getLessonBySlug(slug);
+    setLesson(foundLesson);
+    window.scrollTo(0, 0);
+
+    if (!foundLesson) return;
+
+    localStorage.setItem('lesson_progress', String(foundLesson.id));
+    document.title = `${foundLesson.title} · markAI.vn`;
+  }, [slug]);
 
   if (!lesson) {
     return (
@@ -50,7 +38,6 @@ export default function VibecodeLesson() {
 
   return (
     <div>
-      {/* Breadcrumb & Top Nav */}
       <div className="breadcrumb-wrap">
         <div className="breadcrumb-content">
           <div className="breadcrumb">
@@ -69,10 +56,10 @@ export default function VibecodeLesson() {
             ) : (
               <span className="nav-item-top disabled">← Trước</span>
             )}
-            
+
             {lesson.nextLesson ? (
-              <Link 
-                to={`/vibecode/${getLessonSlug(lesson.nextLesson.id)}`} 
+              <Link
+                to={`/vibecode/${getLessonSlug(lesson.nextLesson.id)}`}
                 className="nav-item-top nav-item-top-black"
               >
                 Bài {lesson.nextLesson.id.toString().padStart(2, '0')} →
@@ -84,50 +71,7 @@ export default function VibecodeLesson() {
         </div>
       </div>
 
-      {/* Lesson Hero */}
-      <LessonHero lesson={lesson} />
-
-      {/* Progress Bar */}
-      <div className="progress-bar-wrap">
-        <div className="progress-bar-inner">
-          <span className="progress-label">LỘ TRÌNH · {lesson.id}/10</span>
-          <div className="progress-steps">
-            {Array.from({ length: 10 }, (_, i) => {
-              const stepNum = i + 1;
-              const isDone = stepNum < lesson.id;
-              const isActive = stepNum === lesson.id;
-              
-              return (
-                <div 
-                  key={i}
-                  className={`progress-step ${isDone ? 'done' : ''} ${isActive ? 'active' : ''}`}
-                />
-              );
-            })}
-          </div>
-          <span className="progress-label" style={{ color: 'var(--accent)' }}>
-            BÀI {lessonNum}
-          </span>
-        </div>
-      </div>
-
-      {/* Main Layout with Sidebar */}
-      <LessonLayout lesson={lesson}>
-        {lesson.subLessons.map((subLesson, index) => (
-          <SubLesson
-            key={subLesson.id}
-            subLesson={subLesson}
-            lessonId={lesson.id}
-            lessonSlug={lesson.slug}
-            totalLessons={lesson.subLessons.length}
-            prevSubLesson={index > 0 ? lesson.subLessons[index - 1] : undefined}
-            nextSubLesson={index < lesson.subLessons.length - 1 ? lesson.subLessons[index + 1] : undefined}
-          />
-        ))}
-      </LessonLayout>
-
-      {/* Next Up Section */}
-      <NextUp currentLesson={lesson} />
+      <LessonLayout lesson={lesson} />
     </div>
   );
 }

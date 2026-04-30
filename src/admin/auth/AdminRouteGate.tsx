@@ -10,7 +10,7 @@ export default function AdminRouteGate({ children }: PropsWithChildren) {
       <div className="admin-auth-screen">
         <div className="admin-auth-card admin-auth-card-muted">
           <div className="admin-auth-eyebrow">markAI admin</div>
-          <h1 className="admin-auth-title">Dang kiem tra phien dang nhap</h1>
+          <h1 className="admin-auth-title">Đang kiểm tra phiên đăng nhập</h1>
         </div>
       </div>
     );

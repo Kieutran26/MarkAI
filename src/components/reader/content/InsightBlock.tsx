@@ -1,4 +1,5 @@
 interface InsightBlockProps {
+  key?: string | number;
   label: string;
   text: string;
 }

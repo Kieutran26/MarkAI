@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
 interface BreadcrumbProps {
-  items: { label: string; href?: string }[];
+  items: { label: string; href?: string; isCurrent?: boolean }[];
 }
 
 export default function Breadcrumb({ items }: BreadcrumbProps) {

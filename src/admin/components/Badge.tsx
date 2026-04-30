@@ -1,7 +1,9 @@
+import type { CSSProperties, ReactNode } from 'react'
+
 interface BadgeProps {
-  children: React.ReactNode
+  children: ReactNode
   variant?: 'accent' | 'dark' | 'outline' | 'green' | 'yellow' | 'blue'
-  style?: React.CSSProperties
+  style?: CSSProperties
 }
 
 export default function Badge({ children, variant = 'outline', style }: BadgeProps) {

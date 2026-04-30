@@ -1,5 +1,6 @@
 'use client'
 
+import type { ReactNode } from 'react'
 import MiniTicker from '@/app/components/MiniTicker'
 import Sidebar from '@/app/components/Sidebar'
 import { miniTickerItems } from '@/app/data/content'
@@ -18,7 +19,7 @@ import {
 import AdminTopbar from './AdminTopbar'
 import { AdminUiProvider, useAdminUi } from './AdminUiProvider'
 
-function AdminShellInner({ children }: { children: React.ReactNode }) {
+function AdminShellInner({ children }: { children: ReactNode }) {
   const { closeAdminModal, openAdminModal, openModal } = useAdminUi()
 
   return (
@@ -48,7 +49,7 @@ function AdminShellInner({ children }: { children: React.ReactNode }) {
   )
 }
 
-export default function AdminShell({ children }: { children: React.ReactNode }) {
+export default function AdminShell({ children }: { children: ReactNode }) {
   return (
     <AdminUiProvider>
       <AdminShellInner>{children}</AdminShellInner>

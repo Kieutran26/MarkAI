@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
-import type { SubLesson } from '../lib/lessons';
+import type { SubLesson } from '../../lib/lessons';
 
 interface SubLessonProps {
+  key?: string | number;
   subLesson: SubLesson;
   lessonId: number;
   isFirst: boolean;
@@ -26,6 +27,17 @@ export default function SubLessonComponent({
       return subLesson.paragraphs.map((para, idx) => (
         <p 
           key={idx} 
+          dangerouslySetInnerHTML={{ __html: para }}
+          className="mb-5"
+        />
+      ));
+    };
+
+    const renderExtraParagraphs = () => {
+      if (!subLesson.paragraphs_extra) return null;
+      return subLesson.paragraphs_extra.map((para, idx) => (
+        <p
+          key={`extra-${idx}`}
           dangerouslySetInnerHTML={{ __html: para }}
           className="mb-5"
         />
@@ -108,6 +120,7 @@ export default function SubLessonComponent({
         return (
           <>
             {renderParagraphs()}
+            {renderExtraParagraphs()}
             {renderInsight()}
           </>
         );
@@ -116,6 +129,7 @@ export default function SubLessonComponent({
         return (
           <>
             {renderParagraphs()}
+            {renderExtraParagraphs()}
             {renderUseCases()}
           </>
         );
@@ -125,6 +139,7 @@ export default function SubLessonComponent({
           <>
             {renderCompareTable()}
             {subLesson.paragraphs && renderParagraphs()}
+            {renderExtraParagraphs()}
             {renderInsight()}
           </>
         );
@@ -134,6 +149,7 @@ export default function SubLessonComponent({
           <>
             {renderContentGrid()}
             {subLesson.paragraphs && renderParagraphs()}
+            {renderExtraParagraphs()}
             {renderInsight()}
           </>
         );
@@ -142,6 +158,7 @@ export default function SubLessonComponent({
         return (
           <>
             {subLesson.paragraphs && renderParagraphs()}
+            {renderExtraParagraphs()}
             {renderContentGrid()}
             {renderCompareTable()}
             {renderUseCases()}

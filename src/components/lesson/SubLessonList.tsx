@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import type { SubLesson } from '../lib/lessons';
+import type { SubLesson } from '../../lib/lessons';
 
 interface SubLessonListProps {
   subLessons: SubLesson[];

@@ -1,4 +1,5 @@
 type ArticleImageProps = {
+  key?: string | number;
   label: string;
   caption: string;
 };

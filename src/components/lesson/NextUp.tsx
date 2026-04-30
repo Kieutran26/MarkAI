@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import type { Lesson } from '../lib/lessons';
+import type { Lesson } from '../../lib/lessons';
 
 interface NextUpProps {
   currentLesson: Lesson;

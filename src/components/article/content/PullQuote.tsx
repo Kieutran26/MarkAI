@@ -1,4 +1,5 @@
 type PullQuoteProps = {
+  key?: string | number;
   text: string;
   emText?: string;
 };

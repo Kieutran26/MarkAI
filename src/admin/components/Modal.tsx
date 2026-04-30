@@ -1,15 +1,16 @@
 'use client'
 
 import { useEffect } from 'react'
+import type { MouseEvent, ReactNode } from 'react'
 
 interface ModalProps {
   id: string
   isOpen: boolean
   onClose: () => void
   title: string
-  children: React.ReactNode
+  children: ReactNode
   width?: number
-  footer?: React.ReactNode
+  footer?: ReactNode
 }
 
 export default function Modal({ id, isOpen, onClose, title, children, width = 560, footer }: ModalProps) {
@@ -23,7 +24,7 @@ export default function Modal({ id, isOpen, onClose, title, children, width = 56
     return () => window.removeEventListener('keydown', handleEscape)
   }, [isOpen, onClose])
 
-  const handleOverlayClick = (e: React.MouseEvent) => {
+  const handleOverlayClick = (e: MouseEvent<HTMLDivElement>) => {
     if (e.target === e.currentTarget) {
       onClose()
     }

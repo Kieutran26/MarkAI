@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import express from 'express';
+import { handleAdminContentRequest } from './http/admin-content-controller';
 import { serverConfig } from './config';
 import { closePool } from './db';
 import adminAuthRoutes from './routes/admin-auth-routes';
@@ -13,6 +14,9 @@ app.get('/api/health', (_req, res) => {
 });
 
 app.use('/api/admin/auth', adminAuthRoutes);
+app.all('/api/admin/content', (req, res) => {
+  void handleAdminContentRequest(req as never, res);
+});
 
 const server = app.listen(serverConfig.port, () => {
   console.log(`Admin API server running on http://localhost:${serverConfig.port}`);

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import type { Lesson } from '../lib/lessons';
+import type { Lesson } from '../../lib/lessons';
 
 interface LessonHeroProps {
   lesson: Lesson;
@@ -8,36 +8,13 @@ interface LessonHeroProps {
 
 export default function LessonHero({ lesson, progress }: LessonHeroProps) {
   const lessonNum = lesson.id.toString().padStart(2, '0');
-  const prevSlug = lesson.prevLesson ? `vibecode-la-gi` : null;
-  const nextSlug = lesson.nextLesson ? `tu-ngu-chuyen-nganh` : null;
-  
-  // Actually get the correct slug
-  const getSlug = (id: number) => {
-    const slugMap: Record<number, string> = {
-      1: 'vibecode-la-gi',
-      2: 'tu-ngu-chuyen-nganh',
-      3: 'cai-dat-moi-truong',
-      4: 'lam-quen-vscode-cursor',
-      5: 'lam-quen-claude-code',
-      6: 'cong-cu-website-huu-ich',
-      7: 'cach-prompt-cho-ai',
-      8: 'khi-ai-code-sai',
-      9: 'tao-skills-va-workflow',
-      10: 'deploy-va-tracking'
-    };
-    return slugMap[id];
-  };
-
-  const prevSlugCorrect = lesson.prevLesson ? getSlug(lesson.prevLesson.id) : null;
-  const nextSlugCorrect = lesson.nextLesson ? getSlug(lesson.nextLesson.id) : null;
+  const firstSubId = lesson.subLessons[0]?.id;
 
   return (
     <section className="border-b border-border">
       <div className="page-shell">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px]">
-          {/* Left Column */}
           <div className="py-8 lg:py-10 pr-0 lg:pr-10 border-b lg:border-b-0 lg:border-r border-border">
-            {/* Badges */}
             <div className="flex flex-wrap items-center gap-2 mb-6">
               {lesson.badgeType === 'accent' && (
                 <span className="badge badge-accent">{lesson.badge}</span>
@@ -52,27 +29,23 @@ export default function LessonHero({ lesson, progress }: LessonHeroProps) {
                 <span className="badge badge-green">{lesson.badgeExtra}</span>
               )}
               <span className="badge badge-outline">{lesson.duration}</span>
-              <span className="badge badge-outline">{lesson.subLessonCount} bài nhỏ</span>
+              <span className="badge badge-outline">{lesson.subLessonCount} bai nho</span>
             </div>
 
-            {/* Lesson Number */}
             <p className="font-mono text-[11px] text-muted tracking-[0.08em] uppercase mb-2">
-              BÀI · {lessonNum} / 10
+              BAI · {lessonNum} / 10
             </p>
 
-            {/* Title */}
             <h1 className="font-serif text-[clamp(1.8rem,3.5vw,2.6rem)] leading-[1.15] mb-5">
               {lesson.title.split(lesson.titleEm)[0]}
               <em className="text-accent italic">{lesson.titleEm}</em>
               {lesson.title.split(lesson.titleEm)[1]}
             </h1>
 
-            {/* Description */}
             <p className="font-sans text-[15px] text-ink2 leading-[1.75] max-w-[560px] mb-7">
               {lesson.desc}
             </p>
 
-            {/* Tags */}
             <div className="flex flex-wrap gap-2">
               {lesson.tags.map((tag, idx) => (
                 <span key={idx} className="step-tag">
@@ -82,41 +55,40 @@ export default function LessonHero({ lesson, progress }: LessonHeroProps) {
             </div>
           </div>
 
-          {/* Right Column */}
           <div className="py-6 lg:py-8 pl-0 lg:pl-8">
-            {/* Stats Box */}
             <div className="border border-border mb-6">
               <div className="lesson-stat">
-                <span className="lesson-stat-label">THỜI GIAN ĐỌC</span>
+                <span className="lesson-stat-label">THOI GIAN DOC</span>
                 <span className="lesson-stat-value">{lesson.duration}</span>
               </div>
               <div className="lesson-stat">
-                <span className="lesson-stat-label">SỐ BÀI NHỎ</span>
-                <span className="lesson-stat-value">{lesson.subLessonCount} bài</span>
+                <span className="lesson-stat-label">SO BAI NHO</span>
+                <span className="lesson-stat-value">{lesson.subLessonCount} bai</span>
               </div>
               <div className="lesson-stat">
-                <span className="lesson-stat-label">ĐỘ KHÓ</span>
+                <span className="lesson-stat-label">DO KHO</span>
                 <span className="lesson-stat-value">{lesson.difficulty}</span>
               </div>
               <div className="lesson-stat">
-                <span className="lesson-stat-label">TIẾP THEO</span>
+                <span className="lesson-stat-label">TIEN DO</span>
+                <span className="lesson-stat-value">Bai {progress.toString().padStart(2, '0')} / 10</span>
+              </div>
+              <div className="lesson-stat">
+                <span className="lesson-stat-label">TIEP THEO</span>
                 <span className="lesson-stat-value">
-                  {lesson.nextLesson 
-                    ? `Bài ${(lesson.id + 1).toString().padStart(2, '0')} · ${lesson.nextLesson.title}` 
-                    : '— Kết thúc lộ trình'}
+                  {lesson.nextLesson
+                    ? `Bai ${(lesson.id + 1).toString().padStart(2, '0')} · ${lesson.nextLesson.title}`
+                    : 'Ket thuc lo trinh'}
                 </span>
               </div>
             </div>
 
-            {/* CTA Button */}
-            <Link 
-              to={`#sub-${lesson.id}01`}
+            <Link
+              to={firstSubId ? `#sub-${firstSubId}` : '#'}
               className="btn-primary w-full justify-center mb-4"
             >
-              Bắt đầu bài này →
+              Bat dau bai nay →
             </Link>
-
-            </div>
           </div>
         </div>
       </div>

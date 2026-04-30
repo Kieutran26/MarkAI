@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import type { Lesson } from '../lib/lessons';
+import type { Lesson } from '../../lib/lessons';
 
 interface LessonSidebarProps {
   lesson: Lesson;
 }
 
 export default function LessonSidebar({ lesson }: LessonSidebarProps) {
-  const [activeId, setActiveId] = useState<string>(`sub-${lesson.id}01`);
+  const [activeId, setActiveId] = useState<string>(`sub-${lesson.subLessons[0]?.id ?? ''}`);
   
   // Slug mapping
   const getSlug = (id: number) => {

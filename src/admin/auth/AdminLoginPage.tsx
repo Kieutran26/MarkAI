@@ -23,9 +23,9 @@ export default function AdminLoginPage() {
     <div className="admin-auth-screen">
       <form className="admin-auth-card" onSubmit={handleSubmit}>
         <div className="admin-auth-eyebrow">markAI admin</div>
-        <h1 className="admin-auth-title">Dang nhap de quan ly Vibecode</h1>
+        <h1 className="admin-auth-title">Đăng nhập để quản lý Vibecode</h1>
         <p className="admin-auth-copy">
-          Dung tai khoan admin noi bo. Khu nay da duoc noi voi Neon va session server-side.
+          Dùng tài khoản admin nội bộ. Khu này đã được nối với Neon và session server-side.
         </p>
 
         <label className="admin-auth-field">
@@ -53,7 +53,7 @@ export default function AdminLoginPage() {
         {errorMessage ? <div className="admin-auth-error">{errorMessage}</div> : null}
 
         <button className="btn btn-primary admin-auth-submit" disabled={isSubmitting} type="submit">
-          {isSubmitting ? 'Dang vao...' : 'Dang nhap admin'}
+          {isSubmitting ? 'Đang đăng nhập...' : 'Đăng nhập admin'}
         </button>
       </form>
     </div>

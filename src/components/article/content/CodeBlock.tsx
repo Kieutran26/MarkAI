@@ -3,6 +3,7 @@
 import { useState } from 'react';
 
 type CodeBlockProps = {
+  key?: string | number;
   filename: string;
   code: string;
 };

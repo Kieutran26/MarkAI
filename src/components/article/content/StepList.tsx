@@ -1,4 +1,5 @@
 type StepListProps = {
+  key?: string | number;
   steps: { title: string; desc: string }[];
 };
 

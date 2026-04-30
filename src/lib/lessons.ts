@@ -7,6 +7,7 @@ export type SubLesson = {
   contentType: 'text' | 'compare' | 'grid' | 'usecases' | 'mixed';
   // Content blocks
   paragraphs?: string[];
+  paragraphs_extra?: string[];
   insight?: string;
   compareHeaders?: [string, string];
   compareRows?: Array<[string, string]>;
@@ -26,6 +27,8 @@ export type Lesson = {
   desc: string;
   tags: string[];
   difficulty: string;
+  badgeExtra?: string;
+  badgeExtraType?: 'accent' | 'dark' | 'green';
   nextLesson: { id: number; title: string } | null;
   prevLesson: { id: number; title: string } | null;
   subLessons: SubLesson[];

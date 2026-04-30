@@ -1,4 +1,5 @@
 type CompareTableProps = {
+  key?: string | number;
   headers: [string, string];
   rows: {
     left: string;

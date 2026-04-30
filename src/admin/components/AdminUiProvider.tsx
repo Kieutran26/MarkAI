@@ -1,6 +1,7 @@
 'use client'
 
 import { createContext, useContext, useMemo, useState } from 'react'
+import type { ReactNode } from 'react'
 import { useRouter } from 'next/navigation'
 
 type AdminUiContextValue = {
@@ -12,7 +13,7 @@ type AdminUiContextValue = {
 
 const AdminUiContext = createContext<AdminUiContextValue | null>(null)
 
-export function AdminUiProvider({ children }: { children: React.ReactNode }) {
+export function AdminUiProvider({ children }: { children: ReactNode }) {
   const router = useRouter()
   const [openModal, setOpenModal] = useState<string | null>(null)
 

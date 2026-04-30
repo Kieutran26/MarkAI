@@ -41,6 +41,7 @@ export type Post = {
   prevTitle: string | null;
   nextTitle: string | null;
   prevCategory: string | null;
+  nextCategory: string | null;
   toc: TocSection[];
   content: ContentBlock[];
 };

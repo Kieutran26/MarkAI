@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import type { PostCategory } from '../../lib/posts';
 
 type BlogCardProps = {
+  key?: string | number;
   slug: string;
   category: PostCategory;
   title: string;

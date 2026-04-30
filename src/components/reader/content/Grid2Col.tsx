@@ -1,4 +1,5 @@
 interface Grid2ColProps {
+  key?: string | number;
   items: {
     label: string;
     title: string;
