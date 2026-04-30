@@ -9,6 +9,12 @@ export default function Nav() {
     location.pathname.startsWith('/lesson') ||
     location.pathname.includes('/bai-');
   const isActive = (path: string) => location.pathname === path;
+  const getNavItemClass = (active: boolean) =>
+    `font-mono text-[12px] px-4 h-[52px] flex items-center border-l border-border transition-colors no-underline ${
+      active
+        ? 'bg-accent text-white font-medium'
+        : 'text-muted hover:bg-bg2 hover:text-ink'
+    }`;
 
   const handleLogoClick = (event: MouseEvent<HTMLAnchorElement>) => {
     if (location.pathname !== '/') {
@@ -20,7 +26,7 @@ export default function Nav() {
   };
 
   return (
-    <nav className="sticky top-0 z-50 h-[52px] bg-bg border-b border-border flex items-center justify-between px-4 md:px-8">
+    <nav className="page-gutter sticky top-0 z-50 h-[52px] bg-bg border-b border-border flex items-center justify-between">
       <Link
         to="/"
         aria-label="Về trang chủ markAI"
@@ -34,7 +40,7 @@ export default function Nav() {
         <li>
           <Link
             to="/vibecode"
-            className={`font-mono text-[12px] px-4 h-[52px] flex items-center border-l border-border hover:bg-bg2 hover:text-ink transition-colors no-underline ${isVibecodeActive ? 'text-accent font-medium' : 'text-muted'}`}
+            className={getNavItemClass(isVibecodeActive)}
           >
             Vibecode
           </Link>
@@ -42,7 +48,7 @@ export default function Nav() {
         <li>
           <Link
             to="/blog"
-            className={`font-mono text-[12px] px-4 h-[52px] flex items-center border-l border-border hover:bg-bg2 hover:text-ink transition-colors no-underline ${isActive('/blog') ? 'text-accent font-medium' : 'text-muted'}`}
+            className={getNavItemClass(isActive('/blog'))}
           >
             Blog
           </Link>
@@ -50,7 +56,7 @@ export default function Nav() {
         <li>
           <Link
             to="/tips"
-            className={`font-mono text-[12px] px-4 h-[52px] flex items-center border-l border-border hover:bg-bg2 hover:text-ink transition-colors no-underline ${isActive('/tips') ? 'text-accent font-medium' : 'text-muted'}`}
+            className={getNavItemClass(isActive('/tips'))}
           >
             Tips
           </Link>
@@ -58,7 +64,7 @@ export default function Nav() {
         <li>
           <Link
             to="/prompts"
-            className={`font-mono text-[12px] px-4 h-[52px] flex items-center border-l border-border hover:bg-bg2 hover:text-ink transition-colors no-underline ${isActive('/prompts') ? 'text-accent font-medium' : 'text-muted'}`}
+            className={getNavItemClass(isActive('/prompts'))}
           >
             Prompts
           </Link>
@@ -73,7 +79,7 @@ export default function Nav() {
           <span className="font-mono text-[12px] text-muted px-4 h-[52px] flex items-center border-l border-border opacity-40 cursor-default">Video</span>
         </li>
       </ul>
-      <div className="font-mono text-accent text-[12px] flex items-center h-full md:border-l border-border md:pl-4">
+      <div className="nav-free-wrap font-mono text-[12px] flex items-center h-full">
         <span className="nav-free font-medium">Miễn phí 100%</span>
       </div>
     </nav>

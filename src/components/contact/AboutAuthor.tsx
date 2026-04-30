@@ -23,10 +23,10 @@ export default function AboutAuthor() {
             <div className="about-card-body">
               <div className="about-card-name">markAI Builder</div>
               <div className="about-card-role">BUILDER · MARKETER · VIBE-CODER</div>
-              <div style={{ fontFamily: 'var(--sans)', fontSize: '13px', fontWeight: 300, color: '#888', lineHeight: 1.7, marginBottom: '1.2rem' }}>
+              <div style={{ fontFamily: 'var(--sans)', fontSize: '13px', fontWeight: 300, color: 'var(--text-soft)', lineHeight: 1.7, marginBottom: '1.2rem' }}>
                 Dân Marketing chuyển sang vibecode. Build markAI.vn ban đêm sau giờ làm việc. Không có background kỹ thuật — tất cả học bằng cách làm thật.
               </div>
-              <div style={{ fontFamily: 'var(--mono)', fontSize: '11px', color: '#555', display: 'flex', flexDirection: 'column', gap: '.4rem' }}>
+              <div style={{ fontFamily: 'var(--mono)', fontSize: '11px', color: 'var(--text-dim)', display: 'flex', flexDirection: 'column', gap: '.4rem' }}>
                 <span>✳ Email: hello@markai.vn</span>
                 <span>✳ Phản hồi: 1-3 ngày</span>
                 <span>✳ Timezone: GMT+7 (Hồ Chí Minh)</span>

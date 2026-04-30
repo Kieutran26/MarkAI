@@ -21,12 +21,12 @@ export default function TickerPage() {
         </div>
       </div>
 
-      <div style={{ background: 'var(--ink)', padding: '1rem 2rem', borderBottom: '1px solid #1a1a1a' }}>
-        <div style={{ fontFamily: 'var(--mono)', fontSize: '10px', color: '#555', marginBottom: '.5rem', letterSpacing: '.06em', textTransform: 'uppercase' }}>
+      <div style={{ background: 'var(--ink)', padding: '1rem 2rem', borderBottom: '1px solid var(--surface-2)' }}>
+        <div style={{ fontFamily: 'var(--mono)', fontSize: '10px', color: 'var(--text-dim)', marginBottom: '.5rem', letterSpacing: '.06em', textTransform: 'uppercase' }}>
           Preview ticker hien tai:
         </div>
         <div className="mini-ticker" style={{ background: 'transparent', height: 'auto', overflow: 'visible' }}>
-          <div style={{ fontFamily: 'var(--mono)', fontSize: '11px', color: '#888', lineHeight: '2' }}>
+          <div style={{ fontFamily: 'var(--mono)', fontSize: '11px', color: 'var(--text-soft)', lineHeight: '2' }}>
             ✳ Vibecode ra mat thang 4/2026 · ✳ 7 bai hoc lo trinh zero · ✳ Mien phi 100% · ✳ Analytics sap ra · ✳ Generate Image sap ra · ✳ Motion Video sap ra · ✳ Blog · Tips · Prompt Library · ✳ Danh rieng dan Marketing
           </div>
         </div>

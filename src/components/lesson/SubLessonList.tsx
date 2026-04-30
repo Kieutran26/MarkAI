@@ -9,9 +9,9 @@ interface SubLessonListProps {
 export default function SubLessonList({ subLessons, lessonSlug }: SubLessonListProps) {
   return (
     <div className="border-b border-border">
-      <div className="max-w-[1200px] mx-auto">
+      <div className="page-shell">
         {/* Header */}
-        <div className="px-8 py-6 border-b border-border flex justify-between items-baseline">
+        <div className="py-6 border-b border-border flex justify-between items-baseline">
           <h2 className="font-serif text-[1.2rem]">
             {subLessons.length} phần trong bài này
           </h2>

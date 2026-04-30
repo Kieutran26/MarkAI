@@ -33,10 +33,10 @@ export default function LessonHero({ lesson, progress }: LessonHeroProps) {
 
   return (
     <section className="border-b border-border">
-      <div className="max-w-[1200px] mx-auto">
+      <div className="page-shell">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_340px]">
           {/* Left Column */}
-          <div className="p-8 lg:p-10 border-b lg:border-b-0 lg:border-r border-border">
+          <div className="py-8 lg:py-10 pr-0 lg:pr-10 border-b lg:border-b-0 lg:border-r border-border">
             {/* Badges */}
             <div className="flex flex-wrap items-center gap-2 mb-6">
               {lesson.badgeType === 'accent' && (
@@ -83,7 +83,7 @@ export default function LessonHero({ lesson, progress }: LessonHeroProps) {
           </div>
 
           {/* Right Column */}
-          <div className="p-6 lg:p-8">
+          <div className="py-6 lg:py-8 pl-0 lg:pl-8">
             {/* Stats Box */}
             <div className="border border-border mb-6">
               <div className="lesson-stat">

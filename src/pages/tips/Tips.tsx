@@ -82,7 +82,7 @@ export default function Tips() {
       <SubmitTip />
       <TipsCTA />
       <footer className="border-t border-border">
-        <div className="max-w-[1200px] mx-auto px-5 md:px-8">
+        <div className="page-shell">
           <div className="py-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 border-b border-border">
             <div>
               <div className="font-mono text-[15px] font-medium tracking-tight mb-4">

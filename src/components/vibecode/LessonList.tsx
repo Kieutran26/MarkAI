@@ -15,7 +15,7 @@ export default function LessonList() {
   return (
     <div className="border-b border-[var(--border)]">
       <div 
-        className="max-w-[1200px] mx-auto border-l border-r border-[var(--border)]"
+        className="page-shell border-l border-r border-[var(--border)]"
       >
         {lessons.map((lesson, index) => (
           <Link

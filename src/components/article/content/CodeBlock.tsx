@@ -22,11 +22,11 @@ export default function CodeBlock({ filename, code }: CodeBlockProps) {
     <div className="code-block">
       <div className="code-block-header">
         <span>{filename}</span>
-        <button onClick={handleCopy} className="font-mono text-[10px] text-[#555] hover:text-[#888] cursor-pointer transition-colors">
+        <button onClick={handleCopy} className="font-mono text-[10px] text-[var(--text-dim)] hover:text-[var(--text-soft)] cursor-pointer transition-colors">
           {copied ? '✓ Đã copy' : 'Copy'}
         </button>
       </div>
-      <pre className="font-mono text-[12.5px] leading-[1.75] text-[#ccc] overflow-x-auto whitespace-pre-wrap p-5">
+      <pre className="font-mono text-[12.5px] leading-[1.75] text-[var(--text-code)] overflow-x-auto whitespace-pre-wrap p-5">
         <code dangerouslySetInnerHTML={{ __html: code }} />
       </pre>
     </div>

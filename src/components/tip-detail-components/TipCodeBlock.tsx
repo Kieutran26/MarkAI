@@ -19,7 +19,7 @@ export default function TipCodeBlock({ code, language = 'code' }: TipCodeBlockPr
     <div
       style={{
         background: 'var(--ink)',
-        border: '1px solid #2a2a2a',
+        border: '1px solid var(--surface-3)',
         marginBottom: '1.5rem',
       }}
     >
@@ -29,15 +29,15 @@ export default function TipCodeBlock({ code, language = 'code' }: TipCodeBlockPr
           alignItems: 'center',
           justifyContent: 'space-between',
           padding: '0.6rem 1rem',
-          borderBottom: '1px solid #2a2a2a',
-          background: '#1a1a1a',
+          borderBottom: '1px solid var(--surface-3)',
+          background: 'var(--surface-2)',
         }}
       >
         <span
           style={{
             fontFamily: 'var(--mono)',
             fontSize: '10px',
-            color: '#555',
+            color: 'var(--text-dim)',
             letterSpacing: '0.06em',
             textTransform: 'uppercase',
           }}
@@ -49,7 +49,7 @@ export default function TipCodeBlock({ code, language = 'code' }: TipCodeBlockPr
           style={{
             fontFamily: 'var(--mono)',
             fontSize: '10px',
-            color: copied ? '#28CA41' : '#555',
+            color: copied ? 'var(--success-bright)' : 'var(--text-dim)',
             cursor: 'pointer',
             letterSpacing: '0.04em',
             transition: 'color 0.15s',

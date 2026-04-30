@@ -1,0 +1,51 @@
+:root {
+  --bg: #f7f5f0;
+  --bg2: #ede9e0;
+  --bg3: #e4dfd5;
+  --ink: #0d0d0d;
+  --ink2: #444444;
+  --muted: #888888;
+  --border: #d4cfc5;
+  --accent: #E88C2E;
+  --accent2: #E88C2E;
+  --accent-contrast: #0d0d0d;
+
+  --surface-0: #0a0a0a;
+  --surface-1: #111111;
+  --surface-2: #1a1a1a;
+  --surface-3: #2a2a2a;
+  --line-dark: #333333;
+
+  --text-subtle: #444444;
+  --text-dim: #555555;
+  --text-faint: #666666;
+  --text-soft: #888888;
+  --text-code: #cccccc;
+  --text-code-muted: #aaaaaa;
+
+  --success: #16a34a;
+  --success-bright: #28ca41;
+  --danger: #dc2626;
+  --danger-hover: #b91c1c;
+  --danger-bg: #fee2e2;
+  --info: #1d4ed8;
+
+  --warning-bg: #f7ffe0;
+  --warning-border: #dff58c;
+  --warning-text: #4d6a00;
+
+  --code-value: #98c379;
+  --code-keyword: #61afef;
+
+  --terminal-red: #ff5f57;
+  --terminal-yellow: #ffbd2e;
+  --terminal-green: #28ca41;
+
+  --category-tool-review: #2d4a3e;
+  --category-case-study: #1a3a5c;
+  --category-analytics: #3d2a5c;
+  --category-deploy: #4a2a1a;
+
+  --page-gutter: 60px;
+  --page-gutter-mobile: 20px;
+}

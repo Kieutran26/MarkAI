@@ -6,9 +6,9 @@ import { posts, featuredPost } from '../../lib/posts';
 export default function BlogHero() {
   return (
     <div className="border-b border-border">
-      <div className="max-w-[1200px] mx-auto grid grid-cols-1 md:grid-cols-2">
+      <div className="page-shell grid grid-cols-1 md:grid-cols-2">
         {/* Left column - Tagline */}
-        <div className="p-8 md:p-12 md:pr-8 border-b md:border-b-0 md:border-r border-border flex flex-col justify-center">
+        <div className="py-8 md:py-12 pr-0 md:pr-8 border-b md:border-b-0 md:border-r border-border flex flex-col justify-center">
           <p className="font-mono text-[11px] text-muted tracking-widest uppercase mb-5">
             <span className="text-accent mr-1">✳</span> Blog · markAI.vn · cập nhật hàng tuần
           </p>

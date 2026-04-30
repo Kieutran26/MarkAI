@@ -14,7 +14,7 @@ export default function CompareTable({ headers, rows }: CompareTableProps) {
       case 'cross':
         return 'line-through text-muted';
       case 'check':
-        return 'text-[#16a34a]';
+        return 'text-[var(--success)]';
       default:
         return 'text-ink2';
     }

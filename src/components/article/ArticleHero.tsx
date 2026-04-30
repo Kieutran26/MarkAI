@@ -58,7 +58,7 @@ export default function ArticleHero({ post }: ArticleHeroProps) {
 
       {/* Breadcrumb */}
       <div className="breadcrumb-wrap">
-        <div className="max-w-[1200px] mx-auto flex items-center gap-2 py-3 px-4 md:px-8 font-mono text-[11px] text-muted">
+        <div className="page-shell flex items-center gap-2 py-3 font-mono text-[11px] text-muted">
           <Link to="/" className="hover:text-ink">markAI</Link>
           <span className="text-border">/</span>
           <Link to="/blog" className="hover:text-ink">Blog</Link>
@@ -69,9 +69,9 @@ export default function ArticleHero({ post }: ArticleHeroProps) {
 
       {/* Article Hero */}
       <div className="border-b border-border">
-        <div className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-[1fr_300px]">
+        <div className="page-shell grid grid-cols-1 lg:grid-cols-[1fr_300px]">
           {/* Left column */}
-          <div className="p-8 md:p-10 lg:p-12 border-b lg:border-b-0 lg:border-r border-border">
+          <div className="py-8 md:py-10 lg:py-12 pr-0 lg:pr-12 border-b lg:border-b-0 lg:border-r border-border">
             <span className="inline-block font-mono text-[10px] bg-ink text-bg px-3 py-1 tracking-wide uppercase mb-5">
               {post.category}
             </span>
@@ -106,7 +106,7 @@ export default function ArticleHero({ post }: ArticleHeroProps) {
           </div>
 
           {/* Right column - TOC + Share */}
-          <div className="p-6 md:p-8 flex flex-col gap-5">
+          <div className="py-6 md:py-8 pl-0 lg:pl-8 flex flex-col gap-5">
             {/* TOC */}
             <div className="border border-border">
               <div className="p-3 border-b border-border bg-bg2 font-mono text-[10px] text-muted tracking-wide uppercase">

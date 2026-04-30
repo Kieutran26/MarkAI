@@ -6,7 +6,7 @@ interface BadgeProps {
 
 export default function Badge({ children, variant = 'outline', style }: BadgeProps) {
   const variantClass = `badge-${variant}`
-  const customStyle = variant === 'blue' ? { background: '#1d4ed8', ...style } : style
+  const customStyle = variant === 'blue' ? { background: 'var(--info)', ...style } : style
 
   return (
     <span className={`badge ${variantClass}`} style={customStyle}>

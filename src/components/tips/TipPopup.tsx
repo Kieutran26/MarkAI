@@ -172,12 +172,12 @@ export default function TipPopup({
                 fontFamily: 'var(--mono)',
                 fontSize: '12px',
                 background: 'var(--ink)',
-                color: '#98c379',
+                color: 'var(--code-value)',
                 padding: '0.9rem 1rem',
                 display: 'block',
                 marginBottom: '1.1rem',
                 lineHeight: 1.65,
-                border: '1px solid #2a2a2a',
+                border: '1px solid var(--surface-3)',
                 overflowX: 'auto',
               }}
             >

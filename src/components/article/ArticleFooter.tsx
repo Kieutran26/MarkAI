@@ -8,9 +8,9 @@ type ArticleFooterProps = {
 export default function ArticleFooter({ post }: ArticleFooterProps) {
   return (
     <div className="border-t border-border">
-      <div className="max-w-[1200px] mx-auto">
+      <div className="page-shell">
         {/* Tags */}
-        <div className="flex items-center gap-3 flex-wrap py-5 px-6 md:px-8 border-b border-border">
+        <div className="flex items-center gap-3 flex-wrap py-5 border-b border-border">
           <span className="font-mono text-[10px] text-muted tracking-wide">Tags:</span>
           {post.tags.map((tag) => (
             <span
@@ -23,7 +23,7 @@ export default function ArticleFooter({ post }: ArticleFooterProps) {
         </div>
 
         {/* Author card */}
-        <div className="flex gap-6 py-8 px-6 md:px-8 border-b border-border">
+        <div className="flex gap-6 py-8 border-b border-border">
           <div className="w-[52px] h-[52px] flex-shrink-0 bg-bg3 border border-border flex items-center justify-center font-serif text-[1.3rem] text-ink2">
             M
           </div>
@@ -41,7 +41,7 @@ export default function ArticleFooter({ post }: ArticleFooterProps) {
           {/* Previous */}
           <Link
             to={post.prevSlug ? `/blog/${post.prevSlug}` : '#'}
-            className={`p-6 md:p-8 border-b md:border-b-0 md:border-r border-border flex flex-col gap-2 ${
+            className={`py-6 md:py-8 border-b md:border-b-0 md:border-r border-border flex flex-col gap-2 ${
               !post.prevSlug ? 'opacity-35 pointer-events-none' : 'hover:bg-bg2 transition-colors'
             }`}
           >
@@ -61,18 +61,18 @@ export default function ArticleFooter({ post }: ArticleFooterProps) {
           {/* Next */}
           <Link
             to={post.nextSlug ? `/blog/${post.nextSlug}` : '#'}
-            className={`p-6 md:p-8 flex flex-col gap-2 text-right ${
+            className={`py-6 md:py-8 flex flex-col gap-2 text-right ${
               !post.nextSlug ? 'opacity-35 pointer-events-none' : 'bg-ink hover:bg-accent transition-colors'
             }`}
           >
-            <span className="font-mono text-[10px] tracking-widest uppercase" style={{ color: post.nextSlug ? '#555' : 'inherit' }}>
+            <span className="font-mono text-[10px] tracking-widest uppercase" style={{ color: post.nextSlug ? 'var(--text-dim)' : 'inherit' }}>
               Bài tiếp theo →
             </span>
             <span className="font-serif text-[1rem] leading-[1.3]" style={{ color: post.nextSlug ? 'var(--bg)' : 'inherit' }}>
               {post.nextTitle || '—'}
             </span>
             {post.nextCategory && (
-              <span className="font-mono text-[10px]" style={{ color: post.nextSlug ? '#555' : 'inherit' }}>
+              <span className="font-mono text-[10px]" style={{ color: post.nextSlug ? 'var(--text-dim)' : 'inherit' }}>
                 {post.nextCategory}
               </span>
             )}

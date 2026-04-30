@@ -251,7 +251,7 @@ export default function Tips() {
                 <div>
                   <div className="featured-tip-text">
                     {tip.id === 54 ? (
-                      <>Khi bị lỗi "module not found" — 90% do quên chạy <code style={{ fontFamily: 'var(--mono)', fontSize: '0.85em', color: '#98c379' }}>npm install</code> sau khi thêm package.</>
+                      <>Khi bị lỗi "module not found" — 90% do quên chạy <code style={{ fontFamily: 'var(--mono)', fontSize: '0.85em', color: 'var(--code-value)' }}>npm install</code> sau khi thêm package.</>
                     ) : (
                       tip.title
                     )}

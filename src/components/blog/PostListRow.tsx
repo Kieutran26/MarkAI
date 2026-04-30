@@ -6,8 +6,8 @@ export default function PostListRow() {
 
   return (
     <div>
-      <div className="max-w-[1200px] mx-auto">
-        <div className="p-6 md:p-8 flex justify-between items-baseline border-b border-border">
+      <div className="page-shell">
+        <div className="py-6 md:py-8 flex justify-between items-baseline border-b border-border">
           <h2 className="font-serif text-[1.2rem]">Tất cả bài viết</h2>
           <span className="font-mono text-[11px] text-muted">Sắp xếp: Mới nhất</span>
         </div>
@@ -20,7 +20,7 @@ export default function PostListRow() {
                 <div className="post-row-num">
                   <span className="font-serif text-[1.4rem] text-muted">{displayNum}</span>
                 </div>
-                <div className="py-5 px-6 md:px-8 flex flex-col gap-1">
+                <div className="py-5 flex flex-col gap-1">
                   <span className="font-mono text-[9px] text-muted tracking-widest uppercase">
                     {post.category}
                   </span>
@@ -39,7 +39,7 @@ export default function PostListRow() {
           })}
         </div>
 
-        <div className="p-8 border-t border-border flex justify-center">
+        <div className="py-8 border-t border-border flex justify-center">
           <button className="btn-ghost">
             Xem thêm bài viết →
           </button>

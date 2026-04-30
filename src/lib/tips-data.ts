@@ -61,7 +61,7 @@ Miễn phí 100%. Triết lý: học xong dùng được ngay.
 - KHÔNG border-radius (trừ 3 dots terminal)
 - KHÔNG box-shadow bất kỳ đâu
 - Font: Instrument Serif (heading) · DM Mono (UI) · DM Sans (body)
-- Accent: #E8410A — chỉ dùng cho hover/badge/em/active
+- Accent: #B6F500 — chỉ dùng cho hover/badge/em/active
 
 ## Current Focus
 Đang build trang /tips và /tips/[slug].`

@@ -4,7 +4,7 @@ export default function PromptTeaser() {
   return (
     <div className="prompt-teaser">
       <div 
-        className="max-w-[1200px] mx-auto px-5 py-16 lg:py-20 grid gap-16 grid-cols-1 lg:grid-cols-2 items-start"
+        className="page-shell py-16 lg:py-20 grid gap-16 grid-cols-1 lg:grid-cols-2 items-start"
         style={{ gridTemplateColumns: '1fr 1fr' }}
       >
         {/* Left Column */}

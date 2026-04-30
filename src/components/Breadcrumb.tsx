@@ -7,7 +7,7 @@ interface BreadcrumbProps {
 export default function Breadcrumb({ items }: BreadcrumbProps) {
   return (
     <div className="border-b border-border">
-      <div className="max-w-[1200px] mx-auto px-4 md:px-8 py-[.9rem] flex items-center gap-[.5rem]">
+      <div className="page-shell py-[.9rem] flex items-center gap-[.5rem]">
         {items.map((item, index) => (
           <div key={index} className="flex items-center gap-[.5rem]">
             {index > 0 && (

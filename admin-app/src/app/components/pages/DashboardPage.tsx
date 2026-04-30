@@ -28,7 +28,7 @@ export default function DashboardPage() {
         <div className="stat-card">
           <div className="stat-num">8</div>
           <div className="stat-label">Module trong roadmap</div>
-          <div className="stat-delta" style={{ color: '#d97706' }}>1 available · 7 sap ra</div>
+          <div className="stat-delta" style={{ color: 'var(--accent)' }}>1 available · 7 sap ra</div>
         </div>
       </div>
 

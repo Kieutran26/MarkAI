@@ -722,7 +722,7 @@ export const lessons: Lesson[] = [
         contentType: 'text',
         paragraphs: [
           'AI không có "mắt thẩm mỹ" — nó hiểu theo từng từ. Khi bạn nói "làm button đẹp", AI không biết "đẹp" là gì.',
-          '<strong>Mô tả CỤ THỂ thay vì MƠ HỒ:</strong><br>• Sai: "làm button đẹp"<br>• Đúng: "button với bg màu cam-đỏ (#E8410A), chữ trắng, font mono 12px, padding 12px 24px"',
+          '<strong>Mô tả CỤ THỂ thay vì MƠ HỒ:</strong><br>• Sai: "làm button đẹp"<br>• Đúng: "button với bg #B6F500, chữ đen, font mono 12px, padding 12px 24px"',
           '<strong>Đoạn này rất quan trọng vì:</strong> Nếu bạn không nói rõ, AI sẽ tự quyết định theo "default" của nó — có thể không phải thứ bạn muốn.'
         ],
         paragraphs_extra: [
@@ -930,7 +930,7 @@ export const lessons: Lesson[] = [
           '<strong>Nội dung nên có:</strong><br>• Project overview và mục tiêu<br>• Tech stack (framework, styling, libraries)<br>• Project structure<br>• Design system (colors, fonts, spacing)<br>• Coding conventions<br>• Common workflows'
         ],
         paragraphs_extra: [
-          '<strong>Example CLAUDE.md:</strong><br># My Project\n## Overview\nLanding page builder cho Marketer\n## Tech Stack\nNext.js 14, TypeScript, Tailwind CSS v4\n## Design\n- Font: Instrument Serif (headings), DM Sans (body)\n- Colors: bg #f7f5f0, accent #E8410A\n- No border-radius, no box-shadow'
+          '<strong>Example CLAUDE.md:</strong><br># My Project\n## Overview\nLanding page builder cho Marketer\n## Tech Stack\nNext.js 14, TypeScript, Tailwind CSS v4\n## Design\n- Font: Instrument Serif (headings), DM Sans (body)\n- Colors: bg #f7f5f0, accent #B6F500\n- No border-radius, no box-shadow'
         ],
         insight: '✳ CLAUDE.md là "playbook" cho AI. Đọc trước khi bắt đầu project mới = AI hiểu bối cảnh ngay.'
       },

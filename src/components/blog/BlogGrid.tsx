@@ -7,8 +7,8 @@ export default function BlogGrid() {
 
   return (
     <div>
-      <div className="max-w-[1200px] mx-auto">
-        <div className="p-6 md:p-8 flex justify-between items-baseline border-b border-border">
+      <div className="page-shell">
+        <div className="py-6 md:py-8 flex justify-between items-baseline border-b border-border">
           <h2 className="font-serif text-[1.2rem]">Bài viết mới nhất</h2>
           <Link to="/blog" className="font-mono text-[11px] text-muted hover:text-accent transition-colors">
             Xem tất cả →

@@ -169,7 +169,7 @@ const CurriculumChapter: React.FC<CurriculumChapterProps> = ({ chapter, index, i
       case 'ỨNG DỤNG': return 'text-blue-600 bg-blue-50/50 border-blue-100';
       case 'DESIGN': return 'text-purple-600 bg-purple-50/50 border-purple-100';
       case 'GIT': return 'text-gray-600 bg-gray-50 border-gray-200';
-      case 'AI CODE': return 'text-orange-600 bg-orange-50/50 border-orange-100';
+      case 'AI CODE': return 'text-accent bg-accent/5 border-accent/10';
       case 'LAUNCH': return 'text-accent bg-accent/5 border-accent/10';
       default: return 'text-muted bg-bg2/50 border-border';
     }
@@ -267,8 +267,8 @@ export default function VibecodeCourse() {
   return (
     <div className="bg-bg min-h-screen">
       {/* Header Section */}
-      <section className="border-b border-border bg-white pt-24 pb-12 px-5">
-        <div className="max-w-[1100px] mx-auto">
+      <section className="border-b border-border bg-white pt-24 pb-12 px-0">
+        <div className="page-shell-course">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -322,8 +322,8 @@ export default function VibecodeCourse() {
       </section>
 
       {/* Main Content with Sidebar */}
-      <section className="py-12 px-5">
-        <div className="max-w-[1100px] mx-auto">
+      <section className="py-12 px-0">
+        <div className="page-shell-course">
           <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px] gap-12 items-start">
             
             {/* Left: Curriculum */}
@@ -382,8 +382,8 @@ export default function VibecodeCourse() {
       </section>
 
       {/* Footer CTA */}
-      <section className="py-20 px-5 border-t border-border bg-white">
-        <div className="max-w-[800px] mx-auto text-center">
+      <section className="py-20 px-0 border-t border-border bg-white">
+        <div className="page-shell-narrow text-center">
           <h2 className="font-serif text-[2rem] mb-6 italic">Mọi thứ bạn cần để làm chủ website.</h2>
           <Link to="/vibecode/vibecode-la-gi" className="inline-block border border-ink px-10 py-4 font-mono text-[11px] uppercase tracking-widest hover:bg-ink hover:text-white transition-all no-underline">
             Ghi danh miễn phí

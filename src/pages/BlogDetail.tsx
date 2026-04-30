@@ -12,7 +12,7 @@ export default function BlogDetailPage() {
 
   if (!post) {
     return (
-      <div className="max-w-[1200px] mx-auto p-12 text-center">
+      <div className="page-shell py-12 text-center">
         <h1 className="font-serif text-2xl mb-4">Bài viết không tìm thấy</h1>
         <a href="/blog" className="btn-ghost">← Quay lại Blog</a>
       </div>
@@ -23,7 +23,7 @@ export default function BlogDetailPage() {
     <div>
       <ArticleHero post={post} />
       
-      <div className="max-w-[1200px] mx-auto grid grid-cols-1 lg:grid-cols-[1fr_300px]">
+      <div className="page-shell grid grid-cols-1 lg:grid-cols-[1fr_300px]">
         <ArticleContent content={post.content} />
         <ArticleSidebar currentSlug={post.slug} currentCategory={post.category} />
       </div>

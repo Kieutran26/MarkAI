@@ -6,7 +6,7 @@ export default function RelatedArticles() {
 
   return (
     <div className="bg-bg2 border-t border-border">
-      <div className="max-w-[1200px] mx-auto py-12 px-6 md:px-8">
+      <div className="page-shell py-12">
         <h2 className="font-serif text-[1.4rem] mb-8">
           Có thể bạn cũng muốn <em className="text-accent">đọc thêm</em>
         </h2>

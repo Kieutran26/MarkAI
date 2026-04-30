@@ -181,10 +181,10 @@ export default function Lesson() {
   const currentId = parseInt(id || "1");
 
   return (
-    <div className="max-w-[1200px] mx-auto min-h-screen">
+    <div className="page-shell min-h-screen">
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px]">
         {/* Main Content */}
-        <div className="p-8 md:p-16 border-r border-border min-h-screen bg-white">
+        <div className="py-8 md:py-16 pr-0 lg:pr-16 border-r border-border min-h-screen bg-white">
           <Link to="/vibecode" className="font-mono text-[11px] text-muted hover:text-accent transition-colors no-underline block mb-8">
             ← Quay lại lộ trình Vibecode
           </Link>
@@ -216,8 +216,8 @@ export default function Lesson() {
             {currentId < 10 ? (
               <Link to={`/lesson/${currentId + 1}`} className="btn-primary no-underline text-white">Bài tiếp theo →</Link>
             ) : (
-              <div className="font-mono text-[12px] text-[#28CA41] flex items-center gap-2">
-                <span className="w-2 h-2 rounded-full bg-[#28CA41] animate-ping"></span>
+              <div className="font-mono text-[12px] text-[var(--success-bright)] flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-[var(--success-bright)] animate-ping"></span>
                 ✳ Bạn đã hoàn thành lộ trình!
               </div>
             )}
@@ -225,7 +225,7 @@ export default function Lesson() {
         </div>
 
         {/* Sidebar */}
-        <div className="hidden lg:block p-8 bg-bg">
+        <div className="hidden lg:block py-8 pl-8 pr-0 bg-bg">
           <div className="sticky top-24">
             <h3 className="font-mono text-[11px] text-muted tracking-widest uppercase mb-6">Lộ trình 10 bài</h3>
             <ul className="flex flex-col gap-1 list-none p-0">
@@ -246,7 +246,7 @@ export default function Lesson() {
             </ul>
             <div className="mt-12 p-6 bg-ink text-bg">
               <div className="font-mono text-[10px] text-accent tracking-widest mb-4">GÓP Ý?</div>
-              <p className="font-sans text-[12px] leading-relaxed mb-4 text-[#888]">
+              <p className="font-sans text-[12px] leading-relaxed mb-4 text-[var(--text-soft)]">
                 Bạn thấy bài học khó hiểu? Hãy báo cho markAI nhé.
               </p>
               <Link to="/feedback" className="btn-ghost-inv !py-2 !px-4 !text-[10px] w-full text-center block no-underline border border-white/20">Gửi góp ý →</Link>

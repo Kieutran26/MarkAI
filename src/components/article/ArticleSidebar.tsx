@@ -49,7 +49,7 @@ export default function ArticleSidebar({ currentSlug, currentCategory }: Article
       {/* Promo box */}
       <div className="border border-border">
         <div className="p-3 bg-ink">
-          <span className="font-mono text-[10px] text-[#555] tracking-wide uppercase">
+          <span className="font-mono text-[10px] text-[var(--text-dim)] tracking-wide uppercase">
             ✳ Khóa học · Vibecode Web
           </span>
         </div>

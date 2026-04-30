@@ -9,7 +9,7 @@ const Hero = () => (
     initial={{ opacity: 0, y: 20 }}
     animate={{ opacity: 1, y: 0 }}
     transition={{ duration: 0.6 }}
-    className="max-w-[1200px] mx-auto px-5 md:px-8 pt-20 pb-16 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center"
+    className="page-shell pt-20 pb-16 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center"
   >
     <div>
       <p className="font-mono text-[11px] uppercase text-muted tracking-widest mb-4">
@@ -49,7 +49,7 @@ const StatsBar = () => {
 
   return (
     <div className="border-t border-b border-border">
-      <div className="max-w-[1200px] mx-auto flex flex-col sm:flex-row">
+      <div className="page-shell flex flex-col sm:flex-row">
         {stats.map((stat, idx) => (
           <motion.div 
             key={idx}
@@ -165,13 +165,13 @@ const Vibecode = () => {
 
   return (
     <section id="vibecode" className="border-t border-border">
-      <div className="py-20 px-5 flex flex-col items-start">
+      <div className="py-20 px-0 flex flex-col items-start">
         <motion.div 
           initial={{ opacity: 0, x: -30 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="max-w-[1200px] w-full flex flex-col items-start text-left mx-auto"
+          className="page-shell w-full flex flex-col items-start text-left"
         >
           <span className="badge badge-accent mb-6 inline-block font-mono tracking-widest uppercase">VIBECODE WEB ⚡</span>
           <h2 className="section-heading text-[clamp(2.5rem,5.5vw,4rem)] tracking-tight mb-4 text-ink">
@@ -183,7 +183,7 @@ const Vibecode = () => {
         </motion.div>
       </div>
 
-      <div className="max-w-[1200px] mx-auto px-5 pb-24">
+      <div className="page-shell pb-24">
         <div className="relative">
           <motion.div 
             variants={containerVariants}
@@ -264,8 +264,8 @@ const Vibecode = () => {
         </div>
       </div>
 
-      <div className="bg-bg2 py-16 px-5 border-t border-b border-border mt-16">
-        <div className="max-w-[1200px] mx-auto">
+      <div className="bg-bg2 py-16 px-0 border-t border-b border-border mt-16">
+        <div className="page-shell">
           <motion.p 
             initial={{ opacity: 0, x: -10 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -331,7 +331,7 @@ const Vibecode = () => {
 
 
 const CTA = () => (
-  <section className="bg-bg2 py-24 px-5 border-b border-border flex flex-col items-center text-center">
+  <section className="page-gutter bg-bg2 py-24 border-b border-border flex flex-col items-center text-center">
     <h2 className="section-heading mb-6 max-w-2xl">
       Thôi nào, <em className="text-accent italic">bắt đầu bài 01 đi.</em>
     </h2>

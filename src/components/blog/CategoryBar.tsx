@@ -11,7 +11,7 @@ export default function CategoryBar() {
 
   return (
     <div className="border-b border-border sticky top-[52px] z-40 bg-bg">
-      <div className="max-w-[1200px] mx-auto flex items-stretch">
+      <div className="page-shell flex items-stretch">
         {categories.map((cat) => (
           <button
             key={cat}

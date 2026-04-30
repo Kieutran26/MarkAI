@@ -12,7 +12,7 @@ const topics = [
 export default function TopicsGrid() {
   return (
     <div className="topics-section">
-      <div className="max-w-[1200px] mx-auto p-8">
+      <div className="page-shell py-8">
         <p className="font-mono text-[11px] text-muted tracking-widest uppercase mb-4">
           <span className="text-accent mr-1">✳</span> Chủ đề · duyệt theo topic
         </p>

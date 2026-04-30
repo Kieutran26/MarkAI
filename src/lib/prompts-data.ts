@@ -26,7 +26,7 @@ Design rules (QUAN TRỌNG):
 - NO border-radius on any element
 - NO box-shadow anywhere
 - Font: DM Mono for UI/labels, Instrument Serif for headings
-- Accent color: #E8410A — use only for hover, active, em tags
+- Accent color: #B6F500 — use only for hover, active, em tags
 - All colors use CSS variables: --bg, --ink, --accent, --border
 
 Output: Complete TypeScript component with Tailwind classes.`,

@@ -18,11 +18,11 @@ export default function LessonNextUp({
 
   return (
     <section className="bg-ink py-12 lg:py-16">
-      <div className="max-w-[1200px] mx-auto px-8">
+      <div className="page-shell">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Left - Next Lesson CTA */}
           <div className="next-cta">
-            <p className="font-mono text-[10px] text-[#555] tracking-[0.06em] uppercase mb-4">
+            <p className="font-mono text-[10px] text-[var(--text-dim)] tracking-[0.06em] uppercase mb-4">
               ✳ Bài tiếp theo trong lộ trình
             </p>
             <h3 className="font-serif text-[1.6rem] text-bg leading-[1.15] mb-4">
@@ -31,7 +31,7 @@ export default function LessonNextUp({
                 {nextLesson.title.split('—')[1]?.trim() || nextLesson.titleEm}
               </em>
             </h3>
-            <p className="font-sans text-[14px] font-light text-[#888] leading-[1.7] mb-8 max-w-[480px]">
+            <p className="font-sans text-[14px] font-light text-[var(--text-soft)] leading-[1.7] mb-8 max-w-[480px]">
               {nextLesson.desc}
             </p>
             <Link to={`/vibecode/${nextSlug}`} className="btn-accent">
@@ -41,7 +41,7 @@ export default function LessonNextUp({
 
           {/* Right - Remaining Lessons */}
           <div className="next-lessons">
-            <p className="font-mono text-[10px] text-[#555] tracking-[0.06em] uppercase mb-4">
+            <p className="font-mono text-[10px] text-[var(--text-dim)] tracking-[0.06em] uppercase mb-4">
               ✳ Các bài còn lại
             </p>
             <div className="next-lesson-list">

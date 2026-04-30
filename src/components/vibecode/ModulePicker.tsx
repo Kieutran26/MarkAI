@@ -15,7 +15,7 @@ const modules = [
 export default function ModulePicker() {
   return (
     <div className="border-b border-[var(--border)]" style={{ background: 'var(--bg2)' }}>
-      <div className="max-w-[1200px] mx-auto px-5 py-16 lg:py-20">
+      <div className="page-shell py-16 lg:py-20">
         <p className="section-label">
           <span>✳</span> 04 · các module học AI
         </p>

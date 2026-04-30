@@ -13,10 +13,10 @@ type BlogCardProps = {
 const categoryClasses: Record<PostCategory, string> = {
   'Vibecode': 'bg-ink text-bg',
   'Workflow': 'bg-ink2 text-bg',
-  'Tool Review': 'bg-[#2d4a3e] text-white',
-  'Case Study': 'bg-[#1a3a5c] text-white',
-  'Analytics': 'bg-[#3d2a5c] text-white',
-  'Deploy': 'bg-[#4a2a1a] text-white',
+  'Tool Review': 'bg-[var(--category-tool-review)] text-white',
+  'Case Study': 'bg-[var(--category-case-study)] text-white',
+  'Analytics': 'bg-[var(--category-analytics)] text-white',
+  'Deploy': 'bg-[var(--category-deploy)] text-white',
 };
 
 export default function BlogCard({ slug, category, title, excerpt, date, readTime }: BlogCardProps) {

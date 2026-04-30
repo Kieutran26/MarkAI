@@ -6,7 +6,7 @@ interface WhatYoullLearnProps {
 export default function WhatYoullLearn({ items, lessonId }: WhatYoullLearnProps) {
   return (
     <section className="bg-bg2 border-b border-border py-12 lg:py-16">
-      <div className="max-w-[1200px] mx-auto px-8">
+      <div className="page-shell">
         <h2 className="font-serif text-[1.5rem] mb-10">
           Sau bài này bạn sẽ <em className="text-accent italic">hiểu được</em>
         </h2>

@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 export default function Footer() {
   return (
     <footer className="border-t border-border">
-      <div className="max-w-[1200px] mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-16 px-5 md:px-8 py-12 lg:py-16 border-b border-border">
+      <div className="page-shell">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-16 py-12 lg:py-16 border-b border-border">
           {/* Col 1: Logo + tagline */}
           <div>
             <div className="font-mono text-[16px] font-medium tracking-tight mb-4">
@@ -49,7 +49,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="px-5 md:px-8 py-6 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div className="py-6 flex flex-col md:flex-row justify-between items-center gap-4">
           <div className="font-mono text-[11px] text-muted">
             © 2026 markAI.vn · Miễn phí 100% · Không quảng cáo · Không tracking
           </div>

@@ -10,7 +10,7 @@ export default function StatsBar() {
 
   return (
     <div className="flex flex-wrap border-b border-[var(--border)]">
-      <div className="max-w-[1200px] mx-auto w-full flex">
+      <div className="page-shell w-full flex">
         {stats.map((stat, index) => (
           <div 
             key={index}
