@@ -1,6 +1,38 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { motion } from 'motion/react';
+
+const Char = ({ children, delay }: { children: string, delay: number }) => {
+  return (
+    <motion.span
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay, duration: 0 }}
+    >
+      {children}
+    </motion.span>
+  );
+};
+
+const TypewriterText = ({ text, delay = 0, speed = 0.015, className = "" }: { text: string, delay?: number, speed?: number, className?: string }) => {
+  return (
+    <span className={className}>
+      {text.split("").map((char, i) => (
+        <Char key={i} delay={delay + i * speed}>{char}</Char>
+      ))}
+    </span>
+  );
+};
 
 export default function PromptTeaser() {
+  const [animationKey, setAnimationKey] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setAnimationKey(prev => prev + 1);
+    }, 15000); // Restart every 15 seconds
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <div className="prompt-teaser">
       <div className="page-shell py-16 lg:py-20 grid gap-10 lg:gap-16 grid-cols-1 lg:grid-cols-2 items-start">
@@ -24,33 +56,47 @@ export default function PromptTeaser() {
             </a>
           </div>
         </div>
-        
+
         {/* Right Column - Code Box */}
         <div>
           <div className="code-box">
             <div className="code-box-header">
+              <div className="dots">
+                <div className="dot r" />
+                <div className="dot y" />
+                <div className="dot g" />
+              </div>
               Prompt mẫu · Vibecode · Landing page
             </div>
-            <div className="font-[family-name:var(--mono)] text-[12px] leading-[1.8]">
-              <div className="cc"># Tạo landing page campaign</div>
+            <div className="font-[family-name:var(--mono)] text-[12px] leading-[1.8]" key={animationKey}>
+              <div className="cc"><TypewriterText text="# Tạo landing page campaign" delay={0.2} /></div>
               <div className="h-3"></div>
-              <div><span className="ck">Mục đích:</span> <span className="cv">Ra mắt sản phẩm mới tháng 5</span></div>
-              <div><span className="ck">Stack:</span>     <span className="cv">Next.js + Tailwind CSS</span></div>
-              <div><span className="ck">Sections:</span>  <span className="cv">Hero → Features → CTA</span></div>
+              <div>
+                <TypewriterText text="Mục đích:" className="ck mr-2" delay={0.6} />
+                <TypewriterText text="Ra mắt sản phẩm mới tháng 5" className="cv" delay={0.8} />
+              </div>
+              <div>
+                <TypewriterText text="Stack:" className="ck mr-2" delay={1.2} />
+                <TypewriterText text="Next.js + Tailwind CSS" className="cv" delay={1.4} />
+              </div>
+              <div>
+                <TypewriterText text="Sections:" className="ck mr-2" delay={1.8} />
+                <TypewriterText text="Hero → Features → CTA" className="cv" delay={2.0} />
+              </div>
               <div className="h-3"></div>
-              <div><span className="ck">Hero:</span></div>
-              <div>  <span className="cv">- Headline chính: [tên sản phẩm]</span></div>
-              <div>  <span className="cv">- Subheadline: 1 câu lợi ích rõ</span></div>
-              <div>  <span className="cv">- CTA button: "Đăng ký ngay"</span></div>
-              <div>  <span className="cv">- Countdown timer: 3 ngày</span></div>
+              <div><TypewriterText text="Hero:" className="ck" delay={2.5} /></div>
+              <div><TypewriterText text="  - Headline chính: [tên sản phẩm]" className="cv" delay={2.7} /></div>
+              <div><TypewriterText text="  - Subheadline: 1 câu lợi ích rõ" className="cv" delay={3.2} /></div>
+              <div><TypewriterText text={'  - CTA button: "Đăng ký ngay"'} className="cv" delay={3.7} /></div>
+              <div><TypewriterText text="  - Countdown timer: 3 ngày" className="cv" delay={4.2} /></div>
               <div className="h-3"></div>
-              <div><span className="ck">Yêu cầu:</span></div>
-              <div>  <span className="cv">- Mobile responsive</span></div>
-              <div>  <span className="cv">- Không dùng thư viện ngoài</span></div>
-              <div>  <span className="cv">- Dark mode support</span></div>
+              <div><TypewriterText text="Yêu cầu:" className="ck" delay={4.8} /></div>
+              <div><TypewriterText text="  - Mobile responsive" className="cv" delay={5.0} /></div>
+              <div><TypewriterText text="  - Không dùng thư viện ngoài" className="cv" delay={5.5} /></div>
+              <div><TypewriterText text="  - Dark mode support" className="cv" delay={6.0} /></div>
             </div>
             <div className="code-box-footer">
-              ✓ Dùng với Cursor · Claude Code · v0.dev
+              ✓ Copy-paste ngay
             </div>
           </div>
         </div>

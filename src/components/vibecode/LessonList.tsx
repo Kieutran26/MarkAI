@@ -65,13 +65,29 @@ export default function LessonList() {
                   </div>
                 )}
                 
-                {/* Down Arrow Connector Line */}
+                {/* Down Arrow Connector Line (End of Row to Start of Next Row) */}
                 {index % 3 === 2 && index < lessons.length - 1 && (
-                  <div className="hidden lg:flex absolute top-full left-1/2 w-[1px] h-24 -translate-x-1/2 items-center justify-center z-0">
-                    <div className="h-full border-l border-dashed border-[var(--border)] group-hover/card:border-[var(--accent)] transition-colors" />
-                    <div className="absolute top-1/2 -translate-y-1/2 w-7 h-7 bg-white border border-[var(--border)] group-hover/card:bg-[var(--accent)] group-hover/card:border-[var(--accent)] group-hover/card:text-[var(--ink)] transition-all flex items-center justify-center text-[var(--border)] rounded-full">
-                      <ArrowDown className="w-3.5 h-3.5" />
-                    </div>
+                  <div className="hidden lg:flex absolute top-full right-1/2 w-[calc(200%+6rem)] h-24 items-center justify-center z-0 pointer-events-none">
+                    <svg width="100%" height="100%" viewBox="0 0 600 100" fill="none" className="overflow-visible">
+                      <path 
+                        d="M600,0 C600,50 0,50 0,100" 
+                        stroke="var(--border)" 
+                        strokeWidth="1" 
+                        strokeDasharray="4 4"
+                        className="group-hover/card:stroke-[var(--accent)] transition-colors"
+                      />
+                      <g className="translate-y-[50px] translate-x-[300px]">
+                        <circle r="14" fill="white" stroke="var(--border)" className="group-hover/card:fill-[var(--accent)] group-hover/card:stroke-[var(--accent)] transition-all" />
+                        <path 
+                          d="M-4,-2 L0,2 L4,-2" 
+                          stroke="currentColor" 
+                          strokeWidth="1.5" 
+                          strokeLinecap="round" 
+                          strokeLinejoin="round"
+                          className="text-[var(--border)] group-hover/card:text-[var(--ink)]"
+                        />
+                      </g>
+                    </svg>
                   </div>
                 )}
               </div>

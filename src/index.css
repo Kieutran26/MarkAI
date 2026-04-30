@@ -1050,12 +1050,17 @@ button, a { cursor: pointer; transition: all 0.15s ease; }
 .prompt-ctas { display: flex; gap: 0.8rem; flex-wrap: wrap; }
 
 .code-box { background: #0a0a0a; border: 1px solid #2a2a2a; padding: 1.5rem; }
-.code-box-header { font-family: var(--mono); font-size: 10px; color: #555; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 1rem; padding-bottom: 0.8rem; border-bottom: 1px solid #1a1a1a; }
+.code-box-header { display: flex; align-items: center; font-family: var(--mono); font-size: 10px; color: #555; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 1rem; padding-bottom: 0.8rem; border-bottom: 1px solid #1a1a1a; }
+.code-box-header .dots { display: flex; gap: 6px; margin-right: 12px; }
+.code-box-header .dot { width: 10px; height: 10px; border-radius: 50%; }
+.code-box-header .dot.r { background: #FF5F57; }
+.code-box-header .dot.y { background: #FFBD2E; }
+.code-box-header .dot.g { background: #28CA41; }
 .code-box pre { font-family: var(--mono); font-size: 12px; line-height: 1.8; white-space: pre-wrap; }
 .ck { color: var(--accent); }
 .cv { color: #98c379; }
-.cc { color: #555; font-style: italic; }
-.code-box-footer { font-family: var(--mono); font-size: 11px; color: #28CA41; margin-top: 1rem; padding-top: 0.8rem; border-top: 1px solid #1a1a1a; }
+.cc { color: #888; font-style: italic; }
+.code-box-footer { font-family: var(--mono); font-size: 11px; color: var(--accent); margin-top: 1rem; padding-top: 0.8rem; border-top: 1px solid #1a1a1a; }
 
 /* Why Free */
 .why-grid {
