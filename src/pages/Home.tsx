@@ -16,10 +16,11 @@ const Hero = () => (
         ✳ AI cho dân Marketing · hoàn toàn miễn phí · 2026
       </p>
       <h1 className="font-serif text-[clamp(2.8rem,5.5vw,4.8rem)] leading-[1.05] tracking-tight mb-6 text-ink">
-        Nhiều người FOMO AI nhưng vẫn dùng <span className="strike">hời hợt.</span>
+        <span className="text-accent">FOMO AI</span> thì nhiều. <br />
+        Dùng được thì <span className="strike">ít.</span>
       </h1>
       <p className="font-sans text-[15px] leading-[1.7] text-ink2 mb-8 max-w-prose">
-        Không thiếu tool. Chỉ thiếu cách dùng AI đúng và tới nơi tới chốn để ra việc thật. Bắt đầu từ zero với Vibecode web, Analytics, Generate Image, Motion Video. Thực chiến · tiếng Việt · dùng được ngay.
+        Tool thì không thiếu. Biết dùng đúng cách mới là chuyện khác. markAI dạy bạn dùng AI tới nơi tới chốn — từ Vibecode web, Analytics, Generate Image đến Motion Video.
       </p>
       <div className="flex flex-wrap gap-4 items-center mb-6">
         <Link to="/vibecode" className="btn-primary no-underline text-white">

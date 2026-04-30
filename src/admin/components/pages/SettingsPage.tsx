@@ -113,18 +113,18 @@ export default function SettingsPage() {
               </div>
               <div className="form-row">
                 <div className="form-label">H1 heading</div>
-                <textarea defaultValue="Nhiều người FOMO AI nhưng vẫn dùng hời hợt." style={{ minHeight: '60px' }} />
+                <textarea defaultValue={"FOMO AI thì nhiều.\nDùng được thì ít."} style={{ minHeight: '60px' }} />
               </div>
               <div className="form-row">
                 <div className="form-label">
                   Từ gạch bỏ
                   <div className="form-sub">Phần strikethrough italic trong H1</div>
                 </div>
-                <input type="text" defaultValue="hời hợt." />
+                <input type="text" defaultValue="ít." />
               </div>
               <div className="form-row">
                 <div className="form-label">Mô tả</div>
-                <textarea defaultValue="Không thiếu tool. Chỉ thiếu cách dùng AI đúng và tới nơi tới chốn để ra việc thật. Bắt đầu từ zero với Vibecode web, Analytics, Generate Image, Motion Video. Thực chiến · tiếng Việt · dùng được ngay." />
+                <textarea defaultValue="Tool thì không thiếu. Biết dùng đúng cách mới là chuyện khác. markAI dạy bạn dùng AI tới nơi tới chốn — từ Vibecode web, Analytics, Generate Image đến Motion Video." />
               </div>
               <div className="form-row">
                 <div className="form-label">CTA primary</div>
