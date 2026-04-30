@@ -11,10 +11,7 @@ export default function PathHeader() {
 
   return (
     <div className="bg-[var(--ink)] border-b border-[var(--surface-2)]" id="lo-trinh">
-      <div 
-        className="page-shell py-16 lg:py-20 grid gap-16 grid-cols-1 lg:grid-cols-2 items-end"
-        style={{ gridTemplateColumns: '1fr 1fr' }}
-      >
+      <div className="page-shell py-16 lg:py-20 grid gap-10 lg:gap-16 grid-cols-1 lg:grid-cols-2 items-end">
         {/* Left Column */}
         <div>
           <div className="mb-5">
@@ -31,14 +28,14 @@ export default function PathHeader() {
         {/* Right Column - Stats Table */}
         <div>
           {stats.map((stat, index) => (
-            <div 
+            <div
               key={index}
-              className={`flex justify-between items-center py-4 border-b ${index === 0 ? 'border-t' : ''} border-[var(--surface-2)]`}
+              className={`flex flex-col items-start gap-2 sm:flex-row sm:justify-between sm:items-center py-4 border-b ${index === 0 ? 'border-t' : ''} border-[var(--surface-2)]`}
             >
               <span className="font-[family-name:var(--mono)] text-[10px] text-[var(--text-dim)] tracking-[0.04em] uppercase">
                 {stat.label}
               </span>
-              <span className={`font-[family-name:var(--mono)] text-[12px] ${stat.accent ? 'text-[var(--accent)]' : 'text-[var(--text-soft)]'}`}>
+              <span className={`font-[family-name:var(--mono)] text-[12px] sm:text-right ${stat.accent ? 'text-[var(--accent)]' : 'text-[var(--text-soft)]'}`}>
                 {stat.value}
               </span>
             </div>

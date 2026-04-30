@@ -4,10 +4,7 @@ import { Link } from 'react-router-dom';
 export default function VibecodeHero() {
   return (
     <section className="border-b border-[var(--border)]">
-      <div 
-        className="page-shell pt-[5rem] pb-0 grid gap-16 grid-cols-1 lg:grid-cols-[1fr_420px] items-end"
-        style={{ gridTemplateColumns: '1fr 420px' }}
-      >
+      <div className="page-shell pt-[4rem] lg:pt-[5rem] pb-0 grid gap-10 lg:gap-16 grid-cols-1 lg:grid-cols-[minmax(0,1fr)_420px] items-end">
         {/* Left Column */}
         <div>
           <p className="font-[family-name:var(--mono)] text-[11px] text-[var(--muted)] tracking-[0.08em] uppercase flex items-center gap-2 mb-6">
@@ -39,7 +36,7 @@ export default function VibecodeHero() {
         </div>
         
         {/* Right Column - Terminal Mockup */}
-        <div className="self-end">
+        <div className="self-end w-full">
           <div className="hero-terminal">
             {/* Title Bar */}
             <div className="term-bar">
@@ -50,7 +47,7 @@ export default function VibecodeHero() {
             </div>
             
             {/* Terminal Body */}
-            <div className="py-6 px-6 font-[family-name:var(--mono)] text-[12.5px] leading-[1.7]">
+            <div className="py-5 px-4 sm:px-6 font-[family-name:var(--mono)] text-[11px] sm:text-[12.5px] leading-[1.7]">
               <div className="mb-1">
                 <span className="text-[var(--accent)]">❯</span>{' '}
                 <span className="text-[var(--text-code)]">cursor .</span>
@@ -76,7 +73,7 @@ export default function VibecodeHero() {
             </div>
             
             {/* Insight Block */}
-            <div className="border-l-2 border-[var(--accent)] mx-6 mb-6 px-4 py-3 font-[family-name:var(--mono)] text-[11px] text-[var(--text-soft)] leading-[1.6]">
+            <div className="border-l-2 border-[var(--accent)] mx-4 sm:mx-6 mb-4 sm:mb-6 px-4 py-3 font-[family-name:var(--mono)] text-[11px] text-[var(--text-soft)] leading-[1.6]">
               <span className="text-[var(--bg)] font-bold">✳ Kết quả:</span> Landing page hoàn chỉnh<br />
               trong 23 phút · 0 dòng code tự viết
             </div>

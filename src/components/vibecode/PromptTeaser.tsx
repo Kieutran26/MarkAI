@@ -3,10 +3,7 @@ import React from 'react';
 export default function PromptTeaser() {
   return (
     <div className="prompt-teaser">
-      <div 
-        className="page-shell py-16 lg:py-20 grid gap-16 grid-cols-1 lg:grid-cols-2 items-start"
-        style={{ gridTemplateColumns: '1fr 1fr' }}
-      >
+      <div className="page-shell py-16 lg:py-20 grid gap-10 lg:gap-16 grid-cols-1 lg:grid-cols-2 items-start">
         {/* Left Column */}
         <div>
           <p className="prompt-label">

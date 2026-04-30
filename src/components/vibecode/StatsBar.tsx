@@ -9,12 +9,18 @@ export default function StatsBar() {
   ];
 
   return (
-    <div className="flex flex-wrap border-b border-[var(--border)]">
-      <div className="page-shell w-full flex">
+    <div className="border-b border-[var(--border)]">
+      <div className="page-shell w-full grid grid-cols-2 lg:grid-cols-4">
         {stats.map((stat, index) => (
-          <div 
+          <div
             key={index}
-            className={`flex-1 min-w-[140px] px-8 py-9 border-r border-[var(--border)] ${index === stats.length - 1 ? 'border-r-0' : ''}`}
+            className={`px-5 py-7 sm:px-8 sm:py-9 border-[var(--border)] ${
+              index % 2 === 0 ? 'border-r' : ''
+            } ${
+              index < 2 ? 'border-b lg:border-b-0' : ''
+            } ${
+              index < stats.length - 1 ? 'lg:border-r' : 'lg:border-r-0'
+            }`}
           >
             <div className="font-[family-name:var(--serif)] text-[2.4rem] leading-[1] mb-2">
               {stat.num}

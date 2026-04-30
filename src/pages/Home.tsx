@@ -169,6 +169,33 @@ const iconStyle = (isLive: boolean) => ({
   color: isLive ? 'white' : 'var(--ink2)',
 });
 
+const learningPathCardClass = (index: number) => {
+  const classes = ['flex', 'flex-col', 'border-border'];
+
+  if (index < learningPaths.length - 1) {
+    classes.push('border-b', 'xl:border-b-0', 'xl:border-r');
+  }
+
+  if (index === 0 || index === 2) {
+    classes.push('md:border-r');
+  }
+
+  return classes.join(' ');
+};
+
+const featuredPromptCardClass = (index: number) => {
+  const classes = ['flex', 'flex-col', 'gap-3', 'border-border'];
+
+  if (index < featuredPrompts.length - 1) {
+    classes.push('border-b', 'xl:border-b-0', 'xl:border-r');
+  }
+
+  return classes.join(' ');
+};
+
+const blogColumnCardClass = (index: number, total: number) =>
+  `flex flex-col gap-2 transition-colors ${index < total - 1 ? 'border-b border-border' : ''}`;
+
 const LearningPaths = () => (
   <section id="paths">
     {/* Section header */}
@@ -185,11 +212,7 @@ const LearningPaths = () => (
     </div>
 
     {/* Paths grid */}
-    <div style={{
-      display: 'grid',
-      gridTemplateColumns: 'repeat(4, 1fr)',
-      borderBottom: '1px solid var(--border)',
-    }}>
+    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 border-b border-border">
       {learningPaths.map((path, idx) => (
         <motion.div
           key={path.id}
@@ -197,11 +220,7 @@ const LearningPaths = () => (
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ delay: idx * 0.08 }}
-          style={{
-            borderRight: idx < 3 ? '1px solid var(--border)' : 'none',
-            display: 'flex',
-            flexDirection: 'column',
-          }}
+          className={learningPathCardClass(idx)}
         >
           {/* Path header */}
           <div style={{ padding: '28px 28px 20px', borderBottom: '1px solid var(--border)' }}>
@@ -350,9 +369,9 @@ const ToolsResources = () => (
       </h2>
     </div>
 
-    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', borderBottom: '1px solid var(--border)' }}>
+    <div className="grid grid-cols-1 lg:grid-cols-2 border-b border-border">
       {/* Prompt Library preview */}
-      <div style={{ padding: '48px 60px', borderRight: '1px solid var(--border)' }}>
+      <div className="px-5 py-10 md:px-8 lg:px-[60px] lg:py-12 border-b lg:border-b-0 lg:border-r border-border">
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
           <div>
             <p style={{ fontFamily: 'var(--mono)', fontSize: '10px', textTransform: 'uppercase' as const, letterSpacing: '0.1em', color: 'var(--muted)', marginBottom: 8 }}>
@@ -367,7 +386,7 @@ const ToolsResources = () => (
           </Link>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', borderTop: '1px solid var(--border)' }}>
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 border-t border-border">
           {featuredPrompts.map((prompt, idx) => (
             <motion.div
               key={idx}
@@ -375,16 +394,12 @@ const ToolsResources = () => (
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: idx * 0.08 }}
+              className={featuredPromptCardClass(idx)}
               style={{
                 padding: '24px',
-                borderRight: idx < 2 ? '1px solid var(--border)' : 'none',
-                borderBottom: '1px solid var(--border)',
                 cursor: 'pointer',
                 textDecoration: 'none',
                 color: 'inherit',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: 12,
                 transition: 'background 0.12s',
               }}
               onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg2)')}
@@ -436,7 +451,7 @@ const ToolsResources = () => (
               display: 'flex',
               alignItems: 'center',
               gap: 20,
-              padding: '24px 60px',
+              padding: '24px 20px',
               borderBottom: idx < tools.length - 1 ? '1px solid var(--border)' : 'none',
               cursor: 'pointer',
               textDecoration: 'none',
@@ -525,20 +540,16 @@ const BlogSection = () => (
       </div>
     </div>
 
-    <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', borderTop: '1px solid var(--border)' }}>
+    <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr_1fr] border-t border-border">
       {/* Featured post */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
+        className="flex flex-col gap-4 p-6 md:p-8 border-b lg:border-b-0 lg:border-r border-border"
         style={{
-          padding: '32px',
-          borderRight: '1px solid var(--border)',
           textDecoration: 'none',
           color: 'inherit',
-          display: 'flex',
-          flexDirection: 'column',
-          gap: 16,
           transition: 'background 0.12s',
           cursor: 'pointer',
         }}
@@ -578,7 +589,7 @@ const BlogSection = () => (
       </motion.div>
 
       {/* Blog list col 1 */}
-      <div style={{ borderRight: '1px solid var(--border)', display: 'flex', flexDirection: 'column' }}>
+      <div className="flex flex-col border-b lg:border-b-0 lg:border-r border-border">
         {[blogPosts[1], blogPosts[2]].map((post, idx) => (
           <motion.div
             key={idx}
@@ -586,14 +597,11 @@ const BlogSection = () => (
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: idx * 0.06 }}
+            className={blogColumnCardClass(idx, 2)}
             style={{
               padding: '24px',
-              borderBottom: '1px solid var(--border)',
               textDecoration: 'none',
               color: 'inherit',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 8,
               transition: 'background 0.12s',
               cursor: 'pointer',
             }}
@@ -623,7 +631,7 @@ const BlogSection = () => (
       </div>
 
       {/* Blog list col 2 */}
-      <div style={{ display: 'flex', flexDirection: 'column' }}>
+      <div className="flex flex-col">
         {[blogPosts[3]].map((post, idx) => (
           <motion.div
             key={idx}
@@ -631,14 +639,11 @@ const BlogSection = () => (
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ delay: idx * 0.06 }}
+            className={blogColumnCardClass(idx, 1)}
             style={{
               padding: '24px',
-              borderBottom: '1px solid var(--border)',
               textDecoration: 'none',
               color: 'inherit',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: 8,
               transition: 'background 0.12s',
               cursor: 'pointer',
             }}
