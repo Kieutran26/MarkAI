@@ -13,7 +13,7 @@ export default function Nav() {
     `font-mono text-[12px] px-4 h-[52px] flex items-center border-l border-border transition-colors no-underline ${
       active
         ? 'bg-accent text-white font-medium'
-        : 'text-muted hover:bg-bg2 hover:text-ink'
+        : 'text-ink hover:bg-bg2'
     }`;
 
   const handleLogoClick = (event: MouseEvent<HTMLAnchorElement>) => {

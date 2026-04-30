@@ -1,20 +1,122 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# markAI.vn
 
-# Run and deploy your AI Studio app
+Brutalist marketing site cho hệ sinh thái học AI ứng dụng của markAI.
 
-This contains everything you need to run your app locally.
+Repo này hiện tập trung vào 2 lớp:
 
-View your app in AI Studio: https://ai.studio/apps/9167ad0d-46e7-49dc-8fee-180d55e97caa
+- `src/`: public website cho người học, gồm Home, Vibecode, Blog, Tips, Prompts, lesson pages
+- `admin-app/`: admin surface và theme token dùng chung
 
-## Run Locally
+## Stack
 
-**Prerequisites:**  Node.js
+- React 19
+- TypeScript
+- Vite
+- React Router
+- Tailwind CSS v4
+- CSS token-based theming qua `admin-app/src/app/theme-tokens.css`
 
+## Chạy local
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+Yêu cầu:
+
+- Node.js 20+
+
+Cài và chạy:
+
+```bash
+npm install
+npm run dev
+```
+
+App mặc định chạy tại:
+
+```bash
+http://localhost:3000
+```
+
+## Scripts
+
+```bash
+npm run dev
+npm run build
+npm run preview
+npm run lint
+```
+
+`npm run lint` hiện chạy TypeScript check bằng `tsc --noEmit`.
+
+## Cấu trúc chính
+
+```text
+.
+├─ src/
+│  ├─ components/     # UI cho public site
+│  ├─ lib/            # data helpers, static content
+│  ├─ pages/          # route-level pages
+│  ├─ App.tsx         # router
+│  └─ index.css       # global styling cho public site
+├─ admin-app/
+│  └─ src/app/
+│     ├─ components/
+│     ├─ data/
+│     └─ theme-tokens.css
+└─ docs/
+   └─ design-guidelines.md
+```
+
+## Routing hiện tại
+
+- `/`
+- `/vibecode`
+- `/vibecode/:lessonSlug`
+- `/vibecode/:lessonSlug/:subSlug`
+- `/blog`
+- `/blog/:slug`
+- `/tips`
+- `/tips/:slug`
+- `/prompts`
+- `/about`
+- `/feedback`
+- `/report`
+- `/contact`
+
+## Design system
+
+Nguồn design system nằm ở:
+
+- `docs/design-guidelines.md`
+
+Theme tokens gốc nằm ở:
+
+- `admin-app/src/app/theme-tokens.css`
+
+Public site import token tại:
+
+- `src/index.css`
+
+## Chỗ nên sửa khi build UI
+
+- Đổi màu, spacing, semantic token: `admin-app/src/app/theme-tokens.css`
+- Đổi pattern layout global, badge, nav, hero, article chrome: `src/index.css`
+- Đổi route/header/footer: `src/components/`
+- Đổi nội dung page: `src/pages/`
+
+## Nguyên tắc implementation
+
+- Ưu tiên sửa trực tiếp file đang dùng thay vì tạo bản enhanced/new
+- Giữ layout sắc nét, nhiều đường kẻ, ít bo góc
+- Accent chỉ dùng để dẫn hướng, highlight, CTA, active state
+- Ưu tiên tính đọc được trên mobile trước khi polish animation
+- Khi thêm section mới, tái dùng token, badge, button, hero pattern hiện có
+
+## Build status
+
+`npm run build` đang build pass.
+
+Có thể còn warning về:
+
+- CSS minify property parsing
+- large chunk size từ Vite
+
+Đây là warning hiện hữu của repo, không chặn build.
