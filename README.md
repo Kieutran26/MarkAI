@@ -5,7 +5,7 @@ Brutalist marketing site cho hệ sinh thái học AI ứng dụng của markAI.
 Repo này hiện tập trung vào 2 lớp:
 
 - `src/`: public website cho người học, gồm Home, Vibecode, Blog, Tips, Prompts, lesson pages
-- `admin-app/`: admin surface và theme token dùng chung
+- `src/admin/`: admin surface và theme token dùng chung
 
 ## Stack
 
@@ -14,7 +14,7 @@ Repo này hiện tập trung vào 2 lớp:
 - Vite
 - React Router
 - Tailwind CSS v4
-- CSS token-based theming qua `admin-app/src/app/theme-tokens.css`
+- CSS token-based theming qua `src/admin/theme-tokens.css`
 
 ## Chạy local
 
@@ -56,11 +56,11 @@ npm run lint
 │  ├─ pages/          # route-level pages
 │  ├─ App.tsx         # router
 │  └─ index.css       # global styling cho public site
-├─ admin-app/
-│  └─ src/app/
-│     ├─ components/
-│     ├─ data/
-│     └─ theme-tokens.css
+├─ src/admin/
+│  ├─ components/
+│  ├─ data/
+│  ├─ globals.css
+│  └─ theme-tokens.css
 └─ docs/
    └─ design-guidelines.md
 ```
@@ -89,7 +89,7 @@ Nguồn design system nằm ở:
 
 Theme tokens gốc nằm ở:
 
-- `admin-app/src/app/theme-tokens.css`
+- `src/admin/theme-tokens.css`
 
 Public site import token tại:
 
@@ -97,7 +97,7 @@ Public site import token tại:
 
 ## Chỗ nên sửa khi build UI
 
-- Đổi màu, spacing, semantic token: `admin-app/src/app/theme-tokens.css`
+- Đổi màu, spacing, semantic token: `src/admin/theme-tokens.css`
 - Đổi pattern layout global, badge, nav, hero, article chrome: `src/index.css`
 - Đổi route/header/footer: `src/components/`
 - Đổi nội dung page: `src/pages/`

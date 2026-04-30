@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap');
 @import "tailwindcss";
-@import "../admin-app/src/app/theme-tokens.css";
+@import "./admin/theme-tokens.css";
 
 :root {
   --serif:   'Instrument Serif', serif;
@@ -134,10 +134,10 @@ button, a { cursor: pointer; transition: all 0.15s ease; }
 }
 
 /* Ticker */
-.ticker { height: 32px; background: var(--ink); overflow: hidden; display: flex; align-items: center; }
+.ticker { height: 32px; background: var(--accent); overflow: hidden; display: flex; align-items: center; border-bottom: 1px solid rgba(0,0,0,0.1); }
 .ticker-track { display: flex; align-items: center; white-space: nowrap; animation: tick 36s linear infinite; }
-.ticker-item { font-family: var(--mono); font-size: 10px; color: #555; padding: 0 2rem; letter-spacing: 0.06em; text-transform: uppercase; }
-.ticker-item b { color: var(--accent); }
+.ticker-item { font-family: var(--mono); font-size: 10px; color: var(--accent-contrast); padding: 0 2rem; letter-spacing: 0.06em; text-transform: uppercase; font-weight: 500; }
+.ticker-item b { color: white; }
 @keyframes tick { from { transform: translateX(0) } to { transform: translateX(-50%) } }
 
 /* Buttons */

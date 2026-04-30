@@ -11,9 +11,12 @@ export default defineConfig(({mode}) => {
       'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
     },
     resolve: {
-      alias: {
-        '@': path.resolve(__dirname, '.'),
-      },
+      alias: [
+        { find: '@/app', replacement: path.resolve(__dirname, 'src/admin') },
+        { find: 'next/navigation', replacement: path.resolve(__dirname, 'src/shims/next-navigation.ts') },
+        { find: 'next/link', replacement: path.resolve(__dirname, 'src/shims/next-link.tsx') },
+        { find: '@', replacement: path.resolve(__dirname, '.') },
+      ],
     },
     server: {
       // HMR is disabled in AI Studio via DISABLE_HMR env var.

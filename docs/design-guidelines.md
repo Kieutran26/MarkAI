@@ -31,7 +31,7 @@ Tránh:
 
 Nguồn token:
 
-- `admin-app/src/app/theme-tokens.css`
+- `src/admin/theme-tokens.css`
 
 ### Neutral palette
 
@@ -261,7 +261,7 @@ UI copy nên tránh:
 
 Khi cần chỉnh UI, xem theo thứ tự:
 
-1. `admin-app/src/app/theme-tokens.css`
+1. `src/admin/theme-tokens.css`
 2. `src/index.css`
 3. component ở `src/components/`
 4. page ở `src/pages/`

@@ -17,6 +17,9 @@
     "jsx": "react-jsx",
     "baseUrl": ".",
     "paths": {
+      "@/app/*": ["src/admin/*"],
+      "next/navigation": ["src/shims/next-navigation.ts"],
+      "next/link": ["src/shims/next-link.tsx"],
       "@/*": ["./*"]
     },
     "allowImportingTsExtensions": true,

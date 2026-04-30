@@ -17,6 +17,7 @@ import Contact from './pages/Contact';
 import VibecodePage from './pages/VibecodePage';
 import LessonOverview from './pages/LessonOverview';
 import SubLessonPage from './pages/SubLessonPage';
+import AdminApp from './admin/AdminApp';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -26,33 +27,52 @@ const ScrollToTop = () => {
   return null;
 };
 
+const AppShell = () => {
+  const { pathname } = useLocation();
+  const isAdminRoute = pathname === '/admin' || pathname.startsWith('/admin/');
+
+  if (isAdminRoute) {
+    return (
+      <main className="min-h-screen">
+        <Routes>
+          <Route path="/admin/*" element={<AdminApp />} />
+        </Routes>
+      </main>
+    );
+  }
+
+  return (
+    <div className="font-sans text-ink min-h-screen flex flex-col">
+      <Nav />
+      <Ticker />
+      <main className="flex-1">
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/blog" element={<Blog />} />
+          <Route path="/blog/:slug" element={<BlogDetail />} />
+          <Route path="/tips" element={<Tips />} />
+          <Route path="/tips/:slug" element={<TipDetail />} />
+          <Route path="/prompts" element={<Prompts />} />
+          <Route path="/lesson/:id" element={<Lesson />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/feedback" element={<Feedback />} />
+          <Route path="/report" element={<Report />} />
+          <Route path="/contact" element={<Contact />} />
+          <Route path="/vibecode" element={<VibecodePage />} />
+          <Route path="/vibecode/:lessonSlug" element={<LessonOverview />} />
+          <Route path="/vibecode/:lessonSlug/:subSlug" element={<SubLessonPage />} />
+        </Routes>
+      </main>
+      <Footer />
+    </div>
+  );
+};
+
 export default function App() {
   return (
     <Router>
       <ScrollToTop />
-      <div className="font-sans text-ink min-h-screen flex flex-col">
-        <Nav />
-        <Ticker />
-        <main className="flex-1">
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/blog/:slug" element={<BlogDetail />} />
-            <Route path="/tips" element={<Tips />} />
-            <Route path="/tips/:slug" element={<TipDetail />} />
-            <Route path="/prompts" element={<Prompts />} />
-            <Route path="/lesson/:id" element={<Lesson />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/feedback" element={<Feedback />} />
-            <Route path="/report" element={<Report />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/vibecode" element={<VibecodePage />} />
-            <Route path="/vibecode/:lessonSlug" element={<LessonOverview />} />
-            <Route path="/vibecode/:lessonSlug/:subSlug" element={<SubLessonPage />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
+      <AppShell />
     </Router>
   );
 }
