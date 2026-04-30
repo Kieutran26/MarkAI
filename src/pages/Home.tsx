@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'motion/react';
-import { Users, Zap, Calendar, ShieldCheck } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
+
 import TerminalAnimation from '../components/TerminalAnimation';
-import Counter from '../components/Counter';
 
 const Hero = () => (
   <motion.div
@@ -40,14 +40,14 @@ const Hero = () => (
   </motion.div>
 );
 
+// ─── STATS BAR (unchanged) ───────────────────────────────────────────────────
 const StatsBar = () => {
   const stats = [
-    { value: 10, label: 'bài học vibecode' },
-    { value: 4, label: 'hướng dẫn AI sắp ra' },
-    { value: 100, suffix: '%', label: 'miễn phí mãi mãi' },
-    { value: 0, label: 'yêu cầu kiến thức code' },
+    { value: '5+', label: 'Lộ trình học' },
+    { value: '150+', label: 'Prompt sẵn dùng' },
+    { value: '100%', label: 'Miễn phí mãi mãi' },
+    { value: '0', label: 'Yêu cầu biết code' },
   ];
-
   return (
     <div className="border-t border-b border-border">
       <div className="page-shell flex flex-col sm:flex-row">
@@ -60,9 +60,7 @@ const StatsBar = () => {
             transition={{ delay: idx * 0.1 }}
             className="flex-1 min-w-[120px] p-8 border-b sm:border-b-0 sm:border-r border-border last:border-r-0 last:border-b-0"
           >
-            <div className="font-serif text-[2.4rem] leading-none mb-1 text-ink">
-              <Counter value={stat.value} suffix={stat.suffix} />
-            </div>
+            <div className="font-serif text-[2.4rem] leading-none mb-1 text-ink">{stat.value}</div>
             <div className="font-mono text-[11px] text-muted tracking-wide">{stat.label}</div>
           </motion.div>
         ))}
@@ -71,284 +69,686 @@ const StatsBar = () => {
   );
 };
 
-const Vibecode = () => {
-  const steps = [
-    {
-      num: '01', badge: 'BẮT ĐẦU ĐÂY', badgeClass: 'badge-accent', time: '~20 phút',
-      title: 'Vibecode là gì? Khó không? Giúp gì cho Marketer?',
-      desc: 'Khái niệm cơ bản, tư duy làm web bằng AI không cần code và những use case thực tế.',
-      tags: ['tư duy', 'use case', 'marketer']
-    },
-    {
-      num: '02', badge: 'CONCEPT', badgeClass: 'badge-dark', time: '~40 phút',
-      title: 'Từ ngữ chuyên ngành code & design — mỗi từ kèm GIF motion',
-      desc: 'Hiểu nhanh padding, margin, flexbox, grid để ra lệnh cho AI chính xác qua hình ảnh minh họa động.',
-      tags: ['spacing', 'flexbox', 'grid', 'responsive']
-    },
-    {
-      num: '03', badge: 'SETUP', badgeClass: 'badge-dark', time: '~30 phút',
-      title: 'Cài gì vào máy để bắt đầu (Node, Cursor, VS Code, Git)',
-      desc: 'Hướng dẫn cài đặt môi trường, Cursor, Node.js đầy đủ cho người mới bắt đầu.',
-      tags: ['Node.js', 'Cursor', 'Git', 'terminal']
-    },
-    {
-      num: '04', badge: 'INTERFACE', badgeClass: 'badge-dark', time: '~25 phút',
-      title: 'Làm quen với VS Code & Cursor — giao diện, phím tắt, cách đọc file',
-      desc: 'Làm chủ công cụ làm việc chính, phím tắt quan trọng và cách quản lý file project.',
-      tags: ['shortcut', 'explorer', 'editor']
-    },
-    {
-      num: '05', badge: 'AI AGENT', badgeClass: 'badge-dark', time: '~35 phút',
-      title: 'Làm quen với Claude Code — cách hoạt động, lệnh cơ bản, khi nào dùng',
-      desc: 'Sử dụng đệ tử đắc lực nhất hiện nay để tự động hóa việc viết code và fix lỗi thần tốc.',
-      tags: ['Claude Code', 'terminal', 'automation']
-    },
-    {
-      num: '06', badge: 'TOOLS', badgeClass: 'badge-dark', time: '~25 phút',
-      title: 'Công cụ & website hữu ích (v0.dev, Vercel, Bolt)',
-      desc: 'Tổng hợp các bộ công cụ không thể thiếu để biến ý tưởng thành interface hoàn chỉnh cực nhanh.',
-      tags: ['v0.dev', 'Vercel', 'Bolt']
-    },
-    {
-      num: '07', badge: 'PROMPT', badgeClass: 'badge-dark', time: '~30 phút',
-      title: 'Cách prompt cho AI hiểu để code đúng ý bạn',
-      desc: 'Kỹ thuật viết yêu cầu (prompt) chi tiết, logic để AI không hiểu lầm ý tưởng của bạn.',
-      tags: ['logic', 'structure', 'clarity']
-    },
-    {
-      num: '08', badge: 'DEBUG', badgeClass: 'badge-dark', time: '~45 phút',
-      title: 'Khi AI code sai — cách đọc lỗi & prompt vá lỗi',
-      desc: 'Không hoảng hốt khi gặp lỗi. Cách đọc thông báo lỗi và yêu cầu AI sửa chữa đúng chỗ.',
-      tags: ['error handling', 'debugging', 'fix']
-    },
-    {
-      num: '09', badge: 'WORKFLOW', badgeClass: 'badge-dark', time: '~45 phút',
-      title: 'Tạo Skills & Workflow — Cursor Rules, CLAUDE.md, MCP',
-      desc: 'Xây dựng hệ thống rule cá nhân, sử dụng MCP và workflow mượt mà cho project lớn.',
-      tags: ['Cursor Rules', 'CLAUDE.md', 'MCP']
-    },
-    {
-      num: '10', badge: 'DEPLOY', badgeClass: 'badge-dark', time: '~50 phút',
-      title: 'Deploy + gắn PostHog & Google Search Console',
-      desc: 'Đưa website lên mạng internet, gắn tracking và khai báo Google webmaster hoàn chỉnh.',
-      tags: ['Vercel', 'PostHog', 'SEO', 'domain']
-    }
-  ];
-
-  const modules = [
-    { title: 'Vibecode ra Web', desc: '10 bài · đang học', available: true, check: true },
-    { title: 'Vibecode ra App', desc: 'React Native · Expo', available: false, badge: 'Sắp ra' },
-    { title: 'Vibecode ra Chatbot', desc: 'Claude API · Telegram Bot', available: false, badge: 'Sắp ra' },
-    { title: 'Vibecode ra Tool nội bộ', desc: 'Dashboard · Tracker', available: false, badge: 'Sắp ra' },
-    { title: 'Analytics với AI', desc: 'GA4 · Looker · Claude', available: false, badge: 'Sắp ra' },
-    { title: 'Generate Image', desc: 'Midjourney · Flux · Firefly', available: false, badge: 'Sắp ra' },
-    { title: 'Motion Video', desc: 'Kling · Runway · HeyGen', available: false, badge: 'Sắp ra' },
-  ];
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1
-      }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.5, ease: 'easeOut' }
-    }
-  };
-
-  return (
-    <section id="vibecode" className="border-t border-border">
-      <div className="py-20 px-0 flex flex-col items-start">
-        <motion.div
-          initial={{ opacity: 0, x: -30 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="page-shell w-full flex flex-col items-start text-left"
-        >
-          <span className="badge badge-accent mb-6 inline-block font-mono tracking-widest uppercase">VIBECODE WEB ⚡</span>
-          <h2 className="section-heading text-[clamp(2.5rem,5.5vw,4rem)] tracking-tight mb-4 text-ink">
-            Từ <em className="text-accent italic">zero</em> đến có web trong 1 buổi sáng.
-          </h2>
-          <p className="font-sans text-[16px] text-muted mb-0 max-w-prose">
-            Lộ trình 10 bước — từ tư duy đến deploy thực tế cho người không chuyên.
-          </p>
-        </motion.div>
+// ─── FREE STRIP (unchanged) ──────────────────────────────────────────────────
+const FreeStrip = () => (
+  <div style={{ background: 'var(--surface-1)', borderBottom: '1px solid var(--surface-3)' }}>
+    <div className="page-shell flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 py-5">
+      <div className="flex items-center gap-4">
+        <span style={{
+          background: 'var(--accent)',
+          color: 'white',
+          fontFamily: 'var(--mono)',
+          fontSize: '10px',
+          textTransform: 'uppercase',
+          letterSpacing: '0.08em',
+          padding: '3px 10px',
+          fontWeight: 500,
+        }}>
+          Triết lý
+        </span>
+        <span style={{ fontFamily: 'var(--mono)', fontSize: '13px', color: 'white' }}>
+          Kiến thức AI không nên có giá. markAI.vn miễn phí hoàn toàn — không có gói Pro, không có paywall, không bao giờ.
+        </span>
       </div>
-
-      <div className="page-shell pb-24">
-        <div className="relative">
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-50px' }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-y-12 md:gap-x-12 relative z-10"
-          >
-            {steps.map((step, idx) => {
-              const isLastInRow = (idx + 1) % 3 === 0;
-              const isLastItem = idx === steps.length - 1;
-
-              return (
-                <motion.div key={idx} variants={itemVariants} className="relative">
-                  <Link
-                    to={idx === 0 ? '/vibecode/vibecode-la-gi' : `/lesson/${idx + 1}`}
-                    className="group relative flex flex-col bg-bg border border-border p-8 no-underline text-ink hover:bg-bg2 transition-all hover:-translate-y-1 hover:shadow-xl hover:border-accent h-full"
-                  >
-                    <div className="flex items-center justify-between mb-6">
-                      <div className="flex flex-col">
-                        <span className="font-mono text-[10px] text-muted tracking-widest leading-none mb-1">BÀI</span>
-                        <span className="font-serif text-[2.4rem] text-ink group-hover:text-accent transition-colors leading-none italic">{step.num}</span>
-                      </div>
-                      <div className="flex flex-col items-end gap-2">
-                        <span className={`badge ${step.badgeClass} !px-2 !py-0.5 !text-[9px]`}>{step.badge}</span>
-                        <span className="badge badge-outline !px-2 !py-0.5 !text-[9px]">{step.time}</span>
-                      </div>
-                    </div>
-
-                    <div className="flex-1">
-                      <h3 className="font-serif text-[1.25rem] mb-3 leading-tight group-hover:text-accent transition-colors">{step.title}</h3>
-                      <p className="font-sans text-[13px] text-ink2 leading-[1.6] mb-4 opacity-80">
-                        {step.desc}
-                      </p>
-                      <div className="flex flex-wrap gap-1.5 mt-auto">
-                        {step.tags.slice(0, 3).map((tag, tIdx) => (
-                          <span key={tIdx} className="step-tag !text-[9px] !px-2 !py-0.5">{tag}</span>
-                        ))}
-                      </div>
-                    </div>
-
-                    <div className="mt-6 pt-4 border-t border-border flex justify-between items-center">
-                      <span className="font-mono text-[10px] text-muted uppercase tracking-tighter">Bắt đầu ngay</span>
-                      <span className="text-muted group-hover:text-accent transition-transform group-hover:translate-x-1">→</span>
-                    </div>
-
-                    {!isLastInRow && !isLastItem && (
-                      <div className="hidden md:block absolute top-1/2 -right-12 w-12 h-px border-t border-dashed border-border -translate-y-1/2 z-0">
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-bg border border-border rounded-full p-1 shadow-sm text-border group-hover:text-accent group-hover:border-accent transition-colors">
-                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                        </div>
-                      </div>
-                    )}
-
-                    {isLastInRow && !isLastItem && (
-                      <div className="hidden md:block absolute -bottom-12 left-1/2 w-px h-12 border-l border-dashed border-border -translate-x-1/2 z-0">
-                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-bg border border-border rounded-full p-1 shadow-sm text-border group-hover:text-accent group-hover:border-accent transition-colors">
-                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14"/><path d="m19 12-7 7-7-7"/></svg>
-                        </div>
-                      </div>
-                    )}
-                  </Link>
-                </motion.div>
-              );
-            })}
-
-            <motion.div variants={itemVariants} className="hidden md:flex bg-bg2/30 border border-dashed border-border p-8 items-center justify-center text-center opacity-40">
-               <div className="font-mono text-[11px] text-muted italic">Các module chuyên sâu (Automation, AI Agent) đang được biên soạn...</div>
-            </motion.div>
-            <motion.div variants={itemVariants} className="hidden md:flex bg-bg2/30 border border-dashed border-border p-8 items-center justify-center text-center opacity-40">
-               <div className="font-mono text-[11px] text-muted italic">Cập nhật nội dung mới mỗi tuần ✳</div>
-            </motion.div>
-          </motion.div>
-        </div>
-      </div>
-
-      <div className="bg-bg2 py-16 px-0 border-t border-b border-border mt-16">
-        <div className="page-shell">
-          <motion.p
-            initial={{ opacity: 0, x: -10 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="section-label"
-          >
-            <span>✳</span> lộ trình module
-          </motion.p>
-          <motion.h2
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="section-heading mb-8"
-          >
-            Web chỉ là bắt đầu. <em className="text-accent italic">Còn nhiều hơn nữa.</em>
-          </motion.h2>
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 sm:border-t sm:border-l border-border"
-          >
-            {modules.map((mod, idx) => (
-              <Link
-                key={idx}
-                to={mod.available ? '/vibecode' : '#'}
-                className={`block p-8 border-r border-b border-border relative transition-all duration-300 no-underline ${
-                  mod.available
-                    ? 'opacity-100 bg-white ring-1 ring-inset ring-accent/10 hover:bg-bg cursor-pointer shadow-[4px_4px_0px_0px_rgba(232,65,10,0.05)]'
-                    : 'opacity-70 bg-bg2/50 cursor-default grayscale-[0.5]'
-                }`}
-              >
-                {mod.badge && <span className="badge-soon !bg-muted/10 !text-muted opacity-80">{mod.badge}</span>}
-                <div className="flex items-start gap-2 mb-1 mt-2">
-                  <div className={`mt-1 font-serif text-[1.1rem] ${mod.available ? 'text-ink font-semibold' : 'text-muted'}`}>
-                    {mod.check && <span className="text-accent">✓ </span>}
-                    {mod.title}
-                  </div>
-                </div>
-                <div className={`font-mono text-[11px] ${mod.available ? 'text-ink2' : 'text-muted'}`}>{mod.desc}</div>
-                {mod.available && (
-                   <div className="mt-4 flex items-center text-accent font-mono text-[10px] uppercase tracking-wider">
-                     Xem lộ trình <span className="ml-1">→</span>
-                   </div>
-                )}
-              </Link>
-            ))}
-            <Link
-              to="/feedback"
-              className="block p-8 border-r border-b border-border relative hover:bg-bg3 transition-colors cursor-pointer bg-bg3 no-underline"
-            >
-              <div className="font-serif text-[1.1rem] text-ink mb-1 mt-2">Bạn muốn module gì tiếp theo?</div>
-              <div className="font-mono text-[11px] text-accent mt-2 flex items-center">Góp ý <span className="ml-1">→</span></div>
-            </Link>
-          </motion.div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const CTA = () => (
-  <section className="page-gutter bg-bg2 py-24 border-b border-border flex flex-col items-center text-center">
-    <h2 className="section-heading mb-6 max-w-2xl">
-      Thôi nào, <em className="text-accent italic">bắt đầu bài 01 đi.</em>
-    </h2>
-    <p className="font-sans text-[15px] text-ink2 mb-8 max-w-md mx-auto">
-      Mở laptop lên, pha ly cafe và hoàn thành website đầu tiên của bạn trong vòng 2 tiếng tới. Tất cả đã sẵn sàng.
-    </p>
-    <div className="flex flex-wrap gap-4 justify-center mb-6">
-      <Link to="/lesson/1" className="btn-primary no-underline text-white !px-8 !py-3 !text-[13px]">Bắt đầu Bài 01 →</Link>
+      <Link
+        to="/about"
+        className="btn-ghost no-underline text-white shrink-0"
+        style={{ borderColor: '#333', fontSize: '11px' }}
+      >
+        Vì sao miễn phí? →
+      </Link>
     </div>
-    <p className="font-mono text-[11px] text-muted">
-      ✳ hoàn toàn miễn phí · không cần email · không cần đăng ký
-    </p>
+  </div>
+);
+
+// ─── LEARNING PATHS ──────────────────────────────────────────────────────────
+const learningPaths = [
+  {
+    id: 'web',
+    icon: 'WEB',
+    name: 'Vibecode Web',
+    sub: 'Next.js · Cursor · Vercel',
+    status: 'live',
+    statusLabel: 'Live',
+    lessons: [
+      { num: '01', title: 'Vibecode là gì?' },
+      { num: '02', title: 'Từ ngữ code & design' },
+      { num: '03', title: 'Cài đặt môi trường' },
+      { num: '04', title: 'VS Code & Cursor' },
+      { num: '05', title: 'Claude Code' },
+      { num: '06', title: 'Công cụ hữu ích' },
+      { num: '07', title: 'Cách prompt cho AI' },
+      { num: '08', title: 'Debug & fix lỗi' },
+      { num: '09', title: 'Skills & Workflow' },
+      { num: '10', title: 'Deploy + Tracking' },
+    ],
+    count: '10 bài · đang học',
+    cta: 'Học ngay',
+    ctaLink: '/vibecode',
+  },
+  {
+    id: 'analytics',
+    icon: 'DATA',
+    name: 'Analytics AI',
+    sub: 'GA4 · Looker · Báo cáo tự động',
+    status: 'soon',
+    statusLabel: 'Sắp ra',
+    topics: [
+      'Cài đặt GA4 nâng cao',
+      'Looker Studio dashboard',
+      'Claude phân tích data tự động',
+      'Báo cáo tuần tự động',
+      'UTM tracking chuẩn',
+      'Funnel analysis',
+    ],
+    count: 'Analytics · đang soạn',
+    cta: 'Góp ý chủ đề',
+    ctaLink: '/feedback',
+  },
+  {
+    id: 'image',
+    icon: 'IMG',
+    name: 'Generate Image',
+    sub: 'Midjourney · Flux · Firefly',
+    status: 'soon',
+    statusLabel: 'Sắp ra',
+    topics: [
+      'Prompt chiến lược cho từng tool',
+      'Style reference & consistency',
+      'Batch generation workflow',
+      'API integration',
+      'Image cho campaign thực tế',
+      'A/B test creative assets',
+    ],
+    count: 'Image · đang soạn',
+    cta: 'Góp ý chủ đề',
+    ctaLink: '/feedback',
+  },
+  {
+    id: 'video',
+    icon: 'VID',
+    name: 'Motion Video',
+    sub: 'Kling · Runway · HeyGen',
+    status: 'soon',
+    statusLabel: 'Sắp ra',
+    topics: [
+      'AI video generation workflow',
+      'Kling cho product video',
+      'Runway cho motion graphics',
+      'HeyGen cho avatar & spokesperson',
+      'Video repurposing strategy',
+      'Subtitle & caption automation',
+    ],
+    count: 'Video · đang soạn',
+    cta: 'Góp ý chủ đề',
+    ctaLink: '/feedback',
+  },
+];
+
+const iconStyle = (isLive: boolean) => ({
+  width: 40,
+  height: 40,
+  background: isLive ? 'var(--accent)' : 'var(--bg2)',
+  border: `1px solid ${isLive ? 'var(--accent)' : 'var(--border)'}`,
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  fontFamily: 'var(--mono)',
+  fontSize: '10px',
+  textTransform: 'uppercase' as const,
+  color: isLive ? 'white' : 'var(--ink2)',
+});
+
+const LearningPaths = () => (
+  <section id="paths">
+    {/* Section header */}
+    <div className="page-shell border-b border-border py-10">
+      <p className="section-label"><span>✳</span> lộ trình học</p>
+      <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
+        <h2 className="section-heading">
+          Từ web đến video. <em>Tất cả miễn phí.</em>
+        </h2>
+        <Link to="/vibecode" className="section-link no-underline">
+          Xem tất cả lộ trình →
+        </Link>
+      </div>
+    </div>
+
+    {/* Paths grid */}
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: 'repeat(4, 1fr)',
+      borderBottom: '1px solid var(--border)',
+    }}>
+      {learningPaths.map((path, idx) => (
+        <motion.div
+          key={path.id}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: idx * 0.08 }}
+          style={{
+            borderRight: idx < 3 ? '1px solid var(--border)' : 'none',
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
+          {/* Path header */}
+          <div style={{ padding: '28px 28px 20px', borderBottom: '1px solid var(--border)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+              <div style={iconStyle(path.status === 'live')}>{path.icon}</div>
+              <span style={{
+                fontFamily: 'var(--mono)',
+                fontSize: '9px',
+                textTransform: 'uppercase' as const,
+                letterSpacing: '0.08em',
+                padding: '3px 8px',
+                border: `1px solid ${path.status === 'live' ? 'var(--accent)' : 'var(--border)'}`,
+                color: path.status === 'live' ? 'var(--accent)' : 'var(--muted)',
+                background: path.status === 'live' ? 'rgba(232, 140, 46, 0.06)' : 'transparent',
+              }}>
+                {path.statusLabel}
+              </span>
+            </div>
+            <div style={{ fontFamily: 'var(--serif)', fontSize: 20, fontWeight: 400, color: 'var(--ink)', marginBottom: 6, letterSpacing: '-0.02em' }}>
+              {path.name}
+            </div>
+            <div style={{ fontFamily: 'var(--mono)', fontSize: '11px', color: 'var(--muted)', lineHeight: 1.5 }}>
+              {path.sub}
+            </div>
+          </div>
+
+          {/* Path body */}
+          {path.status === 'live' ? (
+            <ul style={{ padding: 0, margin: 0, listStyle: 'none', flex: 1 }}>
+              {path.lessons.map((lesson) => (
+                <li key={lesson.num}>
+                  <Link
+                    to={path.ctaLink}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: 12,
+                      padding: '14px 28px',
+                      borderBottom: '1px solid var(--border)',
+                      fontSize: 13,
+                      color: 'var(--ink2)',
+                      textDecoration: 'none',
+                      transition: 'background 0.12s',
+                    }}
+                    className="group"
+                    onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg2)')}
+                    onMouseLeave={(e) => (e.currentTarget.style.background = '')}
+                  >
+                    <span style={{ fontFamily: 'var(--mono)', fontSize: '10px', color: 'var(--muted)', minWidth: 20 }}>
+                      {lesson.num}
+                    </span>
+                    <span style={{ flex: 1, lineHeight: 1.4 }}>{lesson.title}</span>
+                    <ArrowRight size={10} className="text-muted transition-transform group-hover:translate-x-0.5" />
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <div style={{ padding: '28px', display: 'flex', flexDirection: 'column', gap: 8, flex: 1 }}>
+              <div style={{ fontFamily: 'var(--mono)', fontSize: '10px', textTransform: 'uppercase' as const, letterSpacing: '0.06em', color: 'var(--muted)', display: 'flex', alignItems: 'center', gap: 8 }}>
+                <span style={{ display: 'block', width: 12, height: 1, background: 'var(--border)' }} />
+                Sẽ có
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginTop: 8 }}>
+                {path.topics.map((topic, tIdx) => (
+                  <div key={tIdx} style={{
+                    fontFamily: 'var(--mono)',
+                    fontSize: '11px',
+                    color: 'var(--muted)',
+                    padding: '8px 12px',
+                    border: '1px dashed var(--border)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 8,
+                  }}>
+                    <span style={{ width: 3, height: 3, borderRadius: '50%', background: 'var(--border)', flexShrink: 0 }} />
+                    {topic}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Path footer */}
+          <div style={{ padding: '20px 28px', borderTop: '1px solid var(--border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <span style={{ fontFamily: 'var(--mono)', fontSize: '11px', color: 'var(--muted)', textTransform: 'uppercase' as const, letterSpacing: '0.04em' }}>
+              {path.count}
+            </span>
+            <Link
+              to={path.ctaLink}
+              style={{
+                fontFamily: 'var(--mono)',
+                fontSize: '11px',
+                color: path.status === 'live' ? 'var(--ink)' : 'var(--muted)',
+                textDecoration: 'none',
+                textTransform: 'uppercase' as const,
+                letterSpacing: '0.04em',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 4,
+                transition: 'color 0.15s',
+              }}
+              className="group"
+            >
+              {path.cta}
+              <ArrowRight size={10} className="transition-transform group-hover:translate-x-0.5" />
+            </Link>
+          </div>
+        </motion.div>
+      ))}
+    </div>
   </section>
 );
 
+// ─── TOOLS & RESOURCES ────────────────────────────────────────────────────────
+const featuredPrompts = [
+  {
+    category: 'VIBECODE',
+    title: 'Tạo landing page từ brief',
+    preview: '"Tạo landing page cho [sản phẩm]. Header có nav + CTA. Hero section với headline, subheadline, form thu lead..."',
+  },
+  {
+    category: 'ANALYTICS',
+    title: 'Phân tích báo cáo tuần',
+    preview: '"Đây là data GA4 tuần này [paste data]. Phân tích: điểm nào tốt, điểm nào cần cải thiện, 3 action items..."',
+  },
+  {
+    category: 'COPY',
+    title: 'Viết email sequence',
+    preview: '"Viết 5-email nurture sequence cho [audience]. Email 1: welcome. Email 2: value prop. Email 3: social proof..."',
+  },
+];
+
+const tools = [
+  { tag: 'Blog', title: 'Blog markAI', sub: 'Case study · Xu hướng AI · Review' },
+  { tag: 'Tips', title: 'Tips & Mẹo', sub: '100+ thủ thuật AI thực chiến' },
+  { tag: 'Prompts', title: 'Prompt Library', sub: '150+ prompt đã test · copy & dùng' },
+];
+
+const ToolsResources = () => (
+  <section>
+    <div className="page-shell border-b border-border py-10">
+      <p className="section-label"><span>✳</span> công cụ & tài nguyên</p>
+      <h2 className="section-heading">
+        Không chỉ học. <em>Mà dùng được luôn.</em>
+      </h2>
+    </div>
+
+    <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', borderBottom: '1px solid var(--border)' }}>
+      {/* Prompt Library preview */}
+      <div style={{ padding: '48px 60px', borderRight: '1px solid var(--border)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
+          <div>
+            <p style={{ fontFamily: 'var(--mono)', fontSize: '10px', textTransform: 'uppercase' as const, letterSpacing: '0.1em', color: 'var(--muted)', marginBottom: 8 }}>
+              ✳ prompt library
+            </p>
+            <h3 style={{ fontFamily: 'var(--serif)', fontSize: 22, fontWeight: 400, color: 'var(--ink)', letterSpacing: '-0.01em' }}>
+              150+ prompt sẵn dùng
+            </h3>
+          </div>
+          <Link to="/prompts" className="btn-ghost no-underline" style={{ fontSize: '11px' }}>
+            Xem tất cả →
+          </Link>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', borderTop: '1px solid var(--border)' }}>
+          {featuredPrompts.map((prompt, idx) => (
+            <motion.div
+              key={idx}
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.08 }}
+              style={{
+                padding: '24px',
+                borderRight: idx < 2 ? '1px solid var(--border)' : 'none',
+                borderBottom: '1px solid var(--border)',
+                cursor: 'pointer',
+                textDecoration: 'none',
+                color: 'inherit',
+                display: 'flex',
+                flexDirection: 'column',
+                gap: 12,
+                transition: 'background 0.12s',
+              }}
+              onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg2)')}
+              onMouseLeave={(e) => (e.currentTarget.style.background = '')}
+            >
+              <span style={{
+                fontFamily: 'var(--mono)',
+                fontSize: '9px',
+                textTransform: 'uppercase' as const,
+                letterSpacing: '0.08em',
+                padding: '3px 8px',
+                background: 'var(--bg3)',
+                color: 'var(--ink2)',
+                border: '1px solid var(--border)',
+                alignSelf: 'flex-start',
+              }}>
+                {prompt.category}
+              </span>
+              <div style={{ fontFamily: 'var(--sans)', fontSize: 14, fontWeight: 500, color: 'var(--ink)', lineHeight: 1.4 }}>
+                {prompt.title}
+              </div>
+              <div style={{
+                fontSize: 13,
+                color: 'var(--muted)',
+                lineHeight: 1.5,
+                fontStyle: 'italic',
+                padding: '10px 12px',
+                borderLeft: '2px solid var(--accent)',
+                background: 'var(--bg2)',
+                fontFamily: 'var(--sans)',
+              }}>
+                {prompt.preview}
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* Tools list */}
+      <div>
+        {tools.map((tool, idx) => (
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0, x: -10 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: idx * 0.08 }}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 20,
+              padding: '24px 60px',
+              borderBottom: idx < tools.length - 1 ? '1px solid var(--border)' : 'none',
+              cursor: 'pointer',
+              textDecoration: 'none',
+              color: 'inherit',
+              transition: 'background 0.12s',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg2)')}
+            onMouseLeave={(e) => (e.currentTarget.style.background = '')}
+          >
+            <span style={{
+              fontFamily: 'var(--mono)',
+              fontSize: '9px',
+              textTransform: 'uppercase' as const,
+              letterSpacing: '0.08em',
+              padding: '3px 8px',
+              border: '1px solid var(--border)',
+              color: 'var(--muted)',
+              minWidth: 80,
+              textAlign: 'center' as const,
+              flexShrink: 0,
+            }}>
+              {tool.tag}
+            </span>
+            <div style={{ flex: 1 }}>
+              <div style={{ fontSize: 14, fontWeight: 500, color: 'var(--ink)', marginBottom: 3 }}>{tool.title}</div>
+              <div style={{ fontFamily: 'var(--mono)', fontSize: '11px', color: 'var(--muted)' }}>{tool.sub}</div>
+            </div>
+            <ArrowRight size={12} className="text-muted" />
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
+// ─── BLOG & TIPS ─────────────────────────────────────────────────────────────
+const blogPosts = [
+  {
+    id: 'featured',
+    tag: 'CASE STUDY',
+    title: 'Marketer không biết code tự build dashboard báo cáo với AI — case study thực tế',
+    date: '15/04/2026',
+    readTime: '8 phút',
+    slug: '#',
+    isFeatured: true,
+  },
+  {
+    tag: 'VIBECODE',
+    title: '5 lỗi thường gặp khi dùng Cursor cho người mới',
+    date: '12/04/2026',
+    readTime: '5 phút',
+    slug: '#',
+    isFeatured: false,
+  },
+  {
+    tag: 'ANALYTICS',
+    title: 'GA4 vs UA: những thay đổi Marketer cần nắm trong 2026',
+    date: '08/04/2026',
+    readTime: '7 phút',
+    slug: '#',
+    isFeatured: false,
+  },
+  {
+    tag: 'AI TOOLS',
+    title: 'Top 10 AI tools dân Marketing nên thử trong Q2/2026',
+    date: '01/04/2026',
+    readTime: '6 phút',
+    slug: '#',
+    isFeatured: false,
+  },
+];
+
+const BlogSection = () => (
+  <section>
+    <div className="page-shell border-b border-border py-10">
+      <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
+        <div>
+          <p className="section-label"><span>✳</span> blog & tips</p>
+          <h2 className="section-heading">
+            Viết thực tế. <em>Không hype.</em>
+          </h2>
+        </div>
+        <Link to="/blog" className="section-link no-underline">
+          Đọc tất cả →
+        </Link>
+      </div>
+    </div>
+
+    <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr 1fr', borderTop: '1px solid var(--border)' }}>
+      {/* Featured post */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        style={{
+          padding: '32px',
+          borderRight: '1px solid var(--border)',
+          textDecoration: 'none',
+          color: 'inherit',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 16,
+          transition: 'background 0.12s',
+          cursor: 'pointer',
+        }}
+        onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg2)')}
+        onMouseLeave={(e) => (e.currentTarget.style.background = '')}
+      >
+        <div style={{
+          aspectRatio: '16/9',
+          background: 'var(--surface-2)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          border: '1px solid var(--surface-3)',
+        }}>
+          <span style={{ fontFamily: 'var(--mono)', fontSize: '10px', color: 'var(--surface-3)', textTransform: 'uppercase' as const, letterSpacing: '0.06em' }}>
+            case study thumbnail
+          </span>
+        </div>
+        <span style={{
+          fontFamily: 'var(--mono)',
+          fontSize: '9px',
+          textTransform: 'uppercase' as const,
+          letterSpacing: '0.08em',
+          padding: '3px 8px',
+          background: 'var(--accent)',
+          color: 'white',
+          alignSelf: 'flex-start',
+        }}>
+          {blogPosts[0].tag}
+        </span>
+        <div style={{ fontFamily: 'var(--serif)', fontSize: 22, fontWeight: 400, color: 'var(--ink)', lineHeight: 1.25, letterSpacing: '-0.01em', flex: 1 }}>
+          {blogPosts[0].title}
+        </div>
+        <div style={{ fontFamily: 'var(--mono)', fontSize: '10px', color: 'var(--muted)', textTransform: 'uppercase' as const, letterSpacing: '0.05em', marginTop: 'auto' }}>
+          {blogPosts[0].date} · {blogPosts[0].readTime}
+        </div>
+      </motion.div>
+
+      {/* Blog list col 1 */}
+      <div style={{ borderRight: '1px solid var(--border)', display: 'flex', flexDirection: 'column' }}>
+        {[blogPosts[1], blogPosts[2]].map((post, idx) => (
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: idx * 0.06 }}
+            style={{
+              padding: '24px',
+              borderBottom: '1px solid var(--border)',
+              textDecoration: 'none',
+              color: 'inherit',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 8,
+              transition: 'background 0.12s',
+              cursor: 'pointer',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg2)')}
+            onMouseLeave={(e) => (e.currentTarget.style.background = '')}
+          >
+            <span style={{
+              fontFamily: 'var(--mono)',
+              fontSize: '9px',
+              textTransform: 'uppercase' as const,
+              letterSpacing: '0.08em',
+              padding: '2px 6px',
+              border: '1px solid var(--border)',
+              color: 'var(--muted)',
+              alignSelf: 'flex-start',
+            }}>
+              {post.tag}
+            </span>
+            <div style={{ fontSize: 14, fontWeight: 500, color: 'var(--ink)', lineHeight: 1.4 }}>
+              {post.title}
+            </div>
+            <div style={{ fontFamily: 'var(--mono)', fontSize: '10px', color: 'var(--muted)', textTransform: 'uppercase' as const }}>
+              {post.date} · {post.readTime}
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Blog list col 2 */}
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        {[blogPosts[3]].map((post, idx) => (
+          <motion.div
+            key={idx}
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: idx * 0.06 }}
+            style={{
+              padding: '24px',
+              borderBottom: '1px solid var(--border)',
+              textDecoration: 'none',
+              color: 'inherit',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 8,
+              transition: 'background 0.12s',
+              cursor: 'pointer',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg2)')}
+            onMouseLeave={(e) => (e.currentTarget.style.background = '')}
+          >
+            <span style={{
+              fontFamily: 'var(--mono)',
+              fontSize: '9px',
+              textTransform: 'uppercase' as const,
+              letterSpacing: '0.08em',
+              padding: '2px 6px',
+              border: '1px solid var(--border)',
+              color: 'var(--muted)',
+              alignSelf: 'flex-start',
+            }}>
+              {post.tag}
+            </span>
+            <div style={{ fontSize: 14, fontWeight: 500, color: 'var(--ink)', lineHeight: 1.4 }}>
+              {post.title}
+            </div>
+            <div style={{ fontFamily: 'var(--mono)', fontSize: '10px', color: 'var(--muted)', textTransform: 'uppercase' as const }}>
+              {post.date} · {post.readTime}
+            </div>
+          </motion.div>
+        ))}
+      </div>
+    </div>
+  </section>
+);
+
+// ─── CTA SECTION ──────────────────────────────────────────────────────────────
+const CTASection = () => (
+  <section className="page-shell border-b border-border py-24 flex flex-col items-center text-center">
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      viewport={{ once: true }}
+      transition={{ duration: 0.6 }}
+    >
+      <h2 className="section-heading mb-6 max-w-2xl" style={{ textAlign: 'center' }}>
+        Không cần đăng ký.<br />
+        <em>Không cần email.</em><br />
+        Không giới hạn.
+      </h2>
+      <p className="font-sans text-[15px] text-ink2 mb-8 max-w-md mx-auto leading-[1.65]">
+        Chọn lộ trình phù hợp và bắt đầu ngay. Tất cả đều miễn phí. Mãi mãi. Vibecode, Analytics, Image, Video — chọn thứ bạn cần.
+      </p>
+      <div className="flex flex-wrap gap-4 justify-center mb-8">
+        <Link to="/vibecode" className="btn-primary no-underline text-white !px-8 !py-3 !text-[13px]">
+          Vibecode Web — Bắt đầu ngay →
+        </Link>
+        <Link to="/prompts" className="btn-ghost no-underline !px-8 !py-3 !text-[13px]">
+          Xem 150+ Prompt
+        </Link>
+      </div>
+      <div style={{ fontFamily: 'var(--mono)', fontSize: '11px', color: 'var(--muted)', textTransform: 'uppercase' as const, letterSpacing: '0.06em', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 24, flexWrap: 'wrap' }}>
+        <span>✓ 100% miễn phí</span>
+        <span style={{ width: 3, height: 3, background: 'var(--muted)', borderRadius: '50%', display: 'inline-block' }} />
+        <span>✓ Không cần biết code</span>
+        <span style={{ width: 3, height: 3, background: 'var(--muted)', borderRadius: '50%', display: 'inline-block' }} />
+        <span>✓ 5 lộ trình học</span>
+        <span style={{ width: 3, height: 3, background: 'var(--muted)', borderRadius: '50%', display: 'inline-block' }} />
+        <span>✓ Cập nhật liên tục</span>
+      </div>
+    </motion.div>
+  </section>
+);
+
+// ─── HOME PAGE ───────────────────────────────────────────────────────────────
 export default function Home() {
   return (
     <>
       <Hero />
       <StatsBar />
-      <Vibecode />
-      <CTA />
+      <FreeStrip />
+      <LearningPaths />
+      <ToolsResources />
+      <BlogSection />
+      <CTASection />
     </>
   );
 }
