@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { getLessonBySlug, lessons } from '../lib/lessons';
+import { getLessonBySlug, lessons, getLessonSlug } from '../lib/lessons';
 import LessonHero from '../components/lesson/LessonHero';
 import LessonLayout from '../components/lesson/LessonLayout';
 import SubLesson from '../components/lesson/SubLesson';
@@ -50,15 +50,36 @@ export default function VibecodeLesson() {
 
   return (
     <div>
-      {/* Breadcrumb */}
+      {/* Breadcrumb & Top Nav */}
       <div className="breadcrumb-wrap">
-        <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
+        <div className="breadcrumb-content">
           <div className="breadcrumb">
             <Link to="/">markAI</Link>
             <span>/</span>
             <Link to="/vibecode">Vibecode Web</Link>
             <span>/</span>
             <span style={{ color: 'var(--ink)' }}>Bài {lessonNum}</span>
+          </div>
+
+          <div className="nav-lesson-top">
+            {lesson.prevLesson ? (
+              <Link to={`/vibecode/${getLessonSlug(lesson.prevLesson.id)}`} className="nav-item-top">
+                ← Trước
+              </Link>
+            ) : (
+              <span className="nav-item-top disabled">← Trước</span>
+            )}
+            
+            {lesson.nextLesson ? (
+              <Link 
+                to={`/vibecode/${getLessonSlug(lesson.nextLesson.id)}`} 
+                className="nav-item-top nav-item-top-black"
+              >
+                Bài {lesson.nextLesson.id.toString().padStart(2, '0')} →
+              </Link>
+            ) : (
+              <span className="nav-item-top disabled">Kết thúc →</span>
+            )}
           </div>
         </div>
       </div>

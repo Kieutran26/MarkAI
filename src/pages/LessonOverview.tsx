@@ -1,5 +1,5 @@
 import { useParams, Link } from 'react-router-dom';
-import { getLessonBySlug, getNextLesson, getRemainingLessons } from '../lib/lessons';
+import { getLessonBySlug, getNextLesson, getRemainingLessons, getLessonSlug } from '../lib/lessons';
 import LessonOverviewHero from '../components/lesson/LessonOverviewHero';
 import SubLessonList from '../components/lesson/SubLessonList';
 import WhatYoullLearn from '../components/lesson/WhatYoullLearn';
@@ -31,14 +31,31 @@ export default function LessonOverview() {
 
   return (
     <div>
-      {/* Breadcrumb */}
+      {/* Breadcrumb & Top Nav */}
       <div className="breadcrumb-wrap">
-        <div className="breadcrumb">
-          <Link to="/">markAI</Link>
-          <span>/</span>
-          <Link to="/vibecode">Vibecode Web</Link>
-          <span>/</span>
-          <span>Bài {lesson.id.toString().padStart(2, '0')}</span>
+        <div className="breadcrumb-content">
+          <div className="breadcrumb">
+            <Link to="/">markAI</Link>
+            <span>/</span>
+            <Link to="/vibecode">Vibecode Web</Link>
+            <span>/</span>
+            <span style={{ color: 'var(--ink)' }}>Bài {lesson.id.toString().padStart(2, '0')}</span>
+          </div>
+
+          <div className="nav-lesson-top">
+            <span className="nav-item-top disabled">← Trước</span>
+            
+            {nextLesson ? (
+              <Link 
+                to={`/vibecode/${getLessonSlug(nextLesson.id)}`} 
+                className="nav-item-top nav-item-top-black"
+              >
+                Bài {nextLesson.id.toString().padStart(2, '0')} →
+              </Link>
+            ) : (
+              <span className="nav-item-top disabled">Kết thúc →</span>
+            )}
+          </div>
         </div>
       </div>
 

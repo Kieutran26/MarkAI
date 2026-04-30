@@ -116,34 +116,6 @@ export default function LessonHero({ lesson, progress }: LessonHeroProps) {
               Bắt đầu bài này →
             </Link>
 
-            {/* Prev/Next Navigation */}
-            <div className="nav-lesson">
-              {lesson.prevLesson ? (
-                <Link to={`/vibecode/${prevSlugCorrect}`} className="hover:bg-bg2">
-                  <span className="dir">← Trước</span>
-                  <span className="font-serif text-[.85rem] text-ink">
-                    Bài {(lesson.id - 1).toString().padStart(2, '0')}
-                  </span>
-                </Link>
-              ) : (
-                <div className="disabled opacity-40">
-                  <span className="dir">← Trước</span>
-                  <span className="font-serif text-[.85rem] text-ink">—</span>
-                </div>
-              )}
-              {lesson.nextLesson ? (
-                <Link to={`/vibecode/${nextSlugCorrect}`} className="hover:bg-bg2">
-                  <span className="dir">Tiếp →</span>
-                  <span className="font-serif text-[.85rem] text-ink">
-                    Bài {(lesson.id + 1).toString().padStart(2, '0')}
-                  </span>
-                </Link>
-              ) : (
-                <div className="disabled opacity-40">
-                  <span className="dir">Kết thúc →</span>
-                  <span className="font-serif text-[.85rem] text-ink">—</span>
-                </div>
-              )}
             </div>
           </div>
         </div>

@@ -101,32 +101,6 @@ export default function LessonOverviewHero({ lesson }: LessonOverviewHeroProps) 
               <span>Bắt đầu từ bài 1.1</span>
               <span className="transition-transform group-hover:translate-x-1">→</span>
             </Link>
-
-            {/* Prev/Next Navigation */}
-            <div className="nav-lesson mt-4">
-              {lesson.prevLesson ? (
-                <Link to={`/vibecode/${lesson.slug}`} className="hover:bg-bg2">
-                  <span className="dir">← Trước</span>
-                  <span className="name">Bài {(lesson.id - 1).toString().padStart(2, '0')} · {lesson.prevLesson.title}</span>
-                </Link>
-              ) : (
-                <div className="disabled opacity-35 pointer-events-none">
-                  <span className="dir">← Trước</span>
-                  <span className="name">—</span>
-                </div>
-              )}
-              {lesson.nextLesson ? (
-                <Link to={`/vibecode/${lesson.nextLesson.slug}`} className="hover:bg-bg2">
-                  <span className="dir">Tiếp →</span>
-                  <span className="name">Bài {(lesson.id + 1).toString().padStart(2, '0')} · {lesson.nextLesson.title}</span>
-                </Link>
-              ) : (
-                <div className="disabled opacity-35 pointer-events-none">
-                  <span className="dir">Kết thúc →</span>
-                  <span className="name">—</span>
-                </div>
-              )}
-            </div>
           </div>
         </div>
       </div>

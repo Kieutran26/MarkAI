@@ -31,6 +31,22 @@ export type Lesson = {
   subLessons: SubLesson[];
 };
 
+export const getLessonSlug = (id: number): string => {
+  const slugMap: Record<number, string> = {
+    1: 'vibecode-la-gi',
+    2: 'tu-ngu-chuyen-nganh',
+    3: 'cai-dat-moi-truong',
+    4: 'lam-quen-vscode-cursor',
+    5: 'lam-quen-claude-code',
+    6: 'cong-cu-website-huu-ich',
+    7: 'cach-prompt-cho-ai',
+    8: 'khi-ai-code-sai',
+    9: 'tao-skills-va-workflow',
+    10: 'deploy-va-tracking'
+  };
+  return slugMap[id] || '';
+};
+
 // Lesson Data
 export const lessons: Lesson[] = [
   // ========== BÀI 01 ==========
@@ -53,7 +69,7 @@ export const lessons: Lesson[] = [
         id: '1.1',
         title: 'Vibecode là gì — định nghĩa không-tech',
         eyebrow: 'Định nghĩa',
-        desc: 'Giải thích bằng ngôn ngữ người làm Marketing, không dùng thuật ngữ kỹ thuật.',
+        desc: 'Giải thích Vibecode theo ngôn ngữ của Marketer, không dùng thuật ngữ lập trình.',
         contentType: 'text',
         paragraphs: [
           'Vibecode là cách bạn dùng <strong>AI để viết code thay mình</strong>. Bạn mô tả điều mình muốn bằng tiếng Việt bình thường — AI hiểu và tạo ra code. Bạn không cần đọc được code đó, không cần hiểu nó hoạt động thế nào.',
@@ -64,9 +80,9 @@ export const lessons: Lesson[] = [
       },
       {
         id: '1.2',
-        title: 'Tại sao Marketer lại cần biết vibecode?',
+        title: 'Tại sao Marketer lại cần biết Vibecode?',
         eyebrow: 'Tại sao quan trọng',
-        desc: 'Không phải vì bạn cần trở thành developer — mà vì bạn sẽ không cần chờ developer nữa.',
+        desc: 'Lý do thực tế, không phải lý thuyết — Marketer được gì khi biết vibecode.',
         contentType: 'usecases',
         paragraphs: [
           'Trước đây, khi một Marketer có ý tưởng cho một landing page, một công cụ tính toán, hay một dashboard báo cáo — họ phải <strong>chờ team kỹ thuật</strong>. Chờ thiết kế. Chờ estimate. Chờ sprint. Chờ QA. Có khi vài tuần.',
@@ -83,7 +99,7 @@ export const lessons: Lesson[] = [
         id: '1.3',
         title: 'Vibecode khác học code truyền thống thế nào?',
         eyebrow: 'So sánh',
-        desc: 'Hai cách tiếp cận hoàn toàn khác nhau — không phải cái nào tốt hơn, mà là cái nào phù hợp hơn với bạn.',
+        desc: 'So sánh để xoá bỏ nỗi sợ — không phải học lập trình từ đầu.',
         contentType: 'compare',
         compareHeaders: ['Học code truyền thống', 'Vibecode'],
         compareRows: [
@@ -97,9 +113,9 @@ export const lessons: Lesson[] = [
       },
       {
         id: '1.4',
-        title: 'Những thứ Marketer đã build được bằng vibecode',
+        title: 'Những thứ Marketer đã build được bằng Vibecode (case thực tế)',
         eyebrow: 'Case thực tế',
-        desc: 'Không phải ví dụ giả định — đây là những thứ người làm Marketing thực sự đã tạo ra.',
+        desc: 'Ví dụ cụ thể, thứ người ta đã làm được, để người đọc hình dung được đích đến.',
         contentType: 'grid',
         gridItems: [
           { label: 'Landing page', title: 'Trang campaign có countdown timer', desc: 'Build trong 3 giờ, đổi copy realtime theo A/B test, không cần xin dev chỉnh thêm.' },
@@ -113,9 +129,9 @@ export const lessons: Lesson[] = [
       },
       {
         id: '1.5',
-        title: 'Bạn cần biết gì — và những thứ KHÔNG cần biết',
+        title: 'Bạn cần biết gì trước khi bắt đầu — và những thứ bạn KHÔNG cần biết',
         eyebrow: 'Chuẩn bị',
-        desc: 'Danh sách này sẽ giúp bạn ngừng lo lắng và bắt đầu.',
+        desc: 'Xoá bỏ rào cản tâm lý, set kỳ vọng đúng.',
         contentType: 'compare',
         compareHeaders: ['✳ Bạn CẦN có', '✗ Bạn KHÔNG cần'],
         compareRows: [
