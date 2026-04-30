@@ -162,6 +162,13 @@ body {
 .topbar-title strong { color: var(--ink); font-weight: 400; }
 .topbar-spacer { flex: 1; }
 .topbar-actions { display: flex; align-items: center; gap: 0; }
+.topbar-user {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  padding: 0 1rem;
+  letter-spacing: .04em;
+}
 .topbar-btn {
   font-family: var(--mono);
   font-size: 11px;
@@ -550,6 +557,73 @@ textarea { resize: vertical; min-height: 80px; }
   border-left: 3px solid var(--accent);
 }
 .alert-bar-text { font-family: var(--mono); font-size: 11px; color: var(--warning-text); }
+
+/* auth */
+.admin-auth-screen {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background:
+    linear-gradient(135deg, rgba(0,0,0,0.04), transparent 50%),
+    var(--bg);
+}
+.admin-auth-card {
+  width: min(100%, 440px);
+  border: 1px solid var(--border);
+  background: var(--bg);
+  padding: 2rem;
+  box-shadow: 12px 12px 0 rgba(13, 13, 13, 0.05);
+}
+.admin-auth-card-muted { text-align: center; }
+.admin-auth-eyebrow {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin-bottom: .8rem;
+}
+.admin-auth-title {
+  font-family: var(--serif);
+  font-size: 2rem;
+  line-height: 1;
+  margin-bottom: .8rem;
+}
+.admin-auth-copy {
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+.admin-auth-field {
+  display: flex;
+  flex-direction: column;
+  gap: .45rem;
+  margin-bottom: 1rem;
+}
+.admin-auth-field span {
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.admin-auth-error {
+  border: 1px solid var(--danger);
+  background: var(--danger-bg);
+  color: var(--danger);
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: .8rem 1rem;
+  margin-bottom: 1rem;
+}
+.admin-auth-submit {
+  width: 100%;
+  justify-content: center;
+}
 
 /* ─── DEPLOY GRID ─── */
 .deploy-grid { display: grid; grid-template-columns: repeat(3, 1fr); }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 
-const Char = ({ children, delay }: { children: string, delay: number }) => {
+const Char: React.FC<{ children: string, delay: number }> = ({ children, delay }) => {
   return (
     <motion.span
       initial={{ opacity: 0 }}

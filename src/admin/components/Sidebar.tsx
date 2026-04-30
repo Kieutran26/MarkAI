@@ -3,9 +3,11 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { navItems, navGroups } from '@/app/data/navigation'
+import { useAdminSession } from '../auth/AdminSessionProvider'
 
 export default function Sidebar() {
   const pathname = usePathname()
+  const { user } = useAdminSession()
 
   return (
     <aside className="sidebar">
@@ -28,9 +30,7 @@ export default function Sidebar() {
                 >
                   <span className="nav-icon">{item.icon}</span>
                   {item.label}
-                  {item.count !== undefined && (
-                    <span className="nav-count">{item.count}</span>
-                  )}
+                  {item.count !== undefined ? <span className="nav-count">{item.count}</span> : null}
                 </Link>
               ))}
           </div>
@@ -39,10 +39,10 @@ export default function Sidebar() {
 
       <div className="sidebar-bottom">
         <div className="sidebar-user">
-          <div className="user-avatar">A</div>
+          <div className="user-avatar">{user?.displayName?.slice(0, 1).toUpperCase() ?? 'A'}</div>
           <div className="user-info">
-            <span className="user-name">Admin</span>
-            <span className="user-role">markAI · Super Admin</span>
+            <span className="user-name">{user?.displayName ?? 'Admin'}</span>
+            <span className="user-role">@{user?.username ?? 'admin'} · Super Admin</span>
           </div>
         </div>
       </div>

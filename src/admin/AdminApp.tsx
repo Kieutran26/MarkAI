@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import adminCss from './globals.css?raw';
 import AdminShell from '@/app/components/AdminShell';
+import AdminRouteGate from './auth/AdminRouteGate';
+import { AdminSessionProvider } from './auth/AdminSessionProvider';
 import {
   ActivityPage,
   BlogPage,
@@ -52,21 +54,25 @@ export default function AdminApp() {
 
   return (
     <div className="admin-root">
-      <AdminShell>
-        <Routes>
-          <Route index element={<DashboardPage />} />
-          <Route path="activity" element={<ActivityPage />} />
-          <Route path="lessons" element={<LessonsPage />} />
-          <Route path="blog" element={<BlogPage />} />
-          <Route path="tips" element={<TipsPage />} />
-          <Route path="prompts" element={<PromptsPage />} />
-          <Route path="modules" element={<ModulesPage />} />
-          <Route path="ticker" element={<TickerPage />} />
-          <Route path="nav-manage" element={<NavManagePage />} />
-          <Route path="settings" element={<SettingsPage />} />
-          <Route path="deploy" element={<DeployPage />} />
-        </Routes>
-      </AdminShell>
+      <AdminSessionProvider>
+        <AdminRouteGate>
+          <AdminShell>
+            <Routes>
+              <Route index element={<DashboardPage />} />
+              <Route path="activity" element={<ActivityPage />} />
+              <Route path="lessons" element={<LessonsPage />} />
+              <Route path="blog" element={<BlogPage />} />
+              <Route path="tips" element={<TipsPage />} />
+              <Route path="prompts" element={<PromptsPage />} />
+              <Route path="modules" element={<ModulesPage />} />
+              <Route path="ticker" element={<TickerPage />} />
+              <Route path="nav-manage" element={<NavManagePage />} />
+              <Route path="settings" element={<SettingsPage />} />
+              <Route path="deploy" element={<DeployPage />} />
+            </Routes>
+          </AdminShell>
+        </AdminRouteGate>
+      </AdminSessionProvider>
     </div>
   );
 }

@@ -944,7 +944,7 @@ button, a { cursor: pointer; transition: all 0.15s ease; }
 }
 .use-case-item:last-child { border-bottom: none; }
 .use-case-icon { font-family: var(--mono); font-size: 10px; color: var(--accent); padding-top: 3px; min-width: 16px; }
-.use-case-content {}
+
 .use-case-title { font-family: var(--sans); font-size: 14px; font-weight: 400; color: var(--ink); margin-bottom: 0.2rem; }
 .use-case-desc { font-family: var(--sans); font-size: 13px; font-weight: 300; color: var(--ink2); line-height: 1.6; }
 
@@ -1314,7 +1314,7 @@ button, a { cursor: pointer; transition: all 0.15s ease; }
 }
 
 /* Next Lesson Section */
-.next-cta {}
+
 .next-lesson-list { display: flex; flex-direction: column; }
 .next-lesson-item {
   display: flex;
