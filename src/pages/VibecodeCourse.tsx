@@ -176,7 +176,7 @@ const CurriculumChapter: React.FC<CurriculumChapterProps> = ({ chapter, index, i
   }
 
   return (
-    <div className={`border border-border bg-white overflow-hidden transition-all duration-300 ${isOpen ? 'shadow-sm ring-1 ring-accent/5' : 'hover:bg-bg2/20'}`}>
+    <div className={`border border-border bg-bg overflow-hidden transition-all duration-300 ${isOpen ? 'shadow-sm ring-1 ring-accent/5' : 'hover:bg-bg2/20'}`}>
       {/* Chapter Header */}
       <div 
         onClick={() => setIsOpen(!isOpen)}
@@ -217,7 +217,7 @@ const CurriculumChapter: React.FC<CurriculumChapterProps> = ({ chapter, index, i
                 <Link 
                   key={lIdx}
                   to={`/vibecode/${slugMap[index + 1]}`}
-                  className="group/lesson flex items-center gap-4 py-4 px-6 sm:px-8 border-b border-border/40 last:border-0 hover:bg-white transition-all no-underline"
+                  className="group/lesson flex items-center gap-4 py-4 px-6 sm:px-8 border-b border-border/40 last:border-0 hover:bg-bg transition-all no-underline"
                 >
                   <div className="font-mono text-[10px] text-muted group-hover/lesson:text-accent w-8 shrink-0">
                     {lesson.id}
@@ -267,7 +267,7 @@ export default function VibecodeCourse() {
   return (
     <div className="bg-bg min-h-screen">
       {/* Header Section */}
-      <section className="border-b border-border bg-white pt-24 pb-12 px-0">
+      <section className="border-b border-border bg-bg pt-24 pb-12 px-0">
         <div className="page-shell-course">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -307,14 +307,14 @@ export default function VibecodeCourse() {
                     
                     <Link 
                       to={`/vibecode/${slugMap[lastLesson || 1]}`}
-                      className="w-full bg-accent text-white no-underline py-4 font-mono text-[11px] uppercase tracking-widest hover:bg-white hover:text-accent transition-all flex items-center justify-center gap-3 shadow-lg shadow-accent/20"
+                      className="w-full bg-accent text-white no-underline py-4 font-mono text-[11px] uppercase tracking-widest hover:bg-bg hover:text-accent transition-all flex items-center justify-center gap-3 shadow-lg shadow-accent/20"
                     >
                       {lastLesson ? 'Học tiếp ngay' : 'Bắt đầu ngay'} <ChevronRight className="w-3 h-3" />
                     </Link>
                   </div>
                 </div>
                 {/* Decorative background element */}
-                <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-16 -mt-16 group-hover:scale-110 transition-transform duration-700"></div>
+                <div className="absolute top-0 right-0 w-32 h-32 bg-bg/5 rounded-full -mr-16 -mt-16 group-hover:scale-110 transition-transform duration-700"></div>
               </div>
             </div>
           </motion.div>
@@ -352,7 +352,7 @@ export default function VibecodeCourse() {
             <aside className="lg:sticky lg:top-24 flex flex-col gap-6">
               {/* Stats Sidebar Block */}
               <div className="grid grid-cols-2 gap-3">
-                <div className="bg-white border border-border p-4 shadow-sm group hover:border-accent transition-colors">
+                <div className="bg-bg border border-border p-4 shadow-sm group hover:border-accent transition-colors">
                   <div className="font-mono text-[8px] uppercase text-muted mb-1 tracking-wider font-bold">Bài đã học</div>
                   <div className="flex items-baseline gap-1">
                     <span className="font-serif text-[1.2rem] text-ink leading-none">{lessonsCompleted}</span>
@@ -360,17 +360,17 @@ export default function VibecodeCourse() {
                   </div>
                 </div>
                 
-                <div className="bg-white border border-border p-4 shadow-sm group hover:border-accent transition-colors">
+                <div className="bg-bg border border-border p-4 shadow-sm group hover:border-accent transition-colors">
                   <div className="font-mono text-[8px] uppercase text-muted mb-1 tracking-wider font-bold">% Xong</div>
                   <div className="font-serif text-[1.2rem] text-ink leading-none">{progressPercent}%</div>
                 </div>
 
-                <div className="bg-white border border-border p-4 shadow-sm group hover:border-accent transition-colors">
+                <div className="bg-bg border border-border p-4 shadow-sm group hover:border-accent transition-colors">
                   <div className="font-mono text-[8px] uppercase text-muted mb-1 tracking-wider font-bold">Số chương</div>
                   <div className="font-serif text-[1.2rem] text-ink leading-none">{totalChapters}</div>
                 </div>
 
-                <div className="bg-white border border-border p-4 shadow-sm group hover:border-accent transition-colors">
+                <div className="bg-bg border border-border p-4 shadow-sm group hover:border-accent transition-colors">
                   <div className="font-mono text-[8px] uppercase text-muted mb-1 tracking-wider font-serif italic text-accent capitalize">Còn lại</div>
                   <div className="font-serif text-[1.2rem] text-accent leading-none">{remainingLessons}</div>
                 </div>
@@ -382,7 +382,7 @@ export default function VibecodeCourse() {
       </section>
 
       {/* Footer CTA */}
-      <section className="py-20 px-0 border-t border-border bg-white">
+      <section className="py-20 px-0 border-t border-border bg-bg">
         <div className="page-shell-narrow text-center">
           <h2 className="font-serif text-[2rem] mb-6 italic">Mọi thứ bạn cần để làm chủ website.</h2>
           <Link to="/vibecode/vibecode-la-gi" className="inline-block border border-ink px-10 py-4 font-mono text-[11px] uppercase tracking-widest hover:bg-ink hover:text-white transition-all no-underline">

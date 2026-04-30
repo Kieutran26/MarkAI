@@ -7,7 +7,7 @@ export default function WhatYoullLearn({ items, lessonId }: WhatYoullLearnProps)
   return (
     <section className="bg-bg2 border-b border-border py-12 lg:py-16">
       <div className="page-shell">
-        <h2 className="font-serif text-[1.5rem] mb-10">
+        <h2 className="font-serif text-[2rem] mb-12">
           Sau bài này bạn sẽ <em className="text-accent italic">hiểu được</em>
         </h2>
 

@@ -5,7 +5,7 @@ import { lessons } from '../../lib/lessons';
 
 export default function LessonList() {
   return (
-    <div className="border-b border-[var(--border)] bg-[#fcfbf9]">
+    <div className="border-b border-[var(--border)] bg-[var(--bg)]">
       <div className="page-shell py-24">
         <div className="w-full max-w-[1100px] mx-auto">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-16 lg:gap-y-24 gap-x-12 relative">

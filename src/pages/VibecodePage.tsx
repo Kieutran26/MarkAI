@@ -9,7 +9,7 @@ import WhyFree from '../components/vibecode/WhyFree';
 
 export default function VibecodePage() {
   return (
-    <div className="font-[family-name:var(--sans)] text-[var(--ink)] min-h-screen flex flex-col">
+    <div className="font-[family-name:var(--sans)] text-[var(--ink)] min-h-screen flex flex-col bg-[var(--bg)]">
       <main className="flex-1">
         {/* 1. Hero Section */}
         <VibecodeHero />

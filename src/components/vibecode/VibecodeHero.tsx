@@ -4,7 +4,7 @@ import VibecodeShowcase from './VibecodeShowcase';
 
 export default function VibecodeHero() {
   return (
-    <section className="border-b border-[var(--border)] bg-[#fcfbf9]">
+    <section className="border-b border-[var(--border)] bg-[var(--bg)]">
       <div className="page-shell pt-20 pb-16 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
         {/* Left Column */}
         <div>

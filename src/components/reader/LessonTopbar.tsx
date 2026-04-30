@@ -15,8 +15,8 @@ export default function LessonTopbar({ subLesson, lessonSlug }: LessonTopbarProp
     : `/vibecode/${getNextLessonSlug(lessonSlug)}`;
 
   const nextDisplay = nextSlug
-    ? `${id.split('.')[0]}.${currentIndex + 1} ${nextTitle?.split('—')[0].trim().slice(0, 20)} →`
-    : `Bài ${lessonId + 1} · Từ ngữ →`;
+    ? `Đến bài ${id.split('.')[0]}.${currentIndex + 1} →`
+    : `Đến bài ${(lessonId + 1).toString().padStart(2, '0')} →`;
 
   return (
     <div className="topbar">
