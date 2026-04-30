@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
 
@@ -183,9 +184,6 @@ const learningPathCardClass = (index: number) => {
   return classes.join(' ');
 };
 
-const blogColumnCardClass = (index: number, total: number) =>
-  `flex flex-col gap-2 transition-colors ${index < total - 1 ? 'border-b border-border' : ''}`;
-
 const LearningPaths = () => (
   <section id="paths">
     {/* Section header */}
@@ -303,15 +301,18 @@ const LearningPaths = () => (
               to={path.ctaLink}
               style={{
                 fontFamily: 'var(--mono)',
-                fontSize: '11px',
-                color: path.status === 'live' ? 'var(--ink)' : 'var(--muted)',
+                fontSize: path.status === 'live' ? '10px' : '11px',
+                color: path.status === 'live' ? 'var(--bg)' : 'var(--muted)',
                 textDecoration: 'none',
                 textTransform: 'uppercase' as const,
                 letterSpacing: '0.04em',
                 display: 'flex',
                 alignItems: 'center',
                 gap: 4,
-                transition: 'color 0.15s',
+                padding: path.status === 'live' ? '7px 10px' : '0',
+                background: path.status === 'live' ? 'var(--accent)' : 'transparent',
+                border: path.status === 'live' ? '1px solid var(--accent)' : '0',
+                transition: 'color 0.15s, background 0.15s',
               }}
               className="group"
             >
@@ -352,6 +353,38 @@ const tools = [
   { tag: 'Tips', title: 'Tips & Mẹo', sub: '100+ thủ thuật AI thực chiến', href: '/tips', stat: 'Ngắn, làm ngay' },
   { tag: 'Prompts', title: 'Prompt Library', sub: '150+ prompt đã test · copy & dùng', href: '/prompts', stat: 'Copy, sửa, chạy' },
 ];
+
+const promptMotionText = 'Copy -> Sua -> Publish';
+
+const PromptWorkflowType = () => {
+  const [visibleCount, setVisibleCount] = useState(0);
+
+  useEffect(() => {
+    const typeSpeedMs = 85;
+    const restartDelayMs = 1100;
+
+    if (visibleCount < promptMotionText.length) {
+      const timer = window.setTimeout(() => {
+        setVisibleCount((count) => count + 1);
+      }, typeSpeedMs);
+
+      return () => window.clearTimeout(timer);
+    }
+
+    const restartTimer = window.setTimeout(() => {
+      setVisibleCount(0);
+    }, restartDelayMs);
+
+    return () => window.clearTimeout(restartTimer);
+  }, [visibleCount]);
+
+  return (
+    <div className="flex items-center font-mono text-[10px] uppercase tracking-[0.08em] text-muted">
+      <span>{promptMotionText.slice(0, visibleCount)}</span>
+      <span className="term-cursor ml-1 h-[12px] w-[6px]" aria-hidden="true" />
+    </div>
+  );
+};
 
 const ToolsResources = () => (
   <section>
@@ -411,12 +444,10 @@ const ToolsResources = () => (
                 className="border border-border bg-bg2 p-5 md:p-6"
               >
                 <div className="mb-3 flex items-center justify-between gap-4">
-                  <span className="border border-accent bg-[rgba(232,140,46,0.08)] px-2 py-1 font-mono text-[9px] uppercase tracking-[0.1em] text-accent">
+                  <span className="border border-accent bg-[rgba(232,140,46,0.08)] px-2 py-1 font-mono text-[9px] uppercase tracking-[0.1em] text-black">
                     {featuredPrompts[0].category}
                   </span>
-                  <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted">
-                    Copy → sửa → publish
-                  </span>
+                  <PromptWorkflowType />
                 </div>
                 <div className="mb-3 font-serif text-[1.9rem] leading-[1.02] tracking-[-0.03em] text-ink">
                   {featuredPrompts[0].title}
@@ -425,9 +456,9 @@ const ToolsResources = () => (
                   {featuredPrompts[0].preview}
                 </div>
               </motion.div>
-            </div>
           </div>
         </div>
+      </div>
       </div>
 
       <div className="flex flex-col">
@@ -513,7 +544,25 @@ const blogPosts = [
     slug: '#',
     isFeatured: false,
   },
+  {
+    tag: 'COPYWRITING',
+    title: 'Cách viết CTA convert cao với AI assistant',
+    date: '25/03/2026',
+    readTime: '4 phút',
+    slug: '#',
+    isFeatured: false,
+  },
+  {
+    tag: 'AUTOMATION',
+    title: 'Zapier vs Make vs n8n: chọn tool automation nào cho marketing team',
+    date: '20/03/2026',
+    readTime: '9 phút',
+    slug: '#',
+    isFeatured: false,
+  },
 ];
+
+const homePostHref = (slug: string) => (slug === '#' ? '/blog' : slug);
 
 const BlogSection = () => (
   <section>
@@ -531,176 +580,193 @@ const BlogSection = () => (
       </div>
     </div>
 
-    <div className="page-shell grid grid-cols-1 lg:grid-cols-[2fr_1fr_1fr] border-t border-border">
-      {/* Featured post */}
-      <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true }}
-        className="flex flex-col gap-4 p-6 md:p-8 border-b lg:border-b-0 lg:border-r border-border"
-        style={{
-          textDecoration: 'none',
-          color: 'inherit',
-          transition: 'background 0.12s',
-          cursor: 'pointer',
-        }}
-        onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg2)')}
-        onMouseLeave={(e) => (e.currentTarget.style.background = '')}
-      >
-        <div style={{
-          aspectRatio: '16/9',
-          background: 'var(--surface-2)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          border: '1px solid var(--surface-3)',
-        }}>
-          <span style={{ fontFamily: 'var(--mono)', fontSize: '10px', color: 'var(--surface-3)', textTransform: 'uppercase' as const, letterSpacing: '0.06em' }}>
-            case study thumbnail
-          </span>
-        </div>
-        <span style={{
-          fontFamily: 'var(--mono)',
-          fontSize: '9px',
-          textTransform: 'uppercase' as const,
-          letterSpacing: '0.08em',
-          padding: '3px 8px',
-          background: 'var(--accent)',
-          color: 'white',
-          alignSelf: 'flex-start',
-        }}>
-          {blogPosts[0].tag}
-        </span>
-        <div style={{ fontFamily: 'var(--serif)', fontSize: 22, fontWeight: 400, color: 'var(--ink)', lineHeight: 1.25, letterSpacing: '-0.01em', flex: 1 }}>
-          {blogPosts[0].title}
-        </div>
-        <div style={{ fontFamily: 'var(--mono)', fontSize: '10px', color: 'var(--muted)', textTransform: 'uppercase' as const, letterSpacing: '0.05em', marginTop: 'auto' }}>
-          {blogPosts[0].date} · {blogPosts[0].readTime}
-        </div>
-      </motion.div>
+    {/* Bento Grid Layout */}
+    <div className="page-shell border-b border-border pb-12 relative z-20 bg-bg">
+      {/* Top Row: 1 Large Featured + 2 Small Cards */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-0 border-t border-border">
 
-      {/* Blog list col 1 */}
-      <div className="flex flex-col border-b lg:border-b-0 lg:border-r border-border">
-        {[blogPosts[1], blogPosts[2]].map((post, idx) => (
+        {/* Featured Post - Large (8 cols) */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="lg:col-span-8 border-b lg:border-b-0 lg:border-r border-border"
+        >
+          <Link
+            to={homePostHref(blogPosts[0].slug)}
+            className="blog-bento-featured no-underline group"
+          >
+            <div className="blog-bento-featured-inner">
+              {/* Content */}
+              <div className="blog-bento-content">
+                <div className="blog-bento-header">
+                  <span className="blog-bento-badge blog-bento-badge-accent">{blogPosts[0].tag}</span>
+                  <span className="blog-bento-badge blog-bento-badge-outline">FEATURED</span>
+                </div>
+
+                <h3 className="blog-bento-title">{blogPosts[0].title}</h3>
+
+                <p className="blog-bento-excerpt">
+                  Từ brief tới dashboard chạy được: cách dùng AI để dựng reporting stack nhanh, không cần biết code từ đầu.
+                </p>
+
+                <div className="blog-bento-footer">
+                  <div className="blog-bento-meta">
+                    <span>{blogPosts[0].date}</span>
+                    <span className="blog-bento-dot" />
+                    <span>{blogPosts[0].readTime}</span>
+                  </div>
+                  <span className="blog-bento-cta">
+                    Đọc bài
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </Link>
+        </motion.div>
+
+        {/* Right Column - 2 Small Cards (4 cols) */}
+        <div className="lg:col-span-4 flex flex-col">
+          {[blogPosts[1], blogPosts[2]].map((post, idx) => (
+            <motion.div
+              key={post.title}
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: idx * 0.06 }}
+              className={`blog-bento-small ${idx === 0 ? 'border-b border-border' : ''}`}
+            >
+              <Link
+                to={homePostHref(post.slug)}
+                className="blog-bento-small-link no-underline group"
+              >
+                <div className="blog-bento-small-index">0{idx + 1}</div>
+                <div className="blog-bento-small-content">
+                  <span className="blog-bento-badge blog-bento-badge-outline">{post.tag}</span>
+                  <h3 className="blog-bento-small-title">{post.title}</h3>
+                  <div className="blog-bento-meta">
+                    <span>{post.date}</span>
+                    <span className="blog-bento-dot" />
+                    <span>{post.readTime}</span>
+                  </div>
+                </div>
+                <span className="blog-bento-arrow">↗</span>
+              </Link>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+
+      {/* Bottom Row: 3 Equal Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+        {[blogPosts[3], blogPosts[4], blogPosts[5]].map((post, idx) => (
           <motion.div
-            key={idx}
+            key={post.title}
             initial={{ opacity: 0, y: 10 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: idx * 0.06 }}
-            className={blogColumnCardClass(idx, 2)}
-            style={{
-              padding: '24px',
-              textDecoration: 'none',
-              color: 'inherit',
-              transition: 'background 0.12s',
-              cursor: 'pointer',
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg2)')}
-            onMouseLeave={(e) => (e.currentTarget.style.background = '')}
+            transition={{ delay: idx * 0.08 }}
+            className={`blog-bento-card ${idx < 2 ? 'md:border-r border-border' : ''} ${idx < 3 ? 'border-b md:border-b-0' : ''}`}
           >
-            <span style={{
-              fontFamily: 'var(--mono)',
-              fontSize: '9px',
-              textTransform: 'uppercase' as const,
-              letterSpacing: '0.08em',
-              padding: '2px 6px',
-              border: '1px solid var(--border)',
-              color: 'var(--muted)',
-              alignSelf: 'flex-start',
-            }}>
-              {post.tag}
-            </span>
-            <div style={{ fontSize: 14, fontWeight: 500, color: 'var(--ink)', lineHeight: 1.4 }}>
-              {post.title}
-            </div>
-            <div style={{ fontFamily: 'var(--mono)', fontSize: '10px', color: 'var(--muted)', textTransform: 'uppercase' as const }}>
-              {post.date} · {post.readTime}
-            </div>
+            <Link
+              to={homePostHref(post.slug)}
+              className="blog-bento-card-link no-underline group"
+            >
+              {/* Top Accent Line */}
+              <div className="blog-bento-card-accent" />
+
+              <div className="blog-bento-card-content">
+                <div className="blog-bento-card-header">
+                  <span className="blog-bento-badge blog-bento-badge-outline">{post.tag}</span>
+                  <span className="blog-bento-index-label">{String(idx + 4).padStart(2, '0')}</span>
+                </div>
+
+                <h3 className="blog-bento-card-title">{post.title}</h3>
+
+                <div className="blog-bento-card-footer">
+                  <div className="blog-bento-meta">
+                    <span>{post.date}</span>
+                    <span className="blog-bento-dot" />
+                    <span>{post.readTime}</span>
+                  </div>
+                  <span className="blog-bento-card-arrow">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                  </span>
+                </div>
+              </div>
+            </Link>
           </motion.div>
         ))}
       </div>
 
-      {/* Blog list col 2 */}
-      <div className="flex flex-col">
-        {[blogPosts[3]].map((post, idx) => (
-          <motion.div
-            key={idx}
-            initial={{ opacity: 0, y: 10 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: idx * 0.06 }}
-            className={blogColumnCardClass(idx, 1)}
-            style={{
-              padding: '24px',
-              textDecoration: 'none',
-              color: 'inherit',
-              transition: 'background 0.12s',
-              cursor: 'pointer',
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg2)')}
-            onMouseLeave={(e) => (e.currentTarget.style.background = '')}
-          >
-            <span style={{
-              fontFamily: 'var(--mono)',
-              fontSize: '9px',
-              textTransform: 'uppercase' as const,
-              letterSpacing: '0.08em',
-              padding: '2px 6px',
-              border: '1px solid var(--border)',
-              color: 'var(--muted)',
-              alignSelf: 'flex-start',
-            }}>
-              {post.tag}
-            </span>
-            <div style={{ fontSize: 14, fontWeight: 500, color: 'var(--ink)', lineHeight: 1.4 }}>
-              {post.title}
-            </div>
-            <div style={{ fontFamily: 'var(--mono)', fontSize: '10px', color: 'var(--muted)', textTransform: 'uppercase' as const }}>
-              {post.date} · {post.readTime}
-            </div>
-          </motion.div>
-        ))}
+      {/* Rail Links */}
+      <div className="blog-bento-rail">
+        <Link to="/blog" className="blog-bento-rail-link no-underline">
+          <span>Xem tất cả bài viết</span>
+          <span className="blog-bento-rail-sub">Case study, tips, và nhiều hơn nữa</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </Link>
+        <Link to="/tips" className="blog-bento-rail-link no-underline">
+          <span>Xem tips ngắn</span>
+          <span className="blog-bento-rail-sub">Mẹo nhanh, làm được ngay</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </Link>
       </div>
     </div>
   </section>
 );
 
+
 // ─── CTA SECTION ──────────────────────────────────────────────────────────────
 const CTASection = () => (
-  <section className="page-shell border-b border-border py-24 flex flex-col items-center text-center">
-    <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.6 }}
-    >
-      <h2 className="section-heading mb-6 max-w-2xl" style={{ textAlign: 'center' }}>
-        Không cần đăng ký.<br />
-        <em>Không cần email.</em><br />
-        Không giới hạn.
-      </h2>
-      <p className="font-sans text-[15px] text-ink2 mb-8 max-w-md mx-auto leading-[1.65]">
-        Chọn lộ trình phù hợp và bắt đầu ngay. Tất cả đều miễn phí. Mãi mãi. Vibecode, Analytics, Image, Automation — chọn thứ bạn cần.
-      </p>
-      <div className="flex flex-wrap gap-4 justify-center mb-8">
-        <Link to="/vibecode" className="btn-primary no-underline text-white !px-8 !py-3 !text-[13px]">
-          Vibecode Web — Bắt đầu ngay →
-        </Link>
-        <Link to="/prompts" className="btn-ghost no-underline !px-8 !py-3 !text-[13px]">
-          Xem 150+ Prompt
-        </Link>
-      </div>
-      <div style={{ fontFamily: 'var(--mono)', fontSize: '11px', color: 'var(--muted)', textTransform: 'uppercase' as const, letterSpacing: '0.06em', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 24, flexWrap: 'wrap' }}>
-        <span>✓ 100% miễn phí</span>
-        <span style={{ width: 3, height: 3, background: 'var(--muted)', borderRadius: '50%', display: 'inline-block' }} />
-        <span>✓ Không cần biết code</span>
-        <span style={{ width: 3, height: 3, background: 'var(--muted)', borderRadius: '50%', display: 'inline-block' }} />
-        <span>✓ 5 lộ trình học</span>
-        <span style={{ width: 3, height: 3, background: 'var(--muted)', borderRadius: '50%', display: 'inline-block' }} />
-        <span>✓ Cập nhật liên tục</span>
-      </div>
-    </motion.div>
+  <section className="border-b border-border py-24 bg-accent text-ink overflow-hidden relative">
+    {/* Decorative glows for premium feel */}
+    <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-white opacity-20 blur-[120px] rounded-full translate-x-1/3 -translate-y-1/2 pointer-events-none" />
+    <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-black opacity-10 blur-[100px] rounded-full -translate-x-1/3 translate-y-1/2 pointer-events-none" />
+    
+    <div className="page-shell flex flex-col items-center text-center relative z-10">
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6 }}
+      >
+        <h2 className="section-heading mb-6 max-w-2xl text-ink" style={{ textAlign: 'center' }}>
+          Không cần đăng ký.<br />
+          <span className="font-serif italic !text-white">Không cần email.</span><br />
+          Không giới hạn.
+        </h2>
+        <p className="font-sans text-[15px] text-ink/80 mb-8 max-w-md mx-auto leading-[1.65]">
+          Chọn lộ trình phù hợp và bắt đầu ngay. Tất cả đều miễn phí. Mãi mãi. Vibecode, Analytics, Image, Automation — chọn thứ bạn cần.
+        </p>
+        <div className="flex flex-wrap gap-4 justify-center mb-8">
+          <Link to="/vibecode" className="btn-primary !bg-ink !text-white no-underline !px-8 !py-3 !text-[13px] hover:!bg-opacity-90">
+            Vibecode Web — Bắt đầu ngay →
+          </Link>
+          <Link to="/prompts" className="btn-ghost !border-ink !text-ink hover:!bg-ink/5 no-underline !px-8 !py-3 !text-[13px]">
+            Xem 150+ Prompt
+          </Link>
+        </div>
+        <div style={{ fontFamily: 'var(--mono)', fontSize: '11px', color: 'rgba(0,0,0,0.5)', textTransform: 'uppercase' as const, letterSpacing: '0.06em', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 24, flexWrap: 'wrap' }}>
+          <span>✓ 100% miễn phí</span>
+          <span style={{ width: 3, height: 3, background: 'rgba(0,0,0,0.3)', borderRadius: '50%', display: 'inline-block' }} />
+          <span>✓ Không cần biết code</span>
+          <span style={{ width: 3, height: 3, background: 'rgba(0,0,0,0.3)', borderRadius: '50%', display: 'inline-block' }} />
+          <span>✓ 5 lộ trình học</span>
+          <span style={{ width: 3, height: 3, background: 'rgba(0,0,0,0.3)', borderRadius: '50%', display: 'inline-block' }} />
+          <span>✓ Cập nhật liên tục</span>
+        </div>
+      </motion.div>
+    </div>
   </section>
 );
 

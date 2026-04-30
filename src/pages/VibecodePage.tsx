@@ -4,7 +4,6 @@ import VibecodeHero from '../components/vibecode/VibecodeHero';
 import StatsBar from '../components/vibecode/StatsBar';
 import PathHeader from '../components/vibecode/PathHeader';
 import LessonList from '../components/vibecode/LessonList';
-import ModulePicker from '../components/vibecode/ModulePicker';
 import PromptTeaser from '../components/vibecode/PromptTeaser';
 import WhyFree from '../components/vibecode/WhyFree';
 
@@ -24,16 +23,13 @@ export default function VibecodePage() {
         {/* 4. Lesson List - 10 lessons */}
         <LessonList />
         
-        {/* 5. Module Picker */}
-        <ModulePicker />
-        
-        {/* 6. Prompt Teaser (dark section) */}
+        {/* 5. Prompt Teaser (dark section) */}
         <PromptTeaser />
         
-        {/* 7. Why Free */}
+        {/* 6. Why Free */}
         <WhyFree />
         
-        {/* 8. CTA Final */}
+        {/* 7. CTA Final */}
         <section className="cta-section">
           <div className="cta-inner">
             <h2 className="cta-h2">
