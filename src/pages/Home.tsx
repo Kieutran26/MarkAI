@@ -20,7 +20,7 @@ const Hero = () => (
         Dùng được thì <span className="strike">ít.</span>
       </h1>
       <p className="font-sans text-[15px] leading-[1.7] text-ink2 mb-8 max-w-prose">
-        Tool thì không thiếu. Biết dùng đúng cách mới là chuyện khác. markAI dạy bạn dùng AI tới nơi tới chốn — từ Vibecode web, Analytics, Generate Image đến Motion Video.
+        Tool thì không thiếu. Biết dùng đúng cách mới là chuyện khác. markAI dạy bạn dùng AI tới nơi tới chốn — từ Vibecode web, Analytics, Generate Image đến Content Automation.
       </p>
       <div className="flex flex-wrap gap-4 items-center mb-6">
         <Link to="/vibecode" className="btn-primary no-underline text-white">
@@ -137,7 +137,7 @@ const learningPaths = [
   {
     id: 'video',
     icon: 'VID',
-    name: 'Motion Video',
+    name: 'Video thực chiến',
     sub: 'Kling · Runway · HeyGen',
     status: 'soon',
     statusLabel: 'Sắp ra',
@@ -203,16 +203,16 @@ const LearningPaths = () => (
       <p className="section-label"><span>✳</span> lộ trình học</p>
       <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
         <h2 className="section-heading">
-          Từ web đến video. <em>Tất cả miễn phí.</em>
+          Từ lý thuyết đến thực chiến. <em>Tất cả miễn phí.</em>
         </h2>
-        <Link to="/vibecode" className="section-link no-underline">
+        <Link to="/vibecode" className="btn-primary no-underline text-white">
           Xem tất cả lộ trình →
         </Link>
       </div>
     </div>
 
     {/* Paths grid */}
-    <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 border-b border-border">
+    <div className="page-shell grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 border-b border-border">
       {learningPaths.map((path, idx) => (
         <motion.div
           key={path.id}
@@ -369,7 +369,7 @@ const ToolsResources = () => (
       </h2>
     </div>
 
-    <div className="grid grid-cols-1 lg:grid-cols-2 border-b border-border">
+    <div className="page-shell grid grid-cols-1 lg:grid-cols-2 border-b border-border">
       {/* Prompt Library preview */}
       <div className="px-5 py-10 md:px-8 lg:px-[60px] lg:py-12 border-b lg:border-b-0 lg:border-r border-border">
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
@@ -381,7 +381,7 @@ const ToolsResources = () => (
               150+ prompt sẵn dùng
             </h3>
           </div>
-          <Link to="/prompts" className="btn-ghost no-underline" style={{ fontSize: '11px' }}>
+          <Link to="/prompts" className="btn-primary no-underline text-white" style={{ fontSize: '11px' }}>
             Xem tất cả →
           </Link>
         </div>
@@ -534,13 +534,13 @@ const BlogSection = () => (
             Viết thực tế. <em>Không hype.</em>
           </h2>
         </div>
-        <Link to="/blog" className="section-link no-underline">
+        <Link to="/blog" className="btn-primary no-underline text-white">
           Đọc tất cả →
         </Link>
       </div>
     </div>
 
-    <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr_1fr] border-t border-border">
+    <div className="page-shell grid grid-cols-1 lg:grid-cols-[2fr_1fr_1fr] border-t border-border">
       {/* Featured post */}
       <motion.div
         initial={{ opacity: 0, y: 10 }}
@@ -690,7 +690,7 @@ const CTASection = () => (
         Không giới hạn.
       </h2>
       <p className="font-sans text-[15px] text-ink2 mb-8 max-w-md mx-auto leading-[1.65]">
-        Chọn lộ trình phù hợp và bắt đầu ngay. Tất cả đều miễn phí. Mãi mãi. Vibecode, Analytics, Image, Video — chọn thứ bạn cần.
+        Chọn lộ trình phù hợp và bắt đầu ngay. Tất cả đều miễn phí. Mãi mãi. Vibecode, Analytics, Image, Automation — chọn thứ bạn cần.
       </p>
       <div className="flex flex-wrap gap-4 justify-center mb-8">
         <Link to="/vibecode" className="btn-primary no-underline text-white !px-8 !py-3 !text-[13px]">
