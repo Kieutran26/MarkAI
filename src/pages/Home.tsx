@@ -183,16 +183,6 @@ const learningPathCardClass = (index: number) => {
   return classes.join(' ');
 };
 
-const featuredPromptCardClass = (index: number) => {
-  const classes = ['flex', 'flex-col', 'gap-3', 'border-border'];
-
-  if (index < featuredPrompts.length - 1) {
-    classes.push('border-b', 'xl:border-b-0', 'xl:border-r');
-  }
-
-  return classes.join(' ');
-};
-
 const blogColumnCardClass = (index: number, total: number) =>
   `flex flex-col gap-2 transition-colors ${index < total - 1 ? 'border-b border-border' : ''}`;
 
@@ -341,23 +331,26 @@ const featuredPrompts = [
     category: 'VIBECODE',
     title: 'Tạo landing page từ brief',
     preview: '"Tạo landing page cho [sản phẩm]. Header có nav + CTA. Hero section với headline, subheadline, form thu lead..."',
+    note: 'Hero, CTA, form thu lead',
   },
   {
     category: 'ANALYTICS',
     title: 'Phân tích báo cáo tuần',
     preview: '"Đây là data GA4 tuần này [paste data]. Phân tích: điểm nào tốt, điểm nào cần cải thiện, 3 action items..."',
+    note: 'GA4, summary, action items',
   },
   {
     category: 'COPY',
     title: 'Viết email sequence',
     preview: '"Viết 5-email nurture sequence cho [audience]. Email 1: welcome. Email 2: value prop. Email 3: social proof..."',
+    note: 'Welcome, value prop, proof',
   },
 ];
 
 const tools = [
-  { tag: 'Blog', title: 'Blog markAI', sub: 'Case study · Xu hướng AI · Review' },
-  { tag: 'Tips', title: 'Tips & Mẹo', sub: '100+ thủ thuật AI thực chiến' },
-  { tag: 'Prompts', title: 'Prompt Library', sub: '150+ prompt đã test · copy & dùng' },
+  { tag: 'Blog', title: 'Blog markAI', sub: 'Case study · Xu hướng AI · Review', href: '/blog', stat: 'Bài dài, có context' },
+  { tag: 'Tips', title: 'Tips & Mẹo', sub: '100+ thủ thuật AI thực chiến', href: '/tips', stat: 'Ngắn, làm ngay' },
+  { tag: 'Prompts', title: 'Prompt Library', sub: '150+ prompt đã test · copy & dùng', href: '/prompts', stat: 'Copy, sửa, chạy' },
 ];
 
 const ToolsResources = () => (
@@ -369,117 +362,115 @@ const ToolsResources = () => (
       </h2>
     </div>
 
-    <div className="page-shell grid grid-cols-1 lg:grid-cols-2 border-b border-border">
-      {/* Prompt Library preview */}
-      <div className="px-5 py-10 md:px-8 lg:px-[60px] lg:py-12 border-b lg:border-b-0 lg:border-r border-border">
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 24 }}>
-          <div>
-            <p style={{ fontFamily: 'var(--mono)', fontSize: '10px', textTransform: 'uppercase' as const, letterSpacing: '0.1em', color: 'var(--muted)', marginBottom: 8 }}>
-              ✳ prompt library
-            </p>
-            <h3 style={{ fontFamily: 'var(--serif)', fontSize: 22, fontWeight: 400, color: 'var(--ink)', letterSpacing: '-0.01em' }}>
-              150+ prompt sẵn dùng
-            </h3>
-          </div>
-          <Link to="/prompts" className="btn-primary no-underline text-white" style={{ fontSize: '11px' }}>
-            Xem tất cả →
-          </Link>
-        </div>
+    <div className="page-shell grid grid-cols-1 border-b border-border lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)]">
+      <div className="border-b border-border lg:border-b-0 lg:border-r">
+        <div>
+          <div className="px-5 py-10 md:px-8 lg:px-[60px] lg:py-12">
+            <div className="flex flex-col gap-6">
+              <div className="flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
+                <div className="max-w-[30rem]">
+                  <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.16em] text-muted">
+                    ✳ prompt library
+                  </p>
+                  <h3 className="font-serif text-[clamp(2rem,4vw,3.2rem)] leading-[0.95] tracking-[-0.03em] text-ink">
+                    150+ prompt
+                    <br />
+                    sẵn dùng ngay
+                  </h3>
+                </div>
+                <Link to="/prompts" className="btn-primary w-fit no-underline text-white">
+                  Xem tất cả →
+                </Link>
+              </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 border-t border-border">
-          {featuredPrompts.map((prompt, idx) => (
-            <motion.div
-              key={idx}
-              initial={{ opacity: 0, y: 10 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: idx * 0.08 }}
-              className={featuredPromptCardClass(idx)}
-              style={{
-                padding: '24px',
-                cursor: 'pointer',
-                textDecoration: 'none',
-                color: 'inherit',
-                transition: 'background 0.12s',
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg2)')}
-              onMouseLeave={(e) => (e.currentTarget.style.background = '')}
-            >
-              <span style={{
-                fontFamily: 'var(--mono)',
-                fontSize: '9px',
-                textTransform: 'uppercase' as const,
-                letterSpacing: '0.08em',
-                padding: '3px 8px',
-                background: 'var(--bg3)',
-                color: 'var(--ink2)',
-                border: '1px solid var(--border)',
-                alignSelf: 'flex-start',
-              }}>
-                {prompt.category}
-              </span>
-              <div style={{ fontFamily: 'var(--sans)', fontSize: 14, fontWeight: 500, color: 'var(--ink)', lineHeight: 1.4 }}>
-                {prompt.title}
+              <p className="max-w-[36rem] font-sans text-[15px] leading-[1.75] text-ink2">
+                Không cần ngồi viết từ số 0. Thư viện này gom những prompt để làm landing page, báo cáo, email, research và các việc Marketer cần chạy hàng ngày.
+              </p>
+
+              <div className="grid grid-cols-2 border border-border sm:grid-cols-4">
+                {[
+                  { value: '150+', label: 'prompt đã test' },
+                  { value: '12', label: 'nhóm use case' },
+                  { value: '<5p', label: 'copy ra dùng' },
+                  { value: '0', label: 'cần viết từ đầu' },
+                ].map((item, idx) => (
+                  <div
+                    key={item.label}
+                    className={`p-4 ${idx < 2 ? 'border-b sm:border-b-0' : ''} ${idx < 3 ? 'border-r' : ''} border-border`}
+                  >
+                    <div className="mb-1 font-serif text-[1.8rem] leading-none text-ink">{item.value}</div>
+                    <div className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted">{item.label}</div>
+                  </div>
+                ))}
               </div>
-              <div style={{
-                fontSize: 13,
-                color: 'var(--muted)',
-                lineHeight: 1.5,
-                fontStyle: 'italic',
-                padding: '10px 12px',
-                borderLeft: '2px solid var(--accent)',
-                background: 'var(--bg2)',
-                fontFamily: 'var(--sans)',
-              }}>
-                {prompt.preview}
-              </div>
-            </motion.div>
-          ))}
+
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="border border-border bg-bg2 p-5 md:p-6"
+              >
+                <div className="mb-3 flex items-center justify-between gap-4">
+                  <span className="border border-accent bg-[rgba(232,140,46,0.08)] px-2 py-1 font-mono text-[9px] uppercase tracking-[0.1em] text-accent">
+                    {featuredPrompts[0].category}
+                  </span>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted">
+                    Copy → sửa → publish
+                  </span>
+                </div>
+                <div className="mb-3 font-serif text-[1.9rem] leading-[1.02] tracking-[-0.03em] text-ink">
+                  {featuredPrompts[0].title}
+                </div>
+                <div className="border-l-2 border-accent pl-4 font-sans text-[14px] italic leading-[1.7] text-ink2">
+                  {featuredPrompts[0].preview}
+                </div>
+              </motion.div>
+            </div>
+          </div>
         </div>
       </div>
 
-      {/* Tools list */}
-      <div>
+      <div className="flex flex-col">
+        <div className="border-b border-border px-5 py-6 md:px-8 lg:px-10">
+          <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.14em] text-muted">đi tắt vào phần cần dùng</p>
+          <div className="max-w-[24rem] font-sans text-[14px] leading-[1.7] text-ink2">
+            Mỗi ngày có thể đọc sâu, lướt nhanh hoặc copy prompt ra dùng ngay. Cùng một giọng, không tách rời khỏi hệ markAI.
+          </div>
+        </div>
+
         {tools.map((tool, idx) => (
           <motion.div
-            key={idx}
+            key={tool.title}
             initial={{ opacity: 0, x: -10 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             transition={{ delay: idx * 0.08 }}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 20,
-              padding: '24px 20px',
-              borderBottom: idx < tools.length - 1 ? '1px solid var(--border)' : 'none',
-              cursor: 'pointer',
-              textDecoration: 'none',
-              color: 'inherit',
-              transition: 'background 0.12s',
-            }}
-            onMouseEnter={(e) => (e.currentTarget.style.background = 'var(--bg2)')}
-            onMouseLeave={(e) => (e.currentTarget.style.background = '')}
           >
-            <span style={{
-              fontFamily: 'var(--mono)',
-              fontSize: '9px',
-              textTransform: 'uppercase' as const,
-              letterSpacing: '0.08em',
-              padding: '3px 8px',
-              border: '1px solid var(--border)',
-              color: 'var(--muted)',
-              minWidth: 80,
-              textAlign: 'center' as const,
-              flexShrink: 0,
-            }}>
-              {tool.tag}
-            </span>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontSize: 14, fontWeight: 500, color: 'var(--ink)', marginBottom: 3 }}>{tool.title}</div>
-              <div style={{ fontFamily: 'var(--mono)', fontSize: '11px', color: 'var(--muted)' }}>{tool.sub}</div>
-            </div>
-            <ArrowRight size={12} className="text-muted" />
+            <Link
+              to={tool.href}
+              className="group flex items-start gap-4 border-b border-border px-5 py-6 no-underline transition-colors hover:bg-bg2 md:px-8 lg:px-10"
+            >
+              <span className="min-w-11 font-serif text-[1.35rem] leading-none text-accent">
+                0{idx + 1}
+              </span>
+              <div className="flex-1">
+                <div className="mb-3 flex flex-wrap items-center gap-3">
+                  <span className="border border-border px-2 py-1 font-mono text-[9px] uppercase tracking-[0.08em] text-muted">
+                    {tool.tag}
+                  </span>
+                  <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted">
+                    {tool.stat}
+                  </span>
+                </div>
+                <div className="mb-1 font-serif text-[1.65rem] leading-[1.05] tracking-[-0.02em] text-ink">
+                  {tool.title}
+                </div>
+                <div className="font-sans text-[14px] leading-[1.65] text-ink2">
+                  {tool.sub}
+                </div>
+              </div>
+              <ArrowRight size={14} className="mt-1 shrink-0 text-muted transition-transform group-hover:translate-x-1 group-hover:text-ink" />
+            </Link>
           </motion.div>
         ))}
       </div>
