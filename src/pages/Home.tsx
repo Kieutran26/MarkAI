@@ -69,37 +69,7 @@ const StatsBar = () => {
   );
 };
 
-// ─── FREE STRIP (unchanged) ──────────────────────────────────────────────────
-const FreeStrip = () => (
-  <div style={{ background: 'var(--surface-1)', borderBottom: '1px solid var(--surface-3)' }}>
-    <div className="page-shell flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 py-5">
-      <div className="flex items-center gap-4">
-        <span style={{
-          background: 'var(--accent)',
-          color: 'white',
-          fontFamily: 'var(--mono)',
-          fontSize: '10px',
-          textTransform: 'uppercase',
-          letterSpacing: '0.08em',
-          padding: '3px 10px',
-          fontWeight: 500,
-        }}>
-          Triết lý
-        </span>
-        <span style={{ fontFamily: 'var(--mono)', fontSize: '13px', color: 'white' }}>
-          Kiến thức AI không nên có giá. markAI.vn miễn phí hoàn toàn — không có gói Pro, không có paywall, không bao giờ.
-        </span>
-      </div>
-      <Link
-        to="/about"
-        className="btn-ghost no-underline text-white shrink-0"
-        style={{ borderColor: '#333', fontSize: '11px' }}
-      >
-        Vì sao miễn phí? →
-      </Link>
-    </div>
-  </div>
-);
+
 
 // ─── LEARNING PATHS ──────────────────────────────────────────────────────────
 const learningPaths = [
@@ -744,7 +714,6 @@ export default function Home() {
     <>
       <Hero />
       <StatsBar />
-      <FreeStrip />
       <LearningPaths />
       <ToolsResources />
       <BlogSection />

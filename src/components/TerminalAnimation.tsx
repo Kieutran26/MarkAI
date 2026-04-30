@@ -60,7 +60,7 @@ export default function TerminalAnimation() {
         <div className="term-dot g"></div>
         <div className="ml-2 font-mono text-[11px] text-[var(--text-dim)]">markai.vn/evolution</div>
       </div>
-      <div className="p-6 bg-[var(--surface-0)] min-h-[300px] font-mono text-[13px] leading-relaxed overflow-hidden">
+      <div className="p-6 min-h-[300px] font-mono text-[13px] leading-relaxed overflow-hidden">
         <AnimatePresence mode="popLayout">
           {visibleSteps.map((stepIdx) => {
             const step = steps[stepIdx];
@@ -72,27 +72,27 @@ export default function TerminalAnimation() {
                 className="mb-4"
               >
                 {step.type === 'input' && (
-                  <div className="text-[var(--text-soft)]">
+                  <div className="text-ink2">
                     <span className="text-accent">❯</span> {step.text}
                   </div>
                 )}
                 {step.type === 'response' && (
-                  <div className="text-white italic pl-4 border-l border-[var(--line-dark)]">
+                  <div className="text-ink italic pl-4 border-l border-border">
                     {step.text}
                   </div>
                 )}
                 {step.type === 'prompt' && (
                   <div className="text-accent">
-                    <span className="text-[var(--text-soft)]">❯</span> prompt <span className="text-white">"{step.text}"</span>
+                    <span className="text-ink2">❯</span> prompt <span className="text-ink">"{step.text}"</span>
                   </div>
                 )}
                 {step.type === 'success' && (
-                  <div className="text-[var(--success-bright)]">
+                  <div className="text-success font-medium">
                     {step.text}
                   </div>
                 )}
                 {step.type === 'final' && (
-                  <div className="text-white font-bold">
+                  <div className="text-ink font-bold">
                     <span className="text-accent underline">Result:</span> {step.text}
                   </div>
                 )}
@@ -107,13 +107,13 @@ export default function TerminalAnimation() {
             animate={{ opacity: 1 }}
             className="flex items-center gap-2"
           >
-            <span className="text-[var(--text-soft)]">❯</span>
+            <span className="text-ink2">❯</span>
             <span className="term-cursor w-2 h-4 bg-accent inline-block"></span>
           </motion.div>
         )}
       </div>
-      <div className="p-4 border-t border-[var(--surface-3)] bg-[var(--surface-1)]">
-        <div className="insight !border-l-2 !border-accent !text-[var(--text-soft)] !font-mono !text-[12px]">
+      <div className="p-4 border-t border-border bg-white/50">
+        <div className="insight !border-l-2 !border-accent !text-ink2 !font-mono !text-[12px]">
           ✳ <strong>Growth:</strong> Từ chỗ loay hoay, bạn sẽ làm chủ AI để tối ưu 80% thời gian triển khai.
         </div>
       </div>

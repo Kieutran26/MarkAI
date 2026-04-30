@@ -91,8 +91,8 @@ body {
 }
 
 /* Exception for terminal dots */
-.hero-terminal { background: var(--ink); border: 1px solid #2a2a2a; }
-.term-bar { background: #1a1a1a; border-bottom: 1px solid #2a2a2a; height: 32px; display: flex; align-items: center; padding: 0 12px; gap: 6px; }
+.hero-terminal { background: var(--accent-soft); border: 1px solid var(--border); overflow: hidden; }
+.term-bar { background: #000; border-bottom: 1px solid var(--border); height: 32px; display: flex; align-items: center; padding: 0 12px; gap: 6px; }
 .term-dot {
   width: 10px; height: 10px;
   border-radius: 50% !important;
