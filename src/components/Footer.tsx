@@ -22,12 +22,12 @@ export default function Footer() {
           <div>
             <div className="font-mono text-[11px] text-muted tracking-widest uppercase mb-6">Lộ trình học</div>
             <ul className="flex flex-col gap-3 list-none p-0">
-              <li><Link to="/vibecode" className="font-sans text-[13px] text-ink2 hover:text-ink transition-colors no-underline flex items-center gap-2"><span className="text-accent text-[10px]">●</span> Vibecode Web <span className="font-mono text-[10px] text-accent">Live</span></Link></li>
-              <li><Link to="/vibecode" className="font-sans text-[13px] text-ink2 hover:text-ink transition-colors no-underline flex items-center gap-2"><span className="text-muted text-[10px]">○</span> Vibecode App <span className="font-mono text-[10px] text-muted">Sắp ra</span></Link></li>
+              <li><Link to="/vibecode" className="font-sans text-[13px] text-ink2 hover:text-accent transition-colors no-underline flex items-center gap-2"><span className="text-accent text-[10px]">●</span> Vibecode Web <span className="font-mono text-[10px] text-accent">Live</span></Link></li>
+              <li><Link to="/vibecode" className="font-sans text-[13px] text-ink2 hover:text-accent transition-colors no-underline flex items-center gap-2"><span className="text-muted text-[10px]">○</span> Vibecode App <span className="font-mono text-[10px] text-muted">Sắp ra</span></Link></li>
               <li><span className="font-sans text-[13px] text-muted opacity-60 flex items-center gap-2"><span className="text-muted text-[10px]">○</span> Analytics AI <span className="font-mono text-[10px] text-muted">Sắp ra</span></span></li>
               <li><span className="font-sans text-[13px] text-muted opacity-60 flex items-center gap-2"><span className="text-muted text-[10px]">○</span> Generate Image <span className="font-mono text-[10px] text-muted">Sắp ra</span></span></li>
               <li><span className="font-sans text-[13px] text-muted opacity-60 flex items-center gap-2"><span className="text-muted text-[10px]">○</span> Motion Video <span className="font-mono text-[10px] text-muted">Sắp ra</span></span></li>
-              <li className="pt-2 border-t border-border mt-2"><Link to="/feedback" className="font-sans text-[13px] text-accent hover:text-ink transition-colors no-underline">+ Góp ý module mới</Link></li>
+              <li className="pt-3 mt-2"><Link to="/feedback" className="font-mono text-[10px] bg-[#000] text-white px-4 py-2 hover:bg-accent transition-colors no-underline inline-block uppercase tracking-wider">+ Góp ý module mới</Link></li>
             </ul>
           </div>
 
@@ -35,9 +35,9 @@ export default function Footer() {
           <div>
             <div className="font-mono text-[11px] text-muted tracking-widest uppercase mb-6">Khám phá</div>
             <ul className="flex flex-col gap-3 list-none p-0">
-              <li><Link to="/blog" className="font-sans text-[13px] text-ink2 hover:text-ink transition-colors no-underline">Blog</Link></li>
-              <li><Link to="/tips" className="font-sans text-[13px] text-ink2 hover:text-ink transition-colors no-underline">Tips & Mẹo</Link></li>
-              <li><Link to="/prompts" className="font-sans text-[13px] text-ink2 hover:text-ink transition-colors no-underline">Prompt Library</Link></li>
+              <li><Link to="/blog" className="font-sans text-[13px] text-ink2 hover:text-accent transition-colors no-underline">Blog</Link></li>
+              <li><Link to="/tips" className="font-sans text-[13px] text-ink2 hover:text-accent transition-colors no-underline">Tips & Mẹo</Link></li>
+              <li><Link to="/prompts" className="font-sans text-[13px] text-ink2 hover:text-accent transition-colors no-underline">Prompt Library</Link></li>
               <li><span className="font-sans text-[13px] text-muted opacity-50 cursor-default">Analytics (sắp ra)</span></li>
               <li><span className="font-sans text-[13px] text-muted opacity-50 cursor-default">Image (sắp ra)</span></li>
               <li><span className="font-sans text-[13px] text-muted opacity-50 cursor-default">Video (sắp ra)</span></li>
@@ -48,10 +48,10 @@ export default function Footer() {
           <div>
             <div className="font-mono text-[11px] text-muted tracking-widest uppercase mb-6">MARKAI</div>
             <ul className="flex flex-col gap-3 list-none p-0">
-              <li><Link to="/about" className="font-sans text-[13px] text-ink2 hover:text-ink transition-colors no-underline">Về dự án này</Link></li>
-              <li><Link to="/feedback" className="font-sans text-[13px] text-ink2 hover:text-ink transition-colors no-underline">Góp ý module</Link></li>
-              <li><Link to="/report" className="font-sans text-[13px] text-ink2 hover:text-ink transition-colors no-underline">Báo lỗi</Link></li>
-              <li><Link to="/contact" className="font-sans text-[13px] text-ink2 hover:text-ink transition-colors no-underline">Liên hệ tác giả</Link></li>
+              <li><Link to="/about" className="font-sans text-[13px] text-ink2 hover:text-accent transition-colors no-underline">Về dự án này</Link></li>
+              <li><Link to="/feedback" className="font-sans text-[13px] text-ink2 hover:text-accent transition-colors no-underline">Góp ý module</Link></li>
+              <li><Link to="/report" className="font-sans text-[13px] text-ink2 hover:text-accent transition-colors no-underline">Báo lỗi</Link></li>
+              <li><Link to="/contact" className="font-sans text-[13px] text-ink2 hover:text-accent transition-colors no-underline">Liên hệ tác giả</Link></li>
             </ul>
           </div>
         </div>
