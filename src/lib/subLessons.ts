@@ -132,24 +132,168 @@ export const subLessons: SubLessonFull[] = [
     eyebrow: 'Tại sao quan trọng',
     title: 'Tại sao Marketer lại cần biết vibecode?',
     titleEm: '',
-    desc: 'Không phải vì bạn cần trở thành developer — mà vì bạn sẽ không cần chờ developer nữa.',
+    desc: 'Không phải vì AI sẽ thay bạn — mà vì người biết dùng AI sẽ đi nhanh hơn người không biết.',
     duration: '~5 phút',
     totalSubs: 5,
     currentIndex: 2,
     content: [
-      { type: 'h3', text: 'Trước đây Marketer phải chờ' },
-      { type: 'p', text: 'Khi một Marketer có ý tưởng cho landing page, công cụ tính toán, hay dashboard báo cáo — họ phải <strong>chờ team kỹ thuật</strong>. Chờ thiết kế. Chờ estimate. Chờ sprint. Chờ QA. Có khi vài tuần.' },
-      { type: 'p', text: 'Vibecode phá vỡ cái vòng chờ đó. Bạn có thể tự tạo ra bản prototype trong <strong>vài giờ</strong>, test nhanh, điều chỉnh ngay — không phụ thuộc vào lịch của ai khác.' },
-      { type: 'usecases', items: [
-        { icon: '01', title: 'Tự build landing page campaign', desc: 'Thay vì xin dev làm rồi chờ 2 tuần, bạn tự ra trang trong 1 buổi sáng với đúng copy và design bạn muốn.' },
-        { icon: '02', title: 'Tạo tool nội bộ cho team', desc: 'Bảng tính media plan tự động, tracker content calendar, dashboard báo cáo tuần — không cần sheet Excel phức tạp.' },
-        { icon: '03', title: 'Prototype ý tưởng trước khi thuyết phục', desc: 'Thay vì slide mô tả concept, bạn demo trực tiếp một trang web thật — thuyết phục hơn gấp 10 lần.' },
-        { icon: '04', title: 'Tích hợp AI vào workflow Marketing', desc: 'Chatbot hỏi đáp sản phẩm, form thu thập lead tự phân loại, auto-reply theo ngữ cảnh — tất cả tự build được.' }
-      ]},
+      { type: 'p', text: 'Không phải AI sẽ thay thế marketer. Nhưng <strong>marketer biết dùng AI sẽ thay thế marketer không biết.</strong>' },
       { type: 'divider' },
-      { type: 'h3', text: 'Thay đổi cách bạn làm việc' },
-      { type: 'p', text: 'Vibecode không chỉ giúp bạn làm nhanh hơn. Nó <strong>thay đổi cách bạn tiếp cận vấn đề</strong>. Thay vì "có ý tưởng rồi nhờ dev", bạn bắt đầu nghĩ "mình có thể tự làm được".' },
-      { type: 'p', text: 'Điểm mấu chốt: bạn không cần học code để bắt đầu. Bạn cần biết mình muốn gì — và đủ kiên nhẫn để mô tả rõ điều đó.' }
+      { type: 'h3', text: 'Vì cuộc chơi đã đổi rồi' },
+      {
+        type: 'compare',
+        headers: ['Before', 'After'],
+        rows: [
+          {
+            left: 'Chỉ cần <strong>viết content ổn</strong>',
+            leftStyle: 'normal',
+            right: 'Ai cũng có thể dùng AI để <strong>viết bài</strong>',
+            rightStyle: 'check',
+          },
+          {
+            left: 'Chỉ cần <strong>chạy ads biết chút</strong> là đã có lợi thế',
+            leftStyle: 'normal',
+            right: 'Ai cũng có thể dùng AI để <strong>lên idea</strong> và <strong>làm chiến dịch</strong>',
+            rightStyle: 'check',
+          }
+        ],
+      },
+      { type: 'insight', label: 'Kết luận', text: 'Nếu bạn không biết AI, bạn không phải là “chậm hơn một chút” đâu, mà là <strong>tụt lại hẳn phía sau luôn</strong>.' },
+      { type: 'h3', text: 'Vì tốc độ bây giờ quan trọng hơn giỏi' },
+      { type: 'p', text: 'Marketing hiện tại không phải là ai hay nhất thắng. Mà là <strong>ai nhanh hơn người đó thắng</strong>.' },
+      {
+        type: 'infographic',
+        label: 'Ví dụ tốc độ thực thi',
+        steps: [
+          {
+            label: '01',
+            title: 'Bạn làm thủ công',
+            desc: 'Mất <strong>2 tiếng</strong> để viết <strong>1 bài</strong>.',
+          },
+          {
+            label: '02',
+            title: 'Người khác dùng AI',
+            desc: 'Mất <strong>20 phút</strong> để tạo <strong>10 bài</strong>.',
+          }
+        ],
+        aside: {
+          label: 'Kết quả',
+          title: 'Test nhiều hơn sẽ thắng',
+          desc: 'Chưa cần biết bài ai hay hơn. Chỉ cần họ test nhiều hơn bạn, họ có nhiều cơ hội thắng hơn.',
+        }
+      },
+      { type: 'divider' },
+      { type: 'h3', text: 'Vì giờ 1 người có thể làm việc của cả team' },
+      {
+        type: 'infographic',
+        label: 'Từ team nhỏ sang một người + AI',
+        steps: [
+          {
+            label: '01',
+            title: 'Content',
+            desc: 'Trước đây cần riêng một người lo <strong>nội dung</strong>.',
+          },
+          {
+            label: '02',
+            title: 'Designer',
+            desc: 'Cần thêm người phụ trách <strong>thiết kế</strong> và hình ảnh.',
+          },
+          {
+            label: '03',
+            title: 'Ads',
+            desc: 'Và cần người chạy <strong>quảng cáo</strong> để tối ưu chiến dịch.',
+          }
+        ],
+        aside: {
+          label: 'Bây giờ',
+          title: 'Một mình bạn + AI',
+          desc: 'Có thể làm gần hết quy trình. Không phải vì bạn giỏi hơn, mà vì bạn đang dùng đúng công cụ.',
+        }
+      },
+      { type: 'divider' },
+      { type: 'h3', text: 'AI không thay bạn, nhưng người biết dùng AI thì có' },
+      { type: 'p', text: 'Nhiều người sợ AI sẽ lấy job. Nhưng thực tế không phải vậy.' },
+      {
+        type: 'infographic',
+        label: 'Nỗi sợ và thực tế',
+        steps: [
+          {
+            label: '01',
+            title: 'AI không tự thay bạn',
+            desc: 'AI không tự nghĩ chiến lược, không hiểu khách hàng sâu như bạn.',
+          },
+          {
+            label: '02',
+            title: 'Người biết dùng AI sẽ nhanh hơn',
+            desc: 'Một người biết dùng AI có thể làm nhanh hơn bạn <strong>5–10 lần</strong>.',
+          }
+        ],
+        aside: {
+          label: 'Điểm quyết định',
+          title: 'Người nhanh hơn thường được chọn',
+          desc: 'Trong công việc, tốc độ tạo ra kết quả thường quyết định ai là người có lợi thế.',
+        }
+      },
+      { type: 'divider' },
+      { type: 'h3', text: 'Vì ai cũng đang bắt đầu dùng rồi' },
+      { type: 'p', text: 'Cái nguy hiểm nhất là: Bạn nghĩ “chắc chưa nhiều người dùng đâu”.' },
+      {
+        type: 'infographic',
+        label: 'Tín hiệu ngoài thị trường',
+        steps: [
+          {
+            label: '01',
+            title: 'Đối thủ đang dùng',
+            desc: 'Người cạnh tranh trực tiếp với bạn đã bắt đầu tận dụng AI.',
+          },
+          {
+            label: '02',
+            title: 'Freelancer đang dùng',
+            desc: 'Những người làm dịch vụ một mình cũng đã dùng AI để tăng tốc.',
+          },
+          {
+            label: '03',
+            title: 'Agency đang dùng',
+            desc: 'Các team lớn hơn cũng đang đưa AI vào quy trình làm việc hằng ngày.',
+          }
+        ],
+        aside: {
+          label: 'Kết luận',
+          title: 'Bạn không đứng yên',
+          desc: 'Nên nếu bạn không dùng, bạn không đứng yên đâu — bạn đang <strong>tụt lại</strong>.',
+        }
+      },
+      { type: 'divider' },
+      { type: 'h3', text: 'Vì đây là thời điểm dễ bứt lên nhất' },
+      {
+        type: 'infographic',
+        label: 'Các làn sóng cơ hội',
+        steps: [
+          {
+            label: '01',
+            title: 'Facebook Ads',
+            desc: 'Ai biết Facebook Ads sớm thì <strong>đi trước</strong>.',
+          },
+          {
+            label: '02',
+            title: 'TikTok',
+            desc: 'Ai làm TikTok sớm thì <strong>lên nhanh</strong>.',
+          },
+          {
+            label: '03',
+            title: 'AI',
+            desc: 'Còn bây giờ, làn sóng cơ hội nằm ở <strong>AI</strong>.',
+          }
+        ],
+        aside: {
+          label: 'Nếu bắt đầu sớm',
+          title: 'Bạn có lợi thế trước',
+          desc: 'Bạn học nhanh hơn người khác, build lợi thế trước và kiếm tiền sớm hơn.',
+        }
+      },
+      { type: 'divider' },
+      { type: 'h3', text: 'Kết lại một câu thôi:' },
+      { type: 'insight', label: 'Thông điệp chính', text: 'Bạn không cần giỏi AI ngay từ đầu<br /><br /><strong>Nhưng bạn cần bắt đầu ngay bây giờ</strong>' }
     ]
   },
   {

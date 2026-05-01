@@ -24,14 +24,16 @@ export default function InfographicFlow({ label, steps, aside }: InfographicFlow
         {steps.map((step, index) => (
           <React.Fragment key={step.label}>
             <div className={`step-box ${index === 1 ? 'accent-box' : ''}`}>
-              <div className="step-eyebrow">Bước {step.label}</div>
-              <h4 className={`step-title ${index === 1 ? 'is-accent' : ''}`} dangerouslySetInnerHTML={{ __html: annotateTechnicalText(step.title) }} />
-              <p className="step-desc" dangerouslySetInnerHTML={{ __html: annotateTechnicalText(step.desc) }} />
+              <h4
+                className={`step-title ${index === 1 ? 'is-accent' : ''}`}
+                dangerouslySetInnerHTML={{ __html: annotateTechnicalText(step.title) }}
+              />
+              <p className="step-desc" dangerouslySetInnerHTML={{ __html: annotateTechnicalHtml(step.desc) }} />
             </div>
             {index < steps.length - 1 && (
               <div className="arrow-col">
-                <div className="arrow-h-line"></div>
-                <div className="arrow-h-head"></div>
+                <div className="arrow-h-line" />
+                <div className="arrow-h-head" />
               </div>
             )}
           </React.Fragment>
@@ -39,7 +41,7 @@ export default function InfographicFlow({ label, steps, aside }: InfographicFlow
       </div>
 
       <div className="no-step-bar">
-        <span className="x-badge">✕ {aside.label}</span>
+        <span className="x-badge">x {aside.label}</span>
         <span
           className="no-step-text"
           dangerouslySetInnerHTML={{ __html: annotateTechnicalHtml(`<strong>${aside.title}.</strong> ${aside.desc}`) }}
