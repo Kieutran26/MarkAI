@@ -31,6 +31,34 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+::selection {
+  background: color-mix(in srgb, var(--accent) 18%, var(--accent-soft));
+  color: var(--ink);
+}
+
+::-moz-selection {
+  background: color-mix(in srgb, var(--accent) 18%, var(--accent-soft));
+  color: var(--ink);
+}
+
+.featured-section ::selection,
+.featured-section ::-moz-selection,
+.recent-section ::selection,
+.recent-section ::-moz-selection,
+.buglog-section ::selection,
+.buglog-section ::-moz-selection,
+.about-section ::selection,
+.about-section ::-moz-selection,
+.why-section ::selection,
+.why-section ::-moz-selection,
+.submit-section ::selection,
+.submit-section ::-moz-selection,
+.more-tips-section ::selection,
+.more-tips-section ::-moz-selection {
+  background: var(--accent-soft);
+  color: var(--ink);
+}
+
 .page-gutter {
   padding-left: var(--page-gutter-mobile) !important;
   padding-right: var(--page-gutter-mobile) !important;
