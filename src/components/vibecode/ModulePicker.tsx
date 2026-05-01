@@ -39,7 +39,7 @@ export default function ModulePicker() {
                 <span className="badge-soon">Sắp ra</span>
               )}
               {module.available && !module.isFeedback && (
-                <span className="module-card-badge">✓ ĐANG MỞ</span>
+                <span className="module-card-badge flex items-center gap-1"><Sparkles className="w-3 h-3" /> ĐANG MỞ</span>
               )}
               <div className="mb-4 [&>svg]:w-6 [&>svg]:h-6 [&>svg]:text-[var(--accent)]">
                 <module.icon />

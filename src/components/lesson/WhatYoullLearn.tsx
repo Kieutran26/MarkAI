@@ -1,5 +1,7 @@
+import React from 'react';
+
 interface WhatYoullLearnProps {
-  items: { icon: string; title: string; desc: string }[];
+  items: { icon: React.ReactNode; title: string; desc: string }[];
   lessonId: number;
 }
 

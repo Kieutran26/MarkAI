@@ -20,7 +20,7 @@ export default function PostListRow() {
                 <div className="post-row-num">
                   <span className="font-serif text-[1.4rem] text-muted">{displayNum}</span>
                 </div>
-                <div className="py-5 flex flex-col gap-1">
+                <div className="py-5 pl-6 pr-6 flex flex-col gap-1">
                   <span className="font-mono text-[9px] text-muted tracking-widest uppercase">
                     {post.category}
                   </span>

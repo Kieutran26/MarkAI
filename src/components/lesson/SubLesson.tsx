@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { Sparkles } from 'lucide-react';
 import type { SubLesson } from '../../lib/lessons';
 
 interface SubLessonProps {
@@ -62,7 +63,7 @@ export default function SubLessonComponent({
         <div className="use-case-list mb-6">
           {subLesson.useCases.map((useCase, idx) => (
             <div key={idx} className="use-case-item">
-              <span className="use-case-icon">✳</span>
+              <Sparkles className="use-case-icon w-4 h-4 text-accent" />
               <div>
                 <div className="use-case-title">{useCase.title}</div>
                 <div className="use-case-desc">{useCase.desc}</div>

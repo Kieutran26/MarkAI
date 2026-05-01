@@ -157,7 +157,11 @@ button, a { cursor: pointer; transition: all 0.15s ease; }
   text-decoration: none; display: inline-flex; align-items: center; gap: 6px;
   transition: border-color 0.15s;
 }
-.btn-ghost:hover { border-color: var(--accent) !important; }
+.btn-ghost:hover {
+  background: var(--accent) !important;
+  color: white !important;
+  border-color: var(--accent) !important;
+}
 
 .btn-accent {
   background: var(--accent); color: white;
@@ -1859,7 +1863,7 @@ button, a { cursor: pointer; transition: all 0.15s ease; }
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  padding: 2rem;
+  padding: 2.5rem 2rem;
   border-right: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
   text-decoration: none;
@@ -1902,7 +1906,9 @@ button, a { cursor: pointer; transition: all 0.15s ease; }
   color: inherit;
   transition: background 0.15s;
 }
-.post-row:hover { background: var(--bg2); }
+.post-row:hover { background: var(--accent); color: white; }
+.post-row:hover .post-row-num span,
+.post-row:hover .post-row-arrow { color: white; }
 .post-row:last-child { border-bottom: none; }
 .post-row-num {
   border-right: 1px solid var(--border);
@@ -1910,6 +1916,9 @@ button, a { cursor: pointer; transition: all 0.15s ease; }
   align-items: center;
   justify-content: center;
   padding: 1.5rem 0;
+}
+.post-row > div:nth-child(2) {
+  padding-left: 1.5rem;
 }
 .post-row:hover .post-row-num span { color: var(--accent); }
 .post-row-arrow {
@@ -1933,7 +1942,7 @@ button, a { cursor: pointer; transition: all 0.15s ease; }
   border: 1px solid var(--border);
 }
 .topic-card {
-  padding: 1.6rem;
+  padding: 2rem;
   border-right: 1px solid var(--border);
   border-bottom: 1px solid var(--border);
   text-decoration: none;
@@ -2161,7 +2170,7 @@ button, a { cursor: pointer; transition: all 0.15s ease; }
   border: 1px solid var(--border);
 }
 .related-card {
-  padding: 1.5rem;
+  padding: 2rem;
   border-right: 1px solid var(--border);
   text-decoration: none;
   color: inherit;
@@ -4671,7 +4680,7 @@ button, a { cursor: pointer; transition: all 0.15s ease; }
   display: flex;
   flex-direction: column;
   gap: .5rem;
-  padding: 1rem;
+  padding: 1.5rem;
   flex: 1;
 }
 

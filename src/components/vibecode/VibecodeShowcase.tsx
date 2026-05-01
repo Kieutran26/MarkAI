@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'motion/react';
+import { Sparkles } from 'lucide-react';
 
 export default function VibecodeShowcase() {
   return (
@@ -207,10 +208,10 @@ export default function VibecodeShowcase() {
       </motion.div>
 
       {/* Decorative Dots */}
-      <div className="absolute top-0 right-[20%] text-border opacity-50">✳</div>
-      <div className="absolute bottom-[20%] left-0 text-accent opacity-50">✳</div>
-      <div className="absolute top-[15%] left-0 text-accent text-sm opacity-50">○</div>
-      <div className="absolute top-[5%] right-5 text-ink text-sm opacity-50">○</div>
+      <Sparkles className="absolute top-0 right-[20%] text-border opacity-50 w-3 h-3" />
+      <Sparkles className="absolute bottom-[20%] left-0 text-accent opacity-50 w-3 h-3" />
+      <div className="absolute top-[15%] left-0 w-2 h-2 rounded-full bg-accent opacity-50" />
+      <div className="absolute top-[5%] right-5 w-2 h-2 rounded-full bg-ink opacity-50" />
       <div className="absolute bottom-5 right-[40%] text-border text-lg opacity-50">+</div>
     </div>
   );

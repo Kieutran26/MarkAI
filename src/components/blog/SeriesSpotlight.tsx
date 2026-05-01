@@ -29,7 +29,7 @@ export default function SeriesSpotlight() {
           </p>
           <div className="flex flex-wrap gap-2 mb-6">
             {['Cursor', 'Claude Code', 'Next.js', 'Vercel', 'Deploy'].map((tag) => (
-              <span key={tag} className="font-mono text-[10px] text-[var(--text-dim)] border border-[var(--surface-3)] px-2 py-0.5">
+              <span key={tag} className="font-mono text-[10px] text-[var(--accent)] border !border-[var(--accent)] px-2 py-0.5">
                 {tag}
               </span>
             ))}
@@ -40,7 +40,7 @@ export default function SeriesSpotlight() {
         </div>
 
         {/* Right column */}
-        <div className="pl-0 md:pl-8 pt-6 md:pt-0">
+        <div className="pl-6 md:pl-12 pt-6 md:pt-0">
           <p className="font-mono text-[10px] text-[var(--text-dim)] tracking-widest uppercase mb-4">
             ✳ Trong series này
           </p>
@@ -49,14 +49,14 @@ export default function SeriesSpotlight() {
               <Link
                 key={post.num}
                 to={idx === 0 ? `/blog/${firstPostSlug}` : '/blog'}
-                className="flex gap-4 py-4 border-b border-[var(--surface-2)] hover:opacity-70 transition-opacity"
+                className="group flex gap-6 px-4 py-4 border-b border-[var(--surface-2)] hover:bg-[var(--accent)] transition-all duration-200 md:-mx-4"
               >
-                <span className="font-mono text-[10px] text-[var(--text-subtle)] min-w-[22px] pt-1">{post.num}</span>
+                <span className="font-mono text-[10px] text-[var(--text-subtle)] min-w-[22px] pt-1 group-hover:text-white">{post.num}</span>
                 <div className="flex-1">
-                  <div className="font-sans text-[13px] font-light text-[var(--text-soft)] leading-[1.4] mb-1">
+                  <div className="font-sans text-[13px] font-light text-[var(--text-soft)] leading-[1.4] mb-1 group-hover:text-white group-hover:font-medium">
                     {post.title}
                   </div>
-                  <div className="font-mono text-[10px] text-[var(--text-dim)]">
+                  <div className="font-mono text-[10px] text-[var(--text-dim)] group-hover:text-white/80">
                     {post.category} · {post.time}
                   </div>
                 </div>

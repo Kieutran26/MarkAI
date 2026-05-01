@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import { Sparkles } from 'lucide-react';
 import { getLessonBySlug, getNextLesson, getRemainingLessons, getLessonSlug } from '../lib/lessons';
 import { fetchPublicLesson, type PublicLessonPayload } from '../lib/public-lesson-api';
 import { mapPublicLessonToOverviewModules } from '../lib/public-lesson-mapper';
@@ -118,13 +119,13 @@ function ProgressBar({ currentLesson }: { currentLesson: number }) {
 }
 
 function getWhatYoullLearn(lessonId: number) {
-  const data: Record<number, { icon: string; title: string; desc: string }[]> = {
+  const data: Record<number, { icon: React.ReactNode; title: string; desc: string }[]> = {
     1: [
-      { icon: '✳ 01', title: 'Vibecode là gì', desc: 'Định nghĩa rõ ràng, không dùng từ kỹ thuật. Giải thích được cho đồng nghiệp nghe.' },
-      { icon: '✳ 02', title: 'Tại sao nó phù hợp với bạn', desc: 'Tại sao Marketer cần vibecode hơn bất kỳ ai khác.' },
-      { icon: '✳ 03', title: 'Vibecode so với học code', desc: 'Khác nhau ở đâu, phù hợp với ai.' },
-      { icon: '✳ 04', title: 'Use case thực tế', desc: 'Xem những thứ Marketer khác đã tự build.' },
-      { icon: '✳ 05', title: 'Bạn cần gì để bắt đầu', desc: 'Danh sách cần/không cần trước khi bước vào bài 2.' },
+      { icon: <Sparkles className="w-4 h-4 text-accent" />, title: 'Vibecode là gì', desc: 'Định nghĩa rõ ràng, không dùng từ kỹ thuật. Giải thích được cho đồng nghiệp nghe.' },
+      { icon: <Sparkles className="w-4 h-4 text-accent" />, title: 'Tại sao nó phù hợp với bạn', desc: 'Tại sao Marketer cần vibecode hơn bất kỳ ai khác.' },
+      { icon: <Sparkles className="w-4 h-4 text-accent" />, title: 'Vibecode so với học code', desc: 'Khác nhau ở đâu, phù hợp với ai.' },
+      { icon: <Sparkles className="w-4 h-4 text-accent" />, title: 'Use case thực tế', desc: 'Xem những thứ Marketer khác đã tự build.' },
+      { icon: <Sparkles className="w-4 h-4 text-accent" />, title: 'Bạn cần gì để bắt đầu', desc: 'Danh sách cần/không cần trước khi bước vào bài 2.' },
     ],
   };
   return data[lessonId] || data[1];

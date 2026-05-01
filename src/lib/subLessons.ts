@@ -462,11 +462,11 @@ export const subLessons: SubLessonFull[] = [
         html: `
           <section class="vibe-warning" aria-label="Những điều AI có thể sai">
             <div class="vibe-warning-grid">
-              <div class="vibe-warning-item">⚠ Đôi khi trả lời sai</div>
-              <div class="vibe-warning-item">⚠ Đôi khi cần sửa 2–3 lần mới ra đúng</div>
-              <div class="vibe-warning-item">⚠ Tạo ra thứ bạn chưa muốn</div>
-              <div class="vibe-warning-item">⚠ Đôi khi viết chưa hay</div>
-              <div class="vibe-warning-item">⚠ Đôi khi hiểu nhầm ý bạn</div>
+              <div class="vibe-warning-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Đôi khi trả lời sai</div>
+              <div class="vibe-warning-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Đôi khi cần sửa 2–3 lần mới ra đúng</div>
+              <div class="vibe-warning-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Tạo ra thứ bạn chưa muốn</div>
+              <div class="vibe-warning-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Đôi khi viết chưa hay</div>
+              <div class="vibe-warning-item"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Đôi khi hiểu nhầm ý bạn</div>
             </div>
           </section>
         `,
