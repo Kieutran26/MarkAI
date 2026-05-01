@@ -136,7 +136,7 @@ export default function SettingsPage() {
               </div>
               <div className="form-row">
                 <div className="form-label">Note dưới CTA</div>
-                <input type="text" defaultValue="✳ miễn phí · không cần email · không tracking" />
+                <input type="text" defaultValue="✳ miễn phí · học ngay · không tracking" />
               </div>
             </div>
             <div style={{ display: 'flex', gap: '8px', paddingTop: '1rem' }}>
@@ -187,7 +187,7 @@ export default function SettingsPage() {
               </div>
               <div className="form-row">
                 <div className="form-label">Note</div>
-                <input type="text" defaultValue="✳ hoàn toàn miễn phí · không cần email · không cần đăng ký" />
+                <input type="text" defaultValue="✳ hoàn toàn miễn phí · vào học ngay · cập nhật liên tục" />
               </div>
             </div>
             <div style={{ display: 'flex', gap: '8px', paddingTop: '1rem' }}>

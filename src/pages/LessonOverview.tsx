@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { useEffect, useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Sparkles } from 'lucide-react';
@@ -133,7 +134,7 @@ function ProgressBar({ currentLesson }: { currentLesson: number }) {
 }
 
 function getWhatYoullLearn(lessonId: number) {
-  const data: Record<number, { icon: React.ReactNode; title: string; desc: string }[]> = {
+  const data: Record<number, { icon: ReactNode; title: string; desc: string }[]> = {
     1: [
       { icon: <Sparkles className="w-4 h-4 text-accent" />, title: 'Vibecode là gì', desc: 'Định nghĩa rõ ràng, không dùng từ kỹ thuật. Giải thích được cho đồng nghiệp nghe.' },
       { icon: <Sparkles className="w-4 h-4 text-accent" />, title: 'Tại sao nó phù hợp với bạn', desc: 'Tại sao Marketer cần vibecode hơn bất kỳ ai khác.' },

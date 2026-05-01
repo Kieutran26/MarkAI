@@ -63,12 +63,13 @@ export default function ContentBody({ content }: ContentBodyProps) {
 
           case 'infographic':
             return (
-              <InfographicFlow
-                key={index}
-                label={block.label}
-                steps={block.steps}
-                aside={block.aside}
-              />
+              <div key={index}>
+                <InfographicFlow
+                  label={block.label}
+                  steps={block.steps}
+                  aside={block.aside}
+                />
+              </div>
             );
 
           case 'divider':
@@ -102,10 +103,11 @@ export default function ContentBody({ content }: ContentBodyProps) {
           
           case 'vibe-cards':
             return (
-              <VibeCards
-                key={index}
-                items={block.items}
-              />
+              <div key={index}>
+                <VibeCards
+                  items={block.items}
+                />
+              </div>
             );
 
           default:

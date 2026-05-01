@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { Monitor, Brain, Wifi } from 'lucide-react';
 
 interface VibeCardsProps {
@@ -7,7 +8,7 @@ interface VibeCardsProps {
   }[];
 }
 
-const IconMap: Record<string, React.ReactNode> = {
+const IconMap: Record<string, ReactNode> = {
   laptop: <Monitor size={28} strokeWidth={1.5} />,
   brain: <Brain size={28} strokeWidth={1.5} />,
   wifi: <Wifi size={28} strokeWidth={1.5} />,

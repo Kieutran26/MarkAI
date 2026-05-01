@@ -47,7 +47,7 @@ export default function VibecodePage() {
               </a>
             </div>
             <p className="cta-note">
-              ✳ hoàn toàn miễn phí · không cần email · không cần đăng ký
+              ✳ hoàn toàn miễn phí · vào học ngay · cập nhật liên tục
             </p>
           </div>
         </section>

@@ -54,7 +54,7 @@ export default function Feedback() {
               <strong>✳ Thật sự được đọc.</strong> Không có bot xử lý. Mình đọc từng feedback và cập nhật roadmap dựa trên
               những gì nhận được.
             </InsightBlock>
-            <p className="hero-note">✳ không cần đăng ký · không lưu email · phản hồi ẩn danh</p>
+            <p className="hero-note">✳ gửi góp ý nhanh · phản hồi ẩn danh</p>
           </div>
           <div>
             <FeedbackForm />

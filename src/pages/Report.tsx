@@ -27,7 +27,7 @@ export default function Report() {
             <InsightBlock className="mb-[1.5rem]">
               <strong>✳ Mô tả cụ thể nhất có thể:</strong> Lỗi xảy ra ở trang nào, bạn đang làm gì lúc đó, trình duyệt và thiết bị nào. Nếu có thể, kèm ảnh chụp màn hình.
             </InsightBlock>
-            <p className="hero-note">✳ không cần đăng ký · phản hồi ẩn danh được</p>
+            <p className="hero-note">✳ gửi nhanh · phản hồi ẩn danh</p>
           </div>
           <div>
             <BugReportForm />

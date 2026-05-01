@@ -34,7 +34,7 @@ export default function PromptsHero() {
             <a href="#prompts" className="btn-primary">Xem tất cả prompt →</a>
             <a href="#submit" className="btn-ghost">Submit prompt của bạn</a>
           </div>
-          <p className="hero-note">✳ miễn phí · không cần đăng ký · copy xài ngay</p>
+          <p className="hero-note">✳ miễn phí · copy xài ngay · đã test thực tế</p>
         </div>
 
         {/* Right column */}

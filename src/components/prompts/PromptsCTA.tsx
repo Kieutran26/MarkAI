@@ -13,7 +13,7 @@ export default function PromptsCTA() {
           <a href="#" className="btn-primary">Bắt đầu Vibecode →</a>
           <a href="#" className="btn-ghost">Đọc Tips & Mẹo</a>
         </div>
-        <p className="cta-note">✳ hoàn toàn miễn phí · không cần email · không cần đăng ký</p>
+        <p className="cta-note">✳ hoàn toàn miễn phí · đã test trong lộ trình · copy dùng ngay</p>
       </div>
     </section>
   );

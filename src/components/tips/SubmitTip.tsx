@@ -16,7 +16,7 @@ export default function SubmitTip() {
           </p>
           <div className="mt-8 flex flex-col gap-4">
             <div className="insight">✳ Tips được chọn sẽ credit tên bạn — dù chỉ là nickname.</div>
-            <div className="font-mono text-[11px] text-muted">✳ Không cần đăng ký · không cần tài khoản</div>
+            <div className="font-mono text-[11px] text-muted">✳ Submit nhanh · có thể để nickname</div>
           </div>
         </div>
         <div className="submit-form">

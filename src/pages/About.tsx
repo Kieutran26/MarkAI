@@ -46,7 +46,7 @@ export default function About() {
               <Link to="/vibecode" className="btn-primary">Bắt đầu học ngay →</Link>
               <Link to="/vibecode" className="btn-ghost">Xem lộ trình</Link>
             </div>
-            <p className="hero-note">✳ không cần đăng ký · không cần email · không tracking</p>
+            <p className="hero-note">✳ miễn phí · cập nhật liên tục</p>
           </div>
           <div>
             <ManifestoBox />

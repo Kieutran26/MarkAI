@@ -32,7 +32,7 @@ const Hero = () => (
         </Link>
       </div>
       <p className="font-mono text-[11px] text-muted">
-        <Sparkles className="inline w-3 h-3" /> miễn phí · không cần email · không tracking
+        <Sparkles className="inline w-3 h-3" /> miễn phí · học ngay
       </p>
     </div>
     <div className="hidden md:block">
@@ -456,9 +456,9 @@ const ToolsResources = () => (
                   {featuredPrompts[0].preview}
                 </div>
               </motion.div>
+            </div>
           </div>
         </div>
-      </div>
       </div>
 
       <div className="flex flex-col">
@@ -619,7 +619,7 @@ const BlogSection = () => (
                   <span className="blog-bento-cta">
                     Đọc bài
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M5 12h14M12 5l7 7-7 7"/>
+                      <path d="M5 12h14M12 5l7 7-7 7" />
                     </svg>
                   </span>
                 </div>
@@ -694,7 +694,7 @@ const BlogSection = () => (
                   </div>
                   <span className="blog-bento-card-arrow">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <path d="M5 12h14M12 5l7 7-7 7"/>
+                      <path d="M5 12h14M12 5l7 7-7 7" />
                     </svg>
                   </span>
                 </div>
@@ -710,14 +710,14 @@ const BlogSection = () => (
           <span>Xem tất cả bài viết</span>
           <span className="blog-bento-rail-sub">Case study, tips, và nhiều hơn nữa</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
+            <path d="M5 12h14M12 5l7 7-7 7" />
           </svg>
         </Link>
         <Link to="/tips" className="blog-bento-rail-link no-underline">
           <span>Xem tips ngắn</span>
           <span className="blog-bento-rail-sub">Mẹo nhanh, làm được ngay</span>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
+            <path d="M5 12h14M12 5l7 7-7 7" />
           </svg>
         </Link>
       </div>
@@ -732,7 +732,7 @@ const CTASection = () => (
     {/* Decorative glows for premium feel */}
     <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-white opacity-20 blur-[120px] rounded-full translate-x-1/3 -translate-y-1/2 pointer-events-none" />
     <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-black opacity-10 blur-[100px] rounded-full -translate-x-1/3 translate-y-1/2 pointer-events-none" />
-    
+
     <div className="page-shell flex flex-col items-center text-center relative z-10">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
@@ -741,15 +741,15 @@ const CTASection = () => (
         transition={{ duration: 0.6 }}
       >
         <h2 className="section-heading mb-6 max-w-2xl text-ink" style={{ textAlign: 'center' }}>
-          Không cần đăng ký.<br />
-          <span className="font-serif italic !text-white">Không cần email.</span><br />
+          Chọn lộ trình.<br />
+          <span className="font-serif italic !text-white">Bắt đầu thực chiến.</span><br />
           Không giới hạn.
         </h2>
         <p className="font-sans text-[15px] text-ink/80 mb-8 max-w-md mx-auto leading-[1.65]">
           Chọn lộ trình phù hợp và bắt đầu ngay. Tất cả đều miễn phí. Mãi mãi. Vibecode, Analytics, Image, Automation — chọn thứ bạn cần.
         </p>
         <div className="flex flex-wrap gap-4 justify-center mb-8">
-          <Link to="/vibecode" className="btn-primary !bg-ink !text-white no-underline !px-8 !py-3 !text-[13px] hover:!bg-opacity-90">
+          <Link to="/vibecode" className="btn-primary !bg-ink !text-white no-underline !px-8 !py-3 !text-[13px] hover:!bg-white hover:!text-ink hover:!border-white">
             Vibecode Web — Bắt đầu ngay →
           </Link>
           <Link to="/prompts" className="btn-ghost !border-ink !text-ink hover:!bg-ink/5 no-underline !px-8 !py-3 !text-[13px]">

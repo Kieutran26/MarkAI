@@ -14,7 +14,7 @@ export default function TipsHero() {
             <Link to="#tips-grid" className="btn-primary">Đọc tips mới nhất →</Link>
             <Link to="#submit-tip" className="btn-ghost">Submit tip của bạn</Link>
           </div>
-          <p className="hero-note">✳ miễn phí · không cần email · không tracking</p>
+          <p className="hero-note">✳ miễn phí · cập nhật hàng tuần</p>
         </div>
         <div className="tips-stats-grid">
           <div className="tips-stat">

@@ -11,7 +11,7 @@ export default function CTASection() {
           Đọc xong rồi,<br /><em>học thôi.</em>
         </h2>
         <p className="cta-desc">
-          Lộ trình Vibecode Web 10 bài — từ zero đến có web deploy. Không cần biết code, không cần đăng ký, không cần trả tiền.
+          Lộ trình Vibecode Web 10 bài — từ zero đến có web deploy. Không cần biết code, học theo từng bước, và hoàn toàn miễn phí.
         </p>
         <div className="cta-btns">
           <Link to="/vibecode" className="btn-primary">Bắt đầu Vibecode →</Link>
