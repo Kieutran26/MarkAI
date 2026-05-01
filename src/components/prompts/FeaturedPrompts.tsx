@@ -28,7 +28,7 @@ export default function FeaturedPrompts({ onPromptClick }: FeaturedPromptsProps)
 
   return (
     <section className="featured-section">
-      <div className="featured-inner">
+      <div className="featured-inner prompts-feat-inner">
         <div className="featured-header">
           <div>
             <p className="featured-label"><span>✳</span> 01 · hot prompts tuần này</p>

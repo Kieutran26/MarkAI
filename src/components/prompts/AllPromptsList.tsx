@@ -23,7 +23,7 @@ export default function AllPromptsList({ promptIds, onPromptClick }: AllPromptsL
         ))}
 
         <div style={{ padding: '2rem', textAlign: 'center', borderTop: '1px solid var(--border)' }}>
-          <a href="#" className="btn-ghost">Xem thêm 142 prompts →</a>
+          <a href="#" className="all-prompts-more">Xem thêm 142 prompts →</a>
         </div>
       </div>
     </section>

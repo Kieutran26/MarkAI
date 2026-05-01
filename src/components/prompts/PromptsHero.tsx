@@ -1,7 +1,17 @@
+import { useState, useEffect } from 'react';
 import { promptsData } from '../../lib/prompts-data';
+import { TypewriterText } from '../shared/Typewriter';
 
 export default function PromptsHero() {
   const featuredPrompt = promptsData['042'];
+  const [animationKey, setAnimationKey] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setAnimationKey(prev => prev + 1);
+    }, 15000); // Restart every 15 seconds
+    return () => clearInterval(timer);
+  }, []);
 
   const handleCopy = () => {
     navigator.clipboard.writeText(featuredPrompt.prompt);
@@ -40,20 +50,32 @@ export default function PromptsHero() {
               <button className="prompt-preview-copy" onClick={handleCopy}>Copy</button>
             </div>
             <div className="prompt-preview-body">
-              <pre className="prompt-preview-text">
-<span className="kw">Act as</span> a senior Next.js developer.
-I'm building <span className="val">[tên dự án]</span> — a <span className="val">[mô tả ngắn]</span>.
-
-<span className="kw">Tech stack:</span> Next.js 15 · TypeScript
-· Tailwind v4 · Supabase
-
-<span className="kw">Task:</span> Build the <span className="val">[tên component]</span> component.
-Requirements:
-- <span className="val">[yêu cầu 1]</span>
-- <span className="val">[yêu cầu 2]</span>
-
-<span className="kw">Rules:</span> No border-radius · No box-shadow
-· DM Mono for UI text</pre>
+              <pre className="prompt-preview-text" key={animationKey}>
+                <TypewriterText text="Act as" className="kw" delay={0.2} />
+                <TypewriterText text=" a senior Next.js developer." delay={0.3} />
+                {"\n"}
+                <TypewriterText text="I'm building " delay={0.8} />
+                <TypewriterText text="[tên dự án]" className="val" delay={1.0} />
+                <TypewriterText text=" — a " delay={1.2} />
+                <TypewriterText text="[mô tả ngắn]" className="val" delay={1.3} />
+                <TypewriterText text="." delay={1.5} />
+                {"\n\n"}
+                <TypewriterText text="Tech stack:" className="kw" delay={1.8} />
+                <TypewriterText text=" Next.js 15 · TypeScript · Tailwind v4 · Supabase" delay={2.0} />
+                {"\n\n"}
+                <TypewriterText text="Task:" className="kw" delay={2.8} />
+                <TypewriterText text=" Build the " delay={3.0} />
+                <TypewriterText text="[tên component]" className="val" delay={3.2} />
+                <TypewriterText text=" component." delay={3.5} />
+                {"\n"}
+                <TypewriterText text="Requirements: " delay={3.8} />
+                <TypewriterText text="[yêu cầu 1]" className="val" delay={4.1} />
+                <TypewriterText text=" · " delay={4.3} />
+                <TypewriterText text="[yêu cầu 2]" className="val" delay={4.4} />
+                {"\n\n"}
+                <TypewriterText text="Rules:" className="kw" delay={4.8} />
+                <TypewriterText text=" No border-radius · No box-shadow · DM Mono for UI text" delay={5.0} />
+              </pre>
             </div>
             <div className="prompt-preview-footer">
               <span className="ok">✓</span> Dùng với: Claude · Cursor AI · ChatGPT
