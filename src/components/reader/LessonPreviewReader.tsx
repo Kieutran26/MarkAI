@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import ReadingProgressBar from '../article/ReadingProgressBar';
 import ContentBody from './content/ContentBody';
 import ContentHeader from './ContentHeader';
 import { getContentBlocksFromContentJson, summarizeContentBlocks } from '../../lib/reader-content';
@@ -37,13 +38,16 @@ export default function LessonPreviewReader({
 
   return (
     <div className="reader-page">
+      <ReadingProgressBar targetSelector=".reader-reading-track" />
       <PreviewTopbar current={activeSubLesson} lessonSlug={lesson.slug} previewToken={previewToken} />
       <div className="reader-layout">
         <PreviewSidebar current={activeSubLesson} lessonSlug={lesson.slug} previewToken={previewToken} subLessons={subLessons} />
         <div className="reader-content">
-          <ContentHeader subLesson={activeSubLesson} />
-          <ContentBody content={activeSubLesson.content} />
-          <PreviewFooter current={activeSubLesson} lessonSlug={lesson.slug} previewToken={previewToken} />
+          <div className="reader-reading-track">
+            <ContentHeader subLesson={activeSubLesson} />
+            <ContentBody content={activeSubLesson.content} />
+            <PreviewFooter current={activeSubLesson} lessonSlug={lesson.slug} previewToken={previewToken} />
+          </div>
         </div>
       </div>
     </div>

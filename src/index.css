@@ -2010,12 +2010,13 @@ button, a { cursor: pointer; transition: all 0.15s ease; }
 /* Reading Progress */
 .reading-progress {
   position: fixed;
-  top: 52px;
+  top: 0;
   left: 0;
   right: 0;
-  z-index: 90;
-  height: 2px;
-  background: var(--border);
+  z-index: 200;
+  height: 3px;
+  background: color-mix(in srgb, var(--accent) 16%, transparent);
+  pointer-events: none;
 }
 .reading-progress-bar {
   height: 100%;

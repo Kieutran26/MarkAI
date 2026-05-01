@@ -1,6 +1,6 @@
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { getTipBySlug, getRelatedTips, getDetailTips, getTipDetailContent, shouldShowFullTipLink } from '../../lib/tips-data';
-import ReadingProgressBar from '../../components/tip-detail/ReadingProgressBar';
+import ReadingProgressBar from '../../components/article/ReadingProgressBar';
 import TipHero from '../../components/tip-detail/TipHero';
 import TipContent from '../../components/tip-detail/TipContent';
 import TipSidebar from '../../components/tip-detail/TipSidebar';
@@ -40,7 +40,7 @@ export default function TipDetail() {
 
   return (
     <>
-      <ReadingProgressBar />
+      <ReadingProgressBar targetSelector=".tip-main" />
       <Breadcrumb
         items={[
           { label: 'markAI.vn', href: '/' },

@@ -4,6 +4,7 @@ import ArticleHero from '../components/article/ArticleHero';
 import ArticleContent from '../components/article/ArticleContent';
 import ArticleSidebar from '../components/article/ArticleSidebar';
 import ArticleFooter from '../components/article/ArticleFooter';
+import ReadingProgressBar from '../components/article/ReadingProgressBar';
 import RelatedArticles from '../components/article/RelatedArticles';
 
 export default function BlogDetailPage() {
@@ -21,6 +22,7 @@ export default function BlogDetailPage() {
 
   return (
     <div>
+      <ReadingProgressBar targetSelector=".article-content" />
       <ArticleHero post={post} />
       
       <div className="page-shell grid grid-cols-1 lg:grid-cols-[1fr_300px]">

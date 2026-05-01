@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import ReadingProgressBar from '../article/ReadingProgressBar';
 import ReaderTableOfContents from './ReaderTableOfContents';
 import type { TocItem } from '../../lib/reader-outline';
 
@@ -29,17 +30,20 @@ export default function ReaderShell({
 }: ReaderShellProps) {
   return (
     <div className="reader-page">
+      <ReadingProgressBar targetSelector=".reader-reading-track" />
       {topbar}
       <div className="reader-layout">
         {sidebar}
         {sidebarOpen && onSidebarClose ? <div className="sidebar-overlay" onClick={onSidebarClose} /> : null}
         <div className="reader-content">
-          {header}
-          <div className="reader-article-grid">
-            {content}
-            <ReaderTableOfContents tocItems={tocItems} activeTocId={activeTocId} />
+          <div className="reader-reading-track">
+            {header}
+            <div className="reader-article-grid">
+              {content}
+              <ReaderTableOfContents tocItems={tocItems} activeTocId={activeTocId} />
+            </div>
+            {footer}
           </div>
-          {footer}
         </div>
       </div>
       {mobileToggle}

@@ -10,7 +10,6 @@ type ArticleHeroProps = {
 
 export default function ArticleHero({ post }: ArticleHeroProps) {
   const [activeId, setActiveId] = useState<string>('');
-  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -28,18 +27,6 @@ export default function ArticleHero({ post }: ArticleHeroProps) {
     return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = document.documentElement.scrollTop;
-      const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const prog = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0;
-      setProgress(prog);
-    };
-
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   const handleShareX = () => {
     const url = encodeURIComponent(window.location.href);
     window.open(`https://twitter.com/intent/tweet?url=${url}&text=${encodeURIComponent(post.title)}`, '_blank');
@@ -51,11 +38,6 @@ export default function ArticleHero({ post }: ArticleHeroProps) {
 
   return (
     <>
-      {/* Reading Progress Bar */}
-      <div className="reading-progress">
-        <div className="reading-progress-bar" style={{ width: `${progress}%` }}></div>
-      </div>
-
       {/* Breadcrumb */}
       <div className="breadcrumb-wrap">
         <div className="page-shell flex items-center gap-2 py-3 font-mono text-[11px] text-muted">
