@@ -2,8 +2,8 @@ import { lessons } from './lessons';
 
 export type ContentBlock =
   | { type: 'p'; text: string }
-  | { type: 'h3'; text: string; em?: string }
-  | { type: 'h4'; text: string }
+  | { type: 'h3'; text: string; em?: string; id?: string }
+  | { type: 'h4'; text: string; id?: string }
   | { type: 'html'; html: string }
   | { type: 'insight'; label: string; text: string }
   | { type: 'divider' }

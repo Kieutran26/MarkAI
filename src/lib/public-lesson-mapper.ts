@@ -1,4 +1,5 @@
 import type { PublicLessonPayload } from './public-lesson-api';
+import { getContentBlocksFromStoredBlocks, summarizeContentBlocks } from './reader-content';
 import type { ContentBlock, SubLessonFull } from './subLessons';
 
 export type PublicOverviewModule = {
@@ -14,29 +15,30 @@ export function mapPublicLessonToSubLessons(payload: PublicLessonPayload): SubLe
   const lessonNumber = payload.lesson.sortOrder || inferLessonNumber(payload.lesson.slug);
   const totalSubs = payload.lesson.modules.length;
 
-  return payload.lesson.modules.map((module, index) => ({
-    id: module.moduleCode || `${lessonNumber}.${index + 1}`,
-    slug: module.slug,
-    lessonSlug: payload.lesson.slug,
-    lessonId: lessonNumber,
-    lessonTitle: payload.lesson.title,
-    lessonTitleEm: '',
-    prevSlug: index > 0 ? payload.lesson.modules[index - 1]?.slug ?? null : null,
-    nextSlug: index < totalSubs - 1 ? payload.lesson.modules[index + 1]?.slug ?? null : null,
-    prevTitle: index > 0 ? payload.lesson.modules[index - 1]?.title ?? null : null,
-    nextTitle: index < totalSubs - 1 ? payload.lesson.modules[index + 1]?.title ?? null : null,
-    eyebrow: module.moduleCode || `Mục ${index + 1}`,
-    title: module.title,
-    titleEm: '',
-    desc: module.summary || summarizeBlocks(module.blocks),
-    duration: `~${Math.max(1, module.estimatedMinutes || 1)} phút`,
-    totalSubs,
-    currentIndex: index + 1,
-    content: module.blocks.map((block) => ({
-      type: 'html',
-      html: typeof block.contentJson.html === 'string' ? block.contentJson.html : '',
-    } satisfies ContentBlock)),
-  }));
+  return payload.lesson.modules.map((module, index) => {
+    const content = getContentBlocksFromStoredBlocks(module.blocks);
+
+    return {
+      id: module.moduleCode || `${lessonNumber}.${index + 1}`,
+      slug: module.slug,
+      lessonSlug: payload.lesson.slug,
+      lessonId: lessonNumber,
+      lessonTitle: payload.lesson.title,
+      lessonTitleEm: '',
+      prevSlug: index > 0 ? payload.lesson.modules[index - 1]?.slug ?? null : null,
+      nextSlug: index < totalSubs - 1 ? payload.lesson.modules[index + 1]?.slug ?? null : null,
+      prevTitle: index > 0 ? payload.lesson.modules[index - 1]?.title ?? null : null,
+      nextTitle: index < totalSubs - 1 ? payload.lesson.modules[index + 1]?.title ?? null : null,
+      eyebrow: module.moduleCode || `Muc ${index + 1}`,
+      title: module.title,
+      titleEm: '',
+      desc: module.summary || summarizeBlocks(module.blocks),
+      duration: `~${Math.max(1, module.estimatedMinutes || 1)} phut`,
+      totalSubs,
+      currentIndex: index + 1,
+      content: content.length ? content : [{ type: 'html', html: '' } satisfies ContentBlock],
+    };
+  });
 }
 
 export function mapPublicLessonToOverviewModules(payload: PublicLessonPayload): PublicOverviewModule[] {
@@ -55,16 +57,23 @@ export function findSubLessonFromSlug(subLessons: SubLessonFull[], subSlug: stri
 }
 
 function summarizeBlocks(blocks: Array<{ contentJson: Record<string, unknown> }>) {
-  const firstHtml = blocks
-    .map((block) => (typeof block.contentJson.html === 'string' ? block.contentJson.html : ''))
-    .find(Boolean);
-  if (!firstHtml) return 'Đang hiển thị nội dung lấy từ database.';
-  const plain = firstHtml.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
-  return plain ? `${plain.slice(0, 160)}${plain.length > 160 ? '…' : ''}` : 'Đang hiển thị nội dung lấy từ database.';
+  const content = getContentBlocksFromStoredBlocks(blocks.map((block) => ({ title: null, contentJson: block.contentJson })));
+  return summarizeContentBlocks(content);
 }
 
 function inferLessonNumber(slug: string) {
-  const orderedSlugs = ['vibecode-la-gi', 'tu-ngu-chuyen-nganh', 'cai-dat-moi-truong', 'lam-quen-vscode-cursor', 'lam-quen-claude-code', 'cong-cu-website-huu-ich', 'cach-prompt-cho-ai', 'khi-ai-code-sai', 'tao-skills-va-workflow', 'deploy-va-tracking'];
+  const orderedSlugs = [
+    'vibecode-la-gi',
+    'tu-ngu-chuyen-nganh',
+    'cai-dat-moi-truong',
+    'lam-quen-vscode-cursor',
+    'lam-quen-claude-code',
+    'cong-cu-website-huu-ich',
+    'cach-prompt-cho-ai',
+    'khi-ai-code-sai',
+    'tao-skills-va-workflow',
+    'deploy-va-tracking',
+  ];
   const index = orderedSlugs.indexOf(slug);
   return index >= 0 ? index + 1 : 1;
 }

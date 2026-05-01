@@ -32,17 +32,17 @@ export default function ContentBody({ content }: ContentBodyProps) {
 
           case 'h3':
             return block.em ? (
-              <h3 key={index}>
+              <h3 key={index} id={block.id}>
                 {block.text.split(block.em)[0]}
                 <em className="text-accent italic">{block.em}</em>
                 {block.text.split(block.em)[1]}
               </h3>
             ) : (
-              <h3 key={index}>{block.text}</h3>
+              <h3 key={index} id={block.id}>{block.text}</h3>
             );
 
           case 'h4':
-            return <h4 key={index}>{block.text}</h4>;
+            return <h4 key={index} id={block.id}>{block.text}</h4>;
 
           case 'insight':
             return (

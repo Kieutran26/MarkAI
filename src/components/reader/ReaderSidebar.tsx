@@ -7,9 +7,10 @@ interface ReaderSidebarProps {
   lessonSlug: string;
   subLessons?: SubLessonFull[];
   onClose?: () => void;
+  isOpen?: boolean;
 }
 
-export default function ReaderSidebar({ subLesson, lessonSlug, subLessons, onClose }: ReaderSidebarProps) {
+export default function ReaderSidebar({ subLesson, lessonSlug, subLessons, onClose, isOpen = false }: ReaderSidebarProps) {
   const { id, lessonId, lessonTitle, totalSubs, currentIndex } = subLesson;
   const allSubLessons = subLessons ?? getSubLessonsByLesson(lessonSlug);
 
@@ -18,7 +19,7 @@ export default function ReaderSidebar({ subLesson, lessonSlug, subLessons, onClo
   };
 
   return (
-    <aside className="reader-sidebar" id="reader-sidebar">
+    <aside className={`reader-sidebar ${isOpen ? 'open' : ''}`} id="reader-sidebar">
       {/* Header */}
       <div className="sidebar-lesson-header">
         <p className="slh-label">Bài {lessonId.toString().padStart(2, '0')} · {totalSubs} phần</p>
