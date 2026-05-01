@@ -45,20 +45,33 @@ export default function TipsBeforeReport() {
         <h2 className="section-h2">
           Tự <em>fix nhanh</em> một số lỗi phổ biến.
         </h2>
-        <div className="tips-grid">
-          {tips.map((tip) => (
-            <div key={tip.num} className="tips-item">
-              <div className="tips-item-num">{tip.num}</div>
-              <div className="tips-item-title">{tip.title}</div>
-              <div className="tips-item-desc">
-                {tip.desc}
-                {tip.code && <span className="tips-item-code">{tip.code}</span>}
-                {tip.code2 && tip.code2}
-                {tip.code3 && <span className="tips-item-code">{tip.code3}</span>}
-                {tip.code4 && tip.code4}
-              </div>
-            </div>
-          ))}
+        <div className="tips-flow" aria-label="Sơ đồ tự fix nhanh trước khi báo lỗi">
+          <div className="tips-flow-grid">
+            {tips.map((tip, index) => (
+              <article key={tip.num} className="tips-flow-item">
+                <div className="tips-flow-item-top">
+                  <div className="tips-item-num">{tip.num}</div>
+                  <div className="tips-flow-label">bước kiểm tra</div>
+                </div>
+                <div className="tips-item-title">{tip.title}</div>
+                <div className="tips-item-desc">
+                  {tip.desc}
+                  {tip.code && <span className="tips-item-code">{tip.code}</span>}
+                  {tip.code2 && tip.code2}
+                  {tip.code3 && <span className="tips-item-code">{tip.code3}</span>}
+                  {tip.code4 && tip.code4}
+                </div>
+                {index < tips.length - 1 ? (
+                  <div className="tips-flow-arrow" aria-hidden="true">→</div>
+                ) : null}
+              </article>
+            ))}
+          </div>
+          <div className="tips-flow-outcome">
+            <p>
+              <strong>Nếu vẫn lỗi:</strong> lúc đó hãy gửi bug report. Mình sẽ dễ tái hiện và xử lý nhanh hơn vì đã loại bớt các lỗi trình duyệt phổ biến.
+            </p>
+          </div>
         </div>
       </div>
     </div>

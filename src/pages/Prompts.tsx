@@ -37,7 +37,7 @@ export default function Prompts() {
   }, []);
 
   return (
-    <>
+    <div className="prompts-page">
       <PromptsHero />
       <FilterSearchBar />
       <FeaturedPrompts onPromptClick={handlePromptClick} />
@@ -73,6 +73,6 @@ export default function Prompts() {
         onClose={handleClosePopup}
         onNavigate={handleNavigate}
       />
-    </>
+    </div>
   );
 }
