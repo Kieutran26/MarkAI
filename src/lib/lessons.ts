@@ -1,4 +1,4 @@
-// Types
+﻿// Types
 export type SubLesson = {
   id: string;           // "1.1", "1.2"...
   title: string;
@@ -77,7 +77,7 @@ export const lessons: Lesson[] = [
         paragraphs: [
           'Vibecode là cách bạn dùng <strong>AI để viết code thay mình</strong>. Bạn mô tả điều mình muốn bằng tiếng Việt bình thường — AI hiểu và tạo ra code. Bạn không cần đọc được code đó, không cần hiểu nó hoạt động thế nào.',
           'Tên gọi "vibe" xuất phát từ cách làm việc: bạn chạy theo <strong>cảm giác và ý tưởng</strong>, AI lo phần kỹ thuật. Ý tưởng → mô tả → sản phẩm. Đơn giản vậy thôi.',
-          'Hiểu đơn giản hơn: giống như bạn thuê một lập trình viên làm việc 24/7, không ngủ, không tính phí theo giờ, và luôn sẵn sàng sửa lại ngay lập tức khi bạn đổi ý.'
+          'Hiểu đơn giản hơn: giống như bạn thuê <strong>một lập trình viên làm việc 24/7</strong>, <strong>không ngủ</strong>, <strong>không tính phí theo giờ</strong>, và <strong>luôn sẵn sàng sửa lại ngay lập tức khi bạn đổi ý</strong>.'
         ],
         insight: '✳ Định nghĩa ngắn: Vibecode = bạn có ý tưởng, AI viết code, bạn ra sản phẩm. Không cần biết code ở giữa.'
       },

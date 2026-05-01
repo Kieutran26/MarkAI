@@ -51,6 +51,8 @@ function extractTextFromBlock(block: ContentBlock) {
       return stripHtml(block.html);
     case 'insight':
       return `${stripHtml(block.label)} ${stripHtml(block.text)}`.trim();
+    case 'infographic':
+      return `${stripHtml(block.label)} ${block.steps.map((step) => `${step.title} ${step.desc}`).join(' ')} ${stripHtml(block.aside.title)} ${stripHtml(block.aside.desc)}`.trim();
     case 'usecases':
       return block.items.map((item) => `${item.title} ${item.desc}`).join(' ');
     case 'grid2':

@@ -2,6 +2,7 @@ import InsightBlock from './InsightBlock';
 import CompareTable from './CompareTable';
 import UseCaseList from './UseCaseList';
 import Grid2Col from './Grid2Col';
+import InfographicFlow from './InfographicFlow';
 import type { ContentBlock } from '../../../lib/subLessons';
 
 interface ContentBodyProps {
@@ -53,6 +54,16 @@ export default function ContentBody({ content }: ContentBodyProps) {
               />
             );
 
+          case 'infographic':
+            return (
+              <InfographicFlow
+                key={index}
+                label={block.label}
+                steps={block.steps}
+                aside={block.aside}
+              />
+            );
+
           case 'divider':
             return <div key={index} className="content-divider" />;
 
@@ -69,6 +80,7 @@ export default function ContentBody({ content }: ContentBodyProps) {
             return (
               <UseCaseList
                 key={index}
+                eyebrow={block.eyebrow}
                 items={block.items}
               />
             );

@@ -1,4 +1,4 @@
-import { lessons } from './lessons';
+﻿import { lessons } from './lessons';
 
 export type ContentBlock =
   | { type: 'p'; text: string }
@@ -6,9 +6,20 @@ export type ContentBlock =
   | { type: 'h4'; text: string; id?: string }
   | { type: 'html'; html: string }
   | { type: 'insight'; label: string; text: string }
+  | { type: 'infographic'; label: string; steps: { label: string; title: string; desc: string }[]; aside: { label: string; title: string; desc: string } }
   | { type: 'divider' }
   | { type: 'compare'; headers: [string, string]; rows: { left: string; leftStyle: 'cross' | 'check' | 'accent' | 'normal'; right: string; rightStyle: 'cross' | 'check' | 'accent' | 'normal' }[] }
-  | { type: 'usecases'; items: { icon: string; title: string; desc: string }[] }
+  | {
+      type: 'usecases';
+      eyebrow?: string;
+      items: {
+        icon: string;
+        title: string;
+        desc: string;
+        tag?: string;
+        variant?: 'quote' | 'body';
+      }[];
+    }
   | { type: 'grid2'; items: { label: string; title: string; desc: string }[] };
 
 export type SubLessonFull = {
@@ -54,17 +65,30 @@ export const subLessons: SubLessonFull[] = [
     content: [
       { type: 'h3', text: 'Giải thích đơn giản nhất' },
       { type: 'p', text: 'Vibecode là cách bạn dùng <strong>AI để viết code thay mình</strong>. Bạn mô tả điều mình muốn bằng tiếng Việt bình thường — AI hiểu và tạo ra code. Bạn không cần đọc được code đó, không cần hiểu nó hoạt động thế nào bên trong.' },
-      { type: 'p', text: 'Tên gọi "vibe" xuất phát từ cách làm việc: bạn chạy theo <strong>cảm giác và ý tưởng</strong>, AI lo phần kỹ thuật. Ý tưởng → mô tả → sản phẩm. Không có bước "học code" ở giữa.' },
+      {
+        type: 'infographic',
+        label: 'Vibecode — Quy trình',
+        steps: [
+          { label: '01', title: 'Ý tưởng', desc: 'Bạn có hướng đi, nhu cầu, hoặc một thứ muốn làm nhanh.' },
+          { label: '02', title: 'Mô tả', desc: 'Bạn viết ra mong muốn bằng ngôn ngữ bình thường để AI hiểu.' },
+          { label: '03', title: 'Sản phẩm', desc: 'AI biến mô tả thành trang web, tool, flow hoặc prototype thật.' }
+        ],
+        aside: {
+          label: 'Không cần',
+          title: 'Không có bước "học code" ở giữa',
+          desc: 'Bạn chạy theo ý tưởng và kết quả. AI lo phần kỹ thuật thay bạn.'
+        }
+      },
       { type: 'insight', label: 'Định nghĩa ngắn', text: 'Vibecode = bạn có ý tưởng, AI viết code, bạn ra sản phẩm. Không cần biết code ở giữa.' },
-      { type: 'p', text: 'Hiểu đơn giản hơn: giống như bạn thuê một lập trình viên làm việc 24/7, không ngủ, không tính phí theo giờ, và luôn sẵn sàng sửa lại ngay lập tức khi bạn đổi ý. Chỉ khác là "lập trình viên" đó là AI.' },
+      { type: 'p', text: 'Hiểu đơn giản hơn: giống như bạn thuê <strong>một lập trình viên làm việc 24/7</strong>, <strong>không ngủ</strong>, <strong>không tính phí theo giờ</strong>, và <strong>luôn sẵn sàng sửa lại ngay lập tức khi bạn đổi ý</strong>. Chỉ khác là <strong>"lập trình viên" đó là AI</strong>.' },
       { type: 'divider' },
       { type: 'h3', text: 'Quy trình thực tế trông như thế nào?' },
       { type: 'p', text: 'Thay vì ngồi học cú pháp Python hay JavaScript, bạn ngồi <strong>mô tả</strong> điều mình muốn — giống như đang giải thích cho một người khác nghe. AI nhận lấy mô tả đó và tự viết code.' },
-      { type: 'usecases', items: [
-        { icon: '01', title: 'Bạn gõ vào Cursor hoặc Claude Code', desc: '"Tạo cho tôi landing page giới thiệu sản phẩm mới, có countdown 3 ngày, form đăng ký email, nền màu trắng, responsive trên điện thoại."' },
-        { icon: '02', title: 'AI đọc mô tả và bắt đầu viết', desc: 'Trong vài phút, AI tạo ra toàn bộ file code cho trang đó — HTML, CSS, logic countdown, form validation. Bạn không cần viết một dòng nào.' },
-        { icon: '03', title: 'Bạn xem kết quả và điều chỉnh', desc: '"Màu nút CTA hơi nhạt quá, đổi sang đỏ đậm hơn. Và thêm phần testimonial 3 người vào bên dưới." — AI sửa ngay.' },
-        { icon: '04', title: 'Deploy lên internet', desc: 'Khi ưng ý, bạn deploy lên Vercel — một trang web thật, có link chia sẻ được. Mất thêm khoảng 5 phút.' }
+      { type: 'usecases', eyebrow: 'Vibecode hoạt động như thế nào', items: [
+        { icon: '01', tag: 'Bạn làm', title: 'Gõ vào Cursor hoặc Claude Code', desc: '"Tạo cho tôi landing page giới thiệu sản phẩm mới, có countdown 3 ngày, form đăng ký email, nền màu trắng, responsive trên điện thoại."', variant: 'quote' },
+        { icon: '02', tag: 'AI làm', title: 'AI đọc mô tả và bắt đầu viết', desc: 'Trong vài phút, AI tạo ra toàn bộ file code — HTML, CSS, logic countdown, form validation. Bạn không cần viết một dòng nào.', variant: 'body' },
+        { icon: '03', tag: 'Bạn làm', title: 'Xem kết quả và điều chỉnh', desc: '"Màu nút CTA hơi nhạt quá, đổi sang đỏ đậm hơn. Và thêm phần testimonial 3 người vào bên dưới." — AI sửa ngay.', variant: 'quote' },
+        { icon: '04', tag: 'Xong', title: 'Deploy lên internet', desc: 'Khi ưng ý, bạn deploy lên Vercel — một trang web thật, có link chia sẻ được. Mất thêm khoảng 5 phút.', variant: 'body' }
       ]},
       { type: 'divider' },
       { type: 'h3', text: 'Tại sao gọi là "vibe"?', em: '"vibe"?' },

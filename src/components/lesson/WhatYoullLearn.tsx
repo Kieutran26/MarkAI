@@ -17,9 +17,15 @@ export default function WhatYoullLearn({ items, lessonId }: WhatYoullLearnProps)
               key={index}
               className={`learn-card ${index === items.length - 1 ? 'learn-card-result' : ''}`}
             >
-              <div className="learn-card-icon">{item.icon}</div>
-              <div className="learn-card-title">{item.title}</div>
-              <div className="learn-card-desc">{item.desc}</div>
+              <div className="learn-card-header">
+                <span className="learn-card-index">{String(index + 1).padStart(2, '0')}</span>
+                <div className="learn-card-icon">{item.icon}</div>
+              </div>
+              <div className="learn-card-content">
+                <div className="learn-card-title">{item.title}</div>
+                <div className="learn-card-desc">{item.desc}</div>
+              </div>
+              <div className="learn-card-indicator" />
             </div>
           ))}
         </div>
