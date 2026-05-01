@@ -71,6 +71,12 @@ export default function FeedbackForm() {
             <option>Performance Marketing</option>
             <option>Content Marketing</option>
             <option>Social Media</option>
+            <option>SEO / Organic Growth</option>
+            <option>CRM / Email Marketing</option>
+            <option>PR / Communications</option>
+            <option>Product Marketing</option>
+            <option>Community / Partnership</option>
+            <option>Data / Marketing Analytics</option>
             <option>E-commerce / Growth</option>
             <option>Marketing Manager / Lead</option>
             <option>Freelancer / Agency</option>

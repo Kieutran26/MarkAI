@@ -35,7 +35,7 @@ export default function RoadmapSection() {
       <div className="roadmap-inner">
         <div className="roadmap-header">
           <p className="section-label"><span>✳</span> 03 · lộ trình</p>
-          <h2 className="section-h2">
+          <h2 className="section-h2 font-serif text-[42px] leading-[1.02]">
             Đang build gì,<br /><em>sắp ra gì.</em>
           </h2>
         </div>
