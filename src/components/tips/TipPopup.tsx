@@ -222,6 +222,7 @@ export default function TipPopup({
             <button
               onClick={handlePrev}
               disabled={currentIndex <= 0}
+              className="popup-nav-btn"
               style={{
                 fontFamily: 'var(--mono)',
                 fontSize: '11px',
@@ -230,7 +231,6 @@ export default function TipPopup({
                 border: '1px solid var(--border)',
                 padding: '5px 12px',
                 cursor: currentIndex <= 0 ? 'not-allowed' : 'pointer',
-                transition: 'color 0.15s, border-color 0.15s',
                 opacity: currentIndex <= 0 ? 0.3 : 1,
               }}
             >
@@ -239,6 +239,7 @@ export default function TipPopup({
             <button
               onClick={handleNext}
               disabled={currentIndex >= shortTips.length - 1}
+              className="popup-nav-btn"
               style={{
                 fontFamily: 'var(--mono)',
                 fontSize: '11px',
@@ -247,7 +248,6 @@ export default function TipPopup({
                 border: '1px solid var(--border)',
                 padding: '5px 12px',
                 cursor: currentIndex >= shortTips.length - 1 ? 'not-allowed' : 'pointer',
-                transition: 'color 0.15s, border-color 0.15s',
                 opacity: currentIndex >= shortTips.length - 1 ? 0.3 : 1,
               }}
             >
@@ -256,6 +256,7 @@ export default function TipPopup({
             {shouldShowFullTipLink(tip) && (
               <Link
                 to={`/tips/${tip.slug}`}
+                className="popup-full-btn"
                 style={{
                   fontFamily: 'var(--mono)',
                   fontSize: '11px',
@@ -267,7 +268,6 @@ export default function TipPopup({
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '4px',
-                  transition: 'background 0.15s',
                 }}
               >
                 Bài đầy đủ →

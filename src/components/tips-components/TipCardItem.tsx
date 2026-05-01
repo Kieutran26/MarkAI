@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import type { Tip } from '../../lib/types';
 
 interface TipCardItemProps {
@@ -8,13 +9,17 @@ interface TipCardItemProps {
 }
 
 export default function TipCardItem({ tip, onOpen, isHot }: TipCardItemProps) {
+  const navigate = useNavigate();
+
   const handleClick = () => {
-    if (tip.type === 'short' && onOpen) {
+    if (tip.type === 'long') {
+      navigate(`/tips/${tip.slug}`);
+    } else if (tip.type === 'short' && onOpen) {
       onOpen(tip);
     }
   };
 
-  const cardClass = `tip-card ${isHot ? 'hot-card' : ''} ${tip.type === 'short' ? 'cursor-pointer' : ''}`;
+  const cardClass = `tip-card ${isHot ? 'hot-card' : ''} cursor-pointer`;
 
   return (
     <div
@@ -36,11 +41,8 @@ export default function TipCardItem({ tip, onOpen, isHot }: TipCardItemProps) {
         </div>
       </div>
       <div className="tip-text">{tip.title}</div>
-      {tip.type === 'long' && (
-        <div className="insight">✳ Đặt file này ở root project, Claude sẽ đọc tự động mỗi session.</div>
-      )}
       <div className="tip-meta">
-        {tip.categoryLabel} · {tip.date}
+        {tip.date}
       </div>
       <span className="tip-arrow">{tip.type === 'long' ? '→' : '⊕'}</span>
     </div>

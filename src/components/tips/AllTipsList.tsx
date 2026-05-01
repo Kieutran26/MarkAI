@@ -35,8 +35,7 @@ export default function AllTipsList({ tips, onOpenTip }: AllTipsListProps) {
             <div className="tip-row-body">
               <div className="tip-row-title">{tip.title}</div>
               <div className="tip-row-meta">
-                {tip.categoryLabel} · {tip.date}
-                <span className={tip.type === 'long' ? 'tip-type-long' : 'tip-type-quick'}>
+                {tip.categoryLabel} · {tip.date} · <span className={tip.type === 'long' ? 'tip-type-long' : 'tip-type-quick'}>
                   {tip.type === 'long' ? 'Bài dài' : 'Nhanh'}
                 </span>
               </div>
@@ -46,7 +45,7 @@ export default function AllTipsList({ tips, onOpenTip }: AllTipsListProps) {
         ))}
 
         <div className="py-8 text-center border-t border-border">
-          <Link to="/tips" className="btn-ghost">Xem thêm 52 tips →</Link>
+          <Link to="/tips" className="btn-primary">Xem thêm 52 tips →</Link>
         </div>
       </div>
     </section>

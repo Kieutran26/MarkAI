@@ -18,7 +18,7 @@ export default function MoreTips({ tips }: MoreTipsProps) {
               Đọc thêm — <em>đừng dừng lại ở đây.</em>
             </h2>
           </div>
-          <Link to="/tips" className="more-tips-link">
+          <Link to="/tips" className="btn-primary" style={{ padding: '8px 16px', fontSize: '11px' }}>
             Xem tất cả tips →
           </Link>
         </div>

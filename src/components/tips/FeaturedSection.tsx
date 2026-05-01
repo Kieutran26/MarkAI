@@ -17,7 +17,7 @@ export default function FeaturedSection({ tips, onOpenTip }: FeaturedSectionProp
             Mỗi tuần mình chọn ra 1 tip "must-know" — loại tip mà biết sớm 1 ngày là tiết kiệm cả buổi làm việc.
           </p>
           <div className="flex gap-4 flex-wrap">
-            <Link to="/tips" className="btn-accent">Xem tất cả tips →</Link>
+            <Link to="/tips" className="btn-be">Xem tất cả tips →</Link>
             <Link to="#submit-tip" className="btn-ghost-inv">Submit tip của bạn</Link>
           </div>
         </div>
@@ -38,8 +38,8 @@ export default function FeaturedSection({ tips, onOpenTip }: FeaturedSectionProp
                 <div className="featured-tip-text">{tip.title}</div>
                 <div className="featured-tip-cat">
                   {tip.categoryLabel} · {tip.date}
-                  {tip.type === 'long' && <span className="featured-type-long"> · Bài dài →</span>}
-                  {tip.type === 'short' && <span className="featured-type-quick"> · Nhanh ⊕</span>}
+                  {tip.type === 'long' && <> · <span className="featured-type-long">Bài dài</span></>}
+                  {tip.type === 'short' && <> · <span className="featured-type-quick">Nhanh</span></>}
                 </div>
               </div>
             </div>

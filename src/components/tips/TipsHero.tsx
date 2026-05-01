@@ -16,26 +16,22 @@ export default function TipsHero() {
           </div>
           <p className="hero-note">✳ miễn phí · không cần email · không tracking</p>
         </div>
-        <div className="hero-right">
-          <div className="hero-stat-row">
-            <div className="hero-stat">
-              <div className="hero-stat-num">60+</div>
-              <div className="hero-stat-label">Tips đã publish</div>
-            </div>
-            <div className="hero-stat">
-              <div className="hero-stat-num">5</div>
-              <div className="hero-stat-label">Danh mục chủ đề</div>
-            </div>
+        <div className="tips-stats-grid">
+          <div className="tips-stat">
+            <div className="tips-stat-num">60+</div>
+            <div className="tips-stat-label">Tips đã publish</div>
           </div>
-          <div className="hero-stat-row">
-            <div className="hero-stat" style={{ borderBottom: 'none' }}>
-              <div className="hero-stat-num">Mỗi tuần</div>
-              <div className="hero-stat-label">Tips mới thêm vào</div>
-            </div>
-            <div className="hero-stat" style={{ borderBottom: 'none' }}>
-              <div className="hero-stat-num">2 phút</div>
-              <div className="hero-stat-label">Đọc xong 1 tip</div>
-            </div>
+          <div className="tips-stat">
+            <div className="tips-stat-num">5</div>
+            <div className="tips-stat-label">Danh mục chủ đề</div>
+          </div>
+          <div className="tips-stat">
+            <div className="tips-stat-num">Mỗi tuần</div>
+            <div className="tips-stat-label">Tips mới thêm vào</div>
+          </div>
+          <div className="tips-stat">
+            <div className="tips-stat-num">2 phút</div>
+            <div className="tips-stat-label">Đọc xong 1 tip</div>
           </div>
         </div>
       </div>

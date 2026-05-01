@@ -16,7 +16,7 @@ export default function TipsGrid({ tips, onOpenTip }: TipsGridProps) {
             <p className="section-label"><span>✳</span> 01 · hot tips tuần này</p>
             <h2 className="section-heading">Tips <em>đang hot.</em></h2>
           </div>
-          <Link to="/tips" className="tips-grid-header-right">Xem tất cả tips →</Link>
+          <Link to="/tips" className="btn-primary" style={{ padding: '8px 16px', fontSize: '11px' }}>Xem tất cả tips →</Link>
         </div>
         <div className="tips-grid">
           {tips.map((tip) => (
