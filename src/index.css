@@ -4871,9 +4871,40 @@ button, a { cursor: pointer; transition: all 0.15s ease; }
   transform: translateY(0);
 }
 
+.feedback-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.feedback-reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.feedback-page .hero-inner,
+.feedback-page .how-inner,
+.feedback-page .recent-inner {
+  width: 100%;
+  max-width: none;
+  padding-left: var(--page-gutter-mobile);
+  padding-right: var(--page-gutter-mobile);
+}
+
+@media (min-width: 1024px) {
+  .feedback-page .hero-inner,
+  .feedback-page .how-inner,
+  .feedback-page .recent-inner {
+    padding-left: var(--page-gutter);
+    padding-right: var(--page-gutter);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .about-reveal,
-  .about-reveal.is-visible {
+  .about-reveal.is-visible,
+  .feedback-reveal,
+  .feedback-reveal.is-visible {
     opacity: 1;
     transform: none;
     transition: none;
@@ -5018,12 +5049,101 @@ button, a { cursor: pointer; transition: all 0.15s ease; }
 /* HOW IT WORKS */
 .how-section { border-bottom: 1px solid var(--border); background: var(--bg2); }
 .how-inner { max-width: 1200px; margin: 0 auto; padding: 4rem 2rem; }
-.how-grid { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--border); margin-top: 2.5rem; }
-.how-item { padding: 2rem 1.8rem; border-right: 1px solid var(--border); }
-.how-item:last-child { border-right: none; }
+.how-section .section-h2 {
+  font-family: var(--serif);
+  font-size: 42px;
+  line-height: 1.12;
+}
+.how-diagram { margin-top: 2.5rem; display: grid; gap: 1.2rem; }
+.how-diagram-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.2rem; position: relative; }
+.how-diagram-grid::before {
+  content: '';
+  position: absolute;
+  left: 16.666%;
+  right: 16.666%;
+  top: 2.3rem;
+  border-top: 1px solid var(--border);
+  pointer-events: none;
+}
+.how-diagram-item {
+  position: relative;
+  padding: 1.8rem;
+  border: 1px solid var(--border);
+  background: rgba(247, 245, 240, 0.55);
+  min-height: 100%;
+}
+.how-diagram-item::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -1.2rem;
+  width: 1px;
+  height: 1.2rem;
+  background: var(--border);
+  transform: translateX(-50%);
+}
+.how-diagram-item-top { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
+.how-card-arrow {
+  position: absolute;
+  top: 50%;
+  right: -1.4rem;
+  z-index: 2;
+  width: 1.7rem;
+  height: 1.7rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--serif);
+  font-size: 1.05rem;
+  color: var(--accent);
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  transform: translateY(-50%);
+  line-height: 1;
+}
+.how-line-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  white-space: nowrap;
+}
 .how-num { font-family: var(--serif); font-size: 2.2rem; color: var(--accent); line-height: 1; margin-bottom: .8rem; }
-.how-title { font-family: var(--mono); font-size: 12px; font-weight: 500; color: var(--ink); margin-bottom: .5rem; letter-spacing: .02em; }
+.how-diagram-item-top .how-num { margin-bottom: 0; }
+.how-title { font-family: var(--mono); font-size: 12px; font-weight: 500; color: var(--ink); margin-bottom: .5rem; letter-spacing: .02em; text-transform: uppercase; }
 .how-desc { font-family: var(--sans); font-size: 13px; font-weight: 300; color: var(--ink2); line-height: 1.65; }
+.how-diagram-outcome {
+  position: relative;
+  margin: 0 auto;
+  width: min(100%, 780px);
+  padding: 1.35rem 1.5rem 1.45rem;
+  border: 1px solid var(--border);
+  background: var(--bg);
+}
+.how-diagram-outcome::before {
+  content: '';
+  position: absolute;
+  left: 50%;
+  top: -1.2rem;
+  width: 1px;
+  height: 1.2rem;
+  background: var(--border);
+  transform: translateX(-50%);
+}
+.how-diagram-outcome p {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 1.02rem;
+  line-height: 1.55;
+  color: var(--ink);
+}
+.how-diagram-outcome {
+  background: var(--ink);
+  border-color: var(--ink);
+}
+.how-diagram-outcome p { color: var(--bg); }
+.how-diagram-outcome strong { color: var(--accent); font-weight: 400; }
 
 /* RECENT FEEDBACK — dark */
 .recent-section { background: var(--ink); border-bottom: 1px solid #1a1a1a; }
@@ -5286,9 +5406,37 @@ button, a { cursor: pointer; transition: all 0.15s ease; }
   .roadmap-item { border-right: none; }
   .team-grid { grid-template-columns: 1fr; }
   .team-photo { border-right: none; border-bottom: 1px solid var(--border); }
-  .how-grid { grid-template-columns: 1fr; }
-  .how-item { border-right: none; border-bottom: 1px solid var(--border); }
-  .how-item:last-child { border-bottom: none; }
+  .how-diagram-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+    border: 1px solid var(--border);
+  }
+  .how-diagram-grid::before {
+    left: 2rem;
+    right: auto;
+    top: 1.9rem;
+    bottom: 1.9rem;
+    border-top: none;
+    border-left: 1px solid var(--border);
+  }
+  .how-diagram-item {
+    border: none;
+    border-bottom: 1px solid var(--border);
+    padding: 1.5rem 1.4rem 1.5rem 4rem;
+    background: transparent;
+  }
+  .how-diagram-item:last-child { border-bottom: none; }
+  .how-diagram-item::after { display: none; }
+  .how-card-arrow { display: none; }
+  .how-diagram-item-top {
+    align-items: baseline;
+    justify-content: flex-start;
+    gap: .8rem;
+  }
+  .how-diagram-outcome {
+    width: 100%;
+    padding: 1.2rem 1.2rem 1.3rem;
+  }
   .module-grid, .topic-grid { grid-template-columns: 1fr; }
   .module-btn, .topic-btn { border-right: none; }
   .form-row { grid-template-columns: 1fr; }
@@ -5299,6 +5447,12 @@ button, a { cursor: pointer; transition: all 0.15s ease; }
 
 @media (max-width: 480px) {
   .hero-inner, .story-inner, .why-inner, .roadmap-inner, .team-inner, .cta-inner, .how-inner, .recent-inner, .buglog-inner, .tips-inner, .about-inner, .faq-inner { padding-left: 1.2rem; padding-right: 1.2rem; }
+  .feedback-page .hero-inner,
+  .feedback-page .how-inner,
+  .feedback-page .recent-inner {
+    padding-left: var(--page-gutter-mobile);
+    padding-right: var(--page-gutter-mobile);
+  }
   .stats-inner { grid-template-columns: 1fr; }
   .stat-item { border-right: none; border-bottom: 1px solid var(--border); }
   .severity-grid { grid-template-columns: 1fr; }
