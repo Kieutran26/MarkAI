@@ -1,4 +1,4 @@
-import { lessons } from './lessons';
+﻿import { lessons } from './lessons';
 
 export type ContentBlock =
   | { type: 'p'; text: string }
@@ -56,9 +56,9 @@ export const subLessons: SubLessonFull[] = [
     prevTitle: null,
     nextTitle: 'Tại sao Marketer lại cần biết vibecode?',
     eyebrow: 'Định nghĩa',
-    title: 'Vibecode là gì — định nghĩa không-tech',
-    titleEm: 'định nghĩa không-tech',
-    desc: 'Giải thích bằng ngôn ngữ người làm Marketing. Không dùng thuật ngữ kỹ thuật, không cần nền tảng lập trình để hiểu bài này.',
+    title: 'Vibecode là gì',
+    titleEm: 'giải thích cho người không biết code',
+    desc: 'Hiểu vibecode theo cách dễ nhất: bạn có ý tưởng, bạn mô tả cho AI, AI viết code và ra sản phẩm. Không cần học code trước khi bắt đầu.',
     duration: '~4 phút',
     totalSubs: 5,
     currentIndex: 1,
@@ -111,11 +111,7 @@ export const subLessons: SubLessonFull[] = [
           <p><strong>1. Rào cản kỹ thuật biến mất</strong></p>
           <p>Trước đây, để ra một landing page tùy chỉnh, một quiz phân loại lead, hay một chatbot chăm sóc khách hàng — <strong>bạn cần dev</strong>. Bạn cần viết brief, chờ estimate, chờ dev làm, chờ review, chờ fix bug.</p>
           <p>Giờ thì không. <strong>Bất kỳ ai có đủ tư duy sản phẩm và biết giao tiếp với AI — đều có thể tự làm</strong>. Rào cản kỹ thuật không còn là lợi thế cạnh tranh nữa.</p>
-          <p><strong>2. Tốc độ ra mắt tăng vọt</strong></p>
-          <p>Một chiến dịch mà trước đây mất 3 tuần để setup — giờ có thể <strong>ra mắt trong 3 ngày. Thậm chí 3 giờ.</strong></p>
-          <p>Điều này có nghĩa là: team nào biết dùng AI sẽ <strong>test nhiều hơn, học nhanh hơn, và iterate liên tục</strong> trong khi đối thủ vẫn đang chờ dev xong sprint.</p>
-          <p><strong>Weeks → Hours.</strong> Không phải ẩn dụ — đây là thực tế của những team đang làm.</p>
-          <p><strong>3. Chi phí làm sản phẩm giảm mạnh</strong></p>
+          <p><strong>2. Chi phí làm sản phẩm giảm mạnh</strong></p>
           <p>1 marketer biết AI giờ có thể làm được việc của cả một team nhỏ. Không phải vì họ làm thay mọi người — mà vì AI làm phần lớn công việc thực thi, còn họ tập trung vào phần quan trọng nhất: <strong>tư duy chiến lược và ra quyết định.</strong></p>
         `,
       },
