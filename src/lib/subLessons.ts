@@ -33,7 +33,6 @@ export type SubLessonFull = {
 };
 
 export const subLessons: SubLessonFull[] = [
-  // ========== BÀI 01 ==========
   {
     id: '1.1',
     slug: 'bai-1-1',

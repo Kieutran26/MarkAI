@@ -39,7 +39,7 @@ export default function SubLessonPage() {
       .then((payload) => {
         if (cancelled) return;
         const mapped = mapPublicLessonToSubLessons(payload);
-        setDbSubLessons(mapped.length ? mapped : null);
+        setDbSubLessons(mapped.length && !hasBrokenVietnamese(mapped) ? mapped : null);
       })
       .catch(() => {
         if (!cancelled) setDbSubLessons(null);
@@ -141,4 +141,46 @@ export default function SubLessonPage() {
       )}
     />
   );
+}
+
+function hasBrokenVietnamese(subLessons: SubLessonFull[]) {
+  return subLessons.some((subLesson) => {
+    const textParts = [
+      subLesson.lessonTitle,
+      subLesson.prevTitle,
+      subLesson.nextTitle,
+      subLesson.eyebrow,
+      subLesson.title,
+      subLesson.desc,
+      subLesson.duration,
+      ...subLesson.content.flatMap((block) => {
+        switch (block.type) {
+          case 'p':
+          case 'h3':
+          case 'h4':
+            return [block.text];
+          case 'html':
+            return [block.html];
+          case 'insight':
+            return [block.label, block.text];
+          case 'compare':
+            return [block.headers[0], block.headers[1], ...block.rows.flatMap((row) => [row.left, row.right])];
+          case 'usecases':
+            return block.items.flatMap((item) => [item.title, item.desc]);
+          case 'grid2':
+            return block.items.flatMap((item) => [item.label, item.title, item.desc]);
+          case 'divider':
+            return [];
+          default:
+            return [];
+        }
+      }),
+    ].filter((value): value is string => Boolean(value));
+
+    return textParts.some(containsMojibake);
+  });
+}
+
+function containsMojibake(value: string) {
+  return /Ã.|Â.|Ä.|Æ.|áº|á»|â€”|â€œ|â€|â€˜|â€™/.test(value);
 }
