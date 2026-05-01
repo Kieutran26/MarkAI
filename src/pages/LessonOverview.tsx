@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { Sparkles } from 'lucide-react';
-import { getLessonBySlug, getNextLesson, getRemainingLessons, getLessonSlug } from '../lib/lessons';
+import { getLessonBySlug, getNextLesson, getPrevLesson, getRemainingLessons, getLessonSlug } from '../lib/lessons';
 import { fetchPublicLesson, type PublicLessonPayload } from '../lib/public-lesson-api';
 import { mapPublicLessonToOverviewModules } from '../lib/public-lesson-mapper';
 import LessonOverviewHero from '../components/lesson/LessonOverviewHero';
@@ -42,9 +42,11 @@ export default function LessonOverview() {
   }
 
   const lesson = fallbackLesson ?? null;
-  const nextLesson = lesson ? getNextLesson(lesson.id) : null;
-  const remainingLessons = lesson ? getRemainingLessons(lesson.id) : [];
-  const whatYoullLearn = lesson ? getWhatYoullLearn(lesson.id) : getWhatYoullLearn(dbLesson?.sortOrder ?? 1);
+  const currentId = lesson?.id ?? dbLesson?.sortOrder ?? 1;
+  const nextLesson = getNextLesson(currentId);
+  const prevLesson = getPrevLesson(currentId);
+  const remainingLessons = getRemainingLessons(currentId);
+  const whatYoullLearn = getWhatYoullLearn(currentId);
   const overviewModules = useMemo(() => (dbLesson ? mapPublicLessonToOverviewModules({ lesson: dbLesson }) : null), [dbLesson]);
 
   return (
@@ -56,11 +58,17 @@ export default function LessonOverview() {
             <span>/</span>
             <Link to="/vibecode">Vibecode Web</Link>
             <span>/</span>
-            <span style={{ color: 'var(--ink)' }}>Bài {(lesson?.id ?? dbLesson?.sortOrder ?? 1).toString().padStart(2, '0')}</span>
+            <span style={{ color: 'var(--ink)' }}>Bài {currentId.toString().padStart(2, '0')}</span>
           </div>
 
           <div className="nav-lesson-top">
-            <span className="nav-item-top disabled">← Trước</span>
+            {prevLesson ? (
+              <Link to={`/vibecode/${getLessonSlug(prevLesson.id)}`} className="nav-item-top">
+                ← Bài {prevLesson.id.toString().padStart(2, '0')}
+              </Link>
+            ) : (
+              <span className="nav-item-top disabled">← Trước</span>
+            )}
             {nextLesson ? (
               <Link to={`/vibecode/${getLessonSlug(nextLesson.id)}`} className="nav-item-top nav-item-top-black">
                 Bài {nextLesson.id.toString().padStart(2, '0')} →
@@ -73,11 +81,17 @@ export default function LessonOverview() {
       </div>
 
       {lesson ? <LessonOverviewHero lesson={lesson} /> : <DbLessonHero lesson={dbLesson} />}
-      <ProgressBar currentLesson={lesson?.id ?? dbLesson?.sortOrder ?? 1} />
+      <ProgressBar currentLesson={currentId} />
       <SubLessonList subLessons={overviewModules ?? lesson?.subLessons ?? []} lessonSlug={lessonSlug} />
-      <WhatYoullLearn items={whatYoullLearn} lessonId={lesson?.id ?? dbLesson?.sortOrder ?? 1} />
+      <WhatYoullLearn items={whatYoullLearn} lessonId={currentId} />
       {lesson ? (
         <LessonNextUp currentLesson={lesson} nextLesson={nextLesson} remainingLessons={remainingLessons} />
+      ) : dbLesson ? (
+        <LessonNextUp 
+          currentLesson={{ id: currentId, title: dbLesson.title, slug: lessonSlug } as any} 
+          nextLesson={nextLesson} 
+          remainingLessons={remainingLessons} 
+        />
       ) : null}
     </div>
   );

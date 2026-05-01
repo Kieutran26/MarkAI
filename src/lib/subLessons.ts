@@ -305,7 +305,7 @@ export const subLessons: SubLessonFull[] = [
     lessonTitle: 'Vibecode là gì? Khó không? Giúp gì cho Marketer?',
     lessonTitleEm: 'Marketer?',
     prevSlug: 'bai-1-2',
-    nextSlug: 'bai-1-5',
+    nextSlug: 'bai-1-4',
     prevTitle: 'Tại sao Marketer lại cần biết vibecode?',
     nextTitle: 'Bạn cần biết gì — và những thứ KHÔNG cần biết',
     eyebrow: 'So sánh',

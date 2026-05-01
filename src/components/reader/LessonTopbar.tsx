@@ -9,7 +9,7 @@ interface LessonTopbarProps {
 export default function LessonTopbar({ subLesson, lessonSlug }: LessonTopbarProps) {
   const { id, lessonId, lessonTitle, totalSubs, currentIndex, prevSlug, nextSlug, prevTitle, nextTitle } = subLesson;
 
-  const prevHref = prevSlug ? `/vibecode/${lessonSlug}/${prevSlug}` : null;
+  const prevHref = prevSlug ? `/vibecode/${lessonSlug}/${prevSlug}` : `/vibecode/${lessonSlug}`;
   const nextHref = nextSlug
     ? `/vibecode/${lessonSlug}/${nextSlug}`
     : `/vibecode/${getNextLessonSlug(lessonSlug)}`;
