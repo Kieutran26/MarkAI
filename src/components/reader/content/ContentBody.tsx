@@ -3,6 +3,8 @@ import CompareTable from './CompareTable';
 import UseCaseList from './UseCaseList';
 import Grid2Col from './Grid2Col';
 import InfographicFlow from './InfographicFlow';
+import VibeCards from './VibeCards';
+
 import type { ContentBlock } from '../../../lib/subLessons';
 import { annotateTechnicalHtml, annotateTechnicalText } from '../../../lib/technical-terms';
 
@@ -93,6 +95,14 @@ export default function ContentBody({ content }: ContentBodyProps) {
           case 'grid2':
             return (
               <Grid2Col
+                key={index}
+                items={block.items}
+              />
+            );
+          
+          case 'vibe-cards':
+            return (
+              <VibeCards
                 key={index}
                 items={block.items}
               />

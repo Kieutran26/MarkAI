@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { Sparkles } from 'lucide-react';
 import VibecodeShowcase from './VibecodeShowcase';
 
 export default function VibecodeHero() {
@@ -9,7 +10,7 @@ export default function VibecodeHero() {
         {/* Left Column */}
         <div>
           <p className="font-[family-name:var(--mono)] text-[11px] text-[var(--muted)] tracking-widest uppercase flex items-center gap-2 mb-4">
-            <span className="text-[var(--accent)]">✳</span> Vibecode Web · Lộ trình từ zero · 2026
+            <Sparkles className="w-3 h-3 text-[var(--accent)]" /> Vibecode Web · Lộ trình từ zero · 2026
           </p>
           
           <h1 className="font-[family-name:var(--serif)] text-[clamp(2.8rem,5.5vw,4.8rem)] leading-[1.05] tracking-tight mb-6">
@@ -32,7 +33,7 @@ export default function VibecodeHero() {
           </div>
           
           <p className="font-[family-name:var(--mono)] text-[11px] text-[var(--muted)]">
-            ✳ miễn phí · không cần email · không tracking
+            <Sparkles className="inline w-3 h-3" /> miễn phí · không cần email · không tracking
           </p>
         </div>
         

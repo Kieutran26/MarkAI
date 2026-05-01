@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { motion } from 'motion/react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Sparkles } from 'lucide-react';
 
 import TerminalAnimation from '../components/TerminalAnimation';
 
@@ -14,7 +14,7 @@ const Hero = () => (
   >
     <div>
       <p className="font-mono text-[11px] uppercase text-muted tracking-widest mb-4">
-        ✳ AI cho dân Marketing · hoàn toàn miễn phí · 2026
+        <Sparkles className="inline w-3 h-3 mr-1" /> AI cho dân Marketing · hoàn toàn miễn phí · 2026
       </p>
       <h1 className="font-serif text-[clamp(2.8rem,5.5vw,4.8rem)] leading-[1.05] tracking-tight mb-6 text-ink">
         <span className="text-accent">FOMO AI</span> thì nhiều. <br />
@@ -32,7 +32,7 @@ const Hero = () => (
         </Link>
       </div>
       <p className="font-mono text-[11px] text-muted">
-        ✳ miễn phí · không cần email · không tracking
+        <Sparkles className="inline w-3 h-3" /> miễn phí · không cần email · không tracking
       </p>
     </div>
     <div className="hidden md:block">
@@ -188,7 +188,7 @@ const LearningPaths = () => (
   <section id="paths">
     {/* Section header */}
     <div className="page-shell border-b border-border py-10">
-      <p className="section-label"><span>✳</span> lộ trình học</p>
+      <p className="section-label"><Sparkles className="inline w-3 h-3" /> lộ trình học</p>
       <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
         <h2 className="section-heading">
           Từ lý thuyết đến thực chiến. <em>Tất cả miễn phí.</em>
@@ -389,7 +389,7 @@ const PromptWorkflowType = () => {
 const ToolsResources = () => (
   <section>
     <div className="page-shell border-b border-border py-10">
-      <p className="section-label"><span>✳</span> công cụ & tài nguyên</p>
+      <p className="section-label"><Sparkles className="inline w-3 h-3" /> công cụ & tài nguyên</p>
       <h2 className="section-heading">
         Không chỉ học. <em>Mà dùng được luôn.</em>
       </h2>
@@ -403,7 +403,7 @@ const ToolsResources = () => (
               <div className="flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
                 <div className="max-w-[30rem]">
                   <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.16em] text-muted">
-                    ✳ prompt library
+                    <Sparkles className="inline w-3 h-3 mr-1" /> prompt library
                   </p>
                   <h3 className="font-serif text-[clamp(2rem,4vw,3.2rem)] leading-[0.95] tracking-[-0.03em] text-ink">
                     150+ prompt
@@ -569,7 +569,7 @@ const BlogSection = () => (
     <div className="page-shell border-b border-border py-10">
       <div className="flex flex-col sm:flex-row items-start sm:items-end justify-between gap-4">
         <div>
-          <p className="section-label"><span>✳</span> blog & tips</p>
+          <p className="section-label"><Sparkles className="inline w-3 h-3" /> blog & tips</p>
           <h2 className="section-heading">
             Viết thực tế. <em>Không hype.</em>
           </h2>

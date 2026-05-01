@@ -1,15 +1,16 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { Sparkles, Rocket, Frown, Smile, Check } from 'lucide-react';
 
 const steps = [
   {
     type: 'input',
-    text: 'Marketer: Làm sao để tạo landing page nhanh ta? 😩',
+    text: 'Marketer: Làm sao để tạo landing page nhanh ta? ',
     delay: 1000,
   },
   {
     type: 'response',
-    text: 'AI: Thử Vibecode đi, chỉ cần mô tả ý tưởng! ✨',
+    text: 'AI: Thử Vibecode đi, chỉ cần mô tả ý tưởng! ',
     delay: 1500,
   },
   {
@@ -19,12 +20,12 @@ const steps = [
   },
   {
     type: 'success',
-    text: '✓ Code generated. ✓ Analytics connected. ✓ Ready to launch! 🚀',
+    text: 'Code generated. Analytics connected. Ready to launch!',
     delay: 1500,
   },
   {
     type: 'final',
-    text: 'Marketer: Thảo nào bảo không cần code, AI làm hết rồi! 😎',
+    text: 'Marketer: Thảo nào bảo không cần code, AI làm hết rồi! ',
     delay: 2000,
   },
 ];
@@ -73,12 +74,12 @@ export default function TerminalAnimation() {
               >
                 {step.type === 'input' && (
                   <div className="text-ink2">
-                    <span className="text-accent">❯</span> {step.text}
+                    <span className="text-accent"><Frown className="inline w-4 h-4" /></span> {step.text}
                   </div>
                 )}
                 {step.type === 'response' && (
                   <div className="text-ink italic pl-4 border-l border-border">
-                    {step.text}
+                    <Sparkles className="inline w-4 h-4 mr-1" />{step.text}
                   </div>
                 )}
                 {step.type === 'prompt' && (
@@ -87,13 +88,15 @@ export default function TerminalAnimation() {
                   </div>
                 )}
                 {step.type === 'success' && (
-                  <div className="text-success font-medium">
-                    {step.text}
+                  <div className="text-success font-medium flex items-center gap-2 flex-wrap">
+                    <Check className="inline w-4 h-4" /> {step.text.split('. ').map((item, i) => (
+                      <span key={i}><Check className="inline w-3 h-3 mr-1" />{item}.{i < 2 && <Rocket className="inline w-4 h-4 ml-1" />}</span>
+                    ))}
                   </div>
                 )}
                 {step.type === 'final' && (
                   <div className="text-ink font-bold">
-                    <span className="text-accent underline">Result:</span> {step.text}
+                    <span className="text-accent underline">Result:</span> <Smile className="inline w-4 h-4 ml-1" /> {step.text}
                   </div>
                 )}
               </motion.div>
@@ -114,7 +117,7 @@ export default function TerminalAnimation() {
       </div>
       <div className="p-4 border-t border-border bg-white/50">
         <div className="insight !border-l-2 !border-accent !text-ink2 !font-mono !text-[12px]">
-          ✳ <strong>Growth:</strong> Từ chỗ loay hoay, bạn sẽ làm chủ AI để tối ưu 80% thời gian triển khai.
+          <Sparkles className="inline w-3 h-3 mr-1" /><strong>Growth:</strong> Từ chỗ loay hoay, bạn sẽ làm chủ AI để tối ưu 80% thời gian triển khai.
         </div>
       </div>
     </div>

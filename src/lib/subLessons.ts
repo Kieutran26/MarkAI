@@ -1,4 +1,4 @@
-﻿import { lessons } from './lessons';
+import { lessons } from './lessons';
 
 export type ContentBlock =
   | { type: 'p'; text: string }
@@ -20,7 +20,8 @@ export type ContentBlock =
         variant?: 'quote' | 'body';
       }[];
     }
-  | { type: 'grid2'; items: { label: string; title: string; desc: string }[] };
+  | { type: 'grid2'; items: { label: string; title: string; desc: string }[] }
+  | { type: 'vibe-cards'; items: { icon: string; title: string }[] };
 
 export type SubLessonFull = {
   id: string;
@@ -386,22 +387,139 @@ export const subLessons: SubLessonFull[] = [
     prevTitle: 'Những điều marketer có thể làm ngay khi biết AI',
     nextTitle: 'Bài 02 · Từ ngữ chuyên ngành',
     eyebrow: 'Chuẩn bị',
-    title: 'Bạn cần biết gì — và những thứ KHÔNG cần biết',
+    title: 'Bạn cần biết gì',
     titleEm: '',
     desc: 'Danh sách này sẽ giúp bạn ngừng lo lắng và bắt đầu.',
-    duration: '~3 phút',
+    duration: '~5 phút',
     totalSubs: 4,
     currentIndex: 4,
     content: [
-      { type: 'h3', text: 'Bạn CẦN có vs KHÔNG cần' },
-      { type: 'compare', headers: ['✳ Bạn CẦN có', '✗ Bạn KHÔNG cần'], rows: [
-        { left: 'Ý tưởng rõ về thứ mình muốn làm', leftStyle: 'check', right: 'Biết code Python, JavaScript, HTML', rightStyle: 'cross' },
-        { left: 'Khả năng mô tả bằng tiếng Việt/Anh rõ ràng', leftStyle: 'check', right: 'Hiểu database, server, API là gì', rightStyle: 'cross' },
-        { left: 'Máy tính đủ dùng (4GB RAM trở lên)', leftStyle: 'check', right: 'Bằng IT hay chứng chỉ lập trình', rightStyle: 'cross' },
-        { left: 'Kiên nhẫn với lỗi — AI đôi khi sai', leftStyle: 'check', right: 'Hiểu terminal, command line từ trước', rightStyle: 'cross' },
-        { left: 'Tài khoản Claude, GitHub, Vercel (đều free)', leftStyle: 'check', right: 'Trả tiền cho bất kỳ tool nào để bắt đầu', rightStyle: 'cross' }
-      ]},
-      { type: 'insight', label: 'Tóm lại', text: 'Nếu bạn biết dùng Google Docs và gõ được câu mô tả rõ ràng — bạn đã đủ điều kiện. Bài 02 bắt đầu từ đây.' }
+      { type: 'h3', text: 'Bạn cần biết mình muốn làm gì' },
+      { type: 'p', text: 'Đây là <strong>nguyên liệu quan trọng nhất</strong> — và bạn đã có rồi, chỉ là chưa nhận ra.' },
+      { type: 'p', text: 'AI không thiếu khả năng. AI thiếu <strong>hướng dẫn.</strong> Và người cung cấp hướng dẫn đó chính là bạn.' },
+      { type: 'p', text: 'Bạn không cần biết code hoạt động như thế nào. Bạn chỉ cần biết mình muốn gì. Ví dụ:' },
+      {
+        type: 'html',
+        html: `
+          <section class="vibe-checklist" aria-label="Ví dụ ý tưởng cụ thể">
+            <div class="vibe-checklist-item">
+              <span class="vibe-checklist-icon">✓</span>
+              <span>"Tôi muốn một trang thu thập email của khách hàng tiềm năng"</span>
+            </div>
+            <div class="vibe-checklist-item">
+              <span class="vibe-checklist-icon">✓</span>
+              <span>"Tôi muốn một quiz giúp khách hàng chọn đúng sản phẩm phù hợp"</span>
+            </div>
+            <div class="vibe-checklist-item">
+              <span class="vibe-checklist-icon">✓</span>
+              <span>"Tôi muốn một dashboard theo dõi hiệu quả campaign theo tuần"</span>
+            </div>
+            <div class="vibe-checklist-summary">
+              <p>Ý tưởng <strong>càng cụ thể</strong>, AI <strong>càng làm đúng</strong>. Đó là tất cả những gì bạn cần ở bước này.</p>
+            </div>
+          </section>
+        `,
+      },
+      { type: 'divider' },
+      { type: 'h3', text: 'Khả năng mô tả rõ ràng bằng tiếng Việt hoặc tiếng Anh' },
+      { type: 'p', text: 'Vibe Coding thực chất là <strong>nghệ thuật giao tiếp với AI.</strong>' },
+      { type: 'p', text: 'Bạn không cần giỏi tiếng Anh. Bạn không cần dùng thuật ngữ kỹ thuật. Bạn chỉ cần <strong>diễn đạt được ý mình muốn</strong> — như đang giải thích cho một người bạn thông minh nghe.' },
+      {
+        type: 'html',
+        html: `
+          <section class="vibe-compare" aria-label="So sánh cách diễn đạt">
+            <div class="vibe-compare-bad">
+              <div class="vibe-compare-label">✗ Thay vì</div>
+              <p>"Tạo cho tôi một biểu mẫu tạo khách hàng tiềm năng"</p>
+            </div>
+            <div class="vibe-compare-arrow">→</div>
+            <div class="vibe-compare-good">
+              <div class="vibe-compare-label">✓ Bạn hoàn toàn có thể nói</div>
+              <p>"Làm cho tôi một form đăng ký, có ô điền tên và email, khi bấm gửi thì hiện thông báo cảm ơn"</p>
+            </div>
+          </section>
+        `,
+      },
+      { type: 'insight', label: 'Lưu ý', text: 'AI hiểu cả hai. Kỹ năng bạn cần rèn là mô tả càng chi tiết càng tốt — màu sắc, bố cục, tính năng, cảm giác bạn muốn tạo ra. Cái đó, bạn hoàn toàn làm được ngay hôm nay.' },
+      { type: 'divider' },
+      { type: 'h3', text: 'Máy tính đủ dùng là được' },
+      { type: 'p', text: 'Bạn không cần máy xịn. Chỉ cần:' },
+      {
+        type: 'vibe-cards',
+        items: [
+          { icon: 'laptop', title: 'Laptop bình thường' },
+          { icon: 'brain', title: 'RAM từ 8GB trở lên' },
+          { icon: 'wifi', title: 'Có internet ổn định' }
+        ]
+      },
+      { type: 'insight', label: 'Tại sao?', text: 'Vì hầu hết AI chạy trên web không cần cài đặt nặng.' },
+      { type: 'divider' },
+      { type: 'h3', text: 'Kiên nhẫn với lỗi — AI đôi khi sai' },
+      { type: 'p', text: 'Đây là điều nhiều người mới hay bị "vỡ mộng".' },
+      { type: 'p', text: '<strong>AI không hoàn hảo. AI sẽ sai. Và đó là bình thường.</strong>' },
+      {
+        type: 'html',
+        html: `
+          <section class="vibe-warning" aria-label="Những điều AI có thể sai">
+            <div class="vibe-warning-grid">
+              <div class="vibe-warning-item">⚠ Đôi khi trả lời sai</div>
+              <div class="vibe-warning-item">⚠ Đôi khi cần sửa 2–3 lần mới ra đúng</div>
+              <div class="vibe-warning-item">⚠ Tạo ra thứ bạn chưa muốn</div>
+              <div class="vibe-warning-item">⚠ Đôi khi viết chưa hay</div>
+              <div class="vibe-warning-item">⚠ Đôi khi hiểu nhầm ý bạn</div>
+            </div>
+          </section>
+        `,
+      },
+      { type: 'p', text: 'Nhưng đây chính là lúc kỹ năng giao tiếp phát huy tác dụng. Thay vì bỏ cuộc, bạn chỉ cần nói tiếp: <em>"Phần này chưa đúng, tôi muốn nó trông như thế này..."</em>' },
+      {
+        type: 'html',
+        html: `
+          <section class="vibe-loop" aria-label="Vòng lặp Vibe Coding">
+            <div class="vibe-loop-step">
+              <span class="vibe-loop-num">1</span>
+              <span>Sửa lại prompt</span>
+            </div>
+            <div class="vibe-loop-arrow">→</div>
+            <div class="vibe-loop-step">
+              <span class="vibe-loop-num">2</span>
+              <span>Hướng dẫn lại AI</span>
+            </div>
+            <div class="vibe-loop-arrow">→</div>
+            <div class="vibe-loop-step vibe-loop-step-active">
+              <span class="vibe-loop-num">3</span>
+              <span>Refine dần</span>
+            </div>
+          </section>
+        `,
+      },
+      { type: 'insight', label: 'Quan trọng', text: 'Vibe Coding không phải là ra lệnh một lần và xong. Nó là một cuộc hội thoại — <strong>bạn dẫn dắt, AI thực thi, bạn phản hồi, AI cải thiện</strong>. Người kiên nhẫn với vòng lặp đó sẽ làm được những thứ <strong>rất ấn tượng.</strong>' },
+      { type: 'divider' },
+      { type: 'h3', text: 'Một vài tài khoản cơ bản — tất cả đều miễn phí' },
+      {
+        type: 'html',
+        html: `
+          <section class="vibe-tools" aria-label="Bộ công cụ miễn phí">
+            <div class="vibe-tool-item">
+              <div class="vibe-tool-badge">AI Coder</div>
+              <div class="vibe-tool-title">Claude / Codex / Antigravity</div>
+              <div class="vibe-tool-desc">AI giúp bạn viết code, giải thích lỗi, và build sản phẩm bằng ngôn ngữ tự nhiên. Đây là "người bạn thông minh" trong bộ ba này.</div>
+            </div>
+            <div class="vibe-tool-item">
+              <div class="vibe-tool-badge">Code Storage</div>
+              <div class="vibe-tool-title">GitHub</div>
+              <div class="vibe-tool-desc">Nơi lưu trữ code của bạn trên cloud. Bạn không cần hiểu sâu về nó ngay từ đầu — chỉ cần có tài khoản và để AI hướng dẫn từng bước.</div>
+            </div>
+            <div class="vibe-tool-item">
+              <div class="vibe-tool-badge">Deploy</div>
+              <div class="vibe-tool-title">Vercel / Netlify</div>
+              <div class="vibe-tool-desc">Nơi đưa sản phẩm của bạn lên internet. Bạn build xong, Vercel deploy lên thành một link thật, chia sẻ được với bất kỳ ai. Nhanh, đơn giản, và miễn phí cho cá nhân.</div>
+            </div>
+          </section>
+        `,
+      },
+      { type: 'p', text: 'Ba tài khoản. Không tốn một đồng. Đủ để bạn build và publish sản phẩm đầu tiên của mình.' },
+      { type: 'insight', label: 'Đừng lo', text: 'Nếu bạn chưa biết dùng chúng — ta sẽ đi từng bước trong khóa.' }
     ]
   }
 ];

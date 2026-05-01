@@ -1,4 +1,4 @@
-﻿// Types
+// Types
 export type SubLesson = {
   id: string;           // "1.1", "1.2"...
   title: string;
@@ -120,7 +120,7 @@ export const lessons: Lesson[] = [
       },
       {
         id: '1.4',
-        title: 'Bạn cần biết gì trước khi bắt đầu — và những thứ bạn KHÔNG cần biết',
+        title: 'Bạn cần biết gì',
         eyebrow: 'Chuẩn bị',
         desc: 'Xoá bỏ rào cản tâm lý, set kỳ vọng đúng.',
         contentType: 'compare',
