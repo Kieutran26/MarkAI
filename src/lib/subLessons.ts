@@ -57,10 +57,10 @@ export const subLessons: SubLessonFull[] = [
     nextTitle: 'Tại sao Marketer lại cần biết vibecode?',
     eyebrow: 'Định nghĩa',
     title: 'Vibecode là gì',
-    titleEm: 'giải thích cho người không biết code',
+    titleEm: '',
     desc: 'Hiểu vibecode theo cách dễ nhất: bạn có ý tưởng, bạn mô tả cho AI, AI viết code và ra sản phẩm. Không cần học code trước khi bắt đầu.',
     duration: '~4 phút',
-    totalSubs: 5,
+    totalSubs: 4,
     currentIndex: 1,
     content: [
       { type: 'h3', text: 'Giải thích đơn giản nhất' },
@@ -128,13 +128,13 @@ export const subLessons: SubLessonFull[] = [
     prevSlug: 'bai-1-1',
     nextSlug: 'bai-1-3',
     prevTitle: 'Vibecode là gì — định nghĩa không-tech',
-    nextTitle: 'Vibecode khác học code truyền thống thế nào?',
+    nextTitle: 'Những điều marketer có thể làm ngay khi biết AI',
     eyebrow: 'Tại sao quan trọng',
     title: 'Tại sao Marketer lại cần biết vibecode?',
     titleEm: '',
     desc: 'Không phải vì AI sẽ thay bạn — mà vì người biết dùng AI sẽ đi nhanh hơn người không biết.',
     duration: '~5 phút',
-    totalSubs: 5,
+    totalSubs: 4,
     currentIndex: 2,
     content: [
       { type: 'p', text: 'Không phải AI sẽ thay thế marketer. Nhưng <strong>marketer biết dùng AI sẽ thay thế marketer không biết.</strong>' },
@@ -304,26 +304,74 @@ export const subLessons: SubLessonFull[] = [
     lessonTitle: 'Vibecode là gì? Khó không? Giúp gì cho Marketer?',
     lessonTitleEm: 'Marketer?',
     prevSlug: 'bai-1-2',
-    nextSlug: 'bai-1-4',
+    nextSlug: 'bai-1-5',
     prevTitle: 'Tại sao Marketer lại cần biết vibecode?',
-    nextTitle: 'Những thứ Marketer đã build được bằng vibecode',
+    nextTitle: 'Bạn cần biết gì — và những thứ KHÔNG cần biết',
     eyebrow: 'So sánh',
-    title: 'Vibecode khác học code truyền thống thế nào?',
+    title: 'Những điều marketer có thể làm ngay khi biết AI',
     titleEm: '',
-    desc: 'Hai cách tiếp cận hoàn toàn khác nhau — không phải cái nào tốt hơn, mà là cái nào phù hợp hơn với bạn.',
+    desc: 'Biết AI không chỉ để hiểu xu hướng. Nó giúp marketer tự build, đọc insight nhanh hơn, và sản xuất nhiều hơn ngay trong công việc hằng ngày.',
     duration: '~4 phút',
-    totalSubs: 5,
+    totalSubs: 4,
     currentIndex: 3,
     content: [
-      { type: 'h3', text: 'Học code truyền thống vs Vibecode' },
-      { type: 'compare', headers: ['Học code truyền thống', 'Vibecode'], rows: [
-        { left: 'Học syntax Python, JS... từ đầu', leftStyle: 'cross', right: 'Mô tả bằng tiếng Việt, AI tự viết', rightStyle: 'check' },
-        { left: '6–12 tháng mới build được thứ gì đó', leftStyle: 'cross', right: 'Tuần đầu đã có sản phẩm thật', rightStyle: 'check' },
-        { left: 'Hiểu code sâu, debug từng dòng', leftStyle: 'cross', right: 'Paste lỗi cho AI, nó tự sửa', rightStyle: 'check' },
-        { left: 'Cần nền tảng toán, logic lập trình', leftStyle: 'cross', right: 'Chỉ cần biết mình muốn gì', rightStyle: 'check' },
-        { left: 'Phù hợp muốn làm nghề developer', leftStyle: 'cross', right: 'Phù hợp Marketer muốn tự chủ hơn', rightStyle: 'accent' }
-      ]},
-      { type: 'insight', label: 'Lưu ý', text: 'Vibecode không thay thế developer giỏi. Nhưng nó cho phép bạn — người không phải developer — tự làm được những thứ trước đây phải cần họ.' }
+      { type: 'h3', text: 'Tự build tool mà không cần dev' },
+      {
+        type: 'html',
+        html: `
+          <section class="visual-ai-diagram" aria-label="Tự build tool mà không cần dev">
+            <div class="visual-ai-diagram-grid">
+              <div class="visual-ai-diagram-item">Landing page A/B testing</div>
+              <div class="visual-ai-diagram-item">Quiz phân loại lead</div>
+              <div class="visual-ai-diagram-item">Chatbot</div>
+              <div class="visual-ai-diagram-item">Form thu thập dữ liệu tùy chỉnh.</div>
+            </div>
+            <div class="visual-ai-diagram-hub">
+              <p>Tất cả đều có thể <strong>build bằng AI</strong> — không cần viết 1 dòng code, không cần chờ dev.</p>
+            </div>
+            <div class="visual-ai-diagram-outcome">
+              <p>Điều này không chỉ tiết kiệm thời gian. Nó cho phép bạn <strong>thử nghiệm nhiều hơn</strong> vì chi phí thử nghiệm đã giảm xuống gần bằng 0.</p>
+            </div>
+          </section>
+        `,
+      },
+      { type: 'divider' },
+      { type: 'h3', text: 'Phân tích insight nhanh hơn gấp bội' },
+      {
+        type: 'html',
+        html: `
+          <section class="visual-insight-flow" aria-label="Phân tích insight nhanh hơn gấp bội">
+            <div class="visual-insight-flow-step">
+              <p>Bạn có một file CSV 5.000 dòng data campaign. Trước đây, bạn cần <strong>2 tiếng</strong> để pivot table, viết công thức, vẽ chart, rồi mới đọc được kết quả.</p>
+            </div>
+            <div class="visual-insight-flow-arrow" aria-hidden="true"></div>
+            <div class="visual-insight-flow-step visual-insight-flow-step-accent">
+              <p>Giờ bạn upload lên AI, hỏi: <em>"Segment nào có CPL thấp nhất và conversion rate cao nhất trong 30 ngày qua?"</em> — và có insight trong 30 giây.</p>
+            </div>
+            <div class="visual-insight-flow-outcome">
+              <p><strong>Data → insight → action.</strong> Vòng lặp đó giờ diễn ra trong một buổi sáng thay vì cả tuần.</p>
+            </div>
+          </section>
+        `,
+      },
+      { type: 'divider' },
+      { type: 'h3', text: 'Sản xuất content theo scale lớn hơn' },
+      {
+        type: 'html',
+        html: `
+          <section class="visual-content-scale" aria-label="Sản xuất content theo scale lớn hơn">
+            <div class="visual-content-scale-grid">
+              <div class="visual-content-scale-item">10 headline cho một campaign.</div>
+              <div class="visual-content-scale-item">5 version email theo từng segment.</div>
+              <div class="visual-content-scale-item">20 caption cho một tháng social.</div>
+              <div class="visual-content-scale-item">Script video cho 4 tuần.</div>
+            </div>
+            <div class="visual-content-scale-focus">
+              <p>Không phải AI làm thay bạn — AI làm phần <strong>thực thi</strong> để bạn tập trung vào phần chiến lược: đúng message, đúng người, đúng thời điểm.</p>
+            </div>
+          </section>
+        `,
+      }
     ]
   },
   {
@@ -334,46 +382,16 @@ export const subLessons: SubLessonFull[] = [
     lessonTitle: 'Vibecode là gì? Khó không? Giúp gì cho Marketer?',
     lessonTitleEm: 'Marketer?',
     prevSlug: 'bai-1-3',
-    nextSlug: 'bai-1-5',
-    prevTitle: 'Vibecode khác học code truyền thống thế nào?',
-    nextTitle: 'Bạn cần biết gì — và những thứ KHÔNG cần biết',
-    eyebrow: 'Case thực tế',
-    title: 'Những thứ Marketer đã build được bằng vibecode',
-    titleEm: '',
-    desc: 'Không phải ví dụ giả định — đây là những thứ người làm Marketing thực sự đã tạo ra.',
-    duration: '~4 phút',
-    totalSubs: 5,
-    currentIndex: 4,
-    content: [
-      { type: 'h3', text: 'Case thực tế từ Marketer' },
-      { type: 'grid2', items: [
-        { label: 'Landing page', title: 'Trang campaign có countdown timer', desc: 'Build trong 3 giờ, đổi copy realtime theo A/B test, không cần xin dev chỉnh thêm.' },
-        { label: 'Tool nội bộ', title: 'Brief generator tự động', desc: 'Điền thông tin campaign vào form, tool tự xuất brief chuẩn format gửi agency.' },
-        { label: 'Dashboard', title: 'Tracker KPI tuần tự cập nhật', desc: 'Kéo data từ Google Sheet, hiển thị dạng bảng và biểu đồ, share link cho team.' },
-        { label: 'Chatbot', title: 'FAQ bot cho fanpage', desc: 'Trả lời tự động các câu hỏi sản phẩm thường gặp, phân loại lead cơ bản.' }
-      ]},
-      { type: 'p', text: 'Điểm chung của tất cả: người làm ra chúng <strong>không biết code</strong> trước khi học vibecode. Một số làm xong trong ngày đầu tiên thử.' },
-      { type: 'insight', label: 'Bottom line', text: 'Nếu bạn biết dùng Google Docs và gõ được câu mô tả rõ ràng — bạn đã đủ điều kiện.' }
-    ]
-  },
-  {
-    id: '1.5',
-    slug: 'bai-1-5',
-    lessonSlug: 'vibecode-la-gi',
-    lessonId: 1,
-    lessonTitle: 'Vibecode là gì? Khó không? Giúp gì cho Marketer?',
-    lessonTitleEm: 'Marketer?',
-    prevSlug: 'bai-1-4',
     nextSlug: null,
-    prevTitle: 'Những thứ Marketer đã build được bằng vibecode',
+    prevTitle: 'Những điều marketer có thể làm ngay khi biết AI',
     nextTitle: 'Bài 02 · Từ ngữ chuyên ngành',
     eyebrow: 'Chuẩn bị',
     title: 'Bạn cần biết gì — và những thứ KHÔNG cần biết',
     titleEm: '',
     desc: 'Danh sách này sẽ giúp bạn ngừng lo lắng và bắt đầu.',
     duration: '~3 phút',
-    totalSubs: 5,
-    currentIndex: 5,
+    totalSubs: 4,
+    currentIndex: 4,
     content: [
       { type: 'h3', text: 'Bạn CẦN có vs KHÔNG cần' },
       { type: 'compare', headers: ['✳ Bạn CẦN có', '✗ Bạn KHÔNG cần'], rows: [

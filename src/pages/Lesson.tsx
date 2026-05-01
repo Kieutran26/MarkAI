@@ -18,7 +18,7 @@ const lessonData: Record<string, any> = {
       ## 3. mục tiêu bài học
       1.1 Vibecode là gì — định nghĩa không-tech
       1.2 Tại sao Marketer lại cần biết vibecode
-      1.3 Vibecode khác học code truyền thống thế nào
+      1.3 Những điều marketer có thể làm ngay khi biết AI
       1.4 Những thứ Marketer đã build được bằng vibecode (case thực tế)
       1.5 Bạn cần biết gì trước khi bắt đầu — và những thứ bạn KHÔNG cần biết
     `,

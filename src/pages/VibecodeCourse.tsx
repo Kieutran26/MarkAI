@@ -32,7 +32,7 @@ const curriculum: Chapter[] = [
     lessons: [
       { id: "1.1", title: "Vibecode là gì — định nghĩa không-tech", sub: "Non-tech definition", tag: "CƠ BẢN" },
       { id: "1.2", title: "Tại sao Marketer lại cần biết vibecode", sub: "Why marketers need it", tag: "CƠ BẢN" },
-      { id: "1.3", title: "Vibecode khác học code truyền thống thế nào", sub: "Traditional vs Vibecode", tag: "TƯ DUY" },
+      { id: "1.3", title: "Những điều marketer có thể làm ngay khi biết AI", sub: "Immediate AI wins", tag: "ỨNG DỤNG" },
       { id: "1.4", title: "Những thứ Marketer đã build được", sub: "Real-world cases", tag: "ỨNG DỤNG" },
       { id: "1.5", title: "Bạn cần biết gì trước khi bắt đầu", sub: "Prerequisites", tag: "CƠ BẢN" }
     ]

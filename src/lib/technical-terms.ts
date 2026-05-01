@@ -118,6 +118,7 @@ export function annotateTechnicalHtml(html: string) {
     const parent = current.parentElement;
     if (!parent) continue;
     if (parent.closest('.tech-term')) continue;
+    if (parent.closest('.no-tech-annotate')) continue;
     if (['SCRIPT', 'STYLE'].includes(parent.tagName)) continue;
     if (!current.nodeValue?.trim()) continue;
     nodes.push(current);

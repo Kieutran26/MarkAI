@@ -59,7 +59,7 @@ export const lessons: Lesson[] = [
     badge: 'BẮT ĐẦU ĐÂY',
     badgeType: 'accent',
     duration: '~20 phút',
-    subLessonCount: 5,
+    subLessonCount: 4,
     title: 'Vibecode là gì? Khó không? Giúp gì cho Marketer?',
     titleEm: 'Marketer?',
     desc: 'Hiểu tư duy vibecode từ góc nhìn dân Marketing — không cần biết code, không cần nền tảng kỹ thuật, chỉ cần biết mình muốn làm gì.',
@@ -100,9 +100,9 @@ export const lessons: Lesson[] = [
       },
       {
         id: '1.3',
-        title: 'Vibecode khác học code truyền thống thế nào?',
+        title: 'Những điều marketer có thể làm ngay khi biết AI',
         eyebrow: 'So sánh',
-        desc: 'So sánh để xoá bỏ nỗi sợ — không phải học lập trình từ đầu.',
+        desc: 'Những việc marketer có thể bắt tay làm ngay với AI: build tool, đọc insight nhanh, và scale content.',
         contentType: 'compare',
         compareHeaders: ['Học code truyền thống', 'Vibecode'],
         compareRows: [
@@ -112,26 +112,14 @@ export const lessons: Lesson[] = [
           ['Cần nền tảng toán, logic lập trình', 'Chỉ cần biết mình muốn gì'],
           ['Phù hợp muốn làm nghề developer', 'Phù hợp Marketer muốn tự chủ hơn']
         ],
+        paragraphs: [
+          'Bạn có thể tự build landing page A/B testing, quiz phân loại lead, chatbot onboarding, hay form thu thập dữ liệu tùy chỉnh mà <strong>không cần chờ dev</strong>.',
+          'AI cũng rút ngắn vòng lặp <strong>data → insight → action</strong> và giúp bạn sản xuất nhiều biến thể content hơn để tập trung vào chiến lược.'
+        ],
         insight: '✳ Lưu ý: Vibecode không thay thế developer giỏi. Nhưng nó cho phép bạn — người không phải developer — tự làm được những thứ trước đây phải cần họ.'
       },
       {
         id: '1.4',
-        title: 'Những thứ Marketer đã build được bằng Vibecode (case thực tế)',
-        eyebrow: 'Case thực tế',
-        desc: 'Ví dụ cụ thể, thứ người ta đã làm được, để người đọc hình dung được đích đến.',
-        contentType: 'grid',
-        gridItems: [
-          { label: 'Landing page', title: 'Trang campaign có countdown timer', desc: 'Build trong 3 giờ, đổi copy realtime theo A/B test, không cần xin dev chỉnh thêm.' },
-          { label: 'Tool nội bộ', title: 'Brief generator tự động', desc: 'Điền thông tin campaign vào form, tool tự xuất brief chuẩn format gửi agency.' },
-          { label: 'Dashboard', title: 'Tracker KPI tuần tự cập nhật', desc: 'Kéo data từ Google Sheet, hiển thị dạng bảng và biểu đồ, share link cho team.' },
-          { label: 'Chatbot', title: 'FAQ bot cho fanpage', desc: 'Trả lời tự động các câu hỏi sản phẩm thường gặp, phân loại lead cơ bản.' }
-        ],
-        paragraphs: [
-          'Điểm chung của tất cả: người làm ra chúng <strong>không biết code</strong> trước khi học vibecode. Một số làm xong trong ngày đầu tiên thử.'
-        ]
-      },
-      {
-        id: '1.5',
         title: 'Bạn cần biết gì trước khi bắt đầu — và những thứ bạn KHÔNG cần biết',
         eyebrow: 'Chuẩn bị',
         desc: 'Xoá bỏ rào cản tâm lý, set kỳ vọng đúng.',

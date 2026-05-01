@@ -2417,11 +2417,20 @@ button, a { cursor: pointer; transition: all 0.15s ease; }
   margin-top: 1px;
 }
 .si-check {
-  font-family: var(--mono);
-  font-size: 10px;
-  color: #16a34a;
-  padding-top: 2px;
+  margin-left: auto;
   flex-shrink: 0;
+  width: 1.35rem;
+  height: 1.35rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--mono);
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #15803d;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.28);
 }
 .sidebar-next-lesson {
   margin-top: auto;
@@ -2563,9 +2572,9 @@ button, a { cursor: pointer; transition: all 0.15s ease; }
   width: 1.5rem;
   height: 1.5rem;
   flex-shrink: 0;
-  border-radius: 999px !important;
+  border-radius: 0 !important;
   background: var(--accent);
-  color: #fff;
+  color: #0d0d0d;
   font-family: var(--mono);
   font-size: 0.5rem;
   line-height: 1;
@@ -2633,6 +2642,217 @@ button, a { cursor: pointer; transition: all 0.15s ease; }
   color: var(--accent);
   text-decoration: underline;
   text-underline-offset: 0.14em;
+}
+.content-body .content-html .visual-ai-diagram {
+  margin: 1.4rem auto 1.7rem;
+  max-width: 760px;
+}
+.content-body .content-html .visual-ai-diagram-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0;
+  border: 1px solid var(--border);
+  position: relative;
+}
+.content-body .content-html .visual-ai-diagram-grid::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: var(--border);
+  transform: translateX(-50%);
+}
+.content-body .content-html .visual-ai-diagram-grid::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: var(--border);
+  transform: translateY(-50%);
+}
+.content-body .content-html .visual-ai-diagram-item {
+  position: relative;
+  min-height: 84px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 0.9rem;
+  text-align: center;
+  font-family: var(--sans);
+  font-size: 0.9rem;
+  font-weight: 400;
+  line-height: 1.35;
+  color: var(--ink);
+  background: var(--bg);
+}
+.content-body .content-html .visual-ai-diagram-item::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -18px;
+  width: 1px;
+  height: 18px;
+  background: var(--border);
+  transform: translateX(-50%);
+}
+.content-body .content-html .visual-ai-diagram-hub {
+  position: relative;
+  margin: 1.7rem auto 0;
+  max-width: 620px;
+  padding: 1rem 1.1rem;
+  border: 1px solid var(--accent);
+  background: linear-gradient(180deg, rgba(232, 140, 46, 0.09), rgba(232, 140, 46, 0.04));
+}
+.content-body .content-html .visual-ai-diagram-hub::before {
+  content: "";
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  width: calc(100% - 140px);
+  max-width: 360px;
+  height: 18px;
+  border-top: 1px solid var(--border);
+  border-left: 1px solid var(--border);
+  border-right: 1px solid var(--border);
+  transform: translateX(-50%);
+}
+.content-body .content-html .visual-ai-diagram-hub::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -20px;
+  width: 1px;
+  height: 20px;
+  background: var(--accent);
+  transform: translateX(-50%);
+}
+.content-body .content-html .visual-ai-diagram-hub p,
+.content-body .content-html .visual-ai-diagram-outcome p {
+  margin-bottom: 0;
+}
+.content-body .content-html .visual-ai-diagram-outcome {
+  position: relative;
+  margin-top: 1.2rem;
+  padding: 0.95rem 1rem 0.95rem 1.15rem;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  background: var(--bg2);
+}
+.content-body .content-html .visual-ai-diagram .tech-term {
+  display: inline-flex;
+  margin-right: 0.28em;
+  vertical-align: baseline;
+}
+.content-body .content-html .visual-ai-diagram .tech-term__label {
+  color: inherit;
+}
+.content-body .content-html .visual-insight-flow {
+  margin: 1.7rem auto 2rem;
+  max-width: 780px;
+}
+.content-body .content-html .visual-insight-flow-step {
+  position: relative;
+  padding: 1.05rem 1.1rem;
+  border: 1px solid var(--border);
+  background: var(--bg);
+}
+.content-body .content-html .visual-insight-flow-step-accent {
+  border-color: var(--accent);
+  background: linear-gradient(180deg, rgba(232, 140, 46, 0.07), rgba(232, 140, 46, 0.03));
+}
+.content-body .content-html .visual-insight-flow-step p,
+.content-body .content-html .visual-insight-flow-outcome p {
+  margin-bottom: 0;
+}
+.content-body .content-html .visual-insight-flow-arrow {
+  position: relative;
+  height: 36px;
+}
+.content-body .content-html .visual-insight-flow-arrow::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 8px;
+  width: 1px;
+  background: var(--border);
+  transform: translateX(-50%);
+}
+.content-body .content-html .visual-insight-flow-arrow::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: 0;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 8px solid var(--accent);
+  transform: translateX(-50%);
+}
+.content-body .content-html .visual-insight-flow-outcome {
+  position: relative;
+  margin-top: 1rem;
+  padding: 0.95rem 1.1rem 0.95rem 1.2rem;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  background: var(--bg2);
+}
+.content-body .content-html .visual-insight-flow-outcome::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: -18px;
+  width: 1px;
+  height: 18px;
+  background: var(--accent);
+  transform: translateX(-50%);
+}
+.content-body .content-html .visual-content-scale {
+  margin: 1.7rem auto 2rem;
+  max-width: 780px;
+}
+.content-body .content-html .visual-content-scale-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+.content-body .content-html .visual-content-scale-item {
+  position: relative;
+  padding: 1rem 1rem 1rem 1.1rem;
+  border: 1px solid var(--border);
+  background:
+    linear-gradient(90deg, rgba(232, 140, 46, 0.09), transparent 60%) left/100% 100% no-repeat,
+    var(--bg);
+  font-family: var(--sans);
+  font-size: 0.98rem;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--ink);
+}
+.content-body .content-html .visual-content-scale-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: var(--accent);
+}
+.content-body .content-html .visual-content-scale-focus {
+  position: relative;
+  margin-top: 1.2rem;
+  padding: 1rem 1.05rem 1rem 1.15rem;
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  background: var(--bg2);
+}
+.content-body .content-html .visual-content-scale-focus p {
+  margin-bottom: 0;
 }
 .tech-term {
   position: relative;
@@ -3096,6 +3316,58 @@ button, a { cursor: pointer; transition: all 0.15s ease; }
 
 /* Reader Responsive */
 @media (max-width: 900px) {
+  .content-body .content-html .visual-content-scale-grid {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
+  .content-body .content-html .visual-content-scale-item,
+  .content-body .content-html .visual-content-scale-focus {
+    padding-top: 0.9rem;
+    padding-bottom: 0.9rem;
+  }
+  .content-body .content-html .visual-insight-flow {
+    margin-top: 1.3rem;
+  }
+  .content-body .content-html .visual-insight-flow-step {
+    padding: 0.9rem 0.95rem;
+  }
+  .content-body .content-html .visual-insight-flow-arrow {
+    height: 28px;
+  }
+  .content-body .content-html .visual-insight-flow-outcome {
+    padding: 0.9rem 0.95rem 0.9rem 1rem;
+  }
+  .content-body .content-html .visual-ai-diagram-grid {
+    grid-template-columns: 1fr;
+    background: none;
+  }
+  .content-body .content-html .visual-ai-diagram-item {
+    min-height: auto;
+    justify-content: flex-start;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    background:
+      linear-gradient(90deg, rgba(232, 140, 46, 0.12), transparent 52%) left/100% 100% no-repeat,
+      var(--bg);
+  }
+  .content-body .content-html .visual-ai-diagram-item:last-child {
+    border-bottom: none;
+  }
+  .content-body .content-html .visual-ai-diagram-item::after {
+    height: 14px;
+    bottom: -14px;
+  }
+  .content-body .content-html .visual-ai-diagram-hub {
+    margin-top: 1.4rem;
+    padding: 1.15rem 1rem;
+  }
+  .content-body .content-html .visual-ai-diagram-hub::before {
+    width: 1px;
+    height: 14px;
+    top: -14px;
+    border: none;
+    background: var(--border);
+  }
   .reader-layout { grid-template-columns: 1fr; }
   .reader-sidebar {
     position: fixed;
