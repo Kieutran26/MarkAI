@@ -4,6 +4,7 @@ import UseCaseList from './UseCaseList';
 import Grid2Col from './Grid2Col';
 import InfographicFlow from './InfographicFlow';
 import type { ContentBlock } from '../../../lib/subLessons';
+import { annotateTechnicalHtml, annotateTechnicalText } from '../../../lib/technical-terms';
 
 interface ContentBodyProps {
   content: ContentBlock[];
@@ -19,7 +20,7 @@ export default function ContentBody({ content }: ContentBodyProps) {
               <div
                 key={index}
                 className="content-html"
-                dangerouslySetInnerHTML={{ __html: block.html }}
+                dangerouslySetInnerHTML={{ __html: annotateTechnicalHtml(block.html) }}
               />
             );
 
@@ -27,23 +28,27 @@ export default function ContentBody({ content }: ContentBodyProps) {
             return (
               <p
                 key={index}
-                dangerouslySetInnerHTML={{ __html: block.text }}
+                dangerouslySetInnerHTML={{ __html: annotateTechnicalHtml(block.text) }}
               />
             );
 
           case 'h3':
-            return block.em ? (
-              <h3 key={index} id={block.id}>
-                {block.text.split(block.em)[0]}
-                <em className="text-accent italic">{block.em}</em>
-                {block.text.split(block.em)[1]}
-              </h3>
-            ) : (
-              <h3 key={index} id={block.id}>{block.text}</h3>
+            return (
+              <h3
+                key={index}
+                id={block.id}
+                dangerouslySetInnerHTML={{
+                  __html: annotateTechnicalHtml(
+                    block.em
+                      ? `${block.text.split(block.em)[0]}<em class="text-accent italic">${block.em}</em>${block.text.split(block.em)[1] ?? ''}`
+                      : annotateTechnicalText(block.text),
+                  ),
+                }}
+              />
             );
 
           case 'h4':
-            return <h4 key={index} id={block.id}>{block.text}</h4>;
+            return <h4 key={index} id={block.id} dangerouslySetInnerHTML={{ __html: annotateTechnicalText(block.text) }} />;
 
           case 'insight':
             return (

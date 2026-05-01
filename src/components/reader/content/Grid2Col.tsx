@@ -1,3 +1,5 @@
+import { annotateTechnicalText } from '../../../lib/technical-terms';
+
 interface Grid2ColProps {
   key?: string | number;
   items: {
@@ -12,9 +14,9 @@ export default function Grid2Col({ items }: Grid2ColProps) {
     <div className="grid-2col">
       {items.map((item, index) => (
         <div key={index} className="grid2-cell">
-          <div className="grid2-label">{item.label}</div>
-          <div className="grid2-title">{item.title}</div>
-          <div className="grid2-desc">{item.desc}</div>
+          <div className="grid2-label" dangerouslySetInnerHTML={{ __html: annotateTechnicalText(item.label) }} />
+          <div className="grid2-title" dangerouslySetInnerHTML={{ __html: annotateTechnicalText(item.title) }} />
+          <div className="grid2-desc" dangerouslySetInnerHTML={{ __html: annotateTechnicalText(item.desc) }} />
         </div>
       ))}
     </div>

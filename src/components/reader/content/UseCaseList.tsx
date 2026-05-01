@@ -1,3 +1,5 @@
+import { annotateTechnicalText } from '../../../lib/technical-terms';
+
 interface UseCaseListProps {
   key?: string | number;
   eyebrow?: string;
@@ -13,7 +15,7 @@ interface UseCaseListProps {
 export default function UseCaseList({ eyebrow, items }: UseCaseListProps) {
   return (
     <div className="use-case-list">
-      {eyebrow ? <div className="use-case-eyebrow">{eyebrow}</div> : null}
+      {eyebrow ? <div className="use-case-eyebrow" dangerouslySetInnerHTML={{ __html: annotateTechnicalText(eyebrow) }} /> : null}
 
       {items.map((item, index) => (
         <div key={index} className="use-case-item">
@@ -27,9 +29,12 @@ export default function UseCaseList({ eyebrow, items }: UseCaseListProps) {
           </div>
 
           <div className="uc-content">
-            {item.tag ? <div className="uc-tag">{item.tag}</div> : null}
-            <div className="uc-title">{item.title}</div>
-            <div className={item.variant === 'quote' ? 'uc-quote' : 'uc-desc'}>{item.desc}</div>
+            {item.tag ? <div className="uc-tag" dangerouslySetInnerHTML={{ __html: annotateTechnicalText(item.tag) }} /> : null}
+            <div className="uc-title" dangerouslySetInnerHTML={{ __html: annotateTechnicalText(item.title) }} />
+            <div
+              className={item.variant === 'quote' ? 'uc-quote' : 'uc-desc'}
+              dangerouslySetInnerHTML={{ __html: annotateTechnicalText(item.desc) }}
+            />
           </div>
         </div>
       ))}

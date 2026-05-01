@@ -1,3 +1,5 @@
+import { annotateTechnicalHtml } from '../../../lib/technical-terms';
+
 interface InsightBlockProps {
   key?: string | number;
   label: string;
@@ -9,7 +11,7 @@ export default function InsightBlock({ label, text }: InsightBlockProps) {
     <div
       className="insight-block"
       dangerouslySetInnerHTML={{
-        __html: `✳ <strong>${label}:</strong> ${text}`
+        __html: annotateTechnicalHtml(`✳ <strong>${label}:</strong> ${text}`),
       }}
     />
   );

@@ -1,4 +1,5 @@
 import type { SubLessonFull } from '../../lib/subLessons';
+import { annotateTechnicalText } from '../../lib/technical-terms';
 
 interface ContentHeaderProps {
   subLesson: SubLessonFull;
@@ -23,7 +24,7 @@ export default function ContentHeader({ subLesson }: ContentHeaderProps) {
       </h1>
 
       {/* Description */}
-      <p className="ch-desc">{desc}</p>
+      <p className="ch-desc" dangerouslySetInnerHTML={{ __html: annotateTechnicalText(desc) }} />
 
       {/* Meta Tags */}
       <div className="ch-meta">

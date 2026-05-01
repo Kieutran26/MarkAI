@@ -1,3 +1,5 @@
+import { annotateTechnicalText } from '../../../lib/technical-terms';
+
 interface CompareTableProps {
   key?: string | number;
   headers: [string, string];
@@ -23,18 +25,18 @@ export default function CompareTable({ headers, rows }: CompareTableProps) {
     <div className="compare-table">
       {/* Header Row */}
       <div className="compare-row compare-header">
-        <div className="compare-cell">{headers[0]}</div>
-        <div className="compare-cell">{headers[1]}</div>
+        <div className="compare-cell" dangerouslySetInnerHTML={{ __html: annotateTechnicalText(headers[0]) }} />
+        <div className="compare-cell" dangerouslySetInnerHTML={{ __html: annotateTechnicalText(headers[1]) }} />
       </div>
 
       {/* Data Rows */}
       {rows.map((row, index) => (
         <div key={index} className="compare-row">
           <div className="compare-cell">
-            <span className={getStyleClass(row.leftStyle)}>{row.left}</span>
+            <span className={getStyleClass(row.leftStyle)} dangerouslySetInnerHTML={{ __html: annotateTechnicalText(row.left) }} />
           </div>
           <div className="compare-cell">
-            <span className={getStyleClass(row.rightStyle)}>{row.right}</span>
+            <span className={getStyleClass(row.rightStyle)} dangerouslySetInnerHTML={{ __html: annotateTechnicalText(row.right) }} />
           </div>
         </div>
       ))}

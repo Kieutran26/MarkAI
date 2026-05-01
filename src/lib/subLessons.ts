@@ -1,4 +1,4 @@
-﻿import { lessons } from './lessons';
+import { lessons } from './lessons';
 
 export type ContentBlock =
   | { type: 'p'; text: string }
@@ -104,10 +104,21 @@ export const subLessons: SubLessonFull[] = [
         { left: 'Landing page mất 2 tuần', leftStyle: 'cross', right: 'Landing page mất 2–4 giờ', rightStyle: 'check' }
       ]},
       { type: 'divider' },
-      { type: 'h3', text: 'Một điều quan trọng cần hiểu ngay từ đầu' },
-      { type: 'p', text: 'Vibecode <strong>không thay thế developer giỏi</strong>. Nếu bạn cần build một hệ thống phức tạp, scale lớn, bảo mật cao — vẫn cần developer thật sự.' },
-      { type: 'p', text: 'Nhưng vibecode cho phép bạn — người không phải developer — tự làm được <strong>một lớp việc rất rộng</strong> mà trước đây bắt buộc phải nhờ người khác: landing page, tool nội bộ đơn giản, prototype, dashboard, chatbot cơ bản...' },
-      { type: 'p', text: 'Với Marketer, đó là đủ để thay đổi cách làm việc hoàn toàn.' },
+      { type: 'h3', text: '3 thứ Vibe Coding đang phá vỡ' },
+      {
+        type: 'html',
+        html: `
+          <p><strong>1. Rào cản kỹ thuật biến mất</strong></p>
+          <p>Trước đây, để ra một landing page tùy chỉnh, một quiz phân loại lead, hay một chatbot chăm sóc khách hàng — <strong>bạn cần dev</strong>. Bạn cần viết brief, chờ estimate, chờ dev làm, chờ review, chờ fix bug.</p>
+          <p>Giờ thì không. <strong>Bất kỳ ai có đủ tư duy sản phẩm và biết giao tiếp với AI — đều có thể tự làm</strong>. Rào cản kỹ thuật không còn là lợi thế cạnh tranh nữa.</p>
+          <p><strong>2. Tốc độ ra mắt tăng vọt</strong></p>
+          <p>Một chiến dịch mà trước đây mất 3 tuần để setup — giờ có thể <strong>ra mắt trong 3 ngày. Thậm chí 3 giờ.</strong></p>
+          <p>Điều này có nghĩa là: team nào biết dùng AI sẽ <strong>test nhiều hơn, học nhanh hơn, và iterate liên tục</strong> trong khi đối thủ vẫn đang chờ dev xong sprint.</p>
+          <p><strong>Weeks → Hours.</strong> Không phải ẩn dụ — đây là thực tế của những team đang làm.</p>
+          <p><strong>3. Chi phí làm sản phẩm giảm mạnh</strong></p>
+          <p>1 marketer biết AI giờ có thể làm được việc của cả một team nhỏ. Không phải vì họ làm thay mọi người — mà vì AI làm phần lớn công việc thực thi, còn họ tập trung vào phần quan trọng nhất: <strong>tư duy chiến lược và ra quyết định.</strong></p>
+        `,
+      },
       { type: 'insight', label: 'Tóm lại bài 1.1', text: 'Vibecode = AI viết code theo mô tả của bạn. Bạn không cần học code. Bạn cần biết mình muốn gì và mô tả rõ ràng. Phần còn lại AI lo.' }
     ]
   },
