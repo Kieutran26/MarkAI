@@ -4,14 +4,17 @@ import { Link, useLocation } from 'react-router-dom';
 export default function Nav() {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const isGlossaryRoute = location.pathname === '/vibecode/tu-ngu-chuyen-nganh/tu-dien-thuat-ngu';
   const isVibecodeActive =
-    location.pathname === '/vibecode' ||
-    location.pathname.startsWith('/vibecode/') ||
-    location.pathname.startsWith('/lesson') ||
-    location.pathname.includes('/bai-');
+    !isGlossaryRoute &&
+    (location.pathname === '/vibecode' ||
+      location.pathname.startsWith('/vibecode/') ||
+      location.pathname.startsWith('/lesson') ||
+      location.pathname.includes('/bai-'));
   const isActive = (path: string) => location.pathname === path;
   const navItems = [
     { label: 'Vibecode', path: '/vibecode', active: isVibecodeActive },
+    { label: 'Từ ngữ IT', path: '/vibecode/tu-ngu-chuyen-nganh/tu-dien-thuat-ngu', active: isGlossaryRoute },
     { label: 'Blog', path: '/blog', active: isActive('/blog') },
     { label: 'Tips', path: '/tips', active: isActive('/tips') },
     { label: 'Prompts', path: '/prompts', active: isActive('/prompts') },

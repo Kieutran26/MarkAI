@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import type { SubLessonFull } from '../../lib/subLessons';
 
 interface ContentFooterProps {
@@ -17,22 +17,21 @@ export default function ContentFooter({ subLesson, lessonSlug }: ContentFooterPr
 
   if (nextSlug) {
     nextHref = `/vibecode/${lessonSlug}/${nextSlug}`;
-    nextDisplayText = nextTitle?.split('—')[0].trim() || '';
+    nextDisplayText = (nextTitle?.split('—')[0] || nextTitle || '').trim();
   } else if (isLastInLesson) {
     nextHref = `/vibecode/${getNextLessonSlug(lessonSlug)}`;
-    nextDisplayText = `Bài ${lessonId + 1} · Từ ngữ chuyên ngành`;
+    nextDisplayText = getNextLessonLabel(lessonSlug);
   } else {
     nextHref = `/vibecode/${lessonSlug}`;
-    nextDisplayText = ' Quay về bài học';
+    nextDisplayText = 'Quay về bài học';
   }
 
   return (
     <div className="content-footer">
-      {/* Previous */}
       {prevHref ? (
         <Link to={prevHref} className="cf-btn">
           <span className="cf-dir">← Phần trước</span>
-          <span className="cf-title">{prevTitle?.split('—')[0].trim()}</span>
+          <span className="cf-title">{(prevTitle?.split('—')[0] || prevTitle || '').trim()}</span>
           <span className="cf-sub">{id.split('.')[0]}.{currentIndex - 1} · ~5 phút</span>
         </Link>
       ) : (
@@ -43,14 +42,11 @@ export default function ContentFooter({ subLesson, lessonSlug }: ContentFooterPr
         </div>
       )}
 
-      {/* Next */}
       <Link to={nextHref} className="cf-btn cf-btn-next">
         <span className="cf-dir">Phần tiếp theo →</span>
         <span className="cf-title">{nextDisplayText}</span>
         <span className="cf-sub">
-          {nextSlug
-            ? `${id.split('.')[0]}.${currentIndex + 1} · ~5 phút`
-            : `Bài ${lessonId + 1} · ~${getNextDuration(lessonId)} phút`}
+          {nextSlug ? `${id.split('.')[0]}.${currentIndex + 1} · ~5 phút` : `Bài ${lessonId + 1} · ~${getNextDuration(lessonId)} phút`}
         </span>
       </Link>
     </div>
@@ -86,4 +82,19 @@ function getNextDuration(lessonId: number): string {
     9: '50',
   };
   return durations[lessonId] || '30';
+}
+
+function getNextLessonLabel(currentSlug: string): string {
+  const labels: Record<string, string> = {
+    'vibecode-la-gi': 'Bài 02 · AI đang “nói gì” với bạn?',
+    'tu-ngu-chuyen-nganh': 'Bài 03 · Cài đặt môi trường',
+    'cai-dat-moi-truong': 'Bài 04 · Làm quen VS Code & Cursor',
+    'lam-quen-vscode-cursor': 'Bài 05 · Làm quen Claude Code',
+    'lam-quen-claude-code': 'Bài 06 · Công cụ & website hữu ích',
+    'cong-cu-website-huu-ich': 'Bài 07 · Cách prompt cho AI',
+    'cach-prompt-cho-ai': 'Bài 08 · Khi AI code sai',
+    'khi-ai-code-sai': 'Bài 09 · Tạo Skills & Workflow',
+    'tao-skills-va-workflow': 'Bài 10 · Deploy + Tracking',
+  };
+  return labels[currentSlug] || 'Quay về lộ trình';
 }

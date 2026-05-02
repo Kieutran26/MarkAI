@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Instrument+Serif:ital,wght@0,400;1,400&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&display=swap&subset=vietnamese');
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Instrument+Serif:ital,wght@0,400;1,400&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap&subset=vietnamese');
 @import "tailwindcss";
 @import "./admin/theme-tokens.css";
 
@@ -5825,6 +5825,355 @@ button, a { cursor: pointer; transition: all 0.15s ease; }
   color: var(--muted);
 }
 
+/* Input Map */
+.content-body .content-html .input-map {
+  display: grid;
+  gap: 0.95rem;
+  margin: 1.4rem 0 1.7rem;
+  max-width: 820px;
+}
+.content-body .content-html .input-map-core {
+  border: 1px solid var(--border);
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 8%, var(--bg)) 0%, var(--bg) 100%);
+  padding: 1.1rem 1.2rem;
+}
+.content-body .content-html .input-map-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  margin-bottom: 0.35rem;
+}
+.content-body .content-html .input-map-title {
+  font-family: var(--display);
+  font-size: clamp(1.2rem, 2.4vw, 1.7rem);
+  line-height: 1.2;
+  color: var(--ink);
+}
+.content-body .content-html .input-map-items {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+.content-body .content-html .input-map-items span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60px;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--accent) 3%, var(--bg));
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--ink);
+  text-align: center;
+}
+.content-body .content-html .input-map-note {
+  border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--border));
+  background: color-mix(in srgb, var(--accent) 4%, var(--bg2));
+  padding: 0.9rem 1rem;
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink2);
+}
+.content-body .content-html .input-map-note strong {
+  color: var(--ink);
+}
+
+/* Output Map */
+.content-body .content-html .output-map {
+  display: grid;
+  gap: 0.95rem;
+  margin: 1.4rem 0 1.7rem;
+  max-width: 920px;
+}
+.content-body .content-html .output-map-items {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+.content-body .content-html .output-map-items span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60px;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, var(--accent) 3%, var(--bg));
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.4;
+  color: var(--ink);
+  text-align: center;
+}
+
+/* Mini Example Flow */
+.content-body .content-html .mini-example-flow {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+  gap: 0.75rem;
+  align-items: stretch;
+  margin: 1.4rem 0 1.7rem;
+  max-width: 980px;
+}
+.content-body .content-html .mini-example-step {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 92px;
+  padding: 0.95rem 1rem;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink2);
+  text-align: center;
+}
+.content-body .content-html .mini-example-step-accent {
+  background: color-mix(in srgb, var(--accent) 4%, var(--bg));
+  border-color: color-mix(in srgb, var(--accent) 22%, var(--border));
+  color: var(--ink);
+}
+.content-body .content-html .mini-example-arrow {
+  position: relative;
+  width: 28px;
+}
+.content-body .content-html .mini-example-arrow::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 6px;
+  top: 50%;
+  height: 1px;
+  background: color-mix(in srgb, var(--accent) 28%, var(--border));
+}
+.content-body .content-html .mini-example-arrow::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: calc(50% - 5px);
+  width: 10px;
+  height: 10px;
+  border-top: 1px solid color-mix(in srgb, var(--accent) 35%, var(--border));
+  border-right: 1px solid color-mix(in srgb, var(--accent) 35%, var(--border));
+  transform: rotate(45deg);
+}
+.content-body .content-html .glossary-cta-link:active {
+  background: var(--accent) !important;
+  color: var(--bg) !important;
+}
+
+/* Prompt Case Flow */
+.content-body .content-html .prompt-case-flow {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  gap: 1.2rem;
+  align-items: start;
+  margin: 1.4rem 0 1.7rem;
+  max-width: 980px;
+}
+.content-body .content-html .prompt-case-card {
+  border: 1px solid var(--border);
+  padding: 1.1rem 1.15rem;
+  background: var(--bg);
+}
+.content-body .content-html .prompt-case-card-bad {
+  background: color-mix(in srgb, #dc2626 4%, var(--bg));
+  border-color: color-mix(in srgb, #dc2626 24%, var(--border));
+}
+.content-body .content-html .prompt-case-card-good {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 5%, var(--bg)) 0%, color-mix(in srgb, var(--accent) 2%, var(--bg2)) 100%);
+  border-color: color-mix(in srgb, var(--accent) 24%, var(--border));
+}
+.content-body .content-html .prompt-case-label {
+  font-family: var(--mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.7rem;
+}
+.content-body .content-html .prompt-case-card-bad .prompt-case-label {
+  color: #dc2626;
+}
+.content-body .content-html .prompt-case-card-good .prompt-case-label {
+  color: var(--accent);
+}
+.content-body .content-html .prompt-case-quote {
+  font-family: var(--display);
+  font-size: clamp(0.9rem, 1.45vw, 1.18rem);
+  line-height: 1.45;
+  color: var(--ink);
+  margin-bottom: 0.9rem;
+}
+.content-body .content-html .prompt-case-text {
+  display: grid;
+  gap: 0.45rem;
+  padding-top: 0.2rem;
+  border-top: 1px solid color-mix(in srgb, var(--accent) 14%, var(--border));
+}
+.content-body .content-html .prompt-case-text p {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--ink2);
+}
+.content-body .content-html .prompt-case-text strong {
+  display: inline-block;
+  min-width: 72px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink);
+}
+.content-body .content-html .prompt-case-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  color: var(--muted);
+  min-height: 100%;
+  padding-top: 3rem;
+}
+.content-body .content-html .prompt-case-result {
+  grid-column: 1 / -1;
+  border-top: 1px dashed color-mix(in srgb, var(--accent) 22%, var(--border));
+  padding-top: 1rem;
+}
+.content-body .content-html .prompt-case-result-title {
+  font-family: var(--mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink);
+  font-weight: 700;
+  margin-bottom: 0.7rem;
+}
+.content-body .content-html .prompt-case-result-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+.content-body .content-html .prompt-case-result-grid div {
+  border: 1px solid var(--border);
+  background: color-mix(in srgb, #dc2626 3%, var(--bg));
+  padding: 0.9rem 0.95rem;
+}
+.content-body .content-html .prompt-case-result-grid strong {
+  display: block;
+  font-family: var(--display);
+  font-size: 1rem;
+  color: var(--ink);
+  margin-bottom: 0.35rem;
+}
+.content-body .content-html .prompt-case-result-grid p,
+.content-body .content-html .prompt-case-result-note {
+  margin: 0;
+  font-family: var(--sans);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink2);
+}
+.content-body .content-html .prompt-case-result-note {
+  margin-top: 0.9rem;
+}
+
+/* Model Map */
+.content-body .content-html .model-map {
+  display: grid;
+  grid-template-columns: minmax(220px, 280px) 1fr;
+  gap: 1.2rem;
+  align-items: stretch;
+  margin: 1.4rem 0 1.7rem;
+  max-width: 860px;
+}
+.content-body .content-html .model-map-core,
+.content-body .content-html .model-map-node {
+  border: 1px solid var(--border);
+}
+.content-body .content-html .model-map-core {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 10%, var(--bg)) 0%, var(--bg) 100%);
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.45rem;
+}
+.content-body .content-html .model-map-core-label,
+.content-body .content-html .model-map-node-brand {
+  font-family: var(--mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.content-body .content-html .model-map-core-label {
+  color: var(--accent);
+}
+.content-body .content-html .model-map-core-title {
+  font-family: var(--display);
+  font-size: clamp(1.25rem, 2vw, 1.55rem);
+  line-height: 1.2;
+  color: var(--ink);
+}
+.content-body .content-html .model-map-core-desc {
+  font-family: var(--sans);
+  font-size: 13px;
+  color: var(--ink2);
+  line-height: 1.6;
+}
+.content-body .content-html .model-map-branches {
+  display: grid;
+  gap: 0.85rem;
+}
+.content-body .content-html .model-map-node {
+  position: relative;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 4%, var(--bg)) 0%, color-mix(in srgb, var(--accent) 1.5%, var(--bg2)) 100%);
+  padding: 1rem 1rem 1rem 1.35rem;
+  box-shadow: 0 10px 24px color-mix(in srgb, var(--accent) 5%, transparent);
+}
+.content-body .content-html .model-map-node::before {
+  content: "";
+  position: absolute;
+  left: -1.2rem;
+  top: 50%;
+  width: 1.2rem;
+  height: 1px;
+  background: color-mix(in srgb, var(--accent) 35%, var(--border));
+}
+.content-body .content-html .model-map-node::after {
+  content: "";
+  position: absolute;
+  left: -1.45rem;
+  top: calc(50% - 4px);
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border: 2px solid var(--bg);
+  box-sizing: border-box;
+}
+.content-body .content-html .model-map-node-brand {
+  color: var(--ink2);
+  margin-bottom: 0.28rem;
+}
+.content-body .content-html .model-map-node-model {
+  font-family: var(--display);
+  font-size: 1.05rem;
+  line-height: 1.35;
+  color: var(--ink);
+}
+.content-body .content-html .model-map-node-model span {
+  font-family: var(--sans);
+  font-size: 12px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
 /* Cards Style */
 .content-body .vibe-cards {
   display: grid;
@@ -5998,6 +6347,56 @@ button, a { cursor: pointer; transition: all 0.15s ease; }
   .content-body .content-html .vibe-compare-arrow {
     text-align: center;
     transform: rotate(90deg);
+  }
+  .content-body .content-html .input-map-items {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .content-body .content-html .output-map-items {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .content-body .content-html .mini-example-flow {
+    grid-template-columns: 1fr;
+  }
+  .content-body .content-html .mini-example-arrow {
+    width: auto;
+    min-height: 22px;
+  }
+  .content-body .content-html .mini-example-arrow::before {
+    left: 50%;
+    right: auto;
+    top: 0;
+    bottom: 6px;
+    width: 1px;
+    height: auto;
+    transform: translateX(-50%);
+  }
+  .content-body .content-html .mini-example-arrow::after {
+    left: calc(50% - 5px);
+    right: auto;
+    top: auto;
+    bottom: 0;
+    transform: rotate(135deg);
+  }
+  .content-body .content-html .prompt-case-flow {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .content-body .content-html .prompt-case-arrow {
+    padding-top: 0;
+    transform: rotate(90deg);
+  }
+  .content-body .content-html .prompt-case-result-grid {
+    grid-template-columns: 1fr;
+  }
+  .content-body .content-html .model-map {
+    grid-template-columns: 1fr;
+  }
+  .content-body .content-html .model-map-node {
+    padding-left: 1rem;
+  }
+  .content-body .content-html .model-map-node::before,
+  .content-body .content-html .model-map-node::after {
+    display: none;
   }
   .content-body .content-html .vibe-loop {
     flex-direction: column;

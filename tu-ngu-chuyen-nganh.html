@@ -1,0 +1,1543 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Từ ngữ chuyên ngành IT cho Marketer · markAI.vn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,400&family=Instrument+Serif:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #f7f5f0;
+  --bg2:     #ede9e0;
+  --bg3:     #e4dfd5;
+  --ink:     #0d0d0d;
+  --ink2:    #444444;
+  --muted:   #888888;
+  --border:  #d4cfc5;
+  --accent:  #E8410A;
+  --accent2: #C93508;
+  --serif:   'Instrument Serif', serif;
+  --mono:    'DM Mono', monospace;
+  --sans:    'DM Sans', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--ink); font-family: var(--sans); font-size: 15px; line-height: 1.7; }
+a { text-decoration: none; color: inherit; }
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 200;
+  height: 52px; background: var(--bg);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2rem;
+}
+.nav-logo { font-family: var(--mono); font-size: 15px; font-weight: 500; letter-spacing: -.02em; }
+.nav-logo em { color: var(--accent); font-style: normal; }
+.nav-links { display: flex; align-items: center; height: 52px; list-style: none; }
+.nav-links a {
+  font-family: var(--mono); font-size: 12px; color: var(--muted);
+  padding: 0 1rem; height: 52px; display: flex; align-items: center;
+  border-left: 1px solid var(--border); letter-spacing: .02em;
+  transition: color .15s, background .15s;
+}
+.nav-links a:hover { color: var(--ink); background: var(--bg2); }
+.nav-links a.active { color: var(--accent); }
+.nav-links a.disabled { opacity: .4; pointer-events: none; }
+.nav-free { font-family: var(--mono); font-size: 11px; color: var(--accent); display: flex; align-items: center; gap: 5px; border-left: 1px solid var(--border); padding-left: 1rem; height: 52px; }
+.spin { display: inline-block; animation: spin 4s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ── TICKER ── */
+.ticker { height: 32px; background: var(--ink); overflow: hidden; display: flex; align-items: center; }
+.ticker-track { display: flex; white-space: nowrap; animation: tick 36s linear infinite; }
+.ticker-item { font-family: var(--mono); font-size: 10px; color: #555; padding: 0 2rem; letter-spacing: .06em; text-transform: uppercase; flex-shrink: 0; }
+.ticker-item b { color: var(--accent); }
+@keyframes tick { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+/* ── HERO ── */
+.hero { border-bottom: 1px solid var(--border); }
+.hero-inner {
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 340px;
+}
+.hero-left {
+  padding: 4rem 3rem 4rem 2rem;
+  border-right: 1px solid var(--border);
+}
+.hero-eyebrow { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; margin-bottom: 1.2rem; }
+.hero-eyebrow span { color: var(--accent); margin-right: .3rem; }
+.hero-h1 { font-family: var(--serif); font-size: clamp(2rem, 4vw, 3rem); line-height: 1.08; letter-spacing: -.02em; margin-bottom: 1rem; }
+.hero-h1 em { color: var(--accent); font-style: italic; }
+.hero-desc { font-family: var(--sans); font-size: 15px; font-weight: 300; color: var(--ink2); line-height: 1.75; max-width: 480px; margin-bottom: 2rem; }
+
+/* Search bar */
+.search-wrap { position: relative; max-width: 480px; }
+.search-input {
+  width: 100%; font-family: var(--mono); font-size: 13px;
+  border: 1px solid var(--border); background: var(--bg);
+  padding: 11px 44px 11px 14px; color: var(--ink);
+  outline: none; transition: border-color .15s;
+  letter-spacing: .01em;
+}
+.search-input:focus { border-color: var(--ink); }
+.search-input::placeholder { color: var(--muted); }
+.search-icon {
+  position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+  font-family: var(--mono); font-size: 13px; color: var(--muted); pointer-events: none;
+}
+.search-count { font-family: var(--mono); font-size: 11px; color: var(--muted); margin-top: .6rem; }
+.search-count span { color: var(--accent); }
+
+/* Hero right — stats */
+.hero-right { padding: 3rem 2rem; display: flex; flex-direction: column; gap: 0; }
+.hero-stat-row { display: flex; justify-content: space-between; align-items: center; padding: .85rem 0; border-bottom: 1px solid var(--border); }
+.hero-stat-row:first-child { border-top: 1px solid var(--border); }
+.hsr-label { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: .04em; text-transform: uppercase; }
+.hsr-value { font-family: var(--serif); font-size: 1.5rem; line-height: 1; }
+.hsr-value.accent { color: var(--accent); }
+
+.hero-groups { margin-top: 1.5rem; display: flex; flex-direction: column; gap: .3rem; }
+.hero-groups-label { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: .05em; text-transform: uppercase; margin-bottom: .5rem; }
+.group-pill {
+  font-family: var(--mono); font-size: 10px; color: var(--muted);
+  border: 1px solid var(--border); padding: 4px 10px; display: inline-flex;
+  align-items: center; gap: .5rem; cursor: pointer; background: var(--bg);
+  transition: background .15s, color .15s, border-color .15s;
+}
+.group-pill:hover { background: var(--bg2); color: var(--ink); }
+.group-pill.active { background: var(--ink); color: var(--bg); border-color: var(--ink); }
+.group-pill-count { opacity: .5; }
+
+/* ── FILTER BAR ── */
+.filter-bar {
+  position: sticky; top: 52px; z-index: 100;
+  background: var(--bg); border-bottom: 1px solid var(--border);
+}
+.filter-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: stretch; overflow-x: auto; }
+.filter-inner::-webkit-scrollbar { display: none; }
+.filter-btn {
+  font-family: var(--mono); font-size: 11px; color: var(--muted);
+  padding: 0 1.1rem; height: 44px; display: flex; align-items: center; gap: .4rem;
+  border-right: 1px solid var(--border); white-space: nowrap;
+  cursor: pointer; background: none; border-top: none; border-bottom: none; border-left: none;
+  transition: background .15s, color .15s;
+  letter-spacing: .02em;
+}
+.filter-btn:hover { background: var(--bg2); color: var(--ink); }
+.filter-btn.active { color: var(--ink); border-bottom: 2px solid var(--accent); }
+.filter-btn .fbcount { font-family: var(--mono); font-size: 10px; color: var(--border); }
+.filter-btn.active .fbcount { color: var(--accent); }
+.filter-spacer { flex: 1; }
+.filter-sort {
+  font-family: var(--mono); font-size: 11px; color: var(--muted);
+  padding: 0 1.1rem; height: 44px; display: flex; align-items: center; gap: .4rem;
+  border-left: 1px solid var(--border); white-space: nowrap;
+  cursor: pointer; background: none; border-top: none; border-bottom: none; border-right: none;
+  transition: background .15s, color .15s;
+}
+.filter-sort:hover { background: var(--bg2); color: var(--ink); }
+
+/* ── MAIN LAYOUT ── */
+.main-layout {
+  max-width: 1200px; margin: 0 auto;
+  display: grid; grid-template-columns: 220px 1fr;
+  min-height: 80vh;
+}
+
+/* ── ALPHABET SIDEBAR ── */
+.alpha-sidebar {
+  border-right: 1px solid var(--border);
+  position: sticky; top: 96px; /* nav + filter */
+  height: calc(100vh - 96px);
+  overflow-y: auto; padding: .8rem 0;
+}
+.alpha-sidebar::-webkit-scrollbar { width: 3px; }
+.alpha-sidebar::-webkit-scrollbar-thumb { background: var(--border); }
+.alpha-label { font-family: var(--mono); font-size: 9px; color: var(--muted); letter-spacing: .08em; text-transform: uppercase; padding: .5rem 1.2rem .2rem; }
+.alpha-link {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: .4rem 1.2rem;
+  font-family: var(--mono); font-size: 12px; color: var(--ink2);
+  transition: background .15s, color .15s; cursor: pointer;
+  text-decoration: none;
+}
+.alpha-link:hover { background: var(--bg2); color: var(--ink); }
+.alpha-link.active { color: var(--accent); font-weight: 500; background: var(--bg2); border-left: 2px solid var(--accent); padding-left: calc(1.2rem - 2px); }
+.alpha-link-count { font-family: var(--mono); font-size: 10px; color: var(--border); }
+.alpha-link.active .alpha-link-count { color: var(--accent); opacity: .5; }
+.alpha-divider { height: 1px; background: var(--border); margin: .4rem 0; }
+
+/* ── GLOSSARY CONTENT ── */
+.glossary-content { }
+
+/* Group section */
+.group-section { border-bottom: 1px solid var(--border); }
+.group-header {
+  padding: 1.4rem 2rem 1rem;
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: baseline; gap: 1rem;
+  position: sticky; top: 96px; z-index: 50;
+  background: var(--bg2);
+}
+.group-letter { font-family: var(--serif); font-size: 2.2rem; line-height: 1; color: var(--ink); }
+.group-count-label { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: .04em; }
+
+/* Term cards */
+.term-card {
+  display: grid; grid-template-columns: 200px 1fr;
+  border-bottom: 1px solid var(--border);
+  transition: background .15s;
+}
+.term-card:hover { background: var(--bg2); }
+.term-card.hidden { display: none; }
+
+.term-left {
+  padding: 1.6rem 1.5rem 1.6rem 2rem;
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: .4rem;
+}
+.term-name { font-family: var(--serif); font-size: 1.2rem; line-height: 1.2; }
+.term-en { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: .02em; }
+.term-badges { display: flex; gap: .3rem; flex-wrap: wrap; margin-top: .2rem; }
+.term-badge { font-family: var(--mono); font-size: 9px; padding: 2px 7px; letter-spacing: .04em; text-transform: uppercase; }
+.tb-code      { background: var(--ink); color: var(--bg); }
+.tb-design    { background: #2d4a3e; color: white; }
+.tb-infra     { background: #1a3a5c; color: white; }
+.tb-data      { background: #3d2a5c; color: white; }
+.tb-ai        { background: var(--accent); color: white; }
+.tb-workflow  { background: var(--ink2); color: var(--bg); }
+
+.term-right { padding: 1.6rem 2rem; display: flex; flex-direction: column; gap: .8rem; }
+.term-definition { font-family: var(--sans); font-size: 14px; font-weight: 300; color: var(--ink2); line-height: 1.75; }
+.term-definition strong { font-weight: 400; color: var(--ink); }
+
+.term-example-wrap { }
+.term-example-label { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: .05em; text-transform: uppercase; margin-bottom: .3rem; }
+.term-example {
+  border-left: 2px solid var(--accent); padding: .6rem .9rem;
+  font-family: var(--mono); font-size: 12px; color: var(--ink2);
+  background: var(--bg); line-height: 1.65;
+}
+.term-card:hover .term-example { background: var(--bg3); }
+
+.term-related { display: flex; align-items: center; gap: .4rem; flex-wrap: wrap; }
+.term-related-label { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: .04em; }
+.term-related-link {
+  font-family: var(--mono); font-size: 10px; color: var(--muted);
+  border: 1px solid var(--border); padding: 2px 8px; background: var(--bg);
+  transition: border-color .15s, color .15s;
+}
+.term-related-link:hover { border-color: var(--ink); color: var(--ink); }
+
+/* ── NO RESULTS ── */
+.no-results { padding: 4rem 2rem; text-align: center; display: none; }
+.no-results-title { font-family: var(--serif); font-size: 1.4rem; margin-bottom: .6rem; }
+.no-results-desc { font-family: var(--sans); font-size: 14px; font-weight: 300; color: var(--ink2); }
+
+/* ── QUICK REF DARK ── */
+.quickref { background: var(--ink); border-top: 1px solid #1a1a1a; border-bottom: 1px solid var(--border); }
+.quickref-inner { max-width: 1200px; margin: 0 auto; padding: 3.5rem 2rem; }
+.quickref-label { font-family: var(--mono); font-size: 10px; color: #555; letter-spacing: .07em; text-transform: uppercase; margin-bottom: 1rem; }
+.quickref-label span { color: var(--accent); }
+.quickref-h2 { font-family: var(--serif); font-size: clamp(1.5rem, 3vw, 2.2rem); color: var(--bg); line-height: 1.15; margin-bottom: 2rem; }
+.quickref-h2 em { color: var(--accent); font-style: italic; }
+.quickref-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; border: 1px solid #2a2a2a; }
+.qr-card {
+  padding: 1.4rem; border-right: 1px solid #2a2a2a; border-bottom: 1px solid #2a2a2a;
+}
+.qr-card:nth-child(4n) { border-right: none; }
+.qr-card:nth-last-child(-n+4) { border-bottom: none; }
+.qr-term { font-family: var(--mono); font-size: 11px; color: var(--accent); margin-bottom: .4rem; letter-spacing: .02em; }
+.qr-def  { font-family: var(--sans); font-size: 12px; font-weight: 300; color: #888; line-height: 1.6; }
+
+/* ── CTA BOTTOM ── */
+.cta-section { background: var(--bg2); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+.cta-inner { max-width: 1200px; margin: 0 auto; padding: 3.5rem 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+.cta-left { }
+.cta-label { font-family: var(--mono); font-size: 11px; color: var(--muted); letter-spacing: .07em; text-transform: uppercase; margin-bottom: 1rem; }
+.cta-h2 { font-family: var(--serif); font-size: clamp(1.5rem, 3vw, 2.2rem); line-height: 1.15; margin-bottom: .8rem; }
+.cta-h2 em { color: var(--accent); font-style: italic; }
+.cta-desc { font-family: var(--sans); font-size: 14px; font-weight: 300; color: var(--ink2); line-height: 1.7; }
+.cta-right { display: flex; flex-direction: column; gap: 0; border: 1px solid var(--border); }
+.cta-lesson {
+  display: flex; align-items: center; gap: 1rem;
+  padding: .9rem 1.2rem; border-bottom: 1px solid var(--border);
+  text-decoration: none; color: inherit; transition: background .15s;
+}
+.cta-lesson:last-child { border-bottom: none; }
+.cta-lesson:hover { background: var(--bg3); }
+.cta-lesson-num { font-family: var(--mono); font-size: 10px; color: var(--muted); min-width: 24px; }
+.cta-lesson-title { font-family: var(--sans); font-size: 13px; font-weight: 300; color: var(--ink2); flex: 1; }
+.cta-lesson-arrow { font-family: var(--mono); font-size: 12px; color: var(--muted); transition: transform .15s, color .15s; }
+.cta-lesson:hover .cta-lesson-arrow { transform: translateX(4px); color: var(--accent); }
+
+/* ── FOOTER ── */
+footer { border-top: 1px solid var(--border); }
+.footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; }
+.footer-col { padding: 2.5rem 2rem; border-right: 1px solid var(--border); }
+.footer-col:last-child { border-right: none; }
+.footer-logo { font-family: var(--mono); font-size: 15px; font-weight: 500; letter-spacing: -.02em; margin-bottom: .6rem; }
+.footer-logo em { color: var(--accent); font-style: normal; }
+.footer-tagline { font-family: var(--sans); font-size: 13px; font-weight: 300; color: var(--ink2); line-height: 1.6; max-width: 220px; }
+.footer-col-title { font-family: var(--mono); font-size: 10px; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; margin-bottom: 1rem; }
+.footer-links { list-style: none; display: flex; flex-direction: column; gap: .5rem; }
+.footer-links a { font-family: var(--sans); font-size: 13px; font-weight: 300; color: var(--ink2); transition: color .15s; }
+.footer-links a:hover { color: var(--accent); }
+.footer-links .soon { opacity: .45; pointer-events: none; color: var(--muted); }
+.footer-bottom { max-width: 1200px; margin: 0 auto; border-top: 1px solid var(--border); padding: 1.2rem 2rem; display: flex; justify-content: space-between; }
+.footer-bottom-text { font-family: var(--mono); font-size: 11px; color: var(--muted); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 1024px) {
+  .quickref-grid { grid-template-columns: repeat(2, 1fr); }
+  .qr-card:nth-child(4n) { border-right: 1px solid #2a2a2a; }
+  .qr-card:nth-child(2n) { border-right: none; }
+}
+@media (max-width: 900px) {
+  .main-layout { grid-template-columns: 1fr; }
+  .alpha-sidebar { display: none; }
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-right { border-top: 1px solid var(--border); }
+  .cta-inner { grid-template-columns: 1fr; }
+}
+@media (max-width: 768px) {
+  .term-card { grid-template-columns: 1fr; }
+  .term-left { border-right: none; border-bottom: 1px solid var(--border); padding: 1.2rem 1.2rem .8rem; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .nav-links li:nth-child(n+4) { display: none; }
+}
+@media (max-width: 480px) {
+  nav { padding: 0 1.2rem; }
+  .hero-left, .hero-right, .quickref-inner, .cta-inner { padding-left: 1.2rem; padding-right: 1.2rem; }
+  .quickref-grid { grid-template-columns: 1fr; }
+  .qr-card { border-right: none; }
+  .footer-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="nav-logo">mark<em>AI</em></a>
+  <ul class="nav-links">
+    <li><a href="#" class="active">Vibecode</a></li>
+    <li><a href="#">Blog</a></li>
+    <li><a href="#">Tips</a></li>
+    <li><a href="#">Prompts</a></li>
+    <li><a href="#" class="disabled">Analytics</a></li>
+    <li><a href="#" class="disabled">Image</a></li>
+    <li><a href="#" class="disabled">Video</a></li>
+  </ul>
+  <div class="nav-free"><span class="spin">✦</span> Miễn phí 100%</div>
+</nav>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-track" id="ticker">
+    <span class="ticker-item">✳ Glossary · <b>60+ từ ngữ IT</b> cho dân Marketing</span>
+    <span class="ticker-item">✳ Giải thích bằng ngôn ngữ Marketer</span>
+    <span class="ticker-item">✳ Code · Design · Infra · Data · AI · Workflow</span>
+    <span class="ticker-item">✳ Miễn phí 100% · mãi mãi</span>
+    <span class="ticker-item">✳ Vibecode · Blog · Tips · Prompt Library</span>
+    <span class="ticker-item">✳ Dành riêng dân Marketing Việt Nam</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-left">
+      <p class="hero-eyebrow"><span>✳</span> Bài 02 · Vibecode Web · Từ ngữ chuyên ngành</p>
+      <h1 class="hero-h1">Từ ngữ IT mà dân<br>Marketer <em>phải biết.</em></h1>
+      <p class="hero-desc">60+ thuật ngữ kỹ thuật — giải thích bằng ngôn ngữ Marketing, kèm ví dụ thực tế. Không cần nhớ hết, chỉ cần biết đủ để không bị mù khi làm việc với AI và dev.</p>
+      <div class="search-wrap">
+        <input type="text" class="search-input" id="searchInput" placeholder="Tìm từ ngữ... vd: API, deploy, frontend" autocomplete="off">
+        <span class="search-icon">⌕</span>
+        <p class="search-count" id="searchCount">Hiển thị <span id="countNum">62</span> thuật ngữ</p>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="hero-stat-row">
+        <span class="hsr-label">Tổng từ ngữ</span>
+        <span class="hsr-value">62</span>
+      </div>
+      <div class="hero-stat-row">
+        <span class="hsr-label">Nhóm chủ đề</span>
+        <span class="hsr-value">6</span>
+      </div>
+      <div class="hero-stat-row">
+        <span class="hsr-label">Có ví dụ thực tế</span>
+        <span class="hsr-value accent">100%</span>
+      </div>
+      <div class="hero-groups">
+        <div class="hero-groups-label">Lọc theo nhóm</div>
+        <div style="display:flex;flex-direction:column;gap:.3rem;">
+          <span class="group-pill active" data-group="all">Tất cả <span class="group-pill-count">62</span></span>
+          <span class="group-pill" data-group="code">Code <span class="group-pill-count">18</span></span>
+          <span class="group-pill" data-group="design">Design <span class="group-pill-count">12</span></span>
+          <span class="group-pill" data-group="infra">Hạ tầng <span class="group-pill-count">11</span></span>
+          <span class="group-pill" data-group="data">Data <span class="group-pill-count">9</span></span>
+          <span class="group-pill" data-group="ai">AI <span class="group-pill-count">8</span></span>
+          <span class="group-pill" data-group="workflow">Workflow <span class="group-pill-count">4</span></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <div class="filter-inner">
+    <button class="filter-btn active" data-filter="all">Tất cả <span class="fbcount">62</span></button>
+    <button class="filter-btn" data-filter="code">Code <span class="fbcount">18</span></button>
+    <button class="filter-btn" data-filter="design">Design <span class="fbcount">12</span></button>
+    <button class="filter-btn" data-filter="infra">Hạ tầng <span class="fbcount">11</span></button>
+    <button class="filter-btn" data-filter="data">Data <span class="fbcount">9</span></button>
+    <button class="filter-btn" data-filter="ai">AI <span class="fbcount">8</span></button>
+    <button class="filter-btn" data-filter="workflow">Workflow <span class="fbcount">4</span></button>
+    <div class="filter-spacer"></div>
+    <button class="filter-sort">A → Z ↕</button>
+  </div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="main-layout">
+
+  <!-- ALPHABET SIDEBAR -->
+  <aside class="alpha-sidebar" id="alphaSidebar">
+    <div class="alpha-label">Chữ cái</div>
+    <a href="#letter-A" class="alpha-link active" data-letter="A">A <span class="alpha-link-count">5</span></a>
+    <a href="#letter-B" class="alpha-link" data-letter="B">B <span class="alpha-link-count">3</span></a>
+    <a href="#letter-C" class="alpha-link" data-letter="C">C <span class="alpha-link-count">6</span></a>
+    <a href="#letter-D" class="alpha-link" data-letter="D">D <span class="alpha-link-count">5</span></a>
+    <a href="#letter-E" class="alpha-link" data-letter="E">E <span class="alpha-link-count">3</span></a>
+    <div class="alpha-divider"></div>
+    <a href="#letter-F" class="alpha-link" data-letter="F">F <span class="alpha-link-count">4</span></a>
+    <a href="#letter-G" class="alpha-link" data-letter="G">G <span class="alpha-link-count">3</span></a>
+    <a href="#letter-H" class="alpha-link" data-letter="H">H <span class="alpha-link-count">2</span></a>
+    <a href="#letter-I" class="alpha-link" data-letter="I">I <span class="alpha-link-count">3</span></a>
+    <div class="alpha-divider"></div>
+    <a href="#letter-J" class="alpha-link" data-letter="J">J <span class="alpha-link-count">2</span></a>
+    <a href="#letter-L" class="alpha-link" data-letter="L">L <span class="alpha-link-count">3</span></a>
+    <a href="#letter-M" class="alpha-link" data-letter="M">M <span class="alpha-link-count">3</span></a>
+    <a href="#letter-N" class="alpha-link" data-letter="N">N <span class="alpha-link-count">2</span></a>
+    <div class="alpha-divider"></div>
+    <a href="#letter-P" class="alpha-link" data-letter="P">P <span class="alpha-link-count">4</span></a>
+    <a href="#letter-R" class="alpha-link" data-letter="R">R <span class="alpha-link-count">3</span></a>
+    <a href="#letter-S" class="alpha-link" data-letter="S">S <span class="alpha-link-count">3</span></a>
+    <a href="#letter-T" class="alpha-link" data-letter="T">T <span class="alpha-link-count">2</span></a>
+    <div class="alpha-divider"></div>
+    <a href="#letter-U" class="alpha-link" data-letter="U">U <span class="alpha-link-count">2</span></a>
+    <a href="#letter-V" class="alpha-link" data-letter="V">V <span class="alpha-link-count">2</span></a>
+    <a href="#letter-W" class="alpha-link" data-letter="W">W <span class="alpha-link-count">3</span></a>
+  </aside>
+
+  <!-- GLOSSARY -->
+  <div class="glossary-content" id="glossaryContent">
+
+    <!-- ── A ── -->
+    <div class="group-section" id="letter-A">
+      <div class="group-header"><span class="group-letter">A</span><span class="group-count-label">5 thuật ngữ</span></div>
+
+      <div class="term-card" data-group="infra" data-name="API">
+        <div class="term-left">
+          <div class="term-name">API</div>
+          <div class="term-en">Application Programming Interface</div>
+          <div class="term-badges"><span class="term-badge tb-infra">Hạ tầng</span><span class="term-badge tb-code">Code</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Cầu nối giúp các phần mềm nói chuyện với nhau. Khi bạn gửi form trên web và data tự xuất hiện trong Google Sheet — đó là API làm việc. Bạn không thấy nó, nhưng nó ở khắp nơi.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ "Mình muốn khi khách điền form trên landing page, data tự vào Airtable. Cần xài API của Airtable."</div>
+          </div>
+          <div class="term-related"><span class="term-related-label">Xem thêm:</span><a class="term-related-link" href="#letter-E">Endpoint</a><a class="term-related-link" href="#letter-W">Webhook</a><a class="term-related-link" href="#letter-R">Request</a></div>
+        </div>
+      </div>
+
+      <div class="term-card" data-group="code" data-name="Array">
+        <div class="term-left">
+          <div class="term-name">Array</div>
+          <div class="term-en">Mảng / Danh sách</div>
+          <div class="term-badges"><span class="term-badge tb-code">Code</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Danh sách các item được xếp theo thứ tự. Giống như một cột Excel — mỗi ô là một item. Array trong code thường trông như này: <strong>["Hà Nội", "TP.HCM", "Đà Nẵng"]</strong>.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ AI trả về "danh sách categories" — đó thường là một array mà code của bạn sẽ loop qua để hiển thị từng cái.</div>
+          </div>
+          <div class="term-related"><span class="term-related-label">Xem thêm:</span><a class="term-related-link" href="#letter-L">Loop</a><a class="term-related-link" href="#letter-D">Data</a></div>
+        </div>
+      </div>
+
+      <div class="term-card" data-group="design" data-name="Asset">
+        <div class="term-left">
+          <div class="term-name">Asset</div>
+          <div class="term-en">Tài nguyên thiết kế</div>
+          <div class="term-badges"><span class="term-badge tb-design">Design</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Tất cả file hình ảnh, icon, font, video dùng trong sản phẩm. Dev hay hỏi: <em>"Asset đâu?"</em> — tức là họ cần file ảnh / icon để gắn vào code.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ "Folder /assets/images/ chứa toàn bộ ảnh của campaign. Prompt cho AI: 'dùng ảnh từ /assets/images/hero.jpg cho phần hero section'."</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="term-card" data-group="infra" data-name="Authentication">
+        <div class="term-left">
+          <div class="term-name">Auth</div>
+          <div class="term-en">Authentication / Đăng nhập</div>
+          <div class="term-badges"><span class="term-badge tb-infra">Hạ tầng</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Hệ thống xác thực danh tính người dùng. Khi bạn build tool nội bộ và chỉ muốn team mình vào được — bạn cần Auth. Thường dùng Supabase Auth, Clerk, hoặc NextAuth.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ "Prompt Cursor: 'Thêm đăng nhập bằng Google vào tool này, chỉ email @company.com mới được vào'. Đây là Auth."</div>
+          </div>
+          <div class="term-related"><span class="term-related-label">Xem thêm:</span><a class="term-related-link" href="#letter-S">Session</a><a class="term-related-link" href="#letter-T">Token</a></div>
+        </div>
+      </div>
+
+      <div class="term-card" data-group="code" data-name="Async">
+        <div class="term-left">
+          <div class="term-name">Async / Await</div>
+          <div class="term-en">Bất đồng bộ</div>
+          <div class="term-badges"><span class="term-badge tb-code">Code</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Cách xử lý tác vụ mất thời gian mà không làm đơ cả trang. Giống như đặt cà phê mang đi — bạn không đứng chờ, bạn làm việc khác, cà phê xong thì nhận. Web dùng async khi gọi API.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ Khi form submit, trang không bị đơ mà hiện loading spinner — đó là async đang chạy ngầm để gửi data lên server.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── B ── -->
+    <div class="group-section" id="letter-B">
+      <div class="group-header"><span class="group-letter">B</span><span class="group-count-label">3 thuật ngữ</span></div>
+
+      <div class="term-card" data-group="infra" data-name="Backend">
+        <div class="term-left">
+          <div class="term-name">Backend</div>
+          <div class="term-en">Phần sau / Server</div>
+          <div class="term-badges"><span class="term-badge tb-infra">Hạ tầng</span><span class="term-badge tb-code">Code</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Phần người dùng không thấy — nơi data được lưu, xử lý, và bảo mật. Nếu frontend là mặt tiền cửa hàng, backend là kho hàng và văn phòng phía sau.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ "Form đăng ký của tôi lưu data ở đâu?" → Supabase là backend. Nó nhận data từ form (frontend) và lưu vào database.</div>
+          </div>
+          <div class="term-related"><span class="term-related-label">Xem thêm:</span><a class="term-related-link" href="#letter-F">Frontend</a><a class="term-related-link" href="#letter-D">Database</a></div>
+        </div>
+      </div>
+
+      <div class="term-card" data-group="infra" data-name="Build">
+        <div class="term-left">
+          <div class="term-name">Build</div>
+          <div class="term-en">Đóng gói / Compile</div>
+          <div class="term-badges"><span class="term-badge tb-infra">Hạ tầng</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Quá trình biến code thô thành file tối ưu để đưa lên internet. Giống như in ấn trước khi phát hành tài liệu — build tạo ra phiên bản cuối cùng, nhỏ gọn và nhanh hơn.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ "Build failed" = quá trình đóng gói bị lỗi trước khi deploy. Thường do code bị lỗi syntax hoặc thiếu package.</div>
+          </div>
+          <div class="term-related"><span class="term-related-label">Xem thêm:</span><a class="term-related-link" href="#letter-D">Deploy</a><a class="term-related-link" href="#letter-E">Environment</a></div>
+        </div>
+      </div>
+
+      <div class="term-card" data-group="code" data-name="Boolean">
+        <div class="term-left">
+          <div class="term-name">Boolean</div>
+          <div class="term-en">True / False</div>
+          <div class="term-badges"><span class="term-badge tb-code">Code</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Kiểu dữ liệu chỉ có 2 giá trị: đúng hoặc sai (true/false). Dùng để kiểm soát logic — ví dụ: "isLoggedIn: true" nghĩa là người dùng đã đăng nhập.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ Prompt: "Thêm tính năng toggle — khi bật thì hiện banner, khi tắt thì ẩn." AI sẽ dùng boolean showBanner: true/false.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── C ── -->
+    <div class="group-section" id="letter-C">
+      <div class="group-header"><span class="group-letter">C</span><span class="group-count-label">6 thuật ngữ</span></div>
+
+      <div class="term-card" data-group="code" data-name="Component">
+        <div class="term-left">
+          <div class="term-name">Component</div>
+          <div class="term-en">Khối giao diện tái dùng</div>
+          <div class="term-badges"><span class="term-badge tb-code">Code</span><span class="term-badge tb-design">Design</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Một khối giao diện độc lập, có thể dùng lại nhiều lần. Button, card sản phẩm, navbar, form — đều là component. Thiết kế một lần, dùng ở khắp nơi trong web.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ "Tôi có 12 trang web nhưng muốn cùng 1 footer. Đây là lúc dùng Footer component — sửa một chỗ, cập nhật khắp nơi."</div>
+          </div>
+          <div class="term-related"><span class="term-related-label">Xem thêm:</span><a class="term-related-link" href="#letter-P">Props</a><a class="term-related-link" href="#letter-S">State</a></div>
+        </div>
+      </div>
+
+      <div class="term-card" data-group="infra" data-name="CLI">
+        <div class="term-left">
+          <div class="term-name">CLI</div>
+          <div class="term-en">Command Line Interface</div>
+          <div class="term-badges"><span class="term-badge tb-infra">Hạ tầng</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Giao diện dòng lệnh — bạn gõ lệnh chữ thay vì click. Terminal trong VS Code là CLI. Claude Code chạy trên CLI. Đây là cách dev (và vibecoder) nói chuyện với máy tính.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ Gõ "npm run dev" vào terminal = CLI đang chạy lệnh khởi động server. Không cần hiểu sâu, chỉ cần biết copy-paste đúng lệnh.</div>
+          </div>
+          <div class="term-related"><span class="term-related-label">Xem thêm:</span><a class="term-related-link" href="#letter-T">Terminal</a><a class="term-related-link" href="#letter-N">npm</a></div>
+        </div>
+      </div>
+
+      <div class="term-card" data-group="data" data-name="CSS">
+        <div class="term-left">
+          <div class="term-name">CSS</div>
+          <div class="term-en">Cascading Style Sheets</div>
+          <div class="term-badges"><span class="term-badge tb-design">Design</span><span class="term-badge tb-code">Code</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Ngôn ngữ kiểm soát giao diện — màu sắc, kích thước, khoảng cách, font, layout. Nếu HTML là khung xương thì CSS là da thịt và quần áo. Bạn không cần viết CSS — Tailwind làm giúp.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ Prompt: "Đổi màu nền hero section sang màu kem #f5f0e8, chữ heading to hơn, thêm padding trên dưới." — AI sẽ chỉnh CSS cho bạn.</div>
+          </div>
+          <div class="term-related"><span class="term-related-label">Xem thêm:</span><a class="term-related-link" href="#letter-T">Tailwind</a><a class="term-related-link" href="#letter-F">Flexbox</a></div>
+        </div>
+      </div>
+
+      <div class="term-card" data-group="infra" data-name="Cache">
+        <div class="term-left">
+          <div class="term-name">Cache</div>
+          <div class="term-en">Bộ nhớ đệm</div>
+          <div class="term-badges"><span class="term-badge tb-infra">Hạ tầng</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Lưu tạm kết quả để lần sau truy cập nhanh hơn. Giống như nhớ đường đi — lần đầu phải tra bản đồ, lần sau thuộc rồi đi liền. Cache giúp web load nhanh hơn.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ "Tôi sửa web rồi nhưng người dùng vẫn thấy phiên bản cũ" → Đây là vấn đề cache. Xóa cache hoặc hard reload (Ctrl+Shift+R) để thấy bản mới.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="term-card" data-group="code" data-name="Commit">
+        <div class="term-left">
+          <div class="term-name">Commit</div>
+          <div class="term-en">Lưu checkpoint code</div>
+          <div class="term-badges"><span class="term-badge tb-workflow">Workflow</span><span class="term-badge tb-code">Code</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Hành động lưu lại một điểm trong lịch sử code. Giống như Save game — bạn có thể quay lại đây bất cứ lúc nào nếu AI làm vỡ project sau đó.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ Sau khi hero section chạy ổn: "git commit -m 'hero section done'". Giờ dù AI có làm hỏng phần sau, bạn vẫn rollback về được.</div>
+          </div>
+          <div class="term-related"><span class="term-related-label">Xem thêm:</span><a class="term-related-link" href="#letter-G">Git</a><a class="term-related-link" href="#letter-R">Repository</a></div>
+        </div>
+      </div>
+
+      <div class="term-card" data-group="ai" data-name="Context Window">
+        <div class="term-left">
+          <div class="term-name">Context Window</div>
+          <div class="term-en">Bộ nhớ làm việc của AI</div>
+          <div class="term-badges"><span class="term-badge tb-ai">AI</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Lượng text tối đa AI có thể "đọc" và xử lý trong một lần. Khi conversation quá dài, AI bắt đầu quên phần đầu. Đây là lý do đôi khi AI làm sai mặc dù bạn đã giải thích.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ "Mình đã prompt rất nhiều nhưng AI bắt đầu sai lung tung" → Context window đầy rồi. Hãy mở conversation mới và tóm tắt lại yêu cầu.</div>
+          </div>
+          <div class="term-related"><span class="term-related-label">Xem thêm:</span><a class="term-related-link" href="#letter-P">Prompt</a><a class="term-related-link" href="#letter-M">Model</a></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── D ── -->
+    <div class="group-section" id="letter-D">
+      <div class="group-header"><span class="group-letter">D</span><span class="group-count-label">5 thuật ngữ</span></div>
+
+      <div class="term-card" data-group="infra" data-name="Deploy">
+        <div class="term-left">
+          <div class="term-name">Deploy</div>
+          <div class="term-en">Đưa lên internet</div>
+          <div class="term-badges"><span class="term-badge tb-infra">Hạ tầng</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Quá trình đưa code từ máy tính lên server để mọi người truy cập được. Sau khi deploy xong, web của bạn có link thật, không còn là localhost nữa.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ Push code lên GitHub → Vercel tự động build và deploy → bạn có link kiểu "yourapp.vercel.app" chia sẻ được ngay.</div>
+          </div>
+          <div class="term-related"><span class="term-related-label">Xem thêm:</span><a class="term-related-link" href="#letter-B">Build</a><a class="term-related-link" href="#letter-V">Vercel</a></div>
+        </div>
+      </div>
+
+      <div class="term-card" data-group="data" data-name="Database">
+        <div class="term-left">
+          <div class="term-name">Database</div>
+          <div class="term-en">Cơ sở dữ liệu</div>
+          <div class="term-badges"><span class="term-badge tb-data">Data</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Nơi lưu trữ dữ liệu có cấu trúc. Giống như một file Excel khổng lồ nhưng nhanh hơn, an toàn hơn, và có thể truy vấn phức tạp. Supabase, PostgreSQL là ví dụ phổ biến.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ "Mỗi khi khách submit form, thông tin được lưu vào Supabase database" — một bảng, mỗi hàng là một submission.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="term-card" data-group="code" data-name="Dependency">
+        <div class="term-left">
+          <div class="term-name">Dependency</div>
+          <div class="term-en">Thư viện phụ thuộc</div>
+          <div class="term-badges"><span class="term-badge tb-code">Code</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Code của người khác mà project bạn dùng. Giống như nguyên liệu đầu vào — bạn không tự làm bơ, bạn mua từ ngoài. npm install là lệnh cài dependency.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ "module not found" error = project đang cần một dependency chưa được cài. Paste lỗi cho AI, nó sẽ chạy lệnh cài giúp.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="term-card" data-group="design" data-name="DOM">
+        <div class="term-left">
+          <div class="term-name">DOM</div>
+          <div class="term-en">Document Object Model</div>
+          <div class="term-badges"><span class="term-badge tb-code">Code</span><span class="term-badge tb-design">Design</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Cách trình duyệt "nhìn" trang web — một cây cấu trúc của tất cả elements. JavaScript tương tác với DOM để thay đổi trang mà không cần reload.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ Khi bạn click nút và counter tăng lên mà trang không reload — JavaScript đang update DOM trực tiếp.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="term-card" data-group="code" data-name="Dynamic">
+        <div class="term-left">
+          <div class="term-name">Dynamic</div>
+          <div class="term-en">Nội dung động</div>
+          <div class="term-badges"><span class="term-badge tb-code">Code</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Nội dung thay đổi theo người dùng, thời gian, hoặc dữ liệu — không cố định như ảnh và chữ. Trang profile của mỗi user khác nhau = dynamic. Trang giới thiệu công ty = static.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ "Hiển thị số lượt view theo thời gian thực" = dynamic content. Mỗi lần load là fetch data mới từ database.</div>
+          </div>
+          <div class="term-related"><span class="term-related-label">Xem thêm:</span><a class="term-related-link" href="#letter-S">Static</a></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── E ── -->
+    <div class="group-section" id="letter-E">
+      <div class="group-header"><span class="group-letter">E</span><span class="group-count-label">3 thuật ngữ</span></div>
+
+      <div class="term-card" data-group="infra" data-name="Endpoint">
+        <div class="term-left">
+          <div class="term-name">Endpoint</div>
+          <div class="term-en">Điểm cuối API</div>
+          <div class="term-badges"><span class="term-badge tb-infra">Hạ tầng</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">URL cụ thể để gọi một chức năng của API. Giống như số điện thoại của từng phòng ban — muốn đặt đồ ăn thì gọi số này, muốn hỏi hóa đơn thì gọi số kia.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ "POST /api/subscribe" là endpoint nhận email đăng ký. "GET /api/posts" là endpoint lấy danh sách bài viết.</div>
+          </div>
+          <div class="term-related"><span class="term-related-label">Xem thêm:</span><a class="term-related-link" href="#letter-A">API</a><a class="term-related-link" href="#letter-R">Request</a></div>
+        </div>
+      </div>
+
+      <div class="term-card" data-group="infra" data-name="Environment">
+        <div class="term-left">
+          <div class="term-name">Environment</div>
+          <div class="term-en">Môi trường chạy</div>
+          <div class="term-badges"><span class="term-badge tb-infra">Hạ tầng</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Ngữ cảnh code đang chạy — máy của bạn (local/dev), server test (staging), hoặc bản thật (production). Mỗi environment có config và database riêng để không làm vỡ bản thật.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ "localhost:3000" = local environment. "yourapp.vercel.app" = production environment. Test kỹ ở local trước khi deploy lên production.</div>
+          </div>
+          <div class="term-related"><span class="term-related-label">Xem thêm:</span><a class="term-related-link" href="#letter-E">ENV</a><a class="term-related-link" href="#letter-L">Localhost</a></div>
+        </div>
+      </div>
+
+      <div class="term-card" data-group="infra" data-name="ENV">
+        <div class="term-left">
+          <div class="term-name">.env</div>
+          <div class="term-en">Environment Variables</div>
+          <div class="term-badges"><span class="term-badge tb-infra">Hạ tầng</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">File chứa các biến bí mật — API key, password database, token. Không bao giờ upload file này lên GitHub. Vercel cho phép bạn set env variables trong dashboard thay vì file.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ "NEXT_PUBLIC_SUPABASE_KEY=xxx" trong file .env — đây là API key để connect với Supabase. AI sẽ hỏi bạn điền vào đây khi setup project.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── F ── -->
+    <div class="group-section" id="letter-F">
+      <div class="group-header"><span class="group-letter">F</span><span class="group-count-label">4 thuật ngữ</span></div>
+
+      <div class="term-card" data-group="code" data-name="Frontend">
+        <div class="term-left">
+          <div class="term-name">Frontend</div>
+          <div class="term-en">Phần giao diện người dùng</div>
+          <div class="term-badges"><span class="term-badge tb-design">Design</span><span class="term-badge tb-code">Code</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Tất cả những gì người dùng nhìn thấy và tương tác — buttons, form, layout, màu sắc, animation. HTML + CSS + JavaScript là frontend. Vibecode chủ yếu xử lý frontend.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ "Tôi muốn thêm một section FAQ với accordion expand/collapse" — đây là frontend task, AI dùng Cursor để viết component này cho bạn.</div>
+          </div>
+          <div class="term-related"><span class="term-related-label">Xem thêm:</span><a class="term-related-link" href="#letter-B">Backend</a><a class="term-related-link" href="#letter-C">Component</a></div>
+        </div>
+      </div>
+
+      <div class="term-card" data-group="design" data-name="Flexbox">
+        <div class="term-left">
+          <div class="term-name">Flexbox</div>
+          <div class="term-en">Hệ thống layout 1 chiều</div>
+          <div class="term-badges"><span class="term-badge tb-design">Design</span><span class="term-badge tb-code">Code</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Cách sắp xếp elements theo hàng ngang hoặc cột dọc. Khi bạn muốn "3 cái card nằm ngang và cách nhau đều" — đó là flexbox. Tailwind dùng class "flex" và "gap".</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ Prompt: "Icon và text nằm trên cùng một hàng, icon bên trái, khoảng cách 8px." → AI sẽ dùng flexbox để xử lý layout này.</div>
+          </div>
+          <div class="term-related"><span class="term-related-label">Xem thêm:</span><a class="term-related-link" href="#letter-G">Grid</a><a class="term-related-link" href="#letter-P">Padding</a></div>
+        </div>
+      </div>
+
+      <div class="term-card" data-group="infra" data-name="Framework">
+        <div class="term-left">
+          <div class="term-name">Framework</div>
+          <div class="term-en">Khung làm việc</div>
+          <div class="term-badges"><span class="term-badge tb-infra">Hạ tầng</span><span class="term-badge tb-code">Code</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Bộ khung có sẵn giúp bạn không phải xây từ đầu. Next.js là framework cho web — nó đã lo routing, SEO, performance. Bạn chỉ cần tập trung vào logic và giao diện.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ markAI.vn dùng Next.js framework + Tailwind CSS framework. Hai thứ này cùng nhau giúp vibecoder build web chuyên nghiệp không cần biết mọi thứ từ đầu.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="term-card" data-group="code" data-name="Function">
+        <div class="term-left">
+          <div class="term-name">Function</div>
+          <div class="term-en">Hàm / Khối code tái dùng</div>
+          <div class="term-badges"><span class="term-badge tb-code">Code</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Một khối code làm một việc cụ thể, có thể gọi đi gọi lại. Giống như quy trình SOP — viết một lần, áp dụng nhiều lần. Bạn thường không cần tự viết, AI sẽ tạo và gọi function cho bạn.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ "Hàm formatDate() nhận ngày tháng và trả về dạng 'DD/MM/YYYY'" — gọi function này ở bất kỳ đâu trong app mà không cần viết lại logic.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── G ── -->
+    <div class="group-section" id="letter-G">
+      <div class="group-header"><span class="group-letter">G</span><span class="group-count-label">3 thuật ngữ</span></div>
+
+      <div class="term-card" data-group="workflow" data-name="Git">
+        <div class="term-left">
+          <div class="term-name">Git</div>
+          <div class="term-en">Hệ thống quản lý phiên bản</div>
+          <div class="term-badges"><span class="term-badge tb-workflow">Workflow</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Công cụ lưu lịch sử thay đổi của code. Giống như Track Changes trong Word nhưng mạnh hơn nhiều. Cho phép bạn quay lại bất kỳ phiên bản nào trong quá khứ.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ AI làm vỡ project → "git stash" để undo hết thay đổi chưa save, quay về trạng thái ổn. Đây là lifesaver khi vibecode gặp sự cố.</div>
+          </div>
+          <div class="term-related"><span class="term-related-label">Xem thêm:</span><a class="term-related-link" href="#letter-C">Commit</a><a class="term-related-link" href="#letter-R">Repository</a></div>
+        </div>
+      </div>
+
+      <div class="term-card" data-group="design" data-name="Grid">
+        <div class="term-left">
+          <div class="term-name">Grid</div>
+          <div class="term-en">Hệ thống layout lưới</div>
+          <div class="term-badges"><span class="term-badge tb-design">Design</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Layout dạng lưới 2 chiều — hàng và cột. Khi bạn muốn "6 card xếp thành 3 cột, 2 hàng" — đó là grid. Tailwind có class "grid" và "grid-cols-3".</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ "Blog list có 3 bài trên 1 hàng, mobile thì 1 bài mỗi hàng" — AI dùng grid responsive để xử lý: grid-cols-1 md:grid-cols-3.</div>
+          </div>
+          <div class="term-related"><span class="term-related-label">Xem thêm:</span><a class="term-related-link" href="#letter-F">Flexbox</a><a class="term-related-link" href="#letter-R">Responsive</a></div>
+        </div>
+      </div>
+
+      <div class="term-card" data-group="workflow" data-name="GitHub">
+        <div class="term-left">
+          <div class="term-name">GitHub</div>
+          <div class="term-en">Cloud lưu code</div>
+          <div class="term-badges"><span class="term-badge tb-workflow">Workflow</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Nơi lưu code trên cloud — giống Google Drive nhưng cho code, với full lịch sử thay đổi. Vercel kết nối với GitHub để tự động deploy mỗi khi bạn push code mới.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ Flow chuẩn: code trên máy → commit → push lên GitHub → Vercel tự build và deploy → có link live trong vài phút.</div>
+          </div>
+          <div class="term-related"><span class="term-related-label">Xem thêm:</span><a class="term-related-link" href="#letter-G">Git</a><a class="term-related-link" href="#letter-V">Vercel</a></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── H ── -->
+    <div class="group-section" id="letter-H">
+      <div class="group-header"><span class="group-letter">H</span><span class="group-count-label">2 thuật ngữ</span></div>
+
+      <div class="term-card" data-group="code" data-name="Hook">
+        <div class="term-left">
+          <div class="term-name">Hook</div>
+          <div class="term-en">Móc chức năng React</div>
+          <div class="term-badges"><span class="term-badge tb-code">Code</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Hàm đặc biệt trong React để quản lý state và side effects. useEffect, useState là các hook phổ biến. AI tự viết hook cho bạn — bạn không cần tự code.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ "Khi trang load, tự động fetch danh sách sản phẩm từ database" — AI dùng useEffect hook để chạy logic này khi component mount.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="term-card" data-group="infra" data-name="Hosting">
+        <div class="term-left">
+          <div class="term-name">Hosting</div>
+          <div class="term-en">Lưu trữ web</div>
+          <div class="term-badges"><span class="term-badge tb-infra">Hạ tầng</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Dịch vụ cung cấp "chỗ ở" cho web của bạn trên internet. Vercel là hosting miễn phí tốt nhất cho Next.js project. Không cần biết server — Vercel lo hết.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ "Tôi cần hosting cho web campaign" → Dùng Vercel (miễn phí, dễ setup, tự động deploy từ GitHub). Không cần mua VPS hay server riêng.</div>
+          </div>
+          <div class="term-related"><span class="term-related-label">Xem thêm:</span><a class="term-related-link" href="#letter-V">Vercel</a><a class="term-related-link" href="#letter-D">Deploy</a></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── I ── -->
+    <div class="group-section" id="letter-I">
+      <div class="group-header"><span class="group-letter">I</span><span class="group-count-label">3 thuật ngữ</span></div>
+
+      <div class="term-card" data-group="ai" data-name="Inference">
+        <div class="term-left">
+          <div class="term-name">Inference</div>
+          <div class="term-en">AI xử lý và trả kết quả</div>
+          <div class="term-badges"><span class="term-badge tb-ai">AI</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Quá trình AI nhận input (prompt của bạn) và tạo ra output (text, code, ảnh). Mỗi lần bạn hỏi AI và AI trả lời = một lần inference chạy trên server.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ "Inference cost" = chi phí mỗi lần gọi AI API. Khi bạn dùng Claude API trong app, mỗi user message = một lần inference = một khoản phí nhỏ.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="term-card" data-group="design" data-name="Interface">
+        <div class="term-left">
+          <div class="term-name">Interface (UI)</div>
+          <div class="term-en">Giao diện người dùng</div>
+          <div class="term-badges"><span class="term-badge tb-design">Design</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Tất cả những gì người dùng nhìn và chạm vào — không phải logic phía sau. UI tốt là UI mà người dùng không cần đọc hướng dẫn cũng dùng được.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ "Tôi muốn redesign UI của tool nội bộ" → Prompt Cursor: mô tả layout mới bạn muốn, AI sẽ viết component React với giao diện đó.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="term-card" data-group="code" data-name="Import">
+        <div class="term-left">
+          <div class="term-name">Import / Export</div>
+          <div class="term-en">Chia sẻ code giữa file</div>
+          <div class="term-badges"><span class="term-badge tb-code">Code</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Cách một file dùng code từ file khác. Import = lấy vào. Export = chia sẻ ra. Khi AI tạo component, nó thường có "export default" ở cuối để các trang khác import vào được.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ "import Button from './Button'" = trang này đang dùng component Button từ file Button.tsx. Nếu thiếu dòng này, component sẽ không hoạt động.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── J ── -->
+    <div class="group-section" id="letter-J">
+      <div class="group-header"><span class="group-letter">J</span><span class="group-count-label">2 thuật ngữ</span></div>
+
+      <div class="term-card" data-group="data" data-name="JSON">
+        <div class="term-left">
+          <div class="term-name">JSON</div>
+          <div class="term-en">Định dạng dữ liệu phổ biến</div>
+          <div class="term-badges"><span class="term-badge tb-data">Data</span><span class="term-badge tb-code">Code</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Định dạng text để trao đổi dữ liệu giữa hệ thống. Trông như: <strong>{"name": "Lan", "email": "lan@co.com"}</strong>. API thường trả về JSON — AI đọc và xử lý nó cho bạn.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ Khi Airtable API trả dữ liệu, nó là JSON. Cursor/Claude sẽ parse JSON đó và hiển thị thành giao diện đẹp trên web của bạn.</div>
+          </div>
+          <div class="term-related"><span class="term-related-label">Xem thêm:</span><a class="term-related-link" href="#letter-A">API</a><a class="term-related-link" href="#letter-R">Request</a></div>
+        </div>
+      </div>
+
+      <div class="term-card" data-group="code" data-name="JSX">
+        <div class="term-left">
+          <div class="term-name">JSX</div>
+          <div class="term-en">JavaScript + HTML hợp nhất</div>
+          <div class="term-badges"><span class="term-badge tb-code">Code</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Cú pháp viết HTML trong file JavaScript/TypeScript. React dùng JSX. Nhìn trông giống HTML nhưng có thêm logic. File .tsx là TypeScript + JSX.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ Khi Cursor tạo component, nó tạo file .tsx với JSX. Bạn không cần hiểu cú pháp — chỉ cần biết đây là "HTML nâng cấp" mà AI viết cho bạn.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── L ── -->
+    <div class="group-section" id="letter-L">
+      <div class="group-header"><span class="group-letter">L</span><span class="group-count-label">3 thuật ngữ</span></div>
+
+      <div class="term-card" data-group="infra" data-name="Localhost">
+        <div class="term-left">
+          <div class="term-name">Localhost</div>
+          <div class="term-en">Server trên máy tính</div>
+          <div class="term-badges"><span class="term-badge tb-infra">Hạ tầng</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Môi trường chạy web ngay trên máy bạn — chỉ bạn thấy, internet không thấy. Địa chỉ thường là localhost:3000. Đây là nơi bạn test trước khi deploy.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ "npm run dev" → mở localhost:3000 trên browser → bạn thấy web của mình. Mỗi lần save file, web tự reload (hot reload).</div>
+          </div>
+          <div class="term-related"><span class="term-related-label">Xem thêm:</span><a class="term-related-link" href="#letter-P">Port</a><a class="term-related-link" href="#letter-D">Deploy</a></div>
+        </div>
+      </div>
+
+      <div class="term-card" data-group="code" data-name="Loop">
+        <div class="term-left">
+          <div class="term-name">Loop</div>
+          <div class="term-en">Lặp lại tự động</div>
+          <div class="term-badges"><span class="term-badge tb-code">Code</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Tự động lặp lại một đoạn code với từng item trong danh sách. Khi bạn có 50 sản phẩm và muốn hiển thị card cho từng cái — loop xử lý việc đó mà không cần viết 50 lần.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ "Hiển thị tất cả bài blog từ Supabase" → AI viết loop map qua array posts, render BlogCard cho từng bài. Thêm 100 bài vẫn chạy, không cần sửa code.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="term-card" data-group="ai" data-name="LLM">
+        <div class="term-left">
+          <div class="term-name">LLM</div>
+          <div class="term-en">Large Language Model</div>
+          <div class="term-badges"><span class="term-badge tb-ai">AI</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Mô hình AI được train trên lượng text khổng lồ để hiểu và tạo ngôn ngữ. Claude, GPT-4, Gemini đều là LLM. Đây là "não" của các AI tool bạn đang dùng.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ "Cursor dùng LLM nào?" → Cursor cho phép chọn model: Claude Sonnet, GPT-4o. Model = LLM cụ thể bạn đang chat với.</div>
+          </div>
+          <div class="term-related"><span class="term-related-label">Xem thêm:</span><a class="term-related-link" href="#letter-M">Model</a><a class="term-related-link" href="#letter-P">Prompt</a></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── M, N, P, R, S, T, U, V, W ── (rút gọn còn key terms) -->
+    <div class="group-section" id="letter-M">
+      <div class="group-header"><span class="group-letter">M</span><span class="group-count-label">3 thuật ngữ</span></div>
+
+      <div class="term-card" data-group="design" data-name="Margin">
+        <div class="term-left">
+          <div class="term-name">Margin</div>
+          <div class="term-en">Khoảng cách ngoài element</div>
+          <div class="term-badges"><span class="term-badge tb-design">Design</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Khoảng cách từ element ra ngoài, ngăn cách với các element xung quanh. Khác với padding là khoảng cách bên trong. Margin = khoảng cách với hàng xóm. Padding = khoảng thở bên trong nhà.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ "Các section cách nhau quá gần" → Thêm margin-bottom vào mỗi section. Tailwind: "mb-16" = margin-bottom 4rem.</div>
+          </div>
+          <div class="term-related"><span class="term-related-label">Xem thêm:</span><a class="term-related-link" href="#letter-P">Padding</a><a class="term-related-link" href="#letter-S">Spacing</a></div>
+        </div>
+      </div>
+
+      <div class="term-card" data-group="ai" data-name="Model">
+        <div class="term-left">
+          <div class="term-name">Model</div>
+          <div class="term-en">Phiên bản AI</div>
+          <div class="term-badges"><span class="term-badge tb-ai">AI</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Phiên bản cụ thể của một AI — như "Claude Sonnet 3.7" hay "GPT-4o". Mỗi model khác nhau về tốc độ, chi phí, và khả năng. Model mạnh hơn = đắt hơn, chậm hơn nhưng code tốt hơn.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ Trong Cursor: chọn model ở góc phải. Claude Sonnet 3.7 = tốt cho code phức tạp. Claude Haiku = nhanh hơn, rẻ hơn cho task đơn giản.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="term-card" data-group="ai" data-name="MCP">
+        <div class="term-left">
+          <div class="term-name">MCP</div>
+          <div class="term-en">Model Context Protocol</div>
+          <div class="term-badges"><span class="term-badge tb-ai">AI</span><span class="term-badge tb-workflow">Workflow</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Giao thức giúp AI kết nối trực tiếp với tool bên ngoài — Supabase, Vercel, Notion, GitHub. Thay vì copy-paste data cho AI, MCP cho phép AI tự đọc và thực hiện action trên các tool đó.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ "Cursor với Supabase MCP" → AI có thể đọc schema database của bạn và tự viết query đúng cấu trúc, không cần bạn giải thích từng bảng.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="group-section" id="letter-N">
+      <div class="group-header"><span class="group-letter">N</span><span class="group-count-label">2 thuật ngữ</span></div>
+      <div class="term-card" data-group="code" data-name="npm">
+        <div class="term-left">
+          <div class="term-name">npm</div>
+          <div class="term-en">Node Package Manager</div>
+          <div class="term-badges"><span class="term-badge tb-infra">Hạ tầng</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Công cụ cài và quản lý thư viện code. Giống App Store nhưng cho code — gõ "npm install tên-thư-viện" là cài xong. Đi kèm với Node.js.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ "npm install" trong terminal = cài tất cả dependency của project. "npm run dev" = chạy server local. 2 lệnh này dùng hàng ngày khi vibecode.</div>
+          </div>
+        </div>
+      </div>
+      <div class="term-card" data-group="infra" data-name="Node.js">
+        <div class="term-left">
+          <div class="term-name">Node.js</div>
+          <div class="term-en">Môi trường chạy JavaScript</div>
+          <div class="term-badges"><span class="term-badge tb-infra">Hạ tầng</span></div>
+        </div>
+        <div class="term-right">
+          <div class="term-definition">Phần mềm cho phép chạy JavaScript ngoài trình duyệt — trên server, terminal. Next.js cần Node.js để chạy. Bạn chỉ cần cài một lần, không cần hiểu sâu.</div>
+          <div class="term-example-wrap">
+            <div class="term-example-label">Ví dụ thực tế</div>
+            <div class="term-example">✳ Lần đầu setup project: tải và cài Node.js từ nodejs.org → sau đó mọi lệnh npm đều dùng được. Cài một lần dùng mãi.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="group-section" id="letter-P">
+      <div class="group-header"><span class="group-letter">P</span><span class="group-count-label">4 thuật ngữ</span></div>
+      <div class="term-card" data-group="design" data-name="Padding">
+        <div class="term-left"><div class="term-name">Padding</div><div class="term-en">Khoảng cách bên trong</div><div class="term-badges"><span class="term-badge tb-design">Design</span></div></div>
+        <div class="term-right">
+          <div class="term-definition">Khoảng trống bên trong một element, giữa content và đường viền. Button có text quá sát mép = thiếu padding. Tailwind: "p-4" = padding 1rem tất cả phía.</div>
+          <div class="term-example-wrap"><div class="term-example-label">Ví dụ thực tế</div><div class="term-example">✳ "Text trong card bị chật quá" → Tăng padding: "p-6" hoặc "px-4 py-3" (padding ngang 1rem, dọc 0.75rem).</div></div>
+        </div>
+      </div>
+      <div class="term-card" data-group="code" data-name="Props">
+        <div class="term-left"><div class="term-name">Props</div><div class="term-en">Properties / Thuộc tính</div><div class="term-badges"><span class="term-badge tb-code">Code</span></div></div>
+        <div class="term-right">
+          <div class="term-definition">Dữ liệu truyền vào component từ bên ngoài. Giống như thông số khi gọi món — cùng món Phở nhưng "không hành, thêm tái" là props khác nhau.</div>
+          <div class="term-example-wrap"><div class="term-example-label">Ví dụ thực tế</div><div class="term-example">✳ &lt;Button text="Đăng ký" color="accent" /&gt; — "text" và "color" là props. Component Button nhận props này để render đúng theo yêu cầu.</div></div>
+        </div>
+      </div>
+      <div class="term-card" data-group="ai" data-name="Prompt">
+        <div class="term-left"><div class="term-name">Prompt</div><div class="term-en">Câu lệnh cho AI</div><div class="term-badges"><span class="term-badge tb-ai">AI</span></div></div>
+        <div class="term-right">
+          <div class="term-definition">Đoạn text bạn gửi cho AI để hướng dẫn nó làm việc. Prompt tốt = kết quả tốt. Prompt mơ hồ = AI đoán mò. Đây là kỹ năng quan trọng nhất trong vibecode.</div>
+          <div class="term-example-wrap"><div class="term-example-label">Ví dụ thực tế</div><div class="term-example">✳ Prompt tệ: "Làm trang web đẹp". Prompt tốt: "Tạo landing page Next.js có hero section, countdown 3 ngày, form email, màu brand #E8410A, responsive mobile."</div></div>
+        </div>
+      </div>
+      <div class="term-card" data-group="infra" data-name="Port">
+        <div class="term-left"><div class="term-name">Port</div><div class="term-en">Cổng kết nối</div><div class="term-badges"><span class="term-badge tb-infra">Hạ tầng</span></div></div>
+        <div class="term-right">
+          <div class="term-definition">Số định danh cho service đang chạy trên máy. localhost:3000 → port 3000 là Next.js. Port 5432 là PostgreSQL. "Port already in use" = có app khác đang chiếm port đó.</div>
+          <div class="term-example-wrap"><div class="term-example-label">Ví dụ thực tế</div><div class="term-example">✳ "Error: port 3000 is already in use" → Một cửa sổ terminal khác đang chạy dev server. Tắt đi hoặc dùng port khác: "npm run dev -- --port 3001".</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="group-section" id="letter-R">
+      <div class="group-header"><span class="group-letter">R</span><span class="group-count-label">3 thuật ngữ</span></div>
+      <div class="term-card" data-group="design" data-name="Responsive">
+        <div class="term-left"><div class="term-name">Responsive</div><div class="term-en">Giao diện thích nghi</div><div class="term-badges"><span class="term-badge tb-design">Design</span></div></div>
+        <div class="term-right">
+          <div class="term-definition">Web tự điều chỉnh giao diện theo kích thước màn hình — desktop, tablet, mobile. Tailwind có prefix "md:", "lg:", "sm:" để viết style riêng cho từng breakpoint.</div>
+          <div class="term-example-wrap"><div class="term-example-label">Ví dụ thực tế</div><div class="term-example">✳ "grid-cols-3 md:grid-cols-1" = desktop 3 cột, mobile 1 cột. Luôn nhờ AI làm responsive — đây là best practice không thể bỏ qua.</div></div>
+        </div>
+      </div>
+      <div class="term-card" data-group="infra" data-name="Request">
+        <div class="term-left"><div class="term-name">Request / Response</div><div class="term-en">Yêu cầu / Phản hồi</div><div class="term-badges"><span class="term-badge tb-infra">Hạ tầng</span></div></div>
+        <div class="term-right">
+          <div class="term-definition">Cách client và server nói chuyện. Client gửi Request (yêu cầu), server trả Response (kết quả). Mỗi khi web load data từ API là một cặp Request-Response.</div>
+          <div class="term-example-wrap"><div class="term-example-label">Ví dụ thực tế</div><div class="term-example">✳ "400 Bad Request" = server không hiểu yêu cầu. "404 Not Found" = không tìm thấy. "500 Server Error" = server bị lỗi. Paste error code này cho AI để fix.</div></div>
+        </div>
+      </div>
+      <div class="term-card" data-group="workflow" data-name="Repository">
+        <div class="term-left"><div class="term-name">Repository</div><div class="term-en">Kho code</div><div class="term-badges"><span class="term-badge tb-workflow">Workflow</span></div></div>
+        <div class="term-right">
+          <div class="term-definition">Thư mục project được Git quản lý, chứa toàn bộ code và lịch sử thay đổi. Mỗi project = một repository (repo). Lưu trên GitHub để có backup và deploy được lên Vercel.</div>
+          <div class="term-example-wrap"><div class="term-example-label">Ví dụ thực tế</div><div class="term-example">✳ "Tạo repo mới trên GitHub, clone về máy, code, commit, push." — đây là quy trình cơ bản. Claude Code có thể làm hầu hết bước này cho bạn.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="group-section" id="letter-S">
+      <div class="group-header"><span class="group-letter">S</span><span class="group-count-label">3 thuật ngữ</span></div>
+      <div class="term-card" data-group="code" data-name="State">
+        <div class="term-left"><div class="term-name">State</div><div class="term-en">Trạng thái của component</div><div class="term-badges"><span class="term-badge tb-code">Code</span></div></div>
+        <div class="term-right">
+          <div class="term-definition">Dữ liệu tạm thời bên trong component — thay đổi thì UI tự cập nhật. Số lượng sản phẩm trong giỏ hàng, tab đang active, hay filter đang chọn — đều là state.</div>
+          <div class="term-example-wrap"><div class="term-example-label">Ví dụ thực tế</div><div class="term-example">✳ "Khi nhấn nút Thêm vào giỏ, số lượng tăng lên ngay mà không reload trang" → State đang quản lý số lượng đó và trigger re-render UI.</div></div>
+        </div>
+      </div>
+      <div class="term-card" data-group="data" data-name="Supabase">
+        <div class="term-left"><div class="term-name">Supabase</div><div class="term-en">Backend as a Service</div><div class="term-badges"><span class="term-badge tb-data">Data</span><span class="term-badge tb-infra">Hạ tầng</span></div></div>
+        <div class="term-right">
+          <div class="term-definition">Nền tảng backend miễn phí — database, authentication, storage, realtime, tất cả trong một. Marketer dùng vibecode hầu hết chọn Supabase vì không cần setup server.</div>
+          <div class="term-example-wrap"><div class="term-example-label">Ví dụ thực tế</div><div class="term-example">✳ "Lưu form submissions, quản lý user đăng nhập, upload ảnh campaign" — Supabase xử lý hết 3 việc này. Tích hợp với Next.js trong vài dòng code.</div></div>
+        </div>
+      </div>
+      <div class="term-card" data-group="design" data-name="Spacing">
+        <div class="term-left"><div class="term-name">Spacing</div><div class="term-en">Hệ thống khoảng cách</div><div class="term-badges"><span class="term-badge tb-design">Design</span></div></div>
+        <div class="term-right">
+          <div class="term-definition">Khoảng cách giữa các elements — bao gồm margin, padding, gap. Design system tốt có spacing scale nhất quán (4px, 8px, 16px, 32px...). Tailwind dùng scale này.</div>
+          <div class="term-example-wrap"><div class="term-example-label">Ví dụ thực tế</div><div class="term-example">✳ "Trang trông lộn xộn" thường do spacing không nhất quán. Prompt: "Thống nhất spacing giữa các section thành 64px, giữa card nội dung thành 16px."</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="group-section" id="letter-T">
+      <div class="group-header"><span class="group-letter">T</span><span class="group-count-label">2 thuật ngữ</span></div>
+      <div class="term-card" data-group="code" data-name="TypeScript">
+        <div class="term-left"><div class="term-name">TypeScript</div><div class="term-en">JavaScript có kiểu dữ liệu</div><div class="term-badges"><span class="term-badge tb-code">Code</span></div></div>
+        <div class="term-right">
+          <div class="term-definition">Phiên bản JavaScript được bổ sung kiểu dữ liệu — giúp phát hiện lỗi trước khi chạy code. File .ts và .tsx là TypeScript. AI code TypeScript tốt hơn JavaScript thuần vì ít lỗi hơn.</div>
+          <div class="term-example-wrap"><div class="term-example-label">Ví dụ thực tế</div><div class="term-example">✳ "Type error" trong terminal = TypeScript phát hiện bạn đang dùng sai kiểu dữ liệu. Paste lỗi cho AI, nó tự fix kiểu dữ liệu cho đúng.</div></div>
+        </div>
+      </div>
+      <div class="term-card" data-group="design" data-name="Tailwind">
+        <div class="term-left"><div class="term-name">Tailwind CSS</div><div class="term-en">Framework CSS dùng class</div><div class="term-badges"><span class="term-badge tb-design">Design</span><span class="term-badge tb-code">Code</span></div></div>
+        <div class="term-right">
+          <div class="term-definition">Thư viện CSS dùng class nhỏ để style trực tiếp trong HTML. Thay vì viết CSS riêng, bạn ghép class như Lego: "flex gap-4 bg-blue-500 text-white p-3". AI viết Tailwind rất tốt.</div>
+          <div class="term-example-wrap"><div class="term-example-label">Ví dụ thực tế</div><div class="term-example">✳ Prompt: "Nút CTA màu cam đỏ, chữ trắng, padding 12px 24px, hover đổi màu tối hơn." → AI tạo: className="bg-orange-600 text-white px-6 py-3 hover:bg-orange-700"</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="group-section" id="letter-U">
+      <div class="group-header"><span class="group-letter">U</span><span class="group-count-label">2 thuật ngữ</span></div>
+      <div class="term-card" data-group="design" data-name="UI">
+        <div class="term-left"><div class="term-name">UI / UX</div><div class="term-en">User Interface / Experience</div><div class="term-badges"><span class="term-badge tb-design">Design</span></div></div>
+        <div class="term-right">
+          <div class="term-definition">UI = giao diện (trông như thế nào). UX = trải nghiệm (dùng cảm giác ra sao). UI đẹp mà UX tệ là trang trông ổn nhưng khó dùng. Vibecode giúp bạn tự làm UI — UX vẫn cần tư duy người dùng.</div>
+          <div class="term-example-wrap"><div class="term-example-label">Ví dụ thực tế</div><div class="term-example">✳ "Form điền thông tin khó quá, user bỏ giữa chừng" = UX tệ dù UI đẹp. Prompt: "Chia form thành 3 bước, mỗi bước chỉ hỏi 2-3 field" = cải thiện UX.</div></div>
+        </div>
+      </div>
+      <div class="term-card" data-group="data" data-name="URL">
+        <div class="term-left"><div class="term-name">URL / Route</div><div class="term-en">Đường dẫn trang web</div><div class="term-badges"><span class="term-badge tb-infra">Hạ tầng</span></div></div>
+        <div class="term-right">
+          <div class="term-definition">Địa chỉ của trang web. Trong Next.js, route tương ứng với folder trong thư mục app/. Tạo file app/about/page.tsx = tạo URL /about tự động.</div>
+          <div class="term-example-wrap"><div class="term-example-label">Ví dụ thực tế</div><div class="term-example">✳ "Tôi muốn trang /campaign/summer-2026" → Tạo file app/campaign/summer-2026/page.tsx. Next.js tự generate route, không cần config thêm gì.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="group-section" id="letter-V">
+      <div class="group-header"><span class="group-letter">V</span><span class="group-count-label">2 thuật ngữ</span></div>
+      <div class="term-card" data-group="infra" data-name="Vercel">
+        <div class="term-left"><div class="term-name">Vercel</div><div class="term-en">Hosting cho Next.js</div><div class="term-badges"><span class="term-badge tb-infra">Hạ tầng</span></div></div>
+        <div class="term-right">
+          <div class="term-definition">Nền tảng deploy và hosting tốt nhất cho Next.js — miễn phí cho project cá nhân. Kết nối GitHub → push code → Vercel tự deploy. Không cần biết server hay Docker.</div>
+          <div class="term-example-wrap"><div class="term-example-label">Ví dụ thực tế</div><div class="term-example">✳ Quy trình: vercel.com → New Project → Import GitHub repo → Deploy. Xong. Web live trong 2 phút với link yourapp.vercel.app.</div></div>
+        </div>
+      </div>
+      <div class="term-card" data-group="ai" data-name="Vector">
+        <div class="term-left"><div class="term-name">Vector / Embedding</div><div class="term-en">Biểu diễn số của text</div><div class="term-badges"><span class="term-badge tb-ai">AI</span><span class="term-badge tb-data">Data</span></div></div>
+        <div class="term-right">
+          <div class="term-definition">Cách AI chuyển text thành số để tính toán "sự tương đồng". Cho phép AI tìm nội dung liên quan, không chỉ tìm theo từ khóa. Nền tảng của tính năng "semantic search".</div>
+          <div class="term-example-wrap"><div class="term-example-label">Ví dụ thực tế</div><div class="term-example">✳ "Tìm kiếm sản phẩm bằng mô tả thay vì tên" — đây là semantic search dùng vector embedding. Supabase pgvector hỗ trợ tính năng này.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="group-section" id="letter-W">
+      <div class="group-header"><span class="group-letter">W</span><span class="group-count-label">3 thuật ngữ</span></div>
+      <div class="term-card" data-group="infra" data-name="Webhook">
+        <div class="term-left"><div class="term-name">Webhook</div><div class="term-en">Thông báo tự động</div><div class="term-badges"><span class="term-badge tb-infra">Hạ tầng</span></div></div>
+        <div class="term-right">
+          <div class="term-definition">Cơ chế "gọi ngược" — khi có sự kiện xảy ra ở service A, nó tự thông báo cho service B. Thay vì liên tục hỏi "có gì mới không?", webhook chủ động gửi thông tin khi có.</div>
+          <div class="term-example-wrap"><div class="term-example-label">Ví dụ thực tế</div><div class="term-example">✳ "Khi có đơn hàng mới trên Shopify, tự gửi thông báo Slack" → Shopify webhook gọi URL của bạn → server nhận và gửi Slack. Automation không cần polling.</div></div>
+        </div>
+      </div>
+      <div class="term-card" data-group="design" data-name="Wireframe">
+        <div class="term-left"><div class="term-name">Wireframe</div><div class="term-en">Khung bố cục</div><div class="term-badges"><span class="term-badge tb-design">Design</span></div></div>
+        <div class="term-right">
+          <div class="term-definition">Bản phác thảo layout của trang — chỉ có khung và vị trí, không có màu sắc hay nội dung thật. Dùng để thống nhất cấu trúc với team trước khi design chi tiết.</div>
+          <div class="term-example-wrap"><div class="term-example-label">Ví dụ thực tế</div><div class="term-example">✳ Vẽ wireframe trên Figma hoặc giấy → mô tả cho AI → AI code đúng layout đó. Wireframe giúp prompt rõ hơn nhiều so với mô tả bằng chữ thuần.</div></div>
+        </div>
+      </div>
+      <div class="term-card" data-group="infra" data-name="WebSocket">
+        <div class="term-left"><div class="term-name">WebSocket</div><div class="term-en">Kết nối thời gian thực</div><div class="term-badges"><span class="term-badge tb-infra">Hạ tầng</span></div></div>
+        <div class="term-right">
+          <div class="term-definition">Kết nối hai chiều liên tục giữa browser và server. Cho phép update realtime mà không cần reload hoặc polling. Chat app, live dashboard, notification realtime đều dùng WebSocket.</div>
+          <div class="term-example-wrap"><div class="term-example-label">Ví dụ thực tế</div><div class="term-example">✳ "Muốn dashboard KPI cập nhật realtime khi có data mới" → Dùng Supabase Realtime (chạy trên WebSocket). Không cần user F5 trang.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="no-results" id="noResults">
+      <div class="no-results-title">Không tìm thấy từ ngữ này</div>
+      <div class="no-results-desc">Thử từ khóa khác, hoặc <a href="#" style="color:var(--accent)">góp ý thêm từ ngữ</a> để mình bổ sung vào.</div>
+    </div>
+  </div>
+</div>
+
+<!-- QUICK REF DARK -->
+<div class="quickref">
+  <div class="quickref-inner">
+    <p class="quickref-label"><span>✳</span> Cheat sheet · dùng ngay không cần nhớ</p>
+    <h2 class="quickref-h2">Khi AI hoặc dev nói những từ này, <em>đây là ý họ muốn nói.</em></h2>
+    <div class="quickref-grid">
+      <div class="qr-card"><div class="qr-term">"Push lên main"</div><div class="qr-def">Upload code mới nhất lên GitHub nhánh chính → Vercel tự deploy.</div></div>
+      <div class="qr-card"><div class="qr-term">"Cần refactor"</div><div class="qr-def">Viết lại code cho gọn hơn, không thêm tính năng. Không cần lo — AI làm được.</div></div>
+      <div class="qr-card"><div class="qr-term">"Build failed"</div><div class="qr-def">Code có lỗi, không deploy được. Paste log lỗi cho AI để fix.</div></div>
+      <div class="qr-card"><div class="qr-term">"Cần API key"</div><div class="qr-def">Mã bí mật để dùng service bên ngoài. Lấy từ dashboard của service, paste vào .env.</div></div>
+      <div class="qr-card"><div class="qr-term">"Schema database"</div><div class="qr-def">Cấu trúc bảng trong database — có những cột gì, kiểu dữ liệu gì.</div></div>
+      <div class="qr-card"><div class="qr-term">"Hydration error"</div><div class="qr-def">Server render khác client render. Paste lỗi cho AI, thường fix được nhanh.</div></div>
+      <div class="qr-card"><div class="qr-term">"500 error"</div><div class="qr-def">Server bị lỗi. Xem log trên Vercel dashboard hoặc terminal để tìm nguyên nhân.</div></div>
+      <div class="qr-card"><div class="qr-term">"CORS error"</div><div class="qr-def">API không cho phép domain của bạn gọi. Cần config whitelist domain hoặc dùng proxy.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA BOTTOM -->
+<div class="cta-section">
+  <div class="cta-inner">
+    <div class="cta-left">
+      <p class="cta-label">✳ Tiếp theo trong lộ trình</p>
+      <h2 class="cta-h2">Biết từ ngữ rồi —<br><em>giờ bắt đầu cài đặt.</em></h2>
+      <p class="cta-desc">Tiếp tục Bài 03 để cài Node.js, VS Code, Cursor, Git, và Claude Code. Hướng dẫn từng bước, không bỏ sót gì.</p>
+    </div>
+    <div class="cta-right">
+      <a href="#" class="cta-lesson">
+        <span class="cta-lesson-num">03</span>
+        <span class="cta-lesson-title">Cài gì vào máy để bắt đầu vibecode?</span>
+        <span class="cta-lesson-arrow">→</span>
+      </a>
+      <a href="#" class="cta-lesson">
+        <span class="cta-lesson-num">04</span>
+        <span class="cta-lesson-title">Làm quen VS Code & Cursor</span>
+        <span class="cta-lesson-arrow">→</span>
+      </a>
+      <a href="#" class="cta-lesson">
+        <span class="cta-lesson-num">05</span>
+        <span class="cta-lesson-title">Làm quen Claude Code</span>
+        <span class="cta-lesson-arrow">→</span>
+      </a>
+      <a href="#" class="cta-lesson">
+        <span class="cta-lesson-num">01</span>
+        <span class="cta-lesson-title">← Quay lại Bài 01 · Vibecode là gì?</span>
+        <span class="cta-lesson-arrow">↩</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-col">
+      <div class="footer-logo">mark<em>AI</em></div>
+      <p class="footer-tagline">Học AI ứng dụng dành riêng cho dân Marketing Việt Nam. Miễn phí mãi mãi.</p>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Vibecode</div>
+      <ul class="footer-links">
+        <li><a href="#">Bài 01 · Vibecode là gì?</a></li>
+        <li><a href="#">Bài 02 · Từ ngữ chuyên ngành</a></li>
+        <li><a href="#">Bài 03 · Cài đặt</a></li>
+        <li><a href="#">Xem toàn bộ lộ trình</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">Khám phá</div>
+      <ul class="footer-links">
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Tips & Mẹo</a></li>
+        <li><a href="#">Prompt Library</a></li>
+        <li><a href="#" class="soon">Analytics (sắp ra)</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-title">markAI</div>
+      <ul class="footer-links">
+        <li><a href="#">Về markAI</a></li>
+        <li><a href="#">Góp ý thêm từ ngữ</a></li>
+        <li><a href="#">Báo lỗi</a></li>
+        <li><a href="#">Liên hệ</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-bottom-text">markAI.vn · Miễn phí · Không tracking · Không quảng cáo</span>
+    <span class="footer-bottom-text">✳ Dành riêng cho dân Marketing Việt Nam</span>
+  </div>
+</footer>
+
+<script>
+  // Ticker loop
+  const ticker = document.getElementById('ticker');
+  if (ticker) ticker.innerHTML += ticker.innerHTML;
+
+  // Search
+  const searchInput = document.getElementById('searchInput');
+  const countNum = document.getElementById('countNum');
+  const noResults = document.getElementById('noResults');
+  const allCards = document.querySelectorAll('.term-card');
+  const allGroups = document.querySelectorAll('.group-section');
+
+  function filterCards() {
+    const query = searchInput.value.toLowerCase().trim();
+    const activeFilter = document.querySelector('.filter-btn.active')?.dataset.filter || 'all';
+    let visible = 0;
+
+    allCards.forEach(card => {
+      const name = (card.dataset.name || '').toLowerCase();
+      const group = card.dataset.group || '';
+      const text = card.textContent.toLowerCase();
+      const matchSearch = !query || name.includes(query) || text.includes(query);
+      const matchFilter = activeFilter === 'all' || group === activeFilter;
+      if (matchSearch && matchFilter) {
+        card.classList.remove('hidden');
+        visible++;
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+
+    // Hide empty group sections
+    allGroups.forEach(section => {
+      const hasVisible = section.querySelectorAll('.term-card:not(.hidden)').length > 0;
+      section.style.display = hasVisible ? '' : 'none';
+    });
+
+    countNum.textContent = visible;
+    noResults.style.display = visible === 0 ? 'block' : 'none';
+  }
+
+  searchInput.addEventListener('input', filterCards);
+
+  // Filter buttons
+  document.querySelectorAll('.filter-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      filterCards();
+    });
+  });
+
+  // Group pills (hero sidebar)
+  document.querySelectorAll('.group-pill').forEach(pill => {
+    pill.addEventListener('click', () => {
+      document.querySelectorAll('.group-pill').forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+      const group = pill.dataset.group;
+      // Sync with filter bar
+      document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.filter === group);
+      });
+      filterCards();
+    });
+  });
+
+  // Alphabet sidebar active on scroll
+  const groupSections = document.querySelectorAll('.group-section[id]');
+  const alphaLinks = document.querySelectorAll('.alpha-link[data-letter]');
+  const observerAlpha = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        const letter = id.replace('letter-', '');
+        alphaLinks.forEach(link => {
+          link.classList.toggle('active', link.dataset.letter === letter);
+        });
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+  groupSections.forEach(s => observerAlpha.observe(s));
+
+  // Sort toggle (A-Z / Z-A) - UI only
+  const sortBtn = document.querySelector('.filter-sort');
+  let sortAZ = true;
+  sortBtn.addEventListener('click', () => {
+    sortAZ = !sortAZ;
+    sortBtn.textContent = sortAZ ? 'A → Z ↕' : 'Z → A ↕';
+    const content = document.getElementById('glossaryContent');
+    const sections = Array.from(content.querySelectorAll('.group-section'));
+    sections.reverse().forEach(s => content.insertBefore(s, content.querySelector('.no-results')));
+  });
+</script>
+</body>
+</html>

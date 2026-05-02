@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+﻿import { Link } from 'react-router-dom';
 import type { SubLessonFull } from '../../lib/subLessons';
 import { getSubLessonsByLesson } from '../../lib/subLessons';
 
@@ -20,16 +20,13 @@ export default function ReaderSidebar({ subLesson, lessonSlug, subLessons, onClo
 
   return (
     <aside className={`reader-sidebar ${isOpen ? 'open' : ''}`} id="reader-sidebar">
-      {/* Header */}
       <div className="sidebar-lesson-header">
         <p className="slh-label">Bài {lessonId.toString().padStart(2, '0')} · {totalSubs} phần</p>
         <p className="slh-title">{lessonTitle}</p>
       </div>
 
-      {/* Section Label */}
       <p className="sidebar-section-label">Các phần trong bài này</p>
 
-      {/* Sub Lessons */}
       {allSubLessons.map((sl, index) => {
         const subSlug = sl.slug;
         const isActive = sl.id === id;
@@ -52,7 +49,6 @@ export default function ReaderSidebar({ subLesson, lessonSlug, subLessons, onClo
         );
       })}
 
-      {/* Next Lesson */}
       <div className="sidebar-next-lesson">
         <p className="snl-label">Bài tiếp theo</p>
         {getNextLessons(lessonSlug).map((next) => (
@@ -74,7 +70,7 @@ export default function ReaderSidebar({ subLesson, lessonSlug, subLessons, onClo
 function getNextLessons(currentSlug: string) {
   const allLessons = [
     { id: 1, slug: 'vibecode-la-gi', title: 'Vibecode là gì?' },
-    { id: 2, slug: 'tu-ngu-chuyen-nganh', title: 'Từ ngữ chuyên ngành' },
+    { id: 2, slug: 'tu-ngu-chuyen-nganh', title: 'AI đang “nói gì” với bạn?' },
     { id: 3, slug: 'cai-dat-moi-truong', title: 'Cài đặt môi trường' },
     { id: 4, slug: 'lam-quen-vscode-cursor', title: 'Làm quen VS Code & Cursor' },
     { id: 5, slug: 'lam-quen-claude-code', title: 'Làm quen Claude Code' },
@@ -85,7 +81,7 @@ function getNextLessons(currentSlug: string) {
     { id: 10, slug: 'deploy-va-tracking', title: 'Deploy + Tracking' },
   ];
 
-  const currentIndex = allLessons.findIndex(l => l.slug === currentSlug);
+  const currentIndex = allLessons.findIndex((lesson) => lesson.slug === currentSlug);
   const nextLessons = allLessons.slice(currentIndex + 1, currentIndex + 4);
 
   if (nextLessons.length === 0) {

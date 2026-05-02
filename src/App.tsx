@@ -18,6 +18,7 @@ import VibecodePage from './pages/VibecodePage';
 import LessonOverview from './pages/LessonOverview';
 import SubLessonPage from './pages/SubLessonPage';
 import LessonPreviewPage from './pages/LessonPreviewPage';
+import VibecodeGlossaryPage from './pages/VibecodeGlossaryPage';
 import AdminApp from './admin/AdminApp';
 
 const ScrollToTop = () => {
@@ -61,6 +62,7 @@ const AppShell = () => {
           <Route path="/contact" element={<Contact />} />
           <Route path="/vibecode" element={<VibecodePage />} />
           <Route path="/vibecode/preview/:previewToken" element={<LessonPreviewPage />} />
+          <Route path="/vibecode/tu-ngu-chuyen-nganh/tu-dien-thuat-ngu" element={<VibecodeGlossaryPage />} />
           <Route path="/vibecode/:lessonSlug" element={<LessonOverview />} />
           <Route path="/vibecode/:lessonSlug/:subSlug" element={<SubLessonPage />} />
         </Routes>

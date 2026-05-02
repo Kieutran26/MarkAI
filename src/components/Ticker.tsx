@@ -1,4 +1,5 @@
-import { useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom';
+import { glossaryTickerItems } from '../lib/glossary';
 
 const defaultItems = [
   "✳ 150+ prompt đã test thực tế",
@@ -16,20 +17,14 @@ interface TickerProps {
 }
 
 export default function Ticker({ items = defaultItems }: TickerProps) {
-  const trackRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const track = trackRef.current;
-    if (track && track.children.length > 0 && track.children.length < items.length * 2) {
-      const originalHTML = track.innerHTML;
-      track.innerHTML = originalHTML + originalHTML;
-    }
-  }, [items]);
+  const location = useLocation();
+  const isGlossaryRoute = location.pathname === '/vibecode/tu-ngu-chuyen-nganh/tu-dien-thuat-ngu';
+  const activeItems = isGlossaryRoute ? glossaryTickerItems : items;
 
   return (
-    <div className="ticker">
-      <div className="ticker-track" ref={trackRef}>
-        {items.map((item, idx) => (
+    <div className={`ticker ${isGlossaryRoute ? 'glossary-route' : ''}`}>
+      <div className="ticker-track">
+        {[...activeItems, ...activeItems].map((item, idx) => (
           <div key={idx} className="ticker-item">
             {item}
           </div>
