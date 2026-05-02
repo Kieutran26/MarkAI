@@ -1,4 +1,4 @@
-﻿import { lessons } from './lessons';
+import { lessons } from './lessons';
 
 export type ContentBlock =
   | { type: 'p'; text: string }
@@ -693,7 +693,7 @@ export const subLessons: SubLessonFull[] = [
       { type: 'p', text: 'Hiểu từ ngữ chuyên ngành không phải để bạn nói chuyện được với dev. Mục đích thực tế hơn: để bạn prompt đúng hơn, đọc hiểu được lỗi khi AI báo lỗi, và đặc biệt bạn cần biết mình cần làm gì.' },
       { type: 'html', html: '<section class="mini-example-flow" aria-label="Ví dụ về spacing"><div class="mini-example-step">Có một chỗ bị lệch</div><div class="mini-example-arrow" aria-hidden="true"></div><div class="mini-example-step">Bạn biết chỗ lệch đó gọi là spacing</div><div class="mini-example-arrow" aria-hidden="true"></div><div class="mini-example-step">Bạn nhờ AI sửa lỗi</div><div class="mini-example-arrow" aria-hidden="true"></div><div class="mini-example-step mini-example-step-accent">AI sẽ hiểu ý bạn và sửa nhanh hơn.</div></section>' },
       { type: 'p', text: 'Vì danh sách từ ngữ khá dài — và mỗi từ đều được giải thích kèm ví dụ thực tế — mình đã tách phần này thành một trang riêng biệt để bạn dễ tra cứu lại bất cứ lúc nào, không cần cuộn qua toàn bộ bài học.' },
-      { type: 'html', html: '<div style="border:1px solid var(--border); padding:1.1rem; margin:1.4rem 0; background:var(--bg2)"><p style="margin:0 0 .8rem 0; font-family:var(--sans); font-size:14px; line-height:1.7; color:var(--ink2)">Bấm vào nút bên dưới để xem toàn bộ từ điển thuật ngữ.</p><a class="glossary-cta-link" href="/vibecode/tu-ngu-chuyen-nganh/tu-dien-thuat-ngu" style="display:inline-flex; align-items:center; gap:6px; background:var(--ink); color:var(--bg); padding:11px 18px; text-decoration:none; font-family:var(--mono); font-size:12px; letter-spacing:.02em">Xem toàn bộ từ điển thuật ngữ →</a></div>' }
+      { type: 'html', html: '<div style="border:1px solid var(--border); padding:1.1rem; margin:1.4rem 0; background:var(--bg2)"><p style="margin:0 0 .8rem 0; font-family:var(--sans); font-size:14px; line-height:1.7; color:var(--ink2)">Bấm vào nút bên dưới để xem toàn bộ từ điển thuật ngữ.</p><a class="glossary-cta-link" href="/vibecode/tu-ngu-chuyen-nganh/tu-dien-thuat-ngu" style="display:inline-flex; align-items:center; gap:6px; padding:11px 18px; text-decoration:none; font-family:var(--mono); font-size:12px; letter-spacing:.02em">Xem toàn bộ từ điển thuật ngữ →</a></div>' }
     ]
   }
 
