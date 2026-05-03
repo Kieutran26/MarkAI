@@ -12,8 +12,8 @@
     --bg-card: #17171c;
     --fg: #f0ece4;
     --muted: #6b6b78;
-    --accent: #e8753a;
-    --accent-light: #f4a261;
+    --accent: #e88c2e;
+    --accent-light: #f0a25e;
     --bar-dark: #2a2a33;
     --bar-mid: #4a4a58;
     --border: #2a2a33;
@@ -23,7 +23,7 @@
     background:
       linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px),
-      radial-gradient(circle at top right, rgba(232,117,58,0.06), transparent 35%),
+      radial-gradient(circle at top right, rgba(232,140,46,0.06), transparent 35%),
       #0e0e11;
     background-size: 60px 60px, 60px 60px, auto, auto;
     color: var(--fg);
@@ -44,7 +44,7 @@
     cursor: pointer;
     transition: all .25s ease;
   }
-  .tab-btn.active { border-color: var(--accent); color: var(--fg); background: rgba(232,117,58,0.1); }
+  .tab-btn.active { border-color: var(--accent); color: var(--fg); background: rgba(232,140,46,0.1); }
   .tab-btn .num { color: var(--accent); margin-right: 6px; }
   .panel {
     margin-top: 18px;
@@ -63,15 +63,15 @@
     position: absolute;
     inset: 0 0 auto 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(232,117,58,0.3), transparent);
+    background: linear-gradient(90deg, transparent, rgba(232,140,46,0.3), transparent);
   }
   .square {
     width: 120px;
     height: 120px;
     flex-shrink: 0;
     border-radius: 8px;
-    background: repeating-linear-gradient(45deg, var(--accent), var(--accent) 4px, rgba(232,117,58,0.35) 4px, rgba(232,117,58,0.35) 8px);
-    box-shadow: 0 10px 36px rgba(232,117,58,0.15);
+    background: repeating-linear-gradient(45deg, var(--accent), var(--accent) 4px, rgba(232,140,46,0.35) 4px, rgba(232,140,46,0.35) 8px);
+    box-shadow: 0 10px 36px rgba(232,140,46,0.15);
   }
   .bars { flex: 1; min-height: 145px; display: flex; flex-direction: column; justify-content: center; }
   .bar-row { display: flex; align-items: center; gap: 16px; opacity: 0; transform: translateX(-18px); transition: all .45s ease; }
@@ -134,7 +134,6 @@
   <section class="panel">
     <div class="square"></div>
     <div class="bars" id="barsArea"></div>
-    <div class="indicator"><span></span><span></span><span></span><span></span><span></span></div>
     <div class="style-info">
       <div class="label">Khoảng cách</div>
       <div class="value" id="styleValue">4 — 8px</div>

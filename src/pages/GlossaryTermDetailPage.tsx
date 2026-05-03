@@ -187,7 +187,7 @@ function TermDisplaySection({
 
         <div className="px-[1.2rem] py-10 lg:px-8 lg:py-14">
           <div className="mt-8 border border-[#2a2a33] bg-[#0f0f12]">
-            <div className="flex items-center justify-between border-b border-[#2a2a33] bg-[#cf5c26] px-4 py-2">
+            <div className="flex items-center justify-between border-b border-[#2a2a33] bg-[#e88c2e] px-4 py-2">
               <span className="font-mono text-[10px] font-bold uppercase tracking-[0.05em] text-[#0f0f12]">Demo / GIF</span>
               <span className="font-mono text-[10px] font-bold text-[#0f0f12]">{term.name}</span>
             </div>

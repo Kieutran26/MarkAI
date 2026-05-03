@@ -59,7 +59,7 @@ export default function LineSpacingPracticePanel() {
 
   return (
     <div className="mt-8 border border-[#2a2a33] bg-[#0f0f12]">
-      <div className="flex items-center justify-between border-b border-[#2a2a33] bg-[#cf5c26] px-4 py-2">
+      <div className="flex items-center justify-between border-b border-[#2a2a33] bg-[#e88c2e] px-4 py-2">
         <span className="font-mono text-[10px] font-bold uppercase tracking-[0.05em] text-[#0f0f12]">Thực hành</span>
         <span className="font-mono text-[10px] font-bold text-[#0f0f12]">Line Spacing</span>
       </div>

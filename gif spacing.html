@@ -15,8 +15,8 @@
     --bg-card: #080808;
     --fg: #f0ece4;
     --muted: #888899;
-    --accent: #e8753a;
-    --accent-light: #f4a261;
+    --accent: #e88c2e;
+    --accent-light: #f0a25e;
     --bar-dark: #1a1a20;
     --bar-mid: #2a2a33;
     --border: #1a1a1a;
@@ -40,7 +40,7 @@
     right: -10%;
     width: 600px;
     height: 600px;
-    background: radial-gradient(circle, rgba(232,117,58,0.06) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(232,140,46,0.06) 0%, transparent 70%);
     pointer-events: none;
     z-index: 0;
   }
@@ -50,7 +50,7 @@
     left: -5%;
     width: 500px;
     height: 500px;
-    background: radial-gradient(circle, rgba(244,162,97,0.04) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(240,162,94,0.04) 0%, transparent 70%);
     pointer-events: none;
     z-index: 0;
   }
@@ -81,8 +81,8 @@
     letter-spacing: 2px;
     text-transform: uppercase;
     color: var(--accent);
-    background: rgba(232,117,58,0.08);
-    border: 1px solid rgba(232,117,58,0.15);
+    background: rgba(232,140,46,0.08);
+    border: 1px solid rgba(232,140,46,0.15);
     padding: 6px 16px;
     border-radius: 20px;
     margin-bottom: 24px;
@@ -146,7 +146,7 @@
   .tab-btn.active {
     border-color: var(--accent);
     color: #fff;
-    background: rgba(232,117,58,0.12);
+    background: rgba(232,140,46,0.12);
   }
   .tab-btn .num {
     color: var(--accent);
@@ -188,7 +188,7 @@
     position: absolute;
     top: 0; left: 0; right: 0;
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(232,117,58,0.3), transparent);
+    background: linear-gradient(90deg, transparent, rgba(232,140,46,0.3), transparent);
   }
 
   /* === Vuông cam có chéo === */
@@ -206,12 +206,12 @@
         45deg,
         var(--accent),
         var(--accent) 3px,
-        rgba(232,117,58,0.35) 3px,
-        rgba(232,117,58,0.35) 6px
+        rgba(232,140,46,0.35) 3px,
+        rgba(232,140,46,0.35) 6px
       );
     border-radius: 6px;
     position: relative;
-    box-shadow: 0 8px 32px rgba(232,117,58,0.15);
+    box-shadow: 0 8px 32px rgba(232,140,46,0.15);
     animation: squarePulse 3s ease-in-out infinite;
   }
   .cross-square::after {
@@ -222,8 +222,8 @@
     border: 2px solid rgba(255,255,255,0.1);
   }
   @keyframes squarePulse {
-    0%, 100% { box-shadow: 0 8px 32px rgba(232,117,58,0.15); }
-    50% { box-shadow: 0 8px 48px rgba(232,117,58,0.25); }
+    0%, 100% { box-shadow: 0 8px 32px rgba(232,140,46,0.15); }
+    50% { box-shadow: 0 8px 48px rgba(232,140,46,0.25); }
   }
 
   /* === Phần bars === */
@@ -305,28 +305,6 @@
     transition: all 0.5s ease;
   }
 
-  /* === Dải chỉ thị spacing === */
-  .spacing-indicator {
-    position: absolute;
-    right: 12px;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.6s ease 0.4s;
-  }
-  .spacing-indicator.show { opacity: 1; }
-  .spacing-indicator .dot {
-    width: 4px;
-    height: 4px;
-    background: var(--accent);
-    border-radius: 50%;
-    margin-left: -1px;
-  }
   @media (max-width: 800px) {
     .demo-panel { flex-direction: column; padding: 22px 18px; gap: 22px; }
   }
@@ -524,10 +502,10 @@
     font-family: 'JetBrains Mono', monospace;
     font-size: 11px;
     color: var(--accent);
-    background: rgba(232,117,58,0.1);
+    background: rgba(232,140,46,0.1);
     padding: 4px 10px;
     border-radius: 4px;
-    border: 1px solid rgba(232,117,58,0.2);
+    border: 1px solid rgba(232,140,46,0.2);
   }
 
   .stack-container {
@@ -606,13 +584,6 @@
     </div>
     <div class="bars-area" id="barsArea">
       <!-- Bars sẽ được render bằng JS -->
-    </div>
-    <div class="spacing-indicator" id="spacingIndicator">
-      <div class="dot"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
-      <div class="dot"></div>
     </div>
     <div class="style-info">
       <div class="label">Khoảng cách</div>
@@ -849,12 +820,6 @@
         row.classList.add('visible');
       }
     });
-
-    // Cập nhật spacing indicator
-    spacingIndicator.classList.remove('show');
-    if (animate) {
-      setTimeout(() => spacingIndicator.classList.add('show'), 400);
-    }
 
     // Cập nhật giá trị
     styleValue.style.opacity = '0';

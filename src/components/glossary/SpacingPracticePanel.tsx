@@ -15,7 +15,7 @@ export default function SpacingPracticePanel() {
 
   return (
     <section className="mt-6 border border-[#2a2a33] bg-[#0f0f12]">
-      <div className="border-b border-[#2a2a33] bg-[#cf5c26] px-4 py-2">
+      <div className="border-b border-[#2a2a33] bg-[#e88c2e] px-4 py-2">
         <p className="font-mono text-[10px] font-bold uppercase tracking-[0.06em] text-[#0f0f12]">Thực hành</p>
       </div>
 
@@ -39,7 +39,7 @@ export default function SpacingPracticePanel() {
                   max={80}
                   value={gaps[index]}
                   onChange={(event) => updateGap(index, Number(event.target.value))}
-                  className="h-[4px] w-full cursor-pointer appearance-none bg-[#2a2a33] accent-[#cf5c26]"
+                  className="h-[4px] w-full cursor-pointer appearance-none bg-[#2a2a33] accent-[#e88c2e]"
                 />
                 <input
                   type="number"
@@ -53,7 +53,7 @@ export default function SpacingPracticePanel() {
             ))}
           </div>
 
-          <div className="mt-5 border-l-2 border-l-[#cf5c26] bg-[#1e1e25] px-4 py-3 font-mono text-[11px] leading-[1.7] text-[#a0a0ab]">
+          <div className="mt-5 border-l-2 border-l-[#e88c2e] bg-[#1e1e25] px-4 py-3 font-mono text-[11px] leading-[1.7] text-[#a0a0ab]">
             Gợi ý: thử tăng từ `8px` lên `16px`, `24px`, `32px` để cảm nhận layout bớt bí và premium hơn.
           </div>
         </div>
@@ -78,17 +78,17 @@ export default function SpacingPracticePanel() {
                 <article
                   className="border border-[#2a2a33] glossary-tech-grid px-4 py-4"
                 >
-                  <p className="font-mono text-[10px] uppercase tracking-[0.08em] text-[#cf5c26]">{eyebrow}</p>
+                  <p className="font-mono text-[10px] uppercase tracking-[0.08em] text-[#e88c2e]">{eyebrow}</p>
                   <h5 className="mt-2 font-serif text-[1.2rem] leading-[1.05] text-[#e8e4dc]">{title}</h5>
                   <p className="mt-2 font-sans text-[13px] leading-[1.7] text-[#a0a0ab]">{body}</p>
                 </article>
                 {index < items.length - 1 && (
                   <div 
-                    className="flex items-center justify-center overflow-hidden bg-[rgba(207,92,38,0.08)] transition-all"
+                    className="flex items-center justify-center overflow-hidden bg-[rgba(232,140,46,0.08)] transition-all"
                     style={{ height: `${gaps[index]}px`, opacity: gaps[index] > 0 ? 1 : 0 }}
                   >
                     {gaps[index] >= 12 && (
-                      <span className="font-mono text-[9px] text-[#cf5c26] opacity-60">{gaps[index]}px</span>
+                      <span className="font-mono text-[9px] text-[#e88c2e] opacity-60">{gaps[index]}px</span>
                     )}
                   </div>
                 )}
