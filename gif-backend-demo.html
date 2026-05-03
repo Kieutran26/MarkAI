@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Backend Demo — markAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+  --bg:#0f0f12;--bg-card:#16161b;--fg:#e8e4dc;--muted:#6e6e7a;
+  --accent:#e88c2e;--accent-soft:rgba(232,140,46,.12);
+  --accent-border:rgba(232,140,46,.3);--border:#282830;
+  --surface:#1c1c23;--success:#3a9e5c;--success-soft:rgba(58,158,92,.12);
+  --warning:#c49030;--warning-soft:rgba(196,144,48,.1);
+  --error:#c43a3a;--error-soft:rgba(196,58,58,.12);
+  --bar-d:#2a2a34;--bar-m:#44444f;--shape-lt:#33333d;
+  --be:#e88c2e;--be-soft:rgba(232,140,46,.1);--be-border:rgba(232,140,46,.3);
+  --db:#3a9e5c;--db-soft:rgba(58,158,92,.08);--db-border:rgba(58,158,92,.25);
+  --queue:#c49030;--queue-soft:rgba(196,144,48,.1);--queue-border:rgba(196,144,48,.25);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:'Space Grotesk',sans-serif;line-height:1.6;overflow-x:hidden;height:auto}
+body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(rgba(255,255,255,.022) 1px,transparent 1px);background-size:20px 20px;pointer-events:none;z-index:0}
+
+#app-root{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:24px}
+
+.sec-lbl{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.sec-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+
+.sim-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px}
+@media(max-width:560px){.sim-grid{grid-template-columns:1fr}}
+
+.sc{background:var(--bg-card);border:1px solid var(--border);cursor:pointer;position:relative;overflow:hidden;transition:border-color .3s,background .3s}
+.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;transform:scaleX(0);transform-origin:left;transition:transform .35s ease;z-index:2}
+.sc:hover{border-color:var(--be-border)}
+.sc.on{border-color:var(--be);background:var(--surface)}
+.sc.on::before{transform:scaleX(1);background:var(--be)}
+.sc[data-color="db"]::before{background:var(--db)}.sc[data-color="db"].on{border-color:var(--db)}
+.sc[data-color="queue"]::before{background:var(--queue)}.sc[data-color="queue"].on{border-color:var(--queue)}
+
+.sc-head{padding:14px 14px 10px;display:flex;justify-content:space-between;align-items:center}
+.sc-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px}
+.sc-tag{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);transition:color .3s}
+.sc.on .sc-tag{color:var(--be)}
+.sc[data-color="db"].on .sc-tag{color:var(--db)}
+.sc[data-color="queue"].on .sc-tag{color:var(--queue)}
+
+.sc-demo{height:210px;padding:0 14px 14px;position:relative;overflow:hidden}
+@media(max-width:560px){.sc-demo{height:190px}}
+
+.sc-ins{padding:0 14px 12px;font-size:11px;color:var(--muted);opacity:0;max-height:0;overflow:hidden;transition:all .4s ease;line-height:1.55}
+.sc.on .sc-ins{opacity:.7;max-height:70px;margin-top:-4px}
+
+/* ===== 01 API ENDPOINT ===== */
+.api-shell{width:100%;height:100%;background:var(--bg);border:1px solid var(--border);overflow:hidden;font-family:'JetBrains Mono',monospace;font-size:0;position:relative}
+.api-shell::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.006) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.006) 1px,transparent 1px);background-size:8px 8px;pointer-events:none}
+.api-line{padding:3px 8px;font-size:9px;opacity:0;transition:opacity .35s ease;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.api-line.show{opacity:1}
+.api-method{font-weight:600;display:inline-block;width:38px}
+.api-method.get{color:var(--success)}.api-method.post{color:var(--be)}
+.api-path{color:var(--fg);opacity:.7}
+.api-status{color:var(--success)}
+.api-key{color:var(--accent)}
+.api-str{color:var(--db)}
+.api-brace{color:var(--muted)}
+.api-req{color:var(--warning);font-size:8px;opacity:.5;margin-top:4px}
+
+/* ===== 02 DATABASE SCHEMA ===== */
+.db-shell{width:100%;height:100%;display:flex;flex-direction:column;gap:6px;overflow:hidden}
+.db-table{border:1px solid var(--border);background:var(--bg);overflow:hidden;opacity:0;transform:translateY(6px);transition:all .4s ease}
+.db-table.show{opacity:1;transform:translateY(0)}
+.db-table-head{padding:4px 8px;background:var(--db-soft);border-bottom:1px solid var(--db-border);display:flex;align-items:center;gap:6px}
+.db-table-head i{font-size:8px;color:var(--db)}
+.db-table-head span{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:600;color:var(--db)}
+.db-field{padding:2px 8px;font-family:'JetBrains Mono',monospace;font-size:7.5px;color:var(--muted);display:flex;justify-content:space-between;border-bottom:1px solid rgba(40,40,48,.5)}
+.db-field:last-child{border-bottom:none}
+.db-field .type{color:var(--be);opacity:.6}
+.db-field .pk{color:var(--accent);font-size:6px;margin-right:3px}
+
+/* ===== 03 AUTH FLOW ===== */
+.auth-shell{width:100%;height:100%;display:flex;align-items:center;justify-content:center;position:relative}
+.auth-step{position:absolute;display:flex;flex-direction:column;align-items:center;gap:4px;opacity:0;transition:all .5s ease}
+.auth-step.show{opacity:1}
+.auth-icon{width:28px;height:28px;border:1px solid var(--border);background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:11px}
+.auth-label{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);text-align:center;max-width:60px;line-height:1.3}
+
+/* ===== 04 BACKGROUND JOBS ===== */
+.job-shell{width:100%;height:100%;position:relative;display:flex;align-items:center;justify-content:center;gap:0}
+.job-node{display:flex;flex-direction:column;align-items:center;gap:3px;opacity:0;transform:scale(.8);transition:all .5s ease;z-index:1}
+.job-node.show{opacity:1;transform:scale(1)}
+.job-box{border:1px solid var(--border);background:var(--bg);padding:4px 8px;display:flex;align-items:center;gap:5px}
+.job-box i{font-size:9px}
+.job-box span{font-family:'JetBrains Mono',monospace;font-size:7.5px;font-weight:500}
+.job-label{font-family:'JetBrains Mono',monospace;font-size:6.5px;color:var(--muted);opacity:.5}
+
+.ins{background:var(--surface);border:1px solid var(--border);padding:18px 22px;display:flex;align-items:flex-start;gap:12px;min-height:80px}
+.ins-i{color:var(--be);font-size:13px;margin-top:3px;flex-shrink:0}
+.ins-t{font-size:14px;color:var(--fg);opacity:.85;line-height:1.65;transition:opacity .25s,transform .25s}
+.ins-t.fading{opacity:0;transform:translateY(6px)}
+</style>
+</head>
+<body>
+
+<div id="app-root">
+  <section aria-label="Mô phỏng backend">
+    <div class="sim-grid" id="simGrid"></div>
+    <div class="ins">
+      <i class="fa-solid fa-lightbulb ins-i"></i>
+      <p class="ins-t" id="insT">Nhấn vào một panel để xem backend làm gì ở từng tầng.</p>
+    </div>
+  </section>
+</div>
+
+<script>
+const sims = [
+  {
+    num:'01', tag:'API Endpoint', color:'',
+    ins:'API Endpoint là "cửa" mà frontend gõ để nói chuyện với backend. Mỗi endpoint là một URL riêng, trả về data dạng JSON. User không thấy endpoint, nhưng mọi nút bấm đều gọi một endpoint.',
+    build(el){
+      el.innerHTML=`<div class="api-shell">
+        <div class="api-line"><span class="api-method get">GET</span><span class="api-path">/api/users</span></div>
+        <div class="api-line" style="padding-left:16px"><span class="api-status">200 OK</span></div>
+        <div class="api-line" style="padding-left:16px"><span class="api-brace">{</span></div>
+        <div class="api-line" style="padding-left:24px"><span class="api-key">"data"</span><span class="api-brace">: [</span></div>
+        <div class="api-line" style="padding-left:32px"><span class="api-brace">{</span><span class="api-key">"id"</span><span class="api-brace">:</span> <span class="api-str">1</span><span class="api-brace">,</span> <span class="api-key">"name"</span><span class="api-brace">:</span> <span class="api-str">"An"</span><span class="api-brace">,</span> <span class="api-key">"email"</span><span class="api-brace">:</span> <span class="api-str">"an@..."</span><span class="api-brace">}</span></div>
+        <div class="api-line" style="padding-left:32px"><span class="api-brace">{</span><span class="api-key">"id"</span><span class="api-brace">:</span> <span class="api-str">2</span><span class="api-brace">,</span> <span class="api-key">"name"</span><span class="api-brace">:</span> <span class="api-str">"Bình"</span><span class="api-brace">}</span></div>
+        <div class="api-line" style="padding-left:24px"><span class="api-brace">]</span></div>
+        <div class="api-line" style="padding-left:16px"><span class="api-brace">}</span></div>
+        <div class="api-line api-req">--- POST /api/users { name: "An" } → 201 Created ---</div>
+      </div>`;
+      setTimeout(()=>{el.querySelectorAll('.api-line').forEach((l,i)=>{setTimeout(()=>l.classList.add('show'),i*80)})},100);
+    }
+  },
+  {
+    num:'02', tag:'Database Schema', color:'db',
+    ins:'Database là nơi backend lưu mọi thứ — user, đơn hàng, setting. Schema là "bản thiết kế" của database: bảng nào, cột nào, loại data gì. Backend đọc/ghi schema này mỗi khi xử lý request. Sai schema = data hỏng.',
+    build(el){
+      el.innerHTML=`<div class="db-shell">
+        <div class="db-table" id="dt0"><div class="db-table-head"><i class="fa-solid fa-table"></i><span>users</span></div>
+          <div class="db-field"><span><span class="pk">PK</span>id</span><span class="type">INT</span></div>
+          <div class="db-field"><span>name</span><span class="type">VARCHAR</span></div>
+          <div class="db-field"><span>email</span><span class="type">VARCHAR</span></div>
+          <div class="db-field"><span>role</span><span class="type">ENUM</span></div>
+        </div>
+        <div class="db-table" id="dt1"><div class="db-table-head"><i class="fa-solid fa-table"></i><span>orders</span></div>
+          <div class="db-field"><span><span class="pk">PK</span>id</span><span class="type">INT</span></div>
+          <div class="db-field"><span>user_id</span><span class="type">FK → users</span></div>
+          <div class="db-field"><span>total</span><span class="type">DECIMAL</span></div>
+          <div class="db-field"><span>status</span><span class="type">ENUM</span></div>
+        </div>
+        <div class="db-table" id="dt2"><div class="db-table-head"><i class="fa-solid fa-table"></i><span>order_items</span></div>
+          <div class="db-field"><span><span class="pk">PK</span>id</span><span class="type">INT</span></div>
+          <div class="db-field"><span>order_id</span><span class="type">FK → orders</span></div>
+          <div class="db-field"><span>product</span><span class="type">VARCHAR</span></div>
+          <div class="db-field"><span>quantity</span><span class="type">INT</span></div>
+        </div>
+      </div>`;
+      setTimeout(()=>{for(let i=0;i<3;i++)setTimeout(()=>el.querySelector('#dt'+i).classList.add('show'),i*200)},100);
+    }
+  },
+  {
+    num:'03', tag:'Auth Flow', color:'',
+    ins:'Authentication là cách backend xác nhận "bạn là ai". Flow: User gửi email/password → Backend kiểm tra database → Nếu đúng, tạo JWT token → Gửi token cho frontend → Frontend đính kèm token ở mọi request sau. Token hết hạn → Phải login lại.',
+    build(el){
+      const W=el.offsetWidth||200, H=el.offsetHeight||170;
+      const cx=W/2, cy=H/2;
+      const positions=[
+        {x:cx-70,y:cy-55,label:'Client',icon:'fa-user'},
+        {x:cx,y:cy-55,label:'API Server',icon:'fa-server'},
+        {x:cx+70,y:cy-55,label:'Database',icon:'fa-database'},
+        {x:cx,y:cy+45,label:'JWT Token',icon:'fa-key'}
+      ];
+      const arrows=[
+        {from:0,to:1,lbl:'login'},
+        {from:1,to:2,lbl:'verify'},
+        {from:2,to:1,lbl:'user data'},
+        {from:1,to:3,lbl:'generate'}
+      ];
+      el.innerHTML=`<div class="auth-shell"></div>`;
+      const shell=el.querySelector('.auth-shell');
+      positions.forEach((p,i)=>{
+        const d=document.createElement('div');d.className='auth-step';
+        d.style.cssText=`left:${p.x}px;top:${p.y}px;transform:translate(-50%,-50%)`;
+        d.innerHTML=`<div class="auth-icon"><i class="fa-solid ${p.icon}"></i></div><div class="auth-label">${p.label}</div>`;
+        shell.appendChild(d);
+      });
+      setTimeout(()=>{
+        shell.querySelectorAll('.auth-step').forEach((s,i)=>setTimeout(()=>s.classList.add('show'),i*150));
+      },100);
+    }
+  },
+  {
+    num:'04', tag:'Background Jobs', color:'queue',
+    ins:'Một số việc backend KHÔNG làm ngay — gửi email, xử lý file, sync data. Thay vào đó, nó đẩy việc vào hàng đợi (queue), worker lấy ra làm sau. Lợi ích: không chậm request, retry tự động khi lỗi, mở rộng dễ dàng.',
+    build(el){
+      el.innerHTML=`<div class="job-shell">
+        <div class="job-node" id="jn0" style="left:8%;top:20%">
+          <div class="job-box"><i class="fa-solid fa-globe" style="color:var(--be)"></i><span>API Server</span></div>
+          <div class="job-label">Nhận request</div>
+        </div>
+        <div class="job-node" id="jn1" style="left:30%;top:20%">
+          <div class="job-box" style="border-color:var(--queue-border)"><i class="fa-solid fa-layer-group" style="color:var(--queue)"></i><span>Redis Queue</span></div>
+          <div class="job-label">Hàng đợi</div>
+        </div>
+        <div class="job-node" id="jn2" style="left:52%;top:20%">
+          <div class="job-box"><i class="fa-solid fa-gears" style="color:var(--accent)"></i><span>Worker</span></div>
+          <div class="job-label">Xử lý</div>
+        </div>
+        <div class="job-node" id="jn3" style="left:74%;top:20%">
+          <div class="job-box" style="border-color:var(--db-border)"><i class="fa-solid fa-database" style="color:var(--db)"></i><span>Database</span></div>
+          <div class="job-label">Lưu kết quả</div>
+        </div>
+        <div class="job-node" id="jn4" style="left:41%;top:68%">
+          <div class="job-box"><i class="fa-solid fa-envelope" style="color:var(--success)"></i><span>Email Service</span></div>
+          <div class="job-label">Gửi email</div>
+        </div>
+      </div>`;
+      setTimeout(()=>{
+        ['jn0','jn1','jn2','jn3','jn4'].forEach((id,i)=>setTimeout(()=>el.querySelector('#'+id).classList.add('show'),i*180));
+      },100);
+    }
+  }
+];
+
+const simGrid = document.getElementById('simGrid');
+const insT = document.getElementById('insT');
+let activeI = 0;
+let autoTimer;
+
+function renderSim(){
+  simGrid.innerHTML = sims.map((s,i)=>`
+    <div class="sc" data-i="${i}" data-color="${s.color}" tabindex="0" role="button">
+      <div class="sc-head"><span class="sc-num">${s.num}</span><span class="sc-tag">${s.tag}</span></div>
+      <div class="sc-demo" id="sd${i}"></div>
+      <div class="sc-ins">${s.ins}</div>
+    </div>`).join('');
+  simGrid.querySelectorAll('.sc').forEach(c=>{
+    c.addEventListener('click',()=>{
+      clearInterval(autoTimer);
+      activateSim(+c.dataset.i);
+    });
+  });
+}
+
+function activateSim(i){
+  activeI = i;
+  simGrid.querySelectorAll('.sc').forEach((c,idx)=>c.classList.toggle('on',idx===i));
+  const demo=document.getElementById('sd'+i);
+  demo.innerHTML='';
+  sims[i].build(demo);
+  setIns(sims[i].ins);
+}
+
+function setIns(t){insT.classList.add('fading');setTimeout(()=>{insT.textContent=t;insT.classList.remove('fading')},250)}
+
+function startAuto(){
+  activateSim(0);
+  autoTimer = setInterval(()=>{
+    activeI = (activeI + 1) % sims.length;
+    activateSim(activeI);
+  }, 5000);
+}
+
+renderSim();
+startAuto();
+</script>
+</body>
+</html>

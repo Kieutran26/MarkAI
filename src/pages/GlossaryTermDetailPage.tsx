@@ -20,6 +20,9 @@ import cardDemoHtml from '../../gif-card-demo.html?raw';
 import cardPracticeHtml from '../../gif-card-practice.html?raw';
 import frontendDemoHtml from '../../gif-frontend-demo.html?raw';
 import frontendPracticeHtml from '../../gif-frontend-practice.html?raw';
+import backendDemoHtml from '../../gif-backend-demo.html?raw';
+import backendPracticeHtml from '../../gif-backend-practice.html?raw';
+
 
 export default function GlossaryTermDetailPage() {
   const { termId } = useParams<{ termId: string }>();
@@ -45,6 +48,7 @@ export default function GlossaryTermDetailPage() {
     if (id === 'radius') return radiusDemoHtml;
     if (id === 'card') return cardDemoHtml;
     if (id === 'frontend') return frontendDemoHtml;
+    if (id === 'backend') return backendDemoHtml;
     return null;
   };
 
@@ -54,6 +58,7 @@ export default function GlossaryTermDetailPage() {
     if (id === 'radius') return radiusPracticeHtml;
     if (id === 'card') return cardPracticeHtml;
     if (id === 'frontend') return frontendPracticeHtml;
+    if (id === 'backend') return backendPracticeHtml;
     return null;
   };
 
