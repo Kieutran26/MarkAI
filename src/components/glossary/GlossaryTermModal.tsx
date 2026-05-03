@@ -1,12 +1,13 @@
 import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import type { GlossaryTerm, TermGroup } from '../../lib/glossary';
+import { getTermViewMode, type GlossaryTerm, type TermGroup } from '../../lib/glossary';
 
 interface GlossaryTermModalProps {
   term: GlossaryTerm | null;
   isOpen: boolean;
   getTermName: (id: string) => string;
   onClose: () => void;
+  onNext?: () => void;
 }
 
 const badgeClasses: Record<TermGroup, string> = {
@@ -27,7 +28,7 @@ const badgeLabels: Record<TermGroup, string> = {
   workflow: 'Workflow',
 };
 
-export default function GlossaryTermModal({ term, isOpen, getTermName, onClose }: GlossaryTermModalProps) {
+export default function GlossaryTermModal({ term, isOpen, getTermName, onClose, onNext }: GlossaryTermModalProps) {
   useEffect(() => {
     if (!isOpen) return;
     const handleEscape = (event: KeyboardEvent) => event.key === 'Escape' && onClose();
@@ -40,6 +41,8 @@ export default function GlossaryTermModal({ term, isOpen, getTermName, onClose }
   }, [isOpen, onClose]);
 
   if (!isOpen || !term) return null;
+
+  const viewMode = getTermViewMode(term);
 
   return (
     <div className="glossary-modal-overlay" role="dialog" aria-modal="true" aria-labelledby={`glossary-modal-${term.id}`} onClick={(event) => event.target === event.currentTarget && onClose()}>
@@ -82,15 +85,27 @@ export default function GlossaryTermModal({ term, isOpen, getTermName, onClose }
         </div>
 
         <div className="flex items-center justify-between gap-4 border-t border-border px-5 py-4">
-          <span className="font-mono text-[10px] uppercase tracking-[0.05em] text-muted">Term ngắn gọn nên mở popup</span>
-          <Link
-            to={`/tu-dien-thuat-ngu/${term.id}`}
-            className="inline-flex items-center border border-[var(--ink)] bg-[var(--ink)] px-[10px] py-[7px] font-mono text-[10px] uppercase tracking-[0.04em] text-[var(--bg)] no-underline transition-colors hover:border-accent hover:bg-accent hover:text-[var(--ink)] active:border-accent active:bg-accent active:text-[var(--ink)]"
-          >
-            Mở trang riêng →
-          </Link>
+          <span className="font-mono text-[10px] uppercase tracking-[0.05em] text-muted">
+            {viewMode === 'modal' ? 'Thuật ngữ cơ bản' : 'Term ngắn gọn nên mở popup'}
+          </span>
+          {viewMode === 'modal' && onNext ? (
+            <button
+              onClick={onNext}
+              className="inline-flex items-center border border-[var(--ink)] bg-[var(--ink)] px-[10px] py-[7px] font-mono text-[10px] uppercase tracking-[0.04em] text-[var(--bg)] no-underline transition-colors hover:border-accent hover:bg-accent hover:text-[var(--ink)] active:border-accent active:bg-accent active:text-[var(--ink)]"
+            >
+              Sang từ tiếp theo →
+            </button>
+          ) : (
+            <Link
+              to={`/tu-dien-thuat-ngu/${term.id}`}
+              className="inline-flex items-center border border-[var(--ink)] bg-[var(--ink)] px-[10px] py-[7px] font-mono text-[10px] uppercase tracking-[0.04em] text-[var(--bg)] no-underline transition-colors hover:border-accent hover:bg-accent hover:text-[var(--ink)] active:border-accent active:bg-accent active:text-[var(--ink)]"
+            >
+              Mở trang riêng →
+            </Link>
+          )}
         </div>
       </div>
     </div>
   );
 }
+

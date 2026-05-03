@@ -2,11 +2,13 @@ import { Fragment, useEffect, useRef } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import '../components/glossary/glossary.css';
 import ApiPracticePanel from '../components/glossary/ApiPracticePanel';
+import AuthPracticePanel from '../components/glossary/AuthPracticePanel';
 import SpacingPracticePanel from '../components/glossary/SpacingPracticePanel';
 import LetterSpacingPracticePanel from '../components/glossary/LetterSpacingPracticePanel';
 import LineSpacingPracticePanel from '../components/glossary/LineSpacingPracticePanel';
 import { getTermById, GlossaryTerm } from '../lib/glossary';
 import apiDemoHtml from '../../gif-api-demo.html?raw';
+import authDemoHtml from '../../gif-auth-demo.html?raw';
 import spacingDemoHtml from '../../gif-spacing-demo.html?raw';
 import letterSpacingDemoHtml from '../../gif letter spacing.html?raw';
 import lineSpacingDemoHtml from '../../gif-line-spacing.html?raw';
@@ -27,6 +29,7 @@ export default function GlossaryTermDetailPage() {
 
   const getInteractiveHtml = (id: string) => {
     if (id === 'api') return apiDemoHtml;
+    if (id === 'auth') return authDemoHtml;
     if (id === 'spacing') return spacingDemoHtml;
     if (id === 'letter-spacing') return letterSpacingDemoHtml;
     if (id === 'line-spacing') return lineSpacingDemoHtml;
@@ -226,6 +229,7 @@ function TermDisplaySection({
             )}
           </div>
           {term.id === 'api' ? <ApiPracticePanel /> : null}
+          {term.id === 'auth' ? <AuthPracticePanel /> : null}
           {term.id === 'spacing' ? <SpacingPracticePanel /> : null}
           {term.id === 'letter-spacing' ? <LetterSpacingPracticePanel /> : null}
           {term.id === 'line-spacing' ? <LineSpacingPracticePanel /> : null}

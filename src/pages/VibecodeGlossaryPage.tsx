@@ -66,6 +66,14 @@ export default function VibecodeGlossaryPage() {
 
   const getTermName = (id: string) => terms.find((term) => term.id === id)?.name ?? id.toUpperCase();
 
+  const handleNextTerm = () => {
+    if (!activeModalTerm) return;
+    const currentIndex = filteredTerms.findIndex((t) => t.id === activeModalTerm.id);
+    if (currentIndex === -1) return;
+    const nextTerm = filteredTerms[(currentIndex + 1) % filteredTerms.length];
+    setActiveModalTerm(nextTerm);
+  };
+
   return (
     <div className="glossary-page bg-[var(--bg)] text-ink">
       <GlossaryHero searchQuery={searchQuery} onSearchChange={setSearchQuery} filteredCount={filteredTerms.length} activeGroup={activeGroup} onGroupChange={setActiveGroup} />
@@ -89,7 +97,14 @@ export default function VibecodeGlossaryPage() {
         <span aria-hidden="true">↑</span>
       </button>
 
-      <GlossaryTermModal term={activeModalTerm} isOpen={Boolean(activeModalTerm)} getTermName={getTermName} onClose={() => setActiveModalTerm(null)} />
+      <GlossaryTermModal
+        term={activeModalTerm}
+        isOpen={Boolean(activeModalTerm)}
+        getTermName={getTermName}
+        onClose={() => setActiveModalTerm(null)}
+        onNext={handleNextTerm}
+      />
     </div>
   );
 }
+

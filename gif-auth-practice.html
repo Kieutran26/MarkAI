@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Auth Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  :root { --bg:#0f0f12; --bg-card:#17171c; --fg:#e8e4dc; --muted:#6e6e7a; --accent:#e88c2e; --accent-soft:rgba(232,140,46,.13); --accent-border:rgba(232,140,46,.3); --border:#2a2a33; --success:#3a9e5c; --success-soft:rgba(58,158,92,.13); --warning:#c49030; --warning-soft:rgba(196,144,48,.1); }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--fg);font-family:'Space Grotesk',sans-serif}
+  .entry{max-width:920px;margin:0 auto;padding:24px}
+  .p-goal{font-size:15px;color:var(--fg);opacity:.82;margin-bottom:22px;line-height:1.7}
+  .p-goal span{color:var(--accent);font-weight:600}
+  .ctx-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+  .ctx-btn{font-size:13px;font-weight:500;padding:8px 14px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:.25s;display:flex;align-items:center;gap:8px}
+  .ctx-btn:hover{border-color:var(--accent-border);color:var(--fg)}
+  .ctx-btn.active{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+  .ctx-btn .ctx-d{font-family:'JetBrains Mono',monospace;font-size:10px;opacity:.65}
+  .ctx-btn.active .ctx-d{opacity:1}
+  .toggle-row{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--border);background:var(--bg-card);padding:14px 16px;margin-bottom:24px}
+  .toggle-copy{font-size:13px;color:var(--fg);opacity:.82}
+  .toggle-copy b{color:var(--accent)}
+  .toggle{position:relative;width:54px;height:30px;flex-shrink:0}
+  .toggle input{opacity:0;width:0;height:0}
+  .toggle-ui{position:absolute;inset:0;background:var(--border);transition:.25s}
+  .toggle-ui::after{content:'';position:absolute;width:22px;height:22px;left:4px;top:4px;background:var(--fg);transition:.25s}
+  .toggle input:checked + .toggle-ui{background:rgba(58,158,92,.35);border:1px solid rgba(58,158,92,.35)}
+  .toggle input:checked + .toggle-ui::after{transform:translateX(24px);background:var(--success)}
+  .preview{background:var(--bg-card);border:1px solid var(--border);padding:22px 22px 18px;margin-bottom:18px;position:relative;overflow:hidden}
+  .preview::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.008) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.008) 1px,transparent 1px);background-size:18px 18px;pointer-events:none}
+  .prev-label{position:absolute;top:10px;left:14px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);opacity:.4}
+  .gate-bar{height:10px;width:100%;background:var(--border);margin:36px 0 18px;position:relative}
+  .gate-open{position:absolute;top:0;bottom:0;left:0;background:rgba(58,158,92,.28);transition:width .25s ease}
+  .gate-card{position:relative;z-index:1;border:1px solid var(--border);padding:18px;background:#141419;transition:.25s}
+  .gate-card.ok{border-color:rgba(58,158,92,.35);background:rgba(58,158,92,.08)}
+  .gate-card.no{border-color:rgba(232,140,46,.25);background:rgba(232,140,46,.05)}
+  .gate-eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
+  .gate-title{font-size:30px;font-weight:700;line-height:1.05;margin-bottom:8px}
+  .gate-copy{font-size:14px;line-height:1.7;color:var(--fg);opacity:.78}
+  .gate-mini{margin-top:16px;display:grid;gap:10px}
+  .mini-row{display:flex;justify-content:space-between;gap:12px;border:1px solid var(--border);padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#d9d3c8}
+  .mini-row span:last-child{color:var(--accent)}
+  .fb{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;font-size:13px;font-weight:500;border:1px solid var(--border);background:var(--bg-card);transition:.3s}
+  .fb.ok{border-color:rgba(58,158,92,.4);color:var(--success);background:var(--success-soft)}
+  .fb.no{border-color:rgba(196,144,48,.3);color:var(--warning);background:var(--warning-soft)}
+  .hint{font-size:12px;color:var(--muted);opacity:.55;margin-top:10px;display:flex;align-items:center;gap:6px}
+  .hint i{font-size:10px;color:var(--accent)}
+</style>
+</head>
+<body>
+<div id="app-root"><div class="entry">
+  <p class="p-goal"><span>Mục tiêu:</span> Chọn từng kiểu đăng nhập để thấy auth có thể cho vào bằng <strong>Google</strong>, bằng <strong>admin account</strong>, hoặc cho vào nhanh hơn khi còn <strong>session cũ</strong>.</p>
+  <div class="ctx-row" id="ctxRow"></div>
+  <div class="toggle-row">
+    <div class="toggle-copy"><b>Session cũ:</b> bật lên để mô phỏng người đã từng vào trước đó nên lần này auth cho đi nhanh hơn.</div>
+    <label class="toggle"><input id="sessionToggle" type="checkbox"><span class="toggle-ui"></span></label>
+  </div>
+  <div class="preview">
+    <span class="prev-label" id="prevLbl">AUTH GATE</span>
+    <div class="gate-bar"><div class="gate-open" id="gateOpen"></div></div>
+    <div class="gate-card" id="gateCard">
+      <div class="gate-eyebrow" id="gateEyebrow">guest</div>
+      <div class="gate-title" id="gateTitle">Đang đứng ở cổng đăng nhập</div>
+      <div class="gate-copy" id="gateCopy">Auth đang chờ user chọn cách đăng nhập phù hợp trước khi cho xem dữ liệu bên trong.</div>
+      <div class="gate-mini">
+        <div class="mini-row"><span>Cách đăng nhập</span><span id="miniUser">Chưa chọn</span></div>
+        <div class="mini-row"><span>Auth check</span><span id="miniRule">Chờ xác thực</span></div>
+        <div class="mini-row"><span>Kết quả</span><span id="miniResult">Waiting</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="fb" id="fb"><i class="fa-solid fa-circle-info"></i><span>Chọn ngữ cảnh để xem auth phản ứng</span></div>
+  <p class="hint" id="hintEl"><i class="fa-solid fa-arrow-up-right"></i> Gợi ý: thử `Google Login` rồi bật `Session cũ` để thấy vì sao lần quay lại vào nhanh hơn</p>
+</div></div>
+<script>
+  const ctxs = [
+    { id:'google', name:'Google Login', desc:'Continue with Google', gate:84, title:'Google xác thực xong, auth mở cửa', copy:'User bấm Continue with Google, hệ thống nhận diện đúng tài khoản rồi cho vào dashboard.', rule:'Google account hợp lệ', result:'Access granted', hint:'Google login phù hợp với tool dành cho marketer vì vào nhanh và ít phải nhớ mật khẩu.', ok:true },
+    { id:'admin', name:'Admin Login', desc:'Email + mật khẩu admin', gate:72, title:'Admin account được vào khu quản trị', copy:'User nhập email admin và mật khẩu riêng để vào phần quản trị hoặc màn hình nhạy cảm hơn.', rule:'Admin credentials đúng', result:'Admin granted', hint:'Admin login hay dùng cho dashboard nội bộ hoặc trang quản trị cần kiểm soát chặt.', ok:true },
+    { id:'blocked', name:'Sai quyền', desc:'Login xong nhưng role không đúng', gate:24, title:'Đăng nhập thành công nhưng vẫn bị chặn', copy:'Auth thấy tài khoản có thật, nhưng role hoặc nhóm quyền không đúng nên vẫn không cho xem phần dữ liệu này.', rule:'Role không đạt', result:'Denied', hint:'Điểm quan trọng: login xong chưa chắc được vào, còn phải đúng quyền.', ok:false }
+  ];
+  const ctxRowEl = document.getElementById('ctxRow'), toggleEl = document.getElementById('sessionToggle'), gateOpen = document.getElementById('gateOpen'), gateCard = document.getElementById('gateCard');
+  const prevLbl = document.getElementById('prevLbl'), gateEyebrow = document.getElementById('gateEyebrow'), gateTitle = document.getElementById('gateTitle'), gateCopy = document.getElementById('gateCopy'), miniUser = document.getElementById('miniUser'), miniRule = document.getElementById('miniRule'), miniResult = document.getElementById('miniResult'), fbEl = document.getElementById('fb'), hintEl = document.getElementById('hintEl');
+  let curCtx = ctxs[0];
+  function renderCtx(){ ctxRowEl.innerHTML = ctxs.map((c,i)=>`<button class="ctx-btn${i===0?' active':''}" data-id="${c.id}">${c.name}<span class="ctx-d">${c.desc}</span></button>`).join(''); ctxRowEl.querySelectorAll('.ctx-btn').forEach((b)=>b.onclick=()=>pickCtx(b.dataset.id)); }
+  function pickCtx(id){ curCtx = ctxs.find((c)=>c.id===id); ctxRowEl.querySelectorAll('.ctx-btn').forEach((b)=>b.classList.toggle('active', b.dataset.id===id)); updateView(); }
+  function updateView(){
+    const hasSession = toggleEl.checked;
+    let gate = curCtx.gate, title = curCtx.title, copy = curCtx.copy, rule = curCtx.rule, result = curCtx.result, ok = curCtx.ok;
+    if ((curCtx.id === 'google' || curCtx.id === 'admin') && hasSession) {
+      gate = 100;
+      title = 'Có session cũ nên vào rất nhanh';
+      copy = 'Auth nhớ user từ lần trước nên bỏ qua bước login lại và cho vào dashboard gần như ngay lập tức.';
+      rule = 'Session còn hiệu lực';
+      result = 'Session OK';
+    }
+    if (curCtx.id === 'blocked' && hasSession) {
+      gate = 44;
+      title = 'Có session nhưng quyền vẫn không đủ';
+      copy = 'Session cũ giúp nhận diện nhanh hơn, nhưng nếu role sai thì auth vẫn chặn như thường.';
+      rule = 'Session có, role sai';
+      result = 'Still denied';
+    }
+    prevLbl.textContent = hasSession ? 'AUTH + SESSION' : 'AUTH GATE';
+    gateEyebrow.textContent = curCtx.id.toUpperCase();
+    gateTitle.textContent = title;
+    gateCopy.textContent = copy;
+    gateOpen.style.width = gate + '%';
+    miniUser.textContent = curCtx.name;
+    miniRule.textContent = rule;
+    miniResult.textContent = result;
+    gateCard.className = 'gate-card ' + (ok ? 'ok' : 'no');
+    fbEl.className = 'fb ' + (ok ? 'ok' : 'no');
+    fbEl.innerHTML = ok ? `<i class="fa-solid fa-check"></i><span>${hasSession ? 'Có session cũ nên lần này auth cho vào nhanh hơn' : 'Cách đăng nhập này đang mở đúng người vào tool'}</span>` : `<i class="fa-solid fa-xmark"></i><span>Auth vẫn giữ dữ liệu lại vì quyền của tài khoản này chưa đúng</span>`;
+    hintEl.innerHTML = `<i class="fa-solid fa-arrow-up-right"></i> ${curCtx.hint}`;
+  }
+  toggleEl.addEventListener('change', updateView);
+  renderCtx();
+  pickCtx('google');
+</script>
+</body>
+</html>
