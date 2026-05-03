@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Margin Demo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0f0f12;--card:#16161b;--text:#e8e4dc;--muted:#6e6e7a;--accent:#cf5c26;--accent-soft:rgba(207,92,38,.08);--accent-border:rgba(207,92,38,.28);--border:#282830;--surface:#1c1c23;--zone:rgba(207,92,38,.06);--zone-stroke:rgba(207,92,38,.2);--shape:#393946}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;line-height:1.6}
+    body::before{content:"";position:fixed;inset:0;background-image:radial-gradient(rgba(255,255,255,.022) 1px,transparent 1px);background-size:20px 20px;pointer-events:none}
+    .entry{position:relative;max-width:940px;margin:0 auto;padding:48px 24px 64px}
+    .badge{display:inline-block;margin-bottom:16px;padding:4px 12px;border:1px solid var(--accent-border);background:var(--accent-soft);color:var(--accent);font:600 10px 'JetBrains Mono',monospace;letter-spacing:2px;text-transform:uppercase}
+    h1{font-size:clamp(34px,6vw,54px);font-weight:800;letter-spacing:-2px;line-height:1.08}
+    .sub{margin-top:6px;color:var(--muted);font:13px 'JetBrains Mono',monospace}
+    .lede{max-width:680px;margin:28px 0 40px;padding:18px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);font-size:16px;opacity:.88}
+    .lede strong{color:var(--accent)}
+    .section-label{display:flex;align-items:center;gap:10px;margin-bottom:20px;color:var(--muted);font:600 11px 'JetBrains Mono',monospace;letter-spacing:2px;text-transform:uppercase}
+    .section-label::after{content:"";flex:1;height:1px;background:var(--border)}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+    .card{background:var(--card);border:1px solid var(--border);padding:16px;cursor:pointer;transition:border-color .28s,background .28s;position:relative;overflow:hidden}
+    .card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .3s ease}
+    .card:hover{border-color:var(--accent-border)}
+    .card.active{border-color:var(--accent);background:var(--surface)}
+    .card.active::before{transform:scaleX(1)}
+    .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+    .num,.tag,.val,.dim,.insight-label{font-family:'JetBrains Mono',monospace}
+    .num,.tag,.val{font-size:10px;color:var(--muted);letter-spacing:1px}
+    .tag{font-weight:600;text-transform:uppercase;letter-spacing:1.5px}
+    .card.active .tag,.card.active .val{color:var(--accent)}
+    .val{margin-top:10px;text-align:right;font-size:12px}
+    .zone{position:relative;padding:var(--m);border:1px dashed var(--zone-stroke);background:var(--zone);transition:padding .5s cubic-bezier(.4,0,.2,1)}
+    .shape{background:var(--shape);padding:14px}
+    .shape h3{margin-bottom:4px;font-size:13px}
+    .shape p{margin-bottom:10px;color:var(--muted);font-size:10px;line-height:1.5}
+    .shape span{display:inline-block;padding:5px 14px;background:var(--accent);color:#fff;font-size:10px;font-weight:600}
+    .dim{position:absolute;font-size:9px;color:var(--accent);opacity:0;transition:opacity .28s}
+    .card.active .dim{opacity:.7}
+    .top{top:-1px;left:50%;transform:translate(-50%,-100%);padding-bottom:2px}
+    .bottom{bottom:-1px;left:50%;transform:translate(-50%,100%);padding-top:2px}
+    .left{left:-1px;top:50%;transform:translate(-100%,-50%);padding-right:4px}
+    .right{right:-1px;top:50%;transform:translate(100%,-50%);padding-left:4px}
+    .insight{display:flex;gap:12px;align-items:flex-start;margin-top:20px;padding:18px 22px;border:1px solid var(--border);background:var(--surface)}
+    .insight-label{color:var(--accent);font-size:13px;margin-top:3px}
+    .insight-text{font-size:14px;line-height:1.65;opacity:.86;transition:opacity .22s,transform .22s}
+    .insight-text.fading{opacity:0;transform:translateY(6px)}
+    @media (max-width:520px){.entry{padding:32px 14px 48px}.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+  <div class="entry">
+    <div class="badge">DESIGN</div>
+    <h1>Margin</h1>
+    <p class="sub">khoảng cách bên ngoài - đẩy element ra xa</p>
+    <p class="lede"><strong>Margin</strong> là khoảng cách bạn đặt <strong>bên ngoài</strong> một element để đẩy nó ra xa element bên cạnh và mép container. Nó không làm element to hơn, chỉ đổi vị trí của nó trong layout.</p>
+
+    <section aria-label="Mô phỏng margin">
+      <div class="section-label">01 - Mô phỏng</div>
+      <div class="grid" id="grid"></div>
+      <div class="insight">
+        <div class="insight-label">i</div>
+        <p class="insight-text" id="insight">Nhấn vào từng mức margin để xem giải thích. Vùng cam nhạt là margin zone nằm bên ngoài element.</p>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const presets=[
+      {num:"01",val:0,ins:"Không margin: card dính sát hàng xóm và mép container. Hợp cho bảng dữ liệu hoặc grid item rất chặt."},
+      {num:"02",val:16,ins:"Margin 16px: mức an toàn và phổ biến nhất cho card, block nội dung và khoảng cách dọc cơ bản."},
+      {num:"03",val:32,ins:"Margin 32px: tạo khoảng thở rõ ràng hơn, hợp cho những khối cần cảm giác tách biệt và dễ quét mắt."},
+      {num:"04",val:64,ins:"Margin 64px: dùng cho các section lớn hoặc điểm ngắt nhịp mạnh. Quá tay sẽ làm layout bị loãng."}
+    ];
+    const grid=document.getElementById("grid");
+    const insight=document.getElementById("insight");
+    let active=-1;
+
+    function render(){
+      grid.innerHTML=presets.map((p,i)=>`
+        <article class="card${i===active?" active":""}" data-i="${i}" role="button" tabindex="0" aria-label="Margin ${p.val}px">
+          <div class="head"><span class="num">${p.num}</span><span class="tag">MARGIN ${p.val}</span></div>
+          <div class="zone" style="--m:${p.val}px">
+            <span class="dim top">${p.val}px</span>
+            <span class="dim bottom">${p.val}px</span>
+            <span class="dim left">${p.val}px</span>
+            <span class="dim right">${p.val}px</span>
+            <div class="shape">
+              <h3>Headline</h3>
+              <p>Description text for this component demo block.</p>
+              <span>BUTTON</span>
+            </div>
+          </div>
+          <div class="val">margin: ${p.val}px</div>
+        </article>`).join("");
+      grid.querySelectorAll(".card").forEach((card)=>{
+        const next=Number(card.dataset.i);
+        const activate=()=>setActive(next);
+        card.addEventListener("click",activate);
+        card.addEventListener("keydown",(e)=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();activate();}});
+      });
+    }
+
+    function setInsight(text){
+      insight.classList.add("fading");
+      setTimeout(()=>{insight.textContent=text;insight.classList.remove("fading");},180);
+    }
+
+    function setActive(i){
+      active=active===i?-1:i;
+      render();
+      setInsight(active===-1
+        ? "Nhấn vào từng mức margin để xem giải thích. Vùng cam nhạt là margin zone nằm bên ngoài element."
+        : presets[active].ins);
+    }
+
+    render();
+  </script>
+</body>
+</html>

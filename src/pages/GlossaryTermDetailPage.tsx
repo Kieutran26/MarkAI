@@ -6,12 +6,14 @@ import AuthPracticePanel from '../components/glossary/AuthPracticePanel';
 import SpacingPracticePanel from '../components/glossary/SpacingPracticePanel';
 import LetterSpacingPracticePanel from '../components/glossary/LetterSpacingPracticePanel';
 import LineSpacingPracticePanel from '../components/glossary/LineSpacingPracticePanel';
-import { getTermById, GlossaryTerm } from '../lib/glossary';
+import { getTermById, getTermDeepDiveNotes, GlossaryTerm } from '../lib/glossary';
 import apiDemoHtml from '../../gif-api-demo.html?raw';
 import authDemoHtml from '../../gif-auth-demo.html?raw';
 import spacingDemoHtml from '../../gif-spacing-demo.html?raw';
-import letterSpacingDemoHtml from '../../gif letter spacing.html?raw';
-import lineSpacingDemoHtml from '../../gif-line-spacing.html?raw';
+import letterSpacingDemoHtml from '../../gif-letter-spacing-demo.html?raw';
+import lineSpacingDemoHtml from '../../gif-line-spacing-demo.html?raw';
+import marginDemoHtml from '../../gif-margin-demo.html?raw';
+import marginPracticeHtml from '../../gif-margin-practice.html?raw';
 
 export default function GlossaryTermDetailPage() {
   const { termId } = useParams<{ termId: string }>();
@@ -33,10 +35,17 @@ export default function GlossaryTermDetailPage() {
     if (id === 'spacing') return spacingDemoHtml;
     if (id === 'letter-spacing') return letterSpacingDemoHtml;
     if (id === 'line-spacing') return lineSpacingDemoHtml;
+    if (id === 'margin') return marginDemoHtml;
+    return null;
+  };
+
+  const getPracticeHtml = (id: string) => {
+    if (id === 'margin') return marginPracticeHtml;
     return null;
   };
 
   const interactiveDemoHtml = getInteractiveHtml(term.id);
+  const interactivePracticeHtml = getPracticeHtml(term.id);
 
 
   const extendedTerms = (term.id === 'spacing' || term.id === 'letter-spacing')
@@ -51,6 +60,7 @@ export default function GlossaryTermDetailPage() {
       <TermDisplaySection 
         term={term} 
         interactiveDemoHtml={interactiveDemoHtml}
+        interactivePracticeHtml={interactivePracticeHtml}
         showBackLink={true}
       />
 
@@ -69,14 +79,17 @@ export default function GlossaryTermDetailPage() {
 interface TermDisplaySectionProps {
   term: any;
   interactiveDemoHtml?: string | null;
+  interactivePracticeHtml?: string | null;
   showBackLink?: boolean;
 }
 
-function TermDisplaySection({ 
-  term, 
-  interactiveDemoHtml, 
-  showBackLink = false 
-}: TermDisplaySectionProps) {
+interface InteractiveFrameProps {
+  html: string;
+  title: string;
+  caption?: string;
+}
+
+function InteractiveFrame({ html, title, caption }: InteractiveFrameProps) {
   const frameRef = useRef<HTMLIFrameElement | null>(null);
   const observerRef = useRef<ResizeObserver | null>(null);
 
@@ -123,7 +136,7 @@ function TermDisplaySection({
   };
 
   useEffect(() => {
-    if (!interactiveDemoHtml) return;
+    if (!html) return;
     const timer = window.setTimeout(bindAutoHeight, 100);
     window.addEventListener('resize', syncHeight);
     return () => {
@@ -132,7 +145,35 @@ function TermDisplaySection({
       frameRef.current?.contentWindow?.removeEventListener('resize', syncHeight);
       observerRef.current?.disconnect();
     };
-  }, [interactiveDemoHtml]);
+  }, [html]);
+
+  return (
+    <div className="glossary-demo-frame-wrap">
+      <iframe
+        ref={frameRef}
+        title={title}
+        srcDoc={html}
+        className="glossary-demo-frame"
+        sandbox="allow-scripts allow-same-origin"
+        scrolling="no"
+        onLoad={bindAutoHeight}
+      />
+      {caption ? (
+        <p className="border-t border-border px-4 py-3 font-sans text-[12px] leading-[1.65] text-ink2">
+          {caption}
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
+function TermDisplaySection({ 
+  term, 
+  interactiveDemoHtml, 
+  interactivePracticeHtml,
+  showBackLink = false 
+}: TermDisplaySectionProps) {
+  const deepDiveNotes = getTermDeepDiveNotes(term);
   return (
     <section className="border-b border-border">
       <div className="page-shell grid gap-0 lg:grid-cols-[minmax(0,3fr)_minmax(0,7fr)] items-start">
@@ -148,6 +189,19 @@ function TermDisplaySection({
           <h1 className={`${showBackLink ? 'mt-5' : 'mt-0'} font-serif text-[clamp(2.6rem,5vw,4.4rem)] leading-[0.95]`}>{term.name}</h1>
           <p className="mt-3 font-mono text-[11px] tracking-[0.04em] text-muted">{term.nameEn}</p>
           <p className="mt-8 max-w-[46rem] font-sans text-[17px] leading-[1.8] text-ink2">{term.definition}</p>
+
+          {deepDiveNotes.length ? (
+            <div className="mt-8 max-w-[52rem] border-l-2 border-l-accent bg-bg2 px-4 py-4">
+              <p className="font-mono text-[10px] uppercase tracking-[0.06em] text-muted">Hiểu nhanh</p>
+              <div className="mt-3 space-y-3">
+                {deepDiveNotes.map((note) => (
+                  <p key={note} className="font-sans text-[14px] leading-[1.75] text-ink2">
+                    {note}
+                  </p>
+                ))}
+              </div>
+            </div>
+          ) : null}
 
           <div className="mt-10 max-w-[52rem]">
             <p className="font-mono text-[10px] uppercase tracking-[0.06em] text-muted">Ví dụ thực tế</p>
@@ -199,22 +253,11 @@ function TermDisplaySection({
               <span className="font-mono text-[10px] font-bold text-[#0f0f12]">{term.name}</span>
             </div>
             {term.demo?.kind === 'interactive' && interactiveDemoHtml ? (
-              <div className="glossary-demo-frame-wrap">
-                <iframe
-                  ref={frameRef}
-                  title={term.demo.alt ?? `${term.name} demo`}
-                  srcDoc={interactiveDemoHtml}
-                  className="glossary-demo-frame"
-                  sandbox="allow-scripts allow-same-origin"
-                  scrolling="no"
-                  onLoad={bindAutoHeight}
-                />
-                {term.demo.caption ? (
-                  <p className="border-t border-border px-4 py-3 font-sans text-[12px] leading-[1.65] text-ink2">
-                    {term.demo.caption}
-                  </p>
-                ) : null}
-              </div>
+              <InteractiveFrame
+                html={interactiveDemoHtml}
+                title={term.demo.alt ?? `${term.name} demo`}
+                caption={term.demo.caption}
+              />
             ) : term.demo?.src ? (
               <img src={term.demo.src} alt={term.demo.alt ?? `${term.name} demo`} className="block aspect-[4/3] w-full object-cover" />
             ) : (
@@ -228,6 +271,19 @@ function TermDisplaySection({
               </div>
             )}
           </div>
+          {interactivePracticeHtml ? (
+            <div className="mt-6 border border-[#2a2a33] bg-[#0f0f12]">
+              <div className="flex items-center justify-between border-b border-[#2a2a33] bg-[#e88c2e] px-4 py-2">
+                <span className="font-mono text-[10px] font-bold uppercase tracking-[0.05em] text-[#0f0f12]">Thực hành / GIF</span>
+                <span className="font-mono text-[10px] font-bold text-[#0f0f12]">{term.name}</span>
+              </div>
+              <InteractiveFrame
+                html={interactivePracticeHtml}
+                title={`${term.name} practice`}
+                caption="Phần thực hành riêng này cho phép kéo slider để đổi margin của card được highlight và quan sát cách nó đẩy các card khác ra xa."
+              />
+            </div>
+          ) : null}
           {term.id === 'api' ? <ApiPracticePanel /> : null}
           {term.id === 'auth' ? <AuthPracticePanel /> : null}
           {term.id === 'spacing' ? <SpacingPracticePanel /> : null}

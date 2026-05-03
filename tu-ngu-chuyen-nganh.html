@@ -232,6 +232,27 @@ nav {
   transition: border-color .15s, color .15s;
 }
 .term-related-link:hover { border-color: var(--ink); color: var(--ink); }
+.term-demo-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 1.2rem;
+  font-family: var(--mono);
+  font-size: 10px;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 6px 16px;
+  background: transparent;
+  transition: all .15s;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 500;
+}
+.term-demo-link:hover {
+  background: var(--accent);
+  color: #fff;
+}
+.term-demo-link i { font-size: 12px; }
 
 /* ── NO RESULTS ── */
 .no-results { padding: 4rem 2rem; text-align: center; display: none; }
@@ -504,6 +525,10 @@ footer { border-top: 1px solid var(--border); }
             <div class="term-example">✳ "Prompt: 'Thêm đăng nhập bằng Google vào tool này, chỉ email @company.com mới được vào'. Đây là Auth."</div>
           </div>
           <div class="term-related"><span class="term-related-label">Xem thêm:</span><a class="term-related-link" href="#letter-S">Session</a><a class="term-related-link" href="#letter-T">Token</a></div>
+          <a href="gif thực hành auth.html" class="term-demo-link">
+            ✳ Xem mô phỏng & Thực hành
+          </a>
+        </div>
         </div>
       </div>
 
@@ -1128,12 +1153,15 @@ footer { border-top: 1px solid var(--border); }
           <div class="term-badges"><span class="term-badge tb-design">Design</span></div>
         </div>
         <div class="term-right">
-          <div class="term-definition">Khoảng cách từ element ra ngoài, ngăn cách với các element xung quanh. Khác với padding là khoảng cách bên trong. Margin = khoảng cách với hàng xóm. Padding = khoảng thở bên trong nhà.</div>
+          <div class="term-definition">Margin là khoảng cách từ phần tử (element) ra bên ngoài, dùng để ngăn cách nó với các "hàng xóm" xung quanh. Trong khi <strong>Padding</strong> là khoảng thở bên trong, thì <strong>Margin</strong> là khoảng trống bên ngoài. Nếu không có margin, các khối nội dung sẽ dính sát vào nhau, gây cảm giác chật chội và khó đọc.</div>
           <div class="term-example-wrap">
             <div class="term-example-label">Ví dụ thực tế</div>
-            <div class="term-example">✳ "Các section cách nhau quá gần" → Thêm margin-bottom vào mỗi section. Tailwind: "mb-16" = margin-bottom 4rem.</div>
+            <div class="term-example">✳ "Các section trên landing page đang bị dính vào nhau." → Giải pháp: Thêm margin-bottom cho từng section. Trong Tailwind, bạn dùng class như <strong>mb-12</strong> (margin bottom 3rem) hoặc <strong>my-8</strong> (margin dọc 2rem).</div>
           </div>
           <div class="term-related"><span class="term-related-label">Xem thêm:</span><a class="term-related-link" href="#letter-P">Padding</a><a class="term-related-link" href="#letter-S">Spacing</a></div>
+          <a href="gif margin.html" class="term-demo-link">
+            ✳ Xem mô phỏng & Thực hành
+          </a>
         </div>
       </div>
 
