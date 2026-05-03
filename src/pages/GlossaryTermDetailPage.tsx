@@ -22,6 +22,8 @@ import frontendDemoHtml from '../../gif-frontend-demo.html?raw';
 import frontendPracticeHtml from '../../gif-frontend-practice.html?raw';
 import backendDemoHtml from '../../gif-backend-demo.html?raw';
 import backendPracticeHtml from '../../gif-backend-practice.html?raw';
+import databaseDemoHtml from '../../gif-database-demo.html?raw';
+import databasePracticeHtml from '../../gif-database-practice.html?raw';
 
 
 export default function GlossaryTermDetailPage() {
@@ -49,6 +51,7 @@ export default function GlossaryTermDetailPage() {
     if (id === 'card') return cardDemoHtml;
     if (id === 'frontend') return frontendDemoHtml;
     if (id === 'backend') return backendDemoHtml;
+    if (id === 'database') return databaseDemoHtml;
     return null;
   };
 
@@ -59,6 +62,7 @@ export default function GlossaryTermDetailPage() {
     if (id === 'card') return cardPracticeHtml;
     if (id === 'frontend') return frontendPracticeHtml;
     if (id === 'backend') return backendPracticeHtml;
+    if (id === 'database') return databasePracticeHtml;
     return null;
   };
 
