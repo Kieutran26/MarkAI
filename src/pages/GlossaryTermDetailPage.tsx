@@ -5,13 +5,13 @@ import ApiPracticePanel from '../components/glossary/ApiPracticePanel';
 import AuthPracticePanel from '../components/glossary/AuthPracticePanel';
 import SpacingPracticePanel from '../components/glossary/SpacingPracticePanel';
 import LetterSpacingPracticePanel from '../components/glossary/LetterSpacingPracticePanel';
-import LineSpacingPracticePanel from '../components/glossary/LineSpacingPracticePanel';
 import { getTermById, getTermDeepDiveNotes, GlossaryTerm } from '../lib/glossary';
 import apiDemoHtml from '../../gif-api-demo.html?raw';
 import authDemoHtml from '../../gif-auth-demo.html?raw';
 import spacingDemoHtml from '../../gif-spacing-demo.html?raw';
 import letterSpacingDemoHtml from '../../gif-letter-spacing-demo.html?raw';
 import lineSpacingDemoHtml from '../../gif-line-spacing-demo.html?raw';
+import lineSpacingPracticeHtml from '../../gif-line-spacing-practice.html?raw';
 import marginDemoHtml from '../../gif-margin-demo.html?raw';
 import marginPracticeHtml from '../../gif-margin-practice.html?raw';
 
@@ -41,6 +41,7 @@ export default function GlossaryTermDetailPage() {
 
   const getPracticeHtml = (id: string) => {
     if (id === 'margin') return marginPracticeHtml;
+    if (id === 'line-spacing') return lineSpacingPracticeHtml;
     return null;
   };
 
@@ -69,6 +70,7 @@ export default function GlossaryTermDetailPage() {
           <TermDisplaySection 
             term={extTerm} 
             interactiveDemoHtml={getInteractiveHtml(extTerm.id)}
+            interactivePracticeHtml={getPracticeHtml(extTerm.id)}
           />
         </Fragment>
       ))}
@@ -174,6 +176,11 @@ function TermDisplaySection({
   showBackLink = false 
 }: TermDisplaySectionProps) {
   const deepDiveNotes = getTermDeepDiveNotes(term);
+  const practiceCaption = term.id === 'margin'
+    ? 'Phần thực hành riêng này cho phép kéo slider để đổi margin của card được highlight và quan sát cách nó đẩy các card khác ra xa.'
+    : term.id === 'line-spacing'
+      ? 'Phần thực hành này cho phép thử nhiều ngữ cảnh chữ khác nhau và kéo slider để tìm mức line spacing dễ đọc nhất.'
+      : undefined;
   return (
     <section className="border-b border-border">
       <div className="page-shell grid gap-0 lg:grid-cols-[minmax(0,3fr)_minmax(0,7fr)] items-start">
@@ -280,7 +287,7 @@ function TermDisplaySection({
               <InteractiveFrame
                 html={interactivePracticeHtml}
                 title={`${term.name} practice`}
-                caption="Phần thực hành riêng này cho phép kéo slider để đổi margin của card được highlight và quan sát cách nó đẩy các card khác ra xa."
+                caption={practiceCaption}
               />
             </div>
           ) : null}
@@ -288,7 +295,6 @@ function TermDisplaySection({
           {term.id === 'auth' ? <AuthPracticePanel /> : null}
           {term.id === 'spacing' ? <SpacingPracticePanel /> : null}
           {term.id === 'letter-spacing' ? <LetterSpacingPracticePanel /> : null}
-          {term.id === 'line-spacing' ? <LineSpacingPracticePanel /> : null}
         </div>
       </div>
     </section>
