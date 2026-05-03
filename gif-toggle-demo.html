@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toggle Demo — markAI</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f0f12;--bg-card:#16161b;--bg-el:#222;--border:#282830;
+  --border-active:#e88c2e;--accent:#e88c2e;
+  --accent-glow:rgba(232,140,46,.18);--accent-soft:rgba(232,140,46,.07);
+  --cream:#EDE4D8;--text:#D8D0C8;--muted:#777770;
+  --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);height:auto;min-height:0;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:48px 48px;pointer-events:none;z-index:0}
+
+#app-root{position:relative;z-index:1;padding:24px 16px 32px}
+
+/* sim grid */
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.sp{
+  border:1px solid var(--border);
+  background:var(--bg-card);
+  padding:14px 10px 12px;
+  transition:all .4s cubic-bezier(0.23, 1, 0.32, 1);
+  min-height:160px;
+  position:relative;
+  cursor:pointer;
+}
+.sp:hover{border-color:rgba(232,140,46,0.3);background:rgba(255,255,255,0.02)}
+.sp.active{
+  border-color:var(--border-active);
+  background:var(--accent-soft);
+  transform:scale(1.02);
+  box-shadow:0 10px 30px -10px var(--accent-glow);
+  z-index:10;
+}
+.sp:not(.active){opacity:.5}
+.sp.active:not(:hover){opacity:1}
+
+.sh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+.sn{font-family:var(--mono);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);transition:color .4s}
+.sp.active .sn{color:var(--accent)}
+.ssub{font-family:var(--mono);font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+
+/* sim toggle component */
+.stg-wrap{display:flex;align-items:center;gap:10px;margin:20px 0}
+.stg-lbl{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--cream);letter-spacing:.03em}
+.stg{width:40px;height:22px;border-radius:20px;position:relative;cursor:default;flex-shrink:0;transition:background .4s,border-color .4s}
+.stg-off{background:var(--border)}
+.stg-on{background:var(--accent)}
+.stg-dis{background:#444;opacity:.5}
+.stg-focus{background:var(--accent);outline:2px dashed var(--accent);outline-offset:4px}
+.stg-knob{position:absolute;top:2px;left:2px;width:18px;height:18px;background:var(--cream);border-radius:50%;transition:left .4s cubic-bezier(.4,0,.2,1)}
+.stg-on .stg-knob,.stg-focus .stg-knob{left:20px}
+.stg-dis .stg-knob{background:#888}
+
+/* meta info */
+.stg-meta{display:flex;flex-direction:column;gap:3px}
+.stg-mi{display:flex;justify-content:space-between;font-family:var(--mono);font-size:8px}
+.stg-mk{color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.stg-mv{font-weight:600;transition:color .4s}
+.stg-mv.false{color:var(--muted)}
+.stg-mv.true{color:var(--accent)}
+.stg-mv.locked{color:#555}
+
+/* insight */
+.ibar{margin-top:12px;padding:10px 13px;background:var(--bg-card);border:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.55;min-height:38px;transition:opacity .3s}
+.ibar.fading{opacity:0}
+.ibar strong{color:var(--cream);font-weight:600}
+
+.ptrack{display:flex;gap:4px;padding:10px 0 12px}
+.pseg{flex:1;height:3px;background:var(--border);transition:background .4s}
+.pseg.on{background:var(--accent)}
+
+@media(max-width:768px){ .sg{grid-template-columns:repeat(2,1fr)} }
+@media(max-width:420px){ 
+  .sg{gap:6px} 
+  .stg{width:34px;height:18px}
+  .stg-knob{width:14px;height:14px}
+  .stg-on .stg-knob,.stg-focus .stg-knob{left:18px}
+}
+</style>
+</head>
+<body>
+<div id="app-root">
+    <div class="sg" id="sg"></div>
+    <div class="ibar" id="ibar"></div>
+    <div class="ptrack" id="ptrack"></div>
+</div>
+
+<script>
+var D=[
+  {name:'OFF',sub:'inactive',
+   cls:'stg-off',
+   state:'default',val:'false',valCls:'false',
+   desc:'Chờ user bật.',
+   ins:'<strong>Toggle OFF: Trạng thái tắt.</strong> Knob bên trái, track xám. Giá trị trả về là <strong>false</strong>. Đây là trạng thái mặc định cho hầu hết các tính năng tùy chọn.'},
+  {name:'ON',sub:'active',
+   cls:'stg-on',
+   state:'active',val:'true',valCls:'true',
+   desc:'Tính năng đang bật.',
+   ins:'<strong>Toggle ON: Trạng thái bật.</strong> Knob bên phải, track accent. Giá trị là <strong>true</strong>. Dùng để kích hoạt ngay lập tức một thiết lập mà không cần Reload.'},
+  {name:'DISABLED',sub:'locked',
+   cls:'stg-dis',
+   state:'disabled',val:'false',valCls:'locked',
+   desc:'Bị khóa.',
+   ins:'<strong>Toggle DISABLED: Vô hiệu hóa.</strong> User không thể tương tác. Thường dùng khi user thiếu quyền hoặc tính năng phụ thuộc vào một Toggle khác chưa bật.'},
+  {name:'FOCUS',sub:'keyboard',
+   cls:'stg-focus',
+   state:'focus',val:'true',valCls:'true',
+   desc:'Đang được chọn.',
+   ins:'<strong>Toggle FOCUS: Trạng thái hội tụ.</strong> Xuất hiện khi dùng phím Tab để điều hướng. Quan trọng cho Accessibility (khả năng tiếp cận) của website.'}
+];
+
+var sg=document.getElementById('sg');
+D.forEach(function(d,i){
+  var p=document.createElement('div');
+  p.className='sp';p.dataset.i=i;
+  p.innerHTML='<div class="sh"><span class="sn">'+d.name+'</span><span class="ssub">'+d.sub+'</span></div>'+
+    '<div class="stg-wrap"><div class="stg '+d.cls+'"><div class="stg-knob"></div></div></div>'+
+    '<div class="stg-meta">'+
+      '<div class="stg-mi"><span class="stg-mk">State</span><span class="stg-mv '+d.valCls+'">'+d.state+'</span></div>'+
+      '<div class="stg-mi"><span class="stg-mk">Value</span><span class="stg-mv '+d.valCls+'">'+d.val+'</span></div>'+
+    '</div>';
+  sg.appendChild(p);
+});
+
+var pt=document.getElementById('ptrack');
+for(var i=0;i<4;i++){var seg=document.createElement('div');seg.className='pseg';pt.appendChild(seg)}
+
+var cur=0,timer=null;
+var ibar=document.getElementById('ibar');
+var panels=sg.querySelectorAll('.sp');
+var segs=pt.querySelectorAll('.pseg');
+
+function setAct(idx){
+  cur=idx;
+  for(var i=0;i<panels.length;i++){
+    panels[i].classList.toggle('active',i===idx);
+    segs[i].classList.toggle('on',i<=idx);
+  }
+  ibar.classList.add('fading');
+  setTimeout(function(){ibar.innerHTML=D[idx].ins;ibar.classList.remove('fading')},280);
+}
+
+function startLoop(){
+  if(timer) clearInterval(timer);
+  timer=setInterval(function(){setAct((cur+1)%4)},3500);
+}
+function stopLoop(){
+  clearInterval(timer);
+  timer=null;
+}
+
+panels.forEach(function(p, i){
+  p.onclick=function(){
+    setAct(i);
+    stopLoop();
+  };
+});
+
+setAct(0);
+startLoop();
+</script>
+</body>
+</html>
