@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Header — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#111;--bg-card:#1A1A1A;--bg-el:#222;--border:#2C2C2C;
+  --border-active:#D4652A;--accent:#D4652A;
+  --accent-glow:rgba(212,101,42,.18);--accent-soft:rgba(212,101,42,.07);
+  --cream:#EDE4D8;--text:#D8D0C8;--muted:#777770;
+  --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:48px 48px;pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;inset:0;opacity:.025;pointer-events:none;z-index:0;
+  background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.wrap{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:20px 16px 52px}
+
+.topbar{display:flex;align-items:center;gap:12px;padding-bottom:14px;border-bottom:1px solid var(--border);margin-bottom:28px}
+.badge{font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);background:var(--accent-soft);border:1px solid rgba(212,101,42,.22);padding:4px 10px}
+.ttl{font-size:20px;font-weight:700;color:var(--cream);letter-spacing:-.02em}
+.slbl{font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.slbl::before{content:'';width:7px;height:7px;background:var(--accent)}
+
+/* ── gif box ── */
+.gif-box{border:1px solid var(--border);background:var(--bg-card);margin-bottom:36px;position:relative;overflow:hidden}
+.gif-tag{position:absolute;top:10px;right:10px;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:3px 8px;z-index:10;display:flex;align-items:center;gap:5px}
+.gif-tag .dot{width:5px;height:5px;background:var(--accent);animation:pdot 1.4s infinite}
+@keyframes pdot{0%,100%{opacity:1}50%{opacity:.25}}
+.gif-body{padding:24px 18px 18px}
+
+/* ── sim grid ── */
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.sp{border:1px solid var(--border);background:var(--bg);padding:14px 10px 12px;transition:border-color .5s,background .5s,opacity .5s}
+.sp.active{border-color:var(--border-active);background:var(--accent-soft)}
+.sp:not(.active){opacity:.5}
+.sh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+.sn{font-family:var(--mono);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);transition:color .4s}
+.sp.active .sn{color:var(--accent)}
+.ssub{font-family:var(--mono);font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+
+/* mini header */
+.mh{display:flex;align-items:center;height:30px;padding:0 8px;border:1px solid var(--border);background:var(--bg);margin-bottom:4px;gap:6px;transition:border-color .5s,box-shadow .5s}
+.sp.active .mh{border-color:rgba(212,101,42,.35)}
+.mh-scrolled{border-bottom:2px solid var(--accent);box-shadow:0 4px 10px rgba(0,0,0,.45)}
+.mh-brand{font-family:var(--mono);font-size:8px;font-weight:700;color:var(--cream);letter-spacing:.05em;white-space:nowrap}
+.mh-nav{display:flex;gap:5px;flex:1;justify-content:center}
+.mh-nav i{width:20px;height:3px;background:var(--border);display:block;transition:background .5s}
+.sp.active .mh-nav i{background:var(--muted)}
+.mh-cta{font-family:var(--mono);font-size:7px;font-weight:600;padding:3px 7px;border:1px solid var(--border);color:var(--muted);white-space:nowrap;transition:background .4s,color .4s,border-color .4s}
+.mh-cta-fill{background:var(--accent);color:#fff;border-color:var(--accent)}
+.hamburger{width:14px;height:10px;display:flex;flex-direction:column;justify-content:space-between;flex-shrink:0}
+.hamburger span{width:100%;height:2px;background:var(--cream);display:block}
+
+/* mini menu */
+.mh-menu{border:1px solid var(--border);border-top:none;background:var(--bg);padding:4px 8px;margin-bottom:6px}
+.mh-mi{font-family:var(--mono);font-size:7px;color:var(--muted);padding:4px 0;border-bottom:1px solid var(--border)}
+.mh-mi:last-child{border-bottom:none}
+.mh-mi-cta{color:var(--accent);font-weight:600}
+
+/* desc */
+.sp-desc{font-size:10px;color:var(--muted);line-height:1.4}
+
+/* insight */
+.ibar{margin-top:12px;padding:10px 13px;background:var(--bg);border:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.55;min-height:38px;transition:opacity .3s}
+.ibar.fading{opacity:0}
+.ibar strong{color:var(--cream);font-weight:600}
+
+/* progress + controls */
+.ptrack{display:flex;gap:4px;padding:10px 18px 12px;border-top:1px solid var(--border)}
+.pseg{flex:1;height:3px;background:var(--border);transition:background .4s}
+.pseg.on{background:var(--accent)}
+.gctrl{display:flex;align-items:center;justify-content:space-between;padding:9px 18px;border-top:1px solid var(--border);background:var(--bg-card)}
+.gbtn{font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:5px 13px;cursor:pointer;transition:color .2s,border-color .2s}
+.gbtn:hover{color:var(--cream);border-color:var(--muted)}
+.gtmr{font-family:var(--mono);font-size:9px;color:var(--muted)}
+
+/* ═══ PRACTICE ═══ */
+.pbox{border:1px solid var(--border);background:var(--bg-card)}
+.phd{padding:18px 18px 14px;border-bottom:1px solid var(--border)}
+.pgoal{font-size:13px;color:var(--text);line-height:1.5;margin-bottom:5px}
+.phint{font-family:var(--mono);font-size:10px;color:var(--muted)}
+.phint span{color:var(--accent)}
+.pbd{padding:22px 18px}
+
+/* toggles */
+.tog-row{display:flex;gap:20px;margin-bottom:20px;flex-wrap:wrap}
+.tog{display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
+.tog-track{width:36px;height:20px;background:var(--border);position:relative;transition:background .25s;flex-shrink:0}
+.tog-track.on{background:var(--accent)}
+.tog-knob{position:absolute;top:2px;left:2px;width:16px;height:16px;background:var(--cream);transition:left .25s}
+.tog-track.on .tog-knob{left:18px}
+.tog-lbl{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;transition:color .25s;white-space:nowrap}
+.tog-track.on~.tog-lbl{color:var(--accent)}
+
+/* practice preview */
+.ph-prev{border:1px solid var(--border);background:var(--bg);overflow:hidden;margin-bottom:16px;transition:box-shadow .3s}
+.ph-header{display:flex;align-items:center;padding:14px 20px;gap:16px;border-bottom:1px solid var(--border);background:var(--bg);transition:box-shadow .35s,background .35s,border-color .35s}
+.ph-header.scrolled{box-shadow:0 6px 16px rgba(0,0,0,.5);background:var(--bg-card);border-bottom-color:var(--accent)}
+.ph-brand{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--cream);letter-spacing:.06em}
+.ph-nav{display:flex;gap:20px;flex:1;justify-content:center;transition:opacity .3s,max-width .3s;max-width:400px;overflow:hidden}
+.ph-nav.hide{opacity:0;max-width:0;gap:0;pointer-events:none}
+.ph-ni{font-family:var(--sans);font-size:12px;color:var(--muted);cursor:default;transition:color .2s;white-space:nowrap}
+.ph-cta{font-family:var(--mono);font-size:11px;font-weight:600;padding:7px 16px;border:1px solid var(--border);color:var(--muted);cursor:default;transition:background .3s,color .3s,border-color .3s;white-space:nowrap}
+.ph-cta.fill{background:var(--accent);color:#fff;border-color:var(--accent)}
+.ph-ham{display:none;width:20px;height:14px;flex-direction:column;justify-content:space-between;cursor:default;flex-shrink:0}
+.ph-ham.show{display:flex}
+.ph-ham span{width:100%;height:2px;background:var(--cream);display:block}
+
+/* practice menu */
+.ph-menu{display:none;border-bottom:1px solid var(--border);background:var(--bg);padding:0 20px}
+.ph-menu.show{display:block}
+.ph-mi{font-family:var(--sans);font-size:13px;color:var(--muted);padding:11px 0;border-bottom:1px solid var(--border);transition:color .2s}
+.ph-mi:last-child{border-bottom:none}
+.ph-mi-cta{color:var(--accent);font-weight:600;font-family:var(--mono);font-size:12px}
+
+/* fake content */
+.ph-content{padding:20px}
+.ph-block{background:var(--bg-el);opacity:.5}
+
+/* prompt output */
+.p-prompt{border:1px solid var(--border);background:var(--bg);padding:12px 14px;display:flex;align-items:flex-start;gap:10px}
+.p-prompt-lbl{font-family:var(--mono);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);background:var(--accent-soft);border:1px solid rgba(212,101,42,.22);padding:3px 8px;white-space:nowrap;flex-shrink:0;margin-top:1px}
+.p-prompt-txt{font-family:var(--mono);font-size:12px;color:var(--cream);line-height:1.5;transition:opacity .25s}
+.p-prompt-txt.fading{opacity:0}
+
+/* why */
+.whybox{margin-top:28px;border:1px solid var(--border);background:var(--bg-card);padding:18px}
+.whybox p{font-size:13px;color:var(--muted);line-height:1.7}
+.whybox strong{color:var(--cream)}
+
+@media(max-width:768px){
+  .sg{grid-template-columns:repeat(2,1fr)}
+  .gif-body{padding:18px 12px 14px}
+  .pbd{padding:18px 12px}
+  .ttl{font-size:17px}
+  .ph-nav{gap:12px}
+  .ph-ni{font-size:11px}
+  .tog-row{gap:14px}
+}
+@media(max-width:420px){
+  .sg{gap:6px}.sp{padding:10px 8px 8px}
+  .mh{height:26px;padding:0 6px}
+  .mh-brand{font-size:7px}
+  .mh-nav i{width:14px}
+  .mh-cta{font-size:6px;padding:2px 5px}
+  .wrap{padding:14px 10px 36px}
+  .ph-header{padding:10px 12px;gap:10px}
+  .ph-brand{font-size:11px}
+  .ph-nav{gap:10px}
+  .ph-ni{font-size:10px}
+  .ph-cta{font-size:10px;padding:5px 10px}
+  .tog-row{flex-direction:column;gap:10px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <span class="badge">Design</span>
+    <span class="ttl">Header</span>
+  </div>
+
+  <!-- ═══ SIMULATION ═══ -->
+  <div class="slbl">Mô phỏng</div>
+  <div class="gif-box">
+    <div class="gif-tag"><span class="dot"></span>LOOP</div>
+    <div class="gif-body">
+      <div class="sg" id="sg"></div>
+      <div class="ibar" id="ibar"></div>
+    </div>
+    <div class="ptrack" id="ptrack"></div>
+    <div class="gctrl">
+      <button class="gbtn" id="togBtn">Pause</button>
+      <span class="gtmr">3.5s / state</span>
+      <button class="gbtn" id="rstBtn">Reset</button>
+    </div>
+  </div>
+
+  <!-- ═══ PRACTICE ═══ -->
+  <div class="slbl">Thực hành</div>
+  <div class="pbox">
+    <div class="phd">
+      <p class="pgoal">Bật/tắt từng thuộc tính để thấy header thay đổi realtime trên cùng một preview.</p>
+      <p class="phint"><span>Hint:</span> Bật cả 3 cùng lúc để thấy kết hợp mobile + scrolled + CTA.</p>
+    </div>
+    <div class="pbd">
+      <div class="tog-row">
+        <div class="tog" id="togScroll">
+          <div class="tog-track"><div class="tog-knob"></div></div>
+          <span class="tog-lbl">Scrolled</span>
+        </div>
+        <div class="tog" id="togCTA">
+          <div class="tog-track"><div class="tog-knob"></div></div>
+          <span class="tog-lbl">CTA Emphasis</span>
+        </div>
+        <div class="tog" id="togMobile">
+          <div class="tog-track"><div class="tog-knob"></div></div>
+          <span class="tog-lbl">Mobile</span>
+        </div>
+      </div>
+      <div class="ph-prev" id="phPrev">
+        <div class="ph-header" id="phHeader">
+          <div class="ph-ham" id="phHam"><span></span><span></span><span></span></div>
+          <span class="ph-brand">BRAND</span>
+          <div class="ph-nav" id="phNav">
+            <span class="ph-ni">Products</span>
+            <span class="ph-ni">Features</span>
+            <span class="ph-ni">Pricing</span>
+          </div>
+          <span class="ph-cta" id="phCta">Get Started</span>
+        </div>
+        <div class="ph-menu" id="phMenu">
+          <div class="ph-mi">Products</div>
+          <div class="ph-mi">Features</div>
+          <div class="ph-mi">Pricing</div>
+          <div class="ph-mi ph-mi-cta" id="phMiCta">Get Started</div>
+        </div>
+        <div class="ph-content">
+          <div class="ph-block" style="width:75%;height:10px"></div>
+          <div class="ph-block" style="width:55%;height:10px;margin-top:8px"></div>
+          <div class="ph-block" style="width:88%;height:36px;margin-top:16px"></div>
+          <div class="ph-block" style="width:65%;height:36px;margin-top:8px"></div>
+          <div class="ph-block" style="width:40%;height:10px;margin-top:16px"></div>
+        </div>
+      </div>
+      <div class="p-prompt">
+        <span class="p-prompt-lbl">Prompt</span>
+        <span class="p-prompt-txt" id="pPrompt">Header mặc định, clean minimal</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="whybox">
+    <p>Khi bảo AI <strong>"làm cho tôi một header"</strong> — nó tạo ra bản mặc định. Nhưng nếu bạn nói <strong>"header sticky, scroll thêm shadow, CTA emphasis, responsive hamburger"</strong> — bạn đang nói đúng ngôn ngữ dev. Header không phải "cái thanh trên cùng", nó là một component có nhiều trạng thái và biến thể.</p>
+  </div>
+
+</div>
+
+<script>
+/* ── sim data ── */
+var D=[
+  {name:'DEFAULT',sub:'clean / minimal',
+   html:'<div class="mh"><span class="mh-brand">BRAND</span><div class="mh-nav"><i></i><i></i><i></i></div><span class="mh-cta">Get Started</span></div>',
+   desc:'Thanh điều hướng mặc định. Sạch, tối giản, chờ user tương tác.',
+   ins:'<strong>Header = thanh cố định phía trên.</strong> Chứa brand + navigation + CTA. Xuất hiện đầu tiên — quyết định cảm giác đầu tiên của user.'},
+  {name:'SCROLLED',sub:'with shadow',
+   html:'<div class="mh mh-scrolled"><span class="mh-brand">BRAND</span><div class="mh-nav"><i></i><i></i><i></i></div><span class="mh-cta">Get Started</span></div>',
+   desc:'Khi cuộn → header nổi lên, không "chìm" vào nội dung.',
+   ins:'<strong>User cuộn trang → header đổi style.</strong> Thêm shadow, đôi khi đổi nền. Mục đích: header luôn đọc được, không bị lẫn vào content.'},
+  {name:'CTA EMPHASIS',sub:'conversion focus',
+   html:'<div class="mh"><span class="mh-brand">BRAND</span><div class="mh-nav"><i></i><i></i><i></i></div><span class="mh-cta mh-cta-fill">Get Started</span></div>',
+   desc:'Nút CTA nổi bật → hướng user đến hành động quan trọng.',
+   ins:'<strong>Khi ưu tiên conversion → làm CTA nổi bật.</strong> Header không chỉ để điều hướng, mà còn để "chuyển đổi". Một thay đổi nhỏ, ảnh hưởng lớn đến CTR.'},
+  {name:'MOBILE',sub:'hamburger menu',
+   html:'<div class="mh"><div class="hamburger"><span></span><span></span><span></span></div><span class="mh-brand" style="margin-left:auto">BRAND</span></div><div class="mh-menu"><div class="mh-mi">Products</div><div class="mh-mi">Features</div><div class="mh-mi">Pricing</div><div class="mh-mi mh-mi-cta">Get Started</div></div>',
+   desc:'Trên mobile → nav ẩn vào menu. Cùng header, khác tương tác.',
+   ins:'<strong>Cùng một header, màn hình nhỏ → nav ẩn vào hamburger.</strong> Menu items xuất hiện khi bấm. Đây là "responsive header" — marketer cần biết để không hỏi "sao trên phone trông khác."'}
+];
+
+/* ── build sim panels ── */
+var sg=document.getElementById('sg');
+D.forEach(function(d,i){
+  var el=document.createElement('div');
+  el.className='sp';
+  el.dataset.i=i;
+  el.innerHTML='<div class="sh"><span class="sn">0'+(i+1)+' '+d.name+'</span><span class="ssub">'+d.sub+'</span></div>'+d.html+'<p class="sp-desc" style="margin-top:6px">'+d.desc+'</p>';
+  sg.appendChild(el);
+});
+
+/* progress */
+var pt=document.getElementById('ptrack');
+for(var i=0;i<4;i++){var s=document.createElement('div');s.className='pseg';pt.appendChild(s)}
+
+/* ── animation ── */
+var cur=0,playing=true,timer=null;
+var ibar=document.getElementById('ibar');
+
+function setAct(idx){
+  cur=idx;
+  var ps=sg.querySelectorAll('.sp');
+  var ss=pt.querySelectorAll('.pseg');
+  for(var i=0;i<ps.length;i++){
+    ps[i].classList.toggle('active',i===idx);
+    ss[i].classList.toggle('on',i<=idx);
+  }
+  ibar.classList.add('fading');
+  setTimeout(function(){ibar.innerHTML=D[idx].ins;ibar.classList.remove('fading')},280);
+}
+function startLoop(){timer=setInterval(function(){setAct((cur+1)%4)},3500)}
+function stopLoop(){clearInterval(timer)}
+document.getElementById('togBtn').onclick=function(){
+  playing=!playing;
+  this.textContent=playing?'Pause':'Play';
+  playing?startLoop():stopLoop();
+};
+document.getElementById('rstBtn').onclick=function(){
+  stopLoop();cur=0;setAct(0);if(playing)startLoop();
+};
+setAct(0);startLoop();
+
+/* ═══ PRACTICE ═══ */
+var pScroll=false,pCTA=false,pMobile=false;
+var phHeader=document.getElementById('phHeader');
+var phNav=document.getElementById('phNav');
+var phCta=document.getElementById('phCta');
+var phHam=document.getElementById('phHam');
+var phMenu=document.getElementById('phMenu');
+var phMiCta=document.getElementById('phMiCta');
+var pPrompt=document.getElementById('pPrompt');
+
+function updPreview(){
+  /* scrolled */
+  phHeader.classList.toggle('scrolled',pScroll);
+  /* cta */
+  phCta.classList.toggle('fill',pCTA);
+  phMiCta.classList.toggle('ph-mi-cta',pCTA);
+  if(pCTA){phMiCta.style.color='var(--accent)';phMiCta.style.fontWeight='600'}
+  else{phMiCta.style.color='';phMiCta.style.fontWeight=''}
+  /* mobile */
+  phNav.classList.toggle('hide',pMobile);
+  phHam.classList.toggle('show',pMobile);
+  phMenu.classList.toggle('show',pMobile);
+  /* prompt */
+  var parts=[];
+  if(pMobile) parts.push('responsive hamburger menu');
+  if(pScroll) parts.push('scroll effect với shadow');
+  if(pCTA) parts.push('CTA emphasis, nút nổi bật');
+  var txt=parts.length===0?'Header mặc định, clean minimal':'Header '+parts.join(', ');
+  pPrompt.classList.add('fading');
+  setTimeout(function(){pPrompt.textContent=txt;pPrompt.classList.remove('fading')},200);
+}
+
+document.getElementById('togScroll').onclick=function(){
+  pScroll=!pScroll;
+  this.querySelector('.tog-track').classList.toggle('on',pScroll);
+  updPreview();
+};
+document.getElementById('togCTA').onclick=function(){
+  pCTA=!pCTA;
+  this.querySelector('.tog-track').classList.toggle('on',pCTA);
+  updPreview();
+};
+document.getElementById('togMobile').onclick=function(){
+  pMobile=!pMobile;
+  this.querySelector('.tog-track').classList.toggle('on',pMobile);
+  updPreview();
+};
+updPreview();
+</script>
+</body>
+</html>
