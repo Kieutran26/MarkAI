@@ -16,6 +16,8 @@ import marginDemoHtml from '../../gif-margin-demo.html?raw';
 import marginPracticeHtml from '../../gif-margin-practice.html?raw';
 import radiusDemoHtml from '../../gif-radius-demo.html?raw';
 import radiusPracticeHtml from '../../gif-radius-practice.html?raw';
+import cardDemoHtml from '../../gif-card-demo.html?raw';
+import cardPracticeHtml from '../../gif-card-practice.html?raw';
 
 export default function GlossaryTermDetailPage() {
   const { termId } = useParams<{ termId: string }>();
@@ -39,6 +41,7 @@ export default function GlossaryTermDetailPage() {
     if (id === 'line-spacing') return lineSpacingDemoHtml;
     if (id === 'margin') return marginDemoHtml;
     if (id === 'radius') return radiusDemoHtml;
+    if (id === 'card') return cardDemoHtml;
     return null;
   };
 
@@ -46,6 +49,7 @@ export default function GlossaryTermDetailPage() {
     if (id === 'margin') return marginPracticeHtml;
     if (id === 'line-spacing') return lineSpacingPracticeHtml;
     if (id === 'radius') return radiusPracticeHtml;
+    if (id === 'card') return cardPracticeHtml;
     return null;
   };
 

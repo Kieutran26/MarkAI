@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Card Demo — markAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+  --bg:#0f0f12;--bg-card:#16161b;--fg:#e8e4dc;--muted:#6e6e7a;
+  --accent:#e88c2e;--accent-soft:rgba(232,140,46,.12);
+  --accent-border:rgba(232,140,46,.3);--border:#282830;
+  --surface:#1c1c23;--shape-lt:#33333d;--bar-m:#44444f;
+  --card-inner:#22222b;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--bg);color:var(--fg);
+  font-family:'Space Grotesk',sans-serif;line-height:1.6;
+  overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:radial-gradient(rgba(255,255,255,.022) 1px,transparent 1px);
+  background-size:20px 20px;pointer-events:none;z-index:0;
+}
+
+#app-root{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:24px}
+
+.sim-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+@media(max-width:800px){.sim-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:440px){.sim-grid{grid-template-columns:1fr}}
+
+.sc{
+  background:var(--bg-card);border:1px solid var(--border);
+  padding:0;cursor:pointer;position:relative;overflow:hidden;
+  transition:border-color .3s,background .3s;
+}
+.sc::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--accent);transform:scaleX(0);transform-origin:left;
+  transition:transform .35s ease;z-index:10;
+}
+.sc:hover{border-color:var(--accent-border)}
+.sc.on{border-color:var(--accent);background:var(--surface)}
+.sc.on::before{transform:scaleX(1)}
+
+.sc-head{
+  padding:12px 14px 8px;display:flex;justify-content:space-between;align-items:center;
+  border-bottom:1px solid var(--border);
+}
+.sc-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px}
+.sc-tag{
+  font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;
+  text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);transition:color .3s;
+}
+.sc.on .sc-tag{color:var(--accent)}
+
+.sc-body{padding:12px}
+
+/* Mini card previews inside sim */
+.mc{background:var(--card-inner);border:1px solid var(--border);overflow:hidden;transition:transform .3s ease}
+.sc.on .mc{border-color:rgba(232,140,46,.15)}
+.mc-img{height:42px;background:var(--shape-lt);position:relative;overflow:hidden}
+.mc-img::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(232,140,46,.08),transparent 60%);
+}
+.mc-body{padding:8px}
+.mc-title{font-size:10px;font-weight:700;color:var(--fg);margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mc-desc{font-size:8px;color:var(--muted);line-height:1.4;margin-bottom:6px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.mc-btn{
+  display:inline-block;font-family:'JetBrains Mono',monospace;font-size:7px;
+  font-weight:600;letter-spacing:1px;text-transform:uppercase;
+  color:var(--accent);padding:3px 6px;border:1px solid var(--accent-border);
+  background:var(--accent-soft);
+}
+.mc-badge{
+  position:absolute;top:4px;left:4px;
+  font-family:'JetBrains Mono',monospace;font-size:6px;font-weight:600;
+  letter-spacing:1px;text-transform:uppercase;
+  color:#fff;background:var(--accent);padding:1px 4px;z-index:2;
+}
+.mc-stat{display:flex;justify-content:space-between;align-items:baseline;padding:6px 8px;border-top:1px solid var(--border)}
+.mc-stat-val{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;color:var(--fg)}
+.mc-stat-lbl{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);letter-spacing:.5px;text-transform:uppercase}
+.mc-stat-chg{font-family:'JetBrains Mono',monospace;font-size:7px;color:#3a9e5c}
+
+/* Horizontal card mini */
+.mc-horiz{display:flex}
+.mc-horiz-img{width:40px;height:48px;background:var(--shape-lt);flex-shrink:0;position:relative;overflow:hidden}
+.mc-horiz-body{flex:1;padding:6px 8px;display:flex;flex-direction:column;justify-content:center}
+
+.ins{
+  background:var(--surface);border:1px solid var(--border);
+  padding:18px 22px;display:flex;align-items:flex-start;gap:12px;min-height:80px;
+}
+.ins-i{color:var(--accent);font-size:13px;margin-top:3px;flex-shrink:0}
+.ins-t{font-size:14px;color:var(--fg);opacity:.85;line-height:1.65;transition:opacity .25s,transform .25s}
+.ins-t.fading{opacity:0;transform:translateY(6px)}
+
+@media(max-width:480px){
+  #app-root{padding:14px}
+  .ins{padding:14px 16px}
+}
+</style>
+</head>
+<body>
+
+<div id="app-root">
+  <section aria-label="Mô phỏng Card">
+    <div class="sim-grid" id="simGrid"></div>
+    <div class="ins">
+      <i class="fa-solid fa-lightbulb ins-i"></i>
+      <p class="ins-t" id="insT">Đang tải...</p>
+    </div>
+  </section>
+</div>
+
+<script>
+const cardTypes = [
+  {
+    num:'01', name:'Basic',
+    ins:'Card cơ bản — ảnh + tiêu đề + mô tả + nút. Đây là "công thức gốc" mà mọi loại card đều biến thể từ đó. Blog, portfolio, product list đều dùng kiểu này.',
+    html:`
+      <div class="mc">
+        <div class="mc-img"></div>
+        <div class="mc-body">
+          <div class="mc-title">Card title</div>
+          <div class="mc-desc">Short description text goes here.</div>
+          <span class="mc-btn">Read more</span>
+        </div>
+      </div>`
+  },
+  {
+    num:'02', name:'Horizontal',
+    ins:'Card ngang — ảnh bên trái, nội dung bên phải. Tiết kiệm chiều cao, phù hợp cho danh sách bài viết, search result. Mỗi item chiếm ít vertical space hơn.',
+    html:`
+      <div class="mc">
+        <div class="mc-horiz">
+          <div class="mc-horiz-img"></div>
+          <div class="mc-horiz-body">
+            <div class="mc-title" style="font-size:9px">Horizontal card</div>
+            <span class="mc-btn" style="padding:2px 4px;font-size:6px">Read</span>
+          </div>
+        </div>
+      </div>`
+  },
+  {
+    num:'03', name:'Featured',
+    ins:'Card nổi bật — thêm badge để thu hút attention. Dùng cho promoted content, new feature. Cùng layout basic nhưng badge làm thay đổi thứ tự đọc của mắt.',
+    html:`
+      <div class="mc">
+        <div class="mc-img" style="position:relative">
+          <span class="mc-badge">Featured</span>
+        </div>
+        <div class="mc-body">
+          <div class="mc-title">Featured title</div>
+          <div class="mc-desc">Highlighted content with badge.</div>
+          <span class="mc-btn">Explore</span>
+        </div>
+      </div>`
+  },
+  {
+    num:'04', name:'Stats',
+    ins:'Card dữ liệu — không có ảnh, không có nút. Thay vào đó là số + label + trend. Dùng cho dashboard. Ưu tiên scanability: mắt đi thẳng vào con số.',
+    html:`
+      <div class="mc">
+        <div class="mc-stat">
+          <div>
+            <div class="mc-stat-val">12.5K</div>
+            <div class="mc-stat-lbl">Users</div>
+          </div>
+          <div class="mc-stat-chg">+12%</div>
+        </div>
+        <div class="mc-stat" style="border-top:none;padding-top:0">
+          <div>
+            <div class="mc-stat-val">$24.6K</div>
+            <div class="mc-stat-lbl">Revenue</div>
+          </div>
+          <div class="mc-stat-chg">+15%</div>
+        </div>
+      </div>`
+  }
+];
+
+const simGrid = document.getElementById('simGrid');
+const insT = document.getElementById('insT');
+let activeI = 0;
+let autoTimer;
+
+function renderSim() {
+  simGrid.innerHTML = cardTypes.map((c, i) => `
+    <div class="sc" data-i="${i}" tabindex="0" role="button" aria-label="${c.name} card">
+      <div class="sc-head">
+        <span class="sc-num">${c.num}</span>
+        <span class="sc-tag">${c.name.toUpperCase()}</span>
+      </div>
+      <div class="sc-body">${c.html}</div>
+    </div>`).join('');
+
+  simGrid.querySelectorAll('.sc').forEach(c => {
+    c.addEventListener('click', () => {
+      clearInterval(autoTimer);
+      activateCard(+c.dataset.i);
+    });
+  });
+}
+
+function activateCard(i) {
+  activeI = i;
+  simGrid.querySelectorAll('.sc').forEach((c, idx) => c.classList.toggle('on', idx === i));
+  setIns(cardTypes[i].ins);
+}
+
+function setIns(t) {
+  insT.classList.add('fading');
+  setTimeout(() => { 
+    insT.textContent = t; 
+    insT.classList.remove('fading'); 
+  }, 250);
+}
+
+function startAuto() {
+  activateCard(0);
+  autoTimer = setInterval(() => {
+    activeI = (activeI + 1) % cardTypes.length;
+    activateCard(activeI);
+  }, 4500);
+}
+
+renderSim();
+startAuto();
+</script>
+</body>
+</html>

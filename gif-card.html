@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Card — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+  --bg:#0f0f12;--bg-card:#16161b;--fg:#e8e4dc;--muted:#6e6e7a;
+  --accent:#cf5c26;--accent-soft:rgba(207,92,38,.12);
+  --accent-border:rgba(207,92,38,.3);--border:#282830;
+  --surface:#1c1c23;--success:#3a9e5c;--success-soft:rgba(58,158,92,.12);
+  --warning:#c49030;--warning-soft:rgba(196,144,48,.1);
+  --bar-d:#2a2a34;--bar-m:#44444f;--shape-lt:#33333d;
+  --card-bg:#1a1a21;--card-inner:#22222b;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--bg);color:var(--fg);
+  font-family:'Space Grotesk',sans-serif;min-height:100vh;line-height:1.6;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background-image:radial-gradient(rgba(255,255,255,.022) 1px,transparent 1px);
+  background-size:20px 20px;pointer-events:none;z-index:0;
+}
+body::after{
+  content:'';position:fixed;bottom:-20%;right:-8%;
+  width:550px;height:550px;
+  background:radial-gradient(circle,rgba(207,92,38,.035) 0%,transparent 70%);
+  pointer-events:none;z-index:0;
+}
+
+.entry{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:48px 24px 90px}
+
+.th{margin-bottom:28px}
+.badge{
+  display:inline-block;font-family:'JetBrains Mono',monospace;
+  font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;
+  color:var(--accent);background:var(--accent-soft);
+  border:1px solid var(--accent-border);padding:4px 12px;margin-bottom:16px;
+}
+.th h1{font-size:clamp(34px,6vw,54px);font-weight:800;letter-spacing:-2px;line-height:1.08}
+.th .sub{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--muted);margin-top:6px}
+
+.oneliner{
+  font-size:16px;color:var(--fg);opacity:.85;max-width:660px;line-height:1.7;
+  padding:18px 0;border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);margin-bottom:40px;
+}
+.oneliner strong{color:var(--accent);font-weight:600}
+
+.sec-lbl{
+  font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;
+letter-spacing:2px;text-transform:uppercase;color:var(--muted);
+  margin-bottom:20px;display:flex;align-items:center;gap:10px;
+}
+.sec-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* === SIM GRID === */
+.sim-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px}
+@media(max-width:800px){.sim-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:440px){.sim-grid{grid-template-columns:1fr}}
+
+.sc{
+  background:var(--bg-card);border:1px solid var(--border);
+  cursor:pointer;position:relative;overflow:hidden;
+  transition:border-color .3s,background .3s;
+}
+.sc::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:var(--accent);transform:scaleX(0);transform-origin:left;
+  transition:transform .35s ease;z-index:3;
+}
+.sc:hover{border-color:var(--accent-border)}
+.sc.on{border-color:var(--accent);background:var(--surface)}
+.sc.on::before{transform:scaleX(1)}
+
+.sc-head{
+  padding:14px 16px 10px;display:flex;justify-content:space-between;align-items:center;
+  border-bottom:1px solid var(--border);
+}
+.sc-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px}
+.sc-tag{
+  font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;
+  text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);transition:color .3s;
+}
+.sc.on .sc-tag{color:var(--accent)}
+
+.sc-body{padding:16px}
+
+/* Mini card previews inside sim */
+.mc{background:var(--card-inner);border:1px solid var(--border);overflow:hidden;transition:transform .3s ease}
+.sc.on .mc{border-color:rgba(207,92,38,.15)}
+.mc-img{height:48px;background:var(--shape-lt);position:relative;overflow:hidden}
+.mc-img::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(207,92,38,.08),transparent 60%);
+}
+.mc-body{padding:10px}
+.mc-title{font-size:10px;font-weight:700;color:var(--fg);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mc-desc{font-size:8px;color:var(--muted);line-height:1.4;margin-bottom:8px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.mc-btn{
+  display:inline-block;font-family:'JetBrains Mono',monospace;font-size:8px;
+  font-weight:600;letter-spacing:1px;text-transform:uppercase;
+  color:var(--accent);padding:4px 8px;border:1px solid var(--accent-border);
+  background:var(--accent-soft);
+}
+.mc-badge{
+  position:absolute;top:6px;left:6px;
+  font-family:'JetBrains Mono',monospace;font-size:7px;font-weight:600;
+  letter-spacing:1px;text-transform:uppercase;
+  color:#fff;background:var(--accent);padding:2px 6px;z-index:2;
+}
+.mc-stat{display:flex;justify-content:space-between;align-items:baseline;padding:8px 10px;border-top:1px solid var(--border)}
+.mc-stat-val{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:var(--fg)}
+.mc-stat-lbl{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);letter-spacing:.5px;text-transform:uppercase}
+.mc-stat-chg{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--success)}
+.mc-date{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);margin-bottom:6px}
+
+/* Horizontal card mini */
+.mc-horiz{display:flex}
+.mc-horiz-img{width:50px;height:56px;background:var(--shape-lt);flex-shrink:0;position:relative;overflow:hidden}
+.mc-horiz-img::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(207,92,38,.06),transparent)}
+.mc-horiz-body{flex:1;padding:8px 10px;display:flex;flex-direction:column;justify-content:center}
+
+/* Insight */
+.ins{
+  background:var(--surface);border:1px solid var(--border);
+  padding:18px 22px;display:flex;align-items:flex-start;gap:12px;margin-bottom:48px;
+}
+.ins-i{color:var(--accent);font-size:13px;margin-top:3px;flex-shrink:0}
+.ins-t{font-size:14px;color:var(--fg);opacity:.85;line-height:1.65;transition:opacity .25s,transform .25s}
+.ins-t.fading{opacity:0;transform:translateY(6px)}
+
+/* Anatomy breakdown */
+.anatomy{
+  background:var(--surface);border:1px solid var(--border);
+padding:20px 22px;margin-bottom:48px;
+}
+.anatomy-title{
+  font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;
+  letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;
+}
+.anatomy-grid{display:flex;gap:8px;flex-wrap:wrap}
+.anatomy-chip{
+  display:flex;align-items:center;gap:6px;
+  padding:6px 12px;border:1px solid var(--border);background:var(--bg-card);
+  font-size:12px;color:var(--fg);
+}
+.anatomy-dot{width:8px;height:8px;flex-shrink:0}
+
+/* DIVIDER */
+.dv{display:flex;align-items:center;gap:14px;margin-bottom:30px}
+.dv::before,.dv::after{content:'';flex:1;height:1px;background:var(--border)}
+.dv span{
+  font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;
+  letter-spacing:2px;text-transform:uppercase;color:var(--muted);white-space:nowrap;
+}
+
+/* === PRACTICE === */
+.pg{font-size:15px;color:var(--fg);opacity:.8;margin-bottom:22px;line-height:1.6}
+.pg span{color:var(--accent);font-weight:600}
+
+/* Toggle switches */
+.toggle-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px;margin-bottom:28px}
+.tgl{
+display:flex;align-items:center;justify-content:space-between;
+  padding:12px 16px;border:1px solid var(--border);background:var(--bg-card);
+  cursor:pointer;transition:all .25s;user-select:none;
+}
+.tgl:hover{border-color:var(--accent-border)}
+.tgl.on{border-color:var(--accent);background:var(--accent-soft)}
+.tgl-lbl{font-size:13px;color:var(--muted);transition:color .25s;display:flex;align-items:center;gap:8px}
+.tgl.on .tgl-lbl{color:var(--fg)}
+.tgl-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;transition:background .25s}
+.tgl-sw{
+  width:36px;height:20px;border:1px solid var(--border);background:var(--bg);
+  position:relative;transition:all .25s;flex-shrink:0;
+}
+.tgl-sw::after{
+  content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;
+  background:var(--muted);transition:all .25s;
+}
+.tgl.on .tgl-sw{border-color:var(--accent);background:var(--accent-soft)}
+.tgl.on .tgl-sw::after{left:18px;background:var(--accent)}
+
+/* Preview area */
+.prev{
+  background:var(--bg-card);border:1px solid var(--border);
+  padding:40px 28px;margin-bottom:18px;min-height:260px;
+display:flex;align-items:center;justify-content:center;
+  transition:border-color .3s;position:relative;overflow:hidden;
+}
+.prev::before{
+  content:'';position:absolute;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.007) 1px,transparent 1px),
+  linear-gradient(90deg,rgba(255,255,255,.007) 1px,transparent 1px);
+  background-size:16px 16px;pointer-events:none;
+}
+.prev.ok-b{border-color:rgba(58,158,92,.25)}
+.prev-lbl{
+  position:absolute;top:10px;left:14px;z-index:2;
+  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--muted);opacity:.4;
+}
+
+/* Live card preview */
+.live-card{
+  width:280px;background:var(--card-inner);border:1px solid var(--border);
+  overflow:hidden;position:relative;z-index:1;transition:all .35s ease;
+}
+@media(max-width:480px){.live-card{width:240px}}
+.live-card-img{
+  height:120px;background:var(--shape-lt);position:relative;overflow:hidden;
+  transition:height .35s ease,opacity .3s;
+}
+.live-card-img::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(207,92,38,.1),transparent 60%);
+}
+.live-card-img.hide{height:0;opacity:0}
+.live-card-badge{
+  position:absolute;top:10px;left:10px;
+  font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:600;
+  letter-spacing:1.5px;text-transform:uppercase;
+  color:#fff;background:var(--accent);padding:3px 8px;z-index:2;
+  transition:opacity .3s,transform .3s;
+}
+.live-card-badge.hide{opacity:0;transform:translateY(-8px)}
+.live-card-body{padding:16px}
+.live-card-title{
+  font-size:15px;font-weight:700;color:var(--fg);margin-bottom:8px;
+  transition:opacity .3s,margin .3s;
+}
+.live-card-title.hide{opacity:0;margin-bottom:0;height:0;overflow:hidden}
+.live-card-desc{
+  font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:14px;
+  transition:opacity .3s,max-height .35s;margin .3s;max-height:80px;overflow:hidden;
+}
+.live-card-desc.hide{opacity:0;max-height:0;margin-bottom:0}
+.live-card-btn{
+  display:inline-block;font-family:'JetBrains Mono',monospace;font-size:10px;
+  font-weight:600;letter-spacing:1px;text-transform:uppercase;
+  color:var(--accent);padding:8px 16px;border:1px solid var(--accent-border);
+  background:var(--accent-soft);transition:opacity .3s,transform .3s;
+}
+.live-card-btn.hide{opacity:0;transform:translateY(6px)}
+
+/* Empty state */
+.empty-hint{
+  text-align:center;color:var(--muted);opacity:.4;
+  font-family:'JetBrains Mono',monospace;font-size:11px;
+}
+
+/* Feedback */
+.fb{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:8px 16px;font-size:13px;font-weight:500;
+  border:1px solid var(--border);background:var(--bg-card);transition:all .3s;
+}
+.fb.ok{border-color:rgba(58,158,92,.4);color:var(--success);background:var(--success-soft)}
+.fb.no{border-color:rgba(196,144,48,.3);color:var(--warning);background:var(--warning-soft)}
+.fb.neutral{border-color:var(--border);color:var(--muted)}
+.fb i{font-size:11px}
+
+.hint{font-size:12px;color:var(--muted);opacity:.5;margin-top:10px;display:flex;align-items:center;gap:6px}
+.hint i{font-size:10px;color:var(--accent)}
+
+/* Why box */
+.why{margin-top:36px;border:1px solid var(--border);padding:20px 22px;background:var(--surface)}
+.why h3{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--accent);margin-bottom:10px}
+.why p{font-size:14px;color:var(--fg);opacity:.75;line-height:1.65}
+.why code{
+  font-family:'JetBrains Mono',monospace;font-size:12px;
+  background:var(--bg-card);padding:2px 6px;border:1px solid var(--border);color:var(--accent);
+}
+
+.fu{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.fu.in{opacity:1;transform:translateY(0)}
+
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+@media(max-width:480px){
+  .entry{padding:28px 14px 60px}
+  .prev{padding:32px 16px}
+  .ins{padding:14px 16px}
+  .toggle-grid{grid-template-columns:1fr 1fr}
+  .live-card-img{height:90px}
+}
+</style>
+</head>
+<body>
+<div class="entry">
+
+  <header class="th fu">
+    <div class="badge">DESIGN</div>
+    <h1>Card</h1>
+    <p class="sub">card component — khối chứa nội dung liên quan</p>
+  </header>
+
+  <p class="oneliner fu">
+    <strong>Card</strong> là một hộp chứa thông tin — gom ảnh, tiêu đề, mô tả, nút hành động vào một khối. Đổi phần tử bên trong, đổi luôn loại card. Bỏ phần tử ra, card vẫn đứng nhưng "thiếu gì đó".
+  </p>
+
+  <!-- 01 — MÔ PHỎNG -->
+  <section class="fu" aria-label="Mô phỏng Card">
+    <div class="sec-lbl">01 — Mô phỏng</div>
+    <div class="sim-grid" id="simGrid"></div>
+    <div class="ins">
+      <i class="fa-solid fa-lightbulb ins-i"></i>
+      <p class="ins-t" id="insT">Nhấn vào một loại card để xem giải thích.</p>
+    </div>
+  </section>
+
+  <!-- Anatomy breakdown -->
+  <div class="anatomy fu" id="anatomyBox">
+    <div class="anatomy-title">Anatomy của card — các phần tử có thể bật/tắt</div>
+    <div class="anatomy-grid">
+      <div class="anatomy-chip"><div class="anatomy-dot" style="background:var(--shape-lt)"></div>Image</div>
+      <div class="anatomy-chip"><div class="anatomy-dot" style="background:var(--accent)"></div>Badge</div>
+      <div class="anatomy-chip"><div class="anatomy-dot" style="background:var(--fg)"></div>Title</div>
+      <div class="anatomy-chip"><div class="anatomy-dot" style="background:var(--muted)"></div>Description</div>
+      <div class="anatomy-chip"><div class="anatomy-dot" style="background:var(--accent-soft);border:1px solid var(--accent-border)"></div>Button</div>
+    </div>
+  </div>
+
+  <div class="dv fu"><span>02 — Thực hành</span></div>
+
+  <!-- 02 — THỰC HÀNH -->
+  <section class="fu" aria-label="Thực hành Card">
+    <p class="pg">
+      <span>Mục tiêu:</span> Bật/tắt từng phần tử để thấy card thay đổi thế nào khi thiếu đi một thành phần. Thử bỏ hết rồi thêm lại từng cái một.
+    </p>
+
+    <div class="toggle-grid" id="toggleGrid"></div>
+
+    <div class="prev" id="prevBox">
+      <span class="prev-lbl">LIVE PREVIEW</span>
+      <div id="prevContent"></div>
+    </div>
+
+    <div class="fb neutral" id="fb">
+      <i class="fa-solid fa-circle-info"></i>
+      <span>Bật/tắt các phần tử ở trên</span>
+    </div>
+    <p class="hint" id="hintE">
+      <i class="fa-solid fa-arrow-up-right"></i>
+      Thử bỏ hết phần tử — card còn lại gì? Đó chính là "bộ khung" của card
+    </p>
+
+    <div class="why fu">
+      <h3>Tại sao marketer cần biết</h3>
+      <p>
+        Khi bạn nói "làm cho nó thành card" mà dev hỏi "card nào — product card hay stats card?", bạn cần phân biệt được. <code>Product card</code> cần ảnh + tiêu đề + nút mua. <code>Stats card</code> cần số + label + trend. Sai loại = sai layout = mất thời gian iteration. Biết anatomy của card giúp bạn mô tả chính xác cần gì thay vì "cho nó đẹp lên một chút".
+      </p>
+    </div>
+  </section>
+</div>
+
+<script>
+/* === DỮ LIỆU === */
+const cardTypes = [
+  {
+    num:'01', name:'Basic',
+    ins:'Card cơ bản — ảnh + tiêu đề + mô tả + nút. Đây là "công thức gốc" mà mọi loại card đều biến thể từ đó. Blog, portfolio, product list đều dùng kiểu này.',
+    html:`
+      <div class="mc">
+        <div class="mc-img"></div>
+        <div class="mc-body">
+          <div class="mc-title">Card title</div>
+          <div class="mc-desc">Short description text goes here.</div>
+          <span class="mc-btn">Read more</span>
+        </div>
+      </div>`
+  },
+  {
+    num:'02', name:'Horizontal',
+    ins:'Card ngang — ảnh bên trái, nội dung bên phải. Tiết kiệm chiều cao, phù hợp cho danh sách bài viết, search result, notification. Mỗi item chiếm ít vertical space hơn basic card.',
+    html:`
+      <div class="mc">
+        <div class="mc-horiz">
+          <div class="mc-horiz-img"></div>
+          <div class="mc-horiz-body">
+            <div class="mc-date">APR 24, 2024</div>
+            <div class="mc-title">Horizontal card</div>
+            <span class="mc-btn">Read</span>
+          </div>
+        </div>
+      </div>`
+  },
+  {
+    num:'03', name:'Featured',
+    ins:'Card nổi bật — thêm badge/label để thu hút attention. Dùng cho promoted content, new feature, highlight item. Cùng layout basic card nhưng badge thay đổi hoàn toàn thứ tự đọc của mắt.',
+    html:`
+      <div class="mc">
+        <div class="mc-img" style="position:relative">
+          <span class="mc-badge">Featured</span>
+        </div>
+        <div class="mc-body">
+          <div class="mc-title">Featured title</div>
+          <div class="mc-desc">Highlighted content with badge overlay.</div>
+          <span class="mc-btn">Explore</span>
+        </div>
+      </div>`
+  },
+  {
+    num:'04', name:'Stats',
+    ins:'Card dữ liệu — không có ảnh, không có nút. Thay vào đó là số + label + trend. Dùng cho dashboard, analytics, KPI display. Ưu tiên scanability: mắt đi thẳng vào số lớn.',
+    html:`
+      <div class="mc">
+        <div class="mc-stat">
+          <div>
+            <div class="mc-stat-val">12.5K</div>
+            <div class="mc-stat-lbl">Users</div>
+          </div>
+          <div class="mc-stat-chg">+12%</div>
+        </div>
+        <div class="mc-stat">
+          <div>
+            <div class="mc-stat-val">8.2K</div>
+            <div class="mc-stat-lbl">Orders</div>
+          </div>
+          <div class="mc-stat-chg">+8%</div>
+        </div>
+        <div class="mc-stat">
+          <div>
+            <div class="mc-stat-val">$24.6K</div>
+            <div class="mc-stat-lbl">Revenue</div>
+          </div>
+          <div class="mc-stat-chg">+15%</div>
+        </div>
+      </div>`
+  }
+];
+
+const parts = [
+  { id:'image', label:'Image', color:'var(--shape-lt)', default:true },
+  { id:'badge', label:'Badge', color:'var(--accent)', default:false },
+  { id:'title', label:'Title', color:'var(--fg)', default:true },
+  { id:'desc', label:'Description', color:'var(--muted)', default:true },
+  { id:'button', label:'Button', color:'var(--accent-soft)', default:true }
+];
+
+let activeI = -1;
+let state = {};
+
+/* === DOM === */
+const simGrid = document.getElementById('simGrid');
+const insT = document.getElementById('insT');
+const toggleGrid = document.getElementById('toggleGrid');
+const prevContent = document.getElementById('prevContent');
+const fb = document.getElementById('fb');
+
+/* === INIT STATE === */
+function initState() {
+  parts.forEach(p => state[p.id] = p.default);
+}
+
+/* === RENDER SIM === */
+function renderSim() {
+  simGrid.innerHTML = cardTypes.map((c, i) => `
+    <div class="sc" data-i="${i}" tabindex="0" role="button" aria-label="${c.name} card">
+      <div class="sc-head">
+        <span class="sc-num">${c.num}</span>
+        <span class="sc-tag">${c.name.toUpperCase()}</span>
+      </div>
+      <div class="sc-body">${c.html}</div>
+    </div>`).join('');
+
+  simGrid.querySelectorAll('.sc').forEach(c => {
+    const handler = () => activateCard(+c.dataset.i);
+    c.addEventListener('click', handler);
+    c.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handler(); }
+    });
+  });
+}
+
+/* === ACTIVATE CARD === */
+function activateCard(i) {
+  simGrid.querySelectorAll('.sc').forEach(c => c.classList.remove('on'));
+  if (activeI === i) { activeI = -1; setIns('Nhấn vào một loại card để xem giải thích.'); return; }
+  activeI = i;
+  simGrid.querySelector(`[data-i="${i}"]`).classList.add('on');
+  setIns(cardTypes[i].ins);
+
+  /* Set toggle states to match card type */
+  const configs = {
+    0: { image:true, badge:false, title:true, desc:true, button:true },
+    1: { image:true, badge:false, title:true, desc:false, button:true },
+    2: { image:true, badge:true, title:true, desc:true, button:true },
+    3: { image:false, badge:false, title:true, desc:true, button:false }
+  };
+  Object.assign(state, configs[i]);
+  renderToggles();
+  renderPreview();
+}
+
+/* === INSIGHT === */
+function setIns(t) {
+  insT.classList.add('fading');
+  setTimeout(() => { insT.textContent = t; insT.classList.remove('fading'); }, 250);
+}
+
+/* === RENDER TOGGLES === */
+function renderToggles() {
+  toggleGrid.innerHTML = parts.map(p => `
+    <div class="tgl${state[p.id] ? ' on' : ''}" data-id="${p.id}" tabindex="0" role="switch" aria-checked="${state[p.id]}" aria-label="Bật/tắt ${p.label}">
+      <span class="tgl-lbl">
+        <span class="tgl-dot" style="background:${state[p.id] ? p.color : 'var(--border)'}"></span>
+        ${p.label}
+      </span>
+      <div class="tgl-sw"></div>
+    </div>`).join('');
+
+  toggleGrid.querySelectorAll('.tgl').forEach(t => {
+    const handler = () => {
+      const id = t.dataset.id;
+      state[id] = !state[id];
+      activeI = -1;
+      simGrid.querySelectorAll('.sc').forEach(c => c.classList.remove('on'));
+      setIns('Nhấn vào một loại card để xem giải thích.');
+      renderToggles();
+      renderPreview();
+    };
+    t.addEventListener('click', handler);
+    t.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handler(); }
+    });
+  });
+}
+
+/* === RENDER PREVIEW === */
+function renderPreview() {
+  const s = state;
+  const count = Object.values(s).filter(Boolean).length;
+
+  /* Determine card type name */
+  let typeName = 'Custom';
+  if (s.image && !s.badge && s.title && s.desc && s.button) typeName = 'Basic';
+  else if (s.image && !s.badge && s.title && !s.desc && s.button) typeName = 'Horizontal';
+  else if (s.image && s.badge && s.title && s.desc && s.button) typeName = 'Featured';
+  else if (!s.image && !s.badge && s.title && s.desc && !s.button) typeName = 'Stats-like';
+
+  let html = `<div class="live-card">`;
+
+  /* Image */
+  if (s.image) {
+    html += `<div class="live-card-img">`;
+    if (s.badge) html += `<span class="live-card-badge">Featured</span>`;
+    html += `</div>`;
+  }
+
+  html += `<div class="live-card-body">`;
+
+  /* Title */
+  if (s.title) {
+    html += `<div class="live-card-title${s.title ? '' : ' hide'}">Card title goes here</div>`;
+  }
+
+  /* Description */
+  if (s.desc) {
+    html += `<div class="live-card-desc${s.desc ? '' : ' hide'}">This is a short description that provides context for the card content and explains what the user will find inside.</div>`;
+  }
+
+  /* Button */
+  if (s.button) {
+    html += `<span class="live-card-btn${s.button ? '' : ' hide'}">Read more</span>`;
+  }
+
+  html += `</div></div>`;
+
+  prevContent.innerHTML = html;
+
+  /* Feedback */
+  if (count === 0) {
+    fb.className = 'fb no';
+    fb.innerHTML = `<i class="fa-solid fa-ghost"></i><span>Card rỗng — đây chính là "bộ khung" khi không có nội dung</span>`;
+  } else if (count === 5) {
+    fb.className = 'fb ok';
+    fb.innerHTML = `<i class="fa-solid fa-check"></i><span>Đầy đủ phần tử — đây là Featured Card (có badge)</span>`;
+  } else if (count <= 2) {
+    fb.className = 'fb no';
+    fb.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i><span>Quá ít phần tử — card mất ngữ cảnh, user không biết nên làm gì</span>`;
+  } else {
+    fb.className = 'fb neutral';
+    fb.innerHTML = `<i class="fa-solid fa-eye"></i><span>${count}/5 phần tử — đang nhìn giống "${typeName}" card</span>`;
+  }
+}
+
+/* === FADE IN === */
+function initFU() {
+  document.querySelectorAll('.fu').forEach((el, i) => {
+    setTimeout(() => el.classList.add('in'), 60 + i * 110);
+  });
+}
+
+/* === INIT === */
+initState();
+renderSim();
+renderToggles();
+renderPreview();
+initFU();
+</script>
+</body>
+</html>
