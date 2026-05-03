@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Spacing Styles — Animated Demo</title>
@@ -8,15 +11,15 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
   :root {
-    --bg: #0e0e11;
-    --bg-card: #17171c;
+    --bg: #000000;
+    --bg-card: #080808;
     --fg: #f0ece4;
-    --muted: #6b6b78;
+    --muted: #888899;
     --accent: #e8753a;
     --accent-light: #f4a261;
-    --bar-dark: #2a2a33;
-    --bar-mid: #4a4a58;
-    --border: #2a2a33;
+    --bar-dark: #1a1a20;
+    --bar-mid: #2a2a33;
+    --border: #1a1a1a;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -280,20 +283,23 @@
   /* === Thông tin style === */
   .style-info {
     position: absolute;
-    bottom: 20px;
-    left: 28px;
-    text-align: left;
+    top: 14px;
+    left: 20px;
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    z-index: 2;
   }
   .style-info .label {
     font-family: 'JetBrains Mono', monospace;
-    font-size: 10px;
+    font-size: 9px;
     letter-spacing: 2px;
     text-transform: uppercase;
     color: var(--muted);
-    margin-bottom: 4px;
+    margin-bottom: 0;
   }
   .style-info .value {
-    font-size: 18px;
+    font-size: 14px;
     font-weight: 600;
     color: var(--accent);
     transition: all 0.5s ease;
@@ -321,7 +327,6 @@
     border-radius: 50%;
     margin-left: -1px;
   }
-
   @media (max-width: 800px) {
     .demo-panel { flex-direction: column; padding: 22px 18px; gap: 22px; }
   }
@@ -410,6 +415,162 @@
     transform: translateY(0);
   }
 
+  .is-hidden { display: none !important; }
+
+  /* === Practice Panel Styles === */
+  .practice-grid {
+    display: grid;
+    grid-template-columns: 320px 1fr;
+    gap: 40px;
+    width: 100%;
+    align-items: start;
+  }
+
+  .practice-controls {
+    border-right: 1px solid var(--border);
+    padding-right: 40px;
+  }
+
+  .practice-controls h2 {
+    font-size: 28px;
+    line-height: 1.1;
+    margin-bottom: 16px;
+    font-weight: 700;
+  }
+
+  .practice-controls p {
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 24px;
+  }
+
+  .control-group {
+    display: grid;
+    gap: 16px;
+  }
+
+  .control-item {
+    display: grid;
+    grid-template-columns: 60px 1fr 50px;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .control-item label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .control-item input[type="range"] {
+    appearance: none;
+    background: var(--border);
+    height: 2px;
+    border-radius: 2px;
+    cursor: pointer;
+  }
+
+  .control-item input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    background: var(--accent);
+    border-radius: 50%;
+    transition: transform 0.2s;
+  }
+
+  .control-item input[type="number"] {
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--fg);
+    padding: 4px 8px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    text-align: center;
+    border-radius: 4px;
+  }
+
+  .tip-box {
+    margin-top: 32px;
+    padding: 16px;
+    background: rgba(232,117,58,0.05);
+    border-left: 2px solid var(--accent);
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--muted);
+  }
+
+  .practice-preview {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .preview-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .preview-header h3 {
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  .total-badge {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    background: rgba(232,117,58,0.1);
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: 1px solid rgba(232,117,58,0.2);
+  }
+
+  .stack-container {
+    background: #050505;
+    padding: 24px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+
+  .stack-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 20px;
+    border-radius: 8px;
+    transition: margin-bottom 0.3s ease;
+  }
+
+  .stack-card .eyebrow {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    text-transform: uppercase;
+    color: var(--accent);
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+  }
+
+  .stack-card h4 {
+    font-size: 16px;
+    margin-bottom: 8px;
+    color: var(--fg);
+  }
+
+  .stack-card p {
+    font-size: 13px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  @media (max-width: 900px) {
+    .practice-grid { grid-template-columns: 1fr; }
+    .practice-controls { border-right: none; border-bottom: 1px solid var(--border); padding-right: 0; padding-bottom: 32px; }
+  }
+
   /* === Reduced motion === */
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
@@ -434,6 +595,7 @@
   <button class="tab-btn" data-index="1" aria-pressed="false"><span class="num">02</span>Comfortable</button>
   <button class="tab-btn" data-index="2" aria-pressed="false"><span class="num">03</span>Loose</button>
   <button class="tab-btn" data-index="3" aria-pressed="false"><span class="num">04</span>Extra Loose</button>
+  <button class="tab-btn" data-mode="practice" aria-pressed="false"><span class="num">05</span>Thực hành</button>
 </nav>
 
 <main>
@@ -458,8 +620,80 @@
     </div>
   </section>
 
+  <!-- Panel thực hành (Practice Panel) -->
+  <section class="demo-panel fade-up is-hidden" id="practicePanel" aria-live="polite">
+    <div class="practice-grid">
+      <div class="practice-controls">
+        <h2>Tự nhập spacing</h2>
+        <p>Kéo slider hoặc nhập số để thấy layout thay đổi realtime.</p>
+        
+        <div class="control-group">
+          <div class="control-item">
+            <label>Gap 01</label>
+            <input type="range" min="0" max="80" value="8" data-practice-index="0">
+            <input type="number" min="0" max="80" value="8" data-practice-number="0">
+          </div>
+          <div class="control-item">
+            <label>Gap 02</label>
+            <input type="range" min="0" max="80" value="8" data-practice-index="1">
+            <input type="number" min="0" max="80" value="8" data-practice-number="1">
+          </div>
+          <div class="control-item">
+            <label>Gap 03</label>
+            <input type="range" min="0" max="80" value="8" data-practice-index="2">
+            <input type="number" min="0" max="80" value="8" data-practice-number="2">
+          </div>
+          <div class="control-item">
+            <label>Gap 04</label>
+            <input type="range" min="0" max="80" value="8" data-practice-index="3">
+            <input type="number" min="0" max="80" value="8" data-practice-number="3">
+          </div>
+        </div>
+
+        <div class="tip-box">
+          Gợi ý: thử tăng từ 8px lên 16px, 24px, 32px để cảm nhận layout thoáng hơn.
+        </div>
+      </div>
+
+      <div class="practice-preview">
+        <div class="preview-header">
+          <h3>Mô phỏng content</h3>
+          <div class="total-badge" id="practiceSummary">Tổng gap: 32px</div>
+        </div>
+
+        <div class="stack-container" id="practiceStack">
+          <article class="stack-card">
+            <div class="eyebrow">Hero</div>
+            <h4>Ưu đãi workshop AI</h4>
+            <p>Một câu mở đầu ngắn để người dùng nắm ngay lợi ích chính.</p>
+          </article>
+          <article class="stack-card">
+            <div class="eyebrow">Social Proof</div>
+            <h4>Đã có 1.200 marketer</h4>
+            <p>Block niềm tin nếu dính quá sát headline sẽ làm giao diện trông nặng.</p>
+          </article>
+          <article class="stack-card">
+            <div class="eyebrow">Offer</div>
+            <h4>Checklist + template</h4>
+            <p>Spacing vừa phải giúp phần lợi ích dễ quét và không bị cảm giác đè lên nhau.</p>
+          </article>
+          <article class="stack-card">
+            <div class="eyebrow">CTA</div>
+            <h4>Đăng ký ngay</h4>
+            <p>CTA nên có đủ khoảng thở để người dùng cảm nhận đây là điểm hành động.</p>
+          </article>
+          <article class="stack-card">
+            <div class="eyebrow">Footnote</div>
+            <h4>Hoàn tiền 7 ngày</h4>
+            <p>Thử kéo gap rất nhỏ rồi tăng dần để thấy giao diện chuyển từ chật sang thoáng.</p>
+          </article>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <!-- Điều khiển auto-play -->
-  <div class="auto-play-wrap fade-up">
+  <div class="auto-play-wrap fade-up" id="autoPlayWrap">
     <button class="ctrl-btn" id="autoPlayBtn" aria-label="Tự động phát">
       <i class="fa-solid fa-play"></i>
       <span>Tự động</span>
@@ -522,6 +756,7 @@
   ];
 
   let currentIndex = 0;
+  let currentMode = 'preset';
   let autoPlaying = false;
   let autoTimer = null;
   let progressTimer = null;
@@ -538,6 +773,54 @@
   const toastEl = document.getElementById('toast');
   const tabBtns = document.querySelectorAll('.tab-btn');
   const demoPanel = document.getElementById('demoPanel');
+  const practicePanel = document.getElementById('practicePanel');
+  const autoPlayWrap = document.getElementById('autoPlayWrap');
+  const practiceStack = document.getElementById('practiceStack');
+  const practiceSummary = document.getElementById('practiceSummary');
+  const practiceRanges = document.querySelectorAll('[data-practice-index]');
+  const practiceNumbers = document.querySelectorAll('[data-practice-number]');
+
+  function setMode(mode) {
+    currentMode = mode;
+    const isPractice = mode === 'practice';
+    demoPanel.classList.toggle('is-hidden', isPractice);
+    practicePanel.classList.toggle('is-hidden', !isPractice);
+    autoPlayWrap.classList.toggle('is-hidden', isPractice);
+    if (isPractice) stopAutoPlay();
+  }
+
+  function syncTabState() {
+    tabBtns.forEach((btn) => {
+      const mode = btn.dataset.mode ?? 'preset';
+      const index = btn.dataset.index;
+      const isActive = mode === currentMode && (mode === 'practice' || Number(index) === currentIndex);
+      btn.classList.toggle('active', isActive);
+      btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    });
+  }
+
+  function updatePracticePreview() {
+    const values = Array.from(practiceRanges).map((input) => Math.max(0, Math.min(80, Number(input.value) || 0)));
+    const cards = practiceStack.querySelectorAll('.stack-card');
+
+    values.forEach((value, index) => {
+      if (cards[index]) {
+        cards[index].style.marginBottom = `${value}px`;
+      }
+      practiceNumbers[index].value = String(value);
+      practiceRanges[index].value = String(value);
+    });
+
+    const totalGap = values.reduce((sum, value) => sum + value, 0);
+    practiceSummary.textContent = `Tổng gap: ${totalGap}px`;
+  }
+
+  function bindPracticeInput(index, value) {
+    const nextValue = Math.max(0, Math.min(80, Number(value) || 0));
+    practiceRanges[index].value = String(nextValue);
+    practiceNumbers[index].value = String(nextValue);
+    updatePracticePreview();
+  }
 
   // === Render bars vào panel ===
   function renderBars(style, animate = true) {
@@ -585,15 +868,16 @@
 
   // === Chuyển đổi ===
   function switchTo(index) {
-    if (index === currentIndex) return;
+    setMode('preset');
+    if (index === currentIndex) {
+      syncTabState();
+      return;
+    }
     currentIndex = index;
     const style = spacingStyles[index];
 
     // Cập nhật tab buttons
-    tabBtns.forEach((btn, i) => {
-      btn.classList.toggle('active', i === index);
-      btn.setAttribute('aria-pressed', i === index ? 'true' : 'false');
-    });
+    syncTabState();
 
     // Render bars với animation
     renderBars(style, true);
@@ -655,6 +939,7 @@
 
   resetBtn.addEventListener('click', () => {
     stopAutoPlay();
+    setMode('preset');
     switchTo(0);
     renderBars(spacingStyles[0], true);
     showToast('<span>00</span> — Đã đặt lại');
@@ -663,12 +948,32 @@
   // === Tab buttons ===
   tabBtns.forEach(btn => {
     btn.addEventListener('click', () => {
-      switchTo(parseInt(btn.dataset.index));
+      if (btn.dataset.mode === 'practice') {
+        setMode('practice');
+        syncTabState();
+        showToast('<span>05</span> â€” Thá»±c hÃ nh thá»±c táº¿');
+        return;
+      }
+
+      switchTo(parseInt(btn.dataset.index, 10));
+    });
+  });
+
+  practiceRanges.forEach((input, index) => {
+    input.addEventListener('input', (event) => {
+      bindPracticeInput(index, event.target.value);
+    });
+  });
+
+  practiceNumbers.forEach((input, index) => {
+    input.addEventListener('input', (event) => {
+      bindPracticeInput(index, event.target.value);
     });
   });
 
   // === Keyboard navigation ===
   document.addEventListener('keydown', (e) => {
+    if (currentMode === 'practice') return;
     if (e.key === 'ArrowRight') {
       const next = (currentIndex + 1) % spacingStyles.length;
       switchTo(next);
@@ -692,6 +997,8 @@
 
   // === Khởi tạo ===
   function init() {
+    updatePracticePreview();
+    syncTabState();
     renderBars(spacingStyles[0], false);
     // Delay để hiện bars ngay nhưng có hiệu ứng vào
     setTimeout(() => {

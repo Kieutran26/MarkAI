@@ -141,3 +141,53 @@
     max-height: calc(100vh - 24px);
   }
 }
+
+/* ── TERMINAL UI ── */
+.terminal-box {
+  background: #141414;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  border: 1px solid #2a2a2a;
+}
+.terminal-header {
+  background: #252525;
+  padding: 10px 14px;
+  display: flex;
+  gap: 7px;
+  border-bottom: 1px solid #333;
+}
+.terminal-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+.terminal-dot.red { background: #ff5f56; }
+.terminal-dot.yellow { background: #ffbd2e; }
+.terminal-dot.green { background: #27c93f; }
+
+.terminal-content {
+  padding: 18px;
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.7;
+  color: #c9c9c9;
+}
+.terminal-content .prompt-sym {
+  color: var(--accent);
+  margin-right: 10px;
+  font-weight: bold;
+}
+.terminal-cursor {
+  display: inline-block;
+  width: 7px;
+  height: 15px;
+  background: var(--accent);
+  margin-left: 6px;
+  vertical-align: middle;
+  animation: terminal-blink 1s step-end infinite;
+}
+@keyframes terminal-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}

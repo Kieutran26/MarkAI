@@ -1,8 +1,9 @@
 import { useEffect, useRef } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import '../components/glossary/glossary.css';
+import SpacingPracticePanel from '../components/glossary/SpacingPracticePanel';
 import { getTermById, getTermDeepDiveNotes } from '../lib/glossary';
-import spacingDemoHtml from '../../gif spacing.html?raw';
+import spacingDemoHtml from '../../gif-spacing-demo.html?raw';
 
 export default function GlossaryTermDetailPage() {
   const { termId } = useParams<{ termId: string }>();
@@ -19,18 +20,24 @@ export default function GlossaryTermDetailPage() {
     return <Navigate to="/tu-dien-thuat-ngu" replace />;
   }
 
-  const deepDiveNotes = getTermDeepDiveNotes(term);
+
   const interactiveDemoHtml = term.id === 'spacing' ? spacingDemoHtml : null;
 
   const syncDemoFrameHeight = () => {
     const frame = demoFrameRef.current;
     const doc = frame?.contentDocument;
     if (!frame || !doc) return;
-    const nextHeight = Math.max(
-      doc.documentElement.scrollHeight,
-      doc.body.scrollHeight,
-      doc.documentElement.offsetHeight,
-      doc.body.offsetHeight,
+
+    frame.style.height = '0px';
+    const bodyRect = doc.body.getBoundingClientRect();
+    const docRect = doc.documentElement.getBoundingClientRect();
+    const nextHeight = Math.ceil(
+      Math.max(
+        doc.body.scrollHeight,
+        doc.documentElement.scrollHeight,
+        bodyRect.height,
+        docRect.height,
+      ),
     );
     frame.style.height = `${nextHeight}px`;
   };
@@ -73,8 +80,8 @@ export default function GlossaryTermDetailPage() {
   return (
     <div className="glossary-page bg-[var(--bg)] text-ink">
       <section className="border-b border-border">
-        <div className="page-shell grid gap-0 lg:grid-cols-[minmax(0,3fr)_minmax(0,7fr)]">
-          <div className="border-b border-border px-[1.2rem] py-10 lg:border-b-0 lg:border-r lg:px-8 lg:py-14">
+        <div className="page-shell grid gap-0 lg:grid-cols-[minmax(0,3fr)_minmax(0,7fr)] items-start">
+          <div className="border-b border-border px-[1.2rem] py-10 lg:border-b-0 lg:border-r lg:px-8 lg:py-14 lg:sticky lg:top-[52px] lg:h-fit">
             <Link
               to="/tu-dien-thuat-ngu"
               className="inline-flex items-center border border-[var(--ink)] bg-[var(--ink)] px-[10px] py-[7px] font-mono text-[10px] uppercase tracking-[0.04em] text-[var(--bg)] no-underline transition-colors hover:border-accent hover:bg-accent hover:text-[var(--ink)] active:border-accent active:bg-accent active:text-[var(--ink)]"
@@ -86,28 +93,50 @@ export default function GlossaryTermDetailPage() {
             <p className="mt-8 max-w-[46rem] font-sans text-[17px] leading-[1.8] text-ink2">{term.definition}</p>
 
             <div className="mt-10 max-w-[52rem]">
-              <p className="font-mono text-[10px] uppercase tracking-[0.06em] text-muted">Giải thích kỹ hơn</p>
-              <div className="mt-4 grid gap-4">
-                {deepDiveNotes.length ? (
-                  deepDiveNotes.map((note) => (
-                    <div key={note} className="border border-border bg-[var(--bg)] px-5 py-4 font-sans text-[15px] leading-[1.8] text-ink2">
-                      {note}
+              <p className="font-mono text-[10px] uppercase tracking-[0.06em] text-muted">Ví dụ thực tế</p>
+                <div className="mt-4">
+                  {term.example.includes('Prompt:') ? (
+                    (() => {
+                      const [desc, prompt] = term.example.split('Prompt:');
+                      return (
+                        <>
+                          <p className="font-sans text-[15px] leading-[1.8] text-ink2 mb-4">{desc}</p>
+                          <div className="terminal-box">
+                            <div className="terminal-header">
+                              <div className="terminal-dot red" />
+                              <div className="terminal-dot yellow" />
+                              <div className="terminal-dot green" />
+                            </div>
+                            <div className="terminal-content">
+                              <span className="prompt-sym">$</span>
+                              <span className="opacity-50 text-[#c9c9c9] mr-1">Prompt:</span>
+                              <span className="text-accent">{prompt}</span>
+                              <span className="terminal-cursor" />
+                            </div>
+                          </div>
+                        </>
+                      );
+                    })()
+                  ) : (
+                    <div className="terminal-box">
+                      <div className="terminal-header">
+                        <div className="terminal-dot red" />
+                        <div className="terminal-dot yellow" />
+                        <div className="terminal-dot green" />
+                      </div>
+                      <div className="terminal-content">
+                        <span className="prompt-sym">$</span>
+                        {term.example}
+                        <span className="terminal-cursor" />
+                      </div>
                     </div>
-                  ))
-                ) : (
-                  <div className="border border-border bg-[var(--bg)] px-5 py-4 font-sans text-[15px] leading-[1.8] text-ink2">
-                    Term này đã được tách ra trang riêng để bạn có thể gắn thêm GIF, case study, hoặc phần giải thích sâu hơn sau này mà không làm card ngoài trang chính bị dài.
-                  </div>
-                )}
-              </div>
+                  )}
+                </div>
             </div>
           </div>
 
           <div className="px-[1.2rem] py-10 lg:px-8 lg:py-14">
-            <p className="font-mono text-[10px] uppercase tracking-[0.06em] text-muted">Ví dụ thực tế</p>
-            <div className="mt-3 border-l-2 border-l-accent bg-bg2 px-4 py-4 font-mono text-[12px] leading-[1.75] text-ink2">
-              {term.example}
-            </div>
+
             <div className="mt-8 border border-border bg-[var(--bg)]">
               <div className="flex items-center justify-between border-b border-border px-4 py-3">
                 <span className="font-mono text-[10px] uppercase tracking-[0.05em] text-muted">Demo / GIF</span>
@@ -139,6 +168,7 @@ export default function GlossaryTermDetailPage() {
                 </div>
               )}
             </div>
+            {term.id === 'spacing' ? <SpacingPracticePanel /> : null}
           </div>
         </div>
       </section>
