@@ -176,11 +176,7 @@ function TermDisplaySection({
   showBackLink = false 
 }: TermDisplaySectionProps) {
   const deepDiveNotes = getTermDeepDiveNotes(term);
-  const practiceCaption = term.id === 'margin'
-    ? 'Phần thực hành riêng này cho phép kéo slider để đổi margin của card được highlight và quan sát cách nó đẩy các card khác ra xa.'
-    : term.id === 'line-spacing'
-      ? 'Phần thực hành này cho phép thử nhiều ngữ cảnh chữ khác nhau và kéo slider để tìm mức line spacing dễ đọc nhất.'
-      : undefined;
+  const practiceCaption = undefined;
   return (
     <section className="border-b border-border">
       <div className="page-shell grid gap-0 lg:grid-cols-[minmax(0,3fr)_minmax(0,7fr)] items-start">

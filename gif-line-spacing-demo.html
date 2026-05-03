@@ -50,17 +50,17 @@
     <div class="sim-cards" id="simCards"></div>
     <div class="insight-box">
       <i class="fa-solid fa-lightbulb ins-icon"></i>
-      <p class="ins-text" id="insText">Chon mot muc line spacing de xem giai thich.</p>
+      <p class="ins-text" id="insText">Chọn một mức line spacing để xem giải thích.</p>
     </div>
   </section>
 </div>
 </div>
 <script>
   const presets=[
-    {num:'01',name:'Tight',val:1.1,lines:['LINE','SPACING'],ins:'Line spacing khit 1.1 hop cho heading ngan de tao cam giac chat che.'},
-    {num:'02',name:'Normal',val:1.5,lines:['LINE','SPACING'],ins:'Muc 1.5 la vung an toan cho body text vi giup mat di chuyen giua cac dong de hon.'},
-    {num:'03',name:'Wide',val:1.9,lines:['LINE','SPACING'],ins:'Line spacing rong 1.9 tao nhieu khoang tho, hop cho quote hoac doan mo dau can cam giac sang.'},
-    {num:'04',name:'Extra Wide',val:2.4,lines:['LINE','SPACING'],ins:'Muc 2.4 rat thoang, chi nen dung nhu mot diem nhan thay vi cho doan van dai.'}
+    {num:'01',name:'Tight',val:1.1,lines:['LINE','SPACING'],ins:'Line spacing khít 1.1 hợp cho heading ngắn để tạo cảm giác chặt chẽ.'},
+    {num:'02',name:'Normal',val:1.5,lines:['LINE','SPACING'],ins:'Mức 1.5 là vùng an toàn cho body text vì giúp mắt di chuyển giữa các dòng dễ hơn.'},
+    {num:'03',name:'Wide',val:1.9,lines:['LINE','SPACING'],ins:'Line spacing rộng 1.9 tạo nhiều khoảng thở, hợp cho quote hoặc đoạn mở đầu cần cảm giác sang.'},
+    {num:'04',name:'Extra Wide',val:2.4,lines:['LINE','SPACING'],ins:'Mức 2.4 rất thoáng, chỉ nên dùng như một điểm nhấn thay vì cho đoạn văn dài.'}
   ];
   const simCardsEl=document.getElementById('simCards');
   const insTextEl=document.getElementById('insText');
@@ -84,7 +84,7 @@
 
   function activateCard(i){
     simCardsEl.querySelectorAll('.sim-card').forEach(c=>c.classList.remove('active'));
-    if(activeIdx===i){activeIdx=-1;setIns('Chon mot muc line spacing de xem giai thich.');return;}
+    if(activeIdx===i){activeIdx=-1;setIns('Chọn một mức line spacing để xem giải thích.');return;}
     activeIdx=i;
     const card=simCardsEl.querySelector(`[data-i="${i}"]`);
     card.classList.add('active');

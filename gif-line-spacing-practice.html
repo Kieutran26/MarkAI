@@ -60,7 +60,7 @@
 <div id="app-root">
 <div class="entry">
   <section aria-label="Line spacing practice">
-    <p class="p-goal"><span>Muc tieu:</span> Keo slider vao vung cam de tim muc line spacing hop voi tung ngu canh.</p>
+    <p class="p-goal"><span>Mục tiêu:</span> Kéo slider vào vùng cam để tìm mức line spacing hợp với từng ngữ cảnh.</p>
     <div class="ctx-row" id="ctxRow"></div>
     <div class="slider-sec">
       <div class="slider-head">
@@ -70,7 +70,7 @@
       <div class="slider-wrap">
         <div class="s-track"></div>
         <div class="s-zone" id="sZone"></div>
-        <input type="range" id="sSlider" min="0.8" max="3.0" step="0.1" value="1.5" aria-label="Dieu chinh line spacing">
+        <input type="range" id="sSlider" min="0.8" max="3.0" step="0.1" value="1.5" aria-label="Điều chỉnh line spacing">
       </div>
       <div class="s-ticks"><span>0.8</span><span>1.5</span><span>2.0</span><span>2.5</span><span>3.0</span></div>
     </div>
@@ -81,17 +81,17 @@
       </div>
       <div class="ruler-wrap" id="rulerWrap"></div>
     </div>
-    <div class="fb" id="fb"><i class="fa-solid fa-circle-info"></i><span>Chon ngu canh roi keo slider</span></div>
-    <p class="hint" id="hintEl"><i class="fa-solid fa-arrow-up-right"></i> Vung cam tren slider la khoang line spacing khuyen nghi cho ngu canh hien tai.</p>
+    <div class="fb" id="fb"><i class="fa-solid fa-circle-info"></i><span>Chọn ngữ cảnh rồi kéo slider</span></div>
+    <p class="hint" id="hintEl"><i class="fa-solid fa-arrow-up-right"></i> Vùng cam trên slider là khoảng line spacing khuyến nghị cho ngữ cảnh hiện tại.</p>
   </section>
 </div>
 </div>
 <script>
   const ctxs=[
-    {id:'headline',name:'Headline',desc:'Tieu de lon',range:[1.0,1.2],text:'CHU DE LON CUA NAM<br>VA NHUNG XU HUONG MOI',sz:'sz-h',hint:'Headline can line spacing chat de tao tac dong thi giac manh.'},
-    {id:'body',name:'Body',desc:'Noi dung dai',range:[1.5,1.7],text:'Line spacing anh huong truc tiep den kha nang doc hieu. Khi cac dong qua gan nhau, mat de bi nhay dong. Nguoc lai, neu qua thua, doan van ban se roi rac va kho theo doi.',sz:'sz-b',hint:'Body text dai thuong dep nhat quanh 1.5 den 1.6.'},
-    {id:'quote',name:'Quote',desc:'Trich dan',range:[1.8,2.2],text:'"Typography la nghe thuat sap xep con chu de ngon ngu tro nen song dong va ro rang."',sz:'sz-q',hint:'Quote can su thoang de tao nhiep doc cham va co chu y hon.'},
-    {id:'caption',name:'Caption',desc:'Chu thich nho',range:[1.3,1.5],text:'Luu y: so lieu duoc thong ke vao quy 3 nam 2024 tai khu vuc Dong Nam A va cac nuoc lan can.',sz:'sz-c',hint:'Chu nho nen giu line spacing vua phai de khong chiem qua nhieu cho.'}
+    {id:'headline',name:'Headline',desc:'Tiêu đề lớn',range:[1.0,1.2],text:'CHỦ ĐỀ LỚN CỦA NĂM<br>VÀ NHỮNG XU HƯỚNG MỚI',sz:'sz-h',hint:'Headline cần line spacing chặt để tạo tác động thị giác mạnh.'},
+    {id:'body',name:'Body',desc:'Nội dung dài',range:[1.5,1.7],text:'Line spacing ảnh hưởng trực tiếp đến khả năng đọc hiểu. Khi các dòng quá gần nhau, mắt dễ bị nhảy dòng. Ngược lại, nếu quá thưa, đoạn văn bản sẽ rời rạc và khó theo dõi.',sz:'sz-b',hint:'Body văn bản dài thường đẹp nhất quanh 1.5 đến 1.6.'},
+    {id:'quote',name:'Quote',desc:'Trích dẫn',range:[1.8,2.2],text:'"Typography là nghệ thuật sắp xếp con chữ để ngôn ngữ trở nên sống động và rõ ràng."',sz:'sz-q',hint:'Quote cần sự thoáng để tạo nhịp đọc chậm và có chủ ý hơn.'},
+    {id:'caption',name:'Caption',desc:'Chú thích nhỏ',range:[1.3,1.5],text:'Lưu ý: số liệu được thống kê vào quý 3 năm 2024 tại khu vực Đông Nam Á và các nước lân cận.',sz:'sz-c',hint:'Chữ nhỏ nên giữ line spacing vừa phải để không chiếm quá nhiều chỗ.'}
   ];
   const ctxRowEl=document.getElementById('ctxRow');
   const sSlider=document.getElementById('sSlider');
@@ -137,10 +137,10 @@
     prevBox.classList.toggle('ok-border',inZ);
     if(inZ){
       fbEl.className='fb ok';
-      fbEl.innerHTML=`<i class="fa-solid fa-check"></i><span>Line spacing ${v} hop voi ${curCtx.name.toLowerCase()}</span>`;
+      fbEl.innerHTML=`<i class="fa-solid fa-check"></i><span>Line spacing ${v} hợp với ${curCtx.name.toLowerCase()}</span>`;
     }else{
       fbEl.className='fb no';
-      fbEl.innerHTML=`<i class="fa-solid fa-xmark"></i><span>Muc nay ${v<curCtx.range[0]?'qua khit':'qua thua'} cho ${curCtx.name.toLowerCase()}</span>`;
+      fbEl.innerHTML=`<i class="fa-solid fa-xmark"></i><span>Mức này ${v<curCtx.range[0]?'quá khít':'quá thưa'} cho ${curCtx.name.toLowerCase()}</span>`;
     }
   }
 
