@@ -20,6 +20,8 @@ import borderDemoHtml from '../../gif-border-demo.html?raw';
 import borderPracticeHtml from '../../gif-border-practice.html?raw';
 import radiusDemoHtml from '../../gif-radius-demo.html?raw';
 import radiusPracticeHtml from '../../gif-radius-practice.html?raw';
+import cornerDemoHtml from '../../gif-corner-demo.html?raw';
+import cornerPracticeHtml from '../../gif-corner-practice.html?raw';
 import cardDemoHtml from '../../gif-card-demo.html?raw';
 import cardPracticeHtml from '../../gif-card-practice.html?raw';
 import frontendDemoHtml from '../../gif-frontend-demo.html?raw';
@@ -64,6 +66,7 @@ export default function GlossaryTermDetailPage() {
     if (id === 'padding') return paddingDemoHtml;
     if (id === 'border') return borderDemoHtml;
     if (id === 'radius') return radiusDemoHtml;
+    if (id === 'corner') return cornerDemoHtml;
     if (id === 'card') return cardDemoHtml;
     if (id === 'frontend') return frontendDemoHtml;
     if (id === 'backend') return backendDemoHtml;
@@ -82,6 +85,7 @@ export default function GlossaryTermDetailPage() {
     if (id === 'line-spacing') return lineSpacingPracticeHtml;
     if (id === 'border') return borderPracticeHtml;
     if (id === 'radius') return radiusPracticeHtml;
+    if (id === 'corner') return cornerPracticeHtml;
     if (id === 'card') return cardPracticeHtml;
     if (id === 'frontend') return frontendPracticeHtml;
     if (id === 'backend') return backendPracticeHtml;

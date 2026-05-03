@@ -90,6 +90,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'wireframe', name: 'Wireframe', nameEn: 'Khung bố cục', letter: 'W', groups: ['design'], definition: 'Bản phác thảo layout của trang — chỉ có khung và vị trí, không có màu sắc hay nội dung thật. Dùng để thống nhất cấu trúc với team.', example: 'Vẽ wireframe trên Figma hoặc giấy → mô tả cho AI → AI code đúng layout đó. Wireframe giúp prompt rõ hơn nhiều.' },
   { id: 'websocket', name: 'WebSocket', nameEn: 'Kết nối thời gian thực', letter: 'W', groups: ['infra'], definition: 'Kết nối hai chiều liên tục giữa browser và server. Cho phép update realtime mà không cần reload. Chat app, live dashboard, notification realtime đều dùng WebSocket.', example: '"Muốn dashboard KPI cập nhật realtime khi có data mới" → Dùng Supabase Realtime (chạy trên WebSocket).' },
   { id: 'radius', name: 'Radius', nameEn: 'Bo góc / Border Radius', letter: 'R', groups: ['design'], definition: 'Độ cong ở 4 góc của một hình khối. 0px là góc vuông sắc cạnh. Giá trị càng lớn, góc càng tròn. Radius quyết định "vibe" của giao diện: từ cứng cáp, kỹ thuật đến mềm mại, thân thiện.', example: 'Prompt: "Làm nút bấm mềm hơn với border-radius 8px, riêng card sản phẩm thì bo mạnh 16px để tạo cảm giác thân thiện."', related: ['css', 'interface'], demo: { kind: 'interactive', src: 'gif-radius-demo.html', alt: 'Mô phỏng các mức border-radius từ sắc cạnh đến bo tròn' } },
+  { id: 'corner', name: 'Corner', nameEn: 'Góc / Corner Radius', letter: 'C', groups: ['design'], definition: 'Thuật ngữ chỉ các góc của một khối hoặc đường nét. Trong thiết kế giao diện, "Corner" thường đi đôi với "Radius" (bo góc). Việc xử lý góc quyết định độ sắc hay mềm của tổng thể sản phẩm.', example: 'Prompt: "Làm cho các góc (corners) của card này bo mạnh hơn một chút, khoảng 12px để nhìn thân thiện hơn."', related: ['radius', 'stroke', 'border'], demo: { kind: 'interactive', src: 'gif-corner-demo.html', alt: 'Mô phỏng các loại corner radius phổ biến' } },
 ];
 
 export const quickRefItems = [
@@ -125,6 +126,7 @@ const deepDiveTermIds = new Set([
   'build',
   'card',
   'component',
+  'corner',
   'database',
   'deploy',
   'env',
@@ -229,6 +231,11 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Stroke là linh hồn của icon và illustration. Khi bạn thấy một bộ icon "không đồng nhất", 90% là do stroke-width (độ dày nét) không bằng nhau.',
     'Khác biệt lớn nhất với border: stroke có thể bo góc nối (linejoin) và đầu mút (linecap) cực kỳ linh hoạt, giúp icon trông "mượt" hơn hẳn so với việc dùng border-radius trên box.',
     'Marketer nên nhớ 2 thông số: stroke-width (độ đậm nhạt) và stroke-dasharray (tạo nét đứt cho các phần placeholder hoặc trạng thái chưa active).',
+  ],
+  corner: [
+    'Phân biệt: Radius là con số (px), còn Corner là khái niệm về góc. Bạn có thể có một Corner với Radius bằng 0 (góc vuông) hoặc Radius lớn (bo tròn).',
+    'Trong Vibecode, bạn có thể gọi tên các loại góc như "sharp", "rounded", "pill" để AI hiểu nhanh ý đồ thiết kế mà không cần nhớ số px chính xác.',
+    'Hãy chú ý tính nhất quán: nếu card đã bo 12px thì các element bên trong như button nên bo ít hơn (ví dụ 4-8px) để tạo sự cân đối về thị giác.',
   ],
 };
 

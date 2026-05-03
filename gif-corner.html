@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Corner Radius — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#111;--bg-card:#1A1A1A;--bg-el:#222;--border:#2C2C2C;
+  --border-active:#D4652A;--accent:#D4652A;
+  --accent-glow:rgba(212,101,42,.18);--accent-soft:rgba(212,101,42,.07);
+  --cream:#EDE4D8;--text:#D8D0C8;--muted:#777770;
+  --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:48px 48px;pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;inset:0;opacity:.025;pointer-events:none;z-index:0;
+  background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.wrap{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:20px 16px 52px}
+
+/* top bar */
+.topbar{display:flex;align-items:center;gap:12px;padding-bottom:14px;border-bottom:1px solid var(--border);margin-bottom:28px}
+.badge{font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);background:var(--accent-soft);border:1px solid rgba(212,101,42,.22);padding:4px 10px}
+.ttl{font-size:20px;font-weight:700;color:var(--cream);letter-spacing:-.02em}
+
+/* section label */
+.slbl{font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.slbl::before{content:'';width:7px;height:7px;background:var(--accent)}
+
+/* === GIF WRAPPER === */
+.gif-box{border:1px solid var(--border);background:var(--bg-card);margin-bottom:36px;position:relative;overflow:hidden}
+.gif-tag{position:absolute;top:10px;right:10px;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:3px 8px;z-index:10;display:flex;align-items:center;gap:5px}
+.gif-tag .dot{width:5px;height:5px;background:var(--accent);animation:pdot 1.4s infinite}
+@keyframes pdot{0%,100%{opacity:1}50%{opacity:.25}}
+.gif-body{padding:24px 18px 18px}
+
+/* grid */
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.sp{border:1px solid var(--border);background:var(--bg);padding:14px 10px 12px;transition:border-color .5s,background .5s,opacity .5s;position:relative}
+.sp.active{border-color:var(--border-active);background:var(--accent-soft)}
+.sp:not(.active){opacity:.55}
+.sp.pop .db,.sp.pop .dc,.sp.pop .di,.sp.pop .da{transform:scale(1.04);transition:transform .25s,border-radius .7s cubic-bezier(.4,0,.2,1)}
+.db,.dc,.di,.da{transition:border-radius .7s cubic-bezier(.4,0,.2,1),transform .35s}
+
+.sh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+.sn{font-family:var(--mono);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);transition:color .4s}
+.sp.active .sn{color:var(--accent)}
+.sv{font-family:var(--mono);font-size:10px;color:var(--muted);transition:color .4s}
+.sp.active .sv{color:var(--cream)}
+
+.db{width:100%;padding:7px 0;background:var(--accent);color:#fff;border:none;font-family:var(--sans);font-size:11px;font-weight:600;cursor:default;margin-bottom:8px;letter-spacing:.01em}
+.dc{border:1px solid var(--border);background:var(--bg-card);padding:9px;margin-bottom:8px}
+.dc-t{font-size:10px;font-weight:700;color:var(--cream);margin-bottom:3px}
+.dc-p{font-size:8px;color:var(--muted);line-height:1.4}
+.di{width:100%;padding:6px 9px;background:var(--bg);border:1px solid var(--border);color:var(--text);font-family:var(--mono);font-size:9px;outline:none;margin-bottom:8px}
+.da{width:34px;height:34px;background:var(--bg-el);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;color:var(--muted)}
+
+/* insight */
+.ibar{margin-top:12px;padding:10px 13px;background:var(--bg);border:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.55;min-height:38px;transition:opacity .3s}
+.ibar.fading{opacity:0}
+.ibar strong{color:var(--cream);font-weight:600}
+
+/* progress */
+.ptrack{display:flex;gap:4px;padding:10px 18px 12px;border-top:1px solid var(--border)}
+.pseg{flex:1;height:3px;background:var(--border);transition:background .4s}
+.pseg.on{background:var(--accent)}
+
+/* controls */
+.gctrl{display:flex;align-items:center;justify-content:space-between;padding:9px 18px;border-top:1px solid var(--border);background:var(--bg-card)}
+.gbtn{font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:5px 13px;cursor:pointer;transition:color .2s,border-color .2s}
+.gbtn:hover{color:var(--cream);border-color:var(--muted)}
+.gtmr{font-family:var(--mono);font-size:9px;color:var(--muted)}
+
+/* === PRACTICE === */
+.pbox{border:1px solid var(--border);background:var(--bg-card)}
+.phd{padding:18px 18px 14px;border-bottom:1px solid var(--border)}
+.pgoal{font-size:13px;color:var(--text);line-height:1.5;margin-bottom:5px}
+.phint{font-family:var(--mono);font-size:10px;color:var(--muted)}
+.phint span{color:var(--accent)}
+.pbd{padding:22px 18px}
+
+/* slider */
+.sld-area{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+.sld-lbl{font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);white-space:nowrap}
+.sld-wrap{flex:1;position:relative}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;background:var(--border);outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;background:var(--accent);border:2px solid var(--bg);cursor:pointer}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;background:var(--accent);border:2px solid var(--bg);cursor:pointer;border-radius:0}
+.sld-val{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--accent);min-width:56px;text-align:right}
+
+/* presets */
+.presets{display:flex;gap:8px;margin-bottom:24px}
+.pre-btn{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:5px 12px;cursor:pointer;transition:color .2s,border-color .2s,background .2s}
+.pre-btn:hover,.pre-btn.on{color:var(--cream);border-color:var(--accent);background:var(--accent-soft)}
+
+/* preview grid */
+.pvg{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+.pvi{border:1px solid var(--border);background:var(--bg);padding:14px 10px 12px}
+.pvi-l{font-family:var(--mono);font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:10px}
+.pvg .db,.pvg .dc,.pvg .di,.pvg .da{transition:border-radius .35s cubic-bezier(.4,0,.2,1)}
+
+/* vibe */
+.vfb{border:1px solid var(--border);background:var(--bg);padding:12px 14px;display:flex;align-items:center;gap:11px}
+.vtag{font-family:var(--mono);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--bg);background:var(--accent);padding:4px 10px;white-space:nowrap;transition:background .3s}
+.vdesc{font-size:12px;color:var(--muted);line-height:1.4;transition:opacity .3s}
+.vdesc.fading{opacity:0}
+
+/* why */
+.whybox{margin-top:28px;border:1px solid var(--border);background:var(--bg-card);padding:18px}
+.whybox p{font-size:13px;color:var(--muted);line-height:1.7}
+.whybox strong{color:var(--cream)}
+
+/* mobile */
+@media(max-width:768px){
+  .sg{grid-template-columns:repeat(2,1fr)}
+  .pvg{grid-template-columns:repeat(2,1fr)}
+  .gif-body{padding:18px 12px 14px}
+  .pbd{padding:18px 12px}
+  .sld-area{flex-wrap:wrap}
+  .sld-lbl{width:100%}
+  .sld-val{min-width:auto}
+  .ttl{font-size:17px}
+  .presets{flex-wrap:wrap}
+}
+@media(max-width:420px){
+  .sg{gap:6px}.sp{padding:10px 8px 8px}
+  .db{font-size:10px;padding:6px 0}
+  .dc{padding:7px}.dc-t{font-size:9px}.dc-p{font-size:7px}
+  .di{font-size:8px;padding:5px 7px}
+  .da{width:28px;height:28px;font-size:9px}
+  .wrap{padding:14px 10px 36px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <span class="badge">Design</span>
+    <span class="ttl">Corner Radius</span>
+  </div>
+
+  <!-- SIMULATION -->
+  <div class="slbl">Mô phỏng</div>
+  <div class="gif-box">
+    <div class="gif-tag"><span class="dot"></span>LOOP</div>
+    <div class="gif-body">
+      <div class="sg" id="sg"></div>
+      <div class="ibar" id="ibar"></div>
+    </div>
+    <div class="ptrack" id="ptrack"></div>
+    <div class="gctrl">
+      <button class="gbtn" id="togBtn">Pause</button>
+      <span class="gtmr">3.5s / state</span>
+      <button class="gbtn" id="rstBtn">Reset</button>
+    </div>
+  </div>
+
+  <!-- PRACTICE -->
+  <div class="slbl">Thực hành</div>
+  <div class="pbox">
+    <div class="phd">
+      <p class="pgoal">Kéo slider và quan sát: cùng component, khác cảm giác hoàn toàn.</p>
+      <p class="phint"><span>Hint:</span> Thử kéo nhanh từ 0 → 999 rồi ngắm lại toàn bộ.</p>
+    </div>
+    <div class="pbd">
+      <div class="sld-area">
+        <span class="sld-lbl">Radius</span>
+        <div class="sld-wrap">
+          <input type="range" id="sld" min="0" max="999" value="0">
+        </div>
+        <span class="sld-val" id="sldV">0px</span>
+      </div>
+      <div class="presets" id="presets"></div>
+      <div class="pvg" id="pvg"></div>
+      <div class="vfb">
+        <span class="vtag" id="vtag">SHARP</span>
+        <span class="vdesc" id="vdesc">Giao diện kỹ thuật, data-heavy, "nghiêm túc"</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- WHY -->
+  <div class="whybox">
+    <p>Khi bạn nói với AI <strong>"làm cho nó bo hơn"</strong> — nó cần một con số. <strong>4px</strong> khác <strong>12px</strong> khác <strong>999px</strong> về cảm giác, không chỉ hình dáng. Hiểu corner radius = prompt chính xác hơn, review design nhanh hơn, không cần đoán.</p>
+  </div>
+
+</div>
+
+<script>
+/* ── data ── */
+const S=[
+  {name:'Sharp',val:'0px',r:0,
+   ins:'<strong>0px</strong> — Góc vuông hoàn toàn. Dùng cho: terminal, code editor, data table. Cảm giác: "đây là công cụ, không phải trang trí."',
+   vibe:'SHARP',vd:'Giao diện kỹ thuật, data-heavy, "nghiêm túc"'},
+  {name:'Small',val:'4px',r:4,
+   ins:'<strong>4px</strong> — Vừa đủ bớt gai góc, vẫn giữ cảm giác "tool thật". Dùng cho: dashboard, admin panel, settings.',
+   vibe:'SMALL',vd:'Công cụ, dashboard, "nhanh gọn chuyên nghiệp"'},
+  {name:'Medium',val:'12px',r:12,
+   ins:'<strong>12px</strong> — Điểm cân bằng phổ biến nhất. SaaS, app tiêu dùng, landing page. "Thân thiện nhưng không chơi quá."',
+   vibe:'MEDIUM',vd:'Sản phẩm tiêu dùng, SaaS, "thân thiện đáng tin"'},
+  {name:'Full',val:'999px',r:999,
+   ins:'<strong>999px</strong> — Bo hết cỡ = pill / circle. Chat bubble, avatar, CTA playful. Cảm giác: "nói chuyện, không phải giao dịch."',
+   vibe:'FULL',vd:'Thân thiện, playful, chat UI, "bạn bè"'}
+];
+
+/* ── build simulation panels ── */
+const sg=document.getElementById('sg');
+S.forEach((s,i)=>{
+  const d=document.createElement('div');
+  d.className='sp';d.dataset.i=i;
+  d.innerHTML=`
+    <div class="sh"><span class="sn">0${i+1} ${s.name}</span><span class="sv">${s.val}</span></div>
+    <button class="db" style="border-radius:${s.r}px">Button</button>
+    <div class="dc" style="border-radius:${s.r}px"><div class="dc-t">Card title</div><div class="dc-p">Mô tả ngắn gọn</div></div>
+    <input class="di" style="border-radius:${s.r}px" value="Input field" readonly>
+    <div class="da" style="border-radius:${s.r}px">AV</div>`;
+  sg.appendChild(d);
+});
+/* progress */
+const pt=document.getElementById('ptrack');
+for(let i=0;i<4;i++){const d=document.createElement('div');d.className='pseg';pt.appendChild(d)}
+
+/* ── animation ── */
+let cur=0,playing=true,timer=null;
+const panels=()=>sg.querySelectorAll('.sp');
+const segs=()=>pt.querySelectorAll('.pseg');
+const ibar=document.getElementById('ibar');
+
+function setAct(idx){
+  cur=idx;
+  const ps=panels(),ss=segs();
+  ps.forEach((p,i)=>{
+    p.classList.toggle('active',i===idx);
+    /* pop effect */
+    if(i===idx){p.classList.add('pop');setTimeout(()=>p.classList.remove('pop'),300)}
+  });
+  ss.forEach((s,i)=>s.classList.toggle('on',i<=idx));
+  /* insight crossfade */
+  ibar.classList.add('fading');
+  setTimeout(()=>{ibar.innerHTML=S[idx].ins;ibar.classList.remove('fading')},280);
+}
+function startLoop(){timer=setInterval(()=>setAct((cur+1)%4),3500)}
+function stopLoop(){clearInterval(timer)}
+document.getElementById('togBtn').onclick=()=>{
+  playing=!playing;
+  document.getElementById('togBtn').textContent=playing?'Pause':'Play';
+  playing?startLoop():stopLoop();
+};
+document.getElementById('rstBtn').onclick=()=>{stopLoop();cur=0;setAct(0);if(playing)startLoop()};
+
+/* ── build practice ── */
+const pvg=document.getElementById('pvg');
+const compDefs=[
+  {label:'Button',html:'<button class="db" style="border-radius:0px">Đăng ký ngay</button>'},
+  {label:'Card',html:'<div class="dc" style="border-radius:0px"><div class="dc-t">Tên sản phẩm</div><div class="dc-p">Mô tả ngắn về sản phẩm này</div></div>'},
+  {label:'Input',html:'<input class="di" style="border-radius:0px" value="Nhập email..." readonly>'},
+  {label:'Avatar',html:'<div class="da" style="border-radius:0px;width:48px;height:48px;font-size:14px">AV</div>'}
+];
+compDefs.forEach(c=>{
+  const d=document.createElement('div');d.className='pvi';
+  d.innerHTML=`<div class="pvi-l">${c.label}</div>${c.html}`;
+  pvg.appendChild(d);
+});
+
+/* presets */
+const pre=document.getElementById('presets');
+S.forEach(s=>{
+  const b=document.createElement('button');b.className='pre-btn';b.textContent=s.val;
+  b.onclick=()=>{document.getElementById('sld').value=s.r;updPreview(s.r)};
+  pre.appendChild(b);
+});
+
+/* slider */
+const sld=document.getElementById('sld');
+const sldV=document.getElementById('sldV');
+const vtag=document.getElementById('vtag');
+const vdesc=document.getElementById('vdesc');
+
+function updPreview(v){
+  v=parseInt(v);
+  sldV.textContent=v+'px';
+  /* update all preview components */
+  pvg.querySelectorAll('.db,.dc,.di,.da').forEach(el=>el.style.borderRadius=v+'px');
+  /* preset highlight */
+  pre.querySelectorAll('.pre-btn').forEach((b,i)=>{
+    b.classList.toggle('on',S[i].r===v);
+  });
+  /* vibe */
+  let vb,vd;
+  if(v===0){vb='SHARP';vd='Giao diện kỹ thuật, data-heavy, "nghiêm túc"'}
+  else if(v<=8){vb='SMALL';vd='Công cụ, dashboard, "nhanh gọn chuyên nghiệp"'}
+  else if(v<=24){vb='MEDIUM';vd='Sản phẩm tiêu dùng, SaaS, "thân thiện đáng tin"'}
+  else{vb='LARGE → FULL';vd='Playful, chat UI, CTA nổi bật, "bạn bè"'}
+  vdesc.classList.add('fading');
+  setTimeout(()=>{vtag.textContent=vb;vdesc.textContent=vd;vdesc.classList.remove('fading')},200);
+}
+sld.oninput=()=>updPreview(sld.value);
+
+/* ── init ── */
+setAct(0);
+startLoop();
+</script>
+</body>
+</html>
