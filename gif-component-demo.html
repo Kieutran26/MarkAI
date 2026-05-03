@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Component Demo — markAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+  --bg:#0f0f12;--bg-card:#16161b;--fg:#e8e4dc;--muted:#6e6e7a;
+  --accent:#e88c2e;--accent-soft:rgba(232,140,46,.12);
+  --accent-border:rgba(232,140,46,.3);--border:#282830;
+  --surface:#1c1c23;--success:#3a9e5c;--success-soft:rgba(58,158,92,.12);
+  --warning:#c49030;--error:#c43a3a;
+  --bar-d:#2a2a34;--bar-m:#44444f;--shape-lt:#33333d;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:'Space Grotesk',sans-serif;min-height:100vh;line-height:1.6;overflow:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(rgba(255,255,255,.022) 1px,transparent 1px);background-size:20px 20px;pointer-events:none;z-index:0}
+
+#app-root{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:24px}
+
+.sec-lbl{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.sec-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ===== SIM GRID ===== */
+.sim-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+@media(max-width:720px){.sim-grid{grid-template-columns:repeat(2,1fr)}}
+.sc{background:var(--bg-card);border:1px solid var(--border);cursor:pointer;position:relative;overflow:hidden;transition:border-color .3s,background .3s;padding:16px 0}
+.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .35s ease;z-index:2}
+.sc:hover{border-color:var(--accent-border)}
+.sc.on{border-color:var(--accent);background:var(--surface)}
+.sc.on::before{transform:scaleX(1)}
+.sc-head{padding:0 14px 12px;display:flex;justify-content:space-between;align-items:center}
+.sc-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px}
+.sc-tag{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);transition:color .3s}
+.sc.on .sc-tag{color:var(--accent)}
+
+/* Component preview inside sim card */
+.sc-preview{padding:0 14px 12px;min-height:80px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px}
+
+/* Mini button */
+.mini-btn{padding:5px 14px;font-family:'Space Grotesk',sans-serif;font-size:9px;font-weight:600;cursor:default;transition:all .3s}
+.mini-btn.pri{background:var(--accent);color:#fff}
+.mini-btn.sec{background:var(--bar-m);color:var(--fg)}
+.mini-btn.out{background:transparent;border:1px solid var(--border);color:var(--muted)}
+
+/* Mini input */
+.mini-input{width:100%;height:22px;background:var(--bg);border:1px solid var(--border);padding:0 6px;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);display:flex;align-items:center;transition:border-color .3s}
+.mini-input.focus{border-color:var(--accent)}
+.mini-input.error{border-color:var(--error)}
+.mini-input .placeholder{opacity:.4}
+
+/* Mini card */
+.mini-card{width:100%;background:var(--bg);border:1px solid var(--border);padding:6px;transition:border-color .3s}
+.mini-card-img{width:100%;height:24px;background:var(--bar-d);margin-bottom:4px}
+.mini-card-title{height:4px;background:var(--bar-m);width:70%;margin-bottom:3px}
+.mini-card-desc{height:3px;background:var(--bar-d);width:100%;margin-bottom:2px}
+
+/* Mini nav */
+.mini-nav{width:100%;height:20px;background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 6px;gap:8px}
+.mini-nav-logo{width:10px;height:6px;background:var(--accent)}
+.mini-nav-link{height:3px;width:16px;background:var(--bar-d)}
+
+/* Code block */
+.sc-code{padding:0 14px 10px;max-height:0;overflow:hidden;transition:max-height .4s ease,opacity .3s;opacity:0}
+.sc.on .sc-code{max-height:100px;opacity:1}
+.code-l{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);line-height:1.6;background:var(--bg);padding:8px;border:1px solid var(--border)}
+.code-l .p{color:var(--accent)}
+.code-l .v{color:var(--fg);opacity:.6}
+
+.ins{background:var(--surface);border:1px solid var(--border);padding:18px 22px;display:flex;align-items:flex-start;gap:12px;min-height:90px}
+.ins-i{color:var(--accent);font-size:13px;margin-top:3px;flex-shrink:0}
+.ins-t{font-size:14px;color:var(--fg);opacity:.85;line-height:1.65;transition:opacity .25s,transform .25s}
+.ins-t.fading{opacity:0;transform:translateY(6px)}
+
+@media(max-width:480px){
+  #app-root{padding:14px}
+  .ins{padding:14px 16px}
+}
+</style>
+</head>
+<body>
+
+<div id="app-root">
+  <section aria-label="Mô phỏng component">
+    <div class="sim-grid" id="simGrid"></div>
+    <div class="ins">
+      <i class="fa-solid fa-lightbulb ins-i"></i>
+      <p class="ins-t" id="insT">Nhấn vào một component để xem code và giải thích.</p>
+    </div>
+  </section>
+</div>
+
+<script>
+const comps = [
+  {
+    num:'01', tag:'Button',
+    ins:'Button là component phổ biến nhất. Có nhiều variant: primary (nút chính), secondary (nút phụ), outline (không nền). Một Button component có thể dùng ở form, modal, navbar, card — cùng code, khác data.',
+    preview:`<div class="mini-btn pri">Primary</div><div class="mini-btn sec">Secondary</div><div class="mini-btn out">Outline</div>`,
+    code:`<span class="p">&lt;Button</span> variant=<span class="v">"primary"</span><span class="p">&gt;</span>\n<span class="p">&lt;Button</span> variant=<span class="v">"outline"</span><span class="p">&gt;</span>`
+  },
+  {
+    num:'02', tag:'Input',
+    ins:'Input là nơi user nhập data. Có 3 state quan trọng: default (chờ nhập), focus (đang nhập — viền highlight), error (nhập sai — viền đỏ + thông báo). Component xử lý cả 3 state, dev không cần viết lại.',
+    preview:`<div class="mini-input"><span class="placeholder">Email address</span></div><div class="mini-input focus"><span style="color:var(--fg);opacity:.7;font-size:8px">an@exa...</span></div><div class="mini-input error" style="position:relative"><span style="color:var(--muted);opacity:.5;font-size:8px">abc</span></div>`,
+    code:`<span class="p">&lt;Input</span> state=<span class="v">"default"</span> <span class="p">/&gt;</span>\n<span class="p">&lt;Input</span> state=<span class="v">"focus"</span> <span class="p">/&gt;</span>`
+  },
+  {
+    num:'03', tag:'Card',
+    ins:'Card là "khung" chứa nội dung — ảnh, title, description, button. Thường dùng cho blog, product, feature list. Component Card định nghĩa layout một lần, truyền data khác nhau → ra nhiều card khác nhau.',
+    preview:`<div class="mini-card"><div class="mini-card-img"></div><div class="mini-card-title"></div><div class="mini-card-desc"></div></div>`,
+    code:`<span class="p">&lt;Card</span>\n  title=<span class="v">"..."</span>\n  desc=<span class="v">"..."</span>\n<span class="p">/&gt;</span>`
+  },
+  {
+    num:'04', tag:'Navigation',
+    ins:'Navbar là component điều hướng — logo + links. Xuất hiện trên MỌI trang của site. Đổi logo ở component Navbar → tự động đổi trên toàn bộ trang. Đó là lý do dùng component thay vì copy-paste HTML.',
+    preview:`<div class="mini-nav"><div class="mini-nav-logo"></div><div class="mini-nav-link"></div><div class="mini-nav-link"></div><div class="mini-nav-link"></div></div>`,
+    code:`<span class="p">&lt;Navbar</span>\n  logo=<span class="v">"Brand"</span>\n  links=<span class="v">{[...]}</span>\n<span class="p">/&gt;</span>`
+  }
+];
+
+const simGrid = document.getElementById('simGrid');
+const insT = document.getElementById('insT');
+let activeSim = -1;
+let autoTimer;
+
+function renderSim(){
+  simGrid.innerHTML = comps.map((c,i)=>`
+    <div class="sc" data-i="${i}" tabindex="0" role="button" aria-label="${c.tag}">
+      <div class="sc-head"><span class="sc-num">${c.num}</span><span class="sc-tag">${c.tag}</span></div>
+      <div class="sc-preview">${c.preview}</div>
+      <div class="sc-code"><div class="code-l">${c.code}</div></div>
+    </div>`).join('');
+  simGrid.querySelectorAll('.sc').forEach(c=>{
+    c.addEventListener('click',()=>{
+      clearInterval(autoTimer);
+      activateSim(+c.dataset.i);
+    });
+  });
+}
+
+function activateSim(i){
+  simGrid.querySelectorAll('.sc').forEach((c, idx)=>c.classList.toggle('on', idx === i));
+  activeSim = i;
+  setIns(comps[i].ins);
+}
+
+function setIns(t){
+  insT.classList.add('fading');
+  setTimeout(()=>{
+    insT.textContent=t;
+    insT.classList.remove('fading')
+  },250);
+}
+
+function startAuto(){
+  activateSim(0);
+  autoTimer = setInterval(()=>{
+    activeSim = (activeSim + 1) % comps.length;
+    activateSim(activeSim);
+  }, 4500);
+}
+
+renderSim();
+startAuto();
+</script>
+</body>
+</html>

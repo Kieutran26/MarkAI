@@ -33,7 +33,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'card', name: 'Card', nameEn: 'Thẻ nội dung', letter: 'C', groups: ['design', 'code'], definition: 'Một khối chứa thông tin — gom ảnh, tiêu đề, mô tả, nút hành động vào một hộp. Card giúp phân tách các nội dung khác nhau trên trang một cách rõ ràng và dễ quét.', example: 'Product card cho sản phẩm, Blog card cho bài viết. Card là đơn vị cơ bản nhất để build các trang kiểu Dashboard hoặc Landing Page.', related: ['component', 'padding', 'radius'], demo: { kind: 'interactive', src: 'gif-card-demo.html', alt: 'Mô phỏng các loại card: Basic, Horizontal, Featured, Stats' } },
   { id: 'cli', name: 'CLI', nameEn: 'Command Line Interface', letter: 'C', groups: ['infra'], definition: 'Giao diện dòng lệnh — bạn gõ lệnh chữ thay vì click. Terminal trong VS Code là CLI. Claude Code chạy trên CLI.', example: 'Gõ "npm run dev" vào terminal = CLI đang chạy lệnh khởi động server. Chỉ cần biết copy-paste đúng lệnh.', related: ['terminal', 'npm'] },
   { id: 'commit', name: 'Commit', nameEn: 'Lưu checkpoint code', letter: 'C', groups: ['workflow', 'code'], definition: 'Hành động lưu lại một điểm trong lịch sử code. Giống như Save game — bạn có thể quay lại đây bất cứ lúc nào nếu AI làm vỡ project.', example: 'Sau khi hero section chạy ổn: "git commit -m \'hero section done\'". Dù AI có làm hỏng phần sau, bạn vẫn rollback về được.', related: ['git', 'repository'] },
-  { id: 'component', name: 'Component', nameEn: 'Khối giao diện tái dùng', letter: 'C', groups: ['code', 'design'], definition: 'Một khối giao diện độc lập, có thể dùng lại nhiều lần. Button, card sản phẩm, navbar, form — đều là component. Thiết kế một lần, dùng ở khắp nơi trong web.', example: '"Tôi có 12 trang web nhưng muốn cùng 1 footer." Đây là lúc dùng Footer component — sửa một chỗ, cập nhật khắp nơi.', related: ['props', 'state'] },
+  { id: 'component', name: 'Component', nameEn: 'Khối giao diện tái dùng', letter: 'C', groups: ['code', 'design'], definition: 'Một khối giao diện độc lập, có thể dùng lại nhiều lần. Button, card sản phẩm, navbar, form — đều là component. Thiết kế một lần, dùng ở khắp nơi trong web.', example: '"Tôi có 12 trang web nhưng muốn cùng 1 footer." Đây là lúc dùng Footer component — sửa một chỗ, cập nhật khắp nơi.', related: ['props', 'state'], demo: { kind: 'interactive', src: 'gif-component-demo.html', alt: 'Mô phỏng 4 loại component phổ biến và code minh họa' } },
   { id: 'context-window', name: 'Context Window', nameEn: 'Bộ nhớ làm việc của AI', letter: 'C', groups: ['ai'], definition: 'Lượng text tối đa AI có thể "đọc" và xử lý trong một lần. Khi conversation quá dài, AI bắt đầu quên phần đầu.', example: '"Mình đã prompt rất nhiều nhưng AI bắt đầu sai lung tung" → Context window đầy rồi. Mở conversation mới và tóm tắt lại yêu cầu.', related: ['prompt', 'model'] },
   { id: 'css', name: 'CSS', nameEn: 'Cascading Style Sheets', letter: 'C', groups: ['design', 'code'], definition: 'Ngôn ngữ kiểm soát giao diện — màu sắc, kích thước, khoảng cách, font, layout. Nếu HTML là khung xương thì CSS là da thịt và quần áo.', example: 'Prompt: "Đổi màu nền hero section sang màu kem #f5f0e8, chữ heading to hơn, thêm padding trên dưới." → AI sẽ chỉnh CSS.', related: ['tailwind', 'flexbox'] },
   { id: 'deploy', name: 'Deploy', nameEn: 'Đưa lên internet', letter: 'D', groups: ['infra'], definition: 'Quá trình đưa code từ máy tính lên server để mọi người truy cập được. Sau deploy, web có link thật, không còn là localhost nữa.', example: 'Push code lên GitHub → Vercel tự động build và deploy → có link "yourapp.vercel.app" chia sẻ được ngay.', related: ['build', 'vercel'] },
@@ -122,6 +122,7 @@ const deepDiveTermIds = new Set([
   'border',
   'build',
   'card',
+  'component',
   'database',
   'deploy',
   'env',
@@ -159,6 +160,10 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
   async: [
     'Async / await quan trọng vì gần như mọi thao tác gọi API, upload file, hoặc lưu dữ liệu đều không diễn ra tức thì.',
     'Nếu xử lý async không rõ ràng, UI rất dễ gặp lỗi loading sai, bấm nhiều lần, hoặc báo xong trước khi dữ liệu thực sự lưu thành công.',
+  ],
+  component: [
+    'Component là tư duy "LEGO" trong lập trình hiện đại. Thay vì viết hàng ngàn dòng code cho mỗi trang, chúng ta chia nhỏ thành các khối độc lập.',
+    'Khi marketer yêu cầu "thay đổi style toàn trang", nếu project build bằng component, dev chỉ cần sửa 1 file duy nhất. Nếu không, họ phải đi sửa từng trang một.',
   ],
   database: [
     'Database là nơi lưu dữ liệu thật, nên khi mô tả yêu cầu cho AI bạn thường nên nói rõ: lưu vào bảng nào, mỗi dòng đại diện cho cái gì.',
