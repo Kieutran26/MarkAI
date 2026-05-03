@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Navigate, Routes, Route, useLocation } from 'react-router-dom';
 import { useEffect } from 'react';
 import Nav from './components/Nav';
 import Footer from './components/Footer';
@@ -20,6 +20,9 @@ import SubLessonPage from './pages/SubLessonPage';
 import LessonPreviewPage from './pages/LessonPreviewPage';
 import VibecodeGlossaryPage from './pages/VibecodeGlossaryPage';
 import AdminApp from './admin/AdminApp';
+
+const GLOSSARY_PATH = '/tu-dien-thuat-ngu';
+const LEGACY_GLOSSARY_PATH = '/vibecode/tu-ngu-chuyen-nganh/tu-dien-thuat-ngu';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
@@ -62,7 +65,8 @@ const AppShell = () => {
           <Route path="/contact" element={<Contact />} />
           <Route path="/vibecode" element={<VibecodePage />} />
           <Route path="/vibecode/preview/:previewToken" element={<LessonPreviewPage />} />
-          <Route path="/vibecode/tu-ngu-chuyen-nganh/tu-dien-thuat-ngu" element={<VibecodeGlossaryPage />} />
+          <Route path={GLOSSARY_PATH} element={<VibecodeGlossaryPage />} />
+          <Route path={LEGACY_GLOSSARY_PATH} element={<Navigate to={GLOSSARY_PATH} replace />} />
           <Route path="/vibecode/:lessonSlug" element={<LessonOverview />} />
           <Route path="/vibecode/:lessonSlug/:subSlug" element={<SubLessonPage />} />
         </Routes>

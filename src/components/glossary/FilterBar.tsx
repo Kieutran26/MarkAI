@@ -13,7 +13,7 @@ const groups: Array<TermGroup | 'all'> = ['all', 'code', 'design', 'infra', 'dat
 export default function FilterBar({ activeGroup, onGroupChange, sortAZ, onToggleSort }: FilterBarProps) {
   return (
     <div className="sticky top-[52px] z-40 border-b border-border bg-[var(--bg)]">
-      <div className="page-shell !px-0">
+      <div className="page-shell">
         <div className="glossary-scroll flex overflow-x-auto">
           {groups.map((group) => (
             <button key={group} type="button" onClick={() => onGroupChange(group)} className={`flex h-11 shrink-0 items-center gap-2 border-r border-border px-[1.1rem] font-mono text-[11px] transition-colors ${activeGroup === group ? 'border-b-2 border-b-accent text-ink' : 'text-muted hover:bg-bg2 hover:text-ink'}`}>

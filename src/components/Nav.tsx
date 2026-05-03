@@ -1,10 +1,12 @@
 import { useEffect, useState, type MouseEvent } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
+const GLOSSARY_PATH = '/tu-dien-thuat-ngu';
+
 export default function Nav() {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const isGlossaryRoute = location.pathname === '/vibecode/tu-ngu-chuyen-nganh/tu-dien-thuat-ngu';
+  const isGlossaryRoute = location.pathname === GLOSSARY_PATH;
   const isVibecodeActive =
     !isGlossaryRoute &&
     (location.pathname === '/vibecode' ||
@@ -14,7 +16,7 @@ export default function Nav() {
   const isActive = (path: string) => location.pathname === path;
   const navItems = [
     { label: 'Vibecode', path: '/vibecode', active: isVibecodeActive },
-    { label: 'Từ ngữ IT', path: '/vibecode/tu-ngu-chuyen-nganh/tu-dien-thuat-ngu', active: isGlossaryRoute },
+    { label: 'Từ điển chuyên ngành', path: GLOSSARY_PATH, active: isGlossaryRoute },
     { label: 'Blog', path: '/blog', active: isActive('/blog') },
     { label: 'Tips', path: '/tips', active: isActive('/tips') },
     { label: 'Prompts', path: '/prompts', active: isActive('/prompts') },
@@ -50,8 +52,8 @@ export default function Nav() {
       <div className="h-[52px] flex items-center justify-between">
         <Link
           to="/"
-          aria-label="V\u1ec1 trang ch\u1ee7 markAI"
-          title="V\u1ec1 trang ch\u1ee7"
+          aria-label="Về trang chủ markAI"
+          title="Về trang chủ"
           onClick={handleLogoClick}
           className="shrink-0 font-mono text-[15px] font-medium tracking-tight no-underline text-ink"
         >
@@ -79,12 +81,12 @@ export default function Nav() {
 
         <div className="flex items-center h-full">
           <div className="nav-free-wrap hidden md:flex font-mono text-[12px] items-center h-full">
-            <span className="nav-free font-medium">{'Mi\u1ec5n ph\u00ed 100%'}</span>
+            <span className="nav-free font-medium">{'Miễn phí 100%'}</span>
           </div>
           <button
             type="button"
             aria-expanded={isMobileMenuOpen}
-            aria-label={isMobileMenuOpen ? '\u0110\u00f3ng menu' : 'M\u1edf menu'}
+            aria-label={isMobileMenuOpen ? 'Đóng menu' : 'Mở menu'}
             onClick={() => setIsMobileMenuOpen((open) => !open)}
             className="md:hidden h-[52px] px-4 border-l border-border font-mono text-[11px] tracking-[0.08em] uppercase text-ink"
           >
@@ -103,11 +105,11 @@ export default function Nav() {
                 className={getMobileNavItemClass(item.active)}
               >
                 <span>{item.label}</span>
-                <span aria-hidden="true">{'\u2192'}</span>
+                <span aria-hidden="true">{'→'}</span>
               </Link>
             ))}
             <div className="px-5 py-4 border-t border-border font-mono text-[11px] text-muted uppercase tracking-[0.06em] bg-bg2">
-              {'Mi\u1ec5n ph\u00ed 100% \u00b7 Kh\u00f4ng c\u1ea7n email'}
+              {'Miễn phí 100% · Không cần email'}
             </div>
           </div>
         </div>

@@ -14,11 +14,11 @@ const heroGroups: Array<TermGroup | 'all'> = ['all', 'code', 'design', 'infra', 
 export default function GlossaryHero({ searchQuery, onSearchChange, filteredCount, activeGroup, onGroupChange }: GlossaryHeroProps) {
   return (
     <section className="border-b border-border">
-      <div className="page-shell !px-0">
+      <div className="page-shell">
         <div className="grid lg:grid-cols-[1fr_340px]">
           <div className="border-b border-border px-[1.2rem] py-12 lg:border-b-0 lg:border-r lg:px-8 lg:py-16">
             <p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">✳ <span className="text-accent">Bài 02</span> · Vibecode Web · Từ ngữ chuyên ngành</p>
-            <h1 className="mt-5 font-serif text-[clamp(2rem,4vw,3rem)] leading-[1.08] tracking-[-0.02em]">Từ ngữ IT mà dân<br />Marketer <em className="text-accent italic">phải biết.</em></h1>
+            <h1 className="mt-5 font-serif text-[clamp(2rem,4vw,3rem)] leading-[1.08] tracking-[-0.02em]">Từ điển chuyên ngành<br />mà dân Marketer <em className="text-accent italic">phải biết.</em></h1>
             <p className="glossary-body mt-4 max-w-[480px] text-[15px] leading-[1.75] text-ink2">62+ thuật ngữ kỹ thuật giải thích bằng ngôn ngữ Marketing, kèm ví dụ thực tế. Không cần nhớ hết, chỉ cần biết đủ để không bị mù khi làm việc với AI và dev.</p>
             <label className="relative mt-8 block max-w-[480px]">
               <input value={searchQuery} onChange={(event) => onSearchChange(event.target.value)} placeholder="Tìm từ ngữ... vd: API, deploy, frontend" className="w-full border border-border bg-[var(--bg)] px-[14px] py-[11px] pr-11 font-mono text-[13px] text-ink outline-none transition-colors placeholder:text-muted focus:border-ink" />

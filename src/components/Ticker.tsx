@@ -18,7 +18,7 @@ interface TickerProps {
 
 export default function Ticker({ items = defaultItems }: TickerProps) {
   const location = useLocation();
-  const isGlossaryRoute = location.pathname === '/vibecode/tu-ngu-chuyen-nganh/tu-dien-thuat-ngu';
+  const isGlossaryRoute = location.pathname === '/tu-dien-thuat-ngu';
   const activeItems = isGlossaryRoute ? glossaryTickerItems : items;
 
   return (

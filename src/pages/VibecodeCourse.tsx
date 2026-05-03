@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Link } from 'react-router-dom';
 import { Play, CheckCircle2, ChevronRight, BookOpen, Clock, Award, ChevronDown, ChevronUp } from 'lucide-react';
@@ -46,7 +46,7 @@ const curriculum: Chapter[] = [
       { id: "2.2", title: "Input vs Output", sub: "Cặp khái niệm nền tảng", tag: "CƠ BẢN" },
       { id: "2.3", title: "Tại sao marketer cần hiểu tech?", sub: "Mindset làm việc với AI", tag: "MINDSET" },
       { id: "2.4", title: "Case thực tế: ChatGPT viết content sai vì prompt", sub: "Case study thực chiến", tag: "CASE" },
-      { id: "2.5", title: "Các từ ngữ chuyên ngành", sub: "Trang tra cứu riêng", tag: "GLOSSARY" }
+      { id: "2.5", title: "Từ điển chuyên ngành", sub: "Trang tra cứu riêng", tag: "GLOSSARY" }
     ]
   },
   {

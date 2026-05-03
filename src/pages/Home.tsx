@@ -83,7 +83,7 @@ const learningPaths = [
     statusLabel: 'Live',
     lessons: [
       { num: '01', title: 'Vibecode là gì?' },
-      { num: '02', title: 'Từ ngữ code & design' },
+      { num: '02', title: 'Từ điển chuyên ngành' },
       { num: '03', title: 'Cài đặt môi trường' },
       { num: '04', title: 'VS Code & Cursor' },
       { num: '05', title: 'Claude Code' },
