@@ -4,206 +4,161 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Breakpoint Practice — markAI</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#0f0f12;--bg-card:#16161b;--bg-el:#222;--border:#282830;
-  --border-active:#e88c2e;--accent:#e88c2e;
-  --accent-glow:rgba(232,140,46,.18);--accent-soft:rgba(232,140,46,.07);
-  --cream:#EDE4D8;--text:#D8D0C8;--muted:#777770;
-  --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
-}
+:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;--adim:#8b3a1a;--card:#1c1a18;--calt:#242120;--border:#302c28;--bhi:#44403a}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--text);font-family:var(--sans);overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;
-  background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
-  background-size:48px 48px;pointer-events:none;z-index:0}
+body{background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 100%,16px 16px;display:flex;flex-direction:column;align-items:center;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:0;gap:0;overflow-x:hidden}
 
-#app-root{position:relative;z-index:1;padding:24px 16px}
+/* ===== PRACTICE ===== */
+.pw{width:100%;background:var(--card);border:2px solid var(--border);padding:20px 24px}
+.pw-h{font-size:15px;font-weight:700;margin-bottom:2px}.pw-h span{color:var(--accent)}
+.pw-s{font-size:11px;color:var(--muted);margin-bottom:14px}
 
-.pg{font-size:14px;color:var(--text);line-height:1.6;margin-bottom:20px}
-.pg span{color:var(--accent);font-weight:700}
+.ppv{position:relative;height:180px;border:1px solid var(--border);background:var(--bg);background-image:linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);background-size:20px 20px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;overflow:hidden}
+.ppb{height:150px;border:1px solid var(--border);background:var(--calt);transition:width .12s ease-out;overflow:hidden;display:flex;flex-direction:column}
+.ppn{height:20px;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 6px;background:rgba(0,0,0,.18);flex-shrink:0}
+.ppnb{font-size:8px;font-weight:700;letter-spacing:1px}
+.ppnm{display:flex;flex-direction:column;gap:1.5px;margin-left:auto;padding:3px 4px}
+.ppnm i{display:block;width:10px;height:1.5px;background:var(--fg)}
+.ppnl{font-size:7px;color:var(--muted);margin-left:auto;display:none;letter-spacing:.3px}
+.ppb.pm .ppnm{display:flex}.ppb.pm .ppnl{display:none}
+.ppb.pf .ppnm{display:none}.ppb.pf .ppnl{display:inline}
+.ppg{flex:1;display:grid;gap:4px;padding:4px;align-content:start;transition:grid-template-columns .12s}
+.ppc{background:var(--calt);border:1px solid var(--border);display:flex;align-items:center;font-size:8px;font-weight:600;padding-left:5px;min-height:18px;overflow:hidden}
+.ppca{border-left:3px solid var(--accent)}
+.ppcb{border-left:3px solid #b89a2a}
+.ppcc{border-left:3px solid #4a8a5a}
+.ppcd{border-left:3px solid #4a5a7a}
+.ppg.s3 .ppcd{grid-column:1/-1}
 
-/* width slider */
-.ws-area{display:flex;align-items:center;gap:14px;margin-bottom:20px}
-.ws-lbl{font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);white-space:nowrap}
-.ws-wrap{flex:1;position:relative}
-input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;background:var(--border);outline:none;cursor:pointer}
+.bpf{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:700;color:var(--accent);opacity:0;pointer-events:none;z-index:10;text-shadow:0 0 24px rgba(212,113,42,.35);transition:opacity .15s}
+.bpf.show{opacity:1}
+
+.pwd{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.pw-vl{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--fg);min-width:85px}
+.pw-zn{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;padding:3px 10px;border:1px solid}
+.pw-zn.zm{color:#c45a20;border-color:#7a3218;background:rgba(122,50,24,.12)}
+.pw-zn.zt{color:var(--accent);border-color:var(--adim);background:rgba(139,58,26,.12)}
+.pw-zn.zl{color:#5a9a6a;border-color:#2a4a3a;background:rgba(42,74,58,.12)}
+.pw-zn.zd{color:#6a7a9a;border-color:#2a3a4a;background:rgba(42,58,74,.12)}
+
+.psw{position:relative;margin-bottom:14px;padding:8px 2px 0}
+.psm{position:relative;height:12px;pointer-events:none}
+.psm span{position:absolute;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);transform:translateX(-50%);top:0}
+.psm span::after{content:'';position:absolute;top:100%;left:50%;width:1px;height:8px;background:var(--muted);opacity:.35}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;background:var(--border);outline:none;border:none;cursor:pointer}
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;background:var(--accent);border:2px solid var(--bg);cursor:pointer}
-.ws-val{font-family:var(--mono);font-size:16px;font-weight:700;color:var(--accent);min-width:72px;text-align:right}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;background:var(--accent);border:2px solid var(--bg);cursor:pointer;border-radius:0}
 
-/* breakpoint zones bar */
-.bz-bar{display:flex;height:24px;margin-bottom:6px;border:1px solid var(--border);overflow:hidden}
-.bz-zone{display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);transition:background .25s,color .25s;position:relative;overflow:hidden}
-.bz-zone.hit{color:var(--cream)}
-.bz-m{flex:0 0 40%;background:var(--bg)}
-.bz-m.hit{background:rgba(232,140,46,.15)}
-.bz-t{flex:0 0 13.3%;background:var(--bg-el)}
-.bz-t.hit{background:rgba(232,140,46,.25)}
-.bz-l{flex:0 0 21.6%;background:var(--bg)}
-.bz-l.hit{background:rgba(232,140,46,.2)}
-.bz-d{flex:0 0 25.1%;background:var(--bg-card)}
-.bz-d.hit{background:rgba(232,140,46,.3)}
+.pfb{font-family:'JetBrains Mono',monospace;font-size:11px;min-height:18px;color:var(--muted);transition:color .2s;line-height:1.4}
+.pfb.w{color:var(--accent)}
+.pht{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);opacity:.65}
 
-.bz-labels{display:flex;font-family:var(--mono);font-size:8px;color:var(--muted);margin-bottom:16px}
-.bz-labels span{flex:1;text-align:center;padding:2px 0}
-.bz-labels span.ac{color:var(--accent);font-weight:700}
-
-/* preview area */
-.ppv{border:1px solid var(--border);background:var(--bg-card);margin-bottom:16px;overflow:hidden;min-height:240px;display:flex;flex-direction:column;align-items:center;padding:20px}
-.ppv-frame{width:100%;transition:max-width .35s ease;overflow:hidden;background:var(--bg);border:1px solid var(--border);box-shadow:0 10px 30px -10px rgba(0,0,0,0.5)}
-.ppv-hd{display:flex;align-items:center;padding:8px 12px;border-bottom:1px solid var(--border);gap:10px}
-.ppv-ham{display:flex;flex-direction:column;gap:2px;width:16px;flex-shrink:0;cursor:default}
-.ppv-ham span{width:100%;height:2px;background:var(--cream);display:block;transition:opacity .3s}
-.ppv-ham.hide{opacity:0;pointer-events:none}
-.ppv-brand{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--cream);flex:1}
-.ppv-nav{display:flex;gap:12px;flex-shrink:0;transition:opacity .3s,max-width .3s;overflow:hidden}
-.ppv-nav.hide{opacity:0;max-width:0;gap:0;pointer-events:none}
-.ppv-ni{font-family:var(--sans);font-size:11px;color:var(--muted);white-space:nowrap}
-.ppv-body{padding:12px}
-.ppv-grid{display:grid;gap:8px;transition:all .35s ease}
-.ppv-cell{background:var(--bg-el);border:1px solid var(--border);padding:10px 8px;transition:all .35s}
-.ppv-cell-h{min-height:50px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:700;color:var(--accent);opacity:.5}
-.ppv-cell-c{min-height:64px}
-.ppv-cell-t{font-family:var(--mono);font-size:9px;font-weight:700;color:var(--cream);margin-bottom:4px}
-.ppv-cell-d{font-size:9px;color:var(--muted);line-height:1.3}
-
-/* state row */
-.state-row{display:flex;align-items:center;gap:10px;margin-bottom:14px}
-.state-badge{font-family:var(--mono);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--bg);background:var(--accent);padding:5px 12px;transition:all .25s}
-.state-info{font-family:var(--mono);font-size:10px;color:var(--muted);line-height:1.4}
-.state-info span{color:var(--cream);font-weight:600}
-
-/* feedback */
-.fb{display:flex;align-items:center;gap:8px;padding:10px 14px;font-size:13px;border:1px solid var(--border);background:var(--bg-card);margin-top:10px}
-.fb strong{color:var(--accent)}
-
-@media(max-width:768px){
-  .ws-area{flex-wrap:wrap}.ws-lbl{width:100%}.ws-val{min-width:0}
-}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media(max-width:520px){.pw{padding:16px}.pw-vl{font-size:18px;min-width:70px}}
 </style>
 </head>
 <body>
-<div id="app-root">
-    <p class="pg"><span>Mục tiêu:</span> Kéo slider thay đổi width trình duyệt — quan sát layout "nhảy" tại đúng các mốc <span>Breakpoint</span>.</p>
 
-    <div class="ws-area">
-      <span class="ws-lbl">Viewport Width</span>
-      <div class="ws-wrap">
-        <input type="range" id="wSld" min="320" max="1600" value="1440">
-      </div>
-      <span class="ws-val" id="wVal">1440px</span>
-    </div>
-
-    <div class="bz-bar" id="bzBar">
-      <div class="bz-zone bz-m" data-zone="mobile"><span>MOBILE</span></div>
-      <div class="bz-zone bz-t" data-zone="tablet"><span>TABLET</span></div>
-      <div class="bz-zone bz-l" data-zone="laptop"><span>LAPTOP</span></div>
-      <div class="bz-zone bz-d" data-zone="desktop"><span>DESKTOP</span></div>
-    </div>
-    <div class="bz-labels" id="bzLabels">
-      <span>0 — 767</span><span>768 — 1023</span><span>1024 — 1439</span><span>1440+</span>
-    </div>
-
-    <div class="state-row">
-      <span class="state-badge" id="stBadge">DESKTOP</span>
-      <span class="state-info" id="stInfo">Grid: <span>4 cột</span> · Nav: <span>top navigation</span></span>
-    </div>
-
+<div class="pw">
+    <div class="pw-h">Thực hành — <span>Kéo qua Breakpoint</span></div>
+    <div class="pw-s">Kéo slider thay đổi viewport width — thấy layout đổi ngay tại ngưỡng</div>
     <div class="ppv">
-      <div class="ppv-frame" id="ppvFrame" style="max-width:100%">
-        <div class="ppv-hd">
-          <div class="ppv-ham" id="ppHam"><span></span><span></span><span></span></div>
-          <span class="ppv-brand">BRAND</span>
-          <div class="ppv-nav" id="ppNav">
-            <span class="ppv-ni">Products</span>
-            <span class="ppv-ni">Features</span>
-            <span class="ppv-ni">Pricing</span>
-          </div>
+        <div class="ppb pm" id="ppb" style="width:117px">
+            <div class="ppn"><span class="ppnb">BRAND</span><div class="ppnm"><i></i><i></i><i></i></div><span class="ppnl">Home · Features · About</span></div>
+            <div class="ppg" id="ppg" style="grid-template-columns:1fr">
+                <div class="ppc ppca">Analytics</div>
+                <div class="ppc ppcb">Builder</div>
+                <div class="ppc ppcc">Connect</div>
+                <div class="ppc ppcd">Report</div>
+            </div>
         </div>
-        <div class="ppv-body">
-          <div class="ppv-grid" id="ppGrid">
-            <div class="ppv-cell ppv-cell-h">HERO AREA</div>
-            <div class="ppv-cell ppv-cell-c"><div class="ppv-cell-t">Feature A</div><div class="ppv-cell-d">Layout tự thích ứng</div></div>
-            <div class="ppv-cell ppv-cell-c"><div class="ppv-cell-t">Feature B</div><div class="ppv-cell-d">Theo kích thước ngang</div></div>
-            <div class="ppv-cell ppv-cell-c"><div class="ppv-cell-t">Feature C</div><div class="ppv-cell-d">Phân tách bởi mốc</div></div>
-            <div class="ppv-cell ppv-cell-c"><div class="ppv-cell-t">Feature D</div><div class="ppv-cell-d">Kỹ thuật Breakpoint</div></div>
-          </div>
-        </div>
-      </div>
+        <div class="bpf" id="bpf"></div>
     </div>
-
-    <div class="fb" id="fb"><strong>Prompt:</strong> <span>Desktop (1440px+): 4 cột, top nav, full layout</span></div>
+    <div class="pwd">
+        <span class="pw-vl" id="pwVl">375px</span>
+        <span class="pw-zn zm" id="pwZn">MOBILE</span>
+    </div>
+    <div class="psw">
+        <div class="psm">
+            <span style="left:28%">768</span>
+            <span style="left:44%">1024</span>
+            <span style="left:70%">1440</span>
+        </div>
+        <input type="range" id="psl" min="320" max="1920" value="375">
+    </div>
+    <div class="pfb" id="pfb">Kéo slider sang phải — breakpoint đầu tiên ở 768px</div>
+    <div class="pht">Hint: Chú ý lúc vượt 768, 1024, 1440 — layout "nhảy" chứ không thay đổi từ từ</div>
 </div>
 
 <script>
-var wSld=document.getElementById('wSld');
-var wVal=document.getElementById('wVal');
-var stBadge=document.getElementById('stBadge');
-var stInfo=document.getElementById('stInfo');
-var ppvFrame=document.getElementById('ppvFrame');
-var ppHam=document.getElementById('ppHam');
-var ppNav=document.getElementById('ppNav');
-var ppGrid=document.getElementById('ppGrid');
-var fbTxt=document.querySelector('#fb span');
-var bzZones=document.querySelectorAll('.bz-zone');
-var bzLabelSpans=document.querySelectorAll('#bzLabels span');
+var psl=document.getElementById('psl');
+var ppb=document.getElementById('ppb');
+var ppg=document.getElementById('ppg');
+var pwVl=document.getElementById('pwVl');
+var pwZn=document.getElementById('pwZn');
+var pfb=document.getElementById('pfb');
+var bpf=document.getElementById('bpf');
+var MAX_PVW=600;
+
+var prevZone=-1,flashTm=null;
 
 function getZone(w){
-  if(w<768) return {name:'MOBILE',cols:1,ham:true,nav:false,prompt:'Mobile (0-767px): 1 cột, hamburger menu, stacked layout'};
-  if(w<1024) return {name:'TABLET',cols:2,ham:true,nav:false,prompt:'Tablet (768-1023px): 2 cột, hamburger menu, compact grid'};
-  if(w<1440) return {name:'LAPTOP',cols:3,ham:false,nav:true,prompt:'Laptop (1024-1439px): 3 cột, top nav, standard layout'};
-  return {name:'DESKTOP',cols:4,ham:false,nav:true,prompt:'Desktop (1440px+): 4 cột, top nav, full layout'};
+    if(w<768)return 0;if(w<1024)return 1;if(w<1440)return 2;return 3;
 }
 
-function upd(w){
-  w=parseInt(w);
-  wVal.textContent=w+'px';
-  var z=getZone(w);
+var ZONES=['MOBILE','TABLET','LAPTOP','DESKTOP'];
+var ZCLS=['zm','zt','zl','zd'];
+var BPS=[768,1024,1440];
+var COLS=[1,2,3,4];
 
-  /* zone bar */
-  bzZones.forEach(function(el){
-    var zn=el.dataset.zone;
-    var hit=(zn==='mobile'&&w<768)||(zn==='tablet'&&w>=768&&w<1024)||(zn==='laptop'&&w>=1024&&w<1440)||(zn==='desktop'&&w>=1440);
-    el.classList.toggle('hit',hit);
-  });
-  bzLabelSpans.forEach(function(el,i){
-    var ranges=[[0,768],[768,1024],[1024,1440],[1440,9999]];
-    el.classList.toggle('ac',w>=ranges[i][0]&&w<ranges[i][1]);
-  });
-
-  /* badge + info */
-  stBadge.textContent=z.name;
-  stInfo.innerHTML='Grid: <span>'+z.cols+' cột</span> · Nav: <span>'+(z.ham?'hamburger menu':'top navigation')+'</span>';
-
-  /* preview frame width — scale to fit container width roughly */
-  var containerW = document.body.clientWidth - 72;
-  var scaledW = Math.min(w, containerW);
-  ppvFrame.style.maxWidth=scaledW+'px';
-
-  /* hamburger vs nav */
-  ppHam.classList.toggle('hide',!z.ham);
-  ppNav.classList.toggle('hide',!z.nav);
-
-  /* grid columns */
-  var cols=z.cols;
-  if(cols===1) ppGrid.style.gridTemplateColumns='1fr';
-  else if(cols===2) ppGrid.style.gridTemplateColumns='1fr 1fr';
-  else if(cols===3) ppGrid.style.gridTemplateColumns='1fr 1fr 1fr';
-  else ppGrid.style.gridTemplateColumns='1fr 1fr 1fr 1fr';
-
-  /* hero span */
-  var heroCell=ppGrid.querySelector('.ppv-cell-h');
-  if(cols===1) heroCell.style.gridColumn='';
-  else heroCell.style.gridColumn='1 / -1';
-
-  /* feedback txt */
-  fbTxt.textContent=z.prompt;
+function flash(text){
+    clearTimeout(flashTm);
+    bpf.textContent=text;
+    bpf.classList.add('show');
+    flashTm=setTimeout(function(){bpf.classList.remove('show')},700);
 }
 
-wSld.oninput=function(){upd(wSld.value)};
-window.onresize=function(){upd(wSld.value)};
-upd(1440);
+function updatePractice(){
+    var w=+psl.value;
+    var zone=getZone(w);
+    var pvW=Math.max(60,Math.round(w/1920*MAX_PVW));
+
+    pwVl.textContent=w+'px';
+
+    /* Zone badge */
+    pwZn.textContent=ZONES[zone];
+    pwZn.className='pw-zn '+ZCLS[zone];
+
+    /* Browser width */
+    ppb.style.width=pvW+'px';
+
+    /* Nav type */
+    ppb.className='ppb '+(zone<2?'pm':'pf');
+
+    /* Grid columns */
+    var cols=COLS[zone];
+    ppg.style.gridTemplateColumns='repeat('+cols+',1fr)';
+    ppg.className='ppg'+(cols===3?' s3':'');
+
+    /* Detect breakpoint crossing */
+    if(zone!==prevZone&&prevZone!==-1){
+        flash(BPS[prevZone]+'px');
+        pfb.textContent='BREAKPOINT! '+BPS[prevZone]+'px — '+ZONES[prevZone]+' \u2192 '+ZONES[zone]+' ('+COLS[prevZone]+' \u2192 '+cols+' cột)';
+        pfb.className='pfb w';
+    }else if(prevZone===-1){
+        pfb.textContent='Kéo slider sang phải — breakpoint đầu tiên ở 768px';
+        pfb.className='pfb';
+    }else{
+        pfb.textContent=w+'px \u00B7 '+cols+' cột \u00B7 '+(zone<2?'hamburger':'full nav');
+        pfb.className='pfb';
+    }
+    prevZone=zone;
+}
+
+psl.addEventListener('input',updatePractice);
+updatePractice();
 </script>
 </body>
 </html>
