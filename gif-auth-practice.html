@@ -3,121 +3,275 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Auth Practice</title>
+<title>Auth Practice — Permission Matrix</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-  :root { --bg:#0f0f12; --bg-card:#17171c; --fg:#e8e4dc; --muted:#6e6e7a; --accent:#e88c2e; --accent-soft:rgba(232,140,46,.13); --accent-border:rgba(232,140,46,.3); --border:#2a2a33; --success:#3a9e5c; --success-soft:rgba(58,158,92,.13); --warning:#c49030; --warning-soft:rgba(196,144,48,.1); }
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{background:var(--bg);color:var(--fg);font-family:'Space Grotesk',sans-serif}
-  .entry{max-width:920px;margin:0 auto;padding:24px}
-  .p-goal{font-size:15px;color:var(--fg);opacity:.82;margin-bottom:22px;line-height:1.7}
-  .p-goal span{color:var(--accent);font-weight:600}
-  .ctx-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
-  .ctx-btn{font-size:13px;font-weight:500;padding:8px 14px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:.25s;display:flex;align-items:center;gap:8px}
-  .ctx-btn:hover{border-color:var(--accent-border);color:var(--fg)}
-  .ctx-btn.active{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
-  .ctx-btn .ctx-d{font-family:'JetBrains Mono',monospace;font-size:10px;opacity:.65}
-  .ctx-btn.active .ctx-d{opacity:1}
-  .toggle-row{display:flex;align-items:center;justify-content:space-between;gap:12px;border:1px solid var(--border);background:var(--bg-card);padding:14px 16px;margin-bottom:24px}
-  .toggle-copy{font-size:13px;color:var(--fg);opacity:.82}
-  .toggle-copy b{color:var(--accent)}
-  .toggle{position:relative;width:54px;height:30px;flex-shrink:0}
-  .toggle input{opacity:0;width:0;height:0}
-  .toggle-ui{position:absolute;inset:0;background:var(--border);transition:.25s}
-  .toggle-ui::after{content:'';position:absolute;width:22px;height:22px;left:4px;top:4px;background:var(--fg);transition:.25s}
-  .toggle input:checked + .toggle-ui{background:rgba(58,158,92,.35);border:1px solid rgba(58,158,92,.35)}
-  .toggle input:checked + .toggle-ui::after{transform:translateX(24px);background:var(--success)}
-  .preview{background:var(--bg-card);border:1px solid var(--border);padding:22px 22px 18px;margin-bottom:18px;position:relative;overflow:hidden}
-  .preview::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.008) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.008) 1px,transparent 1px);background-size:18px 18px;pointer-events:none}
-  .prev-label{position:absolute;top:10px;left:14px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);opacity:.4}
-  .gate-bar{height:10px;width:100%;background:var(--border);margin:36px 0 18px;position:relative}
-  .gate-open{position:absolute;top:0;bottom:0;left:0;background:rgba(58,158,92,.28);transition:width .25s ease}
-  .gate-card{position:relative;z-index:1;border:1px solid var(--border);padding:18px;background:#141419;transition:.25s}
-  .gate-card.ok{border-color:rgba(58,158,92,.35);background:rgba(58,158,92,.08)}
-  .gate-card.no{border-color:rgba(232,140,46,.25);background:rgba(232,140,46,.05)}
-  .gate-eyebrow{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);margin-bottom:10px}
-  .gate-title{font-size:30px;font-weight:700;line-height:1.05;margin-bottom:8px}
-  .gate-copy{font-size:14px;line-height:1.7;color:var(--fg);opacity:.78}
-  .gate-mini{margin-top:16px;display:grid;gap:10px}
-  .mini-row{display:flex;justify-content:space-between;gap:12px;border:1px solid var(--border);padding:10px 12px;font-family:'JetBrains Mono',monospace;font-size:11px;color:#d9d3c8}
-  .mini-row span:last-child{color:var(--accent)}
-  .fb{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;font-size:13px;font-weight:500;border:1px solid var(--border);background:var(--bg-card);transition:.3s}
-  .fb.ok{border-color:rgba(58,158,92,.4);color:var(--success);background:var(--success-soft)}
-  .fb.no{border-color:rgba(196,144,48,.3);color:var(--warning);background:var(--warning-soft)}
-  .hint{font-size:12px;color:var(--muted);opacity:.55;margin-top:10px;display:flex;align-items:center;gap:6px}
-  .hint i{font-size:10px;color:var(--accent)}
+  :root {
+    --bg: #0f0f12;
+    --bg-card: #16161b;
+    --fg: #e8e4dc;
+    --muted: #6e6e7a;
+    --accent: #e88c2e;
+    --accent-soft: rgba(232, 140, 46, 0.12);
+    --accent-border: rgba(232, 140, 46, 0.3);
+    --border: #282830;
+    --surface: #1c1c23;
+    --success: #3a9e5c;
+    --success-soft: rgba(58, 158, 92, 0.12);
+    --danger: #c43830;
+    --danger-soft: rgba(196, 56, 48, 0.12);
+    --danger-border: rgba(196, 56, 48, 0.3);
+    --warning: #c49030;
+    --warning-soft: rgba(196, 144, 48, 0.1);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { 
+    background: var(--bg); 
+    color: var(--fg); 
+    font-family: 'Space Grotesk', sans-serif; 
+    min-height: auto; 
+    line-height: 1.6;
+    padding: 20px 20px 10px;
+    overflow: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.022) 1px, transparent 1px);
+    background-size: 20px 20px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .entry { position: relative; z-index: 1; max-width: 940px; margin: 0 auto; padding-bottom: 10px; }
+
+  /* ===== PRACTICE ===== */
+  .pg { font-size: 15px; color: var(--fg); opacity: .8; margin-bottom: 22px; line-height: 1.6; }
+  .pg span { color: var(--accent); font-weight: 600; }
+
+  /* Role picker */
+  .role-r { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+  .role-b { 
+    font-family: 'Space Grotesk', sans-serif; 
+    font-size: 13px; 
+    font-weight: 500; 
+    padding: 10px 18px; 
+    border: 1px solid var(--border); 
+    background: transparent; 
+    color: var(--muted); 
+    cursor: pointer; 
+    transition: all .25s; 
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
+    flex: 1; 
+    justify-content: center; 
+  }
+  .role-b:hover { border-color: var(--accent-border); color: var(--fg); }
+  .role-b.on { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+  .role-b i { font-size: 12px; }
+
+  /* Resource grid */
+  .res-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 20px; }
+  @media(max-width:560px) { .res-grid { grid-template-columns: repeat(2, 1fr); } }
+  .res-card { 
+    background: var(--bg-card); 
+    border: 1px solid var(--border); 
+    padding: 16px 14px; 
+    cursor: pointer; 
+    transition: all .25s; 
+    text-align: center; 
+    position: relative; 
+    overflow: hidden; 
+  }
+  .res-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px; transform: scaleX(0); transition: transform .3s ease; }
+  .res-card:hover { border-color: var(--accent-border); }
+  .res-card:disabled { cursor: default; opacity: .7; }
+  .res-card .rc-icon { font-size: 18px; color: var(--muted); margin-bottom: 8px; transition: color .25s; }
+  .res-card .rc-name { font-size: 12px; font-weight: 600; color: var(--fg); margin-bottom: 4px; }
+  .res-card .rc-desc { font-size: 10px; color: var(--muted); font-family: 'JetBrains Mono', monospace; }
+  .res-card.granted { border-color: rgba(58, 158, 92, 0.35); }
+  .res-card.granted::before { background: var(--success); transform: scaleX(1); }
+  .res-card.granted .rc-icon { color: var(--success); }
+  .res-card.denied { border-color: var(--danger-border); }
+  .res-card.denied::before { background: var(--danger); transform: scaleX(1); }
+  .res-card.denied .rc-icon { color: var(--danger); }
+  .res-card .rc-result { position: absolute; top: 8px; right: 8px; font-size: 10px; font-weight: 600; opacity: 0; transform: scale(.8); transition: all .25s; }
+  .res-card.granted .rc-result, .res-card.denied .rc-result { opacity: 1; transform: scale(1); }
+  .res-card.granted .rc-result { color: var(--success); }
+  .res-card.denied .rc-result { color: var(--danger); }
+
+  /* Permission matrix */
+  .perm-matrix { background: var(--bg-card); border: 1px solid var(--border); padding: 16px 18px; margin-bottom: 18px; overflow-x: auto; }
+  .perm-matrix h4 { font-family: 'JetBrains Mono', monospace; font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .pm-table { width: 100%; border-collapse: collapse; font-size: 12px; min-width: 400px; }
+  .pm-table th { text-align: left; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--muted); font-weight: 500; padding: 6px 8px; border-bottom: 1px solid var(--border); white-space: nowrap; }
+  .pm-table td { padding: 6px 8px; border-bottom: 1px solid rgba(40, 40, 48, .5); color: var(--fg); transition: background .2s; }
+  .pm-table tr:last-child td { border-bottom: none; }
+  .pm-table .pm-ok { color: var(--success); font-weight: 600; }
+  .pm-table .pm-no { color: var(--danger); font-weight: 600; }
+  .pm-table .pm-na { color: var(--muted); opacity: .4; }
+  .pm-table .role-col { font-weight: 600; color: var(--accent); white-space: nowrap; }
+
+  .fb { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; font-size: 13px; font-weight: 500; border: 1px solid var(--border); background: var(--bg-card); transition: all .3s; }
+  .fb.ok { border-color: rgba(58, 158, 92, 0.4); color: var(--success); background: var(--success-soft); }
+  .fb.no { border-color: rgba(196, 56, 48, 0.3); color: var(--danger); background: var(--danger-soft); }
+  .fb.info { border-color: var(--accent-border); color: var(--accent); background: var(--accent-soft); }
+  .fb i { font-size: 11px; }
+
+  .hint { font-size: 12px; color: var(--muted); opacity: .5; margin-top: 10px; display: flex; align-items: center; gap: 6px; }
+  .hint i { font-size: 10px; color: var(--accent); }
+
 </style>
 </head>
 <body>
-<div id="app-root"><div class="entry">
-  <p class="p-goal"><span>Mục tiêu:</span> Chọn từng kiểu đăng nhập để thấy auth có thể cho vào bằng <strong>Google</strong>, bằng <strong>admin account</strong>, hoặc cho vào nhanh hơn khi còn <strong>session cũ</strong>.</p>
-  <div class="ctx-row" id="ctxRow"></div>
-  <div class="toggle-row">
-    <div class="toggle-copy"><b>Session cũ:</b> bật lên để mô phỏng người đã từng vào trước đó nên lần này auth cho đi nhanh hơn.</div>
-    <label class="toggle"><input id="sessionToggle" type="checkbox"><span class="toggle-ui"></span></label>
+<div class="entry">
+  <p class="pg">
+    <span>Mục tiêu:</span> Trải nghiệm thực tế cách hệ thống phân quyền (Authorization) vận hành. Hãy chọn một vai trò (Role) và truy cập các trang bên dưới để hiểu cách Ma trận quyền hạn quyết định khả năng tương tác của từng người dùng.
+  </p>
+
+  <div class="role-r" id="roleR">
+    <button class="role-b on" data-role="user"><i class="fa-solid fa-user"></i>User</button>
+    <button class="role-b" data-role="admin"><i class="fa-solid fa-shield-halved"></i>Admin</button>
+    <button class="role-b" data-role="guest"><i class="fa-solid fa-eye"></i>Guest</button>
   </div>
-  <div class="preview">
-    <span class="prev-label" id="prevLbl">AUTH GATE</span>
-    <div class="gate-bar"><div class="gate-open" id="gateOpen"></div></div>
-    <div class="gate-card" id="gateCard">
-      <div class="gate-eyebrow" id="gateEyebrow">guest</div>
-      <div class="gate-title" id="gateTitle">Đang đứng ở cổng đăng nhập</div>
-      <div class="gate-copy" id="gateCopy">Auth đang chờ user chọn cách đăng nhập phù hợp trước khi cho xem dữ liệu bên trong.</div>
-      <div class="gate-mini">
-        <div class="mini-row"><span>Cách đăng nhập</span><span id="miniUser">Chưa chọn</span></div>
-        <div class="mini-row"><span>Auth check</span><span id="miniRule">Chờ xác thực</span></div>
-        <div class="mini-row"><span>Kết quả</span><span id="miniResult">Waiting</span></div>
-      </div>
-    </div>
+
+  <div class="res-grid" id="resGrid"></div>
+
+  <div class="perm-matrix" id="permMatrix" style="display:none">
+    <h4>Permission Matrix (Ma trận quyền hạn)</h4>
+    <table class="pm-table" id="pmTable"></table>
   </div>
-  <div class="fb" id="fb"><i class="fa-solid fa-circle-info"></i><span>Chọn ngữ cảnh để xem auth phản ứng</span></div>
-  <p class="hint" id="hintEl"><i class="fa-solid fa-arrow-up-right"></i> Gợi ý: thử `Google Login` rồi bật `Session cũ` để thấy vì sao lần quay lại vào nhanh hơn</p>
-</div></div>
+
+  <div class="fb info" id="fb">
+    <i class="fa-solid fa-circle-info"></i>
+    <span>Vui lòng chọn một vai trò để bắt đầu kiểm tra quyền truy cập.</span>
+  </div>
+  <p class="hint" id="hintE">
+    <i class="fa-solid fa-lightbulb"></i>
+    Authentication xác nhận "bạn là ai", Authorization quyết định "bạn được làm gì". Đó là lý do cùng một trang nhưng mỗi người lại thấy một kết quả khác nhau.
+  </p>
+
+</div>
+
 <script>
-  const ctxs = [
-    { id:'google', name:'Google Login', desc:'Continue with Google', gate:84, title:'Google xác thực xong, auth mở cửa', copy:'User bấm Continue with Google, hệ thống nhận diện đúng tài khoản rồi cho vào dashboard.', rule:'Google account hợp lệ', result:'Access granted', hint:'Google login phù hợp với tool dành cho marketer vì vào nhanh và ít phải nhớ mật khẩu.', ok:true },
-    { id:'admin', name:'Admin Login', desc:'Email + mật khẩu admin', gate:72, title:'Admin account được vào khu quản trị', copy:'User nhập email admin và mật khẩu riêng để vào phần quản trị hoặc màn hình nhạy cảm hơn.', rule:'Admin credentials đúng', result:'Admin granted', hint:'Admin login hay dùng cho dashboard nội bộ hoặc trang quản trị cần kiểm soát chặt.', ok:true },
-    { id:'blocked', name:'Sai quyền', desc:'Login xong nhưng role không đúng', gate:24, title:'Đăng nhập thành công nhưng vẫn bị chặn', copy:'Auth thấy tài khoản có thật, nhưng role hoặc nhóm quyền không đúng nên vẫn không cho xem phần dữ liệu này.', rule:'Role không đạt', result:'Denied', hint:'Điểm quan trọng: login xong chưa chắc được vào, còn phải đúng quyền.', ok:false }
-  ];
-  const ctxRowEl = document.getElementById('ctxRow'), toggleEl = document.getElementById('sessionToggle'), gateOpen = document.getElementById('gateOpen'), gateCard = document.getElementById('gateCard');
-  const prevLbl = document.getElementById('prevLbl'), gateEyebrow = document.getElementById('gateEyebrow'), gateTitle = document.getElementById('gateTitle'), gateCopy = document.getElementById('gateCopy'), miniUser = document.getElementById('miniUser'), miniRule = document.getElementById('miniRule'), miniResult = document.getElementById('miniResult'), fbEl = document.getElementById('fb'), hintEl = document.getElementById('hintEl');
-  let curCtx = ctxs[0];
-  function renderCtx(){ ctxRowEl.innerHTML = ctxs.map((c,i)=>`<button class="ctx-btn${i===0?' active':''}" data-id="${c.id}">${c.name}<span class="ctx-d">${c.desc}</span></button>`).join(''); ctxRowEl.querySelectorAll('.ctx-btn').forEach((b)=>b.onclick=()=>pickCtx(b.dataset.id)); }
-  function pickCtx(id){ curCtx = ctxs.find((c)=>c.id===id); ctxRowEl.querySelectorAll('.ctx-btn').forEach((b)=>b.classList.toggle('active', b.dataset.id===id)); updateView(); }
-  function updateView(){
-    const hasSession = toggleEl.checked;
-    let gate = curCtx.gate, title = curCtx.title, copy = curCtx.copy, rule = curCtx.rule, result = curCtx.result, ok = curCtx.ok;
-    if ((curCtx.id === 'google' || curCtx.id === 'admin') && hasSession) {
-      gate = 100;
-      title = 'Có session cũ nên vào rất nhanh';
-      copy = 'Auth nhớ user từ lần trước nên bỏ qua bước login lại và cho vào dashboard gần như ngay lập tức.';
-      rule = 'Session còn hiệu lực';
-      result = 'Session OK';
-    }
-    if (curCtx.id === 'blocked' && hasSession) {
-      gate = 44;
-      title = 'Có session nhưng quyền vẫn không đủ';
-      copy = 'Session cũ giúp nhận diện nhanh hơn, nhưng nếu role sai thì auth vẫn chặn như thường.';
-      rule = 'Session có, role sai';
-      result = 'Still denied';
-    }
-    prevLbl.textContent = hasSession ? 'AUTH + SESSION' : 'AUTH GATE';
-    gateEyebrow.textContent = curCtx.id.toUpperCase();
-    gateTitle.textContent = title;
-    gateCopy.textContent = copy;
-    gateOpen.style.width = gate + '%';
-    miniUser.textContent = curCtx.name;
-    miniRule.textContent = rule;
-    miniResult.textContent = result;
-    gateCard.className = 'gate-card ' + (ok ? 'ok' : 'no');
-    fbEl.className = 'fb ' + (ok ? 'ok' : 'no');
-    fbEl.innerHTML = ok ? `<i class="fa-solid fa-check"></i><span>${hasSession ? 'Có session cũ nên lần này auth cho vào nhanh hơn' : 'Cách đăng nhập này đang mở đúng người vào tool'}</span>` : `<i class="fa-solid fa-xmark"></i><span>Auth vẫn giữ dữ liệu lại vì quyền của tài khoản này chưa đúng</span>`;
-    hintEl.innerHTML = `<i class="fa-solid fa-arrow-up-right"></i> ${curCtx.hint}`;
+const resources = [
+  { id:'dashboard', name:'Dashboard', desc:'Trang chính', icon:'fa-solid fa-gauge' },
+  { id:'profile', name:'Profile', desc:'Thông tin cá nhân', icon:'fa-solid fa-user' },
+  { id:'analytics', name:'Analytics', desc:'Dữ liệu phân tích', icon:'fa-solid fa-chart-line' },
+  { id:'settings', name:'Settings', desc:'Cài đặt hệ thống', icon:'fa-solid fa-gear' },
+  { id:'users', name:'User Mgmt', desc:'Quản lý user', icon:'fa-solid fa-users-gear' },
+  { id:'apikeys', name:'API Keys', desc:'Khóa API', icon:'fa-solid fa-key' }
+];
+
+const permissions = {
+  user:  { dashboard:true, profile:true, analytics:true, settings:false, users:false, apikeys:false },
+  admin: { dashboard:true, profile:true, analytics:true, settings:true,  users:true,  apikeys:true },
+  guest: { dashboard:false, profile:false, analytics:false, settings:false, users:false, apikeys:false }
+};
+
+let curRole = 'user';
+let checkedRes = {};
+
+function renderResGrid() {
+  const grid = document.getElementById('resGrid');
+  grid.innerHTML = resources.map(r => {
+    const state = checkedRes[r.id];
+    const cls = state === true ? 'granted' : state === false ? 'denied' : '';
+    const result = state === true ? 'GRANTED' : state === false ? 'DENIED' : '';
+    const resultIcon = state === true ? 'fa-check' : state === false ? 'fa-xmark' : '';
+    return `<div class="res-card ${cls}" data-id="${r.id}" tabindex="0" role="button" aria-label="${r.name}">
+      <div class="rc-result"><i class="fa-solid ${resultIcon}"></i> ${result}</div>
+      <div class="rc-icon"><i class="${r.icon}"></i></div>
+      <div class="rc-name">${r.name}</div>
+      <div class="rc-desc">${r.desc}</div>
+    </div>`;
+  }).join('');
+
+  grid.querySelectorAll('.res-card').forEach(c => {
+    const handler = () => checkResource(c.dataset.id);
+    c.addEventListener('click', handler);
+    c.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handler(); } });
+  });
+}
+
+function checkResource(id) {
+  const granted = permissions[curRole][id];
+  checkedRes[id] = granted;
+  renderResGrid();
+  updateFB();
+  updateMatrix();
+}
+
+function updateFB() {
+  const fb = document.getElementById('fb');
+  const count = Object.keys(checkedRes).length;
+  if (count === 0) {
+    fb.className = 'fb info';
+    fb.innerHTML = `<i class="fa-solid fa-circle-info"></i><span>Chọn role rồi nhấn vào từng trang</span>`;
+    return;
   }
-  toggleEl.addEventListener('change', updateView);
-  renderCtx();
-  pickCtx('google');
+  const granted = Object.values(checkedRes).filter(v => v).length;
+  const denied = count - granted;
+  if (denied === 0) {
+    fb.className = 'fb ok';
+    fb.innerHTML = `<i class="fa-solid fa-check"></i><span>Role "${curRole}" được truy cập tất cả ${count} trang đã kiểm tra</span>`;
+  } else {
+    fb.className = 'fb no';
+    fb.innerHTML = `<i class="fa-solid fa-xmark"></i><span>${denied}/${count} trang bị chặn — role "${curRole}" không đủ quyền</span>`;
+  }
+}
+
+function updateMatrix() {
+  const matrix = document.getElementById('permMatrix');
+  const table = document.getElementById('pmTable');
+  const checked = Object.keys(checkedRes);
+
+  if (checked.length === 0) { matrix.style.display = 'none'; return; }
+  matrix.style.display = 'block';
+
+  const roleLabel = { user:'User', admin:'Admin', guest:'Guest' };
+  const allRoles = ['user','admin','guest'];
+
+  table.innerHTML = `<thead><tr>
+    <th>Resource</th>
+    ${allRoles.map(r => `<th class="${r === curRole ? 'role-col' : ''}">${roleLabel[r]}${r === curRole ? ' (bạn)' : ''}</th>`).join('')}
+  </tr></thead><tbody>
+    ${checked.map(id => {
+      const res = resources.find(r => r.id === id);
+      return `<tr>
+        <td>${res.name}</td>
+        ${allRoles.map(r => {
+          const ok = permissions[r][id];
+          const isCur = r === curRole;
+          if (!ok) return `<td class="${isCur ? 'pm-no' : 'pm-na'}">${isCur ? 'DENIED' : '—'}</td>`;
+          return `<td class="${isCur ? 'pm-ok' : ''}">${isCur ? 'GRANTED' : 'OK'}</td>`;
+        }).join('')}
+      </tr>`;
+    }).join('')}
+  </tbody>`;
+}
+
+document.getElementById('roleR').addEventListener('click', e => {
+  const btn = e.target.closest('.role-b');
+  if (!btn) return;
+  curRole = btn.dataset.role;
+  checkedRes = {};
+  document.querySelectorAll('.role-b').forEach(b => {
+    b.classList.toggle('on', b.dataset.role === curRole);
+  });
+  renderResGrid();
+  updateFB();
+  updateMatrix();
+});
+
+function init() {
+  renderResGrid();
+}
+init();
 </script>
 </body>
 </html>
