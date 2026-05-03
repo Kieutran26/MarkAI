@@ -32,6 +32,8 @@ import componentDemoHtml from '../../gif-component-demo.html?raw';
 import componentPracticeHtml from '../../gif-component-practice.html?raw';
 import deployDemoHtml from '../../gif-deploy-demo.html?raw';
 import deployPracticeHtml from '../../gif-deploy-practice.html?raw';
+import navbarDemoHtml from '../../gif-navbar-demo.html?raw';
+import navbarPracticeHtml from '../../gif-navbar-practice.html?raw';
 
 
 export default function GlossaryTermDetailPage() {
@@ -64,6 +66,7 @@ export default function GlossaryTermDetailPage() {
     if (id === 'database') return databaseDemoHtml;
     if (id === 'component') return componentDemoHtml;
     if (id === 'deploy') return deployDemoHtml;
+    if (id === 'navbar') return navbarDemoHtml;
     return null;
   };
 
@@ -79,6 +82,7 @@ export default function GlossaryTermDetailPage() {
     if (id === 'database') return databasePracticeHtml;
     if (id === 'component') return componentPracticeHtml;
     if (id === 'deploy') return deployPracticeHtml;
+    if (id === 'navbar') return navbarPracticeHtml;
     return null;
   };
 
