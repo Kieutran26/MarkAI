@@ -46,6 +46,8 @@ import dropdownDemoHtml from '../../gif-dropdown-demo.html?raw';
 import dropdownPracticeHtml from '../../gif-dropdown-practice.html?raw';
 import elementDemoHtml from '../../gif-element-demo.html?raw';
 import elementPracticeHtml from '../../gif-element-practice.html?raw';
+import footerDemoHtml from '../../gif-footer-demo.html?raw';
+import footerPracticeHtml from '../../gif-footer-practice.html?raw';
 
 
 export default function GlossaryTermDetailPage() {
@@ -85,6 +87,7 @@ export default function GlossaryTermDetailPage() {
     if (id === 'slider') return sliderDemoHtml;
     if (id === 'dropdown') return dropdownDemoHtml;
     if (id === 'element') return elementDemoHtml;
+    if (id === 'footer') return footerDemoHtml;
     return null;
   };
 
@@ -107,6 +110,7 @@ export default function GlossaryTermDetailPage() {
     if (id === 'slider') return sliderPracticeHtml;
     if (id === 'dropdown') return dropdownPracticeHtml;
     if (id === 'element') return elementPracticeHtml;
+    if (id === 'footer') return footerPracticeHtml;
     return null;
   };
 

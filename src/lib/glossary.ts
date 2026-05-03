@@ -45,6 +45,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'environment', name: 'Environment', nameEn: 'Môi trường chạy', letter: 'E', groups: ['infra'], definition: 'Ngữ cảnh code đang chạy — máy của bạn (local/dev), server test (staging), hoặc bản thật (production). Mỗi environment có config và database riêng.', example: '"localhost:3000" = local environment. "yourapp.vercel.app" = production environment. Test kỹ ở local trước khi deploy.', related: ['env', 'localhost'] },
   { id: 'env', name: '.env', nameEn: 'Environment Variables', letter: 'E', groups: ['infra'], definition: 'File chứa các biến bí mật — API key, password database, token. Không bao giờ upload file này lên GitHub. Vercel cho phép set env variables trong dashboard.', example: '"NEXT_PUBLIC_SUPABASE_KEY=xxx" trong file .env — đây là API key để connect với Supabase.' },
   { id: 'frontend', name: 'Frontend', nameEn: 'Phần giao diện người dùng', letter: 'F', groups: ['design', 'code'], definition: 'Tất cả những gì người dùng nhìn thấy và tương tác — buttons, form, layout, màu sắc, animation. HTML + CSS + JavaScript là frontend.', example: '"Tôi muốn thêm một section FAQ với accordion expand/collapse" — đây là frontend task, AI dùng Cursor để viết component này.', related: ['backend', 'component'], demo: { kind: 'interactive', src: 'gif-frontend-demo.html', alt: 'Mô phỏng 4 loại frontend: Static, Dynamic, Components, Responsive' } },
+  { id: 'footer', name: 'Footer', nameEn: 'Chân trang', letter: 'F', groups: ['design', 'code'], definition: 'Phần cuối trang web — thường chứa thông tin liên hệ, logo, các liên kết phụ (sitemap), newsletter và bản quyền. Footer là component mang tính hệ thống, giúp người dùng không bao giờ rơi vào "ngõ cụt" khi kéo xuống hết trang.', example: 'Footer của markAI chứa logo, link tới các bài blog, fanpage và thông tin công ty. Chỉ cần sửa component Footer, toàn bộ các trang trên web sẽ được cập nhật phần cuối đồng loạt.', related: ['component', 'navbar', 'interface'], demo: { kind: 'interactive', src: 'gif-footer-demo.html', alt: 'Mô phỏng các loại Footer phổ biến và cấu trúc từng phần' } },
   { id: 'flexbox', name: 'Flexbox', nameEn: 'Hệ thống layout 1 chiều', letter: 'F', groups: ['design', 'code'], definition: 'Cách sắp xếp elements theo hàng ngang hoặc cột dọc. Khi bạn muốn "3 cái card nằm ngang và cách nhau đều" — đó là flexbox.', example: 'Prompt: "Icon và text nằm trên cùng một hàng, icon bên trái, khoảng cách 8px." → AI dùng flexbox.', related: ['grid', 'padding'] },
   { id: 'framework', name: 'Framework', nameEn: 'Khung làm việc', letter: 'F', groups: ['infra', 'code'], definition: 'Bộ khung có sẵn giúp bạn không phải xây từ đầu. Next.js là framework cho web — nó đã lo routing, SEO, performance. Bạn chỉ cần tập trung vào logic và giao diện.', example: 'markAI.vn dùng Next.js framework + Tailwind CSS framework. Hai thứ này cùng nhau giúp vibecoder build web chuyên nghiệp.' },
   { id: 'function', name: 'Function', nameEn: 'Hàm / Khối code tái dùng', letter: 'F', groups: ['code'], definition: 'Một khối code làm một việc cụ thể, có thể gọi đi gọi lại. Giống như quy trình SOP — viết một lần, áp dụng nhiều lần.', example: '"Hàm formatDate() nhận ngày tháng và trả về dạng \'DD/MM/YYYY\'" — gọi function này ở bất kỳ đâu trong app.' },
@@ -135,6 +136,7 @@ const deepDiveTermIds = new Set([
   'dropdown',
   'element',
   'env',
+  'footer',
   'frontend',
   'json',
   'margin',
@@ -256,6 +258,10 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Dropdown không chỉ là "cái hộp bấm ra list" — nó là một input quan trọng trong form, có value thật và state thật (mở/đóng, đã chọn/chưa chọn).',
     'Khi mô tả yêu cầu cho AI, hãy nêu rõ: danh sách option, giá trị mặc định, và có cho phép chọn nhiều (multi-select) hay không.',
     'Chú ý trạng thái "Disabled": Dùng khi user chưa đủ điều kiện để chọn (ví dụ: chưa chọn Tỉnh thành thì chưa cho chọn Quận huyện).',
+  ],
+  footer: [
+    'Footer không phải "cái cuối trang cho có". Nó là component có cấu trúc: brand area, nav columns, newsletter capture, social links, legal bar.',
+    'Khi bạn bảo AI "làm footer" mà không chỉ định sections → nó tự đoán. Chỉ định rõ (ví dụ: "footer có 3 cột, newsletter bên phải") → ra đúng ngay, không cần rounds sửa.',
   ],
 };
 

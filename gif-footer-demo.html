@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Footer Demo — markAI</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f0f12;--bg-card:#16161b;--bg-el:#222;--border:#282830;
+  --border-active:#e88c2e;--accent:#e88c2e;
+  --accent-glow:rgba(232,140,46,.18);--accent-soft:rgba(232,140,46,.07);
+  --cream:#EDE4D8;--text:#D8D0C8;--muted:#777770;
+  --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:48px 48px;pointer-events:none;z-index:0}
+
+#app-root{position:relative;z-index:1;padding:20px 16px}
+
+/* sim grid */
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.sp{
+  border:1px solid var(--border);
+  background:var(--bg-card);
+  padding:14px 10px 12px;
+  transition:all .4s cubic-bezier(0.23, 1, 0.32, 1);
+  min-height:220px;
+  position:relative;
+  cursor:pointer;
+  display:flex;
+  flex-direction:column;
+}
+.sp:hover{border-color:rgba(232,140,46,0.3);background:rgba(255,255,255,0.02)}
+.sp.active{
+  border-color:var(--border-active);
+  background:var(--accent-soft);
+  transform:scale(1.02);
+  box-shadow:0 10px 30px -10px var(--accent-glow);
+  z-index:10;
+}
+.sp:not(.active){opacity:.5}
+.sp.active:not(:hover){opacity:1}
+
+.sh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+.sn{font-family:var(--mono);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);transition:color .4s}
+.sp.active .sn{color:var(--accent)}
+.sv{font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase}
+
+/* mini footer preview */
+.mf{border-top:1px solid var(--border);padding:8px 6px;background:var(--bg);margin-top:auto;transition:border-color .5s}
+.sp.active .mf{border-top-color:rgba(232,140,46,.3)}
+.mf-brand{font-family:var(--mono);font-size:8px;font-weight:700;color:var(--cream);letter-spacing:.05em;margin-bottom:3px}
+.mf-tag{font-size:7px;color:var(--muted);line-height:1.3;margin-bottom:6px}
+.mf-cols{display:flex;gap:6px;margin-bottom:6px}
+.mf-col{flex:1}
+.mf-col-h{font-family:var(--mono);font-size:7px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.06em;margin-bottom:3px}
+.mf-col-i{font-size:6px;color:var(--muted);line-height:1.5}
+.mf-nl{display:flex;gap:4px;margin-bottom:6px;align-items:center}
+.mf-nl-in{flex:1;height:10px;background:var(--bg-el);border:1px solid var(--border)}
+.mf-nl-btn{height:10px;width:15px;background:var(--accent);border:none;flex-shrink:0}
+.mf-soc{display:flex;gap:4px;margin-bottom:6px}
+.mf-soc-i{width:8px;height:8px;border:1px solid var(--border);background:var(--bg-el)}
+.mf-legal{display:flex;gap:6px;font-family:var(--mono);font-size:5.5px;color:var(--muted);padding-top:4px;border-top:1px solid var(--border)}
+
+.sp-desc{font-size:9px;color:var(--muted);line-height:1.35;margin-top:8px}
+
+/* insight */
+.ibar{margin-top:12px;padding:10px 13px;background:var(--bg-card);border:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.55;min-height:38px;transition:opacity .3s}
+.ibar.fading{opacity:0}
+.ibar strong{color:var(--cream);font-weight:600}
+
+.ptrack{display:flex;gap:4px;padding:10px 0 12px}
+.pseg{flex:1;height:3px;background:var(--border);transition:background .4s}
+.pseg.on{background:var(--accent)}
+
+@media(max-width:768px){ .sg{grid-template-columns:repeat(2,1fr)} }
+@media(max-width:420px){ 
+  .sg{gap:6px}
+  .sp{min-height:180px}
+}
+</style>
+</head>
+<body>
+<div id="app-root">
+    <div class="sg" id="sg"></div>
+    <div class="ibar" id="ibar"></div>
+    <div class="ptrack" id="ptrack"></div>
+</div>
+
+<script>
+var D=[
+  {name:'SIMPLE',sub:'brand + social',
+   html:'<div class="mf"><div class="mf-brand">BRAND</div><div class="mf-tag">Infrastructure for teams.</div><div class="mf-soc"><div class="mf-soc-i"></div><div class="mf-soc-i"></div><div class="mf-soc-i"></div></div><div class="mf-legal"><span>&copy; 2025</span><span>Privacy</span><span>Terms</span></div></div>',
+   desc:'Tối giản — landing page, portfolio.',
+   ins:'<strong>Footer đơn giản nhất = brand + social + legal.</strong> Dùng khi không cần điều hướng thêm. Phù hợp Landing page, portfolio.'},
+  {name:'MULTI-COLUMN',sub:'3 cột nav',
+   html:'<div class="mf"><div class="mf-brand">BRAND</div><div class="mf-cols"><div class="mf-col"><div class="mf-col-h">Prod</div><div class="mf-col-i">Features<br>Pricing</div></div><div class="mf-col"><div class="mf-col-h">Co</div><div class="mf-col-i">About<br>Blog</div></div><div class="mf-col"><div class="mf-col-h">Res</div><div class="mf-col-i">Docs<br>Help</div></div></div><div class="mf-legal"><span>&copy; 2025</span><span>Privacy</span><span>Terms</span></div></div>',
+   desc:'Phổ biến nhất cho SaaS, product site.',
+   ins:'<strong>Thêm nav columns = thêm lối đi cho user.</strong> Products, Company, Resources — giúp user tìm kiếm thông tin nhanh hơn.'},
+  {name:'WITH NEWSLETTER',sub:'capture lead',
+   html:'<div class="mf"><div class="mf-brand">BRAND</div><div class="mf-cols"><div class="mf-col"><div class="mf-col-h">Prod</div><div class="mf-col-i">Features<br>Pricing</div></div><div class="mf-col"><div class="mf-col-h">Co</div><div class="mf-col-i">About<br>Blog</div></div></div><div class="mf-nl"><div class="mf-nl-in"></div><div class="mf-nl-btn"></div></div><div class="mf-legal"><span>&copy; 2025</span><span>Privacy</span><span>Terms</span></div></div>',
+   desc:'Footer giờ có nhiệm vụ marketing.',
+   ins:'<strong>Newsletter = capture lead ngay cuối trang.</strong> Input + CTA thu email hiệu quả ở nơi người dùng ít kỳ vọng nhất.'},
+  {name:'MINIMAL',sub:'legal only',
+   html:'<div class="mf"><div class="mf-legal" style="justify-content:space-between"><span>&copy; 2025 Brand. All rights reserved.</span><span>Privacy</span><span>Terms</span></div></div>',
+   desc:'App, tool, dashboard — sạch sẽ.',
+   ins:'<strong>Footer tối thiểu = chỉ legal.</strong> Dùng cho logged-in app, dashboard. User đã ở trong product — không cần nav thêm.'}
+];
+
+var sg=document.getElementById('sg');
+D.forEach(function(d,i){
+  var p=document.createElement('div');
+  p.className='sp';p.dataset.i=i;
+  p.innerHTML='<div class="sh"><span class="sn">0'+(i+1)+' '+d.name+'</span><span class="sv">'+d.sub+'</span></div>'+d.html+'<p class="sp-desc">'+d.desc+'</p>';
+  sg.appendChild(p);
+});
+
+var pt=document.getElementById('ptrack');
+for(var i=0;i<4;i++){var seg=document.createElement('div');seg.className='pseg';pt.appendChild(seg)}
+
+var cur=0,timer=null;
+var ibar=document.getElementById('ibar');
+var panels=sg.querySelectorAll('.sp');
+var segs=pt.querySelectorAll('.pseg');
+
+function setAct(idx){
+  cur=idx;
+  for(var i=0;i<panels.length;i++){
+    panels[i].classList.toggle('active',i===idx);
+    segs[i].classList.toggle('on',i<=idx);
+  }
+  ibar.classList.add('fading');
+  setTimeout(function(){ibar.innerHTML=D[idx].ins;ibar.classList.remove('fading')},280);
+}
+
+function startLoop(){
+  if(timer) clearInterval(timer);
+  timer=setInterval(function(){setAct((cur+1)%4)},4000);
+}
+function stopLoop(){
+  clearInterval(timer);
+  timer=null;
+}
+
+panels.forEach(function(p, i){
+  p.onclick=function(){
+    setAct(i);
+    stopLoop();
+  };
+});
+
+setAct(0);
+startLoop();
+</script>
+</body>
+</html>
