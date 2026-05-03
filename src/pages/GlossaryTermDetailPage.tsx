@@ -52,6 +52,8 @@ import toggleDemoHtml from '../../gif-toggle-demo.html?raw';
 import togglePracticeHtml from '../../gif-toggle-practice.html?raw';
 import sidebarDemoHtml from '../../gif-sidebar-demo.html?raw';
 import sidebarPracticeHtml from '../../gif-sidebar-practice.html?raw';
+import accordionDemoHtml from '../../gif-accordion-demo.html?raw';
+import accordionPracticeHtml from '../../gif-accordion-practice.html?raw';
 
 
 export default function GlossaryTermDetailPage() {
@@ -94,6 +96,7 @@ export default function GlossaryTermDetailPage() {
     if (id === 'footer') return footerDemoHtml;
     if (id === 'toggle') return toggleDemoHtml;
     if (id === 'sidebar') return sidebarDemoHtml;
+    if (id === 'accordion') return accordionDemoHtml;
     return null;
   };
 
@@ -119,6 +122,7 @@ export default function GlossaryTermDetailPage() {
     if (id === 'footer') return footerPracticeHtml;
     if (id === 'toggle') return togglePracticeHtml;
     if (id === 'sidebar') return sidebarPracticeHtml;
+    if (id === 'accordion') return accordionPracticeHtml;
     return null;
   };
 

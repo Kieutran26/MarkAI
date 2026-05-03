@@ -97,6 +97,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'element', name: 'Element', nameEn: 'Thành phần giao diện', letter: 'E', groups: ['design', 'code'], definition: 'Đơn vị nhỏ nhất có thể nhận dạng trong giao diện người dùng — như nút bấm, ô nhập liệu, tiêu đề, hay ảnh. Một UI phức tạp là sự kết hợp của nhiều element được sắp xếp theo cấu trúc nhất định.', example: 'Prompt: "Thêm một element Input vào form này, bên dưới element Heading và bên trên element Button để user nhập mã giảm giá."', related: ['component', 'ui', 'interface', 'radius'], demo: { kind: 'interactive', src: 'gif-element-demo.html', alt: 'Mô phỏng các loại element phổ biến: Text, Button, Input, Other' } },
   { id: 'toggle', name: 'Toggle', nameEn: 'Nút bật/tắt / Switch', letter: 'T', groups: ['design', 'code'], definition: 'Một điều khiển giao diện có hai trạng thái đối lập: Bật (On/True) hoặc Tắt (Off/False). Toggle giúp thay đổi thiết lập ngay lập tức mà không cần qua các bước xác nhận phức tạp. Nó phản ánh trực tiếp logic nhị phân (Boolean) trong lập trình.', example: 'Nút bật/tắt "Chế độ tối", "Thông báo đẩy", hoặc "Chế độ bảo trì". Khi gạt sang phải là True, gạt sang trái là False.', related: ['boolean', 'state', 'interface', 'element'], demo: { kind: 'interactive', src: 'gif-toggle-demo.html', alt: 'Mô phỏng 4 trạng thái của toggle: Off, On, Disabled và Focus' } },
   { id: 'sidebar', name: 'Sidebar', nameEn: 'Thanh bên / Navigation Rail', letter: 'S', groups: ['design', 'code'], definition: 'Thanh điều hướng hoặc chứa thông tin bổ sung nằm ở cạnh trái hoặc phải của trang web. Sidebar giúp tận dụng chiều ngang của màn hình desktop để giữ các chức năng quan trọng luôn trong tầm tay mà không chiếm dụng không gian phía trên như Navbar.', example: 'Dashboard của các tool SaaS thường có sidebar bên trái để chuyển giữa các tính năng. Prompt: "Thêm một collapsible sidebar bên trái chứa các mục: Dashboard, Reports, Settings."', related: ['navbar', 'interface', 'layout'], demo: { kind: 'interactive', src: 'gif-sidebar-demo.html', alt: 'Mô phỏng các loại sidebar: Static, Collapsible, Overlay và Right' } },
+  { id: 'accordion', name: 'Accordion', nameEn: 'Danh sách mở rộng / Thu gọn', letter: 'A', groups: ['design', 'code'], definition: 'Một thành phần giao diện cho phép ẩn/hiện nội dung chi tiết bằng cách nhấp vào tiêu đề. Accordion giúp tối ưu hóa không gian hiển thị, đặc biệt hữu ích cho các trang FAQ, cấu hình cài đặt hoặc các khối thông tin dài cần phân loại.', example: 'Prompt: "Làm một accordion cho phần Câu hỏi thường gặp, mặc định đóng hết, khi mở cái này thì cái kia tự đóng để tiết kiệm diện tích."', related: ['component', 'interface', 'element', 'card'], demo: { kind: 'interactive', src: 'gif-accordion-demo.html', alt: 'Mô phỏng các loại accordion: Single Open, Multiple Open, With Icons và In Card' } },
 ];
 
 export const quickRefItems = [
@@ -126,6 +127,7 @@ export const totalGroupCounts = (['code', 'design', 'infra', 'data', 'ai', 'work
 const deepDiveTermIds = new Set([
   'api',
   'auth',
+  'accordion',
   'async',
   'backend',
   'border',
@@ -168,6 +170,11 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
   auth: [
     'Auth không chỉ là nút đăng nhập. Nó còn quyết định ai được vào, vào bằng cách nào, và sau khi vào thì được thấy phần gì.',
     'Với tool nội bộ, rule phổ biến là chỉ cho email công ty truy cập. Với sản phẩm public thì còn có session, logout, và reset mật khẩu.',
+  ],
+  accordion: [
+    'Accordion là giải pháp tuyệt vời để quản lý nội dung dài mà không làm người dùng bị choáng ngợp (information overload).',
+    'Hai chế độ quan trọng: Single Open (chỉ mở 1 cái) giúp tập trung, và Multiple Open (mở nhiều cái) giúp so sánh dữ liệu dễ hơn.',
+    'Khi prompt AI, hãy nói rõ bạn muốn Single hay Multiple Open để AI viết đúng logic xử lý state ngay từ đầu.',
   ],
   border: [
     'Border là đường viền của element. Thiếu style (ví dụ style="none") thì border sẽ biến mất hoàn toàn dù bạn có set width và color.',

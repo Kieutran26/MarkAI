@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accordion Practice — markAI</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f0f12;--bg-card:#16161b;--bg-el:#222;--border:#282830;
+  --border-active:#e88c2e;--accent:#e88c2e;
+  --accent-glow:rgba(232,140,46,.18);--accent-soft:rgba(232,140,46,.07);
+  --cream:#EDE4D8;--text:#D8D0C8;--muted:#777770;
+  --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:48px 48px;pointer-events:none;z-index:0}
+
+#app-root{position:relative;z-index:1;padding:24px 16px}
+
+.pg{font-size:14px;color:var(--text);line-height:1.6;margin-bottom:20px}
+.pg span{color:var(--accent);font-weight:700}
+
+/* mode toggle */
+.mode-row{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+.mode-btn{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--muted);background:var(--bg-card);border:1px solid var(--border);padding:8px 14px;cursor:pointer;transition:all .2s}
+.mode-btn:hover,.mode-btn.on{color:var(--cream);border-color:var(--accent);background:var(--accent-soft)}
+
+.tog-row{display:flex;align-items:center;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+.tog{display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
+.tog-track{width:36px;height:20px;background:var(--border);position:relative;transition:background .25s;flex-shrink:0}
+.tog-track.on{background:var(--accent)}
+.tog-knob{position:absolute;top:2px;left:2px;width:16px;height:16px;background:var(--cream);transition:left .25s}
+.tog-track.on .tog-knob{left:18px}
+.tog-lbl{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;transition:color .25s}
+.tog-track.on~.tog-lbl{color:var(--accent)}
+
+/* practice accordion */
+.pa-wrap{border:1px solid var(--border);background:var(--bg);margin-bottom:20px;overflow:hidden;transition:border-color .3s}
+.pa-wrap.card-mode{border-width:2px;border-color:rgba(232,140,46,0.3)}
+.pa-card-hd{padding:12px 16px;border-bottom:1px solid var(--border);background:var(--bg-el);display:none;align-items:center;gap:8px}
+.pa-card-hd.show{display:flex}
+.pa-card-dot{width:7px;height:7px;background:var(--accent)}
+.pa-card-title{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--cream);text-transform:uppercase;letter-spacing:.06em}
+
+.pa-item{border-bottom:1px solid var(--border);transition:border-color .2s}
+.pa-item:last-child{border-bottom:none}
+.pa-item:hover{border-color:#444}
+.pa-hd{display:flex;align-items:center;padding:14px 16px;gap:12px;cursor:pointer;user-select:none;transition:background .15s}
+.pa-hd:hover{background:var(--accent-soft)}
+.pa-hd-ico{width:20px;height:20px;border:1px solid var(--border);display:none;align-items:center;justify-content:center;font-family:var(--mono);font-size:9px;color:var(--muted);flex-shrink:0;transition:all .2s}
+.pa-hd-ico.show{display:flex}
+.pa-item.open-item .pa-hd-ico{border-color:var(--accent);color:var(--accent)}
+.pa-hd-text{flex:1;font-size:13px;font-weight:600;color:var(--cream);transition:color .2s}
+.pa-item.open-item .pa-hd-text{color:var(--accent)}
+.pa-hd-arr{width:10px;height:10px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(-45deg);transition:transform .3s ease,color .3s;flex-shrink:0}
+.pa-item.open-item .pa-hd-arr{transform:rotate(45deg);color:var(--accent)}
+.pa-bd{max-height:0;overflow:hidden;transition:max-height .35s ease}
+.pa-item.open-item .pa-bd{max-height:120px}
+.pa-bd-inner{padding:0 16px 14px 48px;font-size:12px;color:var(--muted);line-height:1.6}
+.pa-bd-inner span{color:var(--cream);font-weight:600}
+
+/* state info */
+.state-bar{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap}
+.state-chip{font-family:var(--mono);font-size:9px;padding:6px 12px;border:1px solid var(--border);background:var(--bg-card);display:flex;align-items:center;gap:8px}
+.state-chip-k{color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.state-chip-v{color:var(--cream);font-weight:600}
+.state-chip-v.ac{color:var(--accent)}
+
+/* prompt */
+.p-prompt{border:1px solid var(--border);background:var(--bg-card);padding:14px 16px;display:flex;align-items:flex-start;gap:12px}
+.p-prompt-lbl{font-family:var(--mono);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);background:var(--accent-soft);border:1px solid rgba(232,140,46,0.3);padding:4px 10px;white-space:nowrap;flex-shrink:0;margin-top:1px}
+.p-prompt-txt{font-family:var(--mono);font-size:12px;color:var(--cream);line-height:1.5;transition:opacity .25s}
+.p-prompt-txt.fading{opacity:0}
+
+@media(max-width:480px){
+  .pa-hd{padding:12px;gap:8px}
+  .pa-bd-inner{padding:0 12px 12px 36px}
+}
+</style>
+</head>
+<body>
+<div id="app-root">
+    <p class="pg"><span>Mục tiêu:</span> Click từng item — cảm nhận khác biệt giữa single open và multiple open.</p>
+
+    <div class="mode-row" id="modeRow">
+      <button class="mode-btn on" data-mode="single">Single Open</button>
+      <button class="mode-btn" data-mode="multiple">Multiple Open</button>
+    </div>
+
+    <div class="tog-row">
+      <div class="tog" id="togIcons">
+        <div class="tog-track"><div class="tog-knob"></div></div>
+        <span class="tog-lbl">With Icons</span>
+      </div>
+      <div class="tog" id="togCard">
+        <div class="tog-track"><div class="tog-knob"></div></div>
+        <span class="tog-lbl">Inside Card</span>
+      </div>
+    </div>
+
+    <div class="state-bar" id="stateBar"></div>
+
+    <div class="pa-wrap" id="paWrap">
+      <div class="pa-card-hd" id="paCardHd">
+        <div class="pa-card-dot"></div>
+        <span class="pa-card-title">Frequently Asked Questions</span>
+      </div>
+      <div id="paItems"></div>
+    </div>
+
+    <div class="p-prompt">
+      <span class="p-prompt-lbl">Prompt</span>
+      <span class="p-prompt-txt" id="pPrompt">single open accordion, FAQ, 4 items</span>
+    </div>
+</div>
+
+<script>
+var items=[
+  {q:'Chính sách đổi trả?',a:'Đổi trong 30 ngày, miễn phí.',ico:'?'},
+  {q:'Phương thức thanh toán?',a:'Visa, Mastercard, MoMo, COD.',ico:'$'},
+  {q:'Thời gian giao hàng?',a:'1-3 ngày nội thành, 3-7 ngày ngoại tỉnh.',ico:'!'},
+  {q:'Làm sao liên hệ hỗ trợ?',a:'Hotline 1900-xxxx hoặc email support@brand.com.',ico:'@'}
+];
+
+var mode='single';
+var withIcons=false;
+var inCard=false;
+var openItems={};
+
+var paItems=document.getElementById('paItems');
+var paWrap=document.getElementById('paWrap');
+var paCardHd=document.getElementById('paCardHd');
+var stateBar=document.getElementById('stateBar');
+var pPrompt=document.getElementById('pPrompt');
+
+function buildItems(){
+  paItems.innerHTML='';
+  items.forEach(function(item,i){
+    var div=document.createElement('div');
+    div.className='pa-item';
+    div.dataset.i=i;
+    if(openItems[i]) div.classList.add('open-item');
+    div.innerHTML=
+      '<div class="pa-hd">'+
+        '<div class="pa-hd-ico'+(withIcons?' show':'')+'">'+item.ico+'</div>'+
+        '<span class="pa-hd-text">'+item.q+'</span>'+
+        '<div class="pa-hd-arr"></div>'+
+      '</div>'+
+      '<div class="pa-bd">'+
+        '<div class="pa-bd-inner">'+item.a+'</div>'+
+      '</div>';
+    div.querySelector('.pa-hd').addEventListener('click',function(){toggleItem(i)});
+    paItems.appendChild(div);
+  });
+}
+
+function toggleItem(idx){
+  if(mode==='single'){
+    var isCurrentlyOpen = !!openItems[idx];
+    openItems={};
+    if(!isCurrentlyOpen) openItems[idx]=true;
+  }else{
+    openItems[idx]=!openItems[idx];
+  }
+  var allItems=paItems.querySelectorAll('.pa-item');
+  allItems.forEach(function(el){
+    var i=parseInt(el.dataset.i);
+    el.classList.toggle('open-item',!!openItems[i]);
+  });
+  updState();
+}
+
+function updState(){
+  var openCount=Object.keys(openItems).filter(function(k){return openItems[k]}).length;
+  var modeLabel=mode==='single'?'Single Open':'Multiple Open';
+
+  stateBar.innerHTML=
+    '<div class="state-chip"><span class="state-chip-k">Mode</span><span class="state-chip-v ac">'+modeLabel+'</span></div>'+
+    '<div class="state-chip"><span class="state-chip-k">Open</span><span class="state-chip-v">'+openCount+' / '+items.length+'</span></div>'+
+    '<div class="state-chip"><span class="state-chip-k">Icons</span><span class="state-chip-v">'+(withIcons?'On':'Off')+'</span></div>'+
+    '<div class="state-chip"><span class="state-chip-k">Card</span><span class="state-chip-v">'+(inCard?'On':'Off')+'</span></div>';
+
+  var txt=modeLabel.toLowerCase()+' accordion';
+  if(withIcons) txt+=', with icons';
+  if(inCard) txt+=', inside card';
+  txt+=', '+items.length+' items';
+  pPrompt.classList.add('fading');
+  setTimeout(function(){pPrompt.textContent=txt;pPrompt.classList.remove('fading')},200);
+}
+
+document.getElementById('modeRow').addEventListener('click',function(e){
+  var btn=e.target.closest('.mode-btn');
+  if(!btn)return;
+  document.querySelectorAll('.mode-btn').forEach(function(b){b.classList.remove('on')});
+  btn.classList.add('on');
+  mode=btn.dataset.mode;
+  openItems={};
+  buildItems();
+  updState();
+});
+
+document.getElementById('togIcons').addEventListener('click',function(){
+  withIcons=!withIcons;
+  this.querySelector('.tog-track').classList.toggle('on',withIcons);
+  this.querySelector('.tog-lbl').style.color=withIcons?'var(--accent)':'';
+  buildItems();
+  updState();
+});
+
+document.getElementById('togCard').addEventListener('click',function(){
+  inCard=!inCard;
+  this.querySelector('.tog-track').classList.toggle('on',inCard);
+  this.querySelector('.tog-lbl').style.color=inCard?'var(--accent)':'';
+  paCardHd.classList.toggle('show',inCard);
+  paWrap.classList.toggle('card-mode',inCard);
+  updState();
+});
+
+buildItems();
+updState();
+</script>
+</body>
+</html>

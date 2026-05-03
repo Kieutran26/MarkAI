@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Accordion Demo — markAI</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f0f12;--bg-card:#16161b;--bg-el:#222;--border:#282830;
+  --border-active:#e88c2e;--accent:#e88c2e;
+  --accent-glow:rgba(232,140,46,.18);--accent-soft:rgba(232,140,46,.07);
+  --cream:#EDE4D8;--text:#D8D0C8;--muted:#777770;
+  --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:48px 48px;pointer-events:none;z-index:0}
+
+#app-root{position:relative;z-index:1;padding:20px 16px}
+
+/* sim grid */
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.sp{
+  border:1px solid var(--border);
+  background:var(--bg-card);
+  padding:14px 10px 12px;
+  transition:all .4s cubic-bezier(0.23, 1, 0.32, 1);
+  min-height:220px;
+  position:relative;
+  cursor:pointer;
+}
+.sp:hover{border-color:rgba(232,140,46,0.3);background:rgba(255,255,255,0.02)}
+.sp.active{
+  border-color:var(--border-active);
+  background:var(--accent-soft);
+  transform:scale(1.02);
+  box-shadow:0 10px 30px -10px var(--accent-glow);
+  z-index:10;
+}
+.sp:not(.active){opacity:.4}
+.sp.active:not(:hover){opacity:1}
+
+.sh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+.sn{font-family:var(--mono);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);transition:color .4s}
+.sp.active .sn{color:var(--accent)}
+.ssub{font-family:var(--mono);font-size:8px;color:var(--muted);text-transform:uppercase}
+
+/* mini accordion item */
+.mai{border:1px solid var(--border);margin-bottom:3px;transition:border-color .5s,background .5s}
+.sp.active .mai{border-color:rgba(232,140,46,.2)}
+.mai-hd{display:flex;align-items:center;justify-content:space-between;padding:4px 6px;gap:4px;min-height:14px}
+.mai-t{font-family:var(--mono);font-size:6px;font-weight:600;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:color .4s}
+.mai-ico{flex-shrink:0;display:flex;align-items:center;gap:3px}
+.mai-ico-i{width:8px;height:8px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:5px;color:var(--muted);transition:all .4s}
+.sp.active .mai-ico-i.on-i{border-color:var(--accent);color:var(--accent)}
+.mai-arr{width:6px;height:6px;border-right:1.5px solid var(--muted);border-bottom:1.5px solid var(--muted);transform:rotate(-45deg);transition:transform .4s,color .4s;flex-shrink:0}
+.mai-arr.open{transform:rotate(45deg);color:var(--accent)}
+.mai-bd{overflow:hidden;transition:max-height .5s ease;max-height:0}
+.mai-bd.open{max-height:40px}
+.mai-bd-inner{padding:3px 6px;font-size:5px;color:var(--muted);line-height:1.4;border-top:1px solid var(--border)}
+
+/* mini card wrapper */
+.mcard{border:1px solid var(--border);padding:4px;margin-bottom:4px;transition:border-color .5s}
+.sp.active .mcard{border-color:rgba(232,140,46,.25)}
+
+.sspec{display:flex;flex-direction:column;gap:2px;margin-top:8px;border-top:1px solid var(--border);padding-top:8px}
+.ssr{display:flex;justify-content:space-between;font-family:var(--mono);font-size:7px}
+.ssk{color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+.ssv{font-weight:600;color:var(--cream)}
+.ssv.ac{color:var(--accent)}
+
+/* insight */
+.ibar{margin-top:12px;padding:10px 13px;background:var(--bg-card);border:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.55;min-height:38px;transition:opacity .3s}
+.ibar.fading{opacity:0}
+.ibar strong{color:var(--cream);font-weight:600}
+
+.ptrack{display:flex;gap:4px;padding:10px 0 12px}
+.pseg{flex:1;height:3px;background:var(--border);transition:background .4s}
+.pseg.on{background:var(--accent)}
+
+@media(max-width:768px){ .sg{grid-template-columns:repeat(2,1fr)} }
+@media(max-width:420px){ .sg{gap:6px} }
+</style>
+</head>
+<body>
+<div id="app-root">
+    <div class="sg" id="sg"></div>
+    <div class="ibar" id="ibar"></div>
+    <div class="ptrack" id="ptrack"></div>
+</div>
+
+<script>
+var items=[
+  {q:'Chính sách đổi trả?',a:'Đổi trong 30 ngày, miễn phí.',ico:'?'},
+  {q:'Phương thức thanh toán?',a:'Visa, Mastercard, MoMo, COD.',ico:'$'},
+  {q:'Thời gian giao hàng?',a:'1-3 ngày nội thành, 3-7 ngày ngoại tỉnh.',ico:'!'},
+  {q:'Làm sao liên hệ hỗ trợ?',a:'Hotline 1900-xxxx hoặc email support@brand.com.',ico:'@'}
+];
+
+var D=[
+  {name:'SINGLE OPEN',sub:'one at a time',
+   openIdx:1,
+   behavior:'Mở 1 → đóng các khác',use:'FAQ, knowledge base',
+   ins:'<strong>Single open = chỉ 1 item mở tại một thời điểm.</strong> Click item B → item A tự đóng. Giữ trang gọn, user không bị "lost" trong nội dung dài.'},
+  {name:'MULTIPLE OPEN',sub:'any number',
+   openIdx:[0,2],
+   behavior:'Mở bao nhiêu cũng được',use:'Settings, filters, config',
+   ins:'<strong>Multiple open = mở bao nhiêu item cũng được.</strong> Click không đóng item khác. Dùng khi user cần so sánh nhiều section.'},
+  {name:'WITH ICONS',sub:'visual cues',
+   openIdx:1,
+   icons:true,
+   behavior:'Icon + text, dễ scan',use:'Help center, docs',
+   ins:'<strong>Icon giúp user scan nhanh.</strong> ? cho FAQ, $ cho thanh toán. Không phải decoration — là cách giảm cognitive load.'},
+  {name:'IN CARD',sub:'wrapped container',
+   openIdx:1,
+   inCard:true,
+   behavior:'Accordion trong card',use:'Product detail, feature panel',
+   ins:'<strong>Accordion trong card = component nằm trong container.</strong> Card thêm title, border nổi bật. Dùng khi accordion là phần của một panel lớn.'}
+];
+
+var sg=document.getElementById('sg');
+D.forEach(function(d,i){
+  var el=document.createElement('div');
+  el.className='sp';
+  el.dataset.i=i;
+
+  var html='';
+  if(d.inCard) html+='<div class="mcard">';
+  items.forEach(function(item,j){
+    var isOpen=Array.isArray(d.openIdx)?d.openIdx.indexOf(j)!==-1:j===d.openIdx;
+    var icoHTML=d.icons?'<div class="mai-ico-i on-i">'+item.ico+'</div>':'';
+    html+=
+      '<div class="mai">'+
+        '<div class="mai-hd">'+
+          '<div class="mai-ico">'+icoHTML+'</div>'+
+          '<span class="mai-t">'+item.q+'</span>'+
+          '<div class="mai-arr'+(isOpen?' open':'')+'"></div>'+
+        '</div>'+
+        '<div class="mai-bd'+(isOpen?' open':'')+'">'+
+          '<div class="mai-bd-inner">'+item.a+'</div>'+
+        '</div>'+
+      '</div>';
+  });
+  if(d.inCard) html+='</div>';
+
+  el.innerHTML=
+    '<div class="sh"><span class="sn">0'+(i+1)+' '+d.name+'</span><span class="ssub">'+d.sub+'</span></div>'+
+    html+
+    '<div class="sspec">'+
+      '<div class="ssr"><span class="ssk">Behavior</span><span class="ssv">'+d.behavior+'</span></div>'+
+      '<div class="ssr"><span class="ssk">Use case</span><span class="ssv">'+d.use+'</span></div>'+
+    '</div>';
+  sg.appendChild(el);
+});
+
+var pt=document.getElementById('ptrack');
+for(var i=0;i<4;i++){var s=document.createElement('div');s.className='pseg';pt.appendChild(s)}
+
+var cur=0,timer=null;
+var ibar=document.getElementById('ibar');
+var panels=sg.querySelectorAll('.sp');
+var segs=pt.querySelectorAll('.pseg');
+
+function setAct(idx){
+  cur=idx;
+  for(var i=0;i<panels.length;i++){
+    panels[i].classList.toggle('active',i===idx);
+    segs[i].classList.toggle('on',i<=idx);
+  }
+  ibar.classList.add('fading');
+  setTimeout(function(){ibar.innerHTML=D[idx].ins;ibar.classList.remove('fading')},280);
+}
+
+function startLoop(){
+  if(timer) clearInterval(timer);
+  timer=setInterval(function(){setAct((cur+1)%4)},4000);
+}
+
+function stopLoop(){
+  clearInterval(timer);
+  timer=null;
+}
+
+panels.forEach(function(p, i){
+  p.onclick=function(){
+    setAct(i);
+    stopLoop();
+  };
+});
+
+setAct(0);
+startLoop();
+</script>
+</body>
+</html>
