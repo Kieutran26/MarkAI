@@ -4,208 +4,145 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Border Radius Demo — markAI</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#0f0f12;--bg-card:#16161b;--fg:#e8e4dc;--muted:#6e6e7a;
-    --accent:#e88c2e;--accent-soft:rgba(232,140,46,.12);
-    --accent-border:rgba(232,140,46,.3);--border:#282830;
-    --surface:#1c1c23;--shape-lt:#33333d;--bar-m:#44444f;
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{
-    background:var(--bg);color:var(--fg);
-    font-family:'Space Grotesk',sans-serif;line-height:1.6;
-    overflow-x:hidden;
-  }
-  body::before{
-    content:'';position:fixed;inset:0;
-    background-image:radial-gradient(rgba(255,255,255,.022) 1px,transparent 1px);
-    background-size:20px 20px;pointer-events:none;z-index:0;
-  }
+:root{
+  --bg:#0f0f12;--bg-card:#16161b;--bg-el:#222;--border:#282830;
+  --border-active:#e88c2e;--accent:#e88c2e;
+  --accent-glow:rgba(232,140,46,.18);--accent-soft:rgba(232,140,46,.07);
+  --cream:#EDE4D8;--text:#D8D0C8;--muted:#777770;
+  --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:48px 48px;pointer-events:none;z-index:0}
 
-  #app-root{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:24px}
+#app-root{position:relative;z-index:1;padding:20px 16px}
 
-  .sec-lbl{
-    font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;
-    letter-spacing:2px;text-transform:uppercase;color:var(--muted);
-    margin-bottom:20px;display:flex;align-items:center;gap:10px;
-  }
-  .sec-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+/* sim grid */
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.sp{
+  border:1px solid var(--border);
+  background:var(--bg-card);
+  padding:14px 10px 12px;
+  transition:all .4s cubic-bezier(0.23, 1, 0.32, 1);
+  min-height:160px;
+  position:relative;
+  cursor:pointer;
+}
+.sp:hover{border-color:rgba(232,140,46,0.3);background:rgba(255,255,255,0.02)}
+.sp.active{
+  border-color:var(--border-active);
+  background:var(--accent-soft);
+  transform:scale(1.02);
+  box-shadow:0 10px 30px -10px var(--accent-glow);
+  z-index:10;
+}
+.sp:not(.active){opacity:.5}
+.sp.active:not(:hover){opacity:1}
 
-  .sim-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
-  @media(max-width:720px){.sim-grid{grid-template-columns:repeat(2,1fr)}}
+.sh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+.sn{font-family:var(--mono);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);transition:color .4s}
+.sp.active .sn{color:var(--accent)}
+.sv{font-family:var(--mono);font-size:10px;color:var(--accent);font-weight:700}
 
-  .sc{
-    background:var(--bg-card);border:1px solid var(--border);
-    padding:20px 14px 18px;cursor:pointer;position:relative;overflow:hidden;
-    transition:border-color .3s,background .3s;
-  }
-  .sc::before{
-    content:'';position:absolute;top:0;left:0;right:0;height:2px;
-    background:var(--accent);transform:scaleX(0);transform-origin:left;
-    transition:transform .35s ease;
-  }
-  .sc:hover{border-color:var(--accent-border)}
-  .sc.on{border-color:var(--accent);background:var(--surface)}
-  .sc.on::before{transform:scaleX(1)}
+/* Element preview shapes */
+.prev-wrap{display:flex;flex-direction:column;gap:8px}
+.p-btn{width:100%;height:28px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#fff;transition:border-radius .4s}
+.p-card{width:100%;height:48px;background:var(--bg-el);border:1px solid var(--border);transition:border-radius .4s}
+.p-input{width:100%;height:24px;background:var(--bg);border:1px solid var(--border);transition:border-radius .4s}
+.p-row{display:flex;gap:6px;align-items:center}
+.p-avatar{width:24px;height:24px;background:var(--muted);transition:border-radius .4s}
+.p-badge{padding:2px 8px;background:var(--accent-soft);border:1px solid var(--accent-border);font-family:var(--mono);font-size:8px;color:var(--accent);transition:border-radius .4s}
 
-  .sc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
-  .sc-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px}
-  .sc-tag{
-    font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;
-    text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);transition:color .3s;
-  }
-  .sc.on .sc-tag{color:var(--accent)}
+/* insight */
+.ibar{margin-top:12px;padding:10px 13px;background:var(--bg-card);border:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.55;min-height:38px;transition:opacity .3s}
+.ibar.fading{opacity:0}
+.ibar strong{color:var(--cream);font-weight:600}
 
-  .sc-shapes{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;min-height:110px;justify-content:center}
-  .shape-row{display:flex;gap:8px;align-items:center}
+.ptrack{display:flex;gap:4px;padding:10px 0 12px}
+.pseg{flex:1;height:3px;background:var(--border);transition:background .4s}
+.pseg.on{background:var(--accent)}
 
-  .sh{
-    transition:border-radius .5s cubic-bezier(.4,0,.2,1),background .3s;
-    flex-shrink:0;position:relative;
-  }
-  .sh.lg{width:100%;height:36px;background:var(--shape-lt)}
-  .sh.md{width:52px;height:36px;background:var(--shape-lt)}
-  .sh.ac{width:36px;height:36px;background:var(--accent);opacity:.8}
-  .sh.sm{width:28px;height:28px;background:var(--bar-m);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--muted)}
-  .sh.pill{
-    height:28px;padding:0 12px;background:var(--accent-soft);
-    border:1px solid var(--accent-border);display:flex;align-items:center;
-    font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);
-    letter-spacing:.5px;
-  }
-
-  .arc-wrap{
-    position:absolute;pointer-events:none;opacity:0;
-    transition:opacity .4s ease;
-  }
-  .sc.on .arc-wrap{opacity:1}
-  .arc-svg{overflow:visible}
-
-  .sc-val{
-    font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--muted);
-    text-align:center;transition:color .3s,font-weight .3s;
-  }
-  .sc.on .sc-val{color:var(--accent);font-weight:600}
-
-  .ins{
-    background:var(--surface);border:1px solid var(--border);
-    padding:18px 22px;display:flex;align-items:flex-start;gap:12px;min-height:80px;
-  }
-  .ins-i{color:var(--accent);font-size:13px;margin-top:3px;flex-shrink:0}
-  .ins-t{font-size:14px;color:var(--fg);opacity:.85;line-height:1.65;transition:opacity .25s,transform .25s}
-  .ins-t.fading{opacity:0;transform:translateY(6px)}
-
-  @media(max-width:480px){
-    #app-root{padding:14px}
-    .ins{padding:14px 16px}
-  }
+@media(max-width:768px){ .sg{grid-template-columns:repeat(2,1fr)} }
+@media(max-width:420px){ .sg{gap:6px} }
 </style>
 </head>
 <body>
-
 <div id="app-root">
-  <section aria-label="Mô phỏng border radius">
-    <div class="sim-grid" id="simGrid"></div>
-    <div class="ins">
-      <i class="fa-solid fa-lightbulb ins-i"></i>
-      <p class="ins-t" id="insT">Đang tải...</p>
-    </div>
-  </section>
+    <div class="sg" id="sg"></div>
+    <div class="ibar" id="ibar"></div>
+    <div class="ptrack" id="ptrack"></div>
 </div>
 
 <script>
-  const presets = [
-    { num:'01', name:'Sharp', val:0,
-      ins:'Góc vuông hoàn toàn (0px) — sắc, cứng, cảm giác "kỹ thuật". Thường thấy trong dashboard, terminal, hoặc style brutalist. Mang tính kiểm soát cao.' },
-    { num:'02', name:'Subtle', val:4,
-      ins:'Bo rất nhẹ (4px) — vừa đủ để bớt "gai" nhưng vẫn giữ tính chuyên nghiệp. Đây là mức mặc định của hầu hết button và card trong các thiết kế hiện đại.' },
-    { num:'03', name:'Rounded', val:12,
-      ins:'Bo rõ (12px) — tạo cảm giác thân thiện, dễ tiếp cận hơn. Rất phổ biến cho các ứng dụng mobile hoặc giao diện hướng tới người dùng cá nhân.' },
-    { num:'04', name:'Pill', val:24,
-      ins:'Bo lớn hoặc Pill (24px+) — mềm mại, vui tươi. Dùng cho tag, badge hoặc các nút hành động đặc biệt. Nếu dùng quá đà trên card lớn sẽ nhìn hơi "trẻ con".' }
-  ];
+var D=[
+  {name:'SHARP',val:0,
+   ins:'<strong>0px: Góc vuông sắc cạnh.</strong> Cảm giác cứng cáp, kỹ thuật, "tool". Thường thấy trong style Brutalist hoặc Dashboard dữ liệu.'},
+  {name:'SUBTLE',val:4,
+   ins:'<strong>4px: Bo nhẹ nhàng.</strong> Mức mặc định của thiết kế hiện đại. Giúp giao diện bớt "gai" nhưng vẫn giữ được sự chuyên nghiệp.'},
+  {name:'ROUNDED',val:12,
+   ins:'<strong>12px: Bo rõ rệt.</strong> Tạo cảm giác thân thiện, dễ gần. Phổ biến cho các app mobile hoặc landing page hướng tới người dùng cá nhân.'},
+  {name:'PILL',val:24,
+   ins:'<strong>24px+: Bo cực mạnh (Pill).</strong> Mềm mại, năng động. Thường dùng cho Button hoặc Tag để tạo điểm nhấn thị giác mạnh.'}
+];
 
-  const simGrid = document.getElementById('simGrid');
-  const insT = document.getElementById('insT');
-  let activeI = 0;
-  let autoTimer;
+var sg=document.getElementById('sg');
+D.forEach(function(d,i){
+  var p=document.createElement('div');
+  p.className='sp';p.dataset.i=i;
+  p.innerHTML='<div class="sh"><span class="sn">'+d.name+'</span><span class="sv">'+d.val+'px</span></div>'+
+    '<div class="prev-wrap">'+
+      '<div class="p-btn" style="border-radius:'+d.val+'px">BUTTON</div>'+
+      '<div class="p-input" style="border-radius:'+d.val+'px"></div>'+
+      '<div class="p-row">'+
+        '<div class="p-avatar" style="border-radius:'+(d.val > 12 ? '50%' : d.val+'px')+'"></div>'+
+        '<div class="p-badge" style="border-radius:'+d.val+'px">BADGE</div>'+
+      '</div>'+
+      '<div class="p-card" style="border-radius:'+d.val+'px"></div>'+
+    '</div>';
+  sg.appendChild(p);
+});
 
-  function arcSVG(size) {
-    if (size < 1) return '';
-    const s = Math.min(size, 20);
-    return `<svg width="${s+2}" height="${s+2}" viewBox="0 0 ${s+2} ${s+2}" class="arc-svg">
-      <line x1="1" y1="${s+1}" x2="${s+1}" y2="${s+1}" stroke="rgba(232,140,46,0.3)" stroke-width="1"/>
-      <line x1="${s+1}" y1="1" x2="${s+1}" y2="${s+1}" stroke="rgba(232,140,46,0.3)" stroke-width="1"/>
-      <path d="M 1 ${s+1} A ${s} ${s} 0 0 1 ${s+1} 1" fill="none" stroke="rgba(232,140,46,0.6)" stroke-width="1"/>
-      <circle cx="1" cy="${s+1}" r="2" fill="rgba(232,140,46,0.5)"/>
-    </svg>`;
+var pt=document.getElementById('ptrack');
+for(var i=0;i<4;i++){var seg=document.createElement('div');seg.className='pseg';pt.appendChild(seg)}
+
+var cur=0,timer=null;
+var ibar=document.getElementById('ibar');
+var panels=sg.querySelectorAll('.sp');
+var segs=pt.querySelectorAll('.pseg');
+
+function setAct(idx){
+  cur=idx;
+  for(var i=0;i<panels.length;i++){
+    panels[i].classList.toggle('active',i===idx);
+    segs[i].classList.toggle('on',i<=idx);
   }
+  ibar.classList.add('fading');
+  setTimeout(function(){ibar.innerHTML=D[idx].ins;ibar.classList.remove('fading')},280);
+}
 
-  function renderSim() {
-    simGrid.innerHTML = presets.map((p, ci) => {
-      const r = p.val;
-      return `
-        <div class="sc" data-i="${ci}" tabindex="0" role="button">
-          <div class="sc-top">
-            <span class="sc-num">${p.num}</span>
-            <span class="sc-tag">${p.name}</span>
-          </div>
-          <div class="sc-shapes">
-            <div class="shape-row">
-              <div class="sh lg" style="border-radius:${r}px;position:relative">
-                ${(r > 0 && ci !== 1) ? `<div class="arc-wrap" style="top:-2px;left:-2px">${arcSVG(r)}</div>` : ''}
-              </div>
-            </div>
-            <div class="shape-row">
-              <div class="sh md" style="border-radius:${r}px;position:relative">
-                ${(r > 0 && ci !== 1) ? `<div class="arc-wrap" style="top:-2px;left:-2px">${arcSVG(Math.min(r,14))}</div>` : ''}
-              </div>
-              <div class="sh ac" style="border-radius:${r}px"></div>
-              <div class="sh sm" style="border-radius:${r}px">+</div>
-            </div>
-            <div class="shape-row">
-              <div class="sh pill" style="border-radius:${r}px">RADIUS</div>
-            </div>
-          </div>
-          <div class="sc-val">${r}px</div>
-        </div>`;
-    }).join('');
+function startLoop(){
+  if(timer) clearInterval(timer);
+  timer=setInterval(function(){setAct((cur+1)%4)},4000);
+}
+function stopLoop(){
+  clearInterval(timer);
+  timer=null;
+}
 
-    simGrid.querySelectorAll('.sc').forEach(c => {
-      c.addEventListener('click', () => {
-        clearInterval(autoTimer);
-        activateCard(+c.dataset.i);
-      });
-    });
-  }
+/* Add click to panels */
+panels.forEach(function(p, i){
+  p.onclick=function(){
+    setAct(i);
+    stopLoop();
+  };
+});
 
-  function activateCard(i) {
-    activeI = i;
-    simGrid.querySelectorAll('.sc').forEach((c, idx) => c.classList.toggle('on', idx === i));
-    setIns(presets[i].ins);
-  }
-
-  function setIns(t) {
-    insT.classList.add('fading');
-    setTimeout(() => { 
-      insT.textContent = t; 
-      insT.classList.remove('fading'); 
-    }, 250);
-  }
-
-  function startAuto() {
-    activateCard(0);
-    autoTimer = setInterval(() => {
-      activeI = (activeI + 1) % presets.length;
-      activateCard(activeI);
-    }, 4500);
-  }
-
-  renderSim();
-  startAuto();
+setAct(0);
+startLoop();
 </script>
 </body>
 </html>

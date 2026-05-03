@@ -90,9 +90,10 @@ export const terms: GlossaryTerm[] = [
   { id: 'webhook', name: 'Webhook', nameEn: 'Thông báo tự động', letter: 'W', groups: ['infra'], definition: 'Cơ chế "gọi ngược" — khi có sự kiện xảy ra ở service A, nó tự thông báo cho service B. Chat app, live dashboard, notification realtime.', example: '"Khi có đơn hàng mới trên Shopify, tự gửi thông báo Slack" → Shopify webhook gọi URL của bạn → server nhận và gửi Slack.' },
   { id: 'wireframe', name: 'Wireframe', nameEn: 'Khung bố cục', letter: 'W', groups: ['design'], definition: 'Bản phác thảo layout của trang — chỉ có khung và vị trí, không có màu sắc hay nội dung thật. Dùng để thống nhất cấu trúc với team.', example: 'Vẽ wireframe trên Figma hoặc giấy → mô tả cho AI → AI code đúng layout đó. Wireframe giúp prompt rõ hơn nhiều.' },
   { id: 'websocket', name: 'WebSocket', nameEn: 'Kết nối thời gian thực', letter: 'W', groups: ['infra'], definition: 'Kết nối hai chiều liên tục giữa browser và server. Cho phép update realtime mà không cần reload. Chat app, live dashboard, notification realtime đều dùng WebSocket.', example: '"Muốn dashboard KPI cập nhật realtime khi có data mới" → Dùng Supabase Realtime (chạy trên WebSocket).' },
-  { id: 'radius', name: 'Radius', nameEn: 'Bo góc / Border Radius', letter: 'R', groups: ['design'], definition: 'Độ cong ở 4 góc của một hình khối. 0px là góc vuông sắc cạnh. Giá trị càng lớn, góc càng tròn. Radius quyết định "vibe" của giao diện: từ cứng cáp, kỹ thuật đến mềm mại, thân thiện.', example: 'Prompt: "Làm nút bấm mềm hơn với border-radius 8px, riêng card sản phẩm thì bo mạnh 16px để tạo cảm giác thân thiện."', related: ['css', 'interface'], demo: { kind: 'interactive', src: 'gif-radius-demo.html', alt: 'Mô phỏng các mức border-radius từ sắc cạnh đến bo tròn' } },
+  { id: 'radius', name: 'Radius', nameEn: 'Bo góc / Border Radius', letter: 'R', groups: ['design'], definition: 'Độ cong ở 4 góc của một hình khối. 0px là góc vuông sắc cạnh. Giá trị càng lớn, góc càng tròn. Radius quyết định "vibe" của giao diện: từ cứng cáp, kỹ thuật đến mềm mại, thân thiện.', example: 'Prompt: "Làm nút bấm mềm hơn với border-radius 8px, riêng card sản phẩm thì bo mạnh 16px để tạo cảm giác thân thiện."', related: ['css', 'interface', 'element'], demo: { kind: 'interactive', src: 'gif-radius-demo.html', alt: 'Mô phỏng các mức border-radius từ sắc cạnh đến bo tròn' } },
   { id: 'corner', name: 'Corner', nameEn: 'Góc / Corner Radius', letter: 'C', groups: ['design'], definition: 'Thuật ngữ chỉ các góc của một khối hoặc đường nét. Trong thiết kế giao diện, "Corner" thường đi đôi với "Radius" (bo góc). Việc xử lý góc quyết định độ sắc hay mềm của tổng thể sản phẩm.', example: 'Prompt: "Làm cho các góc (corners) của card này bo mạnh hơn một chút, khoảng 12px để nhìn thân thiện hơn."', related: ['radius', 'stroke', 'border'], demo: { kind: 'interactive', src: 'gif-corner-demo.html', alt: 'Mô phỏng các loại corner radius phổ biến' } },
   { id: 'dropdown', name: 'Dropdown', nameEn: 'Menu thả xuống', letter: 'D', groups: ['design', 'code'], definition: 'Một thành phần giao diện cho phép người dùng chọn một giá trị từ danh sách các tùy chọn được ẩn đi và chỉ hiện ra khi click. Nó giúp tiết kiệm diện tích và giữ cho giao diện gọn gàng hơn so với việc liệt kê tất cả lựa chọn cùng lúc.', example: 'Prompt: "Thêm một dropdown để chọn category, mặc định là \'Tất cả\', khi chọn xong thì filter lại danh sách bài viết."', related: ['input', 'select', 'state'], demo: { kind: 'interactive', src: 'gif-dropdown-demo.html', alt: 'Mô phỏng các trạng thái của dropdown: mặc định, mở, đã chọn và disabled' } },
+  { id: 'element', name: 'Element', nameEn: 'Thành phần giao diện', letter: 'E', groups: ['design', 'code'], definition: 'Đơn vị nhỏ nhất có thể nhận dạng trong giao diện người dùng — như nút bấm, ô nhập liệu, tiêu đề, hay ảnh. Một UI phức tạp là sự kết hợp của nhiều element được sắp xếp theo cấu trúc nhất định.', example: 'Prompt: "Thêm một element Input vào form này, bên dưới element Heading và bên trên element Button để user nhập mã giảm giá."', related: ['component', 'ui', 'interface', 'radius'], demo: { kind: 'interactive', src: 'gif-element-demo.html', alt: 'Mô phỏng các loại element phổ biến: Text, Button, Input, Other' } },
 ];
 
 export const quickRefItems = [
@@ -132,6 +133,7 @@ const deepDiveTermIds = new Set([
   'database',
   'deploy',
   'dropdown',
+  'element',
   'env',
   'frontend',
   'json',
@@ -179,6 +181,10 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
   database: [
     'Database là nơi lưu dữ liệu thật, nên khi mô tả yêu cầu cho AI bạn thường nên nói rõ: lưu vào bảng nào, mỗi dòng đại diện cho cái gì.',
     'Ở mức marketer, chỉ cần hiểu form submit tạo record mới, dashboard đọc record ra, còn filter chỉ là cách xem lại dữ liệu đó.',
+  ],
+  element: [
+    'Element là "đơn vị cơ bản nhất" — khi bạn bảo AI thay đổi giao diện, hãy dùng tên element chính xác để AI không làm nhầm (ví dụ: Button thay vì "cái nút tròn tròn").',
+    'Mô phỏng bên dưới giúp bạn nhận diện 4 nhóm element chính: Text, Button, Input và các thành phần bổ trợ (Other).',
   ],
   request: [
     'Rất nhiều lỗi kỹ thuật marketer gặp thực ra nằm ở request / response: gửi sai dữ liệu, gọi sai URL, hoặc server trả lỗi.',

@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Element Practice — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f0f12;--bg-card:#16161b;--bg-el:#222;--border:#282830;
+  --border-active:#e88c2e;--accent:#e88c2e;
+  --accent-glow:rgba(232,140,46,.18);--accent-soft:rgba(232,140,46,.07);
+  --cream:#EDE4D8;--text:#D8D0C8;--muted:#777770;
+  --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:48px 48px;pointer-events:none;z-index:0}
+
+#app-root{position:relative;z-index:1;padding:24px 16px}
+
+.pgoal{font-size:14px;color:var(--text);line-height:1.5;margin-bottom:8px}
+.phint{font-family:var(--mono);font-size:10px;color:var(--muted);margin-bottom:24px}
+.phint span{color:var(--accent)}
+
+/* xray card */
+.xray-wrap{display:flex;justify-content:center;margin-bottom:24px}
+.xray-card{width:320px;border:1px solid var(--border);background:var(--bg-card);padding:20px;position:relative}
+.xzone{position:relative;cursor:pointer;padding:2px;margin:-2px;border:1.5px dashed transparent;transition:border-color .25s,background .25s}
+.xzone:hover:not(.found){border-color:rgba(232,140,46,.35);background:rgba(232,140,46,.03)}
+.xzone.found{border-color:var(--accent);background:var(--accent-soft)}
+.xzone-tag{position:absolute;top:-10px;right:4px;font-family:var(--mono);font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--bg);background:var(--accent);padding:1px 6px;opacity:0;transform:translateY(3px);transition:opacity .25s,transform .25s;pointer-events:none;z-index:5}
+.xzone.found .xzone-tag{opacity:1;transform:translateY(0)}
+
+.xr-badge{display:inline-block;font-family:var(--mono);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--bg);background:var(--accent);padding:2px 8px}
+.xr-div{height:1px;background:var(--border);margin:12px 0}
+.xr-h3{font-size:16px;font-weight:700;color:var(--cream);line-height:1.25;margin-bottom:4px}
+.xr-p{font-size:11px;color:var(--muted);line-height:1.45;margin-bottom:10px}
+.xr-input{width:100%;padding:6px 9px;background:var(--bg);border:1px solid var(--border);color:var(--text);font-family:var(--mono);font-size:10px;outline:none;margin-bottom:10px}
+.xr-prog-row{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.xr-prog{flex:1;height:5px;background:var(--border);position:relative;overflow:hidden}
+.xr-prog-fill{height:100%;width:60%;background:var(--accent)}
+.xr-prog-txt{font-family:var(--mono);font-size:9px;color:var(--muted);white-space:nowrap}
+.xr-btn{display:block;width:100%;padding:8px 0;background:var(--accent);color:#fff;border:none;font-family:var(--sans);font-size:11px;font-weight:600;text-align:center;cursor:default}
+
+/* checklist */
+.xcheck{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;align-items:center}
+.xcheck-label{font-family:var(--mono);font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-right:4px}
+.xchip{font-family:var(--mono);font-size:9px;font-weight:600;color:var(--muted);background:var(--bg-card);border:1px solid var(--border);padding:4px 10px;transition:color .25s,border-color .25s,background .25s}
+.xchip.found{color:var(--cream);border-color:var(--accent);background:var(--accent-soft)}
+.xchip .xchip-t{opacity:0;margin-left:3px;transition:opacity .25s}
+.xchip.found .xchip-t{opacity:1}
+
+.xcounter{font-family:var(--mono);font-size:11px;color:var(--muted);margin-bottom:8px}
+.xcounter span{color:var(--accent);font-weight:700}
+.xdone{font-size:12px;color:var(--accent);font-weight:600;padding:10px 14px;border:1px solid var(--accent);background:var(--accent-soft);display:none;line-height:1.5}
+.xdone.show{display:block}
+
+.xreset{font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:5px 13px;cursor:pointer;transition:color .2s,border-color .2s;margin-top:14px}
+.xreset:hover{color:var(--cream);border-color:var(--muted)}
+
+@media(max-width:480px){
+  .xray-card{width:100%}
+  #app-root{padding:18px 12px}
+}
+</style>
+</head>
+<body>
+<div id="app-root">
+    <p class="pgoal">Click vào từng vùng trong card bên dưới — nhận diện hết 7 loại element.</p>
+    <p class="phint"><span>Hint:</span> Hover thấy viền nhạt = có element ẩn ở đó. Click để xác nhận.</p>
+
+    <div class="xray-wrap">
+        <div class="xray-card" id="xcard">
+          <div class="xzone" data-type="Badge">
+            <span class="xzone-tag">Badge</span>
+            <span class="xr-badge">NEW</span>
+          </div>
+          <div class="xzone" data-type="Divider">
+            <span class="xzone-tag">Divider</span>
+            <div class="xr-div"></div>
+          </div>
+          <div class="xzone" data-type="Heading">
+            <span class="xzone-tag">Heading</span>
+            <div class="xr-h3">Product Name</div>
+          </div>
+          <div class="xzone" data-type="Text">
+            <span class="xzone-tag">Text</span>
+            <div class="xr-p">Mô tả ngắn về sản phẩm này, gồm vài dòng văn bản giới thiệu để mô tả tính năng.</div>
+          </div>
+          <div class="xzone" data-type="Input">
+            <span class="xzone-tag">Input</span>
+            <input class="xr-input" value="Nhập số lượng" readonly>
+          </div>
+          <div class="xzone" data-type="Progress">
+            <span class="xzone-tag">Progress</span>
+            <div class="xr-prog-row">
+              <div class="xr-prog"><div class="xr-prog-fill"></div></div>
+              <span class="xr-prog-txt">60%</span>
+            </div>
+          </div>
+          <div class="xzone" data-type="Button">
+            <span class="xzone-tag">Button</span>
+            <button class="xr-btn">Mua ngay</button>
+          </div>
+        </div>
+    </div>
+
+    <div class="xcounter" id="xcounter">Đã nhận diện: <span>0</span> / 7</div>
+    <div class="xcheck" id="xcheck">
+        <span class="xcheck-label">Types:</span>
+    </div>
+    <div class="xdone" id="xdone">Tuyệt vời! Bạn đã nhận diện đủ 7 element. Mọi UI phức tạp — từ Google đến Shopee — đều được build từ những thành phần cơ bản này xếp cạnh nhau.</div>
+    <button class="xreset" id="xreset">Reset</button>
+</div>
+
+<script>
+var types=['Badge','Divider','Heading','Text','Input','Progress','Button'];
+var found={};
+var xcheck=document.getElementById('xcheck');
+var xcounter=document.getElementById('xcounter');
+var xdone=document.getElementById('xdone');
+
+/* build chips */
+types.forEach(function(t){
+  var c=document.createElement('span');
+  c.className='xchip';c.dataset.type=t;
+  c.innerHTML=t+'<span class="xchip-t"> \u2713</span>';
+  xcheck.appendChild(c);
+});
+
+/* click zones */
+document.querySelectorAll('.xzone').forEach(function(zone){
+  zone.addEventListener('click',function(){
+    var t=zone.dataset.type;
+    if(found[t])return;
+    found[t]=true;
+    zone.classList.add('found');
+    /* update chip */
+    var chip=xcheck.querySelector('.xchip[data-type="'+t+'"]');
+    if(chip)chip.classList.add('found');
+    /* update counter */
+    var count=Object.keys(found).length;
+    xcounter.innerHTML='Đ\u00e3 nh\u1eadn di\u1ec7n: <span>'+count+'</span> / 7';
+    /* done? */
+    if(count===7) xdone.classList.add('show');
+  });
+});
+
+/* reset */
+document.getElementById('xreset').onclick=function(){
+  found={};
+  document.querySelectorAll('.xzone').forEach(function(z){z.classList.remove('found')});
+  xcheck.querySelectorAll('.xchip').forEach(function(c){c.classList.remove('found')});
+  xcounter.innerHTML='\u0110\u00e3 nh\u1eadn di\u1ec7n: <span>0</span> / 7';
+  xdone.classList.remove('show');
+};
+</script>
+</body>
+</html>
