@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Responsive — markAI Animated</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+    --bg: #0f0f12;
+    --fg: #e8e4dc;
+    --muted: #6e6e7a;
+    --accent: #e88c2e;
+    --accent-dim: #cf5c26;
+    --card: #16161b;
+    --card-alt: #1c1c23;
+    --border: #282830;
+    --border-hi: #33333d;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+    background:var(--bg);
+    background-image:
+        radial-gradient(ellipse at 25% 15%,rgba(232,140,46,.035) 0%,transparent 55%),
+        radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);
+    background-size:100% 100%,16px 16px;
+    display:flex;justify-content:center;align-items:center;
+    min-height:100vh;
+    font-family:'Space Grotesk',sans-serif;
+    color:var(--fg);
+    padding:12px;
+}
+
+/* === Wrapper & Scale === */
+.aw{width:100%}
+.ab{
+    width:700px;height:412px;
+    background:var(--card);
+    border:2px solid var(--border);
+    transform-origin:top left;
+    overflow:hidden;
+}
+
+/* === Header === */
+.hd{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:9px 14px;
+    border-bottom:1px solid var(--border);
+    background:rgba(255,255,255,.01);
+}
+.hd-t{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;font-weight:700;
+    color:var(--accent);letter-spacing:2.5px;
+}
+.hd-f{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;color:var(--muted);
+}
+
+/* === Layout Area === */
+.la{
+    position:relative;width:100%;height:235px;
+    background:
+        linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);
+    background-size:30px 30px;
+    overflow:hidden;
+}
+
+/* Width badge */
+.wb{
+    position:absolute;top:7px;right:9px;z-index:10;
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;color:var(--accent);
+    background:rgba(15,15,18,.88);
+    border:1px solid var(--border);
+    padding:3px 8px;
+    transition:opacity .35s;
+    pointer-events:none;
+}
+
+/* Nav block */
+.nb{
+    position:absolute;height:22px;
+    background:var(--border);
+    display:flex;align-items:center;
+    transition:all .72s cubic-bezier(.4,0,.2,1);
+    overflow:hidden;
+}
+.nd{width:5px;height:5px;border-radius:50%;background:var(--muted);margin-left:8px}
+.nd+.nd{margin-left:4px}
+.nt{
+    font-family:'JetBrains Mono',monospace;
+    font-size:8px;color:var(--muted);
+    margin-left:6px;letter-spacing:1.5px;
+}
+
+/* Content cards */
+.cc{
+    position:absolute;
+    background:var(--card-alt);
+    border:1px solid var(--border);
+    display:flex;flex-direction:column;
+    overflow:hidden;
+    transition:all .72s cubic-bezier(.4,0,.2,1);
+}
+.ca{height:3px;flex-shrink:0;transition:height .5s}
+.cb{
+    padding:5px 7px;flex:1;
+    overflow:hidden;display:flex;flex-direction:column;justify-content:center;
+}
+.cl{
+    font-family:'JetBrains Mono',monospace;
+    font-size:7px;color:var(--muted);letter-spacing:1px;
+    transition:opacity .4s,max-height .4s;max-height:16px;overflow:hidden;
+}
+.ct{
+    font-size:10px;font-weight:600;color:var(--fg);
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+    margin-top:1px;
+}
+.cd{
+    font-size:8px;color:var(--muted);margin-top:2px;
+    transition:opacity .4s,max-height .4s;
+    max-height:0;overflow:hidden;opacity:0;
+}
+
+/* State: Tablet — show desc */
+.la.st .cd{max-height:30px;opacity:1}
+
+/* State: Mobile — hide label & accent, add left border */
+.la.sm .cl{max-height:0;opacity:0;margin:0}
+.la.sm .ca{height:0}
+.la.sm .cc{border-left:3px solid var(--accent)}
+
+/* Layout elements wrapper */
+.le{transition:opacity .38s}
+.le.hide{opacity:0;pointer-events:none}
+
+/* === Breakpoints View === */
+.bv{
+    position:absolute;inset:0;
+    display:flex;flex-direction:column;justify-content:center;
+    padding:24px 28px;
+    opacity:0;pointer-events:none;
+    transition:opacity .38s;
+}
+.bv.show{opacity:1;pointer-events:auto}
+
+.bv-title{
+    font-family:'JetBrains Mono',monospace;
+    font-size:9px;color:var(--muted);
+    letter-spacing:2.5px;margin-bottom:14px;
+}
+
+.bv-bar{
+    display:flex;height:56px;
+    border:1px solid var(--border);overflow:hidden;
+}
+.bv-seg{
+    display:flex;flex-direction:column;
+    align-items:center;justify-content:center;
+    overflow:hidden;
+    transform:scaleX(0);transform-origin:left;
+    transition:transform .65s cubic-bezier(.4,0,.2,1);
+}
+.bv.show .bv-seg{transform:scaleX(1)}
+.bv.show .bv-seg:nth-child(2){transition-delay:.14s}
+.bv.show .bv-seg:nth-child(3){transition-delay:.28s}
+
+.bv-seg.sn{background:#7a3218;flex:0 0 49.9%}
+.bv-seg.st2{background:var(--accent);flex:0 0 33.3%}
+.bv-seg.sd{background:#3a5a4a;flex:0 0 16.8%}
+
+.bv-sn{
+    font-family:'Space Grotesk',sans-serif;
+    font-size:12px;font-weight:700;color:#fff;
+}
+.bv-sl{
+    font-family:'JetBrains Mono',monospace;
+    font-size:8px;color:rgba(255,255,255,.55);margin-top:2px;
+}
+
+.bv-mk{position:relative;height:18px;margin-top:5px}
+.bv-m{
+    position:absolute;
+    font-family:'JetBrains Mono',monospace;
+    font-size:9px;color:var(--muted);
+    transform:translateX(-50%);
+}
+.bv-m::before{
+    content:'';position:absolute;
+    top:-7px;left:50%;width:1px;height:5px;
+    background:var(--muted);
+}
+.bv-m:nth-child(1){left:0%}
+.bv-m:nth-child(2){left:49.9%}
+.bv-m:nth-child(3){left:83.2%}
+.bv-m:nth-child(4){left:100%}
+
+.bv-legend{
+    display:flex;gap:18px;margin-top:16px;
+}
+.bv-li{
+    font-size:10px;color:var(--muted);
+    display:flex;align-items:center;gap:6px;
+}
+.bv-ld{width:6px;height:6px;flex-shrink:0;border-radius:1px}
+
+/* === Info Area === */
+.inf{padding:8px 14px;border-top:1px solid var(--border)}
+.dn{font-size:15px;font-weight:800;line-height:1.15}
+.ds{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;color:var(--accent);margin-top:1px;
+}
+.dd{font-size:10px;color:var(--muted);margin-top:3px;line-height:1.3}
+.di{
+    font-family:'JetBrains Mono',monospace;
+    font-size:9px;color:var(--accent);
+    margin-top:6px;padding-top:6px;
+    border-top:1px dashed var(--border);
+    opacity:.78;
+}
+
+/* === Progress & Dots === */
+.pt{height:2px;background:var(--border)}
+.pf{height:100%;background:var(--accent);width:0%}
+.fd{display:flex;gap:4px;justify-content:center;padding:8px 0}
+.fdd.on{background:var(--accent)}
+
+/* === Controls === */
+.ctrls{
+    display:flex;gap:6px;justify-content:center;padding:7px 0;
+    background:rgba(255,255,255,.01);
+}
+.cb-btn{
+    font-family:'JetBrains Mono',monospace;
+    font-size:9px;font-weight:700;
+    color:var(--muted);background:transparent;
+    border:1px solid var(--border);
+    padding:6px 12px;cursor:pointer;
+    transition:all .25s;
+    text-transform:uppercase;letter-spacing:1px;
+}
+.cb-btn:hover{
+    border-color:var(--muted);color:var(--fg);
+}
+.cb-btn.on{
+    border-color:var(--accent);color:var(--accent);
+    background:rgba(232,140,46,.05);
+}
+.cb-btn.play-pause{
+    border-color:var(--accent);
+    color:var(--accent);
+    margin-left: 8px;
+    padding: 6px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.cb-btn.play-pause svg{
+    width: 10px;
+    height: 10px;
+    fill: currentColor;
+}
+.cb-btn.play-pause:hover{
+    background:var(--accent);
+    color:var(--bg);
+}
+
+/* Reduced motion */
+@media(prefers-reduced-motion:reduce){
+    .cc,.nb,.ca,.cl,.cd{transition:none!important}
+    .bv-seg{transition:none!important}
+    .le,.bv{transition:none!important}
+}
+</style>
+</head>
+<body>
+
+<div class="aw">
+<div class="ab" id="ab">
+
+    <!-- Header -->
+    <div class="hd">
+        <span class="hd-t">RESPONSIVE</span>
+        <span class="hd-f" id="hf">01 / 04</span>
+    </div>
+
+    <!-- Layout simulation -->
+    <div class="la" id="la">
+        <div class="wb" id="wb">1280px · 4 cột</div>
+
+        <div class="le" id="le">
+            <div class="nb" id="nv" style="left:12px;top:12px;width:676px">
+                <span class="nd"></span><span class="nd"></span><span class="nd"></span>
+                <span class="nt">NAVIGATION</span>
+            </div>
+            <div class="cc" id="c0" style="left:12px;top:46px;width:160px;height:190px">
+                <div class="ca" style="background:var(--accent)"></div>
+                <div class="cb">
+                    <div class="cl">FEATURE</div>
+                    <div class="ct">Analytics Dashboard</div>
+                    <div class="cd">Xem dữ liệu real-time</div>
+                </div>
+            </div>
+            <div class="cc" id="c1" style="left:184px;top:46px;width:160px;height:190px">
+                <div class="ca" style="background:#b89a2a"></div>
+                <div class="cb">
+                    <div class="cl">TOOL</div>
+                    <div class="ct">Campaign Builder</div>
+                    <div class="cd">Tạo chiến dịch nhanh</div>
+                </div>
+            </div>
+            <div class="cc" id="c2" style="left:356px;top:46px;width:160px;height:190px">
+                <div class="ca" style="background:#4a8a5a"></div>
+                <div class="cb">
+                    <div class="cl">INTEGRATION</div>
+                    <div class="ct">API Connect</div>
+                    <div class="cd">Kết nối hệ thống</div>
+                </div>
+            </div>
+            <div class="cc" id="c3" style="left:528px;top:46px;width:160px;height:190px">
+                <div class="ca" style="background:#4a5a8a"></div>
+                <div class="cb">
+                    <div class="cl">REPORT</div>
+                    <div class="ct">Performance</div>
+                    <div class="cd">Báo cáo tự động</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Breakpoints view -->
+        <div class="bv" id="bv">
+            <div class="bv-title">BREAKPOINT MAP</div>
+            <div class="bv-bar">
+                <div class="bv-seg sn">
+                    <span class="bv-sn">MOBILE</span>
+                    <span class="bv-sl">1 cột · stack</span>
+                </div>
+                <div class="bv-seg st2">
+                    <span class="bv-sn">TABLET</span>
+                    <span class="bv-sl">2 cột · reflow</span>
+                </div>
+                <div class="bv-seg sd">
+                    <span class="bv-sn">DESK</span>
+                    <span class="bv-sl">multi</span>
+                </div>
+            </div>
+            <div class="bv-mk">
+                <span class="bv-m">0</span>
+                <span class="bv-m">768</span>
+                <span class="bv-m">1280</span>
+                <span class="bv-m">1536+</span>
+            </div>
+            <div class="bv-legend">
+                <div class="bv-li"><span class="bv-ld" style="background:#7a3218"></span>Nhỏ · Đơn cột</div>
+                <div class="bv-li"><span class="bv-ld" style="background:var(--accent)"></span>Trung · Reflow</div>
+                <div class="bv-li"><span class="bv-ld" style="background:#3a5a4a"></span>Rộng · Đa cột</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Info -->
+    <div class="inf">
+        <div class="dn" id="dn">Desktop</div>
+        <div class="ds" id="ds">≥ 1280px</div>
+        <div class="dd" id="dd">Đa cột · Không gian rộng · Trải nghiệm đầy đủ</div>
+        <div class="di" id="di">Cùng 1 code — hiển thị tối đa trên màn hình lớn</div>
+    </div>
+
+    <!-- Progress -->
+    <div class="pt"><div class="pf" id="pf"></div></div>
+
+    <!-- Controls -->
+    <div class="ctrls" id="ctrls">
+        <button class="cb-btn on" data-i="0">Desktop</button>
+        <button class="cb-btn" data-i="1">Tablet</button>
+        <button class="cb-btn" data-i="2">Mobile</button>
+        <button class="cb-btn" data-i="3">Breakpoints</button>
+        <div style="width:1px;height:12px;background:var(--border);margin:0 4px"></div>
+        <button class="cb-btn play-pause" id="toggleBtn" title="Play/Pause">
+            <svg id="pauseIcon" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+            <svg id="playIcon" viewBox="0 0 24 24" style="display:none"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+    </div>
+
+</div>
+</div>
+
+<script>
+/* === Cấu hình states === */
+const P = 12, W = 676, CT = 46;
+
+const S = [
+    { /* Desktop */
+        nm:'Desktop', sz:'≥ 1280px',
+        dc:'Đa cột · Không gian rộng · Trải nghiệm đầy đủ',
+        ins:'Cùng 1 code — hiển thị tối đa trên màn hình lớn',
+        bg:'1280px · 4 cột', cl:'',
+        nav:{l:P,t:P,w:W},
+        cd:[
+            {l:P,   t:CT, w:160, h:190},
+            {l:184, t:CT, w:160, h:190},
+            {l:356, t:CT, w:160, h:190},
+            {l:528, t:CT, w:160, h:190}
+        ], bp:false
+    },
+    { /* Tablet */
+        nm:'Tablet', sz:'768 — 1279px',
+        dc:'Giảm cột · Reflow nội dung · Vẫn đọc được',
+        ins:'Nội dung tự xếp lại — không bị cắt, không bị ẩn',
+        bg:'1024px · 2 cột', cl:'st',
+        nav:{l:P,t:P,w:W},
+        cd:[
+            {l:P,   t:CT,    w:332, h:90},
+            {l:356, t:CT,    w:332, h:90},
+            {l:P,   t:CT+100,w:332, h:90},
+            {l:356, t:CT+100,w:332, h:90}
+        ], bp:false
+    },
+    { /* Mobile */
+        nm:'Mobile', sz:'≤ 767px',
+        dc:'Đơn cột · Cuộn dọc · Ưu tiên đọc',
+        ins:'Stack lại — người dùng chỉ cần cuộn, không cần zoom',
+        bg:'375px · 1 cột', cl:'sm',
+        nav:{l:P,t:P,w:W},
+        cd:[
+            {l:P, t:CT,    w:W, h:43},
+            {l:P, t:CT+49, w:W, h:43},
+            {l:P, t:CT+98, w:W, h:43},
+            {l:P, t:CT+147,w:W, h:43}
+        ], bp:false
+    },
+    { /* Breakpoints */
+        nm:'Breakpoints', sz:'CÁC NGƯỠNG CHUYỂN ĐỔI',
+        dc:'Mỗi ngưỡng = một quyết định layout rõ ràng',
+        ins:'4 con số quyết định cách nội dung hiển thị trên mọi màn hình',
+        bg:'', cl:'', bp:true
+    }
+];
+
+/* === DOM refs === */
+const la = document.getElementById('la');
+const le = document.getElementById('le');
+const nv = document.getElementById('nv');
+const cc = [0,1,2,3].map(i => document.getElementById('c'+i));
+const bv = document.getElementById('bv');
+const wb = document.getElementById('wb');
+const dn = document.getElementById('dn');
+const ds = document.getElementById('ds');
+const dd = document.getElementById('dd');
+const di = document.getElementById('di');
+const hf = document.getElementById('hf');
+const pf = document.getElementById('pf');
+const ctrls = document.getElementById('ctrls');
+const toggleBtn = document.getElementById('toggleBtn');
+const playIcon = document.getElementById('playIcon');
+const pauseIcon = document.getElementById('pauseIcon');
+const btns = Array.from(ctrls.querySelectorAll('.cb-btn:not(.play-pause)'));
+
+let cur = 0, ft = null, pa = null, isPaused = false;
+const DUR = 3200;
+
+/* === Áp dụng state === */
+function apply(i) {
+    const s = S[i];
+
+    /* Info */
+    dn.textContent = s.nm;
+    ds.textContent = s.sz;
+    dd.textContent = s.dc;
+    di.textContent = s.ins;
+    hf.textContent = '0' + (i+1) + ' / 04';
+
+    /* Buttons */
+    btns.forEach((b,j) => b.classList.toggle('on', j===i));
+
+    /* Layout class */
+    la.className = 'la ' + s.cl;
+
+    if (s.bp) {
+        /* Breakpoints view */
+        le.classList.add('hide');
+        wb.style.opacity = '0';
+        bv.classList.remove('show');
+        /* Double rAF để reset transition */
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => bv.classList.add('show'));
+        });
+    } else {
+        /* Layout view */
+        bv.classList.remove('show');
+        le.classList.remove('hide');
+        wb.style.opacity = '1';
+        wb.textContent = s.bg;
+
+        /* Nav */
+        nv.style.left   = s.nav.l + 'px';
+        nv.style.top    = s.nav.t + 'px';
+        nv.style.width  = s.nav.w + 'px';
+
+        /* Cards */
+        s.cd.forEach((c,j) => {
+            cc[j].style.left   = c.l + 'px';
+            cc[j].style.top    = c.t + 'px';
+            cc[j].style.width  = c.w + 'px';
+            cc[j].style.height = c.h + 'px';
+        });
+    }
+}
+
+/* === Progress bar === */
+function startProg() {
+    const t0 = performance.now();
+    pf.style.transition = 'none';
+    pf.style.width = '0%';
+    function tick(now) {
+        const p = Math.min(100, (now - t0) / DUR * 100);
+        pf.style.width = p + '%';
+        if (p < 100) pa = requestAnimationFrame(tick);
+    }
+    pa = requestAnimationFrame(tick);
+}
+
+/* === Chuyển frame === */
+function next() {
+    cur = (cur + 1) % S.length;
+    apply(cur);
+    startProg();
+}
+
+/* === Bắt đầu animation === */
+function start() {
+    apply(0);
+    startProg();
+    if(ft) clearInterval(ft);
+    ft = setInterval(next, DUR);
+}
+
+/* === Responsive scale === */
+function scale() {
+    const wr = document.querySelector('.aw');
+    const bx = document.getElementById('ab');
+    const s = wr.clientWidth / 700;
+    bx.style.transform = 'scale(' + s + ')';
+    wr.style.height = Math.ceil(412 * s) + 'px';
+}
+
+/* Pause/Resume logic */
+function pauseAnim() {
+    isPaused = true;
+    if(ft) clearInterval(ft);
+    if(pa) cancelAnimationFrame(pa);
+    pf.style.width = '100%';
+    pf.style.background = 'var(--muted)';
+    playIcon.style.display = 'block';
+    pauseIcon.style.display = 'none';
+}
+
+function resumeAnim() {
+    isPaused = false;
+    pf.style.background = 'var(--accent)';
+    playIcon.style.display = 'none';
+    pauseIcon.style.display = 'block';
+    next(); // Chạy ngay lập tức frame tiếp theo
+    if(ft) clearInterval(ft);
+    ft = setInterval(next, DUR);
+}
+
+/* Button clicks */
+btns.forEach(b => {
+    b.addEventListener('click', () => {
+        const i = parseInt(b.dataset.i);
+        cur = i;
+        pauseAnim();
+        apply(i);
+    });
+});
+
+toggleBtn.addEventListener('click', () => {
+    if (isPaused) resumeAnim();
+    else pauseAnim();
+});
+
+/* Init */
+window.addEventListener('resize', scale);
+requestAnimationFrame(() => requestAnimationFrame(scale));
+start();
+
+/* Pause khi tab ẩn */
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+        if(ft) clearInterval(ft);
+        if(pa) cancelAnimationFrame(pa);
+    } else {
+        if(!isPaused) start();
+    }
+});
+</script>
+</body>
+</html>
