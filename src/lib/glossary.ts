@@ -67,7 +67,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'mcp', name: 'MCP', nameEn: 'Model Context Protocol', letter: 'M', groups: ['ai', 'workflow'], definition: 'Giao thức giúp AI kết nối trực tiếp với tool bên ngoài — Supabase, Vercel, Notion, GitHub. Thay vì copy-paste data cho AI, MCP cho phép AI tự đọc và thực hiện action.', example: '"Cursor với Supabase MCP" → AI có thể đọc schema database của bạn và tự viết query đúng cấu trúc.' },
   { id: 'npm', name: 'npm', nameEn: 'Node Package Manager', letter: 'N', groups: ['infra'], definition: 'Công cụ cài và quản lý thư viện code. Giống App Store nhưng cho code — gõ "npm install tên-thư-viện" là cài xong.', example: '"npm install" trong terminal = cài tất cả dependency của project. "npm run dev" = chạy server local. 2 lệnh này dùng hàng ngày khi vibecode.' },
   { id: 'nodejs', name: 'Node.js', nameEn: 'Môi trường chạy JavaScript', letter: 'N', groups: ['infra'], definition: 'Phần mềm cho phép chạy JavaScript ngoài trình duyệt — trên server, terminal. Next.js cần Node.js để chạy. Cài một lần, không cần hiểu sâu.', example: 'Lần đầu setup project: tải và cài Node.js từ nodejs.org → sau đó mọi lệnh npm đều dùng được.' },
-  { id: 'padding', name: 'Padding', nameEn: 'Khoảng cách bên trong', letter: 'P', groups: ['design'], definition: 'Khoảng trống bên trong một element, giữa content và đường viền. Button có text quá sát mép = thiếu padding. Tailwind: "p-4" = padding 1rem tất cả phía.', example: '"Text trong card bị chật quá" → Tăng padding: "p-6" hoặc "px-4 py-3".' },
+  { id: 'padding', name: 'Padding', nameEn: 'Khoảng cách trong — không gian giữa nội dung và viền', letter: 'P', groups: ['design'], definition: 'Padding là khoảng trống nằm BÊN TRONG một element, tạo ra sự ngăn cách giữa nội dung (text, ảnh) và đường viền (border). Padding giúp nội dung "thở" được và dễ đọc hơn, không bị dính sát vào cạnh.', example: '"Nội dung dính sát vào viền card" → thiếu padding. Khi nói "thêm padding 16px" là yêu cầu nới rộng khoảng trống bên trong card để text trông thoáng hơn.', related: ['margin', 'spacing', 'css'], demo: { kind: 'interactive', src: 'gif-padding-demo.html', alt: 'Mô phỏng 4 mức padding từ không padding đến padding đều 4 cạnh' } },
   { id: 'props', name: 'Props', nameEn: 'Properties / Thuộc tính', letter: 'P', groups: ['code'], definition: 'Dữ liệu truyền vào component từ bên ngoài. Giống như thông số khi gọi món — cùng món Phở nhưng "không hành, thêm tái" là props khác nhau.', example: '<Button text="Đăng ký" color="accent" /> — "text" và "color" là props.' },
   { id: 'prompt', name: 'Prompt', nameEn: 'Câu lệnh cho AI', letter: 'P', groups: ['ai'], definition: 'Đoạn text bạn gửi cho AI để hướng dẫn nó làm việc. Prompt tốt = kết quả tốt. Prompt mơ hồ = AI đoán mò. Đây là kỹ năng quan trọng nhất trong vibecode.', example: 'Prompt tệ: "Làm trang web đẹp". Prompt tốt: "Tạo landing page Next.js có hero section, countdown 3 ngày, form email, màu brand #E8410A, responsive mobile."' },
   { id: 'port', name: 'Port', nameEn: 'Cổng kết nối', letter: 'P', groups: ['infra'], definition: 'Số định danh cho service đang chạy trên máy. localhost:3000 → port 3000 là Next.js. "Port already in use" = có app khác đang chiếm port đó.', example: '"Error: port 3000 is already in use" → Tắt terminal khác hoặc dùng port khác: "npm run dev -- --port 3001".' },
@@ -129,6 +129,7 @@ const deepDiveTermIds = new Set([
   'letter-spacing',
   'line-spacing',
   'mcp',
+  'padding',
   'request',
   'radius',
   'spacing',
@@ -189,6 +190,10 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Backend là "phòng máy" của website — nhận yêu cầu từ frontend, xử lý logic, đọc/ghi database, rồi trả kết quả.',
     'User không bao giờ thấy code backend, nhưng mọi thứ hoạt động đều phụ thuộc vào nó. Khi AI nói "API trả 500" — bạn biết ngay: frontend ổn, backend lỗi.',
     'Trong mô phỏng, bạn sẽ thấy 4 mảnh ghép cốt lõi: API để giao tiếp, Database để lưu trữ, Auth để bảo mật, và Background Jobs để xử lý tác vụ nặng.',
+  ],
+  padding: [
+    'Padding là "khoảng thở" bên trong card. Không có padding, text sẽ dính sát vào viền, tạo cảm giác ngạt thở và cực kỳ khó đọc.',
+    'Phân biệt nhanh: Padding làm element to ra (nếu không set box-sizing), còn Margin đẩy các element khác ra xa. Trong mô phỏng, vùng cam chính là padding.',
   ],
 };
 

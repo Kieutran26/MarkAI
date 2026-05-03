@@ -14,6 +14,8 @@ import lineSpacingDemoHtml from '../../gif-line-spacing-demo.html?raw';
 import lineSpacingPracticeHtml from '../../gif-line-spacing-practice.html?raw';
 import marginDemoHtml from '../../gif-margin-demo.html?raw';
 import marginPracticeHtml from '../../gif-margin-practice.html?raw';
+import paddingDemoHtml from '../../gif-padding-demo.html?raw';
+import paddingPracticeHtml from '../../gif-padding-practice.html?raw';
 import radiusDemoHtml from '../../gif-radius-demo.html?raw';
 import radiusPracticeHtml from '../../gif-radius-practice.html?raw';
 import cardDemoHtml from '../../gif-card-demo.html?raw';
@@ -47,6 +49,7 @@ export default function GlossaryTermDetailPage() {
     if (id === 'letter-spacing') return letterSpacingDemoHtml;
     if (id === 'line-spacing') return lineSpacingDemoHtml;
     if (id === 'margin') return marginDemoHtml;
+    if (id === 'padding') return paddingDemoHtml;
     if (id === 'radius') return radiusDemoHtml;
     if (id === 'card') return cardDemoHtml;
     if (id === 'frontend') return frontendDemoHtml;
@@ -57,6 +60,7 @@ export default function GlossaryTermDetailPage() {
 
   const getPracticeHtml = (id: string) => {
     if (id === 'margin') return marginPracticeHtml;
+    if (id === 'padding') return paddingPracticeHtml;
     if (id === 'line-spacing') return lineSpacingPracticeHtml;
     if (id === 'radius') return radiusPracticeHtml;
     if (id === 'card') return cardPracticeHtml;

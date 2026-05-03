@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Padding Demo — markAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+  --bg:#0f0f12;--bg-card:#16161b;--fg:#e8e4dc;--muted:#6e6e7a;
+  --accent:#e88c2e;--accent-soft:rgba(232,140,46,.12);
+  --accent-border:rgba(232,140,46,.3);--border:#282830;
+  --surface:#1c1c23;--success:#3a9e5c;--success-soft:rgba(58,158,92,.12);
+  --warning:#c49030;--warning-soft:rgba(196,144,48,.1);
+  --bar-d:#2a2a34;--bar-m:#44444f;--shape-lt:#33333d;
+  --pad-fill:rgba(232,140,46,.08);--pad-stroke:rgba(232,140,46,.35);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:'Space Grotesk',sans-serif;line-height:1.6;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(rgba(255,255,255,.022) 1px,transparent 1px);background-size:20px 20px;pointer-events:none;z-index:0}
+
+#app-root{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:24px}
+
+.sec-lbl{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.sec-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ===== SIM GRID ===== */
+.sim-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+@media(max-width:720px){.sim-grid{grid-template-columns:repeat(2,1fr)}}
+.sc{background:var(--bg-card);border:1px solid var(--border);cursor:pointer;position:relative;overflow:hidden;transition:border-color .3s,background .3s}
+.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .35s ease;z-index:2}
+.sc:hover{border-color:var(--accent-border)}
+.sc.on{border-color:var(--accent);background:var(--surface)}
+.sc.on::before{transform:scaleX(1)}
+.sc-head{padding:14px 14px 8px;display:flex;justify-content:space-between;align-items:center}
+.sc-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px}
+.sc-tag{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);transition:color .3s}
+.sc.on .sc-tag{color:var(--accent)}
+
+/* Padding demo box */
+.sc-demo{padding:0 14px 10px;display:flex;justify-content:center;align-items:center;min-height:130px}
+.pad-box{position:relative;border:1.5px solid var(--border);background:var(--bg);transition:all .5s cubic-bezier(.4,0,.2,1);width:100%;max-width:140px}
+.pad-fill{position:absolute;inset:0;background:var(--pad-fill);transition:all .5s cubic-bezier(.4,0,.2,1);pointer-events:none}
+.pad-content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;transition:all .5s cubic-bezier(.4,0,.2,1)}
+.pad-avatar{width:22px;height:22px;background:var(--bar-m);transition:all .5s ease}
+.pad-text{height:4px;background:var(--bar-m);transition:all .5s ease}
+.pad-text.short{width:36px}
+.pad-text.long{width:50px}
+
+/* Padding dimension labels */
+.pad-dim{position:absolute;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--accent);opacity:0;transition:opacity .4s ease;white-space:nowrap;z-index:3;pointer-events:none}
+.sc.on .pad-dim{opacity:.9}
+.pad-dim.top{top:-14px;left:50%;transform:translateX(-50%)}
+.pad-dim.bottom{bottom:-14px;left:50%;transform:translateX(-50%)}
+.pad-dim.left{left:-8px;top:50%;transform:translateY(-50%) rotate(-90deg)}
+.pad-dim.right{right:-8px;top:50%;transform:translateY(-50%) rotate(90deg)}
+
+/* CSS code */
+.sc-code{padding:0 14px 6px}
+.code-line{font-family:'JetBrains Mono',monospace;font-size:8.5px;color:var(--muted);line-height:1.6;opacity:.5;transition:opacity .3s}
+.sc.on .code-line{opacity:.75}
+.code-line .prop{color:var(--accent)}
+.code-line .val{color:var(--fg);opacity:.6}
+
+.sc-ins{padding:0 14px 12px;font-size:10.5px;color:var(--muted);opacity:0;max-height:0;overflow:hidden;transition:all .4s ease;line-height:1.5}
+.sc.on .sc-ins{opacity:.65;max-height:50px;margin-top:-2px}
+
+/* ===== INSIGHT ===== */
+.ins{background:var(--surface);border:1px solid var(--border);padding:18px 22px;display:flex;align-items:flex-start;gap:12px;min-height:80px}
+.ins-i{color:var(--accent);font-size:13px;margin-top:3px;flex-shrink:0}
+.ins-t{font-size:14px;color:var(--fg);opacity:.85;line-height:1.65;transition:opacity .25s,transform .25s}
+.ins-t.fading{opacity:0;transform:translateY(6px)}
+
+@media(max-width:480px){
+  #app-root{padding:14px}
+  .ins{padding:14px 16px}
+}
+</style>
+</head>
+<body>
+
+<div id="app-root">
+  <section aria-label="Mô phỏng padding">
+    <div class="sim-grid" id="simGrid"></div>
+
+    <div class="ins">
+      <i class="fa-solid fa-lightbulb ins-i"></i>
+      <p class="ins-t" id="insT">Đang tải...</p>
+    </div>
+  </section>
+</div>
+
+<script>
+/* ===== DỮ LIỆU MÔ PHỎNG ===== */
+const presets = [
+  { num:'01', tag:'Không padding', t:0, r:0, b:0, l:0,
+    code:'padding: 0px;',
+    ins:'Nội dung dính sát vào viền — trông "ngạt". Áp dụng: table cell, tag nhỏ, khi muốn tiết kiệm không gian tối đa. Nhưng dùng cho card/text dài → rất khó đọc.' },
+  { num:'02', tag:'Đều 16px', t:16, r:16, b:16, l:16,
+    code:'padding: 16px;',
+    ins:'Padding đều 4 cạnh — an toàn, phổ biến nhất. Đây là default cho card, button, input. Khi nói "thêm padding" mà không chỉ định cạnh → dev mặc định hiểu là đều.' },
+  { num:'03', tag:'Dọc khác ngang', t:20, r:24, b:20, l:24,
+    code:'padding: 20px 24px;',
+    ins:'Ngang rộng hơn dọc — thường dùng cho button (để button rộng ra), hoặc card có text dài. Code viết gọn: "padding: 20px 24px" (dọc trước, ngang sau).' },
+  { num:'04', tag:'4 cạnh khác nhau', t:8, r:20, b:16, l:24,
+    code:'padding: 8px 20px 16px 24px;',
+    ins:'4 cạnh khác nhau — hiếm khi dùng, trừ khi design rất đặc thù. Code: "top → right → bottom → left" theo chiều kim đồng hồ. Marketer ít khi cần chỉ định kiểu này.' }
+];
+
+let activeI = 0;
+let autoTimer;
+const simGrid = document.getElementById('simGrid');
+const insT = document.getElementById('insT');
+
+function renderSim(){
+  simGrid.innerHTML = presets.map((p,i)=>{
+    const padStr = `${p.t}px ${p.r}px ${p.b}px ${p.l}px`;
+    const hasAny = p.t+p.r+p.b+p.l > 0;
+    return `<div class="sc" data-i="${i}" tabindex="0" role="button" aria-label="Padding ${p.tag}">
+      <div class="sc-head"><span class="sc-num">${p.num}</span><span class="sc-tag">${p.tag}</span></div>
+      <div class="sc-demo">
+        <div class="pad-box" style="padding:${padStr}">
+          <div class="pad-fill" style="opacity:${hasAny?1:0}"></div>
+          <div class="pad-content">
+            <div class="pad-avatar"></div>
+            <div class="pad-text short"></div>
+            <div class="pad-text long"></div>
+          </div>
+          ${p.t>0?`<div class="pad-dim top">${p.t}px</div>`:''}
+          ${p.b>0?`<div class="pad-dim bottom">${p.b}px</div>`:''}
+          ${p.l>0?`<div class="pad-dim left">${p.l}px</div>`:''}
+          ${p.r>0?`<div class="pad-dim right">${p.r}px</div>`:''}
+        </div>
+      </div>
+      <div class="sc-code"><div class="code-line"><span class="prop">padding</span>: <span class="val">${p.code.replace('padding: ','').replace(';','')}</span>;</div></div>
+      <div class="sc-ins">${p.ins}</div>
+    </div>`;
+  }).join('');
+
+  simGrid.querySelectorAll('.sc').forEach(c=>{
+    c.addEventListener('click',()=>{
+      clearInterval(autoTimer);
+      activateCard(+c.dataset.i);
+    });
+  });
+}
+
+function activateCard(i){
+  activeI = i;
+  simGrid.querySelectorAll('.sc').forEach((c, idx)=>c.classList.toggle('on', idx === i));
+  setIns(presets[i].ins);
+}
+
+function setIns(t){insT.classList.add('fading');setTimeout(()=>{insT.textContent=t;insT.classList.remove('fading')},250)}
+
+function startAuto(){
+  activateCard(0);
+  autoTimer = setInterval(()=>{
+    activeI = (activeI + 1) % presets.length;
+    activateCard(activeI);
+  }, 4500);
+}
+
+renderSim();
+startAuto();
+</script>
+</body>
+</html>
