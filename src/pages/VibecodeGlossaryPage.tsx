@@ -13,9 +13,17 @@ export default function VibecodeGlossaryPage() {
   const [activeGroup, setActiveGroup] = useState<TermGroup | 'all'>('all');
   const [sortAZ, setSortAZ] = useState(true);
   const [activeLetter, setActiveLetter] = useState('A');
+  const [showBackToTop, setShowBackToTop] = useState(false);
 
   useEffect(() => {
     document.title = 'Từ điển chuyên ngành cho Marketer · markAI.vn';
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => setShowBackToTop(window.scrollY > 640);
+    handleScroll();
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const filteredTerms = useMemo(() => terms.filter((term) => {
@@ -54,13 +62,23 @@ export default function VibecodeGlossaryPage() {
       <GlossaryHero searchQuery={searchQuery} onSearchChange={setSearchQuery} filteredCount={filteredTerms.length} activeGroup={activeGroup} onGroupChange={setActiveGroup} />
       <FilterBar activeGroup={activeGroup} onGroupChange={setActiveGroup} sortAZ={sortAZ} onToggleSort={() => setSortAZ((value) => !value)} />
 
-      <div className="glossary-grid-shell grid min-h-[80vh] lg:grid-cols-[220px_1fr]">
+      <div className="glossary-grid-shell grid min-h-[80vh] lg:grid-cols-[108px_1fr] xl:grid-cols-[120px_1fr]">
         <AlphaSidebar groupedLetters={grouped.map((item) => ({ letter: item.letter, count: item.terms.length }))} activeLetter={activeLetter} />
         <GlossaryContent grouped={grouped} getTermName={getTermName} />
       </div>
 
       <QuickRef />
       <GlossaryCta />
+
+      <button
+        type="button"
+        aria-label="Lên đầu trang"
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        className={`glossary-back-to-top ${showBackToTop ? 'is-visible' : ''}`}
+      >
+        <span>Lên đầu</span>
+        <span aria-hidden="true">↑</span>
+      </button>
     </div>
   );
 }

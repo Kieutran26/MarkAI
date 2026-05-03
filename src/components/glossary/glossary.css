@@ -25,6 +25,43 @@
 .glossary-page .glossary-alpha::-webkit-scrollbar { width: 3px; }
 .glossary-page .glossary-alpha::-webkit-scrollbar-thumb { background: var(--border); }
 .glossary-page article:hover .glossary-example { background: var(--bg3); }
+.glossary-back-to-top {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 60;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--bg);
+  padding: 10px 14px;
+  font-family: var(--font-mono, var(--mono));
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(10px);
+  transition: opacity 0.18s ease, transform 0.18s ease, background 0.18s ease, color 0.18s ease;
+}
+.glossary-back-to-top.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+.glossary-back-to-top:hover {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--ink);
+}
+
+@media (min-width: 1024px) {
+  .glossary-back-to-top {
+    right: 32px;
+    bottom: 28px;
+  }
+}
 
 @media (min-width: 1280px) {
   .glossary-page .glossary-quickref-card:nth-child(4n) { border-right: none; }
