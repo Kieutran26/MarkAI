@@ -96,6 +96,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'dropdown', name: 'Dropdown', nameEn: 'Menu thả xuống', letter: 'D', groups: ['design', 'code'], definition: 'Một thành phần giao diện cho phép người dùng chọn một giá trị từ danh sách các tùy chọn được ẩn đi và chỉ hiện ra khi click. Nó giúp tiết kiệm diện tích và giữ cho giao diện gọn gàng hơn so với việc liệt kê tất cả lựa chọn cùng lúc.', example: 'Prompt: "Thêm một dropdown để chọn category, mặc định là \'Tất cả\', khi chọn xong thì filter lại danh sách bài viết."', related: ['input', 'select', 'state'], demo: { kind: 'interactive', src: 'gif-dropdown-demo.html', alt: 'Mô phỏng các trạng thái của dropdown: mặc định, mở, đã chọn và disabled' } },
   { id: 'element', name: 'Element', nameEn: 'Thành phần giao diện', letter: 'E', groups: ['design', 'code'], definition: 'Đơn vị nhỏ nhất có thể nhận dạng trong giao diện người dùng — như nút bấm, ô nhập liệu, tiêu đề, hay ảnh. Một UI phức tạp là sự kết hợp của nhiều element được sắp xếp theo cấu trúc nhất định.', example: 'Prompt: "Thêm một element Input vào form này, bên dưới element Heading và bên trên element Button để user nhập mã giảm giá."', related: ['component', 'ui', 'interface', 'radius'], demo: { kind: 'interactive', src: 'gif-element-demo.html', alt: 'Mô phỏng các loại element phổ biến: Text, Button, Input, Other' } },
   { id: 'toggle', name: 'Toggle', nameEn: 'Nút bật/tắt / Switch', letter: 'T', groups: ['design', 'code'], definition: 'Một điều khiển giao diện có hai trạng thái đối lập: Bật (On/True) hoặc Tắt (Off/False). Toggle giúp thay đổi thiết lập ngay lập tức mà không cần qua các bước xác nhận phức tạp. Nó phản ánh trực tiếp logic nhị phân (Boolean) trong lập trình.', example: 'Nút bật/tắt "Chế độ tối", "Thông báo đẩy", hoặc "Chế độ bảo trì". Khi gạt sang phải là True, gạt sang trái là False.', related: ['boolean', 'state', 'interface', 'element'], demo: { kind: 'interactive', src: 'gif-toggle-demo.html', alt: 'Mô phỏng 4 trạng thái của toggle: Off, On, Disabled và Focus' } },
+  { id: 'sidebar', name: 'Sidebar', nameEn: 'Thanh bên / Navigation Rail', letter: 'S', groups: ['design', 'code'], definition: 'Thanh điều hướng hoặc chứa thông tin bổ sung nằm ở cạnh trái hoặc phải của trang web. Sidebar giúp tận dụng chiều ngang của màn hình desktop để giữ các chức năng quan trọng luôn trong tầm tay mà không chiếm dụng không gian phía trên như Navbar.', example: 'Dashboard của các tool SaaS thường có sidebar bên trái để chuyển giữa các tính năng. Prompt: "Thêm một collapsible sidebar bên trái chứa các mục: Dashboard, Reports, Settings."', related: ['navbar', 'interface', 'layout'], demo: { kind: 'interactive', src: 'gif-sidebar-demo.html', alt: 'Mô phỏng các loại sidebar: Static, Collapsible, Overlay và Right' } },
 ];
 
 export const quickRefItems = [
@@ -149,6 +150,7 @@ const deepDiveTermIds = new Set([
   'request',
   'radius',
   'responsive',
+  'sidebar',
   'slider',
   'spacing',
   'stroke',
@@ -269,6 +271,10 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Toggle không chỉ là "cái nút gạt" — nó là hiện thân của kiểu dữ liệu Boolean (True/False). Khi bạn bảo AI "thêm toggle", AI sẽ tạo ra một biến state để theo dõi trạng thái này.',
     'Khác với Checkbox (dùng cho danh sách nhiều lựa chọn), Toggle thường dùng cho các thiết lập có hiệu lực ngay lập tức. Nếu thay đổi cần nút "Lưu" mới có tác dụng, hãy cân nhắc dùng Checkbox hoặc Switch có xác nhận.',
     'Trong mô phỏng, bạn sẽ thấy trạng thái "Disabled" rất quan trọng: dùng để khóa các lựa chọn khi user chưa đủ quyền hoặc hệ thống đang trong trạng thái bảo trì (Maintenance).',
+  ],
+  sidebar: [
+    'Khi làm dashboard, Static Sidebar là chuẩn mực vì nó giúp user chuyển đổi nhanh giữa các module. Với các tool cần diện tích làm việc lớn (như IDE hay Figma), Collapsible Sidebar là lựa chọn tối ưu.',
+    'Trong mô phỏng, bạn hãy chú ý cách Content Area (vùng nội dung chính) phản ứng: nó có thể bị đẩy đi (Static/Collapsible) hoặc bị đè lên (Overlay). Hiểu điều này giúp bạn prompt AI xử lý layout chính xác hơn.',
   ],
 };
 

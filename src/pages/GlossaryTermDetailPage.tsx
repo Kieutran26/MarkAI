@@ -50,6 +50,8 @@ import footerDemoHtml from '../../gif-footer-demo.html?raw';
 import footerPracticeHtml from '../../gif-footer-practice.html?raw';
 import toggleDemoHtml from '../../gif-toggle-demo.html?raw';
 import togglePracticeHtml from '../../gif-toggle-practice.html?raw';
+import sidebarDemoHtml from '../../gif-sidebar-demo.html?raw';
+import sidebarPracticeHtml from '../../gif-sidebar-practice.html?raw';
 
 
 export default function GlossaryTermDetailPage() {
@@ -91,6 +93,7 @@ export default function GlossaryTermDetailPage() {
     if (id === 'element') return elementDemoHtml;
     if (id === 'footer') return footerDemoHtml;
     if (id === 'toggle') return toggleDemoHtml;
+    if (id === 'sidebar') return sidebarDemoHtml;
     return null;
   };
 
@@ -115,6 +118,7 @@ export default function GlossaryTermDetailPage() {
     if (id === 'element') return elementPracticeHtml;
     if (id === 'footer') return footerPracticeHtml;
     if (id === 'toggle') return togglePracticeHtml;
+    if (id === 'sidebar') return sidebarPracticeHtml;
     return null;
   };
 

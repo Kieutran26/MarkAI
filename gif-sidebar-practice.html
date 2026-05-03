@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sidebar Practice — markAI</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f0f12;--bg-card:#16161b;--bg-el:#222;--border:#282830;
+  --border-active:#e88c2e;--accent:#e88c2e;
+  --accent-glow:rgba(232,140,46,.18);--accent-soft:rgba(232,140,46,.07);
+  --cream:#EDE4D8;--text:#D8D0C8;--muted:#777770;
+  --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:48px 48px;pointer-events:none;z-index:0}
+
+#app-root{position:relative;z-index:1;padding:24px 16px}
+
+.pg{font-size:14px;color:var(--text);line-height:1.6;margin-bottom:20px}
+.pg span{color:var(--accent);font-weight:700}
+
+/* type selector */
+.ts-row{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.ts-btn{
+  font-family:var(--mono);font-size:11px;font-weight:600;
+  padding:8px 14px;border:1px solid var(--border);background:var(--bg-card);
+  color:var(--muted);cursor:pointer;transition:all .25s;
+}
+.ts-btn:hover{border-color:var(--accent);color:var(--text)}
+.ts-btn.on{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+
+/* practice layout preview */
+.pl-wrap{border:1px solid var(--border);background:var(--bg-card);margin-bottom:18px;overflow:hidden;height:280px;position:relative}
+.pl-frame{display:flex;height:100%;transition:all .35s ease}
+
+/* sidebar */
+.pl-sb{background:var(--bg-el);border-right:1px solid var(--border);display:flex;flex-direction:column;transition:width .35s ease,opacity .35s,transform .35s;flex-shrink:0;overflow:hidden;position:relative;z-index:3}
+.pl-sb.right{border-right:none;border-left:1px solid var(--border)}
+.pl-sb-hd{padding:12px 14px;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.1em;white-space:nowrap;min-height:40px;display:flex;align-items:center}
+.pl-sb-items{padding:8px 10px;flex:1;display:flex;flex-direction:column;gap:4px}
+.pl-sb-item{padding:8px 10px;font-family:var(--sans);font-size:11px;color:var(--muted);border:1px solid transparent;transition:all .2s;white-space:nowrap;overflow:hidden;display:flex;align-items:center;gap:10px}
+.pl-sb-item.active-item{color:var(--cream);border-color:var(--border);background:var(--accent-soft)}
+.pl-sb-item .ico{width:16px;height:16px;border:1px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:8px;color:var(--muted)}
+.pl-sb-item.active-item .ico{border-color:var(--accent);color:var(--accent)}
+.pl-sb-item .lbl{transition:opacity .25s;white-space:nowrap}
+.pl-sb-item .lbl.hide{opacity:0;width:0;overflow:hidden}
+
+/* content area */
+.pl-ct{flex:1;display:flex;flex-direction:column;min-width:0;transition:all .35s;background:var(--bg)}
+.pl-ct-hd{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px;flex-shrink:0}
+.pl-ct-hd-t{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--cream);text-transform:uppercase;letter-spacing:1px}
+.pl-ct-hd-b{width:18px;height:18px;border:1px solid var(--border);background:var(--bg-el);flex-shrink:0;cursor:default}
+.pl-ct-body{padding:16px;flex:1;overflow:hidden;display:flex;flex-direction:column;gap:12px}
+.pl-stat-row{display:flex;gap:12px}
+.pl-stat{flex:1;border:1px solid var(--border);background:var(--bg-card);padding:10px 12px}
+.pl-stat-v{font-family:var(--mono);font-size:16px;font-weight:700;color:var(--cream)}
+.pl-stat-l{font-family:var(--mono);font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-top:2px}
+.pl-chart{flex:1;border:1px solid var(--border);background:var(--bg-card);position:relative;overflow:hidden;min-height:80px}
+.pl-chart-line{position:absolute;bottom:30%;left:10%;right:10%;height:2px;background:var(--accent);opacity:.4}
+.pl-chart-fill{position:absolute;bottom:0;left:10%;right:10%;height:30%;background:linear-gradient(transparent,var(--accent-glow));opacity:.3}
+
+/* overlay backdrop */
+.pl-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.6);z-index:2;opacity:0;pointer-events:none;transition:opacity .35s}
+.pl-backdrop.show{opacity:1}
+
+/* right sidebar detail */
+.pl-rs-detail{padding:10px 12px}
+.pl-rs-title{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--cream);margin-bottom:8px;text-transform:uppercase}
+.pl-rs-row{display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;padding:5px 0;border-bottom:1px solid var(--border)}
+.pl-rs-row:last-child{border-bottom:none}
+.pl-rs-k{color:var(--muted)}
+.pl-rs-v{color:var(--cream);font-weight:600}
+
+/* info bar */
+.info-bar{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap}
+.info-chip{font-family:var(--mono);font-size:9px;padding:5px 12px;border:1px solid var(--border);background:var(--bg-card);display:flex;align-items:center;gap:8px}
+.info-chip-k{color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.info-chip-v{color:var(--accent);font-weight:600}
+
+/* prompt */
+.p-prompt{border:1px solid var(--border);background:var(--bg-card);padding:14px 16px;display:flex;align-items:flex-start;gap:12px}
+.p-prompt-lbl{font-family:var(--mono);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);background:var(--accent-soft);border:1px solid rgba(232,140,46,.2);padding:4px 10px;white-space:nowrap;flex-shrink:0}
+.p-prompt-txt{font-family:var(--mono);font-size:12px;color:var(--cream);line-height:1.6;transition:opacity .25s}
+.p-prompt-txt.fading{opacity:0}
+
+@media(max-width:768px){
+  .pl-stat-row{flex-direction:column}
+}
+</style>
+</head>
+<body>
+<div id="app-root">
+    <p class="pg"><span>Mục tiêu:</span> Click từng loại sidebar để thấy cách layout nội dung (content area) thay đổi.</p>
+    
+    <div class="ts-row" id="tsRow"></div>
+    <div class="info-bar" id="infoBar"></div>
+
+    <div class="pl-wrap" id="plWrap">
+        <div class="pl-backdrop" id="plBackdrop"></div>
+        <div class="pl-frame" id="plFrame">
+            <div class="pl-sb" id="plSb">
+                <div class="pl-sb-hd">Navigation</div>
+                <div class="pl-sb-items" id="plSbItems"></div>
+            </div>
+            <div class="pl-ct" id="plCt">
+                <div class="pl-ct-hd">
+                    <div class="pl-ct-hd-b" id="plHam"></div>
+                    <span class="pl-ct-hd-t">Dashboard</span>
+                </div>
+                <div class="pl-ct-body">
+                    <div class="pl-stat-row">
+                        <div class="pl-stat"><div class="pl-stat-v">$12.4K</div><div class="pl-stat-l">Sales</div></div>
+                        <div class="pl-stat"><div class="pl-stat-v">847</div><div class="pl-stat-l">Orders</div></div>
+                    </div>
+                    <div class="pl-chart">
+                        <div class="pl-chart-line"></div>
+                        <div class="pl-chart-fill"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="p-prompt">
+        <span class="p-prompt-lbl">Prompt</span>
+        <span class="p-prompt-txt" id="pPrompt">Static sidebar, always visible, width 240px, left side navigation</span>
+    </div>
+</div>
+
+<script>
+var D=[
+  {name:'STATIC',behavior:'Always visible',width:'240px',pos:'Left',prompt:'Static sidebar, always visible, width 240px, left side navigation'},
+  {name:'COLLAPSIBLE',behavior:'Icon → Expand',width:'60px → 240px',pos:'Left',prompt:'Collapsible sidebar, icon-only default, expand on hover to 240px'},
+  {name:'OVERLAY',behavior:'Slide over',width:'280px (overlay)',pos:'Left',prompt:'Overlay sidebar, off-canvas slide from left, 280px, backdrop visible'},
+  {name:'RIGHT',behavior:'Detail panel',width:'320px',pos:'Right',prompt:'Right sidebar, contextual detail panel, 320px, shows selected item info'}
+];
+
+var navItems=[
+  {ico:'D',lbl:'Dashboard',active:true},
+  {ico:'A',lbl:'Analytics',active:false},
+  {ico:'O',lbl:'Orders',active:false},
+  {ico:'S',lbl:'Settings',active:false}
+];
+
+var tsRow=document.getElementById('tsRow');
+var infoBar=document.getElementById('infoBar');
+var plSb=document.getElementById('plSb');
+var plSbItems=document.getElementById('plSbItems');
+var plFrame=document.getElementById('plFrame');
+var plBackdrop=document.getElementById('plBackdrop');
+var plHam=document.getElementById('plHam');
+var pPrompt=document.getElementById('pPrompt');
+
+function buildSbItems(collapsed,isRight){
+  plSbItems.innerHTML='';
+  if(isRight){
+    plSbItems.innerHTML=
+      '<div class="pl-rs-detail">'+
+        '<div class="pl-rs-title">Order #8472</div>'+
+        '<div class="pl-rs-row"><span class="pl-rs-k">Status</span><span class="pl-rs-v" style="color:var(--accent)">Shipped</span></div>'+
+        '<div class="pl-rs-row"><span class="pl-rs-k">Amount</span><span class="pl-rs-v">$234.00</span></div>'+
+        '<div class="pl-rs-row"><span class="pl-rs-k">Items</span><span class="pl-rs-v">3</span></div>'+
+        '<div class="pl-rs-row"><span class="pl-rs-k">Date</span><span class="pl-rs-v">Jan 15</span></div>'+
+      '</div>';
+    return;
+  }
+  navItems.forEach(function(item){
+    var el=document.createElement('div');
+    el.className='pl-sb-item'+(item.active?' active-item':'');
+    var lblCls=collapsed?'lbl hide':'lbl';
+    el.innerHTML='<div class="ico">'+item.ico+'</div><span class="'+lblCls+'">'+item.lbl+'</span>';
+    plSbItems.appendChild(el);
+  });
+}
+
+function applyType(idx){
+  var d=D[idx];
+  tsRow.querySelectorAll('.ts-btn').forEach(function(x,i){x.classList.toggle('on',i===idx)});
+
+  plSb.classList.remove('right');
+  plSb.style.position='';
+  plSb.style.width='';
+  plBackdrop.classList.remove('show');
+  plFrame.style.flexDirection='';
+
+  if(idx===3){ // Right
+    plFrame.style.flexDirection='row-reverse';
+    plSb.classList.add('right');
+    plSb.style.width='35%';
+    plSb.querySelector('.pl-sb-hd').textContent='Order Detail';
+    buildSbItems(false,true);
+  }else if(idx===2){ // Overlay
+    plSb.style.position='absolute';
+    plSb.style.left='0';plSb.style.top='0';plSb.style.bottom='0';
+    plSb.style.width='40%';
+    plBackdrop.classList.add('show');
+    plSb.querySelector('.pl-sb-hd').textContent='Navigation';
+    buildSbItems(false,false);
+  }else if(idx===1){ // Collapsible
+    plSb.style.width='48px';
+    plSb.querySelector('.pl-sb-hd').textContent='';
+    buildSbItems(true,false);
+  }else{ // Static
+    plSb.style.width='30%';
+    plSb.querySelector('.pl-sb-hd').textContent='Navigation';
+    buildSbItems(false,false);
+  }
+
+  plHam.style.borderColor=idx===2?'var(--accent)':'var(--border)';
+  plHam.style.background=idx===2?'var(--accent-soft)':'var(--bg-el)';
+
+  infoBar.innerHTML=
+    '<div class="info-chip"><span class="info-chip-k">Type</span><span class="info-chip-v">'+d.name+'</span></div>'+
+    '<div class="info-chip"><span class="info-chip-k">Behavior</span><span class="info-chip-v">'+d.behavior+'</span></div>'+
+    '<div class="info-chip"><span class="info-chip-k">Width</span><span class="info-chip-v">'+d.width+'</span></div>';
+
+  pPrompt.classList.add('fading');
+  setTimeout(function(){pPrompt.textContent=d.prompt;pPrompt.classList.remove('fading')},200);
+}
+
+D.forEach(function(d,i){
+  var b=document.createElement('button');
+  b.className='ts-btn'+(i===0?' on':'');
+  b.textContent=d.name;
+  b.onclick=function(){applyType(i)};
+  tsRow.appendChild(b);
+});
+
+applyType(0);
+</script>
+</body>
+</html>
