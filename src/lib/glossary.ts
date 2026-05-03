@@ -1,6 +1,22 @@
 export type TermGroup = 'code' | 'design' | 'infra' | 'data' | 'ai' | 'workflow';
 
-export type GlossaryTerm = { id: string; name: string; nameEn: string; letter: string; groups: TermGroup[]; definition: string; example: string; related?: string[] };
+export type GlossaryTerm = {
+  id: string;
+  name: string;
+  nameEn: string;
+  letter: string;
+  groups: TermGroup[];
+  definition: string;
+  example: string;
+  related?: string[];
+  demo?: {
+    src: string;
+    alt?: string;
+    caption?: string;
+  };
+};
+
+export type TermViewMode = 'modal' | 'page';
 
 export const terms: GlossaryTerm[] = [
   { id: 'api', name: 'API', nameEn: 'Application Programming Interface', letter: 'A', groups: ['infra', 'code'], definition: 'Cầu nối giúp các phần mềm nói chuyện với nhau. Khi bạn gửi form trên web và data tự xuất hiện trong Google Sheet — đó là API làm việc.', example: 'Mình muốn khi khách điền form trên landing page, data tự vào Airtable. Cần xài API của Airtable.', related: ['endpoint', 'webhook', 'request'] },
@@ -91,3 +107,61 @@ export const glossaryTickerItems = ['✳ Glossary · 60+ từ điển chuyên ng
 export const termsByLetter = terms.reduce((acc, term) => ((acc[term.letter] ??= []).push(term), acc), {} as Record<string, GlossaryTerm[]>);
 export const letters = Object.keys(termsByLetter).sort();
 export const totalGroupCounts = (['code', 'design', 'infra', 'data', 'ai', 'workflow'] as TermGroup[]).reduce((acc, group) => ((acc[group] = terms.filter((term) => term.groups.includes(group)).length), acc), { all: terms.length } as Record<TermGroup | 'all', number>);
+
+const deepDiveTermIds = new Set([
+  'api',
+  'auth',
+  'async',
+  'backend',
+  'build',
+  'database',
+  'deploy',
+  'env',
+  'frontend',
+  'json',
+  'mcp',
+  'request',
+  'supabase',
+  'webhook',
+  'websocket',
+]);
+
+const deepDiveNotes: Partial<Record<string, string[]>> = {
+  api: [
+    'Nghĩ theo kiểu marketer: API là chiếc ống nối giữa tool A và tool B, để dữ liệu tự chảy thay vì bạn copy tay.',
+    'Chỉ cần nhớ 3 mảnh chính: endpoint để gọi đúng chỗ, request là dữ liệu mình gửi đi, response là thứ hệ thống trả về.',
+    'API là term rất hợp để gắn GIF mô phỏng kiểu form submit xong data tự chảy sang Airtable hoặc CRM.',
+  ],
+  auth: [
+    'Auth không chỉ là nút đăng nhập. Nó còn quyết định ai được vào, vào bằng cách nào, và sau khi vào thì được thấy phần gì.',
+    'Với tool nội bộ, rule phổ biến là chỉ cho email công ty truy cập. Với sản phẩm public thì còn có session, logout, và reset mật khẩu.',
+  ],
+  async: [
+    'Async / await quan trọng vì gần như mọi thao tác gọi API, upload file, hoặc lưu dữ liệu đều không diễn ra tức thì.',
+    'Nếu xử lý async không rõ ràng, UI rất dễ gặp lỗi loading sai, bấm nhiều lần, hoặc báo xong trước khi dữ liệu thực sự lưu thành công.',
+  ],
+  database: [
+    'Database là nơi lưu dữ liệu thật, nên khi mô tả yêu cầu cho AI bạn thường nên nói rõ: lưu vào bảng nào, mỗi dòng đại diện cho cái gì.',
+    'Ở mức marketer, chỉ cần hiểu form submit tạo record mới, dashboard đọc record ra, còn filter chỉ là cách xem lại dữ liệu đó.',
+  ],
+  request: [
+    'Rất nhiều lỗi kỹ thuật marketer gặp thực ra nằm ở request / response: gửi sai dữ liệu, gọi sai URL, hoặc server trả lỗi.',
+    'Nếu bạn nhớ được vài mã cơ bản như 400, 401, 404, 500 thì lúc prompt AI sửa lỗi sẽ nhanh hơn nhiều.',
+  ],
+  supabase: [
+    'Supabase hay được chọn vì gom database, auth, storage vào một chỗ, nên rất hợp các project vibecode cần ra nhanh.',
+    'Khi AI gợi ý dùng Supabase, hãy hiểu đơn giản là nó đang chọn một backend all-in-one để giảm số phần bạn phải tự cấu hình.',
+  ],
+};
+
+export function getTermById(id: string) {
+  return terms.find((term) => term.id === id);
+}
+
+export function getTermViewMode(term: GlossaryTerm): TermViewMode {
+  return deepDiveTermIds.has(term.id) ? 'page' : 'modal';
+}
+
+export function getTermDeepDiveNotes(term: GlossaryTerm) {
+  return deepDiveNotes[term.id] ?? [];
+}

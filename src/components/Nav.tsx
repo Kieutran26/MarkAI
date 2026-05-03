@@ -6,7 +6,7 @@ const GLOSSARY_PATH = '/tu-dien-thuat-ngu';
 export default function Nav() {
   const location = useLocation();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const isGlossaryRoute = location.pathname === GLOSSARY_PATH;
+  const isGlossaryRoute = location.pathname === GLOSSARY_PATH || location.pathname.startsWith(`${GLOSSARY_PATH}/`);
   const isVibecodeActive =
     !isGlossaryRoute &&
     (location.pathname === '/vibecode' ||

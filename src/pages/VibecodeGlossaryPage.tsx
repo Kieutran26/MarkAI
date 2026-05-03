@@ -5,6 +5,7 @@ import FilterBar from '../components/glossary/FilterBar';
 import GlossaryContent from '../components/glossary/GlossaryContent';
 import GlossaryCta from '../components/glossary/GlossaryCta';
 import GlossaryHero from '../components/glossary/GlossaryHero';
+import GlossaryTermModal from '../components/glossary/GlossaryTermModal';
 import QuickRef from '../components/glossary/QuickRef';
 import { terms, type GlossaryTerm, type TermGroup } from '../lib/glossary';
 
@@ -14,6 +15,7 @@ export default function VibecodeGlossaryPage() {
   const [sortAZ, setSortAZ] = useState(true);
   const [activeLetter, setActiveLetter] = useState('A');
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const [activeModalTerm, setActiveModalTerm] = useState<GlossaryTerm | null>(null);
 
   useEffect(() => {
     document.title = 'Từ điển chuyên ngành cho Marketer · markAI.vn';
@@ -26,11 +28,15 @@ export default function VibecodeGlossaryPage() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const filteredTerms = useMemo(() => terms.filter((term) => {
-    const query = searchQuery.trim().toLowerCase();
-    const haystack = `${term.name} ${term.nameEn} ${term.definition} ${term.example}`.toLowerCase();
-    return (!query || haystack.includes(query)) && (activeGroup === 'all' || term.groups.includes(activeGroup));
-  }), [searchQuery, activeGroup]);
+  const filteredTerms = useMemo(
+    () =>
+      terms.filter((term) => {
+        const query = searchQuery.trim().toLowerCase();
+        const haystack = `${term.name} ${term.nameEn} ${term.definition} ${term.example}`.toLowerCase();
+        return (!query || haystack.includes(query)) && (activeGroup === 'all' || term.groups.includes(activeGroup));
+      }),
+    [searchQuery, activeGroup],
+  );
 
   const grouped = useMemo(() => {
     const bucket = filteredTerms.reduce<Record<string, GlossaryTerm[]>>((acc, term) => ((acc[term.letter] ??= []).push(term), acc), {});
@@ -46,11 +52,14 @@ export default function VibecodeGlossaryPage() {
   useEffect(() => {
     const sections = document.querySelectorAll('.group-section[id]');
     if (!sections.length) return;
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) setActiveLetter(entry.target.id.replace('letter-', ''));
-      });
-    }, { rootMargin: '-30% 0px -60% 0px' });
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActiveLetter(entry.target.id.replace('letter-', ''));
+        });
+      },
+      { rootMargin: '-30% 0px -60% 0px' },
+    );
     sections.forEach((section) => observer.observe(section));
     return () => observer.disconnect();
   }, [grouped]);
@@ -64,7 +73,7 @@ export default function VibecodeGlossaryPage() {
 
       <div className="glossary-grid-shell grid min-h-[80vh] lg:grid-cols-[108px_1fr] xl:grid-cols-[120px_1fr]">
         <AlphaSidebar groupedLetters={grouped.map((item) => ({ letter: item.letter, count: item.terms.length }))} activeLetter={activeLetter} />
-        <GlossaryContent grouped={grouped} getTermName={getTermName} />
+        <GlossaryContent grouped={grouped} onOpenTerm={setActiveModalTerm} />
       </div>
 
       <QuickRef />
@@ -79,6 +88,8 @@ export default function VibecodeGlossaryPage() {
         <span>Lên đầu</span>
         <span aria-hidden="true">↑</span>
       </button>
+
+      <GlossaryTermModal term={activeModalTerm} isOpen={Boolean(activeModalTerm)} getTermName={getTermName} onClose={() => setActiveModalTerm(null)} />
     </div>
   );
 }

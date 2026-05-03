@@ -19,6 +19,7 @@ import LessonOverview from './pages/LessonOverview';
 import SubLessonPage from './pages/SubLessonPage';
 import LessonPreviewPage from './pages/LessonPreviewPage';
 import VibecodeGlossaryPage from './pages/VibecodeGlossaryPage';
+import GlossaryTermDetailPage from './pages/GlossaryTermDetailPage';
 import AdminApp from './admin/AdminApp';
 
 const GLOSSARY_PATH = '/tu-dien-thuat-ngu';
@@ -66,6 +67,7 @@ const AppShell = () => {
           <Route path="/vibecode" element={<VibecodePage />} />
           <Route path="/vibecode/preview/:previewToken" element={<LessonPreviewPage />} />
           <Route path={GLOSSARY_PATH} element={<VibecodeGlossaryPage />} />
+          <Route path={`${GLOSSARY_PATH}/:termId`} element={<GlossaryTermDetailPage />} />
           <Route path={LEGACY_GLOSSARY_PATH} element={<Navigate to={GLOSSARY_PATH} replace />} />
           <Route path="/vibecode/:lessonSlug" element={<LessonOverview />} />
           <Route path="/vibecode/:lessonSlug/:subSlug" element={<SubLessonPage />} />
