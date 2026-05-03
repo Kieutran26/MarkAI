@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dropdown Practice — markAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  :root{
+    --bg:#0f0f12;--bg-card:#16161b;--fg:#e8e4dc;--muted:#6e6e7a;
+    --accent:#e88c2e;--accent-soft:rgba(232,140,46,.12);
+    --accent-border:rgba(232,140,46,.3);--border:#282830;
+    --surface:#1c1c23;--success:#3a9e5c;--success-soft:rgba(58,158,92,.12);
+    --warning:#c49030;--warning-soft:rgba(196,144,48,.1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:var(--bg);color:var(--fg);
+    font-family:'Space Grotesk',sans-serif;line-height:1.6;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:'';position:fixed;inset:0;
+    background-image:radial-gradient(rgba(255,255,255,.022) 1px,transparent 1px);
+    background-size:20px 20px;pointer-events:none;z-index:0;
+  }
+
+  #app-root{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:24px}
+
+  .sec-lbl{
+    font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;
+    letter-spacing:2px;text-transform:uppercase;color:var(--muted);
+    margin-bottom:20px;display:flex;align-items:center;gap:10px;
+  }
+  .sec-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+
+  .pg{font-size:15px;color:var(--fg);opacity:.8;margin-bottom:22px;line-height:1.6}
+  .pg span{color:var(--accent);font-weight:600}
+
+  /* Configuration Row */
+  .cfg-row{display:flex;align-items:center;gap:20px;margin-bottom:26px;flex-wrap:wrap}
+  .tog{display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none}
+  .tog-track{width:40px;height:22px;background:var(--border);position:relative;transition:background .25s;border-radius:11px}
+  .tog-track.on{background:var(--accent)}
+  .tog-knob{position:absolute;top:3px;left:3px;width:16px;height:16px;background:var(--fg);transition:left .25s;border-radius:50%}
+  .tog-track.on .tog-knob{left:21px}
+  .tog-lbl{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+
+  /* Dropdown Area */
+  .dd-practice-area{
+    display: flex;
+    gap: 20px;
+    margin-bottom: 24px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  
+  .dd-wrap{
+    flex: 1;
+    min-width: 240px;
+  }
+
+  .dd-main{
+    position: relative;
+    width: 100%;
+  }
+
+  .dd-trigger{
+    width: 100%;
+    padding: 12px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: inherit;
+    font-size: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: all .25s;
+  }
+  .dd-trigger:hover:not(.dis){border-color: var(--accent-border);}
+  .dd-trigger.open{border-color: var(--accent); color: var(--fg);}
+  .dd-trigger.has-val{color: var(--fg);}
+  .dd-trigger.dis{opacity: 0.5; cursor: not-allowed; border-style: dashed;}
+  
+  .dd-arrow{transition: transform .25s;}
+  .dd-trigger.open .dd-arrow{transform: rotate(180deg); color: var(--accent);}
+
+  .dd-menu{
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 6px;
+    background: var(--bg-card);
+    border: 1px solid var(--accent);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    z-index: 100;
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height .3s, opacity .2s;
+  }
+  .dd-menu.show{max-height: 250px; opacity: 1;}
+
+  .dd-opt{
+    padding: 10px 16px;
+    font-size: 13px;
+    color: var(--fg);
+    cursor: pointer;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background .15s;
+  }
+  .dd-opt:last-child{border-bottom: none;}
+  .dd-opt:hover{background: var(--accent-soft);}
+  .dd-opt.picked{background: var(--accent-soft); color: var(--accent); font-weight: 600;}
+  .dd-opt .chk{opacity: 0; transition: opacity .2s;}
+  .dd-opt.picked .chk{opacity: 1;}
+
+  /* State Output */
+  .state-out{
+    flex: 1;
+    min-width: 240px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 16px;
+  }
+  .out-lbl{
+    font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;
+    text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:12px;
+  }
+  .code-box{
+    font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.6;
+  }
+  .code-key{color: var(--muted);}
+  .code-val{color: var(--accent); font-weight: 600;}
+  .code-val.dim{color: var(--muted); opacity: 0.5;}
+
+  /* Data Flow */
+  .flow-box{
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    padding: 16px;
+    margin-top: 20px;
+  }
+  .df-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content: center;}
+  .df-node{
+    font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;
+    padding:6px 12px;border:1px solid var(--border);background:var(--bg);
+    color:var(--muted);transition: all .3s;
+  }
+  .df-node.lit{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+  .df-arr{color:var(--border);transition: color .3s;}
+  .df-arr.lit{color:var(--accent)}
+
+  .fb{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:8px 16px;font-size:13px;font-weight:500;
+    border:1px solid var(--border);background:var(--bg-card);transition:all .3s;
+    width: 100%;
+    justify-content: center;
+  }
+  .fb.ok{border-color:rgba(58,158,92,.4);color:var(--success);background:var(--success-soft)}
+  .fb.no{border-color:rgba(196,144,48,.3);color:var(--warning);background:var(--warning-soft)}
+
+  @media(max-width:480px){
+    #app-root{padding:14px}
+    .dd-practice-area{flex-direction: column;}
+    .dd-wrap, .state-out{width: 100%; min-width: 100%;}
+  }
+</style>
+</head>
+<body>
+
+<div id="app-root">
+  <section aria-label="Thực hành Dropdown">
+    <p class="pg">
+      <span>Mục tiêu:</span> Tương tác với Dropdown để thấy sự thay đổi của <span>State</span> (Trạng thái) và <span>Value</span> (Giá trị).
+    </p>
+
+    <div class="cfg-row">
+      <div class="tog" id="disTog">
+        <div class="tog-track" id="disTrack"><div class="tog-knob"></div></div>
+        <span class="tog-lbl">Disabled</span>
+      </div>
+    </div>
+
+    <div class="dd-practice-area">
+      <div class="dd-wrap">
+        <div class="dd-main" id="ddMain">
+          <div class="dd-trigger" id="ddTrig">
+            <span id="ddText">Chọn một tùy chọn...</span>
+            <i class="fa-solid fa-chevron-down dd-arrow"></i>
+          </div>
+          <div class="dd-menu" id="ddMenu">
+            <div class="dd-opt" data-val="opt_1"><span>Tùy chọn 1</span><i class="fa-solid fa-check chk"></i></div>
+            <div class="dd-opt" data-val="opt_2"><span>Tùy chọn 2</span><i class="fa-solid fa-check chk"></i></div>
+            <div class="dd-opt" data-val="opt_3"><span>Tùy chọn 3</span><i class="fa-solid fa-check chk"></i></div>
+            <div class="dd-opt" data-val="opt_4"><span>Tùy chọn 4</span><i class="fa-solid fa-check chk"></i></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="state-out">
+        <div class="out-lbl">Dropdown Metadata</div>
+        <div class="code-box" id="codeBox"></div>
+      </div>
+    </div>
+
+    <div class="flow-box">
+      <div class="out-lbl" style="text-align:center; margin-bottom:16px">Data Flow</div>
+      <div class="df-row">
+        <span class="df-node" id="n1">User Click</span>
+        <span class="df-arr" id="a1">&rarr;</span>
+        <span class="df-node" id="n2">Open Menu</span>
+        <span class="df-arr" id="a2">&rarr;</span>
+        <span class="df-node" id="n3">Select Item</span>
+        <span class="df-arr" id="a3">&rarr;</span>
+        <span class="df-node" id="n4">Update State</span>
+        <span class="df-arr" id="a4">&rarr;</span>
+        <span class="df-node" id="n5">Submit Form</span>
+      </div>
+    </div>
+
+    <div class="fb" id="fb" style="margin-top:20px">
+      <i class="fa-solid fa-circle-info"></i>
+      <span>Sẵn sàng. Hãy click vào dropdown.</span>
+    </div>
+  </section>
+</div>
+
+<script>
+  let isDis = false;
+  let isOpen = false;
+  let selIdx = -1;
+  let selVal = 'null';
+
+  const ddTrig = document.getElementById('ddTrig');
+  const ddMenu = document.getElementById('ddMenu');
+  const ddText = document.getElementById('ddText');
+  const codeBox = document.getElementById('codeBox');
+  const fb = document.getElementById('fb');
+  const disTog = document.getElementById('disTog');
+  const disTrack = document.getElementById('disTrack');
+
+  const nodes = [document.getElementById('n1'), document.getElementById('n2'), document.getElementById('n3'), document.getElementById('n4'), document.getElementById('n5')];
+  const arrows = [document.getElementById('a1'), document.getElementById('a2'), document.getElementById('a3'), document.getElementById('a4')];
+
+  function updateUI() {
+    let state = isDis ? 'disabled' : (isOpen ? 'open' : (selIdx >= 0 ? 'selected' : 'closed'));
+    
+    codeBox.innerHTML = `
+      <span class="code-key">state:</span> <span class="code-val ${isDis ? 'dim' : ''}">${state}</span><br>
+      <span class="code-key">value:</span> <span class="code-val ${selIdx < 0 ? 'dim' : ''}">${selVal}</span><br>
+      <span class="code-key">open: </span> <span class="code-val ${!isOpen ? 'dim' : ''}">${isOpen}</span>
+    `;
+
+    // Data flow visualization
+    nodes.forEach(n => n.classList.remove('lit'));
+    arrows.forEach(a => a.classList.remove('lit'));
+
+    if (isDis) {
+      fb.innerHTML = '<i class="fa-solid fa-lock"></i><span>Bị chặn. Hãy tắt Disabled để tương tác.</span>';
+    } else if (isOpen) {
+      nodes[0].classList.add('lit');
+      arrows[0].classList.add('lit');
+      nodes[1].classList.add('lit');
+      fb.innerHTML = '<i class="fa-solid fa-mouse-pointer"></i><span>Menu đang mở. Hãy chọn một option.</span>';
+    } else if (selIdx >= 0) {
+      nodes.forEach(n => n.classList.add('lit'));
+      arrows.forEach(a => a.classList.add('lit'));
+      fb.innerHTML = '<i class="fa-solid fa-check"></i><span>Đã chọn: ' + selVal + '. Dữ liệu sẵn sàng để gửi đi.</span>';
+    } else {
+      fb.innerHTML = '<i class="fa-solid fa-circle-info"></i><span>Click để mở dropdown.</span>';
+    }
+  }
+
+  ddTrig.addEventListener('click', () => {
+    if (isDis) return;
+    isOpen = !isOpen;
+    ddTrig.classList.toggle('open', isOpen);
+    ddMenu.classList.toggle('show', isOpen);
+    updateUI();
+  });
+
+  document.querySelectorAll('.dd-opt').forEach((opt, idx) => {
+    opt.addEventListener('click', (e) => {
+      e.stopPropagation();
+      selIdx = idx;
+      selVal = opt.dataset.val;
+      ddText.textContent = opt.querySelector('span').textContent;
+      ddTrig.classList.add('has-val');
+      
+      document.querySelectorAll('.dd-opt').forEach(o => o.classList.remove('picked'));
+      opt.classList.add('picked');
+
+      isOpen = false;
+      ddTrig.classList.remove('open');
+      ddMenu.classList.remove('show');
+      updateUI();
+    });
+  });
+
+  disTog.addEventListener('click', () => {
+    isDis = !isDis;
+    disTrack.classList.toggle('on', isDis);
+    ddTrig.classList.toggle('dis', isDis);
+    if (isDis && isOpen) {
+      isOpen = false;
+      ddTrig.classList.remove('open');
+      ddMenu.classList.remove('show');
+    }
+    updateUI();
+  });
+
+  // Close when click outside
+  document.addEventListener('click', (e) => {
+    if (!document.getElementById('ddMain').contains(e.target) && isOpen) {
+      isOpen = false;
+      ddTrig.classList.remove('open');
+      ddMenu.classList.remove('show');
+      updateUI();
+    }
+  });
+
+  updateUI();
+</script>
+</body>
+</html>

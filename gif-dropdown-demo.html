@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dropdown Demo — markAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  :root{
+    --bg:#0f0f12;--bg-card:#16161b;--fg:#e8e4dc;--muted:#6e6e7a;
+    --accent:#e88c2e;--accent-soft:rgba(232,140,46,.12);
+    --accent-border:rgba(232,140,46,.3);--border:#282830;
+    --surface:#1c1c23;--shape-lt:#33333d;--bar-m:#44444f;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:var(--bg);color:var(--fg);
+    font-family:'Space Grotesk',sans-serif;line-height:1.6;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:'';position:fixed;inset:0;
+    background-image:radial-gradient(rgba(255,255,255,.022) 1px,transparent 1px);
+    background-size:20px 20px;pointer-events:none;z-index:0;
+  }
+
+  #app-root{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:24px}
+
+  .sec-lbl{
+    font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;
+    letter-spacing:2px;text-transform:uppercase;color:var(--muted);
+    margin-bottom:20px;display:flex;align-items:center;gap:10px;
+  }
+  .sec-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+
+  .sim-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+  @media(max-width:720px){.sim-grid{grid-template-columns:repeat(2,1fr)}}
+
+  .sc{
+    background:var(--bg-card);border:1px solid var(--border);
+    padding:20px 14px 18px;cursor:pointer;position:relative;overflow:hidden;
+    transition:border-color .3s,background .3s;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  .sc::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:2px;
+    background:var(--accent);transform:scaleX(0);transform-origin:left;
+    transition:transform .35s ease;
+  }
+  .sc:hover{border-color:var(--accent-border)}
+  .sc.on{border-color:var(--accent);background:var(--surface)}
+  .sc.on::before{transform:scaleX(1)}
+
+  .sc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+  .sc-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px}
+  .sc-tag{
+    font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;
+    text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);transition:color .3s;
+  }
+  .sc.on .sc-tag{color:var(--accent)}
+
+  .sc-preview{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    padding-top: 10px;
+    margin-bottom: 16px;
+    min-height: 140px;
+  }
+
+  /* Dropdown Mockup */
+  .dd-mock{
+    width: 100%;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    padding: 8px 12px;
+    font-size: 11px;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    transition: border-color .3s, color .3s;
+  }
+  .sc.on .dd-mock{border-color: var(--accent); color: var(--fg);}
+  .dd-arrow{font-size: 8px; transition: transform .3s;}
+  .sc.on .dd-mock.open .dd-arrow{transform: rotate(180deg); color: var(--accent);}
+  
+  .dd-menu-mock{
+    margin-top: 4px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    opacity: 0.3;
+    transition: opacity .3s, border-color .3s;
+  }
+  .sc.on .dd-menu-mock{opacity: 1; border-color: var(--accent-border);}
+  .dd-item{
+    padding: 6px 10px;
+    font-size: 10px;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+  }
+  .dd-item:last-child{border-bottom: none;}
+  .dd-item.hl{background: var(--accent-soft); color: var(--accent);}
+  .dd-item.sel{color: var(--accent); font-weight: 600;}
+
+  .sc-val{
+    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);
+    text-align:center;transition:color .3s,font-weight .3s;
+    margin-top: auto;
+  }
+  .sc.on .sc-val{color:var(--accent);font-weight:600}
+
+  .ins{
+    background:var(--surface);border:1px solid var(--border);
+    padding:18px 22px;display:flex;align-items:flex-start;gap:12px;min-height:80px;
+  }
+  .ins-i{color:var(--accent);font-size:13px;margin-top:3px;flex-shrink:0}
+  .ins-t{font-size:14px;color:var(--fg);opacity:.85;line-height:1.65;transition:opacity .25s,transform .25s}
+  .ins-t.fading{opacity:0;transform:translateY(6px)}
+
+  @media(max-width:480px){
+    #app-root{padding:14px}
+    .ins{padding:14px 16px}
+    .sim-grid{grid-template-columns: 1fr 1fr;}
+  }
+</style>
+</head>
+<body>
+
+<div id="app-root">
+  <section aria-label="Mô phỏng dropdown states">
+    <div class="sim-grid" id="simGrid"></div>
+    <div class="ins">
+      <i class="fa-solid fa-lightbulb ins-i"></i>
+      <p class="ins-t" id="insT">Đang tải...</p>
+    </div>
+  </section>
+</div>
+
+<script>
+  const presets = [
+    { num:'01', name:'Default', 
+      open: false, sel: -1, hl: -1,
+      siVal: 'None',
+      ins:'<strong>Trạng thái mặc định.</strong> Dropdown đóng, hiển thị placeholder. User nhận biết đây là menu chọn nhờ biểu tượng mũi tên.' },
+    { num:'02', name:'Active', 
+      open: true, sel: -1, hl: 1,
+      siVal: 'List open',
+      ins:'<strong>Trạng thái kích hoạt.</strong> Danh sách các lựa chọn hiện ra. Giúp tiết kiệm không gian bằng cách ẩn đi khi không cần thiết.' },
+    { num:'03', name:'Selected', 
+      open: false, sel: 2, hl: -1,
+      siVal: 'Option 3',
+      ins:'<strong>Đã chọn xong.</strong> Giá trị "Option 3" được ghi nhận. Label của dropdown thay đổi để hiển thị giá trị đã chọn.' },
+    { num:'04', name:'Disabled', 
+      open: false, sel: -1, hl: -1, dis: true,
+      siVal: 'Readonly',
+      ins:'<strong>Bị vô hiệu hóa.</strong> Dropdown mờ đi và không thể click. Dùng khi user chưa thực hiện xong các bước bắt buộc trước đó.' }
+  ];
+
+  const simGrid = document.getElementById('simGrid');
+  const insT = document.getElementById('insT');
+  let activeI = 0;
+  let autoTimer;
+
+  function renderSim() {
+    simGrid.innerHTML = presets.map((p, ci) => {
+      const isDis = p.dis;
+      const isOpen = p.open;
+      return `
+        <div class="sc ${isDis ? 'dis' : ''}" data-i="${ci}" tabindex="0" role="button">
+          <div class="sc-top">
+            <span class="sc-num">${p.num}</span>
+            <span class="sc-tag">${p.name}</span>
+          </div>
+          <div class="sc-preview">
+            <div class="dd-mock ${isOpen ? 'open' : ''}" style="${isDis ? 'opacity: 0.4; border-style: dashed;' : ''}">
+              <span>${p.sel >= 0 ? 'Option ' + (p.sel + 1) : 'Select...'}</span>
+              <i class="fa-solid fa-chevron-down dd-arrow"></i>
+            </div>
+            ${isOpen ? `
+              <div class="dd-menu-mock">
+                <div class="dd-item">Option 1</div>
+                <div class="dd-item hl">Option 2</div>
+                <div class="dd-item">Option 3</div>
+              </div>
+            ` : (p.sel >= 0 ? `
+              <div class="dd-menu-mock" style="opacity: 0; height: 0; overflow: hidden;"></div>
+              <div style="margin-top: 10px; font-size: 9px; color: var(--accent); font-family: 'JetBrains Mono'; text-align: center;">Value: opt_3</div>
+            ` : '')}
+          </div>
+          <div class="sc-val">${p.siVal}</div>
+        </div>`;
+    }).join('');
+
+    simGrid.querySelectorAll('.sc').forEach(c => {
+      c.addEventListener('click', () => {
+        clearInterval(autoTimer);
+        activateCard(+c.dataset.i);
+      });
+    });
+  }
+
+  function activateCard(i) {
+    activeI = i;
+    simGrid.querySelectorAll('.sc').forEach((c, idx) => c.classList.toggle('on', idx === i));
+    setIns(presets[i].ins);
+  }
+
+  function setIns(t) {
+    insT.classList.add('fading');
+    setTimeout(() => { 
+      insT.innerHTML = t; 
+      insT.classList.remove('fading'); 
+    }, 250);
+  }
+
+  function startAuto() {
+    activateCard(0);
+    autoTimer = setInterval(() => {
+      activeI = (activeI + 1) % presets.length;
+      activateCard(activeI);
+    }, 4500);
+  }
+
+  renderSim();
+  startAuto();
+</script>
+</body>
+</html>
