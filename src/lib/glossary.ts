@@ -79,6 +79,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'state', name: 'State', nameEn: 'Trạng thái của component', letter: 'S', groups: ['code'], definition: 'Dữ liệu tạm thời bên trong component — thay đổi thì UI tự cập nhật. Số lượng sản phẩm trong giỏ hàng, tab đang active, filter đang chọn — đều là state.', example: '"Khi nhấn nút Thêm vào giỏ, số lượng tăng lên ngay mà không reload trang" → State đang quản lý số lượng đó.' },
   { id: 'supabase', name: 'Supabase', nameEn: 'Backend as a Service', letter: 'S', groups: ['data', 'infra'], definition: 'Nền tảng backend miễn phí — database, authentication, storage, realtime, tất cả trong một. Hầu hết vibecoder chọn Supabase vì không cần setup server.', example: '"Lưu form submissions, quản lý user đăng nhập, upload ảnh campaign" — Supabase xử lý hết 3 việc này.' },
   { id: 'spacing', name: 'Spacing', nameEn: 'Hệ thống khoảng cách', letter: 'S', groups: ['design'], definition: 'Spacing (khoảng cách/giãn cách) là thuật ngữ chỉ khoảng không gian giữa các yếu tố như chữ, dòng, đoạn văn trong soạn thảo (Word) hoặc các phần tử thiết kế đồ họa/website. Mục đích là tăng khả năng đọc hiểu và tạo bố cục cân đối. Nó bao gồm giãn dòng (line), khoảng cách đoạn (paragraph) và khoảng cách ký tự.', example: '"Trang trông lộn xộn" thường do spacing không nhất quán. Prompt: "Thống nhất spacing giữa các section thành 64px."', related: ['margin', 'padding', 'flexbox', 'grid'], demo: { kind: 'interactive', src: 'gif-spacing-demo.html', alt: 'Mô phỏng các mức spacing từ chặt đến thoáng' } },
+  { id: 'stroke', name: 'Stroke', nameEn: 'Đường viền Vector', letter: 'S', groups: ['design', 'code'], definition: 'Đường viền trong thiết kế vector (SVG, Figma, icon). Khác với border (CSS), stroke có thể theo bất kỳ hình dạng nào — vòng tròn, đường cong, icon phức tạp. Có 3 thuộc tính chính: weight (độ dày), style (kiểu nét), corner (góc nối).', example: 'Feedback cho AI: "icon này nét quá mảnh, hãy tăng stroke-width lên 2px" hoặc "đổi stroke sang kiểu dashed cho các icon chưa hoàn thiện".', related: ['border', 'vector', 'css'], demo: { kind: 'interactive', src: 'gif-stroke-demo.html', alt: 'Mô phỏng các thuộc tính stroke: weight, style, corner và cap' } },
   { id: 'typescript', name: 'TypeScript', nameEn: 'JavaScript có kiểu dữ liệu', letter: 'T', groups: ['code'], definition: 'Phiên bản JavaScript được bổ sung kiểu dữ liệu — giúp phát hiện lỗi trước khi chạy code. File .ts và .tsx là TypeScript.', example: '"Type error" trong terminal = TypeScript phát hiện bạn đang dùng sai kiểu dữ liệu. Paste lỗi cho AI, nó tự fix.' },
   { id: 'tailwind', name: 'Tailwind CSS', nameEn: 'Framework CSS dùng class', letter: 'T', groups: ['design', 'code'], definition: 'Thư viện CSS dùng class nhỏ để style trực tiếp trong HTML. Thay vì viết CSS riêng, bạn ghép class như Lego: "flex gap-4 bg-blue-500 text-white p-3".', example: 'Prompt: "Nút CTA màu cam đỏ, chữ trắng, padding 12px 24px, hover đổi màu tối hơn." → AI tạo className với Tailwind class.' },
   { id: 'ui', name: 'UI / UX', nameEn: 'User Interface / Experience', letter: 'U', groups: ['design'], definition: 'UI = giao diện (trông như thế nào). UX = trải nghiệm (dùng cảm giác ra sao). UI đẹp mà UX tệ là trang trông ổn nhưng khó dùng.', example: '"Form điền thông tin khó quá, user bỏ giữa chừng" = UX tệ dù UI đẹp. Prompt: "Chia form thành 3 bước, mỗi bước chỉ hỏi 2-3 field."' },
@@ -138,6 +139,7 @@ const deepDiveTermIds = new Set([
   'request',
   'radius',
   'spacing',
+  'stroke',
   'supabase',
   'webhook',
   'websocket',
@@ -216,6 +218,11 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
   navbar: [
     'Navbar là thành phần "sống" trên mọi trang. Khi feedback cho AI, hãy chú ý tới tính nhất quán: navbar trên mobile phải khớp với desktop về menu item.',
     'Kỹ thuật "Sticky" (cố định) navbar rất quan trọng cho UX. Khi user scroll sâu xuống trang, họ vẫn cần menu để nhảy sang trang khác mà không phải scroll ngược lên đầu.',
+  ],
+  stroke: [
+    'Stroke là linh hồn của icon và illustration. Khi bạn thấy một bộ icon "không đồng nhất", 90% là do stroke-width (độ dày nét) không bằng nhau.',
+    'Khác biệt lớn nhất với border: stroke có thể bo góc nối (linejoin) và đầu mút (linecap) cực kỳ linh hoạt, giúp icon trông "mượt" hơn hẳn so với việc dùng border-radius trên box.',
+    'Marketer nên nhớ 2 thông số: stroke-width (độ đậm nhạt) và stroke-dasharray (tạo nét đứt cho các phần placeholder hoặc trạng thái chưa active).',
   ],
 };
 

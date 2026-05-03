@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stroke Demo — markAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  :root{
+    --bg:#0f0f12;--bg-card:#16161b;--fg:#e8e4dc;--muted:#6e6e7a;
+    --accent:#e88c2e;--accent-soft:rgba(232,140,46,.12);
+    --accent-border:rgba(232,140,46,.3);--border:#282830;
+    --surface:#1c1c23;--shape-lt:#33333d;--bar-m:#44444f;
+    --strk-fill:rgba(232,140,46,.06);--strk-stroke:rgba(232,140,46,.5);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:var(--bg);color:var(--fg);
+    font-family:'Space Grotesk',sans-serif;line-height:1.6;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:'';position:fixed;inset:0;
+    background-image:radial-gradient(rgba(255,255,255,.022) 1px,transparent 1px);
+    background-size:20px 20px;pointer-events:none;z-index:0;
+  }
+
+  #app-root{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:24px}
+
+  .sim-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+  @media(max-width:720px){.sim-grid{grid-template-columns:repeat(2,1fr)}}
+
+  .sc{
+    background:var(--bg-card);border:1px solid var(--border);
+    padding:20px 14px 18px;cursor:pointer;position:relative;overflow:hidden;
+    transition:border-color .3s,background .3s;
+    display:flex;flex-direction:column;
+  }
+  .sc::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:2px;
+    background:var(--accent);transform:scaleX(0);transform-origin:left;
+    transition:transform .35s ease;
+  }
+  .sc:hover{border-color:var(--accent-border)}
+  .sc.on{border-color:var(--accent);background:var(--surface)}
+  .sc.on::before{transform:scaleX(1)}
+
+  .sc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+  .sc-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px}
+  .sc-tag{
+    font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;
+    text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);transition:color .3s;
+  }
+  .sc.on .sc-tag{color:var(--accent)}
+
+  .sc-demo{padding:0 14px 10px;display:flex;flex-direction:column;align-items:center;gap:8px;min-height:110px;justify-content:center}
+  
+  /* SVG shapes */
+  .sk-svg{overflow:visible}
+  .sk-shape{fill:var(--strk-fill);stroke:var(--accent);transition:all .4s ease;opacity:0.6}
+  .sc.on .sk-shape{opacity:1}
+  .sk-label{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);opacity:0;transition:opacity .3s;text-align:center}
+  .sc.on .sk-label{opacity:.7}
+
+  .ins{
+    background:var(--surface);border:1px solid var(--border);
+    padding:18px 22px;display:flex;align-items:flex-start;gap:12px;min-height:80px;
+  }
+  .ins-i{color:var(--accent);font-size:13px;margin-top:3px;flex-shrink:0}
+  .ins-t{font-size:14px;color:var(--fg);opacity:.85;line-height:1.65;transition:opacity .25s,transform .25s}
+  .ins-t.fading{opacity:0;transform:translateY(6px)}
+
+  @media(max-width:480px){
+    #app-root{padding:14px}
+    .ins{padding:14px 16px}
+  }
+</style>
+</head>
+<body>
+
+<div id="app-root">
+  <section aria-label="Mô phỏng stroke">
+    <div class="sim-grid" id="simGrid"></div>
+    <div class="ins">
+      <i class="fa-solid fa-lightbulb ins-i"></i>
+      <p class="ins-t" id="insT">Đang tải...</p>
+    </div>
+  </section>
+</div>
+
+<script>
+  const sims = [
+    {
+      num:'01', tag:'Weight',
+      ins:'Weight là độ dày của nét stroke. 0.5px = siêu mảnh, 1-2px = tiêu chuẩn, 3-4px = đậm. Sai weight sẽ làm icon nhìn mất cân đối so với text xung quanh.',
+      build(el){
+        const weights=[0.5,1.5,3];
+        el.innerHTML = weights.map(w=>`
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+            <svg width="32" height="32" class="sk-svg">
+              <rect x="4" y="4" width="24" height="24" rx="2"
+                class="sk-shape" stroke-width="${w}"/>
+            </svg>
+            <span class="sk-label">${w}px</span>
+          </div>`).join('');
+      }
+    },
+    {
+      num:'02', tag:'Style',
+      ins:'Style quyết định kiểu nét: liền (solid), đứt (dashed), hoặc chấm (dotted). Thường dùng dashed để thể hiện các vùng "placeholder" hoặc trạng thái chưa hoàn tất.',
+      build(el){
+        const styles=[{s:'solid',d:''},{s:'dashed',d:'stroke-dasharray:5 3'},{s:'dotted',d:'stroke-dasharray:1 3'}];
+        el.innerHTML = styles.map(st=>`
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+            <svg width="32" height="32" class="sk-svg">
+              <rect x="4" y="4" width="24" height="24" rx="2"
+                class="sk-shape" stroke-width="1.5" style="${st.d}"/>
+            </svg>
+            <span class="sk-label">${st.s}</span>
+          </div>`).join('');
+      }
+    },
+    {
+      num:'03', tag:'Corner',
+      ins:'Corner (stroke-linejoin) quyết định cách xử lý các góc nối. Miter: góc nhọn hoắt, sắc cạnh; Round: bo tròn mềm mại; Bevel: cắt phẳng (vát góc) tại điểm nối. Stroke dày càng dễ thấy sự khác biệt này.',
+      build(el){
+        const corners=[{s:'Miter',j:'miter'},{s:'Round',j:'round'},{s:'Bevel',j:'bevel'}];
+        el.innerHTML = corners.map(c=>`
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+            <svg width="32" height="32" class="sk-svg">
+              <polygon points="6,26 16,6 26,26"
+                class="sk-shape" stroke-width="4" stroke-linejoin="${c.j}"/>
+            </svg>
+            <span class="sk-label">${c.s}</span>
+          </div>`).join('');
+      }
+    },
+    {
+      num:'04', tag:'Cap',
+      ins:'Line Cap xử lý 2 đầu mút của đường hở. Butt: cắt ngay tại điểm kết thúc; Round: bo tròn đầu (làm đường dài thêm 1 chút); Square: cắt vuông nhưng kéo dài thêm một khoảng bằng nửa độ dày nét.',
+      build(el){
+        const caps=[{s:'Butt',c:'butt'},{s:'Round',c:'round'},{s:'Square',c:'square'}];
+        el.innerHTML = caps.map(cp=>`
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+            <svg width="32" height="32" class="sk-svg">
+              <line x1="10" y1="10" x2="22" y2="22" stroke="var(--muted)" stroke-width="1" opacity="0.3"/>
+              <line x1="10" y1="10" x2="22" y2="22"
+                class="sk-shape" stroke-width="6" stroke-linecap="${cp.c}"/>
+            </svg>
+            <span class="sk-label">${cp.s}</span>
+          </div>`).join('');
+      }
+    }
+  ];
+
+  const simGrid = document.getElementById('simGrid');
+  const insT = document.getElementById('insT');
+  let activeI = 0;
+  let autoTimer;
+
+  function renderSim() {
+    simGrid.innerHTML = sims.map((s, i) => `
+      <div class="sc" data-i="${i}" tabindex="0" role="button">
+        <div class="sc-top">
+          <span class="sc-num">${s.num}</span>
+          <span class="sc-tag">${s.tag}</span>
+        </div>
+        <div class="sc-demo" id="sd${i}"></div>
+      </div>`).join('');
+
+    sims.forEach((s, i) => s.build(document.getElementById('sd'+i)));
+
+    simGrid.querySelectorAll('.sc').forEach(c => {
+      c.addEventListener('click', () => {
+        clearInterval(autoTimer);
+        activateCard(+c.dataset.i);
+      });
+    });
+  }
+
+  function activateCard(i) {
+    activeI = i;
+    simGrid.querySelectorAll('.sc').forEach((c, idx) => c.classList.toggle('on', idx === i));
+    setIns(sims[i].ins);
+  }
+
+  function setIns(t) {
+    insT.classList.add('fading');
+    setTimeout(() => { 
+      insT.textContent = t; 
+      insT.classList.remove('fading'); 
+    }, 250);
+  }
+
+  function startAuto() {
+    activateCard(0);
+    autoTimer = setInterval(() => {
+      activeI = (activeI + 1) % sims.length;
+      activateCard(activeI);
+    }, 4500);
+  }
+
+  renderSim();
+  startAuto();
+</script>
+</body>
+</html>
