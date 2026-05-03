@@ -40,6 +40,8 @@ import strokeDemoHtml from '../../gif-stroke-demo.html?raw';
 import strokePracticeHtml from '../../gif-stroke-practice.html?raw';
 import responsiveDemoHtml from '../../gif-responsive-demo.html?raw';
 import responsivePracticeHtml from '../../gif-responsive-practice.html?raw';
+import sliderDemoHtml from '../../gif-slider-demo.html?raw';
+import sliderPracticeHtml from '../../gif-slider-practice.html?raw';
 
 
 export default function GlossaryTermDetailPage() {
@@ -76,6 +78,7 @@ export default function GlossaryTermDetailPage() {
     if (id === 'navbar') return navbarDemoHtml;
     if (id === 'stroke') return strokeDemoHtml;
     if (id === 'responsive') return responsiveDemoHtml;
+    if (id === 'slider') return sliderDemoHtml;
     return null;
   };
 
@@ -95,6 +98,7 @@ export default function GlossaryTermDetailPage() {
     if (id === 'navbar') return navbarPracticeHtml;
     if (id === 'stroke') return strokePracticeHtml;
     if (id === 'responsive') return responsivePracticeHtml;
+    if (id === 'slider') return sliderPracticeHtml;
     return null;
   };
 

@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Slider Demo — markAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  :root{
+    --bg:#0f0f12;--bg-card:#16161b;--fg:#e8e4dc;--muted:#6e6e7a;
+    --accent:#e88c2e;--accent-soft:rgba(232,140,46,.12);
+    --accent-border:rgba(232,140,46,.3);--border:#282830;
+    --surface:#1c1c23;--shape-lt:#33333d;--bar-m:#44444f;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:var(--bg);color:var(--fg);
+    font-family:'Space Grotesk',sans-serif;line-height:1.6;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:'';position:fixed;inset:0;
+    background-image:radial-gradient(rgba(255,255,255,.022) 1px,transparent 1px);
+    background-size:20px 20px;pointer-events:none;z-index:0;
+  }
+
+  #app-root{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:24px}
+
+  .sec-lbl{
+    font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;
+    letter-spacing:2px;text-transform:uppercase;color:var(--muted);
+    margin-bottom:20px;display:flex;align-items:center;gap:10px;
+  }
+  .sec-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+
+  .sim-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+  @media(max-width:720px){.sim-grid{grid-template-columns:repeat(2,1fr)}}
+
+  .sc{
+    background:var(--bg-card);border:1px solid var(--border);
+    padding:18px 14px 16px;cursor:pointer;position:relative;overflow:hidden;
+    transition:border-color .3s,background .3s,opacity .5s;
+  }
+  .sc::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:2px;
+    background:var(--accent);transform:scaleX(0);transform-origin:left;
+    transition:transform .35s ease;
+  }
+  .sc.on{border-color:var(--accent);background:var(--surface);opacity:1}
+  .sc:not(.on){opacity:0.4}
+  .sc.on::before{transform:scaleX(1)}
+
+  .sc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+  .sc-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px}
+  .sc-tag{
+    font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;
+    text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);transition:color .3s;
+  }
+  .sc.on .sc-tag{color:var(--accent)}
+
+  .sc-visual{height:60px;display:flex;flex-direction:column;justify-content:center;gap:8px;margin-bottom:12px}
+  
+  .sl-area{display:flex;align-items:center;gap:8px}
+  .sl-bound{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);min-width:14px;text-align:center}
+  .sl-tw{flex:1;position:relative;height:20px;display:flex;align-items:center}
+  .sl-track{width:100%;height:4px;background:var(--border);position:relative}
+  .sl-fill{position:absolute;left:0;top:0;height:100%;background:var(--accent);pointer-events:none}
+  .sl-thumb{position:absolute;top:50%;left:50%;width:14px;height:14px;background:var(--accent);border:2px solid var(--bg);transform:translate(-50%,-50%);z-index:2}
+  .sc.on .sl-thumb{box-shadow:0 0 10px var(--accent-border)}
+  
+  .sl-marks{position:absolute;top:50%;left:0;right:0;transform:translateY(-50%);height:0;pointer-events:none}
+  .sl-marks span{position:absolute;width:4px;height:4px;background:var(--bg);border:1px solid var(--border);transform:translate(-50%,-50%)}
+  
+  .sl-out{display:flex;justify-content:space-between;align-items:baseline;margin-top:8px}
+  .sl-val{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--muted);transition:color .3s}
+  .sc.on .sl-val{color:var(--accent)}
+  .sl-sub{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+
+  .ins{
+    background:var(--surface);border:1px solid var(--border);
+    padding:18px 22px;display:flex;align-items:flex-start;gap:12px;min-height:90px;
+  }
+  .ins-i{color:var(--accent);font-size:13px;margin-top:3px;flex-shrink:0}
+  .ins-t{font-size:14px;color:var(--fg);opacity:.85;line-height:1.65;transition:opacity .25s,transform .25s}
+  .ins-t.fading{opacity:0;transform:translateY(6px)}
+  .ins-t strong{color:var(--accent);font-weight:600}
+
+  /* loop progress */
+  .pbar{display:flex;gap:4px;margin-top:12px}
+  .pseg{flex:1;height:2px;background:var(--border);transition:background .3s}
+  .pseg.on{background:var(--accent)}
+
+  @media(max-width:480px){
+    #app-root{padding:14px}
+    .ins{padding:14px 16px}
+    .sim-grid{grid-template-columns:1fr 1fr}
+  }
+</style>
+</head>
+<body>
+
+<div id="app-root">
+  <section aria-label="Mô phỏng slider states">
+    <div class="sim-grid" id="simGrid"></div>
+    <div class="ins">
+      <i class="fa-solid fa-lightbulb ins-i"></i>
+      <p class="ins-t" id="insT">Đang tải...</p>
+    </div>
+    <div class="pbar" id="pbar"></div>
+  </section>
+</div>
+
+<script>
+  const S = [
+    { num:'01', name:'Default', sub:'initial', val:50, 
+      ins:'<strong>Slider ngồi yên</strong> ở giá trị mặc định. Đây là trạng thái khi chưa ai chạm vào, nó chỉ hiển thị thông tin mà chưa có phản hồi tương tác.' },
+    { num:'02', name:'Active', sub:'dragging', val:75, 
+      ins:'<strong>Đang kéo (Dragging) → giá trị thay đổi realtime.</strong> Bản chất: vị trí của nút (thumb) luôn phản ánh chính xác giá trị hiện tại của hệ thống.' },
+    { num:'03', name:'Stepped', sub:'step: 25', val:25, step:25, 
+      ins:'<strong>Bước nhảy (Step) = 25</strong> → nút chỉ nhảy đến 0, 25, 50, 75, 100. Nó không bao giờ dừng ở giữa, giống như các bậc thang.' },
+    { num:'04', name:'Disabled', sub:'readonly', val:50, dis:true,
+      ins:'<strong>Slider bị khóa.</strong> Người dùng thấy giá trị nhưng không thể kéo. Dùng khi điều kiện chưa đủ (ví dụ chưa bật công tắc chính).' }
+  ];
+
+  const simGrid = document.getElementById('simGrid');
+  const insT = document.getElementById('insT');
+  const pbar = document.getElementById('pbar');
+  let activeI = 0;
+  let stateStart = performance.now();
+  const DURATION = 3500;
+  const refs = [];
+
+  function renderSim() {
+    simGrid.innerHTML = S.map((s, i) => {
+      let marks = '';
+      if(s.step){
+        marks = '<div class="sl-marks">';
+        for(let v=0; v<=100; v+=s.step) marks += `<span style="left:${v}%"></span>`;
+        marks += '</div>';
+      }
+      const isDis = s.dis ? 'style="filter:grayscale(1);opacity:0.4"' : '';
+      const fillStyle = s.dis ? 'background:#555' : '';
+      const thumbStyle = s.dis ? 'background:#555' : '';
+
+      return `
+        <div class="sc" data-i="${i}">
+          <div class="sc-top">
+            <span class="sc-num">${s.num}</span>
+            <span class="sc-tag">${s.name}</span>
+          </div>
+          <div class="sc-visual" ${isDis}>
+            <div class="sl-area">
+              <span class="sl-bound">0</span>
+              <div class="sl-tw">
+                <div class="sl-track">
+                  <div class="sl-fill" id="fill${i}" style="width:${s.val}%;${fillStyle}"></div>
+                  <div class="sl-thumb" id="thumb${i}" style="left:${s.val}%;${thumbStyle}"></div>
+                  ${marks}
+                </div>
+              </div>
+              <span class="sl-bound">100</span>
+            </div>
+          </div>
+          <div class="sl-out">
+            <span class="sl-val" id="val${i}">${s.val}</span>
+            <span class="sl-sub">${s.sub}</span>
+          </div>
+        </div>`;
+    }).join('');
+
+    // progress bar segments
+    pbar.innerHTML = S.map(() => `<div class="pseg"></div>`).join('');
+
+    S.forEach((_, i) => {
+      refs.push({
+        fill: document.getElementById(`fill${i}`),
+        thumb: document.getElementById(`thumb${i}`),
+        val: document.getElementById(`val${i}`)
+      });
+    });
+  }
+
+  function activateCard(i) {
+    activeI = i;
+    simGrid.querySelectorAll('.sc').forEach((c, idx) => c.classList.toggle('on', idx === i));
+    pbar.querySelectorAll('.pseg').forEach((s, idx) => s.classList.toggle('on', idx <= i));
+    
+    // reset others to default 50
+    S.forEach((s, idx) => {
+      if(idx !== i) {
+        updateSim(idx, s.val);
+      }
+    });
+
+    setIns(S[i].ins);
+    stateStart = performance.now();
+  }
+
+  function updateSim(idx, val) {
+    const pct = val + '%';
+    refs[idx].fill.style.width = pct;
+    refs[idx].thumb.style.left = pct;
+    refs[idx].val.textContent = Math.round(val);
+  }
+
+  function setIns(t) {
+    insT.classList.add('fading');
+    setTimeout(() => { 
+      insT.innerHTML = t; 
+      insT.classList.remove('fading'); 
+    }, 250);
+  }
+
+  function tick(now) {
+    const elapsed = now - stateStart;
+    const t = Math.min(elapsed / DURATION, 1);
+
+    if (activeI === 1) { // ACTIVE
+      // smooth ping-pong 15 -> 90
+      const val = 15 + 75 * (0.5 - 0.5 * Math.cos(t * 2 * Math.PI));
+      updateSim(1, val);
+    } else if (activeI === 2) { // STEPPED
+      const steps = [50, 75, 100, 75, 50, 25, 0];
+      const si = Math.min(Math.floor(t * steps.length), steps.length - 1);
+      updateSim(2, steps[si]);
+    }
+
+    if (elapsed >= DURATION) {
+      activateCard((activeI + 1) % S.length);
+    }
+
+    requestAnimationFrame(tick);
+  }
+
+  renderSim();
+  activateCard(0);
+  requestAnimationFrame(tick);
+</script>
+</body>
+</html>

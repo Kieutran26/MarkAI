@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Slider — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#111;--bg-card:#1A1A1A;--bg-el:#222;--border:#2C2C2C;
+  --border-active:#D4652A;--accent:#D4652A;
+  --accent-glow:rgba(212,101,42,.18);--accent-soft:rgba(212,101,42,.07);
+  --cream:#EDE4D8;--text:#D8D0C8;--muted:#777770;
+  --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:48px 48px;pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;inset:0;opacity:.025;pointer-events:none;z-index:0;
+  background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.wrap{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:20px 16px 52px}
+
+.topbar{display:flex;align-items:center;gap:12px;padding-bottom:14px;border-bottom:1px solid var(--border);margin-bottom:28px}
+.badge{font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);background:var(--accent-soft);border:1px solid rgba(212,101,42,.22);padding:4px 10px}
+.ttl{font-size:20px;font-weight:700;color:var(--cream);letter-spacing:-.02em}
+.slbl{font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.slbl::before{content:'';width:7px;height:7px;background:var(--accent)}
+
+/* gif box */
+.gif-box{border:1px solid var(--border);background:var(--bg-card);margin-bottom:36px;position:relative;overflow:hidden}
+.gif-tag{position:absolute;top:10px;right:10px;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:3px 8px;z-index:10;display:flex;align-items:center;gap:5px}
+.gif-tag .dot{width:5px;height:5px;background:var(--accent);animation:pdot 1.4s infinite}
+@keyframes pdot{0%,100%{opacity:1}50%{opacity:.25}}
+.gif-body{padding:24px 18px 18px}
+
+/* sim grid */
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.sp{border:1px solid var(--border);background:var(--bg);padding:14px 10px 12px;transition:border-color .5s,background .5s,opacity .5s}
+.sp.active{border-color:var(--border-active);background:var(--accent-soft)}
+.sp:not(.active){opacity:.5}
+.sh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}
+.sn{font-family:var(--mono);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);transition:color .4s}
+.sp.active .sn{color:var(--accent)}
+.ssub{font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+
+/* sim slider */
+.sl-area{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.sl-bound{font-family:var(--mono);font-size:9px;color:var(--muted);min-width:14px;text-align:center}
+.sl-tw{flex:1;position:relative;height:28px;display:flex;align-items:center}
+.sl-track{width:100%;height:4px;background:var(--border);position:relative}
+.sl-fill{position:absolute;left:0;top:0;height:100%;background:var(--accent);pointer-events:none}
+.sl-thumb{position:absolute;top:50%;left:50%;width:16px;height:16px;background:var(--accent);transform:translate(-50%,-50%);z-index:2}
+.sp.active .sl-thumb{box-shadow:0 0 0 4px var(--accent-glow)}
+.sl-tip{position:absolute;top:-28px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:10px;font-weight:700;color:var(--cream);background:var(--accent);padding:2px 7px;opacity:0;pointer-events:none;white-space:nowrap;z-index:3}
+.sl-tip::after{content:'';position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);border-left:4px solid transparent;border-right:4px solid transparent;border-top:4px solid var(--accent)}
+.sl-marks{position:absolute;top:50%;left:0;right:0;transform:translateY(-50%);height:0;pointer-events:none}
+.sl-marks span{position:absolute;width:6px;height:6px;background:var(--bg);border:1.5px solid var(--border);transform:translate(-50%,-50%)}
+.sl-out{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
+.sl-val{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--accent)}
+.sl-st{font-family:var(--mono);font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.sl-desc{font-size:10px;color:var(--muted);line-height:1.4}
+
+/* disabled override */
+.sp-dis.active .sl-fill{background:#555!important}
+.sp-dis.active .sl-thumb{background:#555!important;box-shadow:none!important}
+.sp-dis.active .sl-val{color:#555!important}
+
+/* insight */
+.ibar{margin-top:12px;padding:10px 13px;background:var(--bg);border:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.55;min-height:38px;transition:opacity .3s}
+.ibar.fading{opacity:0}
+.ibar strong{color:var(--cream);font-weight:600}
+
+/* progress + controls */
+.ptrack{display:flex;gap:4px;padding:10px 18px 12px;border-top:1px solid var(--border)}
+.pseg{flex:1;height:3px;background:var(--border);transition:background .4s}
+.pseg.on{background:var(--accent)}
+.gctrl{display:flex;align-items:center;justify-content:space-between;padding:9px 18px;border-top:1px solid var(--border);background:var(--bg-card)}
+.gbtn{font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:5px 13px;cursor:pointer;transition:color .2s,border-color .2s}
+.gbtn:hover{color:var(--cream);border-color:var(--muted)}
+.gtmr{font-family:var(--mono);font-size:9px;color:var(--muted)}
+
+/* ═══ practice ═══ */
+.pbox{border:1px solid var(--border);background:var(--bg-card)}
+.phd{padding:18px 18px 14px;border-bottom:1px solid var(--border)}
+.pgoal{font-size:13px;color:var(--text);line-height:1.5;margin-bottom:5px}
+.phint{font-family:var(--mono);font-size:10px;color:var(--muted)}
+.phint span{color:var(--accent)}
+.pbd{padding:22px 18px}
+
+.cfg-row{display:flex;align-items:center;gap:16px;margin-bottom:24px;flex-wrap:wrap}
+.cfg-group{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.cfg-label{font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);white-space:nowrap}
+.pre-btn{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:5px 11px;cursor:pointer;transition:color .2s,border-color .2s,background .2s}
+.pre-btn:hover,.pre-btn.on{color:var(--cream);border-color:var(--accent);background:var(--accent-soft)}
+
+/* toggle */
+.tog{display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
+.tog-track{width:36px;height:20px;background:var(--border);position:relative;transition:background .25s}
+.tog-track.on{background:var(--accent)}
+.tog-knob{position:absolute;top:2px;left:2px;width:16px;height:16px;background:var(--cream);transition:left .25s}
+.tog-track.on .tog-knob{left:18px}
+.tog-lbl{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;transition:color .25s}
+.tog-track.on~.tog-lbl{color:var(--accent)}
+
+/* practice slider */
+.psl-area{margin-bottom:18px}
+.psl-tw{position:relative;height:32px;display:flex;align-items:center}
+.psl-track{width:100%;height:6px;background:var(--border);position:relative;cursor:pointer}
+.psl-track.dis{cursor:default}
+.psl-fill{position:absolute;left:0;top:0;height:100%;background:var(--accent);pointer-events:none;transition:background .25s}
+.psl-track.dis .psl-fill{background:#555}
+.psl-thumb{position:absolute;top:50%;left:50%;width:20px;height:20px;background:var(--accent);transform:translate(-50%,-50%);z-index:2;cursor:grab;touch-action:none;transition:background .25s}
+.psl-thumb:active{cursor:grabbing;transform:translate(-50%,-50%) scale(1.12)}
+.psl-track.dis .psl-thumb{background:#555;cursor:default}
+.psl-track.dis .psl-thumb:active{transform:translate(-50%,-50%)}
+.psl-marks{position:absolute;top:50%;left:0;right:0;transform:translateY(-50%);height:0;pointer-events:none}
+.psl-marks span{position:absolute;width:8px;height:8px;background:var(--bg);border:1.5px solid var(--border);transform:translate(-50%,-50%);transition:border-color .2s,background .2s}
+.psl-marks span.hit{border-color:var(--accent);background:var(--accent-soft)}
+.psl-bounds{display:flex;justify-content:space-between;margin-top:4px}
+.psl-bound{font-family:var(--mono);font-size:9px;color:var(--muted)}
+
+/* output */
+.pout{display:flex;align-items:center;gap:16px;margin-bottom:18px;flex-wrap:wrap}
+.pout-val{font-family:var(--mono);font-size:28px;font-weight:700;color:var(--accent);min-width:80px;transition:color .25s}
+.pout-val.dis{color:#555}
+.pout-info{font-family:var(--mono);font-size:10px;color:var(--muted);line-height:1.5}
+.pout-info span{color:var(--cream)}
+
+/* preview */
+.pvrow{display:flex;align-items:center;gap:16px;border:1px solid var(--border);background:var(--bg);padding:14px}
+.pv-wrap{width:64px;height:64px;flex-shrink:0;
+  background-image:linear-gradient(45deg,#2a2a2a 25%,transparent 25%),linear-gradient(-45deg,#2a2a2a 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#2a2a2a 75%),linear-gradient(-45deg,transparent 75%,#2a2a2a 75%);
+  background-size:12px 12px;background-position:0 0,0 6px,6px -6px,-6px 0}
+.pv-box{width:100%;height:100%;background:var(--accent);transition:opacity .08s}
+.pv-code{font-family:var(--mono);font-size:12px;color:var(--muted);line-height:1.7}
+.pv-code em{font-style:normal;color:var(--cream);font-weight:600}
+
+/* why */
+.whybox{margin-top:28px;border:1px solid var(--border);background:var(--bg-card);padding:18px}
+.whybox p{font-size:13px;color:var(--muted);line-height:1.7}
+.whybox strong{color:var(--cream)}
+
+@media(max-width:768px){
+  .sg{grid-template-columns:repeat(2,1fr)}
+  .gif-body{padding:18px 12px 14px}
+  .pbd{padding:18px 12px}
+  .ttl{font-size:17px}
+  .pvrow{flex-direction:column;align-items:flex-start;gap:10px}
+}
+@media(max-width:420px){
+  .sg{gap:6px}.sp{padding:10px 8px 8px}
+  .sl-thumb{width:14px;height:14px}
+  .sl-val{font-size:12px}
+  .wrap{padding:14px 10px 36px}
+  .pout-val{font-size:22px}
+  .psl-thumb{width:18px;height:18px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <span class="badge">Design</span>
+    <span class="ttl">Slider</span>
+  </div>
+
+  <!-- simulation -->
+  <div class="slbl">Mô phỏng</div>
+  <div class="gif-box">
+    <div class="gif-tag"><span class="dot"></span>LOOP</div>
+    <div class="gif-body">
+      <div class="sg" id="sg"></div>
+      <div class="ibar" id="ibar"></div>
+    </div>
+    <div class="ptrack" id="ptrack"></div>
+    <div class="gctrl">
+      <button class="gbtn" id="togBtn">Pause</button>
+      <span class="gtmr">3.5s / state</span>
+      <button class="gbtn" id="rstBtn">Reset</button>
+    </div>
+  </div>
+
+  <!-- practice -->
+  <div class="slbl">Thực hành</div>
+  <div class="pbox">
+    <div class="phd">
+      <p class="pgoal">Đổi step rồi kéo slider — cảm nhận sự khác biệt giữa "trượt mượt" và "nhảy bậc".</p>
+      <p class="phint"><span>Hint:</span> Bật step=25 rồi kéo thật chậm để thấy thumb snap vào từng mốc.</p>
+    </div>
+    <div class="pbd">
+      <div class="cfg-row">
+        <div class="cfg-group">
+          <span class="cfg-label">Step</span>
+          <button class="pre-btn on" data-step="0">Liên tục</button>
+          <button class="pre-btn" data-step="10">10</button>
+          <button class="pre-btn" data-step="25">25</button>
+          <button class="pre-btn" data-step="50">50</button>
+        </div>
+        <div class="tog" id="disTog">
+          <div class="tog-track" id="disTrack"><div class="tog-knob"></div></div>
+          <span class="tog-lbl">Disabled</span>
+        </div>
+      </div>
+      <div class="psl-area">
+        <div class="psl-tw">
+          <div class="psl-track" id="pslTrack">
+            <div class="psl-fill" id="pslFill"></div>
+            <div class="psl-thumb" id="pslThumb"></div>
+            <div class="psl-marks" id="pslMarks"></div>
+          </div>
+        </div>
+        <div class="psl-bounds">
+          <span class="psl-bound">0</span>
+          <span class="psl-bound">100</span>
+        </div>
+      </div>
+      <div class="pout">
+        <span class="pout-val" id="poutVal">50</span>
+        <span class="pout-info" id="poutInfo">Liên tục — <span>giá trị chính xác bất kỳ</span></span>
+      </div>
+      <div class="pvrow">
+        <div class="pv-wrap"><div class="pv-box" id="pvBox" style="opacity:.5"></div></div>
+        <div class="pv-code"><em>opacity</em>: <em id="pvOp">0.50</em>;<br><em>slider value</em>: <em id="pvSl">50</em>;</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="whybox">
+    <p>Khi bảo AI <strong>"thêm slider chọn opacity"</strong> — nó cần biết: min/max bao nhiêu, step bao nhiêu, default value bao nhiêu. Thiếu step → trượt mượt. Có step=25 → chỉ chọn được 0, 25, 50, 75, 100. Hiểu slider = mô tả control chính xác hơn, dev không cần đoán.</p>
+  </div>
+
+</div>
+
+<script>
+/* ── data ── */
+var S=[
+  {name:'DEFAULT',sub:'initial',desc:'Chờ user tác động',dis:false,steps:false,tip:false,
+   ins:'<strong>Slider ngồi yên</strong> ở giá trị mặc định. Chưa ai chạm → chỉ hiển thị, không phản hồi.'},
+  {name:'ACTIVE',sub:'dragging',desc:'User đang kéo',dis:false,steps:false,tip:true,
+   ins:'<strong>Thumb di chuyển → giá trị thay đổi realtime.</strong> Bản chất: vị trí thumb = giá trị hiện tại.'},
+  {name:'WITH STEPS',sub:'step: 25',desc:'Chỉ dừng ở mốc cố định',dis:false,steps:true,tip:false,
+   ins:'<strong>Step = 25</strong> → thumb chỉ nhảy đến 0, 25, 50, 75, 100. Không bao giờ dừng ở giữa. Như "bậc thang".'},
+  {name:'DISABLED',sub:'readonly',desc:'Khóa, không tác động',dis:true,steps:false,tip:false,
+   ins:'<strong>Slider bị khóa.</strong> Thấy giá trị nhưng không kéo được. Dùng khi điều kiện chưa đủ để chọn.'}
+];
+
+var refs=[];
+var sg=document.getElementById('sg');
+
+/* build panels */
+S.forEach(function(s,i){
+  var d=document.createElement('div');
+  d.className='sp'+(s.dis?' sp-dis':'');
+  d.dataset.i=i;
+
+  var marks='';
+  if(s.steps){
+    marks='<div class="sl-marks">';
+    for(var v=0;v<=100;v+=25) marks+='<span style="left:'+v+'%"></span>';
+    marks+='</div>';
+  }
+  var tip=s.tip?'<div class="sl-tip" id="stip'+i+'">50</div>':'';
+
+  d.innerHTML=
+    '<div class="sh"><span class="sn">0'+(i+1)+' '+s.name+'</span><span class="ssub">'+s.sub+'</span></div>'+
+    '<div class="sl-area"><span class="sl-bound">0</span><div class="sl-tw"><div class="sl-track">'+
+    '<div class="sl-fill" id="sf'+i+'"></div><div class="sl-thumb" id="st'+i+'"></div>'+
+    tip+marks+
+    '</div></div><span class="sl-bound">100</span></div>'+
+    '<div class="sl-out"><span class="sl-val" id="sv'+i+'">50</span><span class="sl-st">'+s.sub+'</span></div>'+
+    '<div class="sl-desc">'+s.desc+'</div>';
+
+  sg.appendChild(d);
+  refs.push({fill:null,thumb:null,val:null,tip:null});
+});
+
+/* cache refs */
+S.forEach(function(s,i){
+  refs[i].fill=document.getElementById('sf'+i);
+  refs[i].thumb=document.getElementById('st'+i);
+  refs[i].val=document.getElementById('sv'+i);
+  refs[i].tip=s.tip?document.getElementById('stip'+i):null;
+});
+
+/* progress */
+var pt=document.getElementById('ptrack');
+for(var i=0;i<4;i++){var d=document.createElement('div');d.className='pseg';pt.appendChild(d)}
+
+/* ── animation ── */
+var cur=0,playing=true,timer=null,animId=null,stateStart=0;
+var ibar=document.getElementById('ibar');
+
+function setAct(idx){
+  cur=idx;
+  var ps=sg.querySelectorAll('.sp');
+  var ss=pt.querySelectorAll('.pseg');
+  for(var i=0;i<ps.length;i++){
+    ps[i].classList.toggle('active',i===idx);
+    ss[i].classList.toggle('on',i<=idx);
+  }
+  /* reset all sim sliders to 50 */
+  for(var i=0;i<refs.length;i++){
+    refs[i].fill.style.width='50%';
+    refs[i].thumb.style.left='50%';
+    refs[i].val.textContent='50';
+    if(refs[i].tip) refs[i].tip.style.opacity='0';
+  }
+  stateStart=performance.now();
+  /* insight crossfade */
+  ibar.classList.add('fading');
+  setTimeout(function(){ibar.innerHTML=S[idx].ins;ibar.classList.remove('fading')},280);
+}
+
+function updSim(idx,pct,val){
+  refs[idx].fill.style.width=pct+'%';
+  refs[idx].thumb.style.left=pct+'%';
+  refs[idx].val.textContent=val;
+  if(refs[idx].tip){
+    refs[idx].tip.style.opacity='1';
+    refs[idx].tip.textContent=val;
+    refs[idx].tip.style.left=pct+'%';
+  }
+}
+
+function animTick(now){
+  if(!playing){animId=requestAnimationFrame(animTick);return}
+  var elapsed=now-stateStart;
+  var dur=3500;
+  var t=Math.min(elapsed/dur,1);
+
+  if(cur===1){
+    /* active: smooth ping-pong 15→90 */
+    var pct=15+75*(0.5-0.5*Math.cos(t*2*Math.PI));
+    updSim(1,pct,Math.round(pct));
+  }else if(cur===2){
+    /* with steps: discrete jumps */
+    var stops=[50,75,100,75,50,25,0];
+    var si=Math.min(Math.floor(t*stops.length),stops.length-1);
+    updSim(2,stops[si],stops[si]);
+  }
+  animId=requestAnimationFrame(animTick);
+}
+
+function startLoop(){timer=setInterval(function(){setAct((cur+1)%4)},3500)}
+function stopLoop(){clearInterval(timer)}
+
+document.getElementById('togBtn').onclick=function(){
+  playing=!playing;
+  this.textContent=playing?'Pause':'Play';
+  playing?startLoop():stopLoop();
+};
+document.getElementById('rstBtn').onclick=function(){
+  stopLoop();cur=0;setAct(0);if(playing)startLoop();
+};
+
+setAct(0);
+startLoop();
+animId=requestAnimationFrame(animTick);
+
+/* ═══════════════ PRACTICE ═══════════════ */
+var pStep=0,pDis=false,pVal=50,pDrag=false;
+var pslTrack=document.getElementById('pslTrack');
+var pslFill=document.getElementById('pslFill');
+var pslThumb=document.getElementById('pslThumb');
+var pslMarks=document.getElementById('pslMarks');
+var poutVal=document.getElementById('poutVal');
+var poutInfo=document.getElementById('poutInfo');
+var pvBox=document.getElementById('pvBox');
+var pvOp=document.getElementById('pvOp');
+var pvSl=document.getElementById('pvSl');
+
+function snap(raw){
+  if(pStep>0) return Math.round(raw/pStep)*pStep;
+  return Math.round(raw);
+}
+
+function setPV(val){
+  pVal=Math.max(0,Math.min(100,val));
+  pslFill.style.width=pVal+'%';
+  pslThumb.style.left=pVal+'%';
+  poutVal.textContent=pVal;
+  pvBox.style.opacity=pVal/100;
+  pvOp.textContent=(pVal/100).toFixed(2);
+  pvSl.textContent=pVal;
+  updInfo();
+  updMarks();
+}
+
+function updInfo(){
+  if(pDis){
+    poutInfo.innerHTML='Disabled — <span>không thể thay đổi</span>';
+  }else if(pStep>0){
+    var slot=pVal/pStep;
+    var total=100/pStep+1;
+    poutInfo.innerHTML='Step '+pStep+' — snap đến <span>'+pVal+'</span> (bậc '+(slot+1)+'/'+total+')';
+  }else{
+    poutInfo.innerHTML='Liên tục — <span>giá trị chính xác bất kỳ</span>';
+  }
+}
+
+function updMarks(){
+  var ms=pslMarks.querySelectorAll('span');
+  for(var i=0;i<ms.length;i++){
+    var mv=parseInt(ms[i].style.left);
+    ms[i].classList.toggle('hit',mv<=pVal);
+  }
+}
+
+function buildMarks(){
+  pslMarks.innerHTML='';
+  if(pStep>0){
+    for(var v=0;v<=100;v+=pStep){
+      var m=document.createElement('span');
+      m.style.left=v+'%';
+      pslMarks.appendChild(m);
+    }
+  }
+  updMarks();
+}
+
+function pctFromPtr(e){
+  var rect=pslTrack.getBoundingClientRect();
+  var cx=e.clientX!==undefined?e.clientX:0;
+  var pct=(cx-rect.left)/rect.width;
+  pct=Math.max(0,Math.min(1,pct));
+  return snap(pct*100);
+}
+
+/* drag */
+pslThumb.addEventListener('pointerdown',function(e){
+  if(pDis)return;
+  pDrag=true;pslThumb.setPointerCapture(e.pointerId);e.preventDefault();
+});
+pslTrack.addEventListener('pointerdown',function(e){
+  if(pDis||e.target===pslThumb)return;
+  pDrag=true;pslThumb.setPointerCapture(e.pointerId);
+  setPV(pctFromPtr(e));e.preventDefault();
+});
+document.addEventListener('pointermove',function(e){
+  if(!pDrag)return;setPV(pctFromPtr(e));
+});
+document.addEventListener('pointerup',function(){pDrag=false});
+
+/* step buttons */
+document.querySelectorAll('.pre-btn[data-step]').forEach(function(btn){
+  btn.addEventListener('click',function(){
+    document.querySelectorAll('.pre-btn[data-step]').forEach(function(b){b.classList.remove('on')});
+    btn.classList.add('on');
+    pStep=parseInt(btn.dataset.step);
+    buildMarks();
+    setPV(snap(pVal));
+  });
+});
+
+/* disabled toggle */
+document.getElementById('disTog').addEventListener('click',function(){
+  pDis=!pDis;
+  document.getElementById('disTrack').classList.toggle('on',pDis);
+  pslTrack.classList.toggle('dis',pDis);
+  poutVal.classList.toggle('dis',pDis);
+  updInfo();
+});
+
+/* init practice */
+setPV(50);
+buildMarks();
+</script>
+</body>
+</html>

@@ -80,6 +80,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'supabase', name: 'Supabase', nameEn: 'Backend as a Service', letter: 'S', groups: ['data', 'infra'], definition: 'Nền tảng backend miễn phí — database, authentication, storage, realtime, tất cả trong một. Hầu hết vibecoder chọn Supabase vì không cần setup server.', example: '"Lưu form submissions, quản lý user đăng nhập, upload ảnh campaign" — Supabase xử lý hết 3 việc này.' },
   { id: 'spacing', name: 'Spacing', nameEn: 'Hệ thống khoảng cách', letter: 'S', groups: ['design'], definition: 'Spacing (khoảng cách/giãn cách) là thuật ngữ chỉ khoảng không gian giữa các yếu tố như chữ, dòng, đoạn văn trong soạn thảo (Word) hoặc các phần tử thiết kế đồ họa/website. Mục đích là tăng khả năng đọc hiểu và tạo bố cục cân đối. Nó bao gồm giãn dòng (line), khoảng cách đoạn (paragraph) và khoảng cách ký tự.', example: '"Trang trông lộn xộn" thường do spacing không nhất quán. Prompt: "Thống nhất spacing giữa các section thành 64px."', related: ['margin', 'padding', 'flexbox', 'grid'], demo: { kind: 'interactive', src: 'gif-spacing-demo.html', alt: 'Mô phỏng các mức spacing từ chặt đến thoáng' } },
   { id: 'stroke', name: 'Stroke', nameEn: 'Đường viền Vector', letter: 'S', groups: ['design', 'code'], definition: 'Đường viền trong thiết kế vector (SVG, Figma, icon). Khác với border (CSS), stroke có thể theo bất kỳ hình dạng nào — vòng tròn, đường cong, icon phức tạp. Có 3 thuộc tính chính: weight (độ dày), style (kiểu nét), corner (góc nối).', example: 'Feedback cho AI: "icon này nét quá mảnh, hãy tăng stroke-width lên 2px" hoặc "đổi stroke sang kiểu dashed cho các icon chưa hoàn thiện".', related: ['border', 'vector', 'css'], demo: { kind: 'interactive', src: 'gif-stroke-demo.html', alt: 'Mô phỏng các thuộc tính stroke: weight, style, corner và cap' } },
+  { id: 'slider', name: 'Slider', nameEn: 'Thanh trượt chọn giá trị', letter: 'S', groups: ['design', 'code'], definition: 'Một control cho phép người dùng chọn một giá trị từ một dải (range) bằng cách di chuyển một "nút" (thumb) dọc theo một "đường chạy" (track). Slider rất hữu ích để điều chỉnh các thông số định lượng như âm lượng, độ sáng, hoặc các bộ lọc.', example: 'Prompt: "Thêm một slider để người dùng chọn độ mờ (opacity) cho ảnh, dải giá trị từ 0 đến 100, bước nhảy là 10."', related: ['input', 'control', 'ui'], demo: { kind: 'interactive', src: 'gif-slider-demo.html', alt: 'Mô phỏng các trạng thái của slider: mặc định, active, stepped và disabled' } },
   { id: 'typescript', name: 'TypeScript', nameEn: 'JavaScript có kiểu dữ liệu', letter: 'T', groups: ['code'], definition: 'Phiên bản JavaScript được bổ sung kiểu dữ liệu — giúp phát hiện lỗi trước khi chạy code. File .ts và .tsx là TypeScript.', example: '"Type error" trong terminal = TypeScript phát hiện bạn đang dùng sai kiểu dữ liệu. Paste lỗi cho AI, nó tự fix.' },
   { id: 'tailwind', name: 'Tailwind CSS', nameEn: 'Framework CSS dùng class', letter: 'T', groups: ['design', 'code'], definition: 'Thư viện CSS dùng class nhỏ để style trực tiếp trong HTML. Thay vì viết CSS riêng, bạn ghép class như Lego: "flex gap-4 bg-blue-500 text-white p-3".', example: 'Prompt: "Nút CTA màu cam đỏ, chữ trắng, padding 12px 24px, hover đổi màu tối hơn." → AI tạo className với Tailwind class.' },
   { id: 'ui', name: 'UI / UX', nameEn: 'User Interface / Experience', letter: 'U', groups: ['design'], definition: 'UI = giao diện (trông như thế nào). UX = trải nghiệm (dùng cảm giác ra sao). UI đẹp mà UX tệ là trang trông ổn nhưng khó dùng.', example: '"Form điền thông tin khó quá, user bỏ giữa chừng" = UX tệ dù UI đẹp. Prompt: "Chia form thành 3 bước, mỗi bước chỉ hỏi 2-3 field."' },
@@ -141,6 +142,7 @@ const deepDiveTermIds = new Set([
   'request',
   'radius',
   'responsive',
+  'slider',
   'spacing',
   'stroke',
   'supabase',
@@ -236,6 +238,11 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Phân biệt: Radius là con số (px), còn Corner là khái niệm về góc. Bạn có thể có một Corner với Radius bằng 0 (góc vuông) hoặc Radius lớn (bo tròn).',
     'Trong Vibecode, bạn có thể gọi tên các loại góc như "sharp", "rounded", "pill" để AI hiểu nhanh ý đồ thiết kế mà không cần nhớ số px chính xác.',
     'Hãy chú ý tính nhất quán: nếu card đã bo 12px thì các element bên trong như button nên bo ít hơn (ví dụ 4-8px) để tạo sự cân đối về thị giác.',
+  ],
+  slider: [
+    'Slider là lựa chọn tuyệt vời khi người dùng không cần độ chính xác tuyệt đối từng con số mà quan tâm đến sự tương quan (ví dụ: to/nhỏ, sáng/tối).',
+    'Khi bảo AI "thêm slider chọn opacity" — bạn nên nói rõ: min/max bao nhiêu, step bao nhiêu, và giá trị mặc định là gì. Thiếu step → trượt mượt. Có step=25 → chỉ chọn được các mốc 0, 25, 50, 75, 100.',
+    'Hiểu về các thông số của slider giúp bạn mô tả control chính xác hơn, giúp AI viết code đúng ý ngay từ đầu mà không cần đoán mò.',
   ],
 };
 
