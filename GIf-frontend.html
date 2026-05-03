@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Frontend — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+  --bg:#0f0f12;--bg-card:#16161b;--fg:#e8e4dc;--muted:#6e6e7a;
+  --accent:#cf5c26;--accent-soft:rgba(207,92,38,.12);
+  --accent-border:rgba(207,92,38,.3);--border:#282830;
+  --surface:#1c1c23;--success:#3a9e5c;--success-soft:rgba(58,158,92,.12);
+  --warning:#c49030;--warning-soft:rgba(196,144,48,.1);
+  --error:#c43a3a;--error-soft:rgba(196,58,58,.12);--error-border:rgba(196,58,58,.3);
+  --bar-d:#2a2a34;--bar-m:#44444f;--shape-lt:#33333d;
+  --fe:#cf5c26;--be:#3a7ec4;--both:#8a6ec4;
+  --fe-soft:rgba(207,92,38,.1);--be-soft:rgba(58,126,196,.1);--both-soft:rgba(138,110,196,.1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:'Space Grotesk',sans-serif;min-height:100vh;line-height:1.6}
+body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(rgba(255,255,255,.022) 1px,transparent 1px);background-size:20px 20px;pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;bottom:-20%;left:-8%;width:550px;height:550px;background:radial-gradient(circle,rgba(207,92,38,.03) 0%,transparent 70%);pointer-events:none;z-index:0}
+
+.entry{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:48px 24px 90px}
+
+.th{margin-bottom:28px}
+.badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);border:1px solid var(--accent-border);padding:4px 12px;margin-bottom:16px}
+.th h1{font-size:clamp(34px,6vw,54px);font-weight:800;letter-spacing:-2px;line-height:1.08}
+.th .sub{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--muted);margin-top:6px}
+
+.oneliner{font-size:16px;color:var(--fg);opacity:.85;max-width:680px;line-height:1.7;padding:18px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:40px}
+.oneliner strong{color:var(--accent);font-weight:600}
+
+.sec-lbl{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.sec-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ===== SIM GRID ===== */
+.sim-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px}
+@media(max-width:560px){.sim-grid{grid-template-columns:1fr}}
+
+.sc{background:var(--bg-card);border:1px solid var(--border);cursor:pointer;position:relative;overflow:hidden;transition:border-color .3s,background .3s}
+.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .35s ease;z-index:2}
+.sc:hover{border-color:var(--accent-border)}
+.sc.on{border-color:var(--accent);background:var(--surface)}
+.sc.on::before{transform:scaleX(1)}
+
+.sc-head{padding:16px 16px 10px;display:flex;justify-content:space-between;align-items:center}
+.sc-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px}
+.sc-tag{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);transition:color .3s}
+.sc.on .sc-tag{color:var(--accent)}
+
+.sc-demo{height:160px;padding:0 16px 16px;position:relative;overflow:hidden}
+@media(max-width:560px){.sc-demo{height:140px}}
+
+/* Mini page shell */
+.mini-page{width:100%;height:100%;background:var(--bg);border:1px solid var(--border);overflow:hidden;position:relative}
+.mini-page::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.008) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.008) 1px,transparent 1px);background-size:10px 10px;pointer-events:none}
+
+.mp-bar{height:8px;background:var(--bar-d);display:flex;align-items:center;padding:0 4px;gap:3px}
+.mp-dot{width:4px;height:4px;border-radius:50%;background:var(--bar-m);opacity:.5}
+
+.mp-body{padding:8px;position:relative;height:calc(100% - 8px);overflow:hidden}
+
+/* Static page elements */
+.sp-el{position:absolute;left:8px;right:8px;opacity:0;transition:opacity .4s ease}
+.sp-el.show{opacity:1}
+.sp-hero{top:8px;height:24px;background:var(--accent);opacity:0;transition:opacity .4s ease}
+.sp-hero.show{opacity:.7}
+.sp-title{top:40px;height:8px;background:var(--bar-m);width:60%}
+.sp-text{top:54px;height:5px;background:var(--bar-d)}
+.sp-text2{top:63px;height:5px;background:var(--bar-d);width:80%}
+.sp-btn{top:78px;height:16px;width:60px;background:var(--accent);opacity:0;transition:opacity .4s ease}
+.sp-btn.show{opacity:.5}
+
+/* Dynamic page elements */
+.dp-skeleton{position:absolute;left:8px;right:8px;height:6px;background:var(--bar-d);animation:dpPulse 1s ease-in-out infinite}
+@keyframes dpPulse{0%,100%{opacity:.3}50%{opacity:.7}}
+.dp-s1{top:8px;width:50%}
+.dp-s2{top:20px;width:80%}
+.dp-s3{top:32px;width:40%}
+.dp-s4{top:48px;width:70%}
+.dp-s5{top:60px;width:55%}
+
+.dp-data{position:absolute;opacity:0;transition:opacity .4s ease}
+.dp-data.show{opacity:1}
+.dp-stat{top:8px;left:8px;display:flex;gap:8px}
+.dp-stat-box{padding:4px 8px;border:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted)}
+.dp-stat-box b{color:var(--accent);font-weight:600;display:block;font-size:10px;margin-bottom:1px}
+.dp-row{left:8px;right:8px;height:14px;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 4px;font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted)}
+.dp-r1{top:40px}.dp-r2{top:55px}.dp-r3{top:70px}
+
+/* Component-based */
+.cb-comp{position:absolute;opacity:0;transition:all .5s cubic-bezier(.4,0,.2,1);transform:translateY(8px)}
+.cb-comp.show{opacity:1;transform:translateY(0)}
+.cb-header{top:4px;left:4px;right:4px;height:14px;background:var(--bar-d);border-bottom:1px solid var(--border)}
+.cb-card{top:22px;left:4px;width:55%;height:70px;background:var(--shape-lt);border:1px solid var(--border)}
+.cb-card-inner1{position:absolute;top:4px;left:4px;width:70%;height:5px;background:var(--bar-m)}
+.cb-card-inner2{position:absolute;top:12px;left:4px;width:50%;height:4px;background:var(--bar-d)}
+.cb-card-inner3{position:absolute;bottom:6px;left:4px;width:30px;height:8px;background:var(--accent);opacity:.5}
+.cb-btn{top:22px;right:4px;width:30px;height:10px;background:var(--accent);opacity:.5}
+.cb-btn2{top:36px;right:4px;width:36px;height:10px;background:var(--bar-m);opacity:.4}
+.cb-tag{bottom:4px;left:4px;height:14px;width:40px;background:var(--accent-soft);border:1px solid var(--accent-border);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:6px;color:var(--accent)}
+
+/* Responsive */
+.resp-frame{position:absolute;top:4px;left:4px;bottom:4px;right:4px;border:1px solid var(--border);transition:all .5s cubic-bezier(.4,0,.2,1);overflow:hidden}
+.resp-frame.f-desk{width:calc(100% - 8px);height:calc(100% - 8px)}
+.resp-frame.f-tab{width:70%;height:calc(100% - 8px);left:50%;transform:translateX(-50%)}
+.resp-frame.f-mob{width:35%;height:calc(100% - 8px);left:50%;transform:translateX(-50%)}
+
+.resp-inner{padding:4px;transition:all .4s ease}
+.resp-h{height:4px;background:var(--accent);opacity:.5;margin-bottom:3px;transition:all .3s}
+.resp-t{height:3px;background:var(--bar-m);margin-bottom:2px;transition:all .3s}
+.resp-cols{display:flex;gap:2px;margin-top:3px;transition:all .4s ease}
+.resp-col{flex:1;height:20px;background:var(--shape-lt);border:1px solid var(--border);transition:all .4s ease}
+.resp-cols.mob .resp-col{flex:100%}
+.resp-cols.tab .resp-col:nth-child(3){display:none}
+
+.resp-label{position:absolute;bottom:2px;right:4px;font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--accent);opacity:.7;transition:opacity .3s}
+
+.sc-ins{padding:0 16px 14px;font-size:11px;color:var(--muted);opacity:0;max-height:0;overflow:hidden;transition:all .4s ease;line-height:1.5}
+.sc.on .sc-ins{opacity:.7;max-height:60px;margin-top:-4px}
+
+/* Insight */
+.ins{background:var(--surface);border:1px solid var(--border);padding:18px 22px;display:flex;align-items:flex-start;gap:12px;margin-bottom:48px}
+.ins-i{color:var(--accent);font-size:13px;margin-top:3px;flex-shrink:0}
+.ins-t{font-size:14px;color:var(--fg);opacity:.85;line-height:1.65;transition:opacity .25s,transform .25s}
+.ins-t.fading{opacity:0;transform:translateY(6px)}
+
+/* Divider */
+.dv{display:flex;align-items:center;gap:14px;margin-bottom:30px}
+.dv::before,.dv::after{content:'';flex:1;height:1px;background:var(--border)}
+.dv span{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+
+/* ===== PRACTICE: MATCHING ===== */
+.pg{font-size:15px;color:var(--fg);opacity:.8;margin-bottom:8px;line-height:1.6}
+.pg span{color:var(--accent);font-weight:600}
+.pg-sub{font-size:13px;color:var(--muted);opacity:.6;margin-bottom:22px}
+
+/* Category bins */
+.cat-bins{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px}
+@media(max-width:560px){.cat-bins{grid-template-columns:1fr}}
+
+.cat-bin{background:var(--bg-card);border:1px solid var(--border);min-height:120px;transition:border-color .3s,background .3s}
+.cat-bin.drag-over{background:var(--surface)}
+.cat-bin-head{padding:10px 12px 8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.cat-dot{width:8px;height:8px;flex-shrink:0}
+.cat-bin-head span{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.5px}
+.cat-bin-body{padding:8px;display:flex;flex-direction:column;gap:4px;min-height:60px}
+
+.cat-bin.fe .cat-dot{background:var(--fe)}.cat-bin.fe .cat-bin-head span{color:var(--fe)}
+.cat-bin.fe.drag-over{border-color:rgba(207,92,38,.3)}
+.cat-bin.be .cat-dot{background:var(--be)}.cat-bin.be .cat-bin-head span{color:var(--be)}
+.cat-bin.be.drag-over{border-color:rgba(58,126,196,.3)}
+.cat-bin.both .cat-dot{background:var(--both)}.cat-bin.both .cat-bin-head span{color:var(--both)}
+.cat-bin.both.drag-over{border-color:rgba(138,110,196,.3)}
+
+/* Task items */
+.task-pool{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:24px}
+.task-item{
+  padding:8px 14px;background:var(--bg-card);border:1px solid var(--border);
+  font-size:12px;font-weight:500;color:var(--fg);cursor:grab;
+  transition:all .25s;user-select:none;touch-action:none;
+}
+.task-item:hover{border-color:var(--accent-border);background:var(--surface)}
+.task-item.dragging{opacity:.4;border-color:var(--accent)}
+.task-item.placed{opacity:.35;cursor:default;pointer-events:none}
+
+/* Placed items inside bins */
+.placed-item{
+  padding:6px 10px;font-size:11px;font-weight:500;border:1px solid;
+  display:flex;align-items:center;gap:6px;animation:placeIn .3s ease;
+}
+@keyframes placeIn{from{opacity:0;transform:translateX(-8px)}to{opacity:1;transform:translateX(0)}}
+.placed-item.fe{border-color:rgba(207,92,38,.2);background:var(--fe-soft);color:var(--fe)}
+.placed-item.be{border-color:rgba(58,126,196,.2);background:var(--be-soft);color:var(--be)}
+.placed-item.both{border-color:rgba(138,110,196,.2);background:var(--both-soft);color:var(--both)}
+.placed-item .undo{cursor:pointer;opacity:.5;transition:opacity .2s;font-size:10px}
+.placed-item .undo:hover{opacity:1}
+
+/* Result */
+.result-box{
+  border:1px solid var(--border);padding:18px 22px;margin-top:20px;
+  display:none;align-items:center;gap:14px;
+}
+.result-box.show{display:flex}
+.result-box.ok{border-color:rgba(58,158,92,.3);background:var(--success-soft)}
+.result-box.no{border-color:rgba(196,58,58,.3);background:var(--error-soft)}
+.result-icon{font-size:20px;flex-shrink:0}
+.result-box.ok .result-icon{color:var(--success)}
+.result-box.no .result-icon{color:var(--error)}
+.result-text{font-size:14px;line-height:1.5}
+.result-box.ok .result-text{color:var(--success)}
+.result-box.no .result-text{color:var(--error)}
+
+.reset-btn{
+  font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:500;
+  padding:8px 16px;border:1px solid var(--border);background:transparent;
+  color:var(--muted);cursor:pointer;transition:all .25s;margin-top:12px;
+}
+.reset-btn:hover{border-color:var(--accent-border);color:var(--fg)}
+
+.hint{font-size:12px;color:var(--muted);opacity:.5;margin-top:10px;display:flex;align-items:center;gap:6px}
+.hint i{font-size:10px;color:var(--accent)}
+
+/* Progress counter */
+.progress-count{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);text-align:right;margin-bottom:8px}
+
+/* Why box */
+.why{margin-top:36px;border:1px solid var(--border);padding:20px 22px;background:var(--surface)}
+.why h3{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--accent);margin-bottom:10px}
+.why p{font-size:14px;color:var(--fg);opacity:.75;line-height:1.65}
+.why code{font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--bg-card);padding:2px 6px;border:1px solid var(--border);color:var(--accent)}
+
+.fu{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.fu.in{opacity:1;transform:translateY(0)}
+
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+
+<div class="entry">
+
+  <header class="th fu">
+    <div class="badge">CODE</div>
+    <h1>Frontend</h1>
+    <p class="sub">mặt trước — mọi thứ user nhìn thấy và chạm vào</p>
+  </header>
+
+  <p class="oneliner fu">
+    <strong>Frontend</strong> là phần của website/app mà user trực tiếp tương tác — nút bấm, text, ảnh, layout, animation. Nó không chứa dữ liệu hay logic xử lý — đó là việc của backend. Frontend chỉ nhận data và hiển thị.
+  </p>
+
+  <!-- 01 — MÔ PHỎNG -->
+  <section class="fu" aria-label="Mô phỏng frontend">
+    <div class="sec-lbl">01 — Mô phỏng</div>
+    <div class="sim-grid" id="simGrid"></div>
+    <div class="ins">
+      <i class="fa-solid fa-lightbulb ins-i"></i>
+      <p class="ins-t" id="insT">Nhấn vào một panel để xem bản chất của từng loại frontend.</p>
+    </div>
+  </section>
+
+  <div class="dv fu"><span>02 — Thực hành</span></div>
+
+  <!-- 02 — THỰC HÀNH: GHÉP CẶP -->
+  <section class="fu" aria-label="Thực hành phân biệt frontend vs backend">
+    <p class="pg"><span>Mục tiêu:</span> Kéo mỗi task vào đúng nhóm — Frontend, Backend, hay Cả hai.</p>
+    <p class="pg-sub">Nếu phân biệt được, bạn đã hiểu bản chất ranh giới frontend/backend.</p>
+
+    <div class="progress-count" id="progCount">0 / 8 đã phân loại</div>
+
+    <div class="task-pool" id="taskPool"></div>
+
+    <div class="cat-bins" id="catBins">
+      <div class="cat-bin fe" data-cat="fe">
+        <div class="cat-bin-head"><div class="cat-dot"></div><span>Frontend</span></div>
+        <div class="cat-bin-body" id="binFe"></div>
+      </div>
+      <div class="cat-bin be" data-cat="be">
+        <div class="cat-bin-head"><div class="cat-dot"></div><span>Backend</span></div>
+        <div class="cat-bin-body" id="binBe"></div>
+      </div>
+      <div class="cat-bin both" data-cat="both">
+        <div class="cat-bin-head"><div class="cat-dot"></div><span>Cả hai</span></div>
+        <div class="cat-bin-body" id="binBoth"></div>
+      </div>
+    </div>
+
+    <div class="result-box" id="resultBox">
+      <div class="result-icon"><i class="fa-solid fa-check-circle"></i></div>
+      <div class="result-text" id="resultText"></div>
+    </div>
+
+    <button class="reset-btn" id="resetBtn"><i class="fa-solid fa-rotate-left"></i> Đặt lại</button>
+
+    <p class="hint">
+      <i class="fa-solid fa-arrow-up-right"></i>
+      Mẹo: "User nhìn thấy" → Frontend. "User không thấy" → Backend. "Cả hai cùng làm" → Cả hai.
+    </p>
+
+    <div class="why fu">
+      <h3>Tại sao marketer cần biết</h3>
+      <p>
+        Khi báo lỗi "nút không bấm được", dev sẽ hỏi "frontend hay backend?". Nếu bạn trả lời được nhanh, ticket được xử lý gấp 3 lần. Khi prompt AI tạo landing page nhưng output sai layout — đó là lỗi <code>frontend</code>. Khi data không hiển thị — có thể là <code>backend</code> không trả data. Biết phân biệt = biết nói đúng người, đúng việc.
+      </p>
+    </div>
+  </section>
+
+</div>
+
+<script>
+/* ===== DỮ LIỆU MÔ PHỎNG ===== */
+const sims = [
+  {
+    num:'01', tag:'Static Page (SSR)',
+    ins:'Server gửi nguyên một trang HTML hoàn chỉnh. Browser chỉ việc hiển thị. Nhanh cho SEO, nhưng mỗi lần xem nội dung mới phải tải lại toàn bộ trang. Blog, landing page thường dùng cách này.',
+    build(el){
+      el.innerHTML = `<div class="mini-page">
+        <div class="mp-bar"><div class="mp-dot"></div><div class="mp-dot"></div><div class="mp-dot"></div></div>
+        <div class="mp-body">
+          <div class="sp-hero"></div>
+          <div class="sp-el sp-title"></div>
+          <div class="sp-el sp-text"></div>
+          <div class="sp-el sp-text2"></div>
+          <div class="sp-el sp-btn"></div>
+        </div>
+      </div>`;
+      setTimeout(()=>{
+        el.querySelector('.sp-hero').classList.add('show');
+        setTimeout(()=>el.querySelector('.sp-title').classList.add('show'),150);
+        setTimeout(()=>el.querySelector('.sp-text').classList.add('show'),300);
+        setTimeout(()=>el.querySelector('.sp-text2').classList.add('show'),450);
+        setTimeout(()=>el.querySelector('.sp-btn').classList.add('show'),600);
+      },100);
+    }
+  },
+  {
+    num:'02', tag:'Dynamic Page (CSR)',
+    ins:'Browser tải "vỏ" trống trước, rồi JavaScript gọi API lấy data và đổ vào. Dashboard, app nội bộ dùng cách này. Chậm hơn cho SEO nhưng trải nghiệm mượt như app — không cần tải lại trang khi đổi data.',
+    build(el){
+      el.innerHTML = `<div class="mini-page">
+        <div class="mp-bar"><div class="mp-dot"></div><div class="mp-dot"></div><div class="mp-dot"></div></div>
+        <div class="mp-body">
+          <div class="dp-skeleton dp-s1"></div>
+          <div class="dp-skeleton dp-s2"></div>
+          <div class="dp-skeleton dp-s3"></div>
+          <div class="dp-skeleton dp-s4"></div>
+          <div class="dp-skeleton dp-s5"></div>
+          <div class="dp-data dp-stat"><div class="dp-stat-box"><b>12.4K</b>Users</div><div class="dp-stat-box"><b>8.2K</b>Orders</div><div class="dp-stat-box"><b>$24K</b>Rev</div></div>
+          <div class="dp-data dp-row dp-r1">user_001 — active — 2m ago</div>
+          <div class="dp-data dp-row dp-r2">user_002 — pending — 5m ago</div>
+          <div class="dp-data dp-row dp-r3">user_003 — active — 12m ago</div>
+        </div>
+      </div>`;
+      setTimeout(()=>{
+        el.querySelectorAll('.dp-skeleton').forEach(s=>s.style.display='none');
+        el.querySelectorAll('.dp-data').forEach((d,i)=>{setTimeout(()=>d.classList.add('show'),i*100)});
+      },1200);
+    }
+  },
+  {
+    num:'03', tag:'Component-Based UI',
+    ins:'Thay vì viết một trang dài, frontend được chia thành các "khối" nhỏ — Header, Card, Button, Tag. Mỗi khối độc lập, có thể tái dùng. Đổi một component → thay đổi ở mọi nơi dùng nó. Đây là cách React, Vue hoạt động.',
+    build(el){
+      el.innerHTML = `<div class="mini-page">
+        <div class="mp-bar"><div class="mp-dot"></div><div class="mp-dot"></div><div class="mp-dot"></div></div>
+        <div class="mp-body">
+          <div class="cb-comp cb-header"></div>
+          <div class="cb-comp cb-card">
+            <div class="cb-card-inner1"></div>
+            <div class="cb-card-inner2"></div>
+            <div class="cb-card-inner3"></div>
+          </div>
+          <div class="cb-comp cb-btn"></div>
+          <div class="cb-comp cb-btn2"></div>
+          <div class="cb-comp cb-tag">TAG</div>
+        </div>
+      </div>`;
+      setTimeout(()=>{
+        el.querySelectorAll('.cb-comp').forEach((c,i)=>{setTimeout(()=>c.classList.add('show'),i*120)});
+      },100);
+    }
+  },
+  {
+    num:'04', tag:'Responsive Design',
+    ins:'Cùng một nội dung nhưng tự động thay đổi layout theo kích thước màn hình. Desktop: nhiều cột. Tablet: ít cột hơn. Mobile: một cột. Frontend dùng CSS media query để quyết định "ở kích thước nào thì hiển thị thế nào".',
+    build(el){
+      let cycle;
+      el.innerHTML = `<div class="mini-page">
+        <div class="mp-bar"><div class="mp-dot"></div><div class="mp-dot"></div><div class="mp-dot"></div></div>
+        <div class="mp-body">
+          <div class="resp-frame f-desk">
+            <div class="resp-inner">
+              <div class="resp-h"></div>
+              <div class="resp-t"></div>
+              <div class="resp-t" style="width:70%"></div>
+              <div class="resp-cols" id="respCols">
+                <div class="resp-col"></div>
+                <div class="resp-col"></div>
+                <div class="resp-col"></div>
+              </div>
+            </div>
+            <div class="resp-label" id="respLbl">Desktop</div>
+          </div>
+        </div>
+      </div>`;
+      const frame = el.querySelector('.resp-frame');
+      const cols = el.querySelector('.resp-cols');
+      const lbl = el.querySelector('.resp-label');
+      const states = [
+        {cls:'f-desk',colCls:'',label:'Desktop'},
+        {cls:'f-tab',colCls:'tab',label:'Tablet'},
+        {cls:'f-mob',colCls:'mob',label:'Mobile'}
+      ];
+      let idx = 0;
+      function next(){
+        idx = (idx+1)%3;
+        const s = states[idx];
+        frame.className = 'resp-frame '+s.cls;
+        cols.className = 'resp-cols '+s.colCls;
+        lbl.textContent = s.label;
+      }
+      setTimeout(()=>{cycle=setInterval(next,1400)},800);
+      el._cleanup=()=>clearInterval(cycle);
+    }
+  }
+];
+
+let activeSim = -1;
+
+/* ===== RENDER SIM ===== */
+const simGrid = document.getElementById('simGrid');
+const insT = document.getElementById('insT');
+
+function renderSim(){
+  simGrid.innerHTML = sims.map((s,i)=>`
+    <div class="sc" data-i="${i}" tabindex="0" role="button" aria-label="${s.tag}">
+      <div class="sc-head"><span class="sc-num">${s.num}</span><span class="sc-tag">${s.tag}</span></div>
+      <div class="sc-demo" id="sd${i}"></div>
+      <div class="sc-ins">${s.ins}</div>
+    </div>`).join('');
+
+  simGrid.querySelectorAll('.sc').forEach(c=>{
+    const handler=()=>activateSim(+c.dataset.i);
+    c.addEventListener('click',handler);
+    c.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();handler()}});
+  });
+}
+
+function activateSim(i){
+  /* Cleanup previous responsive cycle */
+  if(activeSim>=0 && sims[activeSim].build.toString().includes('cleanup')){
+    const prevDemo = document.getElementById('sd'+activeSim);
+    if(prevDemo && prevDemo._cleanup) prevDemo._cleanup();
+  }
+  simGrid.querySelectorAll('.sc').forEach(c=>c.classList.remove('on'));
+  if(activeSim===i){activeSim=-1;setIns('Nhấn vào một panel để xem bản chất của từng loại frontend.');return}
+  activeSim=i;
+  simGrid.querySelector(`[data-i="${i}"]`).classList.add('on');
+  const demo = document.getElementById('sd'+i);
+  demo.innerHTML='';
+  sims[i].build(demo);
+  setIns(sims[i].ins);
+}
+
+function setIns(t){insT.classList.add('fading');setTimeout(()=>{insT.textContent=t;insT.classList.remove('fading')},250)}
+
+/* ===== THỰC HÀNH: GHÉP CẶP ===== */
+const tasks = [
+  {id:'t1',text:'Màu nút bấm',answer:'fe'},
+  {id:'t2',text:'Lưu đơn hàng vào database',answer:'be'},
+  {id:'t3',text:'Layout trang chủ',answer:'fe'},
+  {id:'t4',text:'Xử lý thanh toán',answer:'be'},
+  {id:'t5',text:'Form đăng nhập',answer:'both'},
+  {id:'t6',text:'Animation hover',answer:'fe'},
+  {id:'t7',text:'Gửi email xác nhận',answer:'be'},
+  {id:'t8',text:'Tìm kiếm sản phẩm',answer:'both'}
+];
+
+const answers = {};
+tasks.forEach(t=>answers[t.id]=t.answer);
+
+let placed = {};
+let dragItem = null;
+
+const taskPool = document.getElementById('taskPool');
+const binFe = document.getElementById('binFe');
+const binBe = document.getElementById('binBe');
+const binBoth = document.getElementById('binBoth');
+const progCount = document.getElementById('progCount');
+const resultBox = document.getElementById('resultBox');
+const resultText = document.getElementById('resultText');
+const resetBtn = document.getElementById('resetBtn');
+
+function renderTasks(){
+  taskPool.innerHTML = tasks.map(t=>`
+    <div class="task-item" draggable="true" data-id="${t.id}" id="item-${t.id}">${t.text}</div>`).join('');
+  placed={};
+  binFe.innerHTML='';binBe.innerHTML='';binBoth.innerHTML='';
+  resultBox.classList.remove('show','ok','no');
+  progCount.textContent='0 / '+tasks.length+' đã phân loại';
+  attachDrag();
+}
+
+function attachDrag(){
+  document.querySelectorAll('.task-item').forEach(item=>{
+    item.addEventListener('dragstart',e=>{
+      dragItem=item;
+      item.classList.add('dragging');
+      e.dataTransfer.effectAllowed='move';
+      e.dataTransfer.setData('text/plain',item.dataset.id);
+    });
+    item.addEventListener('dragend',()=>{
+      item.classList.remove('dragging');
+      dragItem=null;
+      document.querySelectorAll('.cat-bin').forEach(b=>b.classList.remove('drag-over'));
+    });
+  });
+
+  /* Touch support */
+  document.querySelectorAll('.task-item').forEach(item=>{
+    let touchClone=null,ox=0,oy=0;
+    item.addEventListener('touchstart',e=>{
+      dragItem=item;
+      item.classList.add('dragging');
+      const t=e.touches[0];
+      const r=item.getBoundingClientRect();
+      ox=t.clientX-r.left;oy=t.clientY-r.top;
+      touchClone=item.cloneNode(true);
+      touchClone.style.cssText=`position:fixed;left:${t.clientX-ox}px;top:${t.clientY-oy}px;width:${r.width}px;z-index:999;pointer-events:none;opacity:.85;border-color:var(--accent)`;
+      document.body.appendChild(touchClone);
+    },{passive:true});
+    item.addEventListener('touchmove',e=>{
+      if(!touchClone)return;
+      const t=e.touches[0];
+      touchClone.style.left=(t.clientX-ox)+'px';
+      touchClone.style.top=(t.clientY-oy)+'px';
+      /* Highlight bin */
+      document.querySelectorAll('.cat-bin').forEach(b=>{
+        const br=b.getBoundingClientRect();
+        b.classList.toggle('drag-over',t.clientX>=br.left&&t.clientX<=br.right&&t.clientY>=br.top&&t.clientY<=br.bottom);
+      });
+    },{passive:true});
+    item.addEventListener('touchend',e=>{
+      if(!touchClone)return;
+      const t=e.changedTouches[0];
+      touchClone.remove();touchClone=null;
+      document.querySelectorAll('.cat-bin').forEach(b=>{
+        b.classList.remove('drag-over');
+        const br=b.getBoundingClientRect();
+        if(t.clientX>=br.left&&t.clientX<=br.right&&t.clientY>=br.top&&t.clientY<=br.bottom){
+          placeItem(item.dataset.id,b.dataset.cat);
+        }
+      });
+      item.classList.remove('dragging');
+      dragItem=null;
+    });
+  });
+
+  document.querySelectorAll('.cat-bin').forEach(bin=>{
+    bin.addEventListener('dragover',e=>{e.preventDefault();bin.classList.add('drag-over')});
+    bin.addEventListener('dragleave',()=>bin.classList.remove('drag-over'));
+    bin.addEventListener('drop',e=>{
+      e.preventDefault();bin.classList.remove('drag-over');
+      const id=e.dataTransfer.getData('text/plain');
+      if(id)placeItem(id,bin.dataset.cat);
+    });
+  });
+}
+
+function placeItem(id,cat){
+  if(placed[id])return;
+  const task=tasks.find(t=>t.id===id);
+  if(!task)return;
+  placed[id]=cat;
+  const itemEl=document.getElementById('item-'+id);
+  itemEl.classList.add('placed');
+
+  const binEl = cat==='fe'?binFe:cat==='be'?binBe:binBoth;
+  const div=document.createElement('div');
+  div.className='placed-item '+cat;
+  div.innerHTML=`${task.text}<span class="undo" data-id="${id}" title="Hoàn lại"><i class="fa-solid fa-xmark"></i></span>`;
+  div.querySelector('.undo').addEventListener('click',()=>undoPlace(id));
+  binEl.appendChild(div);
+
+  const count=Object.keys(placed).length;
+  progCount.textContent=count+' / '+tasks.length+' đã phân loại';
+
+  if(count===tasks.length)checkResult();
+}
+
+function undoPlace(id){
+  delete placed[id];
+  const itemEl=document.getElementById('item-'+id);
+  itemEl.classList.remove('placed');
+  document.querySelectorAll('.placed-item').forEach(el=>{
+    if(el.querySelector('.undo').dataset.id===id)el.remove();
+  });
+  const count=Object.keys(placed).length;
+  progCount.textContent=count+' / '+tasks.length+' đã phân loại';
+  resultBox.classList.remove('show','ok','no');
+}
+
+function checkResult(){
+  let correct=0;
+  tasks.forEach(t=>{if(placed[t.id]===t.answer)correct++});
+  const allCorrect=correct===tasks.length;
+  resultBox.classList.add('show',allCorrect?'ok':'no');
+  resultBox.querySelector('.result-icon').innerHTML=allCorrect?'<i class="fa-solid fa-check-circle"></i>':'<i class="fa-solid fa-xmark-circle"></i>';
+  resultText.textContent=allCorrect
+    ?'Chính xác! Bạn đã phân biệt được ranh giới frontend/backend.'
+    :`${correct}/${tasks.length} đúng. Nhấp X bên cạnh từng item để sửa và thử lại.`;
+}
+
+resetBtn.addEventListener('click',renderTasks);
+
+/* ===== FADE IN ===== */
+function initFU(){document.querySelectorAll('.fu').forEach((el,i)=>{setTimeout(()=>el.classList.add('in'),60+i*110)})}
+renderSim();renderTasks();initFU();
+</script>
+</body>
+</html>
