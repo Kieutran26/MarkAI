@@ -11,6 +11,19 @@
 .glossary-page .glossary-definition strong { color: var(--ink); font-weight: 400; }
 .glossary-page .glossary-scroll { scrollbar-width: none; }
 .glossary-page .glossary-scroll::-webkit-scrollbar { display: none; }
+.glossary-grid-shell {
+  width: 100%;
+}
+.glossary-grid-shell #glossary-content {
+  padding-right: var(--page-gutter-mobile);
+  padding-left: var(--page-gutter-mobile);
+}
+@media (min-width: 1024px) {
+  .glossary-grid-shell #glossary-content {
+    padding-right: var(--page-gutter);
+    padding-left: 0;
+  }
+}
 .glossary-page .glossary-alpha { scrollbar-width: thin; }
 .glossary-page .glossary-alpha::-webkit-scrollbar { width: 3px; }
 .glossary-page .glossary-alpha::-webkit-scrollbar-thumb { background: var(--border); }
