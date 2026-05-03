@@ -1,11 +1,14 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import '../components/glossary/glossary.css';
 import { getTermById, getTermDeepDiveNotes } from '../lib/glossary';
+import spacingDemoHtml from '../../gif spacing.html?raw';
 
 export default function GlossaryTermDetailPage() {
   const { termId } = useParams<{ termId: string }>();
   const term = termId ? getTermById(termId) : undefined;
+  const demoFrameRef = useRef<HTMLIFrameElement | null>(null);
+  const demoResizeObserverRef = useRef<ResizeObserver | null>(null);
 
   useEffect(() => {
     if (!term) return;
@@ -17,11 +20,60 @@ export default function GlossaryTermDetailPage() {
   }
 
   const deepDiveNotes = getTermDeepDiveNotes(term);
+  const interactiveDemoHtml = term.id === 'spacing' ? spacingDemoHtml : null;
+
+  const syncDemoFrameHeight = () => {
+    const frame = demoFrameRef.current;
+    const doc = frame?.contentDocument;
+    if (!frame || !doc) return;
+    const nextHeight = Math.max(
+      doc.documentElement.scrollHeight,
+      doc.body.scrollHeight,
+      doc.documentElement.offsetHeight,
+      doc.body.offsetHeight,
+    );
+    frame.style.height = `${nextHeight}px`;
+  };
+
+  const bindDemoFrameAutoHeight = () => {
+    demoResizeObserverRef.current?.disconnect();
+    const frame = demoFrameRef.current;
+    const doc = frame?.contentDocument;
+    if (!frame || !doc) return;
+
+    syncDemoFrameHeight();
+
+    const resizeObserver = new ResizeObserver(() => {
+      syncDemoFrameHeight();
+    });
+
+    resizeObserver.observe(doc.documentElement);
+    resizeObserver.observe(doc.body);
+    demoResizeObserverRef.current = resizeObserver;
+
+    if (doc.fonts?.ready) {
+      void doc.fonts.ready.then(() => syncDemoFrameHeight());
+    }
+
+    frame.contentWindow?.addEventListener('resize', syncDemoFrameHeight);
+  };
+
+  useEffect(() => {
+    if (!interactiveDemoHtml) return;
+    const timer = window.setTimeout(bindDemoFrameAutoHeight, 80);
+    window.addEventListener('resize', syncDemoFrameHeight);
+    return () => {
+      window.clearTimeout(timer);
+      window.removeEventListener('resize', syncDemoFrameHeight);
+      demoFrameRef.current?.contentWindow?.removeEventListener('resize', syncDemoFrameHeight);
+      demoResizeObserverRef.current?.disconnect();
+    };
+  }, [interactiveDemoHtml]);
 
   return (
     <div className="glossary-page bg-[var(--bg)] text-ink">
       <section className="border-b border-border">
-        <div className="page-shell grid gap-0 lg:grid-cols-[minmax(0,1fr)_360px]">
+        <div className="page-shell grid gap-0 lg:grid-cols-[minmax(0,3fr)_minmax(0,7fr)]">
           <div className="border-b border-border px-[1.2rem] py-10 lg:border-b-0 lg:border-r lg:px-8 lg:py-14">
             <Link
               to="/tu-dien-thuat-ngu"
@@ -32,6 +84,23 @@ export default function GlossaryTermDetailPage() {
             <h1 className="mt-5 font-serif text-[clamp(2.6rem,5vw,4.4rem)] leading-[0.95]">{term.name}</h1>
             <p className="mt-3 font-mono text-[11px] tracking-[0.04em] text-muted">{term.nameEn}</p>
             <p className="mt-8 max-w-[46rem] font-sans text-[17px] leading-[1.8] text-ink2">{term.definition}</p>
+
+            <div className="mt-10 max-w-[52rem]">
+              <p className="font-mono text-[10px] uppercase tracking-[0.06em] text-muted">Giải thích kỹ hơn</p>
+              <div className="mt-4 grid gap-4">
+                {deepDiveNotes.length ? (
+                  deepDiveNotes.map((note) => (
+                    <div key={note} className="border border-border bg-[var(--bg)] px-5 py-4 font-sans text-[15px] leading-[1.8] text-ink2">
+                      {note}
+                    </div>
+                  ))
+                ) : (
+                  <div className="border border-border bg-[var(--bg)] px-5 py-4 font-sans text-[15px] leading-[1.8] text-ink2">
+                    Term này đã được tách ra trang riêng để bạn có thể gắn thêm GIF, case study, hoặc phần giải thích sâu hơn sau này mà không làm card ngoài trang chính bị dài.
+                  </div>
+                )}
+              </div>
+            </div>
           </div>
 
           <div className="px-[1.2rem] py-10 lg:px-8 lg:py-14">
@@ -44,7 +113,24 @@ export default function GlossaryTermDetailPage() {
                 <span className="font-mono text-[10px] uppercase tracking-[0.05em] text-muted">Demo / GIF</span>
                 <span className="font-mono text-[10px] text-muted">{term.name}</span>
               </div>
-              {term.demo?.src ? (
+              {term.demo?.kind === 'interactive' && interactiveDemoHtml ? (
+                <div className="glossary-demo-frame-wrap">
+                  <iframe
+                    ref={demoFrameRef}
+                    title={term.demo.alt ?? `${term.name} demo`}
+                    srcDoc={interactiveDemoHtml}
+                    className="glossary-demo-frame"
+                    sandbox="allow-scripts allow-same-origin"
+                    scrolling="no"
+                    onLoad={bindDemoFrameAutoHeight}
+                  />
+                  {term.demo.caption ? (
+                    <p className="border-t border-border px-4 py-3 font-sans text-[12px] leading-[1.65] text-ink2">
+                      {term.demo.caption}
+                    </p>
+                  ) : null}
+                </div>
+              ) : term.demo?.src ? (
                 <img src={term.demo.src} alt={term.demo.alt ?? `${term.name} demo`} className="block aspect-[4/3] w-full object-cover" />
               ) : (
                 <div className="glossary-demo-placeholder p-4">
@@ -57,26 +143,6 @@ export default function GlossaryTermDetailPage() {
         </div>
       </section>
 
-      <section className="border-b border-border">
-        <div className="page-shell px-[1.2rem] py-10 md:px-8 md:py-12">
-          <div className="max-w-[860px]">
-            <p className="font-mono text-[10px] uppercase tracking-[0.06em] text-muted">Giải thích kỹ hơn</p>
-            <div className="mt-4 grid gap-4">
-              {deepDiveNotes.length ? (
-                deepDiveNotes.map((note) => (
-                  <div key={note} className="border border-border bg-[var(--bg)] px-5 py-4 font-sans text-[15px] leading-[1.8] text-ink2">
-                    {note}
-                  </div>
-                ))
-              ) : (
-                <div className="border border-border bg-[var(--bg)] px-5 py-4 font-sans text-[15px] leading-[1.8] text-ink2">
-                  Term này đã được tách ra trang riêng để bạn có thể gắn thêm GIF, case study, hoặc phần giải thích sâu hơn sau này mà không làm card ngoài trang chính bị dài.
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-      </section>
     </div>
   );
 }

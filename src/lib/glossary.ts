@@ -10,6 +10,7 @@ export type GlossaryTerm = {
   example: string;
   related?: string[];
   demo?: {
+    kind?: 'image' | 'interactive';
     src: string;
     alt?: string;
     caption?: string;
@@ -72,7 +73,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'repository', name: 'Repository', nameEn: 'Kho code', letter: 'R', groups: ['workflow'], definition: 'Thư mục project được Git quản lý, chứa toàn bộ code và lịch sử thay đổi. Mỗi project = một repository (repo). Lưu trên GitHub để có backup.', example: '"Tạo repo mới trên GitHub, clone về máy, code, commit, push." — Claude Code có thể làm hầu hết bước này.' },
   { id: 'state', name: 'State', nameEn: 'Trạng thái của component', letter: 'S', groups: ['code'], definition: 'Dữ liệu tạm thời bên trong component — thay đổi thì UI tự cập nhật. Số lượng sản phẩm trong giỏ hàng, tab đang active, filter đang chọn — đều là state.', example: '"Khi nhấn nút Thêm vào giỏ, số lượng tăng lên ngay mà không reload trang" → State đang quản lý số lượng đó.' },
   { id: 'supabase', name: 'Supabase', nameEn: 'Backend as a Service', letter: 'S', groups: ['data', 'infra'], definition: 'Nền tảng backend miễn phí — database, authentication, storage, realtime, tất cả trong một. Hầu hết vibecoder chọn Supabase vì không cần setup server.', example: '"Lưu form submissions, quản lý user đăng nhập, upload ảnh campaign" — Supabase xử lý hết 3 việc này.' },
-  { id: 'spacing', name: 'Spacing', nameEn: 'Hệ thống khoảng cách', letter: 'S', groups: ['design'], definition: 'Khoảng cách giữa các elements — bao gồm margin, padding, gap. Design system tốt có spacing scale nhất quán (4px, 8px, 16px, 32px...).', example: '"Trang trông lộn xộn" thường do spacing không nhất quán. Prompt: "Thống nhất spacing giữa các section thành 64px."' },
+  { id: 'spacing', name: 'Spacing', nameEn: 'Hệ thống khoảng cách', letter: 'S', groups: ['design'], definition: 'Khoảng cách giữa các elements — bao gồm margin, padding, gap. Design system tốt có spacing scale nhất quán (4px, 8px, 16px, 32px...).', example: '"Trang trông lộn xộn" thường do spacing không nhất quán. Prompt: "Thống nhất spacing giữa các section thành 64px."', related: ['margin', 'padding', 'flexbox', 'grid'], demo: { kind: 'interactive', src: 'gif spacing.html', alt: 'Mô phỏng các mức spacing từ chặt đến thoáng', caption: 'Mô phỏng này cho thấy cùng một bố cục nhưng spacing khác nhau sẽ làm nhịp điệu giao diện thay đổi rất nhanh.' } },
   { id: 'typescript', name: 'TypeScript', nameEn: 'JavaScript có kiểu dữ liệu', letter: 'T', groups: ['code'], definition: 'Phiên bản JavaScript được bổ sung kiểu dữ liệu — giúp phát hiện lỗi trước khi chạy code. File .ts và .tsx là TypeScript.', example: '"Type error" trong terminal = TypeScript phát hiện bạn đang dùng sai kiểu dữ liệu. Paste lỗi cho AI, nó tự fix.' },
   { id: 'tailwind', name: 'Tailwind CSS', nameEn: 'Framework CSS dùng class', letter: 'T', groups: ['design', 'code'], definition: 'Thư viện CSS dùng class nhỏ để style trực tiếp trong HTML. Thay vì viết CSS riêng, bạn ghép class như Lego: "flex gap-4 bg-blue-500 text-white p-3".', example: 'Prompt: "Nút CTA màu cam đỏ, chữ trắng, padding 12px 24px, hover đổi màu tối hơn." → AI tạo className với Tailwind class.' },
   { id: 'ui', name: 'UI / UX', nameEn: 'User Interface / Experience', letter: 'U', groups: ['design'], definition: 'UI = giao diện (trông như thế nào). UX = trải nghiệm (dùng cảm giác ra sao). UI đẹp mà UX tệ là trang trông ổn nhưng khó dùng.', example: '"Form điền thông tin khó quá, user bỏ giữa chừng" = UX tệ dù UI đẹp. Prompt: "Chia form thành 3 bước, mỗi bước chỉ hỏi 2-3 field."' },
@@ -121,6 +122,7 @@ const deepDiveTermIds = new Set([
   'json',
   'mcp',
   'request',
+  'spacing',
   'supabase',
   'webhook',
   'websocket',
@@ -147,6 +149,11 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
   request: [
     'Rất nhiều lỗi kỹ thuật marketer gặp thực ra nằm ở request / response: gửi sai dữ liệu, gọi sai URL, hoặc server trả lỗi.',
     'Nếu bạn nhớ được vài mã cơ bản như 400, 401, 404, 500 thì lúc prompt AI sửa lỗi sẽ nhanh hơn nhiều.',
+  ],
+  spacing: [
+    'Spacing không chỉ là "chừa chỗ trống". Nó quyết định nhịp điệu cách người dùng quét mắt qua trang: chặt quá thì bí, thoáng quá thì loãng.',
+    'Với marketer, cách nói rất hữu ích cho AI là mô tả theo scale: "section này spacing quá chặt, tăng lên 24px" hoặc "thống nhất gap card thành 16px".',
+    'Mô phỏng bên dưới giúp bạn nhìn nhanh 4 nhịp spacing phổ biến, từ tight đến extra loose, để sau này prompt UI chính xác hơn.',
   ],
   supabase: [
     'Supabase hay được chọn vì gom database, auth, storage vào một chỗ, nên rất hợp các project vibecode cần ra nhanh.',
