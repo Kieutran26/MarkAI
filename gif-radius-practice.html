@@ -109,7 +109,7 @@
     text-transform:uppercase;color:var(--muted);opacity:.4;
   }
 
-  .prev-content{position:relative;z-index:1}
+  .prev-content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center}
   .main-shape-wrap{position:relative;display:inline-block;margin-bottom:20px}
   .main-shape{
     width:200px;height:80px;background:var(--shape-lt);
@@ -122,7 +122,7 @@
   .c-arc.show{opacity:1}
   .c-arc svg{overflow:visible}
 
-  .sec-shapes{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .sec-shapes{display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap}
   .prev-btn{
     padding:10px 22px;background:var(--accent);color:#fff;
     font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;
@@ -221,7 +221,7 @@
     <div class="why">
       <h3>Tại sao marketer cần biết</h3>
       <p>
-        Khi bạn nói "làm cho nó mềm hơn" mà dev hỏi "bao nhiêu px?", bạn cần trả lời được. <code>border-radius: 4px</code> khác hoàn toàn với <code>16px</code>. Sai số = sai vibe. Các design system lớn (Apple, Google, Stripe) đều có quy tắc radius rõ ràng — biết đọc số đó giúp bạn prompt chính xác hơn.
+        Khi bạn nói "làm cho nó mềm hơn" mà AI hỏi "bao nhiêu px?", bạn cần trả lời được. <code>border-radius: 4px</code> khác hoàn toàn với <code>16px</code>. Sai số = sai vibe. Các design system lớn (Apple, Google, Stripe) đều có quy tắc radius rõ ràng — biết đọc số đó giúp bạn prompt chính xác hơn.
       </p>
     </div>
   </section>
@@ -311,16 +311,16 @@
     const eff = Math.min(r, w/2, h/2);
     const s = Math.min(eff, 24);
     const corners = [
-      { x:0, y:0, flip:'scale(1,1)', tx:s+3, ty:3 },
-      { x:w, y:0, flip:'scale(-1,1)', tx:w-s-3, ty:3 }
+      { style:'left:0;top:0;transform:none;' },
+      { style:'right:0;top:0;transform:scaleX(-1);transform-origin:center;' }
     ];
     return corners.map(c => `
-      <div class="c-arc show" style="position:absolute;left:${c.tx}px;top:${c.ty}px;transform:${c.flip}">
-        <svg width="${s+2}" height="${s+2}" viewBox="0 0 ${s+2} ${s+2}" overflow="visible">
-          <line x1="1" y1="${s+1}" x2="${s+1}" y2="${s+1}" stroke="rgba(232,140,46,0.25)" stroke-width="1"/>
-          <line x1="${s+1}" y1="1" x2="${s+1}" y2="${s+1}" stroke="rgba(232,140,46,0.25)" stroke-width="1"/>
-          <path d="M 1 ${s+1} A ${s} ${s} 0 0 1 ${s+1} 1" fill="none" stroke="rgba(232,140,46,0.5)" stroke-width="1"/>
-          <circle cx="1" cy="${s+1}" r="1.5" fill="rgba(232,140,46,0.45)"/>
+      <div class="c-arc show" style="position:absolute;${c.style}">
+        <svg width="${s}" height="${s}" viewBox="0 0 ${s} ${s}" overflow="visible">
+          <line x1="0" y1="${s}" x2="${s}" y2="${s}" stroke="rgba(232,140,46,0.25)" stroke-width="1"/>
+          <line x1="${s}" y1="0" x2="${s}" y2="${s}" stroke="rgba(232,140,46,0.25)" stroke-width="1"/>
+          <path d="M 0 ${s} A ${s} ${s} 0 0 1 ${s} 0" fill="none" stroke="rgba(232,140,46,0.5)" stroke-width="1"/>
+          <circle cx="0" cy="${s}" r="1.5" fill="rgba(232,140,46,0.45)"/>
         </svg>
       </div>`).join('');
   }
