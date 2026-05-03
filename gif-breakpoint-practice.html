@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Breakpoint Practice — markAI</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f0f12;--bg-card:#16161b;--bg-el:#222;--border:#282830;
+  --border-active:#e88c2e;--accent:#e88c2e;
+  --accent-glow:rgba(232,140,46,.18);--accent-soft:rgba(232,140,46,.07);
+  --cream:#EDE4D8;--text:#D8D0C8;--muted:#777770;
+  --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:48px 48px;pointer-events:none;z-index:0}
+
+#app-root{position:relative;z-index:1;padding:24px 16px}
+
+.pg{font-size:14px;color:var(--text);line-height:1.6;margin-bottom:20px}
+.pg span{color:var(--accent);font-weight:700}
+
+/* width slider */
+.ws-area{display:flex;align-items:center;gap:14px;margin-bottom:20px}
+.ws-lbl{font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);white-space:nowrap}
+.ws-wrap{flex:1;position:relative}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;background:var(--border);outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;background:var(--accent);border:2px solid var(--bg);cursor:pointer}
+.ws-val{font-family:var(--mono);font-size:16px;font-weight:700;color:var(--accent);min-width:72px;text-align:right}
+
+/* breakpoint zones bar */
+.bz-bar{display:flex;height:24px;margin-bottom:6px;border:1px solid var(--border);overflow:hidden}
+.bz-zone{display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);transition:background .25s,color .25s;position:relative;overflow:hidden}
+.bz-zone.hit{color:var(--cream)}
+.bz-m{flex:0 0 40%;background:var(--bg)}
+.bz-m.hit{background:rgba(232,140,46,.15)}
+.bz-t{flex:0 0 13.3%;background:var(--bg-el)}
+.bz-t.hit{background:rgba(232,140,46,.25)}
+.bz-l{flex:0 0 21.6%;background:var(--bg)}
+.bz-l.hit{background:rgba(232,140,46,.2)}
+.bz-d{flex:0 0 25.1%;background:var(--bg-card)}
+.bz-d.hit{background:rgba(232,140,46,.3)}
+
+.bz-labels{display:flex;font-family:var(--mono);font-size:8px;color:var(--muted);margin-bottom:16px}
+.bz-labels span{flex:1;text-align:center;padding:2px 0}
+.bz-labels span.ac{color:var(--accent);font-weight:700}
+
+/* preview area */
+.ppv{border:1px solid var(--border);background:var(--bg-card);margin-bottom:16px;overflow:hidden;min-height:240px;display:flex;flex-direction:column;align-items:center;padding:20px}
+.ppv-frame{width:100%;transition:max-width .35s ease;overflow:hidden;background:var(--bg);border:1px solid var(--border);box-shadow:0 10px 30px -10px rgba(0,0,0,0.5)}
+.ppv-hd{display:flex;align-items:center;padding:8px 12px;border-bottom:1px solid var(--border);gap:10px}
+.ppv-ham{display:flex;flex-direction:column;gap:2px;width:16px;flex-shrink:0;cursor:default}
+.ppv-ham span{width:100%;height:2px;background:var(--cream);display:block;transition:opacity .3s}
+.ppv-ham.hide{opacity:0;pointer-events:none}
+.ppv-brand{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--cream);flex:1}
+.ppv-nav{display:flex;gap:12px;flex-shrink:0;transition:opacity .3s,max-width .3s;overflow:hidden}
+.ppv-nav.hide{opacity:0;max-width:0;gap:0;pointer-events:none}
+.ppv-ni{font-family:var(--sans);font-size:11px;color:var(--muted);white-space:nowrap}
+.ppv-body{padding:12px}
+.ppv-grid{display:grid;gap:8px;transition:all .35s ease}
+.ppv-cell{background:var(--bg-el);border:1px solid var(--border);padding:10px 8px;transition:all .35s}
+.ppv-cell-h{min-height:50px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:700;color:var(--accent);opacity:.5}
+.ppv-cell-c{min-height:64px}
+.ppv-cell-t{font-family:var(--mono);font-size:9px;font-weight:700;color:var(--cream);margin-bottom:4px}
+.ppv-cell-d{font-size:9px;color:var(--muted);line-height:1.3}
+
+/* state row */
+.state-row{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.state-badge{font-family:var(--mono);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--bg);background:var(--accent);padding:5px 12px;transition:all .25s}
+.state-info{font-family:var(--mono);font-size:10px;color:var(--muted);line-height:1.4}
+.state-info span{color:var(--cream);font-weight:600}
+
+/* feedback */
+.fb{display:flex;align-items:center;gap:8px;padding:10px 14px;font-size:13px;border:1px solid var(--border);background:var(--bg-card);margin-top:10px}
+.fb strong{color:var(--accent)}
+
+@media(max-width:768px){
+  .ws-area{flex-wrap:wrap}.ws-lbl{width:100%}.ws-val{min-width:0}
+}
+</style>
+</head>
+<body>
+<div id="app-root">
+    <p class="pg"><span>Mục tiêu:</span> Kéo slider thay đổi width trình duyệt — quan sát layout "nhảy" tại đúng các mốc <span>Breakpoint</span>.</p>
+
+    <div class="ws-area">
+      <span class="ws-lbl">Viewport Width</span>
+      <div class="ws-wrap">
+        <input type="range" id="wSld" min="320" max="1600" value="1440">
+      </div>
+      <span class="ws-val" id="wVal">1440px</span>
+    </div>
+
+    <div class="bz-bar" id="bzBar">
+      <div class="bz-zone bz-m" data-zone="mobile"><span>MOBILE</span></div>
+      <div class="bz-zone bz-t" data-zone="tablet"><span>TABLET</span></div>
+      <div class="bz-zone bz-l" data-zone="laptop"><span>LAPTOP</span></div>
+      <div class="bz-zone bz-d" data-zone="desktop"><span>DESKTOP</span></div>
+    </div>
+    <div class="bz-labels" id="bzLabels">
+      <span>0 — 767</span><span>768 — 1023</span><span>1024 — 1439</span><span>1440+</span>
+    </div>
+
+    <div class="state-row">
+      <span class="state-badge" id="stBadge">DESKTOP</span>
+      <span class="state-info" id="stInfo">Grid: <span>4 cột</span> · Nav: <span>top navigation</span></span>
+    </div>
+
+    <div class="ppv">
+      <div class="ppv-frame" id="ppvFrame" style="max-width:100%">
+        <div class="ppv-hd">
+          <div class="ppv-ham" id="ppHam"><span></span><span></span><span></span></div>
+          <span class="ppv-brand">BRAND</span>
+          <div class="ppv-nav" id="ppNav">
+            <span class="ppv-ni">Products</span>
+            <span class="ppv-ni">Features</span>
+            <span class="ppv-ni">Pricing</span>
+          </div>
+        </div>
+        <div class="ppv-body">
+          <div class="ppv-grid" id="ppGrid">
+            <div class="ppv-cell ppv-cell-h">HERO AREA</div>
+            <div class="ppv-cell ppv-cell-c"><div class="ppv-cell-t">Feature A</div><div class="ppv-cell-d">Layout tự thích ứng</div></div>
+            <div class="ppv-cell ppv-cell-c"><div class="ppv-cell-t">Feature B</div><div class="ppv-cell-d">Theo kích thước ngang</div></div>
+            <div class="ppv-cell ppv-cell-c"><div class="ppv-cell-t">Feature C</div><div class="ppv-cell-d">Phân tách bởi mốc</div></div>
+            <div class="ppv-cell ppv-cell-c"><div class="ppv-cell-t">Feature D</div><div class="ppv-cell-d">Kỹ thuật Breakpoint</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fb" id="fb"><strong>Prompt:</strong> <span>Desktop (1440px+): 4 cột, top nav, full layout</span></div>
+</div>
+
+<script>
+var wSld=document.getElementById('wSld');
+var wVal=document.getElementById('wVal');
+var stBadge=document.getElementById('stBadge');
+var stInfo=document.getElementById('stInfo');
+var ppvFrame=document.getElementById('ppvFrame');
+var ppHam=document.getElementById('ppHam');
+var ppNav=document.getElementById('ppNav');
+var ppGrid=document.getElementById('ppGrid');
+var fbTxt=document.querySelector('#fb span');
+var bzZones=document.querySelectorAll('.bz-zone');
+var bzLabelSpans=document.querySelectorAll('#bzLabels span');
+
+function getZone(w){
+  if(w<768) return {name:'MOBILE',cols:1,ham:true,nav:false,prompt:'Mobile (0-767px): 1 cột, hamburger menu, stacked layout'};
+  if(w<1024) return {name:'TABLET',cols:2,ham:true,nav:false,prompt:'Tablet (768-1023px): 2 cột, hamburger menu, compact grid'};
+  if(w<1440) return {name:'LAPTOP',cols:3,ham:false,nav:true,prompt:'Laptop (1024-1439px): 3 cột, top nav, standard layout'};
+  return {name:'DESKTOP',cols:4,ham:false,nav:true,prompt:'Desktop (1440px+): 4 cột, top nav, full layout'};
+}
+
+function upd(w){
+  w=parseInt(w);
+  wVal.textContent=w+'px';
+  var z=getZone(w);
+
+  /* zone bar */
+  bzZones.forEach(function(el){
+    var zn=el.dataset.zone;
+    var hit=(zn==='mobile'&&w<768)||(zn==='tablet'&&w>=768&&w<1024)||(zn==='laptop'&&w>=1024&&w<1440)||(zn==='desktop'&&w>=1440);
+    el.classList.toggle('hit',hit);
+  });
+  bzLabelSpans.forEach(function(el,i){
+    var ranges=[[0,768],[768,1024],[1024,1440],[1440,9999]];
+    el.classList.toggle('ac',w>=ranges[i][0]&&w<ranges[i][1]);
+  });
+
+  /* badge + info */
+  stBadge.textContent=z.name;
+  stInfo.innerHTML='Grid: <span>'+z.cols+' cột</span> · Nav: <span>'+(z.ham?'hamburger menu':'top navigation')+'</span>';
+
+  /* preview frame width — scale to fit container width roughly */
+  var containerW = document.body.clientWidth - 72;
+  var scaledW = Math.min(w, containerW);
+  ppvFrame.style.maxWidth=scaledW+'px';
+
+  /* hamburger vs nav */
+  ppHam.classList.toggle('hide',!z.ham);
+  ppNav.classList.toggle('hide',!z.nav);
+
+  /* grid columns */
+  var cols=z.cols;
+  if(cols===1) ppGrid.style.gridTemplateColumns='1fr';
+  else if(cols===2) ppGrid.style.gridTemplateColumns='1fr 1fr';
+  else if(cols===3) ppGrid.style.gridTemplateColumns='1fr 1fr 1fr';
+  else ppGrid.style.gridTemplateColumns='1fr 1fr 1fr 1fr';
+
+  /* hero span */
+  var heroCell=ppGrid.querySelector('.ppv-cell-h');
+  if(cols===1) heroCell.style.gridColumn='';
+  else heroCell.style.gridColumn='1 / -1';
+
+  /* feedback txt */
+  fbTxt.textContent=z.prompt;
+}
+
+wSld.oninput=function(){upd(wSld.value)};
+window.onresize=function(){upd(wSld.value)};
+upd(1440);
+</script>
+</body>
+</html>

@@ -26,6 +26,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'auth', name: 'Auth', nameEn: 'Authentication / Đăng nhập', letter: 'A', groups: ['infra'], definition: 'Auth là lớp kiểm tra danh tính người dùng trước khi cho vào hệ thống. Hiểu đơn giản: web cần biết bạn là ai, đăng nhập bằng cách nào, và có được phép vào khu vực đó không. Với marketer làm tool nội bộ, auth thường đi kèm Google login, email admin, session đăng nhập, và rule như “chỉ email công ty mới được vào”.', example: 'Prompt: "Thêm đăng nhập bằng Google cho tool này, chỉ email @company.com mới vào được dashboard, nếu đã có session cũ thì cho vào nhanh hơn." Đây là cách dùng auth rất thực tế.', related: ['session', 'token'], demo: { kind: 'interactive', src: 'gif-auth-demo.html', alt: 'Mô phỏng auth theo 4 trạng thái: chưa login, đúng team, sai domain, còn session' } },
   { id: 'async', name: 'Async / Await', nameEn: 'Bất đồng bộ', letter: 'A', groups: ['code'], definition: 'Cách xử lý tác vụ mất thời gian mà không làm đơ cả trang. Giống như đặt cà phê mang đi — bạn không đứng chờ, bạn làm việc khác, cà phê xong thì nhận.', example: 'Khi form submit, trang không bị đơ mà hiện loading spinner — đó là async đang chạy ngầm để gửi data lên server.' },
   { id: 'border', name: 'Border', nameEn: 'Viền / Đường kẻ bao quanh', letter: 'B', groups: ['design', 'code'], definition: 'Đường viền bao quanh một element. Gồm 3 thuộc tính: style (kiểu đường), width (độ dày), và color (màu). Border là công cụ quan trọng để phân tách các khối nội dung và tạo điểm nhấn thị giác.', example: 'Prompt: "Thêm viền 1px màu xám nhạt cho các card sản phẩm, riêng card đang được chọn thì đổi viền sang màu cam 2px để làm nổi bật."', related: ['padding', 'radius', 'card'], demo: { kind: 'interactive', src: 'gif-border-demo.html', alt: 'Mô phỏng 4 thuộc tính border: style, width, color và sides' } },
+  { id: 'breakpoint', name: 'Breakpoint', nameEn: 'Điểm ngắt layout', letter: 'B', groups: ['design', 'code'], definition: 'Điểm dừng kỹ thuật mà tại đó giao diện web tự động thay đổi cấu trúc (layout) để phù hợp với kích thước màn hình. Ví dụ: từ 4 cột trên Desktop nhảy sang 1 cột trên Mobile. Hiểu về breakpoint giúp marketer feedback chính xác vùng màn hình bị lỗi thay vì nói "màn hình nhỏ" chung chung.', example: 'Prompt: "Ở breakpoint mobile (dưới 768px), hãy ẩn bớt các cột không quan trọng và chuyển menu sang dạng hamburger để giao diện gọn hơn."', related: ['responsive', 'mobile-first', 'layout'], demo: { kind: 'interactive', src: 'gif-breakpoint-demo.html', alt: 'Mô phỏng 4 mốc breakpoint phổ biến: Mobile, Tablet, Laptop, Desktop' } },
   { id: 'backend', name: 'Backend', nameEn: 'Phần sau / Server', letter: 'B', groups: ['infra', 'code'], definition: 'Phần người dùng không thấy — nơi data được lưu, xử lý, và bảo mật. Nếu frontend là mặt tiền cửa hàng, backend là kho hàng và văn phòng phía sau.', example: '"Form đăng ký của tôi lưu data ở đâu?" → Supabase là backend.', related: ['frontend', 'database'], demo: { kind: 'interactive', src: 'gif-backend-demo.html', alt: 'Mô phỏng 4 tầng backend: API, DB, Auth, Jobs' } },
   { id: 'build', name: 'Build', nameEn: 'Đóng gói / Compile', letter: 'B', groups: ['infra'], definition: 'Quá trình biến code thô thành file tối ưu để đưa lên internet. Giống như in ấn trước khi phát hành tài liệu.', example: '"Build failed" = quá trình đóng gói bị lỗi trước khi deploy. Thường do code bị lỗi syntax hoặc thiếu package.', related: ['deploy', 'environment'] },
   { id: 'boolean', name: 'Boolean', nameEn: 'True / False', letter: 'B', groups: ['code'], definition: 'Kiểu dữ liệu chỉ có 2 giá trị: đúng hoặc sai (true/false). Dùng để kiểm soát logic — ví dụ: "isLoggedIn: true" nghĩa là người dùng đã đăng nhập.', example: 'Prompt: "Thêm tính năng toggle — khi bật thì hiện banner, khi tắt thì ẩn." AI sẽ dùng boolean showBanner: true/false.' },
@@ -132,6 +133,7 @@ const deepDiveTermIds = new Set([
   'async',
   'backend',
   'border',
+  'breakpoint',
   'build',
   'card',
   'component',
@@ -181,6 +183,11 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
   border: [
     'Border là đường viền của element. Thiếu style (ví dụ style="none") thì border sẽ biến mất hoàn toàn dù bạn có set width và color.',
     'Shorthand border: 1px solid black là cách viết cực nhanh cho 4 cạnh giống nhau. Nếu chỉ muốn gạch chân, hãy dùng border-bottom.',
+  ],
+  breakpoint: [
+    'Breakpoint chính là "cửa ngõ" của thiết kế Responsive. Mỗi khi chiều rộng trình duyệt vượt qua một con số cụ thể (ví dụ 768px), một bộ CSS mới sẽ được kích hoạt để thay đổi layout.',
+    'Với marketer, việc biết các mốc breakpoint giúp quá trình Review UI diễn ra chuyên nghiệp hơn. Thay vì nói "trên điện thoại bị lỗi", bạn có thể chỉ rõ "ở breakpoint dưới 480px, tiêu đề đang bị tràn".',
+    'Trong mô phỏng, bạn sẽ thấy 4 mốc kinh điển: 768px (bắt đầu Tablet), 1024px (bắt đầu Laptop), 1440px (Desktop lớn). Mỗi mốc là một sự thay đổi về trải nghiệm người dùng.',
   ],
   card: [
     'Card là "nguyên tử" của layout hiện đại. Thay vì viết tràn lan, hãy gom nội dung vào card để trang trông ngăn nắp và chuyên nghiệp hơn.',

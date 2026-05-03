@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Breakpoint Demo — markAI</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f0f12;--bg-card:#16161b;--bg-el:#222;--border:#282830;
+  --border-active:#e88c2e;--accent:#e88c2e;
+  --accent-glow:rgba(232,140,46,.18);--accent-soft:rgba(232,140,46,.07);
+  --cream:#EDE4D8;--text:#D8D0C8;--muted:#777770;
+  --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:48px 48px;pointer-events:none;z-index:0}
+
+#app-root{position:relative;z-index:1;padding:20px 16px}
+
+/* sim grid */
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.sp{
+  border:1px solid var(--border);
+  background:var(--bg-card);
+  padding:14px 10px 12px;
+  transition:all .4s cubic-bezier(0.23, 1, 0.32, 1);
+  min-height:180px;
+  position:relative;
+  cursor:pointer;
+}
+.sp:hover{border-color:rgba(232,140,46,0.3);background:rgba(255,255,255,0.02)}
+.sp.active{
+  border-color:var(--border-active);
+  background:var(--accent-soft);
+  transform:scale(1.02);
+  box-shadow:0 10px 30px -10px var(--accent-glow);
+  z-index:10;
+}
+.sp:not(.active){opacity:.5}
+.sp.active:not(:hover){opacity:1}
+
+.sh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+.sn{font-family:var(--mono);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);transition:color .4s}
+.sp.active .sn{color:var(--accent)}
+.sv{font-family:var(--mono);font-size:10px;color:var(--accent);font-weight:700}
+
+/* mini device frame */
+.mdev{border:1px solid var(--border);background:var(--bg);margin-bottom:8px;overflow:hidden;transition:border-color .5s}
+.sp.active .mdev{border-color:rgba(232,140,46,0.3)}
+.mdev-hd{display:flex;align-items:center;padding:4px 6px;border-bottom:1px solid var(--border);gap:4px;min-height:16px}
+.mdev-ham{display:flex;flex-direction:column;gap:1.5px;width:10px;flex-shrink:0}
+.mdev-ham span{width:100%;height:1.5px;background:var(--cream);display:block}
+.mdev-ham.hide{display:none}
+.mdev-brand{font-family:var(--mono);font-size:6px;font-weight:700;color:var(--cream);flex:1}
+.mdev-nav{display:flex;gap:4px;flex-shrink:0}
+.mdev-nav-i{font-family:var(--mono);font-size:5px;color:var(--muted);padding:1px 3px;border:1px solid var(--border)}
+.mdev-nav.hide{display:none}
+.mdev-body{padding:6px}
+.mdev-grid{display:grid;gap:3px;margin-bottom:4px}
+.mdev-g1{grid-template-columns:1fr}
+.mdev-g2{grid-template-columns:1fr 1fr}
+.mdev-g3{grid-template-columns:1fr 1fr 1fr}
+.mdev-g4{grid-template-columns:1fr 1fr 1fr 1fr}
+.mdev-cell{background:var(--bg-el);border:1px solid var(--border);min-height:12px}
+.mdev-cell-h{min-height:18px;background:var(--accent);opacity:.2}
+
+/* meta */
+.smeta{display:flex;flex-direction:column;gap:2px}
+.sm-row{display:flex;justify-content:space-between;font-family:var(--mono);font-size:7px}
+.sm-k{color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.sm-v{font-weight:600;color:var(--cream)}
+.sm-v.accent{color:var(--accent)}
+
+/* insight */
+.ibar{margin-top:12px;padding:10px 13px;background:var(--bg-card);border:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.55;min-height:38px;transition:opacity .3s}
+.ibar.fading{opacity:0}
+.ibar strong{color:var(--cream);font-weight:600}
+
+.ptrack{display:flex;gap:4px;padding:10px 0 12px}
+.pseg{flex:1;height:3px;background:var(--border);transition:background .4s}
+.pseg.on{background:var(--accent)}
+
+@media(max-width:768px){ .sg{grid-template-columns:repeat(2,1fr)} }
+@media(max-width:420px){ .sg{gap:6px} }
+</style>
+</head>
+<body>
+<div id="app-root">
+    <div class="sg" id="sg"></div>
+    <div class="ibar" id="ibar"></div>
+    <div class="ptrack" id="ptrack"></div>
+</div>
+
+<script>
+var D=[
+  {name:'MOBILE',range:'0-767px',
+   ham:true,nav:false,grid:'mdev-g1',
+   layout:'1 cột',navtype:'Hamburger',device:'Điện thoại',
+   ins:'<strong>0-767px: Mobile.</strong> Mọi thứ xếp thành 1 cột. Navigation ẩn vào hamburger. Đây là điểm khởi đầu cho tư duy Mobile-first.'},
+  {name:'TABLET',range:'768-1023px',
+   ham:true,nav:false,grid:'mdev-g2',
+   layout:'2 cột',navtype:'Hamburger',device:'Máy tính bảng',
+   ins:'<strong>768px: Tablet.</strong> Từ 1 cột nhảy sang 2 cột. Chiều rộng chưa đủ để hiện đầy đủ menu nên vẫn dùng hamburger.'},
+  {name:'LAPTOP',range:'1024-1439px',
+   ham:false,nav:true,grid:'mdev-g3',
+   layout:'3 cột',navtype:'Top Nav',device:'Laptop nhỏ',
+   ins:'<strong>1024px: Laptop.</strong> Hamburger biến mất, thay bằng Top Navigation. Layout 3 cột giúp tận dụng chiều ngang màn hình.'},
+  {name:'DESKTOP',range:'1440px+',
+   ham:false,nav:true,grid:'mdev-g4',
+   layout:'4+ cột',navtype:'Top Nav',device:'Màn hình lớn',
+   ins:'<strong>1440px+: Desktop.</strong> Layout mở rộng ra 4 cột hoặc hơn. Đây là sân chơi rộng nhất cho designer thể hiện nội dung.'}
+];
+
+var sg=document.getElementById('sg');
+D.forEach(function(d,i){
+  var p=document.createElement('div');
+  p.className='sp';p.dataset.i=i;
+  
+  var hamCls=d.ham?'mdev-ham':'mdev-ham hide';
+  var navCls=d.nav?'mdev-nav':'mdev-nav hide';
+  var navHTML=d.nav?'<div class="'+navCls+'"><span class="mdev-nav-i"></span><span class="mdev-nav-i"></span><span class="mdev-nav-i"></span></div>':'<div class="'+navCls+'"></div>';
+
+  p.innerHTML='<div class="sh"><span class="sn">'+d.name+'</span><span class="sv">'+d.range+'</span></div>'+
+    '<div class="mdev">'+
+      '<div class="mdev-hd"><div class="'+hamCls+'"><span></span><span></span><span></span></div><span class="mdev-brand">BRAND</span>'+navHTML+'</div>'+
+      '<div class="mdev-body"><div class="mdev-grid '+d.grid+'">'+
+        '<div class="mdev-cell mdev-cell-h"></div>'+
+        '<div class="mdev-cell"></div>'+
+        '<div class="mdev-cell"></div>'+
+        '<div class="mdev-cell"></div>'+
+        '<div class="mdev-cell"></div>'+
+      '</div></div>'+
+    '</div>'+
+    '<div class="smeta">'+
+      '<div class="sm-row"><span class="sm-k">Layout</span><span class="sm-v">'+d.layout+'</span></div>'+
+      '<div class="sm-row"><span class="sm-k">Nav</span><span class="sm-v">'+d.navtype+'</span></div>'+
+      '<div class="sm-row"><span class="sm-k">Device</span><span class="sm-v accent">'+d.device+'</span></div>'+
+    '</div>';
+  sg.appendChild(p);
+});
+
+var pt=document.getElementById('ptrack');
+for(var i=0;i<4;i++){var seg=document.createElement('div');seg.className='pseg';pt.appendChild(seg)}
+
+var cur=0,timer=null;
+var ibar=document.getElementById('ibar');
+var panels=sg.querySelectorAll('.sp');
+var segs=pt.querySelectorAll('.pseg');
+
+function setAct(idx){
+  cur=idx;
+  for(var i=0;i<panels.length;i++){
+    panels[i].classList.toggle('active',i===idx);
+    segs[i].classList.toggle('on',i<=idx);
+  }
+  ibar.classList.add('fading');
+  setTimeout(function(){ibar.innerHTML=D[idx].ins;ibar.classList.remove('fading')},280);
+}
+
+function startLoop(){
+  if(timer) clearInterval(timer);
+  timer=setInterval(function(){setAct((cur+1)%4)},4000);
+}
+function stopLoop(){
+  clearInterval(timer);
+  timer=null;
+}
+
+panels.forEach(function(p, i){
+  p.onclick=function(){
+    setAct(i);
+    stopLoop();
+  };
+});
+
+setAct(0);
+startLoop();
+</script>
+</body>
+</html>
