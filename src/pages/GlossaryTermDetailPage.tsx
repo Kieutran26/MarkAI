@@ -14,6 +14,8 @@ import lineSpacingDemoHtml from '../../gif-line-spacing-demo.html?raw';
 import lineSpacingPracticeHtml from '../../gif-line-spacing-practice.html?raw';
 import marginDemoHtml from '../../gif-margin-demo.html?raw';
 import marginPracticeHtml from '../../gif-margin-practice.html?raw';
+import radiusDemoHtml from '../../gif-radius-demo.html?raw';
+import radiusPracticeHtml from '../../gif-radius-practice.html?raw';
 
 export default function GlossaryTermDetailPage() {
   const { termId } = useParams<{ termId: string }>();
@@ -36,12 +38,14 @@ export default function GlossaryTermDetailPage() {
     if (id === 'letter-spacing') return letterSpacingDemoHtml;
     if (id === 'line-spacing') return lineSpacingDemoHtml;
     if (id === 'margin') return marginDemoHtml;
+    if (id === 'radius') return radiusDemoHtml;
     return null;
   };
 
   const getPracticeHtml = (id: string) => {
     if (id === 'margin') return marginPracticeHtml;
     if (id === 'line-spacing') return lineSpacingPracticeHtml;
+    if (id === 'radius') return radiusPracticeHtml;
     return null;
   };
 

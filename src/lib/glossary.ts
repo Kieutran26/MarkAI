@@ -85,6 +85,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'webhook', name: 'Webhook', nameEn: 'Thông báo tự động', letter: 'W', groups: ['infra'], definition: 'Cơ chế "gọi ngược" — khi có sự kiện xảy ra ở service A, nó tự thông báo cho service B. Chat app, live dashboard, notification realtime.', example: '"Khi có đơn hàng mới trên Shopify, tự gửi thông báo Slack" → Shopify webhook gọi URL của bạn → server nhận và gửi Slack.' },
   { id: 'wireframe', name: 'Wireframe', nameEn: 'Khung bố cục', letter: 'W', groups: ['design'], definition: 'Bản phác thảo layout của trang — chỉ có khung và vị trí, không có màu sắc hay nội dung thật. Dùng để thống nhất cấu trúc với team.', example: 'Vẽ wireframe trên Figma hoặc giấy → mô tả cho AI → AI code đúng layout đó. Wireframe giúp prompt rõ hơn nhiều.' },
   { id: 'websocket', name: 'WebSocket', nameEn: 'Kết nối thời gian thực', letter: 'W', groups: ['infra'], definition: 'Kết nối hai chiều liên tục giữa browser và server. Cho phép update realtime mà không cần reload. Chat app, live dashboard, notification realtime đều dùng WebSocket.', example: '"Muốn dashboard KPI cập nhật realtime khi có data mới" → Dùng Supabase Realtime (chạy trên WebSocket).' },
+  { id: 'radius', name: 'Radius', nameEn: 'Bo góc / Border Radius', letter: 'R', groups: ['design'], definition: 'Độ cong ở 4 góc của một hình khối. 0px là góc vuông sắc cạnh. Giá trị càng lớn, góc càng tròn. Radius quyết định "vibe" của giao diện: từ cứng cáp, kỹ thuật đến mềm mại, thân thiện.', example: 'Prompt: "Làm nút bấm mềm hơn với border-radius 8px, riêng card sản phẩm thì bo mạnh 16px để tạo cảm giác thân thiện."', related: ['css', 'interface'], demo: { kind: 'interactive', src: 'gif-radius-demo.html', alt: 'Mô phỏng các mức border-radius từ sắc cạnh đến bo tròn' } },
 ];
 
 export const quickRefItems = [
@@ -127,6 +128,7 @@ const deepDiveTermIds = new Set([
   'line-spacing',
   'mcp',
   'request',
+  'radius',
   'spacing',
   'supabase',
   'webhook',
@@ -137,7 +139,6 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
   api: [
     'Nghĩ theo kiểu marketer: API là chiếc ống nối giữa tool A và tool B, để dữ liệu tự chảy thay vì bạn copy tay.',
     'Chỉ cần nhớ 3 mảnh chính: endpoint để gọi đúng chỗ, request là dữ liệu mình gửi đi, response là thứ hệ thống trả về.',
-    'API là term rất hợp để gắn GIF mô phỏng kiểu form submit xong data tự chảy sang Airtable hoặc CRM.',
   ],
   auth: [
     'Auth không chỉ là nút đăng nhập. Nó còn quyết định ai được vào, vào bằng cách nào, và sau khi vào thì được thấy phần gì.',
@@ -168,6 +169,11 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
   margin: [
     'Trong UI web, margin-bottom là kiểu dùng phổ biến nhất vì nó quyết định nhịp dọc giữa headline, đoạn mô tả, card, section và CTA.',
     'Khi layout trông bí và các khối như đang dán vào nhau, thứ nên kiểm tra đầu tiên thường là margin trước khi đụng tới font hay màu.',
+  ],
+  radius: [
+    'Radius không chỉ là "bo cho đẹp". Nó mang tính tâm lý: góc vuông gợi sự chính xác, tin cậy; góc bo gợi sự thoải mái, an toàn.',
+    'Quy tắc vàng: Element càng nhỏ (button, tag) thì radius nên nhỏ. Element càng lớn (card, modal) thì radius có thể lớn hơn để cân đối thị giác.',
+    'Khi dùng AI, thay vì nói "bo góc một chút", hãy thử các mức cụ thể như 4px (subtle), 8px (standard), hoặc 50% (circle) để có kết quả nhất quán.',
   ],
 };
 
