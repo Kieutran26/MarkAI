@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Border Demo — markAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  :root{
+    --bg:#0f0f12;--bg-card:#16161b;--fg:#e8e4dc;--muted:#6e6e7a;
+    --accent:#e88c2e;--accent-soft:rgba(232,140,46,.12);
+    --accent-border:rgba(232,140,46,.3);--border:#282830;
+    --surface:#1c1c23;--shape-lt:#33333d;--bar-m:#44444f;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:var(--bg);color:var(--fg);
+    font-family:'Space Grotesk',sans-serif;line-height:1.6;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:'';position:fixed;inset:0;
+    background-image:radial-gradient(rgba(255,255,255,.022) 1px,transparent 1px);
+    background-size:20px 20px;pointer-events:none;z-index:0;
+  }
+
+  #app-root{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:24px}
+
+  .sec-lbl{
+    font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;
+    letter-spacing:2px;text-transform:uppercase;color:var(--muted);
+    margin-bottom:20px;display:flex;align-items:center;gap:10px;
+  }
+  .sec-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+
+  .sim-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+  @media(max-width:720px){.sim-grid{grid-template-columns:repeat(2,1fr)}}
+
+  .sc{
+    background:var(--bg-card);border:1px solid var(--border);
+    padding:20px 14px 18px;cursor:pointer;position:relative;overflow:hidden;
+    transition:border-color .3s,background .3s;
+  }
+  .sc::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:2px;
+    background:var(--accent);transform:scaleX(0);transform-origin:left;
+    transition:transform .35s ease;
+  }
+  .sc:hover{border-color:var(--accent-border)}
+  .sc.on{border-color:var(--accent);background:var(--surface)}
+  .sc.on::before{transform:scaleX(1)}
+
+  .sc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+  .sc-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px}
+  .sc-tag{
+    font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;
+    text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);transition:color .3s;
+  }
+  .sc.on .sc-tag{color:var(--accent)}
+
+  .sc-demo{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;min-height:90px;align-items:center;margin-bottom:12px}
+  .b-sample{width:44px;height:36px;background:var(--bg);display:flex;align-items:center;justify-content:center;transition:border .4s ease;position:relative}
+  .b-sample .b-lbl{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);opacity:0;transition:opacity .3s;position:absolute;bottom:-12px;white-space:nowrap}
+  .sc.on .b-sample .b-lbl{opacity:.7}
+
+  .ins{
+    background:var(--surface);border:1px solid var(--border);
+    padding:18px 22px;display:flex;align-items:flex-start;gap:12px;min-height:80px;
+  }
+  .ins-i{color:var(--accent);font-size:13px;margin-top:3px;flex-shrink:0}
+  .ins-t{font-size:14px;color:var(--fg);opacity:.85;line-height:1.65;transition:opacity .25s,transform .25s}
+  .ins-t.fading{opacity:0;transform:translateY(6px)}
+
+  @media(max-width:480px){
+    #app-root{padding:14px}
+    .ins{padding:14px 16px}
+  }
+</style>
+</head>
+<body>
+
+<div id="app-root">
+  <section aria-label="Mô phỏng border">
+    <div class="sim-grid" id="simGrid"></div>
+    <div class="ins">
+      <i class="fa-solid fa-lightbulb ins-i"></i>
+      <p class="ins-t" id="insT">Đang tải...</p>
+    </div>
+  </section>
+</div>
+
+<script>
+  const styles = ['none','solid','dashed','dotted','double','groove','ridge'];
+  const widths = [1,2,4,6,8];
+  const colors = [
+    {name:'black',val:'#1a1a1a'},
+    {name:'white',val:'#e8e4dc'},
+    {name:'accent',val:'#e88c2e'},
+    {name:'muted',val:'#6e6e7a'},
+    {name:'red',val:'#c43a3a'},
+    {name:'green',val:'#3a9e5c'}
+  ];
+
+  const presets = [
+    {
+      num:'01', name:'Style',
+      ins:'Style quyết định kiểu đường viền. "none" = không hiển thị (mặc định). "solid" = nét liền. "dashed" = nét đứt. "dotted" = chấm. "double" = đường kép. Style là bắt buộc — không có nó thì border không hiện.',
+      build(el){
+        el.innerHTML = styles.slice(0, 5).map(s=>`<div class="b-sample" style="border:2px ${s} var(--fg)"><span class="b-lbl">${s}</span></div>`).join('');
+      }
+    },
+    {
+      num:'02', name:'Width',
+      ins:'Width là độ dày của đường viền, tính bằng px. 1px = siêu mảnh (divider). 4-8px = dày, tạo cảm giác khung mạnh. Width không có tác dụng nếu style là "none".',
+      build(el){
+        el.innerHTML = widths.map(w=>`<div class="b-sample" style="border:${w}px solid var(--fg)"><span class="b-lbl">${w}px</span></div>`).join('');
+      }
+    },
+    {
+      num:'03', name:'Color',
+      ins:'Color quyết định màu viền. Mặc định theo màu chữ. Dùng màu để phân biệt trạng thái: xám = normal, cam = active, đỏ = error.',
+      build(el){
+        el.innerHTML = colors.slice(0, 5).map(c=>`<div class="b-sample" style="border:2px solid ${c.val}"><span class="b-lbl">${c.name}</span></div>`).join('');
+      }
+    },
+    {
+      num:'04', name:'Sides',
+      ins:'Có thể đặt riêng từng cạnh (top, right, bottom, left). Khi 4 cạnh giống nhau dùng shorthand "border: 1px solid black". Khi khác nhau dùng từng cạnh riêng lẻ.',
+      build(el){
+        el.innerHTML = `
+          <div class="b-sample" style="border:2px solid var(--fg)"><span class="b-lbl">all</span></div>
+          <div class="b-sample" style="border-top:3px solid var(--accent);border-right:1px dashed var(--muted);border-bottom:1px dashed var(--muted);border-left:1px dashed var(--muted)"><span class="b-lbl">top</span></div>
+          <div class="b-sample" style="border-top:2px solid var(--accent);border-bottom:2px solid var(--accent)"><span class="b-lbl">y-axis</span></div>
+        `;
+      }
+    }
+  ];
+
+  const simGrid = document.getElementById('simGrid');
+  const insT = document.getElementById('insT');
+  let activeI = 0;
+  let autoTimer;
+
+  function renderSim() {
+    simGrid.innerHTML = presets.map((p, ci) => `
+      <div class="sc" data-i="${ci}" tabindex="0" role="button">
+        <div class="sc-top">
+          <span class="sc-num">${p.num}</span>
+          <span class="sc-tag">${p.name}</span>
+        </div>
+        <div class="sc-demo" id="sd${ci}"></div>
+      </div>`).join('');
+
+    presets.forEach((p, i) => p.build(document.getElementById('sd'+i)));
+
+    simGrid.querySelectorAll('.sc').forEach(c => {
+      c.addEventListener('click', () => {
+        clearInterval(autoTimer);
+        activateCard(+c.dataset.i);
+      });
+    });
+  }
+
+  function activateCard(i) {
+    activeI = i;
+    simGrid.querySelectorAll('.sc').forEach((c, idx) => c.classList.toggle('on', idx === i));
+    setIns(presets[i].ins);
+  }
+
+  function setIns(t) {
+    insT.classList.add('fading');
+    setTimeout(() => { 
+      insT.textContent = t; 
+      insT.classList.remove('fading'); 
+    }, 250);
+  }
+
+  function startAuto() {
+    activateCard(0);
+    autoTimer = setInterval(() => {
+      activeI = (activeI + 1) % presets.length;
+      activateCard(activeI);
+    }, 4500);
+  }
+
+  renderSim();
+  startAuto();
+</script>
+</body>
+</html>

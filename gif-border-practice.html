@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Border Practice — markAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  :root{
+    --bg:#0f0f12;--bg-card:#16161b;--fg:#e8e4dc;--muted:#6e6e7a;
+    --accent:#e88c2e;--accent-soft:rgba(232,140,46,.12);
+    --accent-border:rgba(232,140,46,.3);--border:#282830;
+    --surface:#1c1c23;--success:#3a9e5c;--success-soft:rgba(58,158,92,.12);
+    --warning:#c49030;--warning-soft:rgba(196,144,48,.1);
+    --bar-d:#2a2a34;--bar-m:#44444f;--shape-lt:#33333d;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:var(--bg);color:var(--fg);
+    font-family:'Space Grotesk',sans-serif;line-height:1.6;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:'';position:fixed;inset:0;
+    background-image:radial-gradient(rgba(255,255,255,.022) 1px,transparent 1px);
+    background-size:20px 20px;pointer-events:none;z-index:0;
+  }
+
+  #app-root{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:24px}
+
+  .sec-lbl{
+    font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;
+    letter-spacing:2px;text-transform:uppercase;color:var(--muted);
+    margin-bottom:20px;display:flex;align-items:center;gap:10px;
+  }
+  .sec-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+
+  .pg{font-size:15px;color:var(--fg);opacity:.8;margin-bottom:22px;line-height:1.6}
+  .pg span{color:var(--accent);font-weight:600}
+
+  /* Controls grid */
+  .ctrl-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:24px}
+  @media(max-width:500px){.ctrl-grid{grid-template-columns:1fr}}
+  .ctrl-box{background:var(--bg-card);border:1px solid var(--border);padding:14px}
+  .ctrl-label{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:10px}
+
+  /* Style selector */
+  .style-opts{display:flex;flex-wrap:wrap;gap:6px}
+  .style-opt{padding:6px 12px;border:1px solid var(--border);background:transparent;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);cursor:pointer;transition:all .25s}
+  .style-opt:hover{border-color:var(--accent-border);color:var(--fg)}
+  .style-opt.on{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+
+  /* Color opts */
+  .color-opts{display:flex;gap:8px;flex-wrap:wrap}
+  .color-opt{width:28px;height:28px;border:2px solid transparent;cursor:pointer;transition:all .25s;position:relative}
+  .color-opt:hover{transform:scale(1.1)}
+  .color-opt.on{border-color:var(--fg);box-shadow:0 0 0 2px var(--bg)}
+  .color-opt .c-lbl{position:absolute;bottom:-14px;left:50%;transform:translateX(-50%);font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);opacity:0;white-space:nowrap;transition:opacity .2s}
+  .color-opt.on .c-lbl{opacity:.7}
+
+  /* Width slider */
+  .sl-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+  .sl-lbl{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
+  .sl-val{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:600;color:var(--accent);min-width:36px;text-align:right}
+  .sl-wrap{position:relative;height:28px}
+  .sl-track{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);height:3px;background:var(--border)}
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:28px;background:transparent;outline:none;cursor:pointer;position:absolute;top:0;left:0;z-index:2}
+  input[type=range]::-webkit-slider-runnable-track{height:3px;background:transparent}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;background:var(--accent);border:2px solid var(--bg);margin-top:-5.5px;cursor:grab}
+  input[type=range]::-moz-range-track{height:3px;background:transparent;border:none}
+  input[type=range]::-moz-range-thumb{width:14px;height:14px;background:var(--accent);border:2px solid var(--bg);cursor:grab;border-radius:0}
+
+  /* Side toggles */
+  .side-toggles{display:flex;gap:6px}
+  .side-btn{padding:6px 10px;border:1px solid var(--border);background:transparent;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:4px}
+  .side-btn:hover{border-color:var(--accent-border);color:var(--fg)}
+  .side-btn.on{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+  .side-btn i{font-size:8px}
+
+  /* Preview */
+  .prev{background:var(--bg-card);border:1px solid var(--border);padding:36px 28px;margin-bottom:18px;display:flex;justify-content:center;align-items:center;min-height:200px;position:relative;transition:border-color .3s}
+  .prev::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.005) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.005) 1px,transparent 1px);background-size:14px 14px;pointer-events:none}
+  .prev-lbl{position:absolute;top:10px;left:14px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);opacity:.4;z-index:2}
+  .prev-box{width:200px;min-height:130px;background:var(--bg);position:relative;z-index:1;transition:border .15s ease;display:flex;flex-direction:column;gap:6px;padding:12px}
+  .prev-av{width:28px;height:28px;background:var(--bar-m)}
+  .prev-t{height:5px;background:var(--bar-m);width:70%}
+  .prev-d{height:4px;background:var(--bar-d);width:100%}
+  .prev-d2{height:4px;background:var(--bar-d);width:60%}
+  .prev-d3{height:4px;background:var(--bar-d);width:85%}
+
+  /* CSS output */
+  .css-out{background:var(--bg-card);border:1px solid var(--border);padding:14px 18px;margin-bottom:12px}
+  .css-out-head{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px}
+  .css-out-code{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--fg);opacity:.8;line-height:1.7}
+  .css-out-code .p{color:var(--accent)}
+  .css-out-code .v{color:var(--success)}
+
+  /* Shorthand vs individual comparison */
+  .compare{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:20px}
+  @media(max-width:500px){.compare{grid-template-columns:1fr}}
+  .cmp-item{background:var(--surface);border:1px solid var(--border);padding:14px}
+  .cmp-label{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted);margin-bottom:8px}
+  .cmp-code{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--fg);opacity:.7;line-height:1.8}
+  .cmp-code .p{color:var(--accent)}
+  .cmp-code .v{color:var(--success)}
+  .cmp-note{font-size:11px;color:var(--muted);opacity:.5;margin-top:8px;line-height:1.4}
+
+  .hint{font-size:12px;color:var(--muted);opacity:.5;margin-top:10px;display:flex;align-items:center;gap:6px}
+  .hint i{font-size:10px;color:var(--accent)}
+
+  @media(max-width:480px){
+    #app-root{padding:14px}
+    .prev{padding:32px 16px}
+    .ctrl-grid{grid-template-columns:1fr}
+  }
+</style>
+</head>
+<body>
+
+<div id="app-root">
+  <section aria-label="Thực hành border">
+    <p class="pg"><span>Mục tiêu:</span> Chọn style, color, width và bật/tắt từng cạnh để tạo border. Quan sát CSS output thay đổi realtime.</p>
+
+    <div class="ctrl-grid">
+      <div class="ctrl-box">
+        <div class="ctrl-label">Style</div>
+        <div class="style-opts" id="styleOpts"></div>
+      </div>
+      <div class="ctrl-box">
+        <div class="ctrl-label">Color</div>
+        <div class="color-opts" id="colorOpts"></div>
+      </div>
+      <div class="ctrl-box">
+        <div class="sl-head"><span class="sl-lbl">Width</span><span class="sl-val" id="wVal">2px</span></div>
+        <div class="sl-wrap"><div class="sl-track"></div><input type="range" id="wSl" min="0" max="12" value="2" step="1" aria-label="Border width"></div>
+      </div>
+      <div class="ctrl-box">
+        <div class="ctrl-label">Sides</div>
+        <div class="side-toggles" id="sideToggles"></div>
+      </div>
+    </div>
+
+    <div class="prev" id="prevBox">
+      <span class="prev-lbl">PREVIEW</span>
+      <div class="prev-box" id="prevBoxInner">
+        <div class="prev-av"></div>
+        <div class="prev-t"></div>
+        <div class="prev-d"></div>
+        <div class="prev-d2"></div>
+        <div class="prev-d3"></div>
+      </div>
+    </div>
+
+    <div class="css-out">
+      <div class="css-out-head">CSS Output</div>
+      <div class="css-out-code" id="cssOut"></div>
+    </div>
+
+    <div class="compare">
+      <div class="cmp-item">
+        <div class="cmp-label">Shorthand (viết gọn)</div>
+        <div class="cmp-code" id="cmpShort"></div>
+        <div class="cmp-note">Ngắn gọn, dễ đọc. Dùng khi 4 cạnh giống nhau.</div>
+      </div>
+      <div class="cmp-item">
+        <div class="cmp-label">Individual (riêng từng cạnh)</div>
+        <div class="cmp-code" id="cmpLong"></div>
+        <div class="cmp-note">Dùng khi mỗi cạnh khác nhau. Chính xác hơn.</div>
+      </div>
+    </div>
+
+    <p class="hint">
+      <i class="fa-solid fa-arrow-up-right"></i>
+      Bật/tắt từng cạnh để xem khi nào CSS dùng shorthand.
+    </p>
+  </section>
+</div>
+
+<script>
+  const styles = ['none','solid','dashed','dotted','double','groove','ridge'];
+  const colors = [
+    {name:'black',val:'#1a1a1a'},
+    {name:'white',val:'#e8e4dc'},
+    {name:'accent',val:'#e88c2e'},
+    {name:'muted',val:'#6e6e7a'},
+    {name:'red',val:'#c43a3a'},
+    {name:'green',val:'#3a9e5c'}
+  ];
+
+  let curStyle = 'solid';
+  let curColor = '#e88c2e';
+  let curWidth = 2;
+  let curSides = {top:true,right:true,bottom:true,left:true};
+
+  const styleOpts = document.getElementById('styleOpts');
+  const colorOpts = document.getElementById('colorOpts');
+  const wSl = document.getElementById('wSl');
+  const wVal = document.getElementById('wVal');
+  const sideToggles = document.getElementById('sideToggles');
+  const prevBoxInner = document.getElementById('prevBoxInner');
+  const cssOut = document.getElementById('cssOut');
+  const cmpShort = document.getElementById('cmpShort');
+  const cmpLong = document.getElementById('cmpLong');
+
+  function renderStyles(){
+    styleOpts.innerHTML = styles.map(s=>`<button class="style-opt${s===curStyle?' on':''}" data-s="${s}">${s}</button>`).join('');
+    styleOpts.querySelectorAll('.style-opt').forEach(b=>{
+      b.addEventListener('click',()=>{curStyle=b.dataset.s;renderStyles();updatePreview()});
+    });
+  }
+
+  function renderColors(){
+    colorOpts.innerHTML = colors.map(c=>`<div class="color-opt${c.val===curColor?' on':''}" data-c="${c.val}" style="background:${c.val}" title="${c.name}"><span class="c-lbl">${c.name}</span></div>`).join('');
+    colorOpts.querySelectorAll('.color-opt').forEach(b=>{
+      b.addEventListener('click',()=>{curColor=b.dataset.c;renderColors();updatePreview()});
+    });
+  }
+
+  function renderSides(){
+    const sides = [
+      {key:'top',icon:'fa-arrow-up',label:'Top'},
+      {key:'right',icon:'fa-arrow-right',label:'Right'},
+      {key:'bottom',icon:'fa-arrow-down',label:'Bottom'},
+      {key:'left',icon:'fa-arrow-left',label:'Left'}
+    ];
+    sideToggles.innerHTML = sides.map(s=>`<button class="side-btn${curSides[s.key]?' on':''}" data-s="${s.key}" aria-label="Border ${s.label}"><i class="fa-solid ${s.icon}"></i>${s.label}</button>`).join('');
+    sideToggles.querySelectorAll('.side-btn').forEach(b=>{
+      b.addEventListener('click',()=>{curSides[b.dataset.s]=!curSides[b.dataset.s];renderSides();updatePreview()});
+    });
+  }
+
+  wSl.addEventListener('input',()=>{curWidth=+wSl.value;wVal.textContent=curWidth+'px';updatePreview()});
+
+  function updatePreview(){
+    const box = prevBoxInner;
+    const s = curStyle;
+    const w = curWidth;
+    const c = curColor;
+    const v = curStyle==='none' ? 'none' : `${w}px ${s} ${c}`;
+
+    box.style.borderTop = curSides.top ? v : 'none';
+    box.style.borderRight = curSides.right ? v : 'none';
+    box.style.borderBottom = curSides.bottom ? v : 'none';
+    box.style.borderLeft = curSides.left ? v : 'none';
+
+    const allSame = curSides.top && curSides.right && curSides.bottom && curSides.left;
+    const allOff = !curSides.top && !curSides.right && !curSides.bottom && !curSides.left;
+    
+    let cssLines = [];
+    let shortLines = [];
+    let longLines = [];
+
+    if(allSame || allOff){
+      const finalVal = (allOff || curStyle==='none') ? 'none' : `${w}px ${s} ${c}`;
+      cssLines.push(`<span class="p">border</span>: <span class="v">${finalVal}</span>;`);
+      shortLines.push(`<span class="p">border</span>: <span class="v">${finalVal}</span>;`);
+      longLines.push(`<span class="p">border</span>: <span class="v">${finalVal}</span>;`);
+    } else {
+      const sideNames = ['top','right','bottom','left'];
+      sideNames.forEach(side=>{
+        if(curSides[side]){
+          const val = curStyle==='none' ? 'none' : `${w}px ${s} ${c}`;
+          cssLines.push(`<span class="p">border-${side}</span>: <span class="v">${val}</span>;`);
+          longLines.push(`<span class="p">border-${side}</span>: <span class="v">${val}</span>;`);
+        }
+      });
+      shortLines.push(`<span style="color:var(--muted);opacity:.4">/* Không dùng shorthand */</span>`);
+    }
+    cssOut.innerHTML = cssLines.join('<br>');
+    cmpShort.innerHTML = shortLines.join('<br>');
+    cmpLong.innerHTML = longLines.join('<br>');
+  }
+
+  renderStyles();renderColors();renderSides();updatePreview();
+</script>
+</body>
+</html>
