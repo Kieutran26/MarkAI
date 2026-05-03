@@ -74,7 +74,7 @@ export default function PromptsHero() {
                 <TypewriterText text="[yêu cầu 2]" className="val" delay={4.4} />
                 {"\n\n"}
                 <TypewriterText text="Rules:" className="kw" delay={4.8} />
-                <TypewriterText text=" No border-radius · No box-shadow · DM Mono for UI text" delay={5.0} />
+                <TypewriterText text=" No border-radius · No box-shadow · IBM Plex Mono for UI text" delay={5.0} />
               </pre>
             </div>
             <div className="prompt-preview-footer">

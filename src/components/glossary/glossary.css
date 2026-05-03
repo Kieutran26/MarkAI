@@ -4,11 +4,8 @@
   --glossary-data: #3d2a5c;
 }
 
-.ticker.glossary-route { background: var(--ink); border-bottom-color: var(--border); }
-.ticker.glossary-route .ticker-item { color: #555; font-weight: 400; }
-.ticker.glossary-route .ticker-item b { color: var(--accent); }
-.glossary-page .glossary-body { font-family: 'DM Sans', sans-serif; font-weight: 300; }
-.glossary-page .glossary-definition strong { color: var(--ink); font-weight: 400; }
+
+.glossary-page .glossary-definition strong { color: var(--ink); font-weight: 500; }
 .glossary-page .glossary-scroll { scrollbar-width: none; }
 .glossary-page .glossary-scroll::-webkit-scrollbar { display: none; }
 .glossary-grid-shell {

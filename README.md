@@ -4,7 +4,7 @@ Brutalist marketing site cho hệ sinh thái học AI ứng dụng của markAI.
 
 Repo này hiện tập trung vào 2 lớp:
 
-- `src/`: public website cho người học, gồm Home, Vibecode, Blog, Tips, Prompts, lesson pages
+- `src/`: public website cho người học, gồm Home, Vibecode, Blog, Tips, Prompts, lesson pages, glossary page độc lập
 - `src/admin/`: admin surface và theme token dùng chung
 
 ## Stack
@@ -68,7 +68,9 @@ npm run lint
 ## Routing hiện tại
 
 - `/`
+- `/tu-dien-thuat-ngu`
 - `/vibecode`
+- `/vibecode/preview/:previewToken`
 - `/vibecode/:lessonSlug`
 - `/vibecode/:lessonSlug/:subSlug`
 - `/blog`
@@ -80,6 +82,12 @@ npm run lint
 - `/feedback`
 - `/report`
 - `/contact`
+- `/admin/*`
+
+## Ghi chú route glossary
+
+- Trang từ điển chuyên ngành là route độc lập tại `/tu-dien-thuat-ngu`
+- URL cũ `/vibecode/tu-ngu-chuyen-nganh/tu-dien-thuat-ngu` hiện redirect sang route mới để giữ backward compatibility
 
 ## Design system
 

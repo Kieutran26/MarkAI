@@ -35,7 +35,7 @@ export default function BugLog() {
       statusText: 'ĐÃ BIẾT',
       desc: (
         <>
-          <strong>Font DM Mono</strong> render nhẹ hơn trên Windows Chrome so với Mac — do font hinting khác biệt. Đây là known issue của Google Fonts.
+          <strong>Font IBM Plex Mono</strong> render nhẹ hơn trên Windows Chrome so với Mac — do font hinting khác biệt. Đây là known issue của Google Fonts.
         </>
       ),
       date: '15·04·2026'

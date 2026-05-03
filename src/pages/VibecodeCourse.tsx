@@ -26,15 +26,15 @@ interface Chapter {
 
 const curriculum: Chapter[] = [
   {
-    title: "Vibecode lÃ  gÃ¬? KhÃ³ khÃ´ng? GiÃºp gÃ¬ cho Marketer?",
+    title: "Vibecode là gì? Khó không? Giúp gì cho Marketer?",
     subtitle: "Introduction to Vibecode for Marketers",
     progress: "0/5",
     lessons: [
-      { id: "1.1", title: "Vibecode lÃ  gÃ¬ â€” Ä‘á»‹nh nghÄ©a khÃ´ng-tech", sub: "Non-tech definition", tag: "CÆ  Báº¢N" },
-      { id: "1.2", title: "Táº¡i sao Marketer láº¡i cáº§n biáº¿t vibecode", sub: "Why marketers need it", tag: "CÆ  Báº¢N" },
-      { id: "1.3", title: "Nhá»¯ng Ä‘iá»u marketer cÃ³ thá»ƒ lÃ m ngay khi biáº¿t AI", sub: "Immediate AI wins", tag: "á»¨NG Dá»¤NG" },
-      { id: "1.4", title: "Báº¡n cáº§n biáº¿t gÃ¬", sub: "Prerequisites", tag: "CÆ  Báº¢N" },
-      { id: "1.5", title: "Báº¡n cáº§n biáº¿t gÃ¬ trÆ°á»›c khi báº¯t Ä‘áº§u", sub: "Prerequisites", tag: "CÆ  Báº¢N" }
+      { id: "1.1", title: "Vibecode là gì — định nghĩa không-tech", sub: "Non-tech definition", tag: "CƠ BẢN" },
+      { id: "1.2", title: "Tại sao Marketer lại cần biết vibecode", sub: "Why marketers need it", tag: "CƠ BẢN" },
+      { id: "1.3", title: "Những điều marketer có thể làm ngay khi biết AI", sub: "Immediate AI wins", tag: "ỨNG DỤNG" },
+      { id: "1.4", title: "Bạn cần biết gì", sub: "Prerequisites", tag: "CƠ BẢN" },
+      { id: "1.5", title: "Bạn cần biết gì trước khi bắt đầu", sub: "Prerequisites", tag: "CƠ BẢN" }
     ]
   },
   {
@@ -50,92 +50,92 @@ const curriculum: Chapter[] = [
     ]
   },
   {
-    title: "CÃ i gÃ¬ vÃ o mÃ¡y Ä‘á»ƒ báº¯t Ä‘áº§u",
+    title: "Cài gì vào máy để bắt đầu",
     subtitle: "Setting up your Development Environment",
     progress: "0/6",
     lessons: [
-      { id: "3.1", title: "Tá»•ng quan â€” cáº§n cÃ i gÃ¬, theo thá»© tá»± nÃ o", sub: "Installation order", tag: "SETUP" },
-      { id: "3.2", title: "CÃ i Node.js", sub: "The engine", tag: "SETUP" },
-      { id: "3.3", title: "CÃ i VS Code", sub: "The editor", tag: "SETUP" },
-      { id: "3.4", title: "CÃ i Cursor", sub: "The AI Code Editor", tag: "SETUP" },
-      { id: "3.5", title: "CÃ i Git", sub: "Version Control", tag: "SETUP" },
-      { id: "3.6", title: "CÃ i Claude Code", sub: "The Agent CLI", tag: "SETUP" }
+      { id: "3.1", title: "Tổng quan — cần cài gì, theo thứ tự nào", sub: "Installation order", tag: "SETUP" },
+      { id: "3.2", title: "Cài Node.js", sub: "The engine", tag: "SETUP" },
+      { id: "3.3", title: "Cài VS Code", sub: "The editor", tag: "SETUP" },
+      { id: "3.4", title: "Cài Cursor", sub: "The AI Code Editor", tag: "SETUP" },
+      { id: "3.5", title: "Cài Git", sub: "Version Control", tag: "SETUP" },
+      { id: "3.6", title: "Cài Claude Code", sub: "The Agent CLI", tag: "SETUP" }
     ]
   },
   {
-    title: "LÃ m quen VS Code & Cursor",
+    title: "Làm quen VS Code & Cursor",
     subtitle: "Mastering the AI Editor Interface",
     progress: "0/6",
     lessons: [
-      { id: "4.1", title: "Giao diá»‡n VS Code & Explorer", sub: "Interface overview", tag: "BASIC" },
-      { id: "4.2", title: "Äá»c cáº¥u trÃºc thÆ° má»¥c Next.js", sub: "Project structure", tag: "ANALYSIS" },
-      { id: "4.3", title: "Terminal tÃ­ch há»£p", sub: "Integrated Terminal", tag: "COMMANDS" },
-      { id: "4.4", title: "Giao diá»‡n Cursor vs VS Code", sub: "The diff", tag: "CONCEPT" },
+      { id: "4.1", title: "Giao diện VS Code & Explorer", sub: "Interface overview", tag: "BASIC" },
+      { id: "4.2", title: "Đọc cấu trúc thư mục Next.js", sub: "Project structure", tag: "ANALYSIS" },
+      { id: "4.3", title: "Terminal tích hợp", sub: "Integrated Terminal", tag: "COMMANDS" },
+      { id: "4.4", title: "Giao diện Cursor vs VS Code", sub: "The diff", tag: "CONCEPT" },
       { id: "4.5", title: "Chat vs Composer trong Cursor", sub: "Workflow modes", tag: "TIP" },
-      { id: "4.6", title: "PhÃ­m táº¯t hay dÃ¹ng nháº¥t", sub: "Hotkeys for speed", tag: "SPEED" }
+      { id: "4.6", title: "Phím tắt hay dùng nhất", sub: "Hotkeys for speed", tag: "SPEED" }
     ]
   },
   {
-    title: "LÃ m quen Claude Code",
+    title: "Làm quen Claude Code",
     subtitle: "Interacting with AI Agents",
     progress: "0/5",
     lessons: [
-      { id: "5.1", title: "Claude Code lÃ  gÃ¬", sub: "Agent vs Editor", tag: "CONCEPT" },
-      { id: "5.2", title: "Cháº¡y Claude Code láº§n Ä‘áº§u", sub: "Initialization", tag: "PRACTICE" },
-      { id: "5.3", title: "CÃ¡c lá»‡nh hay dÃ¹ng nháº¥t", sub: "Plan, Edit, Run", tag: "COMMANDS" },
-      { id: "5.4", title: "Khi nÃ o dÃ¹ng Claude, khi nÃ o dÃ¹ng Cursor", sub: "Tool selection", tag: "WORKFLOW" },
-      { id: "5.5", title: "Claude Code + Cursor káº¿t há»£p", sub: "Hybrid workflow", tag: "PRO" }
+      { id: "5.1", title: "Claude Code là gì", sub: "Agent vs Editor", tag: "CONCEPT" },
+      { id: "5.2", title: "Chạy Claude Code lần đầu", sub: "Initialization", tag: "PRACTICE" },
+      { id: "5.3", title: "Các lệnh hay dùng nhất", sub: "Plan, Edit, Run", tag: "COMMANDS" },
+      { id: "5.4", title: "Khi nào dùng Claude, khi nào dùng Cursor", sub: "Tool selection", tag: "WORKFLOW" },
+      { id: "5.5", title: "Claude Code + Cursor kết hợp", sub: "Hybrid workflow", tag: "PRO" }
     ]
   },
   {
-    title: "CÃ´ng cá»¥ & website há»¯u Ã­ch",
+    title: "Công cụ & website hữu ích",
     subtitle: "The AI Development Ecosystem",
     progress: "0/6",
     lessons: [
-      { id: "6.1", title: "v0.dev â€” sinh UI tá»« mÃ´ táº£", sub: "Generative UI", tag: "DESIGN" },
-      { id: "6.2", title: "Bolt.new â€” táº¡o app nhanh", sub: "Rapid prototyping", tag: "TOOL" },
-      { id: "6.3", title: "Vercel â€” deploy miá»…n phÃ­", sub: "Hosting & CI/CD", tag: "DEPLOY" },
-      { id: "6.4", title: "Shadcn/ui â€” thÆ° viá»‡n component", sub: "Copy-paste UI", tag: "BUILD" },
+      { id: "6.1", title: "v0.dev — sinh UI từ mô tả", sub: "Generative UI", tag: "DESIGN" },
+      { id: "6.2", title: "Bolt.new — tạo app nhanh", sub: "Rapid prototyping", tag: "TOOL" },
+      { id: "6.3", title: "Vercel — deploy miễn phí", sub: "Hosting & CI/CD", tag: "DEPLOY" },
+      { id: "6.4", title: "Shadcn/ui — thư viện component", sub: "Copy-paste UI", tag: "BUILD" },
       { id: "6.5", title: "21st.dev & Magicpatterns", sub: "UI Repositories", tag: "RESOURCES" },
-      { id: "6.6", title: "So sÃ¡nh nhanh cÃ¡c tool", sub: "Summary", tag: "SUMMARY" }
+      { id: "6.6", title: "So sánh nhanh các tool", sub: "Summary", tag: "SUMMARY" }
     ]
   },
   {
-    title: "CÃ¡ch prompt cho AI hiá»ƒu Ä‘á»ƒ code Ä‘Ãºng Ã½",
+    title: "Cách prompt cho AI hiểu để code đúng ý",
     subtitle: "Advanced Prompt Engineering for Code",
     progress: "0/6",
     lessons: [
-      { id: "7.1", title: "Táº¡i sao AI code sai", sub: "Root causes", tag: "ANALYSIS" },
-      { id: "7.2", title: "Cáº¥u trÃºc má»™t prompt code tá»‘t", sub: "Context & Constraints", tag: "LOGIC" },
-      { id: "7.3", title: "CÃ¡ch mÃ´ táº£ UI cho AI", sub: "UI Description", tag: "DESIGN" },
-      { id: "7.4", title: "DÃ¹ng Prompt Library sáºµn cÃ³", sub: "Skip the cold start", tag: "SPEED" },
-      { id: "7.5", title: "Prompt theo tá»«ng tÃ¬nh huá»‘ng", sub: "Feature vs Refactor", tag: "PRACTICE" },
-      { id: "7.6", title: "Nhá»¯ng cÃ¢u prompt hay dÃ¹ng", sub: "Cheat sheet", tag: "SPEED" }
+      { id: "7.1", title: "Tại sao AI code sai", sub: "Root causes", tag: "ANALYSIS" },
+      { id: "7.2", title: "Cấu trúc một prompt code tốt", sub: "Context & Constraints", tag: "LOGIC" },
+      { id: "7.3", title: "Cách mô tả UI cho AI", sub: "UI Description", tag: "DESIGN" },
+      { id: "7.4", title: "Dùng Prompt Library sẵn có", sub: "Skip the cold start", tag: "SPEED" },
+      { id: "7.5", title: "Prompt theo từng tình huống", sub: "Feature vs Refactor", tag: "PRACTICE" },
+      { id: "7.6", title: "Những câu prompt hay dùng", sub: "Cheat sheet", tag: "SPEED" }
     ]
   },
   {
-    title: "Khi AI code sai â€” Ä‘á»c lá»—i & vÃ¡ lá»—i",
+    title: "Khi AI code sai — đọc lỗi & vá lỗi",
     subtitle: "Debugging and Troubleshooting",
     progress: "0/6",
     lessons: [
-      { id: "8.1", title: "Äá»«ng hoáº£ng â€” quy trÃ¬nh xá»­ lÃ½", sub: "Workflow", tag: "TIP" },
-      { id: "8.2", title: "Äá»c error message chuyÃªn sÃ¢u", sub: "Error analysis", tag: "DEBUG" },
-      { id: "8.3", title: "CÃ¡c lá»—i phá»• biáº¿n nháº¥t", sub: "Hydration, Imports, etc.", tag: "FIX" },
-      { id: "8.4", title: "Prompt vÃ¡ lá»—i", sub: "Debugging prompts", tag: "PRACTICE" },
-      { id: "8.5", title: "Khi AI fix mÃ£i khÃ´ng xong", sub: "When to stop", tag: "TIP" },
-      { id: "8.6", title: "DÃ¹ng Git Ä‘á»ƒ cá»©u project", sub: "Rollbacks", tag: "SAFETY" }
+      { id: "8.1", title: "Đừng hoảng — quy trình xử lý", sub: "Workflow", tag: "TIP" },
+      { id: "8.2", title: "Đọc error message chuyên sâu", sub: "Error analysis", tag: "DEBUG" },
+      { id: "8.3", title: "Các lỗi phổ biến nhất", sub: "Hydration, Imports, etc.", tag: "FIX" },
+      { id: "8.4", title: "Prompt vá lỗi", sub: "Debugging prompts", tag: "PRACTICE" },
+      { id: "8.5", title: "Khi AI fix mãi không xong", sub: "When to stop", tag: "TIP" },
+      { id: "8.6", title: "Dùng Git để cứu project", sub: "Rollbacks", tag: "SAFETY" }
     ]
   },
   {
-    title: "Táº¡o Skills & Workflow cÃ¡ nhÃ¢n",
+    title: "Tạo Skills & Workflow cá nhân",
     subtitle: "Personalizing your AI Workflow",
     progress: "0/5",
     lessons: [
-      { id: "9.1", title: "Cursor Rules lÃ  gÃ¬", sub: "Project context", tag: "PRO" },
+      { id: "9.1", title: "Cursor Rules là gì", sub: "Project context", tag: "PRO" },
       { id: "9.2", title: "CLAUDE.md", sub: "Agent instructions", tag: "PRO" },
-      { id: "9.3", title: "MCP lÃ  gÃ¬", sub: "Extending AI", tag: "ADVANCED" },
-      { id: "9.4", title: "Workflow thá»±c táº¿ tá»« Ã½ tÆ°á»Ÿng", sub: "Zero to Hero", tag: "SUMMARY" },
-      { id: "9.5", title: "Cá»™ng Ä‘á»“ng Cursor Rules", sub: "Resources", tag: "COMMUNITY" }
+      { id: "9.3", title: "MCP là gì", sub: "Extending AI", tag: "ADVANCED" },
+      { id: "9.4", title: "Workflow thực tế từ ý tưởng", sub: "Zero to Hero", tag: "SUMMARY" },
+      { id: "9.5", title: "Cộng đồng Cursor Rules", sub: "Resources", tag: "COMMUNITY" }
     ]
   },
   {
@@ -143,11 +143,11 @@ const curriculum: Chapter[] = [
     subtitle: "Launching and Measuring",
     progress: "0/5",
     lessons: [
-      { id: "10.1", title: "Deploy lÃªn Vercel láº§n Ä‘áº§u", sub: "Go live", tag: "LAUNCH" },
-      { id: "10.2", title: "Gáº¯n domain riÃªng", sub: "Custom domain", tag: "SETUP" },
-      { id: "10.3", title: "CÃ i PostHog", sub: "User analytics", tag: "TRACKING" },
-      { id: "10.4", title: "Gáº¯n Google Search Console", sub: "SEO setup", tag: "SEO" },
-      { id: "10.5", title: "Checklist trÆ°á»›c khi share", sub: "Final check", tag: "QUALITY" }
+      { id: "10.1", title: "Deploy lên Vercel lần đầu", sub: "Go live", tag: "LAUNCH" },
+      { id: "10.2", title: "Gắn domain riêng", sub: "Custom domain", tag: "SETUP" },
+      { id: "10.3", title: "Cài PostHog", sub: "User analytics", tag: "TRACKING" },
+      { id: "10.4", title: "Gắn Google Search Console", sub: "SEO setup", tag: "SEO" },
+      { id: "10.5", title: "Checklist trước khi share", sub: "Final check", tag: "QUALITY" }
     ]
   }
 ];
@@ -164,8 +164,8 @@ const CurriculumChapter: React.FC<CurriculumChapterProps> = ({ chapter, index, i
 
   const getTagColor = (tag: string) => {
     switch (tag) {
-      case 'CÆ  Báº¢N': return 'text-green-600 bg-green-50/50 border-green-100';
-      case 'á»¨NG Dá»¤NG': return 'text-blue-600 bg-blue-50/50 border-blue-100';
+      case 'CƠ BẢN': return 'text-green-600 bg-green-50/50 border-green-100';
+      case 'ỨNG DỤNG': return 'text-blue-600 bg-blue-50/50 border-blue-100';
       case 'DESIGN': return 'text-purple-600 bg-purple-50/50 border-purple-100';
       case 'GIT': return 'text-gray-600 bg-gray-50 border-gray-200';
       case 'AI CODE': return 'text-accent bg-accent/5 border-accent/10';
@@ -187,7 +187,7 @@ const CurriculumChapter: React.FC<CurriculumChapterProps> = ({ chapter, index, i
         
         <div className="flex-1">
           <div className="flex items-center gap-2 mb-1">
-            <span className="font-mono text-[9px] uppercase tracking-wider text-muted opacity-60">CHÆ¯Æ NG {(index + 1)}</span>
+            <span className="font-mono text-[9px] uppercase tracking-wider text-muted opacity-60">CHƯƠNG {(index + 1)}</span>
           </div>
           <h3 className="font-serif text-[1.1rem] sm:text-[1.3rem] text-ink group-hover:text-accent transition-colors leading-tight">
             {chapter.title}
@@ -283,15 +283,15 @@ export default function VibecodeCourse() {
               
               <h1 className="font-serif text-[clamp(2.5rem,5vw,4.5rem)] leading-[1.1] mb-2 text-ink">
                 Vibecode Web <br />
-                <em className="text-accent italic">Báº¯t Ä‘áº§u tá»« sá»‘ khÃ´ng.</em>
+                <em className="text-accent italic">Bắt đầu từ số không.</em>
               </h1>
             </div>
 
-            {/* Tiáº¿p tá»¥c Card in Header */}
+            {/* Tiếp tục Card in Header */}
             <div className="w-full md:w-[380px] shrink-0">
               <div className="bg-ink text-white p-6 sm:p-8 shadow-2xl relative overflow-hidden group">
                 <div className="relative z-10">
-                  <h3 className="font-serif text-[1.4rem] mb-6 text-white/90 italic">Tiáº¿p tá»¥c?</h3>
+                  <h3 className="font-serif text-[1.4rem] mb-6 text-white/90 italic">Tiếp tục?</h3>
                   
                   <div className="space-y-6">
                     <div className="flex items-center gap-4">
@@ -299,8 +299,8 @@ export default function VibecodeCourse() {
                         <Play className="w-5 h-5 fill-current" />
                       </div>
                       <div>
-                        <div className="font-mono text-[9px] uppercase text-white/40 tracking-[0.2em] mb-1">Äang há»c</div>
-                        <div className="font-serif text-[1.1rem] line-clamp-1">{lastLesson ? curriculum[lastLesson-1].title : 'BÃ i 01: Giá»›i thiá»‡u'}</div>
+                        <div className="font-mono text-[9px] uppercase text-white/40 tracking-[0.2em] mb-1">Đang học</div>
+                        <div className="font-serif text-[1.1rem] line-clamp-1">{lastLesson ? curriculum[lastLesson-1].title : 'Bài 01: Giới thiệu'}</div>
                       </div>
                     </div>
                     
@@ -308,7 +308,7 @@ export default function VibecodeCourse() {
                       to={`/vibecode/${slugMap[lastLesson || 1]}`}
                       className="w-full bg-accent text-white no-underline py-4 font-mono text-[11px] uppercase tracking-widest hover:bg-bg hover:text-accent transition-all flex items-center justify-center gap-3 shadow-lg shadow-accent/20"
                     >
-                      {lastLesson ? 'Há»c tiáº¿p ngay' : 'Báº¯t Ä‘áº§u ngay'} <ChevronRight className="w-3 h-3" />
+                      {lastLesson ? 'Học tiếp ngay' : 'Bắt đầu ngay'} <ChevronRight className="w-3 h-3" />
                     </Link>
                   </div>
                 </div>
@@ -328,10 +328,10 @@ export default function VibecodeCourse() {
             {/* Left: Curriculum */}
             <div className="flex flex-col gap-8">
               <div className="flex items-end justify-between border-b border-border pb-4">
-                <h2 className="font-serif text-[1.6rem] text-ink">Ná»™i dung lá»™ trÃ¬nh</h2>
+                <h2 className="font-serif text-[1.6rem] text-ink">Nội dung lộ trình</h2>
                 <div className="flex items-center gap-2">
                   <span className="w-2 h-2 rounded-full bg-green-500"></span>
-                  <span className="font-mono text-[10px] text-muted uppercase">Cáº­p nháº­t 2026</span>
+                  <span className="font-mono text-[10px] text-muted uppercase">Cập nhật 2026</span>
                 </div>
               </div>
               
@@ -352,7 +352,7 @@ export default function VibecodeCourse() {
               {/* Stats Sidebar Block */}
               <div className="grid grid-cols-2 gap-3">
                 <div className="bg-bg border border-border p-4 shadow-sm group hover:border-accent transition-colors">
-                  <div className="font-mono text-[8px] uppercase text-muted mb-1 tracking-wider font-bold">BÃ i Ä‘Ã£ há»c</div>
+                  <div className="font-mono text-[8px] uppercase text-muted mb-1 tracking-wider font-bold">Bài đã học</div>
                   <div className="flex items-baseline gap-1">
                     <span className="font-serif text-[1.2rem] text-ink leading-none">{lessonsCompleted}</span>
                     <span className="font-mono text-[9px] text-muted">/{totalLessons}</span>
@@ -365,12 +365,12 @@ export default function VibecodeCourse() {
                 </div>
 
                 <div className="bg-bg border border-border p-4 shadow-sm group hover:border-accent transition-colors">
-                  <div className="font-mono text-[8px] uppercase text-muted mb-1 tracking-wider font-bold">Sá»‘ chÆ°Æ¡ng</div>
+                  <div className="font-mono text-[8px] uppercase text-muted mb-1 tracking-wider font-bold">Số chương</div>
                   <div className="font-serif text-[1.2rem] text-ink leading-none">{totalChapters}</div>
                 </div>
 
                 <div className="bg-bg border border-border p-4 shadow-sm group hover:border-accent transition-colors">
-                  <div className="font-mono text-[8px] uppercase text-muted mb-1 tracking-wider font-serif italic text-accent capitalize">CÃ²n láº¡i</div>
+                  <div className="font-mono text-[8px] uppercase text-muted mb-1 tracking-wider font-serif italic text-accent capitalize">Còn lại</div>
                   <div className="font-serif text-[1.2rem] text-accent leading-none">{remainingLessons}</div>
                 </div>
               </div>
@@ -383,9 +383,9 @@ export default function VibecodeCourse() {
       {/* Footer CTA */}
       <section className="py-20 px-0 border-t border-border bg-bg">
         <div className="page-shell-narrow text-center">
-          <h2 className="font-serif text-[2rem] mb-6 italic">Má»i thá»© báº¡n cáº§n Ä‘á»ƒ lÃ m chá»§ website.</h2>
+          <h2 className="font-serif text-[2rem] mb-6 italic">Mọi thứ bạn cần để làm chủ website.</h2>
           <Link to="/vibecode/vibecode-la-gi" className="inline-block border border-ink px-10 py-4 font-mono text-[11px] uppercase tracking-widest hover:bg-ink hover:text-white transition-all no-underline">
-            Ghi danh miá»…n phÃ­
+            Ghi danh miễn phí
           </Link>
         </div>
       </section>

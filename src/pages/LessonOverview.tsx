@@ -34,9 +34,9 @@ export default function LessonOverview() {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
         <div className="text-center">
-          <h1 className="font-serif text-2xl mb-4">BÃ i há»c khÃ´ng tá»“n táº¡i</h1>
+          <h1 className="font-serif text-2xl mb-4">Bài học không tồn tại</h1>
           <p className="text-muted mb-6">Slug: {lessonSlug}</p>
-          <Link to="/vibecode" className="btn-primary">Quay láº¡i lá»™ trÃ¬nh</Link>
+          <Link to="/vibecode" className="btn-primary">Quay lại lộ trình</Link>
         </div>
       </div>
     );
@@ -59,23 +59,23 @@ export default function LessonOverview() {
             <span>/</span>
             <Link to="/vibecode">Vibecode Web</Link>
             <span>/</span>
-            <span style={{ color: 'var(--ink)' }}>BÃ i {currentId.toString().padStart(2, '0')}</span>
+            <span style={{ color: 'var(--ink)' }}>Bài {currentId.toString().padStart(2, '0')}</span>
           </div>
 
           <div className="nav-lesson-top">
             {prevLesson ? (
               <Link to={`/vibecode/${getLessonSlug(prevLesson.id)}`} className="nav-item-top">
-                â† BÃ i {prevLesson.id.toString().padStart(2, '0')}
+                ← Bài {prevLesson.id.toString().padStart(2, '0')}
               </Link>
             ) : (
-              <span className="nav-item-top disabled">â† TrÆ°á»›c</span>
+              <span className="nav-item-top disabled">← Trước</span>
             )}
             {nextLesson ? (
               <Link to={`/vibecode/${getLessonSlug(nextLesson.id)}`} className="nav-item-top nav-item-top-black">
-                BÃ i {nextLesson.id.toString().padStart(2, '0')} â†’
+                Bài {nextLesson.id.toString().padStart(2, '0')} →
               </Link>
             ) : (
-              <span className="nav-item-top disabled">Káº¿t thÃºc â†’</span>
+              <span className="nav-item-top disabled">Kết thúc →</span>
             )}
           </div>
         </div>
@@ -104,13 +104,13 @@ function DbLessonHero({ lesson }: { lesson: PublicLessonPayload['lesson'] | null
     <section className="lesson-hero-wrap">
       <div className="lesson-hero-grid">
         <div className="lesson-hero-main">
-          <span className="lesson-hero-kicker">BÃ i {String(lesson.sortOrder).padStart(2, '0')}</span>
+          <span className="lesson-hero-kicker">Bài {String(lesson.sortOrder).padStart(2, '0')}</span>
           <h1 className="lesson-hero-title">{lesson.title}</h1>
-          <p className="lesson-hero-desc">{lesson.summary || 'Äang hiá»ƒn thá»‹ lesson tá»« database.'}</p>
+          <p className="lesson-hero-desc">{lesson.summary || 'Đang hiển thị lesson từ database.'}</p>
         </div>
         <div className="lesson-hero-side">
-          <div className="lesson-hero-meta-card"><span>Pháº§n</span><strong>{lesson.modules.length}</strong></div>
-          <div className="lesson-hero-meta-card"><span>Thá»i lÆ°á»£ng</span><strong>~{lesson.estimatedMinutes} phÃºt</strong></div>
+          <div className="lesson-hero-meta-card"><span>Phần</span><strong>{lesson.modules.length}</strong></div>
+          <div className="lesson-hero-meta-card"><span>Thời lượng</span><strong>~{lesson.estimatedMinutes} phút</strong></div>
         </div>
       </div>
     </section>
@@ -121,13 +121,13 @@ function ProgressBar({ currentLesson }: { currentLesson: number }) {
   return (
     <div className="progress-bar-wrap">
       <div className="progress-bar-inner">
-        <span className="progress-label">Lá»˜ TRÃŒNH Â· {currentLesson}/10</span>
+        <span className="progress-label">LỘ TRÌNH · {currentLesson}/10</span>
         <div className="progress-steps">
           {Array.from({ length: 10 }).map((_, i) => (
             <div key={i} className={`progress-step ${i + 1 < currentLesson ? 'done' : i + 1 === currentLesson ? 'active' : ''}`} />
           ))}
         </div>
-        <span className="progress-label text-accent">BÃ€I {currentLesson.toString().padStart(2, '0')}</span>
+        <span className="progress-label text-accent">BÀI {currentLesson.toString().padStart(2, '0')}</span>
       </div>
     </div>
   );
@@ -136,11 +136,11 @@ function ProgressBar({ currentLesson }: { currentLesson: number }) {
 function getWhatYoullLearn(lessonId: number) {
   const data: Record<number, { icon: ReactNode; title: string; desc: string }[]> = {
     1: [
-      { icon: <Sparkles className="w-4 h-4 text-accent" />, title: 'Vibecode lÃ  gÃ¬', desc: 'Äá»‹nh nghÄ©a rÃµ rÃ ng, khÃ´ng dÃ¹ng tá»« ká»¹ thuáº­t. Giáº£i thÃ­ch Ä‘Æ°á»£c cho Ä‘á»“ng nghiá»‡p nghe.' },
-      { icon: <Sparkles className="w-4 h-4 text-accent" />, title: 'Táº¡i sao nÃ³ phÃ¹ há»£p vá»›i báº¡n', desc: 'Táº¡i sao Marketer cáº§n vibecode hÆ¡n báº¥t ká»³ ai khÃ¡c.' },
-      { icon: <Sparkles className="w-4 h-4 text-accent" />, title: 'Vibecode so vá»›i há»c code', desc: 'KhÃ¡c nhau á»Ÿ Ä‘Ã¢u, phÃ¹ há»£p vá»›i ai.' },
-      { icon: <Sparkles className="w-4 h-4 text-accent" />, title: 'Use case thá»±c táº¿', desc: 'Xem nhá»¯ng thá»© Marketer khÃ¡c Ä‘Ã£ tá»± build.' },
-      { icon: <Sparkles className="w-4 h-4 text-accent" />, title: 'Báº¡n cáº§n gÃ¬ Ä‘á»ƒ báº¯t Ä‘áº§u', desc: 'Danh sÃ¡ch cáº§n/khÃ´ng cáº§n trÆ°á»›c khi bÆ°á»›c vÃ o bÃ i 2.' },
+      { icon: <Sparkles className="w-4 h-4 text-accent" />, title: 'Vibecode là gì', desc: 'Định nghĩa rõ ràng, không dùng từ kỹ thuật. Giải thích được cho đồng nghiệp nghe.' },
+      { icon: <Sparkles className="w-4 h-4 text-accent" />, title: 'Tại sao nó phù hợp với bạn', desc: 'Tại sao Marketer cần vibecode hơn bất kỳ ai khác.' },
+      { icon: <Sparkles className="w-4 h-4 text-accent" />, title: 'Vibecode so với học code', desc: 'Khác nhau ở đâu, phù hợp với ai.' },
+      { icon: <Sparkles className="w-4 h-4 text-accent" />, title: 'Use case thực tế', desc: 'Xem những thứ Marketer khác đã tự build.' },
+      { icon: <Sparkles className="w-4 h-4 text-accent" />, title: 'Bạn cần gì để bắt đầu', desc: 'Danh sách cần/không cần trước khi bước vào bài 2.' },
     ],
     2: [
       { icon: <Sparkles className="w-4 h-4 text-accent" />, title: 'AI, model, prompt', desc: 'Hiểu 3 khái niệm gốc để biết mình đang nói chuyện với cái gì.' },
