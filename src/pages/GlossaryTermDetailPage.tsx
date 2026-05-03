@@ -58,6 +58,8 @@ import headerDemoHtml from '../../gif-header-demo.html?raw';
 import headerPracticeHtml from '../../gif-header-practice.html?raw';
 import breakpointDemoHtml from '../../gif-breakpoint-demo.html?raw';
 import breakpointPracticeHtml from '../../gif-breakpoint-practice.html?raw';
+import gridDemoHtml from '../../gif-grid-demo.html?raw';
+import gridPracticeHtml from '../../gif-grid-practice.html?raw';
 
 
 export default function GlossaryTermDetailPage() {
@@ -103,6 +105,7 @@ export default function GlossaryTermDetailPage() {
     if (id === 'accordion') return accordionDemoHtml;
     if (id === 'header') return headerDemoHtml;
     if (id === 'breakpoint') return breakpointDemoHtml;
+    if (id === 'grid') return gridDemoHtml;
     return null;
   };
 
@@ -131,6 +134,7 @@ export default function GlossaryTermDetailPage() {
     if (id === 'accordion') return accordionPracticeHtml;
     if (id === 'header') return headerPracticeHtml;
     if (id === 'breakpoint') return breakpointPracticeHtml;
+    if (id === 'grid') return gridPracticeHtml;
     return null;
   };
 
