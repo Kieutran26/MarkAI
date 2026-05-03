@@ -28,7 +28,6 @@
     background-size: 60px 60px, 60px 60px, auto, auto;
     color: var(--fg);
     font-family: 'Space Grotesk', sans-serif;
-    overflow: hidden;
   }
   .shell { max-width: 980px; margin: 0 auto; padding: 28px 24px 20px; }
   h1 { text-align: center; font-size: clamp(34px, 5vw, 58px); line-height: 1.05; font-weight: 700; }
@@ -122,6 +121,7 @@
 </style>
 </head>
 <body>
+<div id="app-root">
 <div class="shell">
   <h1>4 Kiểu <span>Spacing</span></h1>
   <div class="tabs">
@@ -146,6 +146,7 @@
     <div class="track"><div class="fill" id="progressFill"></div></div>
     <button class="ctrl-btn" id="resetBtn"><i class="fa-solid fa-rotate-left"></i>Đặt lại</button>
   </div>
+</div>
 </div>
 <div class="toast" id="toast"></div>
 
