@@ -54,11 +54,9 @@ export default function VibecodeGlossaryPage() {
       <GlossaryHero searchQuery={searchQuery} onSearchChange={setSearchQuery} filteredCount={filteredTerms.length} activeGroup={activeGroup} onGroupChange={setActiveGroup} />
       <FilterBar activeGroup={activeGroup} onGroupChange={setActiveGroup} sortAZ={sortAZ} onToggleSort={() => setSortAZ((value) => !value)} />
 
-      <div className="page-shell">
-        <div className="grid min-h-[80vh] lg:grid-cols-[220px_1fr]">
-          <AlphaSidebar groupedLetters={grouped.map((item) => ({ letter: item.letter, count: item.terms.length }))} activeLetter={activeLetter} />
-          <GlossaryContent grouped={grouped} getTermName={getTermName} />
-        </div>
+      <div className="glossary-grid-shell grid min-h-[80vh] lg:grid-cols-[220px_1fr]">
+        <AlphaSidebar groupedLetters={grouped.map((item) => ({ letter: item.letter, count: item.terms.length }))} activeLetter={activeLetter} />
+        <GlossaryContent grouped={grouped} getTermName={getTermName} />
       </div>
 
       <QuickRef />
