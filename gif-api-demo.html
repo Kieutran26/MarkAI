@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API Key Demo</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #000000;
+    --card: #0b0b0f;
+    --line: #202028;
+    --fg: #f0ece4;
+    --muted: #8a8a96;
+    --accent: #e88c2e;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--fg); font-family: 'Space Grotesk', sans-serif; overflow: hidden; }
+  #app-root { position: relative; padding: 28px 20px 22px; }
+  .bg-grid {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none;
+  }
+  h1 {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    font-size: clamp(30px, 4.5vw, 48px);
+    line-height: 1;
+  }
+  h1 span { color: var(--accent); }
+  .tabs {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 20px 0 18px;
+  }
+  .tab {
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--muted);
+    padding: 10px 16px;
+    font: 500 12px 'JetBrains Mono', monospace;
+    cursor: pointer;
+  }
+  .tab.active {
+    border-color: var(--accent);
+    color: var(--fg);
+    background: rgba(232,140,46,0.08);
+  }
+  .panel {
+    position: relative;
+    z-index: 1;
+    border: 1px solid var(--line);
+    background: var(--card);
+    padding: 22px;
+  }
+  .meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font: 500 10px 'JetBrains Mono', monospace;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .meta .value { color: var(--accent); }
+  .flow {
+    display: grid;
+    gap: 16px;
+    margin-top: 18px;
+    align-items: center;
+  }
+  .node {
+    border: 1px solid var(--line);
+    background: #141419;
+    padding: 16px;
+    min-height: 126px;
+    transition: border-color 0.3s ease, background 0.3s ease;
+  }
+  .node.active {
+    border-color: var(--accent);
+    background: rgba(232,140,46,0.08);
+  }
+  .node-label {
+    font: 500 10px 'JetBrains Mono', monospace;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+  }
+  .node-title {
+    margin-top: 8px;
+    font-size: 20px;
+    line-height: 1.1;
+  }
+  .node-copy {
+    margin-top: 8px;
+    font-size: 13px;
+    line-height: 1.65;
+    color: var(--muted);
+  }
+  .arrow-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    color: var(--muted);
+    font: 500 10px 'JetBrains Mono', monospace;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .arrow {
+    font-size: 30px;
+    line-height: 1;
+    color: #5d5d67;
+    transition: color 0.3s ease, transform 0.3s ease;
+  }
+  .arrow.active {
+    color: var(--accent);
+    transform: translateX(4px);
+  }
+  .progress {
+    margin-top: 18px;
+    height: 3px;
+    background: var(--line);
+  }
+  .progress-fill {
+    height: 100%;
+    width: 0;
+    background: var(--accent);
+    transition: width 0.1s linear;
+  }
+  .controls {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 16px;
+  }
+  .btn {
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--muted);
+    padding: 10px 18px;
+    font: 500 12px 'JetBrains Mono', monospace;
+    cursor: pointer;
+  }
+  .btn.playing, .btn:hover {
+    border-color: var(--accent);
+    color: var(--fg);
+  }
+  @media (min-width: 860px) {
+    .flow { grid-template-columns: 1fr 90px 1fr 90px 1fr; }
+  }
+  @media (max-width: 859px) {
+    .arrow.active { transform: translateY(3px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  }
+</style>
+</head>
+<body>
+<div id="app-root">
+  <div class="bg-grid"></div>
+  <h1>4 Bước Lấy <span>API Key</span></h1>
+  <div class="tabs" id="tabs"></div>
+
+  <section class="panel">
+    <div class="meta">
+      <span id="leftMeta">Lấy từ platform AI</span>
+      <span class="value" id="rightMeta">Lưu trong .env</span>
+    </div>
+
+    <div class="flow">
+      <article class="node" id="node1">
+        <div class="node-label">Bước 01</div>
+        <div class="node-title" id="sourceTitle"></div>
+        <p class="node-copy" id="sourceCopy"></p>
+      </article>
+
+      <div class="arrow-wrap">
+        <div class="arrow" id="arrow1">→</div>
+        <div>Copy key</div>
+      </div>
+
+      <article class="node" id="node2">
+        <div class="node-label">Bước 02</div>
+        <div class="node-title">API key</div>
+        <p class="node-copy" id="apiCopy"></p>
+      </article>
+
+      <div class="arrow-wrap">
+        <div class="arrow" id="arrow2">→</div>
+        <div>Giữ bí mật</div>
+      </div>
+
+      <article class="node" id="node3">
+        <div class="node-label">Bước 03</div>
+        <div class="node-title" id="targetTitle"></div>
+        <p class="node-copy" id="targetCopy"></p>
+      </article>
+    </div>
+
+    <div class="progress">
+      <div class="progress-fill" id="progress"></div>
+    </div>
+  </section>
+
+  <div class="controls">
+    <button class="btn" id="playBtn">Tự động</button>
+    <button class="btn" id="resetBtn">Đặt lại</button>
+  </div>
+</div>
+
+<script>
+  const flows = [
+    {
+      tab: '01 Mở dashboard',
+      left: 'Vào platform AI',
+      right: 'Tìm chỗ API keys',
+      sourceTitle: 'Dashboard AI',
+      sourceCopy: 'Bạn vào OpenAI hoặc nền tảng AI khác, mở phần developer hoặc API keys.',
+      apiCopy: 'Ở đây platform cho bạn một API key để app được phép gọi model.',
+      targetTitle: 'Trang API keys',
+      targetCopy: 'Bạn nhìn thấy nút tạo key mới và danh sách key đang dùng.'
+    },
+    {
+      tab: '02 Tạo key',
+      left: 'Bấm Create key',
+      right: 'Platform trả API key',
+      sourceTitle: 'Nút tạo key',
+      sourceCopy: 'Bạn bấm tạo key mới cho project hoặc app đang làm.',
+      apiCopy: 'Platform sinh ra một chuỗi bí mật kiểu `sk-...` và chỉ hiện rõ lúc mới tạo.',
+      targetTitle: 'API key mới',
+      targetCopy: 'Bạn phải copy ngay vì thường platform sẽ không hiện lại đầy đủ lần nữa.'
+    },
+    {
+      tab: '03 Copy và cất',
+      left: 'Copy key vừa tạo',
+      right: 'Dán vào file .env',
+      sourceTitle: 'Copy API key',
+      sourceCopy: 'Bạn sao chép key để mang về project đang dùng model AI.',
+      apiCopy: 'Chỗ an toàn nhất thường là file `.env`, không phải giao diện public hay file code đẩy lên GitHub.',
+      targetTitle: 'File .env',
+      targetCopy: 'App đọc key từ đây để gọi AI, còn người dùng bình thường sẽ không nhìn thấy.'
+    },
+    {
+      tab: '04 Đừng để lộ',
+      left: 'API key = tiền',
+      right: 'Lộ key là mất phí',
+      sourceTitle: 'Key bí mật',
+      sourceCopy: 'API key giống chìa khóa ví điện tử: ai cầm được có thể gọi model bằng tài khoản của bạn.',
+      apiCopy: 'Vì thế key không nên dán vào ảnh chụp màn hình, gửi chat bừa, hay commit lên repo public.',
+      targetTitle: 'Dùng an toàn',
+      targetCopy: 'Nhớ quy tắc ngắn: lấy key, copy key, cất vào `.env`, giữ kín.'
+    }
+  ];
+
+  const tabs = document.getElementById('tabs');
+  const playBtn = document.getElementById('playBtn');
+  const resetBtn = document.getElementById('resetBtn');
+  const progress = document.getElementById('progress');
+  const arrow1 = document.getElementById('arrow1');
+  const arrow2 = document.getElementById('arrow2');
+  const node1 = document.getElementById('node1');
+  const node2 = document.getElementById('node2');
+  const node3 = document.getElementById('node3');
+  const refs = {
+    leftMeta: document.getElementById('leftMeta'),
+    rightMeta: document.getElementById('rightMeta'),
+    sourceTitle: document.getElementById('sourceTitle'),
+    sourceCopy: document.getElementById('sourceCopy'),
+    apiCopy: document.getElementById('apiCopy'),
+    targetTitle: document.getElementById('targetTitle'),
+    targetCopy: document.getElementById('targetCopy')
+  };
+
+  let index = 0;
+  let autoPlaying = false;
+  let stepTimer = null;
+  let progressTimer = null;
+  const interval = 3200;
+
+  function clearState() {
+    node1.classList.remove('active');
+    node2.classList.remove('active');
+    node3.classList.remove('active');
+    arrow1.classList.remove('active');
+    arrow2.classList.remove('active');
+  }
+
+  function animateFlow() {
+    clearState();
+    node1.classList.add('active');
+    window.setTimeout(() => {
+      arrow1.classList.add('active');
+      node2.classList.add('active');
+    }, 350);
+    window.setTimeout(() => {
+      arrow2.classList.add('active');
+      node3.classList.add('active');
+    }, 850);
+  }
+
+  function renderTabs() {
+    tabs.innerHTML = '';
+    flows.forEach((flow, flowIndex) => {
+      const button = document.createElement('button');
+      button.className = `tab${flowIndex === index ? ' active' : ''}`;
+      button.textContent = flow.tab;
+      button.addEventListener('click', () => showFlow(flowIndex));
+      tabs.appendChild(button);
+    });
+  }
+
+  function showFlow(nextIndex) {
+    index = nextIndex;
+    const flow = flows[index];
+    refs.leftMeta.textContent = flow.left;
+    refs.rightMeta.textContent = flow.right;
+    refs.sourceTitle.textContent = flow.sourceTitle;
+    refs.sourceCopy.textContent = flow.sourceCopy;
+    refs.apiCopy.textContent = flow.apiCopy;
+    refs.targetTitle.textContent = flow.targetTitle;
+    refs.targetCopy.textContent = flow.targetCopy;
+    renderTabs();
+    animateFlow();
+  }
+
+  function startAuto() {
+    autoPlaying = true;
+    playBtn.classList.add('playing');
+    playBtn.textContent = 'Tạm dừng';
+    clearInterval(stepTimer);
+    clearInterval(progressTimer);
+    progress.style.width = '0%';
+    let value = 0;
+    progressTimer = window.setInterval(() => {
+      value += 100 / (interval / 40);
+      progress.style.width = `${Math.min(100, value)}%`;
+    }, 40);
+    stepTimer = window.setInterval(() => {
+      progress.style.width = '0%';
+      showFlow((index + 1) % flows.length);
+    }, interval);
+  }
+
+  function stopAuto() {
+    autoPlaying = false;
+    playBtn.classList.remove('playing');
+    playBtn.textContent = 'Tự động';
+    clearInterval(stepTimer);
+    clearInterval(progressTimer);
+    progress.style.width = '0%';
+  }
+
+  playBtn.addEventListener('click', () => autoPlaying ? stopAuto() : startAuto());
+  resetBtn.addEventListener('click', () => {
+    stopAuto();
+    showFlow(0);
+  });
+
+  showFlow(0);
+</script>
+</body>
+</html>

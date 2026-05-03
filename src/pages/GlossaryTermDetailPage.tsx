@@ -1,10 +1,12 @@
-import { useEffect, useRef } from 'react';
+import { Fragment, useEffect, useRef } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import '../components/glossary/glossary.css';
+import ApiPracticePanel from '../components/glossary/ApiPracticePanel';
 import SpacingPracticePanel from '../components/glossary/SpacingPracticePanel';
 import LetterSpacingPracticePanel from '../components/glossary/LetterSpacingPracticePanel';
 import LineSpacingPracticePanel from '../components/glossary/LineSpacingPracticePanel';
-import { getTermById, getTermDeepDiveNotes, GlossaryTerm } from '../lib/glossary';
+import { getTermById, GlossaryTerm } from '../lib/glossary';
+import apiDemoHtml from '../../gif-api-demo.html?raw';
 import spacingDemoHtml from '../../gif-spacing-demo.html?raw';
 import letterSpacingDemoHtml from '../../gif letter spacing.html?raw';
 import lineSpacingDemoHtml from '../../gif-line-spacing.html?raw';
@@ -24,6 +26,7 @@ export default function GlossaryTermDetailPage() {
 
 
   const getInteractiveHtml = (id: string) => {
+    if (id === 'api') return apiDemoHtml;
     if (id === 'spacing') return spacingDemoHtml;
     if (id === 'letter-spacing') return letterSpacingDemoHtml;
     if (id === 'line-spacing') return lineSpacingDemoHtml;
@@ -49,11 +52,12 @@ export default function GlossaryTermDetailPage() {
       />
 
       {extendedTerms.map((extTerm) => (
-        <TermDisplaySection 
-          key={extTerm.id}
-          term={extTerm} 
-          interactiveDemoHtml={getInteractiveHtml(extTerm.id)}
-        />
+        <Fragment key={extTerm.id}>
+          <TermDisplaySection 
+            term={extTerm} 
+            interactiveDemoHtml={getInteractiveHtml(extTerm.id)}
+          />
+        </Fragment>
       ))}
     </div>
   );
@@ -221,6 +225,7 @@ function TermDisplaySection({
               </div>
             )}
           </div>
+          {term.id === 'api' ? <ApiPracticePanel /> : null}
           {term.id === 'spacing' ? <SpacingPracticePanel /> : null}
           {term.id === 'letter-spacing' ? <LetterSpacingPracticePanel /> : null}
           {term.id === 'line-spacing' ? <LineSpacingPracticePanel /> : null}
