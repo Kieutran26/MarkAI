@@ -107,6 +107,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'pagination', name: 'Pagination', nameEn: 'Phân trang', letter: 'P', groups: ['design', 'code'], definition: 'Cách chia một lượng lớn dữ liệu thành nhiều trang hoặc phần nhỏ hơn. Không chỉ là thêm "trang 1, 2, 3", pagination còn bao gồm nhiều hình thức khác nhau như Prev/Next hay Load More tùy thuộc vào luồng trải nghiệm.', example: 'Prompt: "Thêm Pagination kiểu Load More cho danh sách sản phẩm này, mỗi lần bấm sẽ tải thêm 12 sản phẩm thay vì phải nhảy sang trang mới."', related: ['component', 'interface', 'data', 'state'], demo: { kind: 'interactive', src: 'gif-pagination-demo.html', alt: 'Mô phỏng các loại pagination: Numeric, Prev/Next, First/Last và Load More' } },
   { id: 'popup', name: 'Popup', nameEn: 'Cửa sổ bật lên / Modal', letter: 'P', groups: ['design', 'code'], definition: 'Một thành phần giao diện xuất hiện đè lên nội dung hiện tại, buộc người dùng phải tương tác hoặc đóng lại trước khi tiếp tục. Thường được gọi là Modal. Popup giúp tập trung sự chú ý tuyệt đối vào một thông điệp hoặc tác vụ cụ thể.', example: '"Khi click nút Xóa, một popup hiện ra hỏi \'Bạn có chắc không?\' — đây là cách ngăn lỗi lầm tai hại bằng cách chặn người dùng hành động vội vàng."', related: ['interface', 'element', 'state'], demo: { kind: 'interactive', src: 'gif-popup-demo.html', alt: 'Mô phỏng các loại popup: Alert, Confirm, Form và Success' } },
   { id: 'design-system', name: 'Design System', nameEn: 'Hệ thống thiết kế', letter: 'D', groups: ['design', 'workflow'], definition: 'Một bộ tiêu chuẩn hóa gồm các quy tắc thiết kế, các thành phần giao diện tái sử dụng và ngôn ngữ hình ảnh nhất quán. Design System là "nguồn sự thật duy nhất" giúp designer và developer làm việc nhanh hơn, giảm sai sót và đảm bảo trải nghiệm thương hiệu đồng nhất trên mọi sản phẩm.', example: 'Prompt: "Dùng các component trong Design System để build một trang Pricing mới, đảm bảo dùng đúng spacing scale và primary tokens."', related: ['component', 'ui', 'asset', 'css'], demo: { kind: 'interactive', src: 'gif-design-system-demo.html', alt: 'Mô phỏng 4 lớp cấu thành Design System: Colors, Typography, Components và Layout' } },
+  { id: 'skeleton', name: 'Skeleton screen', nameEn: 'Màn hình khung xương / Loading placeholders', letter: 'S', groups: ['design', 'code'], definition: 'Giao diện ở trạng thái "chờ" — thay vì hiện vòng xoay (spinner) hay trang trắng, hệ thống hiện các khối màu xám mô phỏng hình dáng của nội dung sắp tải. Giúp người dùng hình dung được bố cục trang và cảm thấy thời gian chờ đợi ngắn hơn.', example: 'Khi mở Facebook hay Shopee lúc mạng yếu, bạn thấy các thanh xám dài ngắn khác nhau hiện lên trước khi ảnh và text xuất hiện — đó là skeleton screen.', related: ['interface', 'state', 'ux', 'performance'], demo: { kind: 'interactive', src: 'gif-skeleton-demo.html', alt: 'Mô phỏng skeleton screen cho Article, Dashboard, Product và Table' } },
 ];
 
 export const quickRefItems = [
@@ -179,6 +180,7 @@ const deepDiveTermIds = new Set([
   'pagination',
   'popup',
   'design-system',
+  'skeleton',
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -351,6 +353,12 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     '4 lớp cốt lõi: Foundations (màu, chữ, spacing), Components (nút, input), Layout (grid, shell), và Patterns (luồng đăng ký, thanh toán).',
     'Với marketer, Design System giúp việc yêu cầu sửa web trở nên cực kỳ chính xác: "Đổi primary color sang mã mới" thay vì "đổi màu cam này thành màu cam khác".',
     'Lợi ích lớn nhất là tính mở rộng (Scalability): Khi có DS, việc tạo thêm 10 landing page mới sẽ nhanh hơn gấp 5 lần vì mọi "viên gạch" đã có sẵn.',
+  ],
+  skeleton: [
+    'Skeleton Screen là giải pháp thay thế hoàn hảo cho Spinner (vòng quay loading) truyền thống. Nó mang lại cảm giác hệ thống đang phản hồi nhanh hơn thực tế (perceived performance).',
+    'Quy tắc vàng: Skeleton phải khớp 100% với layout thật về kích thước và vị trí. Nếu skeleton một đằng, nội dung hiện ra một nẻo, user sẽ bị "giật mình" và khó chịu (layout shift).',
+    'Trong Vibecode, khi bảo AI "làm loading", hãy thêm từ khóa "skeleton screen" để AI tạo ra các component placeholder xám mờ thay vì chỉ một cái vòng xoay đơn điệu.',
+    'Mô phỏng thực hành giúp bạn thấy rõ sự khác biệt: Delay ngắn (0.3s) thì skeleton có thể gây "nháy" (flicker), nhưng delay dài (1s+) thì skeleton là cứu cánh cho trải nghiệm người dùng.',
   ],
 };
 

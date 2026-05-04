@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skeleton Screen — Animated</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;--accent-dim:rgba(212,113,42,.15);--card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a;--ok:#4a8a5a}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:auto;overflow:hidden;background:var(--bg)}
+body{background-image:radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 100%,16px 16px;font-family:'Space Grotesk',sans-serif;color:var(--fg)}
+
+#app-root{display:flex;flex-direction:column;align-items:center;padding:12px 16px 8px}
+.aw{width:100%}
+.ab{width:100%;height:260px;background:var(--card);border:1px solid var(--border);overflow:hidden;display:flex;flex-direction:column;position:relative}
+
+.hd{display:flex;align-items:center;justify-content:space-between;padding:6px 14px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
+.hd-t{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:2.5px}
+.hd-f{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
+.la{position:relative;flex:1;background:linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);background-size:30px 30px;overflow:hidden}
+
+.fr{position:absolute;inset:0;display:flex;flex-direction:column;padding:12px 20px;opacity:0;pointer-events:none;transition:opacity .3s}.fr.show{opacity:1;pointer-events:auto}
+.fl{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+
+/* Skeleton & Content layers */
+.fp{position:relative;flex:1;min-height:0}
+.fsl,.fcl{position:absolute;inset:0;display:flex;flex-direction:column}
+.fsl{transition:opacity .45s}.fcl{opacity:0;transition:opacity .45s}
+.fp.ld .fsl{opacity:0}.fp.ld .fcl{opacity:1}
+
+/* Skeleton bars */
+.sb{background:linear-gradient(90deg,#302c28 0%,#3e3a36 50%,#302c28 100%);background-size:200px 100%;animation:shim 1.2s ease-in-out infinite;border-radius:1px}
+@keyframes shim{from{background-position:200px 0}to{background-position:-200px 0}}
+
+/* Article cards */
+.ac-row{display:flex;gap:12px;margin-bottom:8px}
+.ac{display:flex;gap:10px;flex:1;border:1px solid var(--border);padding:6px;background:var(--card-alt)}
+.ac-img{width:48px;height:48px;flex-shrink:0}
+.ac-txt{display:flex;flex-direction:column;gap:4px;flex:1;justify-content:center;overflow:hidden}
+.ac-t{font-size:10px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ac-d{font-size:8px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ac-m{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--accent);letter-spacing:1px}
+
+/* Dashboard */
+.ds-row{display:flex;gap:10px;margin-bottom:10px}
+.ds-stat{flex:1;border:1px solid var(--border);padding:8px;background:var(--card-alt)}
+.ds-n{font-size:16px;font-weight:800}
+.ds-l{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);letter-spacing:1px;margin-top:2px}
+.ds-chart{flex:1;border:1px solid var(--border);padding:10px;background:var(--card-alt);display:flex;align-items:flex-end;gap:6px}
+.ds-bar{flex:1;border-radius:1px 1px 0 0;transition:height .4s}
+
+/* Product */
+.pd-row{display:flex;gap:14px;flex:1}
+.pd-img{width:120px;flex-shrink:0;border:1px solid var(--border);background:var(--card-alt);display:flex;align-items:center;justify-content:center}
+.pd-img-i{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:1px}
+.pd-info{flex:1;display:flex;flex-direction:column;gap:4px;justify-content:center}
+.pd-t{font-size:14px;font-weight:800}
+.pd-p{font-size:12px;font-weight:700;color:var(--accent)}
+.pd-d{font-size:8px;color:var(--muted);line-height:1.3}
+.pd-btn{padding:0 12px;height:24px;background:var(--accent);border:none;color:#fff;font-family:'Space Grotesk',sans-serif;font-size:9px;font-weight:600;width:fit-content;cursor:default;margin-top:2px}
+
+/* Table */
+.tb{width:100%;border-collapse:collapse}
+.tb th{font-family:'JetBrains Mono',monospace;font-size:7px;font-weight:700;color:var(--muted);letter-spacing:1px;text-align:left;padding:4px 6px;border-bottom:1px solid var(--border);text-transform:uppercase}
+.tb td{font-size:9px;padding:3px 6px;border-bottom:1px solid rgba(48,44,40,.35);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.st-b{display:inline-block;padding:1px 5px;font-family:'JetBrains Mono',monospace;font-size:7px;font-weight:700;border:1px solid var(--border)}
+.st-a{background:rgba(74,138,90,.12);border-color:var(--ok);color:var(--ok)}
+.st-i{color:var(--muted)}
+
+/* Info */
+.inf{padding:6px 14px;background:var(--card);border-top:1px solid var(--border)}
+.dn{font-size:13px;font-weight:800;line-height:1.1;color:var(--fg)}
+.ds{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);margin-top:2px;text-transform:uppercase;letter-spacing:1px}
+.dd{font-size:9px;color:var(--muted);margin-top:2px;line-height:1.4}
+
+.pt{height:2px;background:var(--border)}.pf{height:100%;background:var(--accent);width:0%}
+
+/* Controls */
+.ctr{display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 16px 2px;background:transparent;flex-wrap:wrap}
+.ctr-b{padding:6px 12px;background:var(--card-alt);border:1px solid var(--border);color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:1px}
+.ctr-b:hover{border-color:var(--border-hi);color:var(--fg)}
+.ctr-b.act{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+
+.pp-b{width:32px;height:32px;border-radius:50%;background:var(--accent);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-left:4px;transition:transform .2s;flex-shrink:0}
+.pp-b:active{transform:scale(.92)}
+.pp-i{width:12px;height:12px;fill:#000}
+
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div id="app-root">
+<div class="aw">
+<div class="ab" id="ab">
+  <div class="hd"><span class="hd-t">SKELETON SCREEN</span><span class="hd-f" id="hf">01 / 04</span></div>
+  <div class="la" id="la">
+
+    <!-- F0: Article List -->
+    <div class="fr" id="f0">
+      <div class="fl">01 ARTICLE LIST</div>
+      <div class="fp" id="fp0">
+        <div class="fsl">
+          <div class="ac-row"><div class="ac"><div class="ac-img sb"></div><div class="ac-txt"><div class="sb" style="width:70%;height:10px"></div><div class="sb" style="width:90%;height:7px"></div><div class="sb" style="width:50%;height:7px"></div></div></div><div class="ac"><div class="ac-img sb"></div><div class="ac-txt"><div class="sb" style="width:60%;height:10px"></div><div class="sb" style="width:85%;height:7px"></div><div class="sb" style="width:40%;height:7px"></div></div></div></div>
+          <div class="ac-row"><div class="ac"><div class="ac-img sb"></div><div class="ac-txt"><div class="sb" style="width:55%;height:10px"></div><div class="sb" style="width:80%;height:7px"></div><div class="sb" style="width:45%;height:7px"></div></div></div><div class="ac"><div class="ac-img sb"></div><div class="ac-txt"><div class="sb" style="width:65%;height:10px"></div><div class="sb" style="width:75%;height:7px"></div><div class="sb" style="width:35%;height:7px"></div></div></div></div>
+        </div>
+        <div class="fcl">
+          <div class="ac-row"><div class="ac"><div class="ac-img" style="background:#252018;display:flex;align-items:center;justify-content:center"><span class="pd-img-i">IMG</span></div><div class="ac-txt"><div class="ac-t">Building a design system</div><div class="ac-d">How we created a consistent UI across all products</div><div class="ac-m">5 MIN READ</div></div></div><div class="ac"><div class="ac-img" style="background:#182220;display:flex;align-items:center;justify-content:center"><span class="pd-img-i">IMG</span></div><div class="ac-txt"><div class="ac-t">10 tips for better UX writing</div><div class="ac-d">Simple rules to improve your interface copy</div><div class="ac-m">3 MIN READ</div></div></div></div>
+          <div class="ac-row"><div class="ac"><div class="ac-img" style="background:#1a2018;display:flex;align-items:center;justify-content:center"><span class="pd-img-i">IMG</span></div><div class="ac-txt"><div class="ac-t">Color theory for marketers</div><div class="ac-d">Why color choices impact conversion rates</div><div class="ac-m">4 MIN READ</div></div></div><div class="ac"><div class="ac-img" style="background:#201a18;display:flex;align-items:center;justify-content:center"><span class="pd-img-i">IMG</span></div><div class="ac-txt"><div class="ac-t">Responsive design basics</div><div class="ac-d">A guide to mobile-first thinking</div><div class="ac-m">6 MIN READ</div></div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- F1: Dashboard -->
+    <div class="fr" id="f1">
+      <div class="fl">02 DASHBOARD</div>
+      <div class="fp" id="fp1">
+        <div class="fsl">
+          <div class="ds-row"><div class="ds-stat"><div class="sb" style="width:50%;height:14px;margin-bottom:4px"></div><div class="sb" style="width:70%;height:7px"></div></div><div class="ds-stat"><div class="sb" style="width:55%;height:14px;margin-bottom:4px"></div><div class="sb" style="width:60%;height:7px"></div></div><div class="ds-stat"><div class="sb" style="width:40%;height:14px;margin-bottom:4px"></div><div class="sb" style="width:80%;height:7px"></div></div></div>
+          <div class="ds-chart"><div class="sb" style="width:15%;height:40%"></div><div class="sb" style="width:15%;height:65%"></div><div class="sb" style="width:15%;height:45%"></div><div class="sb" style="width:15%;height:80%"></div><div class="sb" style="width:15%;height:55%"></div><div class="sb" style="width:15%;height:70%"></div></div>
+        </div>
+        <div class="fcl">
+          <div class="ds-row"><div class="ds-stat"><div class="ds-n">1,234</div><div class="ds-l">TOTAL USERS</div></div><div class="ds-stat"><div class="ds-n" style="color:var(--accent)">$45.2K</div><div class="ds-l">REVENUE</div></div><div class="ds-stat"><div class="ds-n" style="color:var(--ok)">98.5%</div><div class="ds-l">UPTIME</div></div></div>
+          <div class="ds-chart"><div class="ds-bar" style="height:40%;background:var(--accent)"></div><div class="ds-bar" style="height:65%;background:var(--accent)"></div><div class="ds-bar" style="height:45%;background:var(--accent)"></div><div class="ds-bar" style="height:80%;background:var(--accent)"></div><div class="ds-bar" style="height:55%;background:var(--accent)"></div><div class="ds-bar" style="height:70%;background:var(--accent)"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- F2: Product Detail -->
+    <div class="fr" id="f2">
+      <div class="fl">03 PRODUCT DETAIL</div>
+      <div class="fp" id="fp2">
+        <div class="fsl">
+          <div class="pd-row"><div class="pd-img sb"></div><div class="pd-info"><div class="sb" style="width:70%;height:14px"></div><div class="sb" style="width:30%;height:12px;margin-top:6px"></div><div class="sb" style="width:95%;height:7px;margin-top:8px"></div><div class="sb" style="width:85%;height:7px;margin-top:4px"></div><div class="sb" style="width:60%;height:7px;margin-top:4px"></div><div class="sb" style="width:30%;height:26px;margin-top:8px"></div></div></div>
+        </div>
+        <div class="fcl">
+          <div class="pd-row"><div class="pd-img"><span class="pd-img-i">PRODUCT IMAGE</span></div><div class="pd-info"><div class="pd-t">Wireless Headphones Pro</div><div class="pd-p">$299.00</div><div class="pd-d">Premium noise-cancelling headphones with 40h battery life</div><div class="pd-d">Bluetooth 5.3, USB-C fast charging</div><div class="pd-d">Available in 3 colors</div><div class="pd-btn">ADD TO CART</div></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- F3: Table -->
+    <div class="fr" id="f3">
+      <div class="fl">04 TABLE</div>
+      <div class="fp" id="fp3">
+        <div class="fsl">
+          <div style="display:flex;gap:8px;margin-bottom:6px"><div class="sb" style="width:20%;height:9px"></div><div class="sb" style="width:30%;height:9px"></div><div class="sb" style="width:15%;height:9px"></div><div class="sb" style="width:15%;height:9px"></div></div>
+          <div style="display:flex;flex-direction:column;gap:5px" id="skRows"></div>
+        </div>
+        <div class="fcl">
+          <table class="tb"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th></tr></thead><tbody>
+            <tr><td>Linh Nguyen</td><td>linh@brand.co</td><td>Designer</td><td><span class="st-b st-a">Active</span></td></tr>
+            <tr><td>Minh Tran</td><td>minh@brand.co</td><td>Developer</td><td><span class="st-b st-a">Active</span></td></tr>
+            <tr><td>Hoa Pham</td><td>hoa@brand.co</td><td>Manager</td><td><span class="st-b st-i">Inactive</span></td></tr>
+            <tr><td>Tuan Le</td><td>tuan@brand.co</td><td>Marketer</td><td><span class="st-b st-a">Active</span></td></tr>
+            <tr><td>Mai Vu</td><td>mai@brand.co</td><td>Analyst</td><td><span class="st-b st-i">Inactive</span></td></tr>
+          </tbody></table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="inf">
+    <div class="dn" id="dn">Article List</div>
+    <div class="ds" id="ds">DANH SÁCH BÀI VIẾT</div>
+    <div class="dd" id="dd">Khung hình trước khi có nội dung — thay vì trang trắng, user thấy "bản nháp" của layout.</div>
+  </div>
+  <div class="pt"><div class="pf" id="pf"></div></div>
+</div>
+
+<div class="ctr">
+    <button class="ctr-b act" data-i="0">ARTICLES</button>
+    <button class="ctr-b" data-i="1">DASHBOARD</button>
+    <button class="ctr-b" data-i="2">PRODUCT</button>
+    <button class="ctr-b" data-i="3">TABLE</button>
+    <button class="pp-b" id="pp" title="Play/Pause">
+        <svg class="pp-i" id="pp-i" viewBox="0 0 24 24"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>
+    </button>
+</div>
+</div>
+</div>
+
+<script>
+/* Build Table Skeleton */
+const skR=document.getElementById('skRows');
+for(let i=0;i<5;i++){
+  const r=document.createElement('div');
+  r.style.cssText='display:flex;gap:8px';
+  r.innerHTML=`<div class="sb" style="width:20%;height:8px"></div><div class="sb" style="width:${25+Math.random()*10}%;height:8px"></div><div class="sb" style="width:${12+Math.random()*8}%;height:8px"></div><div class="sb" style="width:14%;height:8px"></div>`;
+  skR.appendChild(r);
+}
+
+const INFO=[
+  {nm:'Article List',sz:'DANH SÁCH BÀI VIẾT',dc:'Khung hình trước khi có nội dung — thay vì trang trắng, user thấy "bản nháp" của layout. Giúp giảm bớt cảm giác chờ đợi.'},
+  {nm:'Dashboard',sz:'DASHBOARD',dc:'Stats, chart, card — mọi thứ đều có skeleton tương ứng. Skeleton giúp ổn định layout (layout stability) khi data đang tải.'},
+  {nm:'Product Detail',sz:'CHI TIẾT SẢN PHẨM',dc:'Hình ảnh, tiêu đề, giá, mô tả — skeleton theo đúng cấu trúc thật. User có thể hình dung ra vị trí của các thông tin quan trọng.'},
+  {nm:'Table',sz:'BẢNG DỮ LIỆU',dc:'Header + rows — skeleton giữ nguyên layout table khi data chưa về. Tránh tình trạng nhảy layout (layout shift) cực kỳ khó chịu.'}
+];
+
+const frs=[0,1,2,3].map(i=>document.getElementById('f'+i));
+const fps=[0,1,2,3].map(i=>document.getElementById('fp'+i));
+const el={dn:document.getElementById('dn'),ds:document.getElementById('ds'),dd:document.getElementById('dd'),hf:document.getElementById('hf'),pf:document.getElementById('pf')};
+const ctrBs=document.querySelectorAll('.ctr-b');
+const ppB=document.getElementById('pp');
+const ppI=document.getElementById('pp-i');
+
+let cur=0,pa=null,t0=0,isPaused=false,fTm=null;
+const DUR=4500; // Increased duration to allow skeleton -> content cycle
+
+function apply(i){
+  cur=i;
+  const s=INFO[i];el.dn.textContent=s.nm;el.ds.textContent=s.sz;el.dd.textContent=s.dc;
+  el.hf.textContent='0'+(i+1)+' / 04';
+  ctrBs.forEach((b,j)=>b.classList.toggle('act',j===i));
+  
+  clearTimeout(fTm);
+  fps.forEach(f=>f.classList.remove('ld'));
+  frs.forEach(f=>f.classList.remove('show'));
+  
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    frs[i].classList.add('show');
+    // Start showing content after a short delay
+    fTm=setTimeout(()=>{
+        if(!isPaused || cur === i) fps[i].classList.add('ld');
+    }, 1800);
+  }));
+}
+
+function tk(n){
+    if(isPaused) return;
+    const p=Math.min(100,(n-t0)/DUR*100);
+    el.pf.style.width=p+'%';
+    if(p<100)pa=requestAnimationFrame(tk);
+    else next();
+}
+function startProg(){t0=performance.now();el.pf.style.transition='none';el.pf.style.width='0%';pa=requestAnimationFrame(tk)}
+function next(){if(isPaused)return;cur=(cur+1)%4;apply(cur);startProg()}
+
+function togglePP(){
+    isPaused=!isPaused;
+    ppI.innerHTML=isPaused ? '<path d="M8 5v14l11-7z"/>' : '<path d="M6 4h4v16H6zm8 0h4v16h-4z"/>';
+    if(!isPaused){
+        t0=performance.now() - (parseFloat(el.pf.style.width||0)/100*DUR);
+        pa=requestAnimationFrame(tk);
+        // If content hasn't shown yet, ensure it shows
+        if(!fps[cur].classList.contains('ld')) {
+            clearTimeout(fTm);
+            fTm=setTimeout(()=>{fps[cur].classList.add('ld')}, 1200);
+        }
+    }
+}
+
+ctrBs.forEach(b=>{
+    b.onclick=()=>{
+        isPaused=true;
+        ppI.innerHTML='<path d="M8 5v14l11-7z"/>';
+        apply(parseInt(b.dataset.i));
+        el.pf.style.width='0%';
+    }
+});
+
+ppB.onclick=togglePP;
+
+apply(0);
+startProg();
+
+document.addEventListener('visibilitychange',()=>{
+    if(document.hidden){cancelAnimationFrame(pa);clearTimeout(fTm);}
+    else if(!isPaused){t0=performance.now() - (parseFloat(el.pf.style.width||0)/100*DUR);pa=requestAnimationFrame(tk);}
+});
+</script>
+</body>
+</html>

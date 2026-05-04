@@ -74,6 +74,8 @@ import popupDemoHtml from '../../gif-popup-demo.html?raw';
 import popupPracticeHtml from '../../gif-popup-practice.html?raw';
 import designSystemDemoHtml from '../../gif-design-system-demo.html?raw';
 import designSystemPracticeHtml from '../../gif-design-system-practice.html?raw';
+import skeletonDemoHtml from '../../gif-skeleton-demo.html?raw';
+import skeletonPracticeHtml from '../../gif-skeleton-practice.html?raw';
 
 
 export default function GlossaryTermDetailPage() {
@@ -127,6 +129,7 @@ export default function GlossaryTermDetailPage() {
     if (id === 'pagination') return paginationDemoHtml;
     if (id === 'popup') return popupDemoHtml;
     if (id === 'design-system') return designSystemDemoHtml;
+    if (id === 'skeleton') return skeletonDemoHtml;
     return null;
   };
 
@@ -163,6 +166,7 @@ export default function GlossaryTermDetailPage() {
     if (id === 'pagination') return paginationPracticeHtml;
     if (id === 'popup') return popupPracticeHtml;
     if (id === 'design-system') return designSystemPracticeHtml;
+    if (id === 'skeleton') return skeletonPracticeHtml;
     return null;
   };
 

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skeleton Screen — Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;--card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a;--success:#3a9e5c;--ok:#4a8a5a}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:auto;overflow:hidden;background:var(--bg)}
+body{background-image:radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 100%,16px 16px;font-family:'Space Grotesk',sans-serif;color:var(--fg)}
+
+#app-root{display:flex;flex-direction:column;align-items:center;padding:12px 16px 8px}
+.pw{width:100%;background:var(--card);border:1px solid var(--border);padding:16px 20px;position:relative;z-index:1}
+.pw-h{font-size:15px;font-weight:700;margin-bottom:2px}.pw-h span{color:var(--accent)}
+.pw-s{font-size:11px;color:var(--muted);margin-bottom:12px}
+
+.pcv{background:var(--card-alt);border:1px solid var(--border);padding:16px;margin-bottom:12px;position:relative;height:200px;overflow:hidden}
+.pp-inner{position:relative;height:100%;display:flex;flex-direction:column}
+.pp-sl,.pp-cl{position:absolute;inset:0;display:flex;flex-direction:column}
+.pp-sl{transition:opacity .4s}.pp-cl{opacity:0;transition:opacity .4s}
+.pp-inner.ld .pp-sl{opacity:0}.pp-inner.ld .pp-cl{opacity:1}
+
+/* Skeleton bars */
+.sb{background:linear-gradient(90deg,#302c28 0%,#3e3a36 50%,#302c28 100%);background-size:200px 100%;animation:shim 1.2s ease-in-out infinite;border-radius:1px}
+@keyframes shim{from{background-position:200px 0}to{background-position:-200px 0}}
+
+/* Practice components */
+.pm-stats{display:flex;gap:8px;margin-bottom:8px}
+.pm-st{flex:1;border:1px solid var(--border);padding:6px 8px;background:var(--card-alt);height:40px}
+.pm-st-n{font-size:13px;font-weight:800}.pm-st-l{font-family:'JetBrains Mono',monospace;font-size:6px;color:var(--muted);letter-spacing:1px;margin-top:1px}
+.pm-card{display:flex;gap:8px;border:1px solid var(--border);padding:6px;background:var(--card-alt);margin-bottom:8px;height:52px}
+.pm-ci{width:40px;height:40px;flex-shrink:0}
+.pm-ct{display:flex;flex-direction:column;gap:3px;flex:1;justify-content:center;overflow:hidden}
+.pm-ct-t{font-size:9px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pm-ct-d{font-size:7px;color:var(--muted)}
+.pm-tb{width:100%;border-collapse:collapse;flex:1}
+.pm-tb th{font-family:'JetBrains Mono',monospace;font-size:6px;font-weight:700;color:var(--muted);letter-spacing:1px;text-align:left;padding:3px 4px;border-bottom:1px solid var(--border);text-transform:uppercase}
+.pm-tb td{font-size:8px;padding:2px 4px;border-bottom:1px solid rgba(48,44,40,.3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.st-b{display:inline-block;padding:1px 5px;font-family:'JetBrains Mono',monospace;font-size:7px;font-weight:700;border:1px solid var(--border)}
+.st-a{background:rgba(74,138,90,.12);border-color:var(--ok);color:var(--ok)}
+.st-i{color:var(--muted)}
+
+.sl-sec{margin-bottom:12px}
+.sl-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+.sl-lbl{font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:1px}
+.sl-val{font-family:'JetBrains Mono',monospace;font-size:15px;font-weight:700;color:var(--accent)}
+
+.sl-wrap{position:relative;height:24px;display:flex;align-items:center}
+.sl-track{position:absolute;left:0;right:0;height:4px;background:var(--border)}
+
+input[type=range]{-webkit-appearance:none;width:100%;height:100%;background:transparent;outline:none;cursor:pointer;position:relative;z-index:2}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;background:var(--accent);border:2px solid var(--card);cursor:grab;border-radius:0}
+input[type=range]:active::-webkit-slider-thumb{cursor:grabbing}
+
+.fb{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 12px;font-size:12px;border:1px solid var(--border);background:var(--card-alt);font-family:'Space Grotesk',sans-serif}
+.fb strong{color:var(--accent)}
+.fb.ok{border-color:var(--success);background:rgba(58,158,92,.05)}
+.fb.ok strong{color:var(--success)}
+
+.sim-btn{padding:5px 14px;border:1px solid var(--accent);background:rgba(212,113,42,.1);color:var(--accent);font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:all .2s;white-space:nowrap;letter-spacing:1px}
+.sim-btn:hover{background:var(--accent);color:#fff}
+.sim-btn:disabled{opacity:.4;pointer-events:none}
+
+.pht{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);opacity:.65}
+
+@media(max-width:520px){.pw{padding:16px}}
+</style>
+</head>
+<body>
+<div id="app-root">
+<div class="pw">
+  <div class="pw-h">Thực hành — <span>Simulate Loading</span></div>
+  <div class="pw-s">Điều chỉnh delay → bấm simulate để thấy skeleton → content</div>
+  
+  <div class="sl-sec">
+    <div class="sl-head">
+      <span class="sl-lbl">Loading Delay</span>
+      <span class="sl-val" id="sV">1.2s</span>
+    </div>
+    <div class="sl-wrap">
+      <div class="sl-track"></div>
+      <input type="range" id="sR" min="300" max="3000" step="100" value="1200">
+    </div>
+  </div>
+
+  <div class="pcv">
+    <div class="pp-inner" id="ppIn">
+      <div class="pp-sl" id="ppSl"></div>
+      <div class="pp-cl" id="ppCl"></div>
+    </div>
+  </div>
+
+  <div class="fb" id="fb">
+    <span>Nhấn <strong>Simulate</strong> để bắt đầu thử nghiệm</span>
+    <button class="sim-btn" id="simBtn">SIMULATE</button>
+  </div>
+  <div class="pht">Hint: Delay < 0.5s khiến skeleton bị "nháy" (flicker). Delay > 2s khiến skeleton cực kỳ quan trọng.</div>
+</div>
+</div>
+
+<script>
+  const ppIn=document.getElementById('ppIn'), ppSl=document.getElementById('ppSl'), ppCl=document.getElementById('ppCl');
+  const sR=document.getElementById('sR'), sV=document.getElementById('sV'), simBtn=document.getElementById('simBtn'), fb=document.getElementById('fb');
+
+  /* Build practice skeleton */
+  ppSl.innerHTML=`
+  <div class="pm-stats"><div class="pm-st"><div class="sb" style="width:45%;height:12px;margin-bottom:3px"></div><div class="sb" style="width:65%;height:6px"></div></div><div class="pm-st"><div class="sb" style="width:50%;height:12px;margin-bottom:3px"></div><div class="sb" style="width:55%;height:6px"></div></div><div class="pm-st"><div class="sb" style="width:35%;height:12px;margin-bottom:3px"></div><div class="sb" style="width:70%;height:6px"></div></div></div>
+  <div class="pm-card"><div class="pm-ci sb"></div><div class="pm-ct"><div class="sb" style="width:65%;height:8px"></div><div class="sb" style="width:85%;height:6px"></div><div class="sb" style="width:50%;height:6px"></div></div></div>
+  <div class="pm-card"><div class="pm-ci sb"></div><div class="pm-ct"><div class="sb" style="width:55%;height:8px"></div><div class="sb" style="width:75%;height:6px"></div><div class="sb" style="width:40%;height:6px"></div></div></div>
+  <table class="pm-tb"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th></tr></thead><tbody><tr><td colspan="4" style="padding:0"><div style="display:flex;gap:6px;padding:3px 4px"><div class="sb" style="width:22%;height:7px"></div><div class="sb" style="width:30%;height:7px"></div><div class="sb" style="width:15%;height:7px"></div><div class="sb" style="width:13%;height:7px"></div></div></td></tr></tbody></table>`;
+
+  /* Build practice content */
+  ppCl.innerHTML=`
+  <div class="pm-stats"><div class="pm-st"><div class="pm-st-n">1,234</div><div class="pm-st-l">USERS</div></div><div class="pm-st"><div class="pm-st-n" style="color:var(--accent)">$45K</div><div class="pm-st-l">REVENUE</div></div><div class="pm-st"><div class="pm-st-n" style="color:var(--ok)">98%</div><div class="pm-st-l">UPTIME</div></div></div>
+  <div class="pm-card"><div class="pm-ci" style="background:#252018;display:flex;align-items:center;justify-content:center"><span style="font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted)">IMG</span></div><div class="pm-ct"><div class="pm-ct-t">Design system guide</div><div class="pm-ct-d">Building consistent UI components</div><div class="pm-ct-d" style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:6px;letter-spacing:1px">5 MIN</div></div></div>
+  <div class="pm-card"><div class="pm-ci" style="background:#182220;display:flex;align-items:center;justify-content:center"><span style="font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted)">IMG</span></div><div class="pm-ct"><div class="pm-ct-t">UX writing tips</div><div class="pm-ct-d">Simple rules for better copy</div><div class="pm-ct-d" style="color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:6px;letter-spacing:1px">3 MIN</div></div></div>
+  <table class="pm-tb"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th></tr></thead><tbody><tr><td>Linh N.</td><td>linh@brand.co</td><td>Designer</td><td><span class="st-b st-a">Active</span></td></tr></tbody></table>`;
+
+  sR.oninput = () => { sV.textContent = (sR.value/1000).toFixed(1) + 's'; };
+
+  let busy = false;
+  simBtn.onclick = () => {
+    if(busy) return;
+    busy = true;
+    simBtn.disabled = true;
+    ppIn.classList.remove('ld');
+    fb.innerHTML = '<span>Trạng thái <strong>Loading</strong> — Skeleton hiển thị...</span> <button class="sim-btn" disabled>LOADING...</button>';
+    fb.className = 'fb';
+    const delay = parseInt(sR.value);
+    setTimeout(() => {
+      ppIn.classList.add('ld');
+      fb.className = 'fb ok';
+      fb.innerHTML = '<span><strong>Dữ liệu đã về!</strong> Skeleton được thay bằng content.</span> <button class="sim-btn" id="simBtnReset">RESET</button>';
+      document.getElementById('simBtnReset').onclick = () => {
+        ppIn.classList.remove('ld');
+        busy = false;
+        simBtn.disabled = false;
+        fb.className = 'fb';
+        fb.innerHTML = '<span>Nhấn <strong>Simulate</strong> để bắt đầu thử nghiệm</span> <button class="sim-btn" id="simBtnActual">SIMULATE</button>';
+        document.getElementById('simBtnActual').onclick = simBtn.onclick;
+      };
+    }, delay);
+  };
+</script>
+</body>
+</html>
