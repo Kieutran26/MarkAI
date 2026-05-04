@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Container Demo — Animated</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{--bg:#0c0c0e;--fg:#ece8e1;--muted:#706b64;--accent:#e88c2e;--accent-dim:rgba(232,140,46,.15);--card:#1a1a1e;--card-alt:#242120;--border:#26262a;--border-hi:#44403a;--mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);display:flex;flex-direction:column;align-items:center;margin:0;padding:0}
+.aw{width:100%;padding:0 0 100px;gap:8px;display:flex;flex-direction:column;align-items:center}
+.ab-wrap{width:100%;background:var(--card);border:2px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.la-wrap{width:100%;position:relative;overflow:hidden}
+.ab{width:100%;height:300px;position:relative;background:#0c0c0e;overflow:hidden}
+.ab::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:1;background-image:linear-gradient(rgba(255,255,255,.008) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.008) 1px,transparent 1px);background-size:20px 20px}
+
+.hd{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
+.hd-t{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--accent);letter-spacing:2.5px;text-transform:uppercase}
+.hd-f{font-family:var(--mono);font-size:10px;color:var(--muted)}
+
+.badge{position:absolute;top:14px;left:14px;z-index:30;font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--bg);background:var(--accent);padding:3px 9px;line-height:1.7;white-space:nowrap}
+.vp-ref{position:absolute;top:14px;right:14px;z-index:30;font-family:var(--mono);font-size:8px;color:rgba(255,255,255,.2);letter-spacing:.1em}
+
+/* === Sim states === */
+.ss{position:absolute;inset:0;opacity:0;transition:opacity .4s ease;pointer-events:none;z-index:5;display:flex;align-items:center;justify-content:center}
+.ss.on{opacity:1;pointer-events:auto}
+
+/* Container */
+.sc{
+  position:relative;width:83%;height:140px;
+  border:1.5px dashed var(--accent);background:rgba(232,140,46,.03);
+  transition:width .6s cubic-bezier(.4,0,.2,1);overflow:hidden;
+}
+.sc-inner{
+  position:absolute;top:10%;bottom:10%;left:50%;transform:translateX(-50%);
+  border:1.5px solid var(--accent);background:rgba(232,140,46,.06);
+  transition:width .6s cubic-bezier(.4,0,.2,1);overflow:hidden;
+}
+
+/* Content inside container */
+.sc-nav{padding:8px 12px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--muted);display:flex;gap:12px;white-space:nowrap}
+.sc-cards{flex:1;display:flex;gap:8px;padding:12px;align-items:center}
+.sc-card{flex:1;height:32px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06)}
+.sc-btn{margin:0 12px 12px;height:12px;width:60px;background:var(--accent);align-self:flex-start}
+
+/* Dimension indicator */
+.sc-dim{position:absolute;bottom:8px;left:0;right:0;display:flex;align-items:center;justify-content:center;z-index:10}
+.sc-dim-line{position:absolute;bottom:50%;left:4px;right:4px;height:1px;background:var(--accent);opacity:.4}
+.sc-dim-lbl{position:relative;z-index:1;font-family:var(--mono);font-size:9px;color:var(--accent);background:#0c0c0e;padding:0 6px;white-space:nowrap}
+.sc-dim-arr{font-family:var(--mono);font-size:9px;color:var(--accent);opacity:.5;position:absolute;top:50%;transform:translateY(-50%)}
+.sc-dim-arr.l{left:0}.sc-dim-arr.r{right:0}
+
+.sc-margin{position:absolute;top:50%;transform:translateY(-50%);font-family:var(--mono);font-size:8px;color:rgba(232,140,46,.4);writing-mode:vertical-lr;letter-spacing:.08em;text-orientation:mixed;z-index:10;transition:opacity .4s}
+.sc-margin.hide{opacity:0}
+
+.sc-bp{position:absolute;top:-1px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:9px;color:var(--accent);background:#0c0c0e;padding:1px 6px;white-space:nowrap;z-index:10;letter-spacing:.08em;text-transform:uppercase;transition:opacity .3s}
+.sc-inner-dim{position:absolute;bottom:-1px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:7px;color:var(--accent);background:#0c0c0e;padding:1px 5px;white-space:nowrap;z-index:10;letter-spacing:.06em;opacity:.7}
+
+.inf{padding:11px 14px;border-top:1px solid var(--border);background:var(--card);min-height:86px}
+.dn{font-size:15px;font-weight:800;line-height:1.15;color:var(--fg)}
+.ds{font-family:var(--mono);font-size:10px;color:var(--accent);margin-top:2px;text-transform:uppercase;letter-spacing:1px}
+.dd{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.5}
+
+.pt{height:2px;background:var(--border)}.pff{height:100%;background:var(--accent);width:0%;transition:width 0.1s linear}
+
+/* Controls */
+.ctr{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 0;background:transparent}
+.ctr-b{padding:6px 14px;background:var(--card-alt);border:1px solid var(--border);color:var(--muted);font-family:var(--mono);font-size:9px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:1px;text-transform:uppercase}
+.ctr-b:hover{border-color:var(--border-hi);color:var(--fg)}
+.ctr-b.act{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+
+.pp-b{width:32px;height:32px;border-radius:50%;background:var(--accent);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-left:4px;transition:transform .2s;flex-shrink:0}
+.pp-b:active{transform:scale(.92)}
+.pp-i{width:12px;height:12px;fill:#000}
+
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="aw" id="app-root">
+<div class="ab-wrap">
+  <div class="hd"><span class="hd-t">CONTAINER TYPES</span><span class="hd-f" id="hf">01 / 04</span></div>
+  <div class="la-wrap">
+    <div class="ab">
+      <div class="badge" id="sbadge">01 FIXED CONTAINER</div>
+      <div class="vp-ref">viewport: 1440px</div>
+
+      <!-- State 0: Fixed -->
+      <div class="ss on" id="ss0">
+        <div class="sc" id="sc0" style="width:83%">
+          <div class="sc-nav">BRAND · Home · About · Pricing</div>
+          <div class="sc-cards"><div class="sc-card"></div><div class="sc-card"></div><div class="sc-card"></div></div>
+          <div class="sc-btn"></div>
+          <div class="sc-dim"><div class="sc-dim-line"></div><span class="sc-dim-arr l">←</span><span class="sc-dim-lbl">max-width: 1200px</span><span class="sc-dim-arr r">→</span></div>
+        </div>
+        <div class="sc-margin" id="sm0l" style="left:2%">margin: auto</div>
+        <div class="sc-margin" id="sm0r" style="right:2%">margin: auto</div>
+      </div>
+
+      <!-- State 1: Fluid -->
+      <div class="ss" id="ss1">
+        <div class="sc" id="sc1" style="width:100%">
+          <div class="sc-nav">BRAND · Home · About · Pricing</div>
+          <div class="sc-cards"><div class="sc-card"></div><div class="sc-card"></div><div class="sc-card"></div></div>
+          <div class="sc-btn"></div>
+          <div class="sc-dim"><div class="sc-dim-line"></div><span class="sc-dim-arr l">←</span><span class="sc-dim-lbl">width: 100%</span><span class="sc-dim-arr r">→</span></div>
+        </div>
+      </div>
+
+      <!-- State 2: Responsive -->
+      <div class="ss" id="ss2">
+        <div class="sc" id="sc2" style="width:83%">
+          <div class="sc-bp" id="sc2bp">desktop · max-width: 1200px</div>
+          <div class="sc-nav">BRAND · Home · About · Pricing</div>
+          <div class="sc-cards"><div class="sc-card"></div><div class="sc-card"></div><div class="sc-card"></div></div>
+          <div class="sc-btn"></div>
+          <div class="sc-dim"><div class="sc-dim-line"></div><span class="sc-dim-arr l">←</span><span class="sc-dim-lbl" id="sc2dim">1200px</span><span class="sc-dim-arr r">→</span></div>
+        </div>
+      </div>
+
+      <!-- State 3: Nested -->
+      <div class="ss" id="ss3">
+        <div class="sc" id="sc3" style="width:83%">
+          <div class="sc-dim"><div class="sc-dim-line"></div><span class="sc-dim-arr l">←</span><span class="sc-dim-lbl">outer: 1200px</span><span class="sc-dim-arr r">→</span></div>
+          <div class="sc-inner" id="sc3i" style="width:67%">
+            <div class="sc-nav">BRAND · Home · About</div>
+            <div class="sc-cards"><div class="sc-card"></div><div class="sc-card"></div></div>
+            <div class="sc-btn"></div>
+            <div class="sc-inner-dim">inner: 800px</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="inf">
+    <div class="dn" id="dn">Fixed Container</div>
+    <div class="ds" id="ds">MAX-WIDTH: 1200PX</div>
+    <div class="dd" id="dd">Container cố định 1200px — không đổi dù viewport to hay nhỏ.</div>
+  </div>
+  <div class="pt"><div class="pff" id="pff"></div></div>
+</div>
+
+<div class="ctr">
+    <button class="ctr-b act" data-i="0">Fixed</button>
+    <button class="ctr-b" data-i="1">Fluid</button>
+    <button class="ctr-b" data-i="2">Responsive</button>
+    <button class="ctr-b" data-i="3">Nested</button>
+    <button class="pp-b" id="pp" title="Play/Pause">
+        <svg class="pp-i" id="pp-i" viewBox="0 0 24 24"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>
+    </button>
+</div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+
+const INFO=[
+  {nm:'Fixed Container',sz:'MAX-WIDTH: 1200PX',dc:'Container cố định 1200px — không đổi dù viewport to hay nhỏ. Thường dùng cho layout web truyền thống.'},
+  {nm:'Fluid Container',sz:'WIDTH: 100%',dc:'Container luôn tràn lề — co giãn theo mọi kích thước màn hình. Phù hợp cho landing page hiện đại.'},
+  {nm:'Responsive Container',sz:'DYNAMIC BREAKPOINTS',dc:'Tự động thay đổi kích thước theo thiết bị — desktop to, mobile nhỏ. Tối ưu trải nghiệm đa thiết bị.'},
+  {nm:'Nested Container',sz:'CONTAINER IN CONTAINER',dc:'Cấu trúc lồng nhau — outer kiểm soát tổng thể, inner kiểm soát các phần nhỏ bên trong.'}
+];
+
+const RESP=[
+  {w:83,bp:'desktop · max-width: 1200px',dim:'1200px'},
+  {w:53,bp:'tablet · max-width: 768px',dim:'768px'},
+  {w:100,bp:'mobile · width: 100%',dim:'100%'}
+];
+
+const el={dn:$('dn'),ds:$('ds'),dd:$('dd'),hf:$('hf'),pff:$('pff'),sbadge:$('sbadge')};
+const states=[0,1,2,3].map(i=>$('ss'+i));
+const ctrBs=document.querySelectorAll('.ctr-b');
+const ppB=$('pp');
+const ppI=$('pp-i');
+
+let cur=0,pa=null,t0=performance.now(),isPaused=false,respI=0,respT=null;
+const DUR=3800;
+
+function apply(i){
+  cur=i;
+  clearInterval(respT);
+  const s=INFO[i];
+  el.dn.textContent=s.nm;el.ds.textContent=s.sz;el.dd.textContent=s.dc;
+  el.hf.textContent='0'+(i+1)+' / 04';
+  el.sbadge.textContent='0'+(i+1)+' '+(s.nm.toUpperCase());
+  
+  states.forEach((st,j)=>st.classList.toggle('on',j===i));
+  ctrBs.forEach((b,j)=>b.classList.toggle('act',j===i));
+
+  /* Reset margin labels */
+  if($('sm0l')) $('sm0l').classList.add('hide');
+  if($('sm0r')) $('sm0r').classList.add('hide');
+
+  if(i===0){
+    if($('sm0l')) $('sm0l').classList.remove('hide');
+    if($('sm0r')) $('sm0r').classList.remove('hide');
+  }
+  
+  if(i===2){
+    respI=0;applyResp();
+    respT=setInterval(()=>{
+      respI=(respI+1)%RESP.length;
+      applyResp();
+    },1200);
+  }
+}
+
+function applyResp(){
+  const r=RESP[respI];
+  if($('sc2')){
+    $('sc2').style.width=r.w+'%';
+    $('sc2bp').textContent=r.bp;
+    $('sc2dim').textContent=r.dim;
+  }
+}
+
+function tk(n){
+    if(isPaused) return;
+    const p=Math.min(100,(n-t0)/DUR*100);
+    el.pff.style.width=p+'%';
+    if(p<100)pa=requestAnimationFrame(tk);
+    else next();
+}
+
+function startProg(){t0=performance.now();el.pff.style.width='0%';pa=requestAnimationFrame(tk)}
+function next(){if(isPaused)return;cur=(cur+1)%4;apply(cur);startProg()}
+
+function togglePP(){
+    isPaused=!isPaused;
+    ppI.innerHTML=isPaused ? '<path d="M8 5v14l11-7z"/>' : '<path d="M6 4h4v16H6zm8 0h4v16h-4z"/>';
+    if(!isPaused){
+        t0=performance.now() - (parseFloat(el.pff.style.width||0)/100*DUR);
+        pa=requestAnimationFrame(tk);
+    }
+}
+
+ctrBs.forEach(b=>{
+    b.onclick=()=>{
+        isPaused=true;
+        ppI.innerHTML='<path d="M8 5v14l11-7z"/>';
+        apply(parseInt(b.dataset.i));
+        el.pff.style.width='0%';
+    }
+});
+
+ppB.onclick=togglePP;
+
+apply(0);
+startProg();
+
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden){cancelAnimationFrame(pa)}
+  else if(!isPaused){t0=performance.now() - (parseFloat(el.pff.style.width||0)/100*DUR);pa=requestAnimationFrame(tk);}
+});
+</script>
+</body>
+</html>

@@ -123,6 +123,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'flat-design', name: 'Flat Design', nameEn: 'Thiết kế phẳng', letter: 'F', groups: ['design'], definition: 'Phong cách thiết kế loại bỏ các hiệu ứng giả 3D như đổ bóng (shadow), độ dốc màu (gradient), hay các chi tiết nổi khối (skeuomorphism). Flat Design tập trung vào sự đơn giản, sử dụng màu sắc phẳng, hình khối rõ ràng và typography mạnh mẽ để truyền tải thông tin.', example: 'Sự thay đổi của iOS từ bản 6 sang bản 7 là minh chứng rõ nhất cho việc chuyển từ Skeuomorphism sang Flat Design. Prompt: "Hãy thiết kế UI theo style flat, bỏ hết shadow và gradient để giao diện trông hiện đại hơn."', related: ['skeuomorphism', 'minimalism', 'ui', 'design-system'], demo: { kind: 'interactive', src: 'gif-flatdesign-demo.html', alt: 'Mô phỏng 4 ví dụ về Flat Design: Hero, Pricing, Dashboard và Chat UI' } },
   { id: 'glassmorphism', name: 'Glassmorphism', nameEn: 'Hiệu ứng kính mờ', letter: 'G', groups: ['design'], definition: 'Phong cách thiết kế sử dụng các lớp nền trong suốt kết hợp với hiệu ứng làm mờ (blur) phía sau và đường viền mờ, tạo cảm giác như đang nhìn qua một tấm kính mờ. Glassmorphism giúp tạo chiều sâu, sự phân cấp và vẻ hiện đại cho giao diện mà vẫn giữ được sự liên kết với nền.', example: 'Prompt: "Tạo một card thông báo theo phong cách glassmorphism với backdrop-filter: blur(16px), nền trắng 10% opacity và viền trắng mờ 1px để làm nổi bật thông tin trên nền gradient rực rỡ."', related: ['ui', 'opacity', 'blur', 'depth', 'design-system'], demo: { kind: 'interactive', src: 'gif-glassmorphism-demo.html', alt: 'Mô phỏng 4 ứng dụng của Glassmorphism: Card, Dark Card, Nav và Modal' } },
   { id: 'spinner', name: 'Spinner', nameEn: 'Vòng quay chờ / Loading Indicator', letter: 'S', groups: ['design', 'code'], definition: 'Một biểu tượng đồ họa (thường là vòng tròn quay) dùng để thông báo cho người dùng rằng hệ thống đang xử lý tác vụ và họ cần chờ đợi. Spinner giúp giảm sự ức chế khi người dùng không biết hệ thống có đang hoạt động hay không.', example: 'Khi nhấn nút "Thanh toán", một spinner xuất hiện trên nút để báo hiệu đang gửi thông tin thẻ, ngăn người dùng bấm nhầm lần nữa.', related: ['skeleton', 'state', 'ux', 'async'], demo: { kind: 'interactive', src: 'gif-spinner-demo.html', alt: 'Mô phỏng 4 loại spinner và cách dùng trong flow thực tế' } },
+  { id: 'container', name: 'Container', nameEn: 'Khung bao / Container', letter: 'C', groups: ['design', 'code'], definition: 'Thành phần bao bọc các thành phần khác bên trong để kiểm soát chiều rộng (width) và căn lề (alignment) của nội dung trên trang. Container giúp đảm bảo nội dung không bị tràn ra mép màn hình hoặc quá dài khó đọc trên màn hình lớn.', example: 'Prompt: "Dùng một container 1200px căn giữa cho phần nội dung chính, trên mobile thì chuyển sang full width có padding 16px hai bên."', related: ['layout', 'breakpoint', 'padding', 'margin'], demo: { kind: 'interactive', src: 'gif-container-demo.html', alt: 'Mô phỏng 4 loại container: Fixed, Fluid, Responsive và Nested' } },
 ];
 
 export const quickRefItems = [
@@ -211,6 +212,7 @@ const deepDiveTermIds = new Set([
   'flat-design',
   'glassmorphism',
   'spinner',
+  'container',
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -462,6 +464,11 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     '4 loại spinner cơ bản: Basic (nhiều kích thước), With Text (có ngữ cảnh), Overlay (chặn tương tác toàn trang), và Inline (nằm trong element như button/input).',
     'Quy tắc vàng: Luôn vô hiệu hóa (disable) các nút bấm khi spinner đang quay để tránh việc user gửi yêu cầu trùng lặp gây lỗi dữ liệu.',
     'Nếu tác vụ mất hơn 10 giây, hãy cân nhắc dùng Progress Bar (thanh tiến trình) thay vì Spinner để user biết chính xác họ phải chờ bao lâu nữa.',
+  ],
+  container: [
+    'Container là "chiếc hộp" quan trọng nhất trong layout. Nó xác định ranh giới cho nội dung của bạn.',
+    'Có 3 loại Container phổ biến: Fixed (cố định chiều rộng), Fluid (luôn chiếm 100% chiều rộng) và Responsive (thay đổi chiều rộng tùy theo màn hình).',
+    'Quy tắc "Max-width + Margin Auto": Đây là cách kinh điển để tạo container căn giữa. Max-width giới hạn chiều rộng tối đa để text không bị quá dài trên màn hình 4K, còn Margin Auto đẩy container vào giữa.',
   ],
 };
 
