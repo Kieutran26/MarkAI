@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkbox — Vibecode Glossary</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root{
+            --bg:#141413;--bg-card:#1c1c1a;--fg:#e8e0d4;--muted:#6e6a63;
+            --accent:#d97706;--accent-dim:rgba(217,119,6,.12);
+            --accent-glow:rgba(217,119,6,.25);--border:#2e2c28;--border-hi:#3e3b35;
+            --slate:#33312d;--cream:#f5f0e8;--green:#22c55e;--red:#ef4444;
+            --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+        }
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        body{
+            background:var(--bg);color:var(--fg);font-family:var(--sans);
+            min-height:100vh;-webkit-font-smoothing:antialiased;
+            background-image:
+                linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+                linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+            background-size:20px 20px;
+        }
+        /* Grid */
+        .g4{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:12px 16px 0;max-width:920px;margin:0 auto}
+
+        /* Card */
+        .cd{background:var(--bg-card);border:1px solid var(--border);position:relative;overflow:hidden}
+        .cd::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 0%,rgba(217,119,6,.04) 0%,transparent 60%);pointer-events:none}
+        .cd-n{position:absolute;top:10px;right:12px;font-family:var(--mono);font-size:9px;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:2px 7px;letter-spacing:1.5px;z-index:5}
+        .cd-l{font-family:var(--mono);font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:2px;padding:14px 14px 2px;position:relative}
+        .cd-t{font-size:15px;font-weight:700;color:var(--cream);padding:2px 14px 10px;position:relative}
+        .cd-d{padding:0 14px 8px;height:230px;position:relative;display:flex;align-items:center;justify-content:center}
+        .cd-i{font-family:var(--mono);font-size:10px;color:var(--muted);padding:10px 14px 13px;border-top:1px solid var(--border);line-height:1.6;position:relative}
+        .cd-i em{color:var(--accent);font-style:normal}
+
+        /* === Checkbox base === */
+        .cb{display:flex;align-items:center;gap:9px;padding:4px 0;user-select:none}
+        .cb-box{
+            width:18px;height:18px;border:2px solid var(--border-hi);background:var(--bg);
+            position:relative;flex-shrink:0;transition:background .18s,border-color .18s,opacity .18s;
+        }
+        .cb-box.on,.cb-box.ind{background:var(--accent);border-color:var(--accent)}
+        .cb-box.dis{opacity:.32}
+        /* Checkmark */
+        .cb-box::after{
+            content:'';position:absolute;left:4px;top:1px;width:6px;height:10px;
+            border:solid #0e0e0d;border-width:0 2.5px 2.5px 0;
+            transform:rotate(45deg) scale(0);transition:transform .15s ease-out;
+        }
+        .cb-box.on::after{transform:rotate(45deg) scale(1)}
+        /* Indeterminate line */
+        .cb-box::before{
+            content:'';position:absolute;left:3px;top:50%;width:10px;height:2.5px;
+            background:#0e0e0d;transform:translateY(-50%) scaleX(0);transition:transform .15s ease-out;
+        }
+        .cb-box.ind::before{transform:translateY(-50%) scaleX(1)}
+        .cb-lbl{font-size:12px;color:var(--fg);line-height:1.3}
+        .cb-lbl.dis{opacity:.32}
+        .cb-lbl .sub{font-size:9px;color:var(--muted);display:block;margin-top:1px;font-family:var(--mono)}
+
+        /* Cursor giả */
+        .fc{
+            position:absolute;width:14px;height:14px;border:2px solid var(--accent);
+            border-radius:50%;pointer-events:none;z-index:20;opacity:0;
+            transition:left .4s cubic-bezier(.4,0,.2,1),top .4s cubic-bezier(.4,0,.2,1),opacity .2s;
+            box-shadow:0 0 10px var(--accent-glow);
+        }
+        .fc.show{opacity:1}
+        .fc::after{
+            content:'';position:absolute;inset:3px;background:var(--accent);
+            border-radius:50%;animation:cpulse .5s ease-out forwards;opacity:0;
+        }
+        @keyframes cpulse{0%{transform:scale(0);opacity:.6}100%{transform:scale(2.2);opacity:0}}
+
+        /* === Card 1: States === */
+        .st-wrap{display:flex;flex-direction:column;align-items:center;gap:12px}
+        .st-box{width:36px;height:36px;border:2.5px solid var(--border-hi);background:var(--bg);position:relative;transition:background .2s,border-color .2s}
+        .st-box.on,.st-box.ind{background:var(--accent);border-color:var(--accent)}
+        .st-box.dis{opacity:.3}
+        .st-box::after{content:'';position:absolute;left:7px;top:2px;width:10px;height:17px;border:solid #0e0e0d;border-width:0 3px 3px 0;transform:rotate(45deg) scale(0);transition:transform .15s ease-out}
+        .st-box.on::after{transform:rotate(45deg) scale(1)}
+        .st-box::before{content:'';position:absolute;left:6px;top:50%;width:18px;height:3.5px;background:#0e0e0d;transform:translateY(-50%) scaleX(0);transition:transform .15s ease-out}
+        .st-box.ind::before{transform:translateY(-50%) scaleX(1)}
+        .st-label{font-family:var(--mono);font-size:10px;color:var(--muted);height:14px;transition:opacity .2s;text-align:center}
+        .st-row{display:flex;gap:16px;margin-top:4px}
+        .st-sm .st-box{width:22px;height:22px;border-width:2px}
+        .st-sm .st-box::after{left:4px;top:1px;width:6px;height:10px;border-width:0 2px 2px 0}
+        .st-sm .st-box::before{left:3px;width:12px;height:2.5px}
+        .st-sm .st-label{font-size:8px}
+
+        /* === Card 2: Labeled === */
+        .lb-list{display:flex;flex-direction:column;gap:4px;width:100%}
+        .lb-count{font-family:var(--mono);font-size:9px;color:var(--muted);margin-bottom:6px;text-align:right;transition:color .2s}
+        .lb-count.hi{color:var(--accent)}
+
+        /* === Card 3: List === */
+        .ls-list{width:100%;display:flex;flex-direction:column;gap:2px}
+        .ls-item{display:flex;align-items:center;gap:9px;padding:6px 10px;border:1px solid transparent;transition:background .2s,border-color .2s}
+        .ls-item.par{border-bottom:1px solid var(--border);padding-bottom:8px;margin-bottom:4px}
+        .ls-item.hl{background:rgba(217,119,6,.04);border-color:rgba(217,119,6,.08)}
+        .ls-item .cb-lbl{font-size:11px}
+
+        /* === Card 4: Form === */
+        .fm-wrap{width:100%;display:flex;flex-direction:column;gap:6px}
+        .fm-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;min-height:24px}
+        .fm-tag{
+            font-family:var(--mono);font-size:9px;padding:3px 8px;
+            background:var(--accent-dim);color:var(--accent);border:1px solid rgba(217,119,6,.15);
+            transform:scale(0);transition:transform .2s ease-out;white-space:nowrap;
+        }
+        .fm-tag.s{transform:scale(1)}
+
+        @media(max-width:620px){
+            .g4{grid-template-columns:1fr}
+            .st-row{gap:12px}
+        }
+        @media(prefers-reduced-motion:reduce){
+            *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+        }
+    </style>
+</head>
+<body>
+
+<main>
+    <div class="g4">
+
+        <!-- 1. Checkbox States -->
+        <section class="cd" aria-label="Checkbox States">
+            <span class="cd-n">LOOP</span>
+            <div class="cd-l">Khía cạnh 01</div>
+            <h2 class="cd-t">Các trạng thái</h2>
+            <div class="cd-d">
+                <div class="st-wrap">
+                    <div class="st-box" id="stMain"></div>
+                    <div class="st-label" id="stLbl">&nbsp;</div>
+                    <div class="st-row">
+                        <div class="st-sm">
+                            <div class="st-box dis" id="stDis1"></div>
+                            <div class="st-label" style="opacity:0" id="stDL1">Disabled Off</div>
+                        </div>
+                        <div class="st-sm">
+                            <div class="st-box on dis" id="stDis2"></div>
+                            <div class="st-label" style="opacity:0" id="stDL2">Disabled On</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="cd-i">3 trạng thái hoạt động: <em>rỗng, chọn, nửa-chọn</em>. 2 trạng thái khóa: không cho thao tác.</div>
+        </section>
+
+        <!-- 2. Labeled Checkboxes -->
+        <section class="cd" aria-label="Labeled Checkboxes">
+            <span class="cd-n">LOOP</span>
+            <div class="cd-l">Khía cạnh 02</div>
+            <h2 class="cd-t">Checkbox có nhãn</h2>
+            <div class="cd-d" id="d2">
+                <div class="fc" id="c2"></div>
+                <div class="lb-list" style="width:200px">
+                    <div class="lb-count" id="lbCnt">Selected: 0/4</div>
+                    <div class="cb" data-i="0"><div class="cb-box"></div><div class="cb-lbl">Nhận email thông báo</div></div>
+                    <div class="cb" data-i="1"><div class="cb-box"></div><div class="cb-lbl">Đăng ký newsletter</div></div>
+                    <div class="cb" data-i="2"><div class="cb-box"></div><div class="cb-lbl">Nhắc nhở deadline</div></div>
+                    <div class="cb" data-i="3"><div class="cb-box"></div><div class="cb-lbl">Báo cáo tuần</div></div>
+                </div>
+            </div>
+            <div class="cd-i">Multi-select — <em>chọn bao nhiêu cũng được</em>. Khác radio: không giới hạn ở 1 lựa chọn.</div>
+        </section>
+
+        <!-- 3. List Checkboxes -->
+        <section class="cd" aria-label="List Checkboxes">
+            <span class="cd-n">LOOP</span>
+            <div class="cd-l">Khía cạnh 03</div>
+            <h2 class="cd-t">Checkbox trong danh sách</h2>
+            <div class="cd-d" id="d3">
+                <div class="fc" id="c3"></div>
+                <div class="ls-list" style="width:210px">
+                    <div class="ls-item par" data-i="-1">
+                        <div class="cb-box" id="lsPar"></div>
+                        <div class="cb-lbl" style="font-weight:600">Select All</div>
+                    </div>
+                    <div class="ls-item" data-i="0"><div class="cb-box" id="lsC0"></div><div class="cb-lbl">Brand Guidelines.pdf</div></div>
+                    <div class="ls-item" data-i="1"><div class="cb-box" id="lsC1"></div><div class="cb-lbl">Q4 Campaign Deck.pptx</div></div>
+                    <div class="ls-item" data-i="2"><div class="cb-box" id="lsC2"></div><div class="cb-lbl">Logo Assets.zip</div></div>
+                    <div class="ls-item" data-i="3"><div class="cb-box" id="lsC3"></div><div class="cb-lbl">Social Templates.fig</div></div>
+                </div>
+            </div>
+            <div class="cd-i">Parent-child logic: hết → <em>nửa-chọn</em> → tất cả. Indeterminate = "chưa quyết định hết".</div>
+        </section>
+
+        <!-- 4. Form Checkboxes -->
+        <section class="cd" aria-label="Form Checkboxes">
+            <span class="cd-n">LOOP</span>
+            <div class="cd-l">Khía cạnh 04</div>
+            <h2 class="cd-t">Checkbox trong form</h2>
+            <div class="cd-d" id="d4">
+                <div class="fc" id="c4"></div>
+                <div class="fm-wrap" style="width:210px">
+                    <div style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:1px;margin-bottom:4px">PREFERENCES</div>
+                    <div class="cb" data-i="0"><div class="cb-box" id="fmC0"></div><div class="cb-lbl">Dark mode<span class="sub">Giao diện tối</span></div></div>
+                    <div class="cb" data-i="1"><div class="cb-box" id="fmC1"></div><div class="cb-lbl">Compact layout<span class="sub">Hiển thị densely</span></div></div>
+                    <div class="cb" data-i="2"><div class="cb-box" id="fmC2"></div><div class="cb-lbl">Auto-save<span class="sub">Lưu mỗi 30s</span></div></div>
+                    <div class="cb" data-i="3"><div class="cb-box" id="fmC3"></div><div class="cb-lbl">Sound effects<span class="sub">Âm thanh thao tác</span></div></div>
+                    <div class="fm-tags" id="fmTags"></div>
+                </div>
+            </div>
+            <div class="cd-i">Mỗi checkbox = <em>1 cặp boolean</em>. Backend nhận mảng true/false — đơn giản, rõ ràng.</div>
+        </section>
+    </div>
+</main>
+
+<script>
+function moveCur(cur, el, container) {
+    var cr = el.getBoundingClientRect();
+    var pr = container.getBoundingClientRect();
+    cur.style.left = (cr.left - pr.left + cr.width / 2 - 7) + 'px';
+    cur.style.top = (cr.top - pr.top + cr.height / 2 - 7) + 'px';
+    cur.classList.add('show');
+    cur.style.animation = 'none';
+    void cur.offsetWidth;
+    cur.style.animation = '';
+}
+
+(function() {
+    var box = document.getElementById('stMain');
+    var lbl = document.getElementById('stLbl');
+    var d1 = document.getElementById('stDis1');
+    var dl1 = document.getElementById('stDL1');
+    var d2 = document.getElementById('stDis2');
+    var dl2 = document.getElementById('stDL2');
+    var step = 0, total = 5;
+    var names = ['Unchecked', 'Checked', 'Indeterminate', '', ''];
+
+    function run() {
+        box.className = 'st-box';
+        dl1.style.opacity = '0';
+        dl2.style.opacity = '0';
+
+        if (step === 0) { box.className = 'st-box'; }
+        else if (step === 1) { box.className = 'st-box on'; }
+        else if (step === 2) { box.className = 'st-box ind'; }
+        else if (step === 3) {
+            box.className = 'st-box ind';
+            dl1.style.opacity = '1';
+            dl2.style.opacity = '1';
+        }
+        else { box.className = 'st-box'; }
+
+        lbl.textContent = names[step] || '\u00a0';
+        step = (step + 1) % total;
+    }
+    run();
+    setInterval(run, 1800);
+})();
+
+(function() {
+    var wrap = document.getElementById('d2');
+    var cur = document.getElementById('c2');
+    var items = wrap.querySelectorAll('.cb');
+    var cnt = document.getElementById('lbCnt');
+    var states = [false, false, false, false];
+    var seq = [0,1,2,3,-1,-1, 3,2,1,0,-1,-1];
+    var si = 0;
+
+    function updCount() {
+        var n = states.filter(Boolean).length;
+        cnt.textContent = 'Selected: ' + n + '/4';
+        cnt.classList.toggle('hi', n > 0);
+    }
+
+    function run() {
+        var i = seq[si];
+        if (i === -1) { si++; return; }
+        states[i] = !states[i];
+        items[i].querySelector('.cb-box').className = 'cb-box' + (states[i] ? ' on' : '');
+        moveCur(cur, items[i].querySelector('.cb-box'), wrap);
+        updCount();
+        si = (si + 1) % seq.length;
+    }
+    run();
+    setInterval(run, 700);
+})();
+
+(function() {
+    var wrap = document.getElementById('d3');
+    var cur = document.getElementById('c3');
+    var par = document.getElementById('lsPar');
+    var children = [
+        document.getElementById('lsC0'),
+        document.getElementById('lsC1'),
+        document.getElementById('lsC2'),
+        document.getElementById('lsC3')
+    ];
+    var items = wrap.querySelectorAll('.ls-item');
+    var cStates = [false, false, false, false];
+
+    function syncParent() {
+        var on = cStates.filter(Boolean).length;
+        par.className = 'cb-box';
+        if (on === 0) { }
+        else if (on === 4) { par.classList.add('on'); }
+        else { par.classList.add('ind'); }
+        items[0].classList.toggle('hl', on > 0 && on < 4);
+        for (var i = 0; i < 4; i++) {
+            items[i + 1].classList.toggle('hl', cStates[i]);
+        }
+    }
+
+    var actions = [
+        { type: 'par' },
+        { type: 'child', i: 1 },
+        { type: 'child', i: 3 },
+        { type: 'par' },
+        { type: 'child', i: 0 },
+        { type: 'child', i: 1 },
+        { type: 'child', i: 2 },
+        { type: 'child', i: 3 },
+        { type: 'pause' },
+        { type: 'reset' }
+    ];
+    var ai = 0;
+
+    function run() {
+        var a = actions[ai];
+        if (a.type === 'par') {
+            var allOn = cStates.every(Boolean);
+            var newVal = !allOn;
+            cStates = [newVal, newVal, newVal, newVal];
+            for (var j = 0; j < 4; j++) children[j].className = 'cb-box' + (newVal ? ' on' : '');
+            moveCur(cur, par, wrap);
+        } else if (a.type === 'child') {
+            cStates[a.i] = !cStates[a.i];
+            children[a.i].className = 'cb-box' + (cStates[a.i] ? ' on' : '');
+            moveCur(cur, children[a.i], wrap);
+        } else if (a.type === 'reset') {
+            cStates = [false, false, false, false];
+            for (var k = 0; k < 4; k++) children[k].className = 'cb-box';
+            par.className = 'cb-box';
+            items[0].classList.remove('hl');
+            for (var m = 0; m < 4; m++) items[m + 1].classList.remove('hl');
+        }
+        syncParent();
+        ai = (ai + 1) % actions.length;
+    }
+    syncParent();
+    setTimeout(function() { run(); }, 800);
+    setInterval(run, 1200);
+})();
+
+(function() {
+    var wrap = document.getElementById('d4');
+    var cur = document.getElementById('c4');
+    var boxes = [
+        document.getElementById('fmC0'),
+        document.getElementById('fmC1'),
+        document.getElementById('fmC2'),
+        document.getElementById('fmC3')
+    ];
+    var items = wrap.querySelectorAll('.cb');
+    var tagsEl = document.getElementById('fmTags');
+    var labels = ['Dark mode', 'Compact', 'Auto-save', 'Sound'];
+    var states = [false, false, false, false];
+
+    function updTags() {
+        tagsEl.innerHTML = '';
+        for (var i = 0; i < 4; i++) {
+            if (states[i]) {
+                var t = document.createElement('span');
+                t.className = 'fm-tag s';
+                t.textContent = labels[i];
+                tagsEl.appendChild(t);
+            }
+        }
+    }
+
+    var seq = [0,1,2,3,-1,-1, 0,1,2,3,-1,-1];
+    var si = 0;
+
+    function run() {
+        var i = seq[si];
+        if (i === -1) { si++; return; }
+        states[i] = !states[i];
+        boxes[i].className = 'cb-box' + (states[i] ? ' on' : '');
+        moveCur(cur, boxes[i], wrap);
+        updTags();
+        si = (si + 1) % seq.length;
+    }
+    run();
+    setInterval(run, 650);
+})();
+</script>
+</body>
+</html>
