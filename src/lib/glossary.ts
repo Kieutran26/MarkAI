@@ -124,6 +124,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'glassmorphism', name: 'Glassmorphism', nameEn: 'Hiệu ứng kính mờ', letter: 'G', groups: ['design'], definition: 'Phong cách thiết kế sử dụng các lớp nền trong suốt kết hợp với hiệu ứng làm mờ (blur) phía sau và đường viền mờ, tạo cảm giác như đang nhìn qua một tấm kính mờ. Glassmorphism giúp tạo chiều sâu, sự phân cấp và vẻ hiện đại cho giao diện mà vẫn giữ được sự liên kết với nền.', example: 'Prompt: "Tạo một card thông báo theo phong cách glassmorphism với backdrop-filter: blur(16px), nền trắng 10% opacity và viền trắng mờ 1px để làm nổi bật thông tin trên nền gradient rực rỡ."', related: ['ui', 'opacity', 'blur', 'depth', 'design-system'], demo: { kind: 'interactive', src: 'gif-glassmorphism-demo.html', alt: 'Mô phỏng 4 ứng dụng của Glassmorphism: Card, Dark Card, Nav và Modal' } },
   { id: 'spinner', name: 'Spinner', nameEn: 'Vòng quay chờ / Loading Indicator', letter: 'S', groups: ['design', 'code'], definition: 'Một biểu tượng đồ họa (thường là vòng tròn quay) dùng để thông báo cho người dùng rằng hệ thống đang xử lý tác vụ và họ cần chờ đợi. Spinner giúp giảm sự ức chế khi người dùng không biết hệ thống có đang hoạt động hay không.', example: 'Khi nhấn nút "Thanh toán", một spinner xuất hiện trên nút để báo hiệu đang gửi thông tin thẻ, ngăn người dùng bấm nhầm lần nữa.', related: ['skeleton', 'state', 'ux', 'async'], demo: { kind: 'interactive', src: 'gif-spinner-demo.html', alt: 'Mô phỏng 4 loại spinner và cách dùng trong flow thực tế' } },
   { id: 'container', name: 'Container', nameEn: 'Khung bao / Container', letter: 'C', groups: ['design', 'code'], definition: 'Thành phần bao bọc các thành phần khác bên trong để kiểm soát chiều rộng (width) và căn lề (alignment) của nội dung trên trang. Container giúp đảm bảo nội dung không bị tràn ra mép màn hình hoặc quá dài khó đọc trên màn hình lớn.', example: 'Prompt: "Dùng một container 1200px căn giữa cho phần nội dung chính, trên mobile thì chuyển sang full width có padding 16px hai bên."', related: ['layout', 'breakpoint', 'padding', 'margin'], demo: { kind: 'interactive', src: 'gif-container-demo.html', alt: 'Mô phỏng 4 loại container: Fixed, Fluid, Responsive và Nested' } },
+  { id: 'progressbar', name: 'Progress Bar', nameEn: 'Thanh tiến trình', letter: 'P', groups: ['design', 'code'], definition: 'Thành phần giao diện hiển thị trạng thái hoàn thành của một tác vụ đang diễn ra. Progress Bar giúp người dùng ước lượng được thời gian chờ đợi và cảm thấy yên tâm rằng hệ thống đang hoạt động ổn định, thay vì bị "đứng hình" không rõ lý do.', example: 'Prompt: "Thêm một thanh progress bar ở đầu trang để chỉ rõ người dùng đã điền được bao nhiêu phần trăm form đăng ký, tự động cập nhật mỗi khi xong một field."', related: ['skeleton', 'spinner', 'state', 'ux'], demo: { kind: 'interactive', src: 'gif-progressbar-demo.html', alt: 'Mô phỏng 4 loại Progress Bar: Linear, Circular, Steps và Task' } },
 ];
 
 export const quickRefItems = [
@@ -213,6 +214,7 @@ const deepDiveTermIds = new Set([
   'glassmorphism',
   'spinner',
   'container',
+  'progressbar',
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -469,6 +471,12 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Container là "chiếc hộp" quan trọng nhất trong layout. Nó xác định ranh giới cho nội dung của bạn.',
     'Có 3 loại Container phổ biến: Fixed (cố định chiều rộng), Fluid (luôn chiếm 100% chiều rộng) và Responsive (thay đổi chiều rộng tùy theo màn hình).',
     'Quy tắc "Max-width + Margin Auto": Đây là cách kinh điển để tạo container căn giữa. Max-width giới hạn chiều rộng tối đa để text không bị quá dài trên màn hình 4K, còn Margin Auto đẩy container vào giữa.',
+  ],
+  progressbar: [
+    'Progress Bar là cách trực quan nhất để phản hồi cho người dùng về những tác vụ mất thời gian. Nó giúp giảm bớt cảm giác sốt ruột bằng cách trả lời câu hỏi: "Tôi phải chờ bao lâu nữa?".',
+    '4 loại pattern kinh điển: Linear (thanh ngang đơn giản), Circular (vòng tròn cho không gian hẹp), Steps (theo từng giai đoạn) và Task Progress (tổng hợp từ nhiều task nhỏ).',
+    'Quy tắc UX: Nếu tác vụ dưới 2 giây, đừng hiện gì cả. Từ 2-10 giây dùng Spinner. Trên 10 giây hoặc có thể tính toán được % thì BẮT BUỘC dùng Progress Bar.',
+    'Lỗi "99% bị đứng": Đây là trải nghiệm tệ nhất. Nếu không thể lấy số % chính xác từ server, hãy dùng hiệu ứng "Indeterminate" (thanh chạy vô tận) thay vì đoán mò con số.',
   ],
 };
 

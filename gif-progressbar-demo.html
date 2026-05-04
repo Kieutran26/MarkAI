@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progress Bar Demo — Animated</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #0c0c0e;
+      --fg: #ece8e1;
+      --muted: #706b64;
+      --accent: #e88c2e;
+      --accent-dim: rgba(207, 92, 39, .15);
+      --card: #1a1a1e;
+      --card-alt: #242120;
+      --border: #26262a;
+      --border-hi: #44403a;
+      --mono: 'JetBrains Mono', monospace;
+      --sans: 'Space Grotesk', sans-serif
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 0;
+      padding: 0
+    }
+
+    .aw {
+      width: 100%;
+      padding: 0 0 40px;
+      gap: 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center
+    }
+
+    .ab-wrap {
+      width: 100%;
+      background: var(--card);
+      border: 2px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden
+    }
+
+    .la-wrap {
+      width: 100%;
+      position: relative;
+      overflow: hidden;
+      background: #08080a;
+      display: flex;
+      justify-content: center
+    }
+
+    .ab {
+      width: 100%;
+      height: 300px;
+      position: relative;
+      overflow: hidden;
+      transition: width .4s cubic-bezier(.4, 0, .2, 1)
+    }
+
+    .ab::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      background-image: linear-gradient(rgba(255, 255, 255, .008) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, .008) 1px, transparent 1px);
+      background-size: 20px 20px
+    }
+
+    .hd {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 9px 14px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, .01)
+    }
+
+    .hd-t {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 2.5px;
+      text-transform: uppercase
+    }
+
+    .hd-f {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted)
+    }
+
+    .badge {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      z-index: 30;
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--accent);
+      padding: 3px 9px;
+      line-height: 1.7;
+      white-space: nowrap
+    }
+
+    /* === Sim states === */
+    .ss {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity .4s ease;
+      pointer-events: none;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 0 12%
+    }
+
+    .ss.on {
+      opacity: 1;
+      pointer-events: auto
+    }
+
+    /* Annotation */
+    .apin {
+      position: absolute;
+      z-index: 25;
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity .3s, transform .3s;
+      white-space: nowrap;
+      pointer-events: none;
+      background: rgba(12, 12, 14, .85);
+      padding: 3px 7px;
+      border: 1px solid rgba(207, 92, 39, .25)
+    }
+
+    .apin.sh {
+      opacity: 1;
+      transform: translateY(0)
+    }
+
+    /* === Progress bar base === */
+    .pb-track {
+      width: 100%;
+      height: 10px;
+      background: rgba(255, 255, 255, .06);
+      position: relative;
+      overflow: hidden
+    }
+
+    .pb-fill {
+      height: 100%;
+      background: var(--accent);
+      transition: width .8s cubic-bezier(.4, 0, .2, 1);
+      position: relative
+    }
+
+    .pb-fill.animated::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .15), transparent);
+      animation: shimmer 1.5s infinite
+    }
+
+    @keyframes shimmer {
+      0% {
+        transform: translateX(-100%)
+      }
+
+      100% {
+        transform: translateX(100%)
+      }
+    }
+
+    .pb-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .06em;
+      white-space: nowrap;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 4px
+    }
+
+    .pb-val {
+      color: var(--accent);
+      font-weight: 700
+    }
+
+    .pb-lbl {
+      color: var(--muted)
+    }
+
+    /* Circular progress */
+    .cprog {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center
+    }
+
+    .cprog svg {
+      transform: rotate(-90deg)
+    }
+
+    .cprog-track {
+      fill: none;
+      stroke: rgba(255, 255, 255, .06);
+      stroke-width: 4px
+    }
+
+    .cprog-fill {
+      fill: none;
+      stroke: var(--accent);
+      stroke-width: 4px;
+      stroke-linecap: butt;
+      transition: stroke-dashoffset .8s cubic-bezier(.4, 0, .2, 1)
+    }
+
+    .cprog-center {
+      position: absolute;
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--fg)
+    }
+
+    /* Step progress */
+    .step-row {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      position: relative
+    }
+
+    .step-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      position: relative;
+      z-index: 2
+    }
+
+    .step-dot {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--border);
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mono);
+      font-size: 8px;
+      font-weight: 700;
+      color: var(--muted);
+      transition: all .4s
+    }
+
+    .step-dot.done {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: var(--bg)
+    }
+
+    .step-dot.active {
+      border-color: var(--accent);
+      background: transparent;
+      color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(207, 92, 39, .15)
+    }
+
+    .step-line {
+      position: absolute;
+      top: 50%;
+      height: 2px;
+      background: var(--border);
+      z-index: 1;
+      transition: background .4s
+    }
+
+    .step-line.done {
+      background: var(--accent)
+    }
+
+    .step-lbl {
+      font-family: var(--mono);
+      font-size: 8px;
+      color: var(--muted);
+      letter-spacing: .06em;
+      margin-top: 6px;
+      text-transform: uppercase;
+      text-align: center;
+      white-space: nowrap
+    }
+
+    .step-lbl.done {
+      color: var(--accent)
+    }
+
+    .step-lbl.active {
+      color: var(--fg)
+    }
+
+    /* Task progress */
+    .task-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px
+    }
+
+    .task-frac {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--fg)
+    }
+
+    .task-frac span {
+      color: var(--accent)
+    }
+
+    .task-list {
+      display: flex;
+      flex-direction: column;
+      gap: 4px
+    }
+
+    .task-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 4px 0
+    }
+
+    .task-item+.task-item {
+      border-top: 1px solid rgba(255, 255, 255, .04);
+      padding-top: 4px
+    }
+
+    .task-name {
+      font-size: 10px;
+      color: var(--muted);
+      flex: 1
+    }
+
+    .task-pbar {
+      width: 100px;
+      height: 6px;
+      background: rgba(255, 255, 255, .06);
+      overflow: hidden;
+      flex-shrink: 0
+    }
+
+    .task-pfill {
+      height: 100%;
+      background: var(--accent);
+      transition: width .8s cubic-bezier(.4, 0, .2, 1)
+    }
+
+    .task-pval {
+      font-family: var(--mono);
+      font-size: 8px;
+      color: var(--muted);
+      min-width: 32px;
+      text-align: right;
+      flex-shrink: 0
+    }
+
+    .task-pval.done {
+      color: var(--accent)
+    }
+
+    .inf {
+      padding: 11px 14px;
+      border-top: 1px solid var(--border);
+      background: var(--card);
+      min-height: 86px
+    }
+
+    .dn {
+      font-size: 15px;
+      font-weight: 800;
+      line-height: 1.15;
+      color: var(--fg)
+    }
+
+    .ds {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--accent);
+      margin-top: 2px;
+      text-transform: uppercase;
+      letter-spacing: 1px
+    }
+
+    .dd {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 4px;
+      line-height: 1.5
+    }
+
+    .pt {
+      height: 2px;
+      background: var(--border)
+    }
+
+    .pff {
+      height: 100%;
+      background: var(--accent);
+      width: 0%;
+      transition: width 0.1s linear
+    }
+
+    /* Controls */
+    .ctr {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 12px 0;
+      background: transparent
+    }
+
+    .ctr-b {
+      padding: 6px 14px;
+      background: var(--card-alt);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .2s;
+      letter-spacing: 1px;
+      text-transform: uppercase
+    }
+
+    .ctr-b:hover {
+      border-color: var(--border-hi);
+      color: var(--fg)
+    }
+
+    .ctr-b.act {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-dim)
+    }
+
+    .pp-b {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      margin-left: 4px;
+      transition: transform .2s;
+      flex-shrink: 0
+    }
+
+    .pp-b:active {
+      transform: scale(.92)
+    }
+
+    .pp-i {
+      width: 12px;
+      height: 12px;
+      fill: #000
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+      * {
+        transition: none !important;
+        animation: none !important
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="aw" id="app-root">
+    <div class="ab-wrap">
+      <div class="hd"><span class="hd-t">PROGRESS BAR TYPES</span><span class="hd-f" id="hf">01 / 04</span></div>
+      <div class="la-wrap">
+        <div class="ab" id="ab">
+          <div class="badge" id="sbadge">01 LINEAR PROGRESS</div>
+
+          <!-- Annotations -->
+          <div class="apin" id="ap0" style="top:25%;right:8%">fill width = value%</div>
+          <div class="apin" id="ap1" style="top:48%;right:8%">secondary track</div>
+          <div class="apin" id="ap2" style="top:32%;right:8%">stroke-dashoffset</div>
+          <div class="apin" id="ap3" style="top:38%;right:8%">step done / active / pending</div>
+          <div class="apin" id="ap4" style="top:22%;right:8%">overall = avg of tasks</div>
+          <div class="apin" id="ap5" style="top:62%;right:8%">each task has own %</div>
+
+          <!-- State 0: Linear -->
+          <div class="ss on" id="ss0">
+            <div style="display:flex;flex-direction:column;gap:24px">
+              <div>
+                <div class="pb-label"><span class="pb-lbl">Uploading files...</span><span class="pb-val"
+                    id="lv0">65%</span></div>
+                <div class="pb-track">
+                  <div class="pb-fill animated" id="lf0" style="width:65%"></div>
+                </div>
+              </div>
+              <div>
+                <div class="pb-label"><span class="pb-lbl">Buffer</span><span class="pb-val" style="opacity:.4"
+                    id="lv0s">45%</span></div>
+                <div class="pb-track">
+                  <div class="pb-fill" id="lf0s" style="width:45%;opacity:.4"></div>
+                </div>
+              </div>
+              <div>
+                <div class="pb-label"><span class="pb-lbl">Processing...</span><span class="pb-val" id="lv1">30%</span>
+                </div>
+                <div class="pb-track">
+                  <div class="pb-fill" id="lf1" style="width:30%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- State 1: Circular -->
+          <div class="ss" id="ss1">
+            <div style="display:flex;align-items:center;justify-content:center;gap:40px">
+              <div style="text-align:center">
+                <div class="cprog"><svg width="80" height="80" viewBox="0 0 36 36">
+                    <circle class="cprog-track" cx="18" cy="18" r="15" />
+                    <circle class="cprog-fill" id="cf0" cx="18" cy="18" r="15" stroke-dasharray="94.25"
+                      stroke-dashoffset="23.56" />
+                  </svg>
+                  <div class="cprog-center" id="cc0">75%</div>
+                </div>
+                <div
+                  style="font-family:var(--mono);font-size:7px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-top:6px">
+                  Storage</div>
+              </div>
+              <div style="text-align:center">
+                <div class="cprog"><svg width="80" height="80" viewBox="0 0 36 36">
+                    <circle class="cprog-track" cx="18" cy="18" r="15" />
+                    <circle class="cprog-fill" id="cf2" cx="18" cy="18" r="15" stroke-dasharray="94.25"
+                      stroke-dashoffset="47.13" />
+                  </svg>
+                  <div class="cprog-center" id="cc2">50%</div>
+                </div>
+                <div
+                  style="font-family:var(--mono);font-size:7px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-top:6px">
+                  CPU Usage</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- State 2: Steps -->
+          <div class="ss" id="ss2">
+            <div style="display:flex;flex-direction:column;gap:32px">
+              <div class="step-row">
+                <div class="step-item">
+                  <div class="step-dot done">✓</div>
+                  <div class="step-lbl done">Account</div>
+                </div>
+                <div class="step-line done" style="left:12.5%;right:62.5%"></div>
+                <div class="step-item">
+                  <div class="step-dot done">✓</div>
+                  <div class="step-lbl done">Profile</div>
+                </div>
+                <div class="step-line done" style="left:37.5%;right:37.5%"></div>
+                <div class="step-item">
+                  <div class="step-dot active">3</div>
+                  <div class="step-lbl active">Billing</div>
+                </div>
+                <div class="step-line" style="left:62.5%;right:12.5%"></div>
+                <div class="step-item">
+                  <div class="step-dot">4</div>
+                  <div class="step-lbl">Confirm</div>
+                </div>
+              </div>
+              <div class="step-row">
+                <div class="step-item">
+                  <div class="step-dot done">✓</div>
+                  <div class="step-lbl done">Upload</div>
+                </div>
+                <div class="step-line done" style="left:12.5%;right:62.5%"></div>
+                <div class="step-item">
+                  <div class="step-dot active">2</div>
+                  <div class="step-lbl active">Review</div>
+                </div>
+                <div class="step-line" style="left:37.5%;right:37.5%"></div>
+                <div class="step-item">
+                  <div class="step-dot">3</div>
+                  <div class="step-lbl">Approve</div>
+                </div>
+                <div class="step-line" style="left:62.5%;right:12.5%"></div>
+                <div class="step-item">
+                  <div class="step-dot">4</div>
+                  <div class="step-lbl">Publish</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- State 3: Tasks -->
+          <div class="ss" id="ss3">
+            <div style="width:100%;max-width:320px;margin:0 auto">
+              <div class="task-header">
+                <div class="task-frac"><span>3</span> of 5 tasks</div>
+                <div class="pb-label" style="font-size:9px">60% overall</div>
+              </div>
+              <div class="pb-track" style="margin-bottom:12px;height:8px">
+                <div class="pb-fill animated" id="tf0" style="width:60%"></div>
+              </div>
+              <div class="task-list">
+                <div class="task-item"><span class="task-name">Design UI</span>
+                  <div class="task-pbar">
+                    <div class="task-pfill" id="tp0" style="width:100%"></div>
+                  </div><span class="task-pval done">100%</span>
+                </div>
+                <div class="task-item"><span class="task-name">Build API</span>
+                  <div class="task-pbar">
+                    <div class="task-pfill" id="tp1" style="width:80%"></div>
+                  </div><span class="task-pval">80%</span>
+                </div>
+                <div class="task-item"><span class="task-name">Write Tests</span>
+                  <div class="task-pbar">
+                    <div class="task-pfill" id="tp2" style="width:45%"></div>
+                  </div><span class="task-pval">45%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="inf">
+        <div class="dn" id="dn">Linear Progress</div>
+        <div class="ds" id="ds">FILL WIDTH = VALUE%</div>
+        <div class="dd" id="dd">Thanh biểu diễn tiến độ dạng ngang — biến số thành hình, user biết "đến đâu rồi" ngay
+          lập tức.</div>
+      </div>
+      <div class="pt">
+        <div class="pff" id="pff"></div>
+      </div>
+    </div>
+
+    <div class="ctr">
+      <button class="ctr-b" data-w="35">MOBILE</button>
+      <button class="ctr-b act" data-w="60">TABLET</button>
+      <button class="ctr-b" data-w="80">LAPTOP</button>
+      <button class="ctr-b" data-w="100">DESKTOP</button>
+      <button class="pp-b" id="pp" title="Play/Pause">
+        <svg class="pp-i" id="pp-i" viewBox="0 0 24 24">
+          <path d="M6 4h4v16H6zm8 0h4v16h-4z" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <script>
+    const $ = id => document.getElementById(id);
+    const CIRC = 94.248;
+
+    const INFO = [
+      { nm: 'Linear Progress', sz: 'FILL WIDTH = VALUE%', dc: 'Thanh biểu diễn tiến độ dạng ngang — biến số thành hình, user biết "đến đâu rồi" ngay lập tức.' },
+      { nm: 'Circular Progress', sz: 'STROKE-DASHOFFSET', dc: 'Dạng vòng tròn — tối ưu cho không gian hẹp hoặc dashboard cần sự hiện đại. Progress tăng thì stroke-dashoffset giảm.' },
+      { nm: 'Step Progress', sz: 'FLOW VISUALIZATION', dc: 'Chia tác vụ thành các giai đoạn rõ ràng. Giúp người dùng hình dung được lộ trình hoàn thành.' },
+      { nm: 'Task Progress', sz: 'AVERAGE OF TASKS', dc: 'Tiến độ tổng hợp từ nhiều nhiệm vụ con. Mỗi task có trạng thái riêng, thanh chính hiển thị trung bình cộng.' }
+    ];
+
+    const el = { dn: $('dn'), ds: $('ds'), dd: $('dd'), hf: $('hf'), pff: $('pff'), sbadge: $('sbadge'), ab: $('ab') };
+    const states = [0, 1, 2, 3].map(i => $('ss' + i));
+    const allPins = [0, 1, 2, 3, 4, 5].map(i => $('ap' + i));
+    const ctrBs = document.querySelectorAll('.ctr-b');
+    const ppB = $('pp');
+    const ppI = $('pp-i');
+
+    let cur = 0, pa = null, t0 = performance.now(), isPaused = false, animT = null;
+    const DUR = 3800;
+
+    function showState(i) {
+      cur = i;
+      const s = INFO[i];
+      el.dn.textContent = s.nm; el.ds.textContent = s.sz; el.dd.textContent = s.dc;
+      el.hf.textContent = '0' + (i + 1) + ' / 04';
+      el.sbadge.textContent = '0' + (i + 1) + ' ' + (s.nm.toUpperCase());
+
+      states.forEach((st, j) => st.classList.toggle('on', j === i));
+      allPins.forEach((p, j) => {
+        const visiblePins = [[0, 1], [2], [3], [4, 5]][i];
+        p.classList.toggle('sh', visiblePins.includes(j));
+      });
+
+      animateSim();
+    }
+
+    function setCircle(fillEl, centerEl, pct) {
+      const offset = CIRC - (CIRC * pct / 100);
+      fillEl.setAttribute('stroke-dashoffset', offset);
+      fillEl.style.opacity = pct === 0 ? '0' : '1';
+      centerEl.textContent = pct === 0 ? '--' : pct + '%';
+      centerEl.style.opacity = pct === 0 ? '.2' : '1';
+    }
+
+    function animateSim() {
+      clearInterval(animT);
+      if (cur === 0) {
+        let simI = 0;
+        animT = setInterval(() => {
+          simI = (simI + 1) % 100;
+          const v0 = simI, v1 = Math.round(Math.min(100, simI * 0.7)), vs = Math.round(Math.min(100, simI * 0.8));
+          $('lf0').style.width = v0 + '%'; $('lv0').textContent = v0 + '%';
+          $('lf0s').style.width = vs + '%'; $('lv0s').textContent = vs + '%';
+          $('lf1').style.width = v1 + '%'; $('lv1').textContent = v1 + '%';
+        }, 40);
+      } else if (cur === 1) {
+        let simI = 0;
+        animT = setInterval(() => {
+          simI = (simI + 1) % 100;
+          const v0 = Math.round(simI * .75), v2 = Math.round(simI * .5);
+          setCircle($('cf0'), $('cc0'), v0);
+          setCircle($('cf2'), $('cc2'), v2);
+        }, 40);
+      } else if (cur === 3) {
+        let simI = 0;
+        animT = setInterval(() => {
+          simI = (simI + 1) % 100;
+          const t = [Math.min(100, simI * 1.5), Math.min(100, simI * 1.1), Math.round(simI * .6)];
+          t.forEach((v, j) => { if ($('tp' + j)) $('tp' + j).style.width = v + '%'; });
+          const avg = Math.round(t.reduce((a, b) => a + b, 0) / t.length);
+          $('tf0').style.width = avg + '%';
+        }, 40);
+      }
+    }
+
+    function tk(n) {
+      if (isPaused) return;
+      const p = Math.min(100, (n - t0) / DUR * 100);
+      el.pff.style.width = p + '%';
+      if (p < 100) pa = requestAnimationFrame(tk);
+      else next();
+    }
+
+    function startProg() { t0 = performance.now(); el.pff.style.width = '0%'; pa = requestAnimationFrame(tk) }
+    function next() { if (isPaused) return; cur = (cur + 1) % 4; showState(cur); startProg() }
+
+    function togglePP() {
+      isPaused = !isPaused;
+      ppI.innerHTML = isPaused ? '<path d="M8 5v14l11-7z"/>' : '<path d="M6 4h4v16H6zm8 0h4v16h-4z"/>';
+      if (!isPaused) {
+        t0 = performance.now() - (parseFloat(el.pff.style.width || 0) / 100 * DUR);
+        pa = requestAnimationFrame(tk);
+      }
+    }
+
+    ctrBs.forEach(b => {
+      b.onclick = () => {
+        ctrBs.forEach(btn => btn.classList.remove('act'));
+        b.classList.add('act');
+        el.ab.style.width = b.dataset.w + '%';
+      }
+    });
+
+    ppB.onclick = togglePP;
+
+    showState(0);
+    startProg();
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) { cancelAnimationFrame(pa) }
+      else if (!isPaused) { t0 = performance.now() - (parseFloat(el.pff.style.width || 0) / 100 * DUR); pa = requestAnimationFrame(tk); }
+    });
+  </script>
+</body>
+
+</html>

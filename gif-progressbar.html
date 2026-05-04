@@ -1,0 +1,1357 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Progress Bar</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0c0c0e;
+      --bg2: #131315;
+      --fg: #ece8e1;
+      --muted: #706b64;
+      --accent: #e88c2e;
+      --card: #1a1a1e;
+      --border: #26262a;
+      --mono: 'Space Mono', monospace;
+      --sans: 'Space Grotesk', sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 28px 16px 48px;
+      background-image:
+        radial-gradient(ellipse 60% 40% at 50% 0%, rgba(207, 92, 39, .04) 0%, transparent 100%),
+        linear-gradient(rgba(255, 255, 255, .016) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, .016) 1px, transparent 1px);
+      background-size: 100% 100%, 28px 28px, 28px 28px;
+    }
+
+    .wrap {
+      width: 100%;
+      max-width: 880px
+    }
+
+    .stag {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid rgba(207, 92, 39, .35);
+      display: inline-block;
+      padding: 3px 10px;
+      margin-bottom: 10px
+    }
+
+    .sdesc {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 14px;
+      max-width: 520px;
+      line-height: 1.55
+    }
+
+    .tbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2px 10px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 10px
+    }
+
+    .tl {
+      display: flex;
+      align-items: center;
+      gap: 8px
+    }
+
+    .tg {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted)
+    }
+
+    .tsep {
+      color: var(--border)
+    }
+
+    .ta {
+      color: var(--accent);
+      border: 1px solid rgba(207, 92, 39, .35);
+      padding: 2px 8px
+    }
+
+    /* === Preview === */
+    .prev {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      overflow: hidden
+    }
+
+    .prev::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      background-image: linear-gradient(rgba(255, 255, 255, .008) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, .008) 1px, transparent 1px);
+      background-size: 20px 20px
+    }
+
+    .badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 30;
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--accent);
+      padding: 3px 9px;
+      line-height: 1.7;
+      white-space: nowrap
+    }
+
+    .ctr {
+      position: absolute;
+      bottom: 10px;
+      right: 12px;
+      z-index: 30;
+      font-family: var(--mono);
+      font-size: 9px;
+      color: rgba(255, 255, 255, .15);
+      letter-spacing: .1em
+    }
+
+    /* === Sim states === */
+    .ss {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity .5s;
+      pointer-events: none;
+      z-index: 5;
+      padding: 10% 8% 6%
+    }
+
+    .ss.on {
+      opacity: 1;
+      pointer-events: auto
+    }
+
+    /* Annotation */
+    .apin {
+      position: absolute;
+      z-index: 25;
+      font-family: var(--mono);
+      font-size: clamp(6px, .7vw, 8px);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity .3s, transform .3s;
+      white-space: nowrap;
+      pointer-events: none;
+      background: rgba(12, 12, 14, .75);
+      padding: 2px 6px;
+      border: 1px solid rgba(207, 92, 39, .25)
+    }
+
+    .apin.sh {
+      opacity: 1;
+      transform: translateY(0)
+    }
+
+    /* === Progress bar base === */
+    .pb-track {
+      width: 100%;
+      height: clamp(6px, 1.2vw, 12px);
+      background: rgba(255, 255, 255, .06);
+      position: relative;
+      overflow: hidden
+    }
+
+    .pb-fill {
+      height: 100%;
+      background: var(--accent);
+      transition: width .8s cubic-bezier(.4, 0, .2, 1);
+      position: relative
+    }
+
+    .pb-fill.animated::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, .15), transparent);
+      animation: shimmer 1.5s infinite
+    }
+
+    @keyframes shimmer {
+      0% {
+        transform: translateX(-100%)
+      }
+
+      100% {
+        transform: translateX(100%)
+      }
+    }
+
+    .pb-label {
+      font-family: var(--mono);
+      font-size: clamp(7px, .8vw, 9px);
+      letter-spacing: .06em;
+      white-space: nowrap
+    }
+
+    .pb-val {
+      color: var(--accent);
+      font-weight: 700
+    }
+
+    .pb-lbl {
+      color: var(--muted)
+    }
+
+    /* Circular progress */
+    .cprog {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center
+    }
+
+    .cprog svg {
+      transform: rotate(-90deg)
+    }
+
+    .cprog-track {
+      fill: none;
+      stroke: rgba(255, 255, 255, .06);
+      stroke-width: clamp(3px, .5vw, 5px)
+    }
+
+    .cprog-fill {
+      fill: none;
+      stroke: var(--accent);
+      stroke-width: clamp(3px, .5vw, 5px);
+      stroke-linecap: butt;
+      transition: stroke-dashoffset .8s cubic-bezier(.4, 0, .2, 1)
+    }
+
+    .cprog-center {
+      position: absolute;
+      font-family: var(--mono);
+      font-size: clamp(10px, 1.5vw, 16px);
+      font-weight: 700;
+      color: var(--fg)
+    }
+
+    /* Step progress */
+    .step-row {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      position: relative
+    }
+
+    .step-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      position: relative;
+      z-index: 2
+    }
+
+    .step-dot {
+      width: clamp(14px, 2.2vw, 22px);
+      height: clamp(14px, 2.2vw, 22px);
+      border: 2px solid var(--border);
+      background: var(--bg2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mono);
+      font-size: clamp(6px, .7vw, 8px);
+      font-weight: 700;
+      color: var(--muted);
+      transition: border-color .4s, background .4s, color .4s
+    }
+
+    .step-dot.done {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: var(--bg)
+    }
+
+    .step-dot.active {
+      border-color: var(--accent);
+      background: transparent;
+      color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(207, 92, 39, .15)
+    }
+
+    .step-line {
+      position: absolute;
+      top: 50%;
+      height: 2px;
+      background: var(--border);
+      z-index: 1;
+      transition: background .4s
+    }
+
+    .step-line.done {
+      background: var(--accent)
+    }
+
+    .step-lbl {
+      font-family: var(--mono);
+      font-size: clamp(6px, .7vw, 8px);
+      color: var(--muted);
+      letter-spacing: .06em;
+      margin-top: clamp(4px, .6vw, 6px);
+      text-transform: uppercase;
+      text-align: center;
+      white-space: nowrap
+    }
+
+    .step-lbl.done {
+      color: var(--accent)
+    }
+
+    .step-lbl.active {
+      color: var(--fg)
+    }
+
+    /* Task progress */
+    .task-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: clamp(6px, 1vw, 10px)
+    }
+
+    .task-frac {
+      font-family: var(--mono);
+      font-size: clamp(9px, 1.2vw, 13px);
+      font-weight: 700;
+      color: var(--fg)
+    }
+
+    .task-frac span {
+      color: var(--accent)
+    }
+
+    .task-list {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(3px, .5vw, 5px)
+    }
+
+    .task-item {
+      display: flex;
+      align-items: center;
+      gap: clamp(6px, 1.2vw, 12px);
+      padding: clamp(3px, .5vw, 5px) 0
+    }
+
+    .task-item+.task-item {
+      border-top: 1px solid rgba(255, 255, 255, .04);
+      padding-top: clamp(4px, .6vw, 6px)
+    }
+
+    .task-name {
+      font-size: clamp(8px, 1vw, 11px);
+      color: var(--muted);
+      flex: 1
+    }
+
+    .task-pbar {
+      width: clamp(60px, 14vw, 120px);
+      height: clamp(4px, .7vw, 7px);
+      background: rgba(255, 255, 255, .06);
+      overflow: hidden;
+      flex-shrink: 0
+    }
+
+    .task-pfill {
+      height: 100%;
+      background: var(--accent);
+      transition: width .8s cubic-bezier(.4, 0, .2, 1)
+    }
+
+    .task-pval {
+      font-family: var(--mono);
+      font-size: clamp(7px, .8vw, 9px);
+      color: var(--muted);
+      min-width: clamp(28px, 4vw, 38px);
+      text-align: right;
+      flex-shrink: 0
+    }
+
+    .task-pval.done {
+      color: var(--accent)
+    }
+
+    /* === Bottom === */
+    .bot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 10px;
+      padding: 0 2px;
+      min-height: 20px
+    }
+
+    .dots {
+      display: flex;
+      gap: 6px
+    }
+
+    .dot {
+      width: 22px;
+      height: 3px;
+      background: var(--border);
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      transition: background .3s
+    }
+
+    .dot:hover {
+      background: var(--muted)
+    }
+
+    .dot.on {
+      background: var(--accent)
+    }
+
+    .ins {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: .02em;
+      max-width: 62%;
+      text-align: right;
+      line-height: 1.5;
+      transition: opacity .25s
+    }
+
+    /* ======================== */
+    /* === PRACTICE ========== */
+    /* ======================== */
+    .prac {
+      margin-top: 28px;
+      border-top: 1px solid var(--border);
+      padding-top: 18px
+    }
+
+    .prac-hd {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 14px;
+      flex-wrap: wrap
+    }
+
+    .prac-g {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 440px
+    }
+
+    .prac-g strong {
+      color: var(--fg);
+      font-weight: 600
+    }
+
+    .prac-h {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: rgba(207, 92, 39, .55);
+      text-align: right;
+      line-height: 1.5
+    }
+
+    .cp {
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: clamp(12px, 3vw, 28px);
+      flex-wrap: wrap
+    }
+
+    .cp-item {
+      flex: 1;
+      min-width: 180px
+    }
+
+    .cp-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between
+    }
+
+    .cp-label b {
+      color: var(--accent);
+      font-weight: 400
+    }
+
+    input[type=range] {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 3px;
+      background: var(--border);
+      outline: none;
+      cursor: pointer
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      background: var(--accent);
+      border: none;
+      cursor: pointer
+    }
+
+    input[type=range]::-moz-range-thumb {
+      width: 14px;
+      height: 14px;
+      background: var(--accent);
+      border: none;
+      cursor: pointer;
+      border-radius: 0
+    }
+
+    /* Practice preview */
+    .pp {
+      width: 100%;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      padding: clamp(14px, 2vw, 24px) clamp(16px, 2.5vw, 28px);
+      display: flex;
+      flex-direction: column;
+      gap: clamp(12px, 2vw, 20px)
+    }
+
+    .pp-sec {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(4px, .6vw, 6px)
+    }
+
+    .pp-sec-lbl {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 4px;
+      margin-bottom: clamp(2px, .3vw, 4px)
+    }
+
+    /* Practice linear */
+    .pp-lin-row {
+      display: flex;
+      align-items: center;
+      gap: clamp(8px, 1.5vw, 16px)
+    }
+
+    .pp-lin-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 8px
+    }
+
+    .pp-lin-track {
+      width: 100%;
+      height: clamp(8px, 1.3vw, 14px);
+      background: rgba(255, 255, 255, .06);
+      overflow: hidden
+    }
+
+    .pp-lin-fill {
+      height: 100%;
+      background: var(--accent);
+      transition: width .15s
+    }
+
+    .pp-lin-track.sec {
+      height: clamp(4px, .7vw, 7px)
+    }
+
+    .pp-lin-fill.sec {
+      background: rgba(255, 255, 255, .15)
+    }
+
+    /* Practice circular */
+    .pp-circ-row {
+      display: flex;
+      gap: clamp(16px, 4vw, 40px);
+      justify-content: center;
+      align-items: center
+    }
+
+    .pp-circ-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 4px
+    }
+
+    /* Practice steps */
+    .pp-step-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 0;
+      position: relative
+    }
+
+    .pp-step-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      position: relative;
+      z-index: 2
+    }
+
+    .pp-step-dot {
+      width: clamp(16px, 2.2vw, 20px);
+      height: clamp(16px, 2.2vw, 20px);
+      border: 2px solid var(--border);
+      background: var(--bg2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mono);
+      font-size: clamp(6px, .65vw, 7px);
+      font-weight: 700;
+      color: var(--muted);
+      transition: border-color .3s, background .3s, color .3s
+    }
+
+    .pp-step-dot.done {
+      border-color: var(--accent);
+      background: var(--accent);
+      color: var(--bg)
+    }
+
+    .pp-step-dot.active {
+      border-color: var(--accent);
+      color: var(--accent)
+    }
+
+    .pp-step-line {
+      position: absolute;
+      top: clamp(8px, 1.1vw, 10px);
+      height: 2px;
+      background: var(--border);
+      z-index: 1;
+      transition: background .3s
+    }
+
+    .pp-step-line.done {
+      background: var(--accent)
+    }
+
+    .pp-step-lbl {
+      font-family: var(--mono);
+      font-size: clamp(6px, .6vw, 7px);
+      color: var(--muted);
+      letter-spacing: .06em;
+      margin-top: 4px;
+      text-transform: uppercase;
+      text-align: center;
+      white-space: nowrap;
+      transition: color .3s
+    }
+
+    .pp-step-lbl.done {
+      color: var(--accent)
+    }
+
+    .pp-step-lbl.active {
+      color: var(--fg)
+    }
+
+    /* Practice tasks */
+    .pp-task-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline
+    }
+
+    .pp-task-frac {
+      font-family: var(--mono);
+      font-size: clamp(9px, 1.1vw, 12px);
+      font-weight: 700
+    }
+
+    .pp-task-frac span {
+      color: var(--accent)
+    }
+
+    .pp-task-list {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(3px, .4vw, 4px)
+    }
+
+    .pp-task-row {
+      display: flex;
+      align-items: center;
+      gap: clamp(6px, 1vw, 10px)
+    }
+
+    .pp-task-name {
+      font-size: clamp(8px, .95vw, 10px);
+      color: var(--muted);
+      flex: 1
+    }
+
+    .pp-task-pbar {
+      width: clamp(50px, 10vw, 100px);
+      height: clamp(4px, .6vw, 6px);
+      background: rgba(255, 255, 255, .06);
+      overflow: hidden
+    }
+
+    .pp-task-pfill {
+      height: 100%;
+      background: var(--accent);
+      transition: width .15s
+    }
+
+    .pp-task-val {
+      font-family: var(--mono);
+      font-size: clamp(7px, .75vw, 8px);
+      color: var(--muted);
+      min-width: 30px;
+      text-align: right
+    }
+
+    /* Feedback */
+    .fb {
+      margin-top: 10px;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      line-height: 1.7;
+      min-height: 16px;
+      transition: opacity .25s
+    }
+
+    .fb em {
+      color: var(--fg);
+      font-style: normal
+    }
+
+    .fb .w {
+      color: var(--accent)
+    }
+
+    @media(max-width:640px) {
+      body {
+        padding: 14px 10px 36px
+      }
+
+      .ins {
+        display: none
+      }
+
+      .bot {
+        justify-content: center
+      }
+
+      .tl .tg:nth-child(n+3) {
+        display: none
+      }
+
+      .prac-hd {
+        flex-direction: column
+      }
+
+      .prac-h {
+        text-align: left
+      }
+
+      .apin {
+        display: none
+      }
+
+      .pp-circ-row {
+        gap: 10px
+      }
+
+      .cp {
+        flex-direction: column;
+        gap: 8px
+      }
+
+      .cp-item {
+        min-width: 0
+      }
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+      .pb-fill.animated::after {
+        animation: none !important
+      }
+
+      *,
+      *::before,
+      *::after {
+        transition-duration: .01ms !important
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <!-- ===== MÔ PHỠNG ===== -->
+    <span class="stag">mô phỏng</span>
+    <p class="sdesc">Thanh biểu diễn tiến độ — biến số thành hình, user biết "đến đâu rồi" ngay lập tức.</p>
+
+    <div class="tbar">
+      <div class="tl"><span class="tg">progress bar</span><span class="tsep">/</span><span class="tg">ui
+          component</span></div>
+      <span class="ta">4 TYPES</span>
+    </div>
+
+    <div class="prev" id="sp">
+      <div class="badge" id="sbadge">01 LINEAR PROGRESS</div>
+      <div class="ctr" id="sctr">1 / 4</div>
+
+      <!-- Annotations -->
+      <div class="apin" id="ap0" style="top:24%;right:8%">fill width = value%</div>
+      <div class="apin" id="ap1" style="top:46%;right:8%">secondary track</div>
+      <div class="apin" id="ap2" style="top:28%;right:8%">stroke-dashoffset</div>
+      <div class="apin" id="ap3" style="top:34%;right:8%">step done / active / pending</div>
+      <div class="apin" id="ap4" style="top:22%;right:8%">overall = avg of tasks</div>
+      <div class="apin" id="ap5" style="top:58%;right:8%">each task has own %</div>
+
+      <!-- State 0: Linear -->
+      <div class="ss on" id="ss0">
+        <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:clamp(12px,2.5vw,28px)">
+          <div>
+            <div class="pb-label" style="display:flex;justify-content:space-between;margin-bottom:4px"><span
+                class="pb-lbl">Uploading files...</span><span class="pb-val" id="lv0">65%</span></div>
+            <div class="pb-track">
+              <div class="pb-fill animated" id="lf0" style="width:65%"></div>
+            </div>
+          </div>
+          <div>
+            <div class="pb-label" style="display:flex;justify-content:space-between;margin-bottom:3px"><span
+                class="pb-lbl">Buffer</span><span class="pb-val" style="opacity:.4" id="lv0s">45%</span></div>
+            <div class="pb-track sec">
+              <div class="pb-fill sec" id="lf0s" style="width:45%"></div>
+            </div>
+          </div>
+          <div>
+            <div class="pb-label" style="display:flex;justify-content:space-between;margin-bottom:4px"><span
+                class="pb-lbl">Processing...</span><span class="pb-val" id="lv1">30%</span></div>
+            <div class="pb-track">
+              <div class="pb-fill" id="lf1" style="width:30%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- State 1: Circular -->
+      <div class="ss" id="ss1">
+        <div style="display:flex;align-items:center;justify-content:center;height:100%;gap:clamp(20px,5vw,48px)">
+          <div class="pp-circ-item">
+            <div class="cprog"><svg width="clamp(60px,10vw,90px)" height="clamp(60px,10vw,90px)" viewBox="0 0 36 36">
+                <circle class="cprog-track" cx="18" cy="18" r="15" />
+                <circle class="cprog-fill" id="cf0" cx="18" cy="18" r="15" stroke-dasharray="94.25"
+                  stroke-dashoffset="23.56" />
+              </svg>
+              <div class="cprog-center" id="cc0">75%</div>
+            </div>
+            <div
+              style="font-family:var(--mono);font-size:clamp(6px,.65vw,7px);color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-top:4px">
+              Storage</div>
+          </div>
+          <div class="pp-circ-item">
+            <div class="cprog"><svg width="clamp(60px,10vw,90px)" height="clamp(60px,10vw,90px)" viewBox="0 0 36 36">
+                <circle class="cprog-track" cx="18" cy="18" r="15" />
+                <circle class="cprog-fill" id="cf1" cx="18" cy="18" r="15" stroke-dasharray="94.25"
+                  stroke-dashoffset="94.25" style="opacity:0" />
+              </svg>
+              <div class="cprog-center" style="opacity:.2">--</div>
+            </div>
+            <div
+              style="font-family:var(--mono);font-size:clamp(6px,.65vw,7px);color:rgba(255,255,255,.15);letter-spacing:.08em;text-transform:uppercase;margin-top:4px">
+              No data</div>
+          </div>
+          <div class="pp-circ-item">
+            <div class="cprog"><svg width="clamp(60px,10vw,90px)" height="clamp(60px,10vw,90px)" viewBox="0 0 36 36">
+                <circle class="cprog-track" cx="18" cy="18" r="15" />
+                <circle class="cprog-fill" id="cf2" cx="18" cy="18" r="15" stroke-dasharray="94.25"
+                  stroke-dashoffset="47.13" />
+              </svg>
+              <div class="cprog-center" id="cc2">50%</div>
+            </div>
+            <div
+              style="font-family:var(--mono);font-size:clamp(6px,.65vw,7px);color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-top:4px">
+              CPU</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- State 2: Steps -->
+      <div class="ss" id="ss2">
+        <div style="display:flex;flex-direction:column;justify-content:center;height:100%;gap:clamp(16px,3vw,28px)">
+          <div class="step-row" id="stepRow0" style="padding:0 clamp(4px,.8vw,8px)">
+            <div class="step-item">
+              <div class="step-dot done">✓</div>
+              <div class="step-lbl done">Account</div>
+            </div>
+            <div class="step-line done" style="left:calc(16.67% - 1px);right:calc(16.67% - 1px)"></div>
+            <div class="step-item">
+              <div class="step-dot done">✓</div>
+              <div class="step-lbl done">Profile</div>
+            </div>
+            <div class="step-line done" style="left:calc(50% - 1px);right:calc(50% - 1px)"></div>
+            <div class="step-item">
+              <div class="step-dot active">3</div>
+              <div class="step-lbl active">Billing</div>
+            </div>
+            <div class="step-line" style="left:calc(83.33% - 1px);right:calc(83.33% - 1px)"></div>
+            <div class="step-item">
+              <div class="step-dot">4</div>
+              <div class="step-lbl">Confirm</div>
+            </div>
+          </div>
+          <div class="step-row" id="stepRow1" style="padding:0 clamp(4px,.8vw,8px)">
+            <div class="step-item">
+              <div class="step-dot done">✓</div>
+              <div class="step-lbl done">Upload</div>
+            </div>
+            <div class="step-line done" style="left:calc(25% - 1px);right:calc(25% - 1px)"></div>
+            <div class="step-item">
+              <div class="step-dot active">2</div>
+              <div class="step-lbl active">Review</div>
+            </div>
+            <div class="step-line" style="left:calc(50% - 1px);right:calc(50% - 1px)"></div>
+            <div class="step-item">
+              <div class="step-dot">3</div>
+              <div class="step-lbl">Approve</div>
+            </div>
+            <div class="step-line" style="left:calc(75% - 1px);right:calc(75% - 1px)"></div>
+            <div class="step-item">
+              <div class="step-dot">4</div>
+              <div class="step-lbl">Publish</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- State 3: Tasks -->
+      <div class="ss" id="ss3">
+        <div style="display:flex;flex-direction:column;justify-content:center;height:100%;max-width:85%;margin:0 auto">
+          <div class="task-header">
+            <div class="task-frac"><span>3</span> of 5 tasks</div>
+            <div class="pb-label" style="font-size:clamp(7px,.8vw,9px)">60% overall</div>
+          </div>
+          <div class="pb-track" style="margin-bottom:clamp(8px,1.2vw,12px);height:clamp(5px,.8vw,8px)">
+            <div class="pb-fill animated" id="tf0" style="width:60%"></div>
+          </div>
+          <div class="task-list">
+            <div class="task-item"><span class="task-name">Design UI</span>
+              <div class="task-pbar">
+                <div class="task-pfill" id="tp0" style="width:100%"></div>
+              </div><span class="task-pval done">100%</span>
+            </div>
+            <div class="task-item"><span class="task-name">Build API</span>
+              <div class="task-pbar">
+                <div class="task-pfill" id="tp1" style="width:80%"></div>
+              </div><span class="task-pval">80%</span>
+            </div>
+            <div class="task-item"><span class="task-name">Write Tests</span>
+              <div class="task-pbar">
+                <div class="task-pfill" id="tp2" style="width:45%"></div>
+              </div><span class="task-pval">45%</span>
+            </div>
+            <div class="task-item"><span class="task-name">Deploy</span>
+              <div class="task-pbar">
+                <div class="task-pfill" id="tp3" style="width:0%"></div>
+              </div><span class="task-pval">0%</span>
+            </div>
+            <div class="task-item"><span class="task-name">Documentation</span>
+              <div class="task-pbar">
+                <div class="task-pfill" id="tp4" style="width:0%"></div>
+              </div><span class="task-pval">0%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bot">
+      <div class="dots" id="sdots">
+        <button class="dot on" data-i="0" aria-label="Linear"></button>
+        <button class="dot" data-i="1" aria-label="Circular"></button>
+        <button class="dot" data-i="2" aria-label="Steps"></button>
+        <button class="dot" data-i="3" aria-label="Tasks"></button>
+      </div>
+      <div class="ins" id="sins">Fill width = giá trị phần trăm — 65% nghĩa là thanh filled 65%</div>
+    </div>
+
+    <!-- ===== THỰC HÀNH ===== -->
+    <div class="prac">
+      <span class="stag">thực hành</span>
+      <div class="prac-hd">
+        <p class="prac-g"><strong>Kéo slider</strong> thay đổi tiến độ — 4 loại progress bar cập nhật cùng lúc.</p>
+        <p class="prac-h">Kéo qua 100% rồi về 0 — thấy trạng thái "done" xuất hiện rồi biến mất.</p>
+      </div>
+
+      <div class="cp">
+        <div class="cp-item">
+          <div class="cp-label">PROGRESS <b id="pvVal">65%</b></div>
+          <input type="range" id="pvSlider" min="0" max="100" step="1" value="65">
+        </div>
+      </div>
+
+      <div class="pp">
+        <!-- Linear -->
+        <div class="pp-sec">
+          <div class="pp-sec-lbl">Linear Progress</div>
+          <div class="pp-lin-row">
+            <div class="pp-lin-info" style="min-width:clamp(70px,12vw,120px)">
+              <span style="font-size:clamp(8px,1vw,11px);color:var(--fg)">Upload</span>
+            </div>
+            <div class="pp-lin-info" style="flex:1;flex-direction:column;gap:2px">
+              <div class="pp-lin-track">
+                <div class="pp-lin-fill" id="plf"></div>
+              </div>
+              <div class="pp-lin-track sec">
+                <div class="pp-lin-fill sec" id="pls"></div>
+              </div>
+            </div>
+            <span class="pb-label pp-lin-val" id="plv">65%</span>
+          </div>
+        </div>
+
+        <!-- Circular -->
+        <div class="pp-sec">
+          <div class="pp-sec-lbl">Circular Progress</div>
+          <div class="pp-circ-row">
+            <div class="pp-circ-item">
+              <div class="cprog"><svg width="60" height="60" viewBox="0 0 36 36">
+                  <circle class="cprog-track" cx="18" cy="18" r="15" />
+                  <circle class="cprog-fill" id="pcf" cx="18" cy="18" r="15" stroke-dasharray="94.25"
+                    stroke-dashoffset="23.56" />
+                </svg>
+                <div class="cprog-center" id="pcc">75%</div>
+              </div>
+              <span style="font-family:var(--mono);font-size:7px;color:var(--muted);letter-spacing:.06em">STORAGE</span>
+            </div>
+            <div class="pp-circ-item">
+              <div class="cprog"><svg width="60" height="60" viewBox="0 0 36 36">
+                  <circle class="cprog-track" cx="18" cy="18" r="15" />
+                  <circle class="cprog-fill" id="pcf2" cx="18" cy="18" r="15" stroke-dasharray="94.25"
+                    stroke-dashoffset="47.13" />
+                </svg>
+                <div class="cprog-center" id="pcc2">50%</div>
+              </div>
+              <span style="font-family:var(--mono);font-size:7px;color:var(--muted);letter-spacing:.06em">CPU</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Steps -->
+        <div class="pp-sec">
+          <div class="pp-sec-lbl">Step Progress</div>
+          <div class="pp-step-row" id="pStepRow">
+            <div class="pp-step-item">
+              <div class="pp-step-dot" id="psd0">1</div>
+              <div class="pp-step-lbl" id="psl0">Account</div>
+            </div>
+            <div class="pp-step-line" id="psl0" style="left:calc(25% - 1px);right:calc(25% - 1px)"></div>
+            <div class="pp-step-item">
+              <div class="pp-step-dot" id="psd1">2</div>
+              <div class="pp-step-lbl" id="psl1">Profile</div>
+            </div>
+            <div class="pp-step-line" id="psl1" style="left:calc(50% - 1px);right:calc(50% - 1px)"></div>
+            <div class="pp-step-item">
+              <div class="pp-step-dot" id="psd2">3</div>
+              <div class="pp-step-lbl" id="psl2">Billing</div>
+            </div>
+            <div class="pp-step-line" id="psl2" style="left:calc(75% - 1px);right:calc(75% - 1px)"></div>
+            <div class="pp-step-item">
+              <div class="pp-step-dot" id="psd3">4</div>
+              <div class="pp-step-lbl" id="psl3">Confirm</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tasks -->
+        <div class="pp-sec">
+          <div class="pp-sec-lbl">Task Progress</div>
+          <div class="pp-task-header">
+            <div class="pp-task-frac"><span id="ptDone">2</span> of 4 tasks</div>
+            <span class="pb-label" style="font-size:8px" id="ptPct">50% overall</span>
+          </div>
+          <div class="pb-track" style="height:5px;margin-bottom:6px">
+            <div class="pp-lin-fill" id="ptf"></div>
+          </div>
+          <div class="pp-task-list">
+            <div class="pp-task-row"><span class="pp-task-name">Design UI</span>
+              <div class="pp-task-pbar">
+                <div class="pp-task-pfill" id="ptpf0"></div>
+              </div><span class="pp-task-val" id="ptpv0">0%</span>
+            </div>
+            <div class="pp-task-row"><span class="pp-task-name">Build API</span>
+              <div class="pp-task-pbar">
+                <div class="pp-task-pfill" id="ptpf1"></div>
+              </div><span class="pp-task-val" id="ptpv1">0%</span>
+            </div>
+            <div class="pp-task-row"><span class="pp-task-name">Write Tests</span>
+              <div class="pp-task-pbar">
+                <div class="pp-task-pfill" id="ptpf2"></div>
+              </div><span class="pp-task-val" id="ptpv2">0%</span>
+            </div>
+            <div class="pp-task-row"><span class="pp-task-name">Deploy</span>
+              <div class="pp-task-pbar">
+                <div class="pp-task-pfill" id="ptpf3"></div>
+              </div><span class="pp-task-val" id="ptpv3">0%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fb" id="pfb"><em>65%</em> — thanh filled 65%, shimmer animation cho thấy đang "đang tải".</div>
+    </div>
+
+  </div>
+
+  <script>
+    const $ = id => document.getElementById(id);
+    const CIRC = 94.248;
+
+    /* ===== Dữ liệu mô phỏng ===== */
+    const SNAMES = ['01 LINEAR PROGRESS', '02 CIRCULAR PROGRESS', '03 STEP PROGRESS', '04 TASK PROGRESS'];
+    const SINS = [
+      'Fill width = giá trị phần trăm — 65% nghĩa là thanh filled 65%',
+      'Vòng tròn — stroke-dashoffset nhỏ đi khi progress tăng',
+      'Step done / active / pending — biểu diễn luồng nhiều bước',
+      'Overall = trung bình tasks — mỗi task có progress riêng'
+    ];
+    const APINS = [[0, 1], [2], [3], [4, 5]];
+
+    /* ===== Simulation ===== */
+    const states = [0, 1, 2, 3].map(i => $('ss' + i));
+    const allPins = [0, 1, 2, 3, 4, 5].map(i => $('ap' + i));
+    let si = 0, mt = null, animT = null;
+
+    function showState(i) {
+      states.forEach((s, j) => s.classList.toggle('on', j === i));
+      $('sbadge').textContent = SNAMES[i];
+      $('sctr').textContent = (i + 1) + '/ 4';
+      allPins.forEach(p => p.classList.remove('sh'));
+      const ins = $('sins');
+      ins.style.opacity = '0';
+      setTimeout(() => { ins.textContent = SINS[i]; ins.style.opacity = '1' }, 200);
+      document.querySelectorAll('#sdots .dot').forEach((d, j) => d.classList.toggle('on', j === i));
+    }
+
+    /* Animate progress values within each state */
+    const simVals = [
+      { bars: [{ id: 'lf0', l: 'lv0' }, { id: 'lf1', l: 'lv1' }], secs: [{ id: 'lf0s', l: 'lv0s' }], targets: [65, 30], secTargets: [45] },
+      { circs: [{ id: 'cf0', c: 'cc0', t: 75 }, { id: 'cf1', c: 'cc1', t: 0 }, { id: 'cf2', c: 'cc2', t: 50 }] },
+      null,
+      { tasks: [{ id: 'tp0', t: 100 }, { id: 'tp1', t: 80 }, { id: 'tp2', t: 45 }, { id: 'tp3', t: 0 }, { id: 'tp4', t: 0 }], overall: 'tf0' }
+    ];
+
+    let simAnimI = 0;
+
+    function animateSim() {
+      clearInterval(animT);
+      if (si === 0) {
+        simAnimI = 0;
+        animT = setInterval(() => {
+          simAnimI = (simAnimI + 1) % 100;
+          const v0 = simAnimI, v1 = Math.min(100, simAnimI * 0.7), vs = Math.min(100, simAnimI * 0.8);
+          $('lf0').style.width = v0 + '%'; $('lv0').textContent = v0 + '%';
+          $('lf0s').style.width = vs + '%'; $('lv0s').textContent = vs + '%';
+          $('lf1').style.width = v1 + '%'; $('lv1').textContent = v1 + '%';
+        }, 40);
+      } else if (si === 1) {
+        simAnimI = 0;
+        animT = setInterval(() => {
+          simAnimI = (simAnimI + 1) % 100;
+          const v0 = Math.round(simAnimI * .75), v2 = Math.round(simAnimI * .5);
+          setCircle($('cf0'), $('cc0'), v0);
+          setCircle($('cf2'), $('cc2'), v2);
+        }, 40);
+      } else if (si === 3) {
+        simAnimI = 0;
+        animT = setInterval(() => {
+          simAnimI = (simAnimI + 1) % 100;
+          const t = [Math.min(100, simAnimI * 1.5), Math.min(100, simAnimI * 1.1), Math.round(simAnimI * .6), Math.round(simAnimI * .2), 0];
+          t.forEach((v, i) => {
+            $('tp' + i).style.width = v + '%';
+          });
+          const done = t.filter(x => x >= 100).length;
+          const avg = Math.round(t.reduce((a, b) => a + b, 0) / t.length);
+          $('tf0').style.width = avg + '%';
+        }, 40);
+      }
+    }
+
+    function setCircle(fillEl, centerEl, pct) {
+      const offset = CIRC - (CIRC * pct / 100);
+      fillEl.setAttribute('stroke-dashoffset', offset);
+      fillEl.style.opacity = pct === 0 ? '0' : '1';
+      centerEl.textContent = pct === 0 ? '--' : pct + '%';
+      centerEl.style.opacity = pct === 0 ? '.2' : '1';
+    }
+
+    function startLoop() {
+      clearInterval(mt); clearInterval(animT);
+      mt = setInterval(() => { si = (si + 1) % 4; showState(si); animateSim() }, 3600);
+    }
+
+    document.querySelectorAll('#sdots .dot').forEach(d => d.addEventListener('click', () => { si = +d.dataset.i; showState(si); animateSim(); startLoop() }));
+    showState(0); animateSim(); startLoop();
+
+    /* ===== Practice ===== */
+    let pv = 65;
+
+    function updatePractice() {
+      const v = pv;
+      $('pvVal').textContent = v + '%';
+      $('pvSlider').value = v;
+
+      /* Linear */
+      $('plf').style.width = v + '%';
+      $('plv').textContent = v + '%';
+      $('pls').style.width = Math.min(100, v * 0.8) + '%';
+
+      /* Circular - scale: 0→0%, 50→75%, 100→100% */
+      const cv = Math.round(v * .75);
+      const cv2 = Math.round(v * .5);
+      setCircle($('pcf'), $('pcc'), cv);
+      setCircle($('pcf2'), $('pcc2'), cv2);
+
+      /* Steps: 0-25% step0, 25-50% step1, 50-75% step2, 75-100% step3 */
+      const steps = 4;
+      const activeStep = Math.min(steps, Math.floor(v / 25));
+      const dotEls = [0, 1, 2, 3].map(i => $('psd' + i));
+      const lblEls = [0, 1, 2, 3].map(i => $('psl' + i));
+      const lineEls = [0, 1, 2].map(i => $('psl' + i));
+
+      dotEls.forEach((d, i) => {
+        d.className = 'pp-step-dot';
+        lblEls[i].className = 'pp-step-lbl';
+        if (i < activeStep) { d.classList.add('done'); d.textContent = '✓'; lblEls[i].classList.add('done') }
+        else if (i === activeStep) { d.classList.add('active'); d.textContent = (i + 1); lblEls[i].classList.add('active') }
+        else { d.textContent = (i + 1) }
+      });
+      lineEls.forEach((l, i) => l.className = 'pp-step-line' + (i < activeStep ? ' done' : ''));
+
+      /* Tasks: distribute progress across 4 tasks */
+      const tasks = [
+        Math.min(100, v * 1.6),
+        Math.min(100, v * 1.2),
+        Math.min(100, v * .7),
+        Math.min(100, v * .3)
+      ];
+      const done = tasks.filter(x => x >= 100).length;
+      const avg = Math.round(tasks.reduce((a, b) => a + b, 0) / tasks.length);
+
+      tasks.forEach((t, i) => {
+        $('ptpf' + i).style.width = t + '%';
+        $('ptpv' + i).textContent = t + '%';
+        $('ptpv' + i).className = 'pp-task-val' + (t >= 100 ? ' done' : '');
+      });
+      $('ptf').style.width = avg + '%';
+      $('ptDone').textContent = done;
+      $('ptPct').textContent = avg + '% overall';
+
+      /* Feedback */
+      updateFB(v, activeStep, done, avg);
+    }
+
+    function updateFB(v, activeStep, done, avg) {
+      const fb = $('pfb');
+      const lines = [];
+
+      if (v === 0) {
+        lines.push('<em>0%</em> — thanh rỗng, không có progress. User không biết chuyện gì đang diễn ra.');
+      } else if (v < 30) {
+        lines.push('<em>' + v + '%</em> — mới bắt đầu. Shimmer animation cho thấy "đang tải".');
+      } else if (v < 70) {
+        lines.push('<em>' + v + '%</em> — đang tiến triển tốt. User thấy tiến độ rõ ràng.');
+      } else if (v < 100) {
+        lines.push('<em>' + v + '%</em>' > sắp xong.User cảm thấy "gần rồi", kiên nhẫn chờ.');
+  } else {
+        lines.push('<em>100%</em> — hoàn thành. Progress bar nên biến mất hoặc chuyển sang trạng thái success.');
+        lines.push('Lỗi phổ biến: progress dừng ở 99% — user nghĩ bị lỗi. <span class="w">Luôn có timeout hoặc handle edge case.</span>');
+      }
+
+      /* Step insight */
+      if (activeStep < 4) {
+        lines.push('Step ' + activeStep + ' đang active — trước đó đã done, sau đó pending. Cho user thấy "mình ở bước nào" trong flow.');
+      }
+
+      /* Task insight */
+      if (done > 0 && done < 4) {
+        lines.push(done + ' task' + (done > 1 ? 's' : '') + ' done — <em>overall ' + avg + '%</em> là trung bình. Task chưa xong kéo average xuống.');
+      }
+      if (done === 4) {
+        lines.push('Tất cả task done → overall 100%. Nếu task "Deploy" còn 0% mà 3 task kia 100%, overall vẫn chỉ ~82%.');
+        lines.push('Khi prompt: <em>"hiện progress tổng + từng task riêng"</em> — dev hiểu đây là pattern task progress bar.');
+      }
+
+      fb.innerHTML = lines.join(' ');
+    }
+
+    $('pvSlider').addEventListener('input', e => { pv = +e.target.value; updatePractice() });
+    updatePractice();
+  </script>
+</body>
+
+</html>

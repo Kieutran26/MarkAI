@@ -108,6 +108,8 @@ import spinnerDemoHtml from '../../gif-spinner-demo.html?raw';
 import spinnerPracticeHtml from '../../gif-spinner-practice.html?raw';
 import containerDemoHtml from '../../gif-container-demo.html?raw';
 import containerPracticeHtml from '../../gif-container-practice.html?raw';
+import progressbarDemoHtml from '../../gif-progressbar-demo.html?raw';
+import progressbarPracticeHtml from '../../gif-progressbar-practice.html?raw';
 
 
 // Final sync for viewport practice update
@@ -181,6 +183,7 @@ export default function GlossaryTermDetailPage() {
       case 'glassmorphism': return glassmorphismDemoHtml;
       case 'spinner': return spinnerDemoHtml;
       case 'container': return containerDemoHtml;
+      case 'progressbar': return progressbarDemoHtml;
       default: return null;
     }
   };
@@ -238,6 +241,7 @@ export default function GlossaryTermDetailPage() {
       case 'glassmorphism': return glassmorphismPracticeHtml;
       case 'spinner': return spinnerPracticeHtml;
       case 'container': return containerPracticeHtml;
+      case 'progressbar': return progressbarPracticeHtml;
       default: return null;
     }
   };
