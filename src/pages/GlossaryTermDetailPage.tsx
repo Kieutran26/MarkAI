@@ -88,6 +88,8 @@ import colorPaletteDemoHtml from '../../gif-colorpalette-demo.html?raw';
 import colorPalettePracticeHtml from '../../gif-colorpalette-practice.html?raw';
 import heroSectionDemoHtml from '../../gif-hero-demo.html?raw';
 import heroSectionPracticeHtml from '../../gif-hero-practice.html?raw';
+import fontWeightDemoHtml from '../../gif-fontweight-demo.html?raw';
+import fontWeightPracticeHtml from '../../gif-fontweight-practice.html?raw';
 
 
 // Final sync for viewport practice update
@@ -106,7 +108,8 @@ export default function GlossaryTermDetailPage() {
 
 
   const getInteractiveHtml = (id: string) => {
-    switch (id) {
+    const cleanId = id.trim().toLowerCase();
+    switch (cleanId) {
       case 'api': return apiDemoHtml;
       case 'auth': return authDemoHtml;
       case 'spacing': return spacingDemoHtml;
@@ -150,12 +153,14 @@ export default function GlossaryTermDetailPage() {
       case 'primary-color': return primaryColorDemoHtml;
       case 'color-palette': return colorPaletteDemoHtml;
       case 'hero-section': return heroSectionDemoHtml;
+      case 'fontweight': return fontWeightDemoHtml;
       default: return null;
     }
   };
 
   const getPracticeHtml = (id: string) => {
-    switch (id) {
+    const cleanId = id.trim().toLowerCase();
+    switch (cleanId) {
       case 'api': return apiPracticeHtml;
       case 'margin': return marginPracticeHtml;
       case 'padding': return paddingPracticeHtml;
@@ -196,6 +201,7 @@ export default function GlossaryTermDetailPage() {
       case 'primary-color': return primaryColorPracticeHtml;
       case 'color-palette': return colorPalettePracticeHtml;
       case 'hero-section': return heroSectionPracticeHtml;
+      case 'fontweight': return fontWeightPracticeHtml;
       default: return null;
     }
   };

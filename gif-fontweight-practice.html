@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Font Weight Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;--card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a;--ok:#4a8a5a;--err:#a03030}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:'Space Grotesk',sans-serif;padding:0;display:flex;justify-content:center;overflow-x:hidden}
+.pw{width:100%;background:var(--card);padding:24px 32px}
+.pw-h{font-size:18px;font-weight:700;margin-bottom:4px}.pw-h span{color:var(--accent)}
+.pw-s{font-size:12px;color:var(--muted);margin-bottom:20px}
+.sr{display:flex;align-items:center;gap:14px;margin-bottom:16px}
+.sl{font-size:13px;white-space:nowrap;min-width:70px}
+.sv{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:800;color:var(--accent);min-width:56px;text-align:right}
+input[type=range]{flex:1;-webkit-appearance:none;appearance:none;height:4px;background:var(--border);outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;background:var(--accent);border:2px solid var(--bg);cursor:pointer}
+input[type=range]::-moz-range-thumb{width:20px;height:20px;background:var(--accent);border:2px solid var(--bg);cursor:pointer;border-radius:0}
+
+.pp{border:1px solid var(--border);background:var(--card-alt);overflow:hidden;margin-bottom:16px}
+.pp-lbl{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:2px;padding:10px 20px 0;opacity:.4}
+.pp-inner{padding:20px 28px 24px}
+.pp-preview{text-align:center;margin-bottom:20px;padding:16px;border:1px dashed var(--border);background:var(--card)}
+.pp-big{font-size:36px;line-height:1.1;margin-bottom:8px;transition:font-weight .15s}
+.pp-med{font-size:18px;margin-bottom:4px;transition:font-weight .15s}
+.pp-sm{font-size:12px;color:var(--muted);margin-bottom:8px;transition:font-weight .15s}
+.pp-sample{font-size:14px;text-align:left;line-height:1.6;padding:14px;border:1px solid var(--border);background:var(--card);transition:font-weight .15s}
+
+.pp-meta{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:14px}
+.pp-mi{display:flex;flex-direction:column;gap:2px}
+.pp-mi-l{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:1.5px}
+.pp-mi-v{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500}
+
+.pp-scale{display:flex;gap:4px;align-items:flex-end;height:48px}
+.pp-sb{width:100%;display:flex;flex-direction:column;align-items:center;gap:3px;transition:all .2s}
+.pp-sb-bar{width:100%;border-radius:1px 1px 0 0;transition:height .2s}
+.pp-sb-lbl{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);letter-spacing:.5px}
+.pp-sb.active .pp-sb-bar{background:var(--accent)}
+.pp-sb.active .pp-sb-lbl{color:var(--accent);font-weight:700}
+
+.pfb{font-family:'JetBrains Mono',monospace;font-size:13px;min-height:20px;color:var(--muted);transition:color .2s;line-height:1.5}.pfb.w{color:var(--accent)}
+.pht{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:12px;padding-top:12px;border-top:1px dashed var(--border);opacity:.65}
+
+@media(max-width:520px){.pw{padding:20px}.pp-big{font-size:28px}.pp-inner{padding:16px}}
+</style>
+</head>
+<body>
+
+<div class="pw">
+  <div class="pw-h">Thực hành — <span>Kéo thay đổi Weight</span></div>
+  <div class="pw-s">Kéo slider → thấy text thay đổi độ đậm + tên + use case tương ứng</div>
+  <div class="sr"><span class="sl">Weight</span><input type="range" id="sW" min="100" max="900" value="400" step="100"><span class="sv" id="vW">400</span></div>
+  <div class="pp">
+    <div class="pp-lbl">PREVIEW</div>
+    <div class="pp-inner">
+      <div class="pp-preview">
+        <div class="pp-big" id="pBig" style="font-weight:400">Heading Text</div>
+        <div class="pp-med" id="pMed" style="font-weight:400">Subheading line</div>
+        <div class="pp-sm" id="pSm" style="font-weight:400">Caption / secondary info</div>
+      </div>
+      <div class="pp-sample" id="pSample" style="font-weight:400">Mỗi mức Font Weight kể một câu chuyện khác nhau về độ nhấn mạnh và phân cấp thông tin. Marketer nên dùng đúng mức độ để dẫn dắt mắt người dùng.</div>
+      <div class="pp-meta" id="pMeta">
+        <div class="pp-mi"><span class="pp-mi-l">NAME</span><span class="pp-mi-v" id="pName">Regular</span></div>
+        <div class="pp-mi"><span class="pp-mi-l">VALUE</span><span class="pp-mi-v" id="pVal">400</span></div>
+        <div class="pp-mi"><span class="pp-mi-l">USE FOR</span><span class="pp-mi-v" id="pUse">Body text, paragraphs</span></div>
+      </div>
+      <div class="pp-scale" id="pScale"></div>
+    </div>
+  </div>
+  <div class="pfb" id="pfb">400 Regular — body text mặc định, dễ đọc, phù hợp đoạn văn dài</div>
+  <div class="pht">Hint: Kéo đến 100 hoặc 300 → để ý text rất khó đọc ở kích thước nhỏ</div>
+</div>
+
+<script>
+const WEIGHTS=[
+  {v:100,n:'Thin',u:'Decoration, large display only'},
+  {v:300,n:'Light',u:'Large subheadings, quotes'},
+  {v:400,n:'Regular',u:'Body text, paragraphs'},
+  {v:500,n:'Medium',u:'Navigation links, tabs'},
+  {v:600,n:'Semi Bold',u:'Subheadings, card titles, buttons'},
+  {v:700,n:'Bold',u:'Headings, brand name, emphasis'},
+  {v:800,n:'Extra Bold',u:'Hero headings, display text'},
+  {v:900,n:'Black',u:'Impact text, logos'}
+];
+
+const sW=document.getElementById('sW');
+const vW=document.getElementById('vW');
+const pBig=document.getElementById('pBig');
+const pMed=document.getElementById('pMed');
+const pSm=document.getElementById('pSm');
+const pSample=document.getElementById('pSample');
+const pName=document.getElementById('pName');
+const pVal=document.getElementById('pVal');
+const pUse=document.getElementById('pUse');
+const pScale=document.getElementById('pScale');
+const pfb=document.getElementById('pfb');
+
+pScale.innerHTML=WEIGHTS.map(w=>`<div class="pp-sb" data-v="${w.v}"><div class="pp-sb-bar" style="height:${Math.max(2,w.v/90)}px;background:var(--border-hi)"></div><span class="pp-sb-lbl">${w.v}</span></div>`).join('');
+
+function updateP(){
+  const v=+sW.value;
+  vW.textContent=v;
+  pBig.style.fontWeight=v;
+  pMed.style.fontWeight=v;
+  pSm.style.fontWeight=v;
+  pSample.style.fontWeight=v;
+
+  const w=WEIGHTS.find(w=>w.v===v);
+  pName.textContent=w?w.n:v+'';
+  pVal.textContent=v;
+  pUse.textContent=w?w.u:'—';
+
+  pScale.querySelectorAll('.pp-sb').forEach(b=>{
+    const bv=+b.dataset.v;
+    const active=bv===v;
+    b.classList.toggle('active',active);
+    b.querySelector('.pp-sb-bar').style.background=active?'var(--accent)':'var(--border-hi)';
+  });
+
+  if(v<=300){
+    pfb.textContent=v+' '+w.n+' — quá mảnh cho text nhỏ, chỉ nên dùng cho text lớn (≥20px)';
+    pfb.className='pfb w';pfb.style.color='var(--err)';
+  }else if(v===400){
+    pfb.textContent='400 Regular — body text mặc định, dễ đọc, phù hợp đoạn văn dài';
+    pfb.className='pfb';pfb.style.color='';
+  }else if(v===500){
+    pfb.textContent='500 Medium — nhẹ hơn Bold, dùng cho nav links và tabs';
+    pfb.className='pfb';pfb.style.color='';
+  }else if(v<=600){
+    pfb.textContent=v+' '+w.n+' — phù hợp subheading và button, nhấn vừa đủ không quá nặng';
+    pfb.className='pfb w';pfb.style.color='';
+  }else{
+    pfb.textContent=v+' '+w.n+' — dành cho heading và hero, không dùng cho body text';
+    pfb.className='pfb w';pfb.style.color='';
+  }
+}
+
+sW.addEventListener('input',updateP);
+updateP();
+</script>
+</body>
+</html>

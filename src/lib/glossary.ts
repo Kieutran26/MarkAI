@@ -114,6 +114,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'z-index', name: 'Z-index', nameEn: 'Z-index / Thứ tự lớp', letter: 'Z', groups: ['design', 'code'], definition: 'Z-index là thuộc tính quyết định thứ tự "nông sâu" của các thành phần trên màn hình (trục Z). Element nào có z-index cao hơn sẽ nằm đè lên element có z-index thấp hơn. Hãy tưởng tượng z-index giống như các lớp giấy xếp chồng lên nhau trên mặt bàn.', example: 'Khi bạn thấy modal bị che bởi navbar, đó là lỗi z-index. Cách fix: set z-index cho modal cao hơn (ví dụ: navbar z:100, modal z:1000).', related: ['layout', 'popup', 'sticky', 'interface'], demo: { kind: 'interactive', src: 'gif-zindex-demo.html', alt: 'Mô phỏng 4 lớp z-index phổ biến: Tooltip, Dropdown, Modal và Stack tổng thể' } },
   { id: 'primary-color', name: 'Primary / Secondary Color', nameEn: 'Màu chính / Màu phụ', letter: 'P', groups: ['design', 'code'], definition: 'Màu chính (Primary) và màu phụ (Secondary) là nền tảng của hệ thống màu sắc. Primary dành cho nút hành động chính (CTA) và điểm nhấn quan trọng nhất. Secondary hỗ trợ Primary, dùng cho các nút phụ, badge hoặc thông tin cần phân cấp thấp hơn.', example: 'Prompt: "Đổi nút Mua hàng thành Primary, nút Xem thêm thành Secondary để người dùng tập trung vào việc mua."', related: ['design-system', 'interface', 'css', 'element'], demo: { kind: 'interactive', src: 'gif-primary-color-demo.html', alt: 'Mô phỏng 4 cách ứng dụng Primary / Secondary Color: Button, Card, Form và Chart' } },
   { id: 'color-palette', name: 'Color Palette', nameEn: 'Bảng màu thiết kế', letter: 'C', groups: ['design', 'code'], definition: 'Tập hợp các màu sắc được phân loại theo vai trò rõ ràng trong hệ thống thiết kế. Một bảng màu chuyên nghiệp thường có 4 nhóm: Brand (nhận diện cốt lõi), Semantic (truyền tải trạng thái), Neutral (trung tính cho nền, text, viền) và Extended (hỗ trợ illustration, biểu đồ).', example: 'Prompt: "Dùng Brand Palette cho nút submit chính, và dùng Semantic Error cho các thông báo điền sai form."', related: ['design-system', 'primary-color', 'css'], demo: { kind: 'interactive', src: 'gif-colorpalette-demo.html', alt: 'Mô phỏng 4 nhóm màu trong Color Palette và vai trò của từng nhóm' } },
+  { id: 'fontweight', name: 'Font weight', nameEn: 'Độ đậm của chữ', letter: 'F', groups: ['design', 'code'], definition: 'Độ dày hoặc mỏng của các nét chữ. Trong thiết kế web, font weight thường được biểu diễn bằng các con số từ 100 (Thin) đến 900 (Black). Font weight là công cụ quan trọng nhất để tạo phân cấp thị giác (hierarchy) mà không cần thay đổi kích thước chữ quá nhiều.', example: 'Prompt: "Dùng font weight 700 cho tiêu đề để tạo sự mạnh mẽ, và 400 cho phần nội dung để đảm bảo tính dễ đọc."', related: ['typography', 'letter-spacing', 'line-spacing', 'css'], demo: { kind: 'interactive', src: 'gif-fontweight-demo.html', alt: 'Mô phỏng thang đo font-weight và cách ứng dụng trong hierarchy' } },
 ];
 
 export const quickRefItems = [
@@ -193,6 +194,7 @@ const deepDiveTermIds = new Set([
   'z-index',
   'primary-color',
   'color-palette',
+  'fontweight',
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -402,6 +404,11 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Bảng màu (Color Palette) không chỉ là chọn màu cho đẹp. Nó là việc gán "ý nghĩa" cho mỗi màu. Khi marketer yêu cầu AI tạo web, việc gọi tên màu theo chức năng (ví dụ: "dùng màu semantic warning") sẽ tốt hơn nhiều so với việc mô tả theo cảm tính.',
     '4 nhóm màu kinh điển: Brand Color chỉ nên chiếm khoảng 10% giao diện để tập trung sự chú ý vào nút CTA. Semantic Color dùng cho trạng thái đúng/sai/cảnh báo. Grayscale Scale là "bộ xương" chiếm 80% không gian hiển thị (nền, text, divider).',
     'Với AI hiện tại, nếu bạn chỉ đưa cho nó mã hex màu chính (Primary), nó có thể tự nội suy (interpolate) ra toàn bộ Color Palette bằng cách điều chỉnh độ sáng tối (Luminance) hoặc sắc độ (Saturation).',
+  ],
+  'fontweight': [
+    'Đừng lạm dụng quá nhiều Font Weight trên một trang. Quy tắc "an toàn" là dùng tối đa 3 mức: 400 (Body), 600/700 (Heading/Subheading) và 500 (Links/Buttons).',
+    'Lưu ý về hiệu năng: Mỗi mức Font Weight là một file font riêng biệt cần tải về. Càng dùng nhiều weight, web càng load chậm. Đây là lý do designer chuyên nghiệp luôn giới hạn bảng weight trong Design System.',
+    'Khi prompt AI "làm chữ đậm lên", hãy thử dùng số cụ thể (ví dụ: 600) thay vì nói chung chung. Điều này giúp code CSS sạch hơn và tránh việc AI tự ý chọn những weight lạ không có trong font-family của bạn.',
   ],
 };
 
