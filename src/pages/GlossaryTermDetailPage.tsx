@@ -12,6 +12,8 @@ import spacingDemoHtml from '../../gif-spacing-demo.html?raw';
 import letterSpacingDemoHtml from '../../gif-letter-spacing-demo.html?raw';
 import lineSpacingDemoHtml from '../../gif-line-spacing-demo.html?raw';
 import lineSpacingPracticeHtml from '../../gif-line-spacing-practice.html?raw';
+import lineheightDemoHtml from '../../gif-lineheight-demo.html?raw';
+import lineheightPracticeHtml from '../../gif-lineheight-practice.html?raw';
 import marginDemoHtml from '../../gif-margin-demo.html?raw';
 import marginPracticeHtml from '../../gif-margin-practice.html?raw';
 import paddingDemoHtml from '../../gif-padding-demo.html?raw';
@@ -115,6 +117,7 @@ export default function GlossaryTermDetailPage() {
       case 'spacing': return spacingDemoHtml;
       case 'letter-spacing': return letterSpacingDemoHtml;
       case 'line-spacing': return lineSpacingDemoHtml;
+      case 'line-height': return lineheightDemoHtml;
       case 'margin': return marginDemoHtml;
       case 'padding': return paddingDemoHtml;
       case 'border': return borderDemoHtml;
@@ -165,6 +168,7 @@ export default function GlossaryTermDetailPage() {
       case 'margin': return marginPracticeHtml;
       case 'padding': return paddingPracticeHtml;
       case 'line-spacing': return lineSpacingPracticeHtml;
+      case 'line-height': return lineheightPracticeHtml;
       case 'border': return borderPracticeHtml;
       case 'radius': return radiusPracticeHtml;
       case 'corner': return cornerPracticeHtml;

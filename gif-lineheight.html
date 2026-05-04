@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Line Height</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0c0c0e;--bg2:#131315;--fg:#ece8e1;--muted:#706b64;
+  --accent:#cf5c27;--card:#1a1a1e;--border:#26262a;
+  --mono:'Space Mono',monospace;--sans:'Space Grotesk',sans-serif;
+  --teal:#3a8a7a;--teal-dim:rgba(58,138,122,.15);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--bg);color:var(--fg);font-family:var(--sans);
+  min-height:100vh;display:flex;align-items:flex-start;justify-content:center;
+  padding:28px 16px 48px;
+  background-image:
+    radial-gradient(ellipse 60% 40% at 50% 0%,rgba(207,92,39,.04) 0%,transparent 100%),
+    linear-gradient(rgba(255,255,255,.016) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.016) 1px,transparent 1px);
+  background-size:100% 100%,28px 28px,28px 28px;
+}
+.wrap{width:100%;max-width:880px}
+
+/* === Common === */
+.stag{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);border:1px solid rgba(207,92,39,.35);display:inline-block;padding:3px 10px;margin-bottom:10px}
+.stag-teal{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--teal);border:1px solid rgba(58,138,122,.35);display:inline-block;padding:3px 10px;margin-bottom:10px}
+.sdesc{font-size:13px;color:var(--muted);margin-bottom:14px;max-width:520px;line-height:1.55}
+.tbar{display:flex;align-items:center;justify-content:space-between;padding:0 2px 10px;border-bottom:1px solid var(--border);margin-bottom:10px}
+.tl{display:flex;align-items:center;gap:8px}
+.tg{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.tsep{color:var(--border)}
+.ta{color:var(--accent);border:1px solid rgba(207,92,39,.35);padding:2px 8px}
+
+/* === Preview === */
+.prev{position:relative;width:100%;aspect-ratio:16/9;background:var(--bg2);border:1px solid var(--border);overflow:hidden}
+.prev::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:1;background-image:linear-gradient(rgba(255,255,255,.008) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.008) 1px,transparent 1px);background-size:20px 20px}
+.badge{position:absolute;top:10px;left:10px;z-index:30;font-family:var(--mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;color:var(--bg);background:var(--accent);padding:3px 9px;line-height:1.7;white-space:nowrap}
+.ctr{position:absolute;bottom:10px;right:12px;z-index:30;font-family:var(--mono);font-size:9px;color:rgba(255,255,255,.15);letter-spacing:.1em}
+
+/* === Sim states === */
+.ss{position:absolute;inset:0;opacity:0;transition:opacity .45s;pointer-events:none;z-index:5;padding:0 8%}
+.ss.on{opacity:1;pointer-events:auto}
+
+/* State 1: Scale sweep */
+.sc-wrap{display:flex;height:100%;gap:clamp(8px,2vw,24px)}
+.sc-left{width:clamp(80px,12vw,120px);display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0}
+.sc-num{font-family:var(--mono);font-size:clamp(24px,5vw,48px);font-weight:700;color:var(--accent);line-height:1}
+.sc-lbl{font-family:var(--mono);font-size:8px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-top:4px}
+.sc-rail{width:2px;flex:1;max-height:70%;background:var(--border);position:relative;margin-top:8px}
+.sc-fill{position:absolute;top:0;left:0;width:100%;background:var(--accent);transition:height .3s}
+.sc-right{flex:1;display:flex;align-items:center;overflow:hidden}
+.sc-txt{width:100%;font-size:clamp(10px,1.3vw,14px);color:var(--fg);transition:line-height .3s}
+
+/* State 2: Body comparison */
+.bc-wrap{display:flex;height:100%;gap:clamp(6px,1.5vw,16px);padding-top:36px}
+.bc-col{flex:1;display:flex;flex-direction:column;border:1px solid var(--border);overflow:hidden}
+.bc-hdr{padding:clamp(4px,.8vw,8px) clamp(6px,1vw,12px);background:rgba(255,255,255,.03);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.bc-val{font-family:var(--mono);font-size:clamp(10px,1.4vw,14px);font-weight:700;color:var(--accent)}
+.bc-tag{font-family:var(--mono);font-size:clamp(7px,.8vw,9px);color:var(--muted);letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--border);padding:1px 5px}
+.bc-body{flex:1;padding:clamp(4px,.8vw,8px) clamp(6px,1vw,12px);font-size:clamp(8px,1vw,11px);color:var(--muted);overflow:hidden}
+.bc-col.best{border-color:rgba(207,92,39,.35)}
+.bc-col.best .bc-hdr{background:rgba(207,92,39,.06)}
+
+/* State 3: UI Components */
+.uic-wrap{display:flex;flex-direction:column;height:100%;gap:clamp(4px,1vw,8px);padding-top:36px}
+.uic-nav{display:flex;align-items:center;justify-content:space-between;padding:clamp(4px,.8vw,8px) clamp(8px,1.5vw,16px);background:rgba(255,255,255,.03);border:1px solid var(--border)}
+.uic-list{flex:1;display:flex;flex-direction:column;border:1px solid var(--border);overflow:hidden}
+.uic-li{padding:clamp(5px,.9vw,10px) clamp(8px,1.5vw,16px);border-bottom:1px solid var(--border);font-size:clamp(9px,1.1vw,12px);color:var(--muted);display:flex;justify-content:space-between;align-items:center;transition:line-height .3s}
+.uic-li:last-child{border-bottom:none}
+.uic-ann{position:absolute;font-family:var(--mono);font-size:clamp(6px,.7vw,8px);color:var(--accent);background:rgba(12,12,14,.88);padding:1px 5px;border:1px solid rgba(207,92,39,.25);opacity:0;transition:opacity .3s;pointer-events:none;z-index:8;white-space:nowrap}
+.uic-ann.sh{opacity:1}
+
+/* State 4: Responsive */
+.rs-wrap{display:flex;height:100%;gap:clamp(8px,2vw,20px);padding-top:36px;align-items:stretch}
+.rs-col{flex:1;border:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.rs-hdr{padding:clamp(4px,.7vw,7px) clamp(6px,1vw,10px);background:rgba(255,255,255,.03);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.rs-dev{font-family:var(--mono);font-size:clamp(8px,.9vw,10px);color:var(--fg);letter-spacing:.08em;text-transform:uppercase}
+.rs-lh{font-family:var(--mono);font-size:clamp(8px,.9vw,10px);color:var(--accent);font-weight:700}
+.rs-body{flex:1;padding:clamp(4px,.7vw,8px) clamp(5px,.9vw,10px);overflow:hidden;display:flex;align-items:flex-start;color:var(--muted)}
+.rs-body span{display:block}
+.rs-arw{display:flex;align-items:center;font-family:var(--mono);font-size:clamp(10px,1.2vw,14px);color:rgba(255,255,255,.1);flex-shrink:0}
+
+/* === Bottom === */
+.bot{display:flex;align-items:center;justify-content:space-between;margin-top:10px;padding:0 2px;min-height:20px}
+.dots{display:flex;gap:6px}
+.dot{width:22px;height:3px;background:var(--border);border:none;padding:0;cursor:pointer;transition:background .3s}
+.dot:hover{background:var(--muted)}.dot.on{background:var(--accent)}
+.ins{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.02em;max-width:62%;text-align:right;line-height:1.5;transition:opacity .25s}
+
+/* ======================== */
+/* === SO SÁNH ========== */
+/* ======================== */
+.cmp{margin-top:28px;border-top:1px solid var(--border);padding-top:18px}
+.cmp-hd{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.cmp-hd .stag,.cmp-hd .stag-teal{margin-bottom:0}
+.cmp-box{width:100%;border:1px solid var(--border);background:var(--bg2);position:relative;overflow:hidden}
+.cmp-box::before{content:'';position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.006) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.006) 1px,transparent 1px);background-size:20px 20px}
+
+/* Toggle buttons */
+.cmp-toggle{display:flex;gap:0;margin-bottom:0;border-bottom:1px solid var(--border)}
+.cmp-tbtn{flex:1;padding:8px 12px;font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;background:none;border:none;cursor:pointer;transition:background .2s,color .2s;color:var(--muted);border-right:1px solid var(--border)}
+.cmp-tbtn:last-child{border-right:none}
+.cmp-tbtn:hover{background:rgba(255,255,255,.02)}
+.cmp-tbtn.on-lh{background:rgba(207,92,39,.08);color:var(--accent)}
+.cmp-tbtn.on-ls{background:var(--teal-dim);color:var(--teal)}
+
+/* Comparison content area */
+.cmp-content{position:relative;padding:20px 24px;min-height:180px}
+
+/* Text sample - same for both views */
+.cmp-text{font-size:14px;line-height:2;max-width:420px;color:var(--fg);position:relative;z-index:3}
+
+/* Measurement overlays */
+.cmp-measure{position:absolute;top:20px;bottom:20px;width:clamp(120px,20vw,200px);z-index:5;pointer-events:none;opacity:0;transition:opacity .35s}
+.cmp-measure.sh{opacity:1}
+.cmp-measure-lh{left:clamp(400px,52%,520px)}
+.cmp-measure-ls{left:clamp(400px,52%,520px)}
+
+/* Line-height measurement (orange) */
+.m-lh-bracket{position:absolute;left:20px;right:0;height:1px}
+.m-lh-bracket::before{content:'';position:absolute;left:0;right:0;top:0;height:1px;background:var(--accent)}
+.m-lh-bracket::after{content:'';position:absolute;left:-4px;top:-4px;width:9px;height:9px;border:1.5px solid var(--accent);background:var(--bg2)}
+.m-lh-bracket.btm::after{top:auto;bottom:-4px}
+.m-lh-line{position:absolute;left:30px;width:1px;background:var(--accent);opacity:.3}
+.m-lh-val{position:absolute;right:0;font-family:var(--mono);font-size:10px;color:var(--accent);font-weight:700;white-space:nowrap;letter-spacing:.04em}
+.m-lh-lbl{position:absolute;right:0;font-family:var(--mono);font-size:8px;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;opacity:.6;white-space:nowrap}
+.m-lh-text-h{position:absolute;right:0;font-family:var(--mono);font-size:7px;color:rgba(207,92,39,.45);letter-spacing:.06em;white-space:nowrap}
+.m-lh-gap-h{position:absolute;right:0;font-family:var(--mono);font-size:7px;color:rgba(207,92,39,.45);letter-spacing:.06em;white-space:nowrap;border-top:1px dashed rgba(207,92,39,.2);padding-top:1px}
+
+/* Line-spacing measurement (teal) */
+.m-ls-bracket{position:absolute;left:20px;right:0;height:1px}
+.m-ls-bracket::before{content:'';position:absolute;left:0;right:0;top:0;height:1px;background:var(--teal)}
+.m-ls-bracket::after{content:'';position:absolute;left:-4px;top:-4px;width:9px;height:9px;border:1.5px solid var(--teal);background:var(--bg2)}
+.m-ls-bracket.btm::after{top:auto;bottom:-4px}
+.m-ls-line{position:absolute;left:30px;width:1px;background:var(--teal);opacity:.3}
+.m-ls-val{position:absolute;right:0;font-family:var(--mono);font-size:10px;color:var(--teal);font-weight:700;white-space:nowrap;letter-spacing:.04em}
+.m-ls-lbl{position:absolute;right:0;font-family:var(--mono);font-size:8px;color:var(--teal);letter-spacing:.1em;text-transform:uppercase;opacity:.6;white-space:nowrap}
+.m-ls-xout{position:absolute;left:0;right:0;display:flex;align-items:center;justify-content:center}
+.m-ls-xout-line{flex:1;height:1px;background:var(--teal);opacity:.35}
+.m-ls-xout-label{font-family:var(--mono);font-size:7px;color:var(--teal);letter-spacing:.08em;opacity:.5;padding:0 4px;white-space:nowrap}
+
+/* Comparison legend */
+.cmp-legend{display:flex;gap:clamp(12px,3vw,32px);padding:10px 24px;border-top:1px solid var(--border);font-family:var(--mono);font-size:9px;line-height:1.7;color:var(--muted);letter-spacing:.04em}
+.cmp-leg-item{display:flex;align-items:flex-start;gap:8px}
+.cmp-leg-dot{width:8px;height:8px;flex-shrink:0;margin-top:3px}
+.cmp-leg-dot.lh{background:var(--accent)}
+.cmp-leg-dot.ls{background:var(--teal)}
+.cmp-leg-item strong{color:var(--fg);font-weight:600}
+
+/* ======================== */
+/* === PRACTICE ========== */
+/* ======================== */
+.prac{margin-top:28px;border-top:1px solid var(--border);padding-top:18px}
+.prac-hd{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px;flex-wrap:wrap}
+.prac-g{font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.6;max-width:440px}
+.prac-g strong{color:var(--fg);font-weight:600}
+.prac-h{font-family:var(--mono);font-size:10px;color:rgba(207,92,39,.55);text-align:right;line-height:1.5}
+
+.pp{width:100%;background:var(--bg2);border:1px solid var(--border);overflow:hidden;position:relative}
+.pp-inner{padding:clamp(14px,2vw,24px) clamp(16px,2.5vw,28px)}
+.pp-txt{font-size:clamp(13px,1.6vw,16px);color:var(--fg);transition:line-height .15s;max-width:640px}
+.pp-hint{position:absolute;top:10px;right:12px;font-family:var(--mono);font-size:9px;color:var(--accent);letter-spacing:.08em;z-index:5;opacity:.6}
+
+.ruler{height:32px;margin-top:10px;position:relative;border-top:1px solid var(--border)}
+.ruler-bg{position:absolute;top:0;left:0;right:0;bottom:0;opacity:.3}
+.ruler-mark{position:absolute;top:0;width:1px;background:var(--accent);opacity:.5;transition:top .15s,height .15s}
+.ruler-label{position:absolute;right:0;top:-1px;font-family:var(--mono);font-size:8px;color:var(--accent);letter-spacing:.06em;transform:translateY(-100%);padding-bottom:2px}
+
+.pc{margin-top:14px}
+.pc-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+.pc-lbl{font-family:var(--mono);font-size:10px;color:var(--fg);letter-spacing:.08em}
+.pc-val{font-family:var(--mono);font-size:10px;color:var(--muted)}
+.pc-val b{color:var(--accent);font-weight:400}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:3px;background:var(--border);outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;background:var(--accent);border:none;cursor:pointer}
+input[type=range]::-moz-range-thumb{width:14px;height:14px;background:var(--accent);border:none;cursor:pointer;border-radius:0}
+.pc-presets{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}
+.pc-pb{font-family:var(--mono);font-size:9px;letter-spacing:.06em;color:var(--muted);background:none;border:1px solid var(--border);padding:4px 10px;cursor:pointer;transition:border-color .2s,color .2s}
+.pc-pb:hover{border-color:rgba(207,92,39,.3);color:var(--fg)}
+.pc-pb.on{border-color:var(--accent);color:var(--accent)}
+
+.fb{margin-top:12px;font-family:var(--mono);font-size:10px;color:var(--muted);line-height:1.7;min-height:32px;transition:opacity .25s}
+.fb em{color:var(--fg);font-style:normal}
+.fb .w{color:var(--accent)}
+.fb .t{color:var(--teal)}
+
+@media(max-width:640px){
+  body{padding:14px 10px 36px}
+  .ins{display:none}.bot{justify-content:center}
+  .tl .tg:nth-child(n+3){display:none}
+  .prac-hd{flex-direction:column}.prac-h{text-align:left}
+  .bc-wrap{gap:3px}.bc-tag{display:none}
+  .uic-ann{display:none}
+  .rs-arw{display:none}
+  .sc-left{width:60px}
+  .rs-wrap{gap:4px}
+  .cmp-measure{display:none}
+  .cmp-content{padding:14px 16px}
+  .cmp-legend{flex-direction:column;gap:6px}
+  .cmp-text{font-size:12px;line-height:2}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ===== MÔ PHỎNG ===== -->
+<span class="stag">mô phỏng</span>
+<p class="sdesc">Cùng chữ, cùng size — khoảng cách giữa các dòng quyết định dễ hay khó đọc.</p>
+
+<div class="tbar">
+  <div class="tl"><span class="tg">line-height</span><span class="tsep">/</span><span class="tg">typography</span></div>
+  <span class="ta">4 ASPECTS</span>
+</div>
+
+<div class="prev" id="sp">
+  <div class="badge" id="sbadge">01 LINE HEIGHT SCALE</div>
+  <div class="ctr" id="sctr">1 / 4</div>
+
+  <!-- State 1 -->
+  <div class="ss on" id="ss0">
+    <div class="sc-wrap">
+      <div class="sc-left">
+        <div class="sc-num" id="scn">1.0</div>
+        <div class="sc-lbl">line-height</div>
+        <div class="sc-rail"><div class="sc-fill" id="scf"></div></div>
+      </div>
+      <div class="sc-right">
+        <div class="sc-txt" id="sct">Line height là khoảng cách từ đáy một dòng text đến đáy dòng tiếp theo. Giá trị này không phải là pixel — nó là hệ số nhân với font size. Line height 1.5 nghĩa là khoảng cách giữa các dòng bằng 1.5 lần kích thước chữ. Điều này ảnh hưởng trực tiếp đến khả năng đọc hiểu của user.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- State 2 -->
+  <div class="ss" id="ss1">
+    <div class="bc-wrap">
+      <div class="bc-col">
+        <div class="bc-hdr"><span class="bc-val">1.2</span><span class="bc-tag">Tight</span></div>
+        <div class="bc-body" style="line-height:1.2">Line height là khoảng cách từ đáy một dòng text đến đáy dòng tiếp theo. Giá trị này không phải pixel, nó là hệ số nhân với font size. Dòng quá sát nhau gây khó đọc.</div>
+      </div>
+      <div class="bc-col best">
+        <div class="bc-hdr"><span class="bc-val">1.5</span><span class="bc-tag">Body text</span></div>
+        <div class="bc-body" style="line-height:1.5">Line height là khoảng cách từ đáy một dòng text đến đáy dòng tiếp theo. Giá trị này không phải pixel, nó là hệ số nhân với font size. Dòng này dễ đọc nhất.</div>
+      </div>
+      <div class="bc-col">
+        <div class="bc-hdr"><span class="bc-val">1.8</span><span class="bc-tag">Loose</span></div>
+        <div class="bc-body" style="line-height:1.8">Line height là khoảng cách từ đáy một dòng text đến đáy dòng tiếp theo. Giá trị này không phải pixel, nó là hệ số nhân với font size. Dòng quá rời rạc.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- State 3 -->
+  <div class="ss" id="ss2" style="position:relative">
+    <div class="uic-wrap">
+      <div class="uic-nav">
+        <span style="font-weight:700;font-size:clamp(8px,1.1vw,11px);letter-spacing:.08em">BRAND</span>
+        <div style="display:flex;gap:clamp(8px,2vw,20px)">
+          <span style="font-size:clamp(7px,1vw,10px);color:var(--muted)">Home</span>
+          <span style="font-size:clamp(7px,1vw,10px);color:var(--muted)">Features</span>
+          <span style="font-size:clamp(7px,1vw,10px);color:var(--muted)">Pricing</span>
+        </div>
+      </div>
+      <div class="uic-list" id="uicl">
+        <div class="uic-li"><span>Deploy infrastructure</span><span style="color:var(--accent);font-family:var(--mono);font-size:clamp(7px,.85vw,9px)">2h ago</span></div>
+        <div class="uic-li"><span>Scale database cluster</span><span style="color:var(--accent);font-family:var(--mono);font-size:clamp(7px,.85vw,9px)">5h ago</span></div>
+        <div class="uic-li"><span>Update SSL certificates</span><span style="color:var(--accent);font-family:var(--mono);font-size:clamp(7px,.85vw,9px)">1d ago</span></div>
+        <div class="uic-li"><span>Monitor performance metrics</span><span style="color:var(--accent);font-family:var(--mono);font-size:clamp(7px,.85vw,9px)">2d ago</span></div>
+      </div>
+    </div>
+    <div class="uic-ann" id="ua0" style="top:42px;right:10%">line-height: 1.0</div>
+    <div class="uic-ann" id="ua1" style="top:52%;right:10%">line-height: 2.5</div>
+  </div>
+
+  <!-- State 4 -->
+  <div class="ss" id="ss3">
+    <div class="rs-wrap">
+      <div class="rs-col">
+        <div class="rs-hdr"><span class="rs-dev">Mobile</span><span class="rs-lh">1.6</span></div>
+        <div class="rs-body" style="font-size:clamp(9px,1.1vw,12px);line-height:1.6"><span>Text nhỏ trên màn hình nhỏ cần line-height cao hơn để mắt dễ theo dõi từ dòng này sang dòng khác.</span></div>
+      </div>
+      <div class="rs-arw">→</div>
+      <div class="rs-col">
+        <div class="rs-hdr"><span class="rs-dev">Desktop</span><span class="rs-lh">1.4</span></div>
+        <div class="rs-body" style="font-size:clamp(10px,1.2vw,13px);line-height:1.4"><span>Text lớn trên màn hình rộng cần line-height thấp hơn — đủ khoảng cách, không lãng phí space.</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="bot">
+  <div class="dots" id="sdots">
+    <button class="dot on" data-i="0" aria-label="Scale"></button>
+    <button class="dot" data-i="1" aria-label="Comparison"></button>
+    <button class="dot" data-i="2" aria-label="UI"></button>
+    <button class="dot" data-i="3" aria-label="Responsive"></button>
+  </div>
+  <div class="ins" id="sins">Kéo line-height từ 1.0 lên 2.0 — thấy text "thở" dần ra</div>
+</div>
+
+<!-- ===== SO SÁNH: LINE HEIGHT vs LINE SPACING ===== -->
+<div class="cmp">
+  <div class="cmp-hd">
+    <span class="stag">so sánh</span>
+    <span class="stag-teal">thường bị nhầm</span>
+  </div>
+
+  <div class="cmp-box">
+    <div class="cmp-toggle">
+      <button class="cmp-tbtn on-lh" id="btnLH" data-view="lh">LINE HEIGHT (CSS)</button>
+      <button class="cmp-tbtn" id="btnLS" data-view="ls">LINE SPACING (Figma / Word)</button>
+    </div>
+
+    <div class="cmp-content">
+      <!-- Text sample — same for both views -->
+      <div class="cmp-text" id="cmpTxt">Cùng một đoạn text.<br>Cùng font, cùng size.<br>Khoảng cách nhìn giống nhau.</div>
+
+      <!-- LINE HEIGHT measurement overlay -->
+      <div class="cmp-measure cmp-measure-lh sh" id="mLH">
+        <!-- Top bracket: baseline line 1 -->
+        <div class="m-lh-bracket" style="top:0">
+          <div class="m-lh-line" style="top:0;height:100%"></div>
+          <div class="m-lh-val" style="top:-14px">baseline → baseline</div>
+        </div>
+        <!-- Bottom bracket: baseline line 2 -->
+        <div class="m-lh-bracket btm" style="bottom:0">
+        </div>
+        <!-- Value label center -->
+        <div class="m-lh-val" style="top:50%;transform:translateY(-50%);font-size:13px">1.5×</div>
+        <!-- Sub-labels -->
+        <div class="m-lh-text-h" style="top:18%">← chiều cao chữ</div>
+        <div class="m-lh-gap-h" style="top:62%">← gap giữa dòng</div>
+        <!-- Main label -->
+        <div class="m-lh-lbl" style="bottom:-20px">line-height = cả hai cộng lại</div>
+      </div>
+
+      <!-- LINE SPACING measurement overlay -->
+      <div class="cmp-measure cmp-measure-ls" id="mLS">
+        <!-- X-out the text height area (top + bottom) -->
+        <div class="m-ls-xout" style="top:0;height:36%">
+          <div class="m-ls-xout-line"></div>
+          <div class="m-ls-xout-label">không tính phần chữ</div>
+          <div class="m-ls-xout-line"></div>
+        </div>
+        <!-- Only gap bracket -->
+        <div class="m-ls-bracket" style="top:36%">
+          <div class="m-ls-line" style="top:0;height:100%"></div>
+        </div>
+        <div class="m-ls-bracket btm" style="top:64%">
+        </div>
+        <!-- Value label -->
+        <div class="m-ls-val" style="top:50%;transform:translateY(-50%);font-size:13px">gap only</div>
+        <!-- Main label -->
+        <div class="m-ls-lbl" style="bottom:-20px">line spacing = chỉ đo khoảng trống</div>
+      </div>
+    </div>
+
+    <div class="cmp-legend">
+      <div class="cmp-leg-item">
+        <div class="cmp-leg-dot lh"></div>
+        <div><strong>Line-height (CSS)</strong> — baseline đến baseline, bao gồm cả chiều cao chữ. Giá trị 1.5 = 1.5× font-size.</div>
+      </div>
+      <div class="cmp-leg-item">
+        <div class="cmp-leg-dot ls"></div>
+        <div><strong>Line spacing (Figma/Word)</strong> — chỉ khoảng trống giữa các dòng, không tính thân chữ. Cùng visual nhưng số khác.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== THỰC HÀNH ===== -->
+<div class="prac">
+  <span class="stag">thực hành</span>
+  <div class="prac-hd">
+    <p class="prac-g"><strong>Kéo slider</strong> để thay đổi line-height — cảm nhận trực tiếp độ dễ đọc thay đổi thế nào.</p>
+    <p class="prac-h">Thử kéo sang 1.0 rồi 2.0 — thấy ngay tại sao 1.4–1.6 là sweet spot.</p>
+  </div>
+
+  <div class="pp" id="pprev">
+    <div class="pp-hint" id="pphint">line-height: 1.5</div>
+    <div class="pp-inner">
+      <div class="pp-txt" id="pptxt" style="line-height:1.5">Line height là khoảng cách từ đáy một dòng text đến đáy dòng tiếp theo. Nó không phải là pixel mà là hệ số nhân với font size. Khi bạn bảo dev "giảm line-height một chút", thực tế là bạn đang bảo họ thu hẹp khoảng cách giữa các dòng. Line height 1.5 nghĩa là khoảng cách giữa các dòng bằng 1.5 lần kích thước chữ — đây là range tốt nhất cho body text. Qua thấp, dòng dính nhau. Qua cao, user mất chiều dọc và khó tìm dòng tiếp theo.</div>
+    </div>
+  </div>
+
+  <div class="ruler" id="ruler">
+    <svg class="ruler-bg" preserveAspectRatio="none" width="100%" height="100%">
+      <line x1="0" y1="50%" x2="100%" y2="50%" stroke="rgba(207,92,39,0.12)" stroke-width="1"/>
+    </svg>
+    <div class="ruler-mark" id="rmark"></div>
+    <div class="ruler-label" id="rlbl">1.5×</div>
+  </div>
+
+  <div class="pc">
+    <div class="pc-top">
+      <span class="pc-lbl">line-height</span>
+      <span class="pc-val">giá trị: <b id="pcv">1.5</b></span>
+    </div>
+    <input type="range" id="pcslider" min="0.8" max="2.4" step="0.1" value="1.5">
+    <div class="pc-presets" id="pcpre">
+      <button class="pc-pb" data-v="0.8">0.8</button>
+      <button class="pc-pb" data-v="1.0">1.0</button>
+      <button class="pc-pb" data-v="1.2">1.2</button>
+      <button class="pc-pb on" data-v="1.5">1.5 Body</button>
+      <button class="pc-pb" data-v="1.8">1.8</button>
+      <button class="pc-pb" data-v="2.0">2.0</button>
+      <button class="pc-pb" data-v="2.4">2.4</button>
+    </div>
+  </div>
+
+  <div class="fb" id="pfb"><em>1.5</em> — sweet spot cho body text. Dễ đọc, không lãng phí space.</div>
+</div>
+
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+
+/* ===== Simulation ===== */
+const SNAMES=['01 LINE HEIGHT SCALE','02 BODY TEXT COMPARISON','03 UI COMPONENT EXAMPLES','04 RESPONSIVE LINE HEIGHT'];
+const SINS=[
+  'Kéo line-height từ 1.0 lên 2.0 — thấy text "thở" dần ra',
+  'Cùng nội dung, 3 giá trị khác nhau — cột giữa dễ đọc nhất',
+  'Nav cần line-height chặt, list cần line-height thoáng hơn',
+  'Mobile cần line-height cao hơn desktop — text nhỏ khó đọc hơn'
+];
+
+const states=[0,1,2,3].map(i=>$('ss'+i));
+let si=0,sweepI=0,mt=null,wt=null;
+
+function showState(i){
+  states.forEach((s,j)=>s.classList.toggle('on',j===i));
+  $('sbadge').textContent=SNAMES[i];
+  $('sctr').textContent=(i+1)+' / 4';
+  const ins=$('sins');
+  ins.style.opacity='0';
+  setTimeout(()=>{ins.textContent=SINS[i];ins.style.opacity='1'},200);
+  document.querySelectorAll('#sdots .dot').forEach((d,j)=>d.classList.toggle('on',j===i));
+}
+
+function resetAnno(){$('ua0').classList.remove('sh');$('ua1').classList.remove('sh')}
+
+function runSweep(){
+  const vals=[1.0,1.2,1.4,1.5,1.6,1.8,2.0];
+  sweepI=0;
+  function next(){
+    if(sweepI>=vals.length){si=1;mt=setTimeout(runSim,400);return}
+    const v=vals[sweepI];
+    $('sct').style.lineHeight=v;
+    $('scn').textContent=v.toFixed(1);
+    $('scf').style.height=((v-0.8)/1.6*100)+'%';
+    sweepI++;
+    wt=setTimeout(next,500);
+  }
+  next();
+}
+
+function runComp(){mt=setTimeout(()=>{si=2;runSim()},3500)}
+
+function runUI(){
+  const lis=$('uicl').querySelectorAll('.uic-li');
+  lis.forEach(l=>l.style.lineHeight='1.0');
+  $('ua0').classList.add('sh');$('ua1').classList.remove('sh');
+  $('ua0').textContent='line-height: 1.0';
+  setTimeout(()=>{
+    lis.forEach(l=>l.style.lineHeight='2.5');
+    $('ua0').classList.remove('sh');$('ua1').classList.add('sh');
+    $('ua1').textContent='line-height: 2.5';
+    setTimeout(()=>{
+      lis.forEach(l=>l.style.lineHeight='1.6');
+      $('ua1').textContent='line-height: 1.6';
+      setTimeout(()=>{si=3;runSim()},1200);
+    },1000);
+  },1200);
+}
+
+function runResp(){mt=setTimeout(()=>{si=0;runSim()},3500)}
+
+function runSim(){
+  clearTimeout(mt);clearTimeout(wt);resetAnno();
+  showState(si);
+  if(si===0) runSweep();
+  else if(si===1) runComp();
+  else if(si===2) runUI();
+  else runResp();
+}
+
+document.querySelectorAll('#sdots .dot').forEach(d=>d.addEventListener('click',()=>{
+  clearTimeout(mt);clearTimeout(wt);resetAnno();
+  si=+d.dataset.i;runSim();
+}));
+runSim();
+
+/* ===== So sánh toggle ===== */
+const btnLH=$('btnLH'),btnLS=$('btnLS'),mLH=$('mLH'),mLS=$('mLS');
+
+function setCmpView(view){
+  btnLH.classList.toggle('on-lh',view==='lh');
+  btnLS.classList.toggle('on-ls',view==='ls');
+  mLH.classList.toggle('sh',view==='lh');
+  mLS.classList.toggle('sh',view==='ls');
+}
+
+btnLH.addEventListener('click',()=>setCmpView('lh'));
+btnLS.addEventListener('click',()=>setCmpView('ls'));
+
+/* ===== Practice ===== */
+function setLH(val){
+  val=Math.round(parseFloat(val)*10)/10;
+  $('pptxt').style.lineHeight=val;
+  $('pcv').textContent=val.toFixed(1);
+  $('pphint').textContent='line-height: '+val.toFixed(1);
+  $('pcslider').value=val;
+  document.querySelectorAll('.pc-pb').forEach(b=>b.classList.toggle('on',parseFloat(b.dataset.v)===val));
+
+  const pct=Math.min(100,Math.max(0,(val-0.8)/1.6*100));
+  const h=Math.max(4,pct*0.8+4);
+  $('rmark').style.height=h+'px';
+  $('rmark').style.top=(50-h/2)+'%';
+  $('rlbl').textContent=val.toFixed(1)+'×';
+  $('rlbl').style.top=(50-h/2-2)+'px';
+
+  const fb=$('pfb');
+  const lines=[];
+  if(val<=0.9) lines.push('<span class="w">Dòng dính chặt vào nhau — gần như không đọc được đoạn dài.</span>');
+  else if(val<=1.1) lines.push('<span class="w">Quá chật — mắt dễ bị nhầm dòng khi đọc đoạn text dài.</span>');
+  else if(val<=1.3) lines.push('Được cho heading ngắn, nhưng body text sẽ mệt mắt.');
+  else if(val<=1.6) lines.push('<em>'+val.toFixed(1)+'</em> — sweet spot cho body text. Dễ đọc, không lãng phí space.');
+  else if(val<=1.9) lines.push('<em>'+val.toFixed(1)+'</em> — vẫn ổn cho paragraph dài, nhưng bắt đầu thấy "thừa" khoảng cách.');
+  else lines.push('<span class="w">'+val.toFixed(1)+' — quá rời rạc. User mất nhiều scrolling, khó tìm dòng tiếp theo.</span>');
+
+  if(val>=1.4&&val<=1.6) lines.push('Khi prompt, hãy nói <em>"line-height 1.5 cho body"</em> thay vì "cho dễ đọc một chút".');
+  else if(val<=1.1) lines.push('Lỗi phổ biến: nhiều template mặc định line-height thấp — marketer không nhận ra vì "nội dung vẫn hiển thị".');
+
+  fb.innerHTML=lines.join(' ');
+}
+
+ $('pcslider').addEventListener('input',e=>setLH(e.target.value));
+document.querySelectorAll('.pc-pb').forEach(b=>b.addEventListener('click',()=>setLH(b.dataset.v)));
+setLH(1.5);
+</script>
+</body>
+</html>

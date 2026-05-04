@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Line Height — Animated</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;--accent-dim:rgba(212,113,42,.15);--card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a;--surface:#1c1c23;--teal:#3a8a7a;--teal-dim:rgba(58,138,122,.15)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 100%,16px 16px;display:flex;flex-direction:column;align-items:center;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:12px;gap:24px}
+
+.aw{width:100%}
+.ab-wrap{width:100%;background:var(--card);border:2px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.la-wrap{width:100%;position:relative;overflow:hidden}
+.ab{width:700px;height:250px;transform-origin:top left;background:linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);background-size:30px 30px;position:relative}
+.hd{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
+.hd-t{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:2.5px}
+.hd-f{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
+.fr{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 24px;opacity:0;pointer-events:none;transition:opacity .3s}.fr.show{opacity:1;pointer-events:auto}
+
+/* State 1: Scale sweep */
+.sc-wrap{display:flex;height:100%;gap:32px;align-items:center;width:100%;max-width:560px}
+.sc-left{width:100px;display:flex;flex-direction:column;align-items:center;flex-shrink:0}
+.sc-num{font-family:'JetBrains Mono',monospace;font-size:42px;font-weight:700;color:var(--accent);line-height:1}
+.sc-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-top:4px}
+.sc-rail{width:4px;height:80px;background:var(--border);position:relative;margin-top:12px}
+.sc-fill{position:absolute;top:0;left:0;width:100%;background:var(--accent);transition:height .3s}
+.sc-right{flex:1;display:flex;align-items:center;border-left:1px solid var(--border);padding-left:32px}
+.sc-txt{width:100%;font-size:14px;color:var(--fg);transition:line-height .3s;line-height:1.0}
+
+/* State 2: Body comparison */
+.bc-wrap{display:flex;height:100%;gap:12px;width:100%}
+.bc-col{flex:1;display:flex;flex-direction:column;border:1px solid var(--border);background:var(--card-alt)}
+.bc-hdr{padding:8px 12px;background:rgba(255,255,255,.03);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.bc-val{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--accent)}
+.bc-tag{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
+.bc-body{flex:1;padding:10px 12px;font-size:10px;color:var(--muted);overflow:hidden}
+.bc-col.best{border-color:var(--accent);box-shadow:0 0 20px rgba(212,113,42,0.1)}
+.bc-col.best .bc-hdr{background:var(--accent-dim)}
+
+/* State 3: UI Components */
+.uic-wrap{display:flex;flex-direction:column;width:100%;max-width:400px;gap:8px}
+.uic-list{display:flex;flex-direction:column;border:1px solid var(--border);background:var(--card-alt)}
+.uic-li{padding:8px 16px;border-bottom:1px solid var(--border);font-size:11px;color:var(--muted);display:flex;justify-content:space-between;align-items:center;transition:line-height .3s}
+.uic-li:last-child{border-bottom:none}
+.uic-ann{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);margin-bottom:4px;text-align:right}
+
+/* State 4: Responsive */
+.rs-wrap{display:flex;width:100%;gap:20px;align-items:stretch;max-width:600px}
+.rs-col{flex:1;border:1px solid var(--border);background:var(--card-alt);display:flex;flex-direction:column}
+.rs-hdr{padding:6px 10px;background:rgba(255,255,255,.03);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.rs-dev{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--fg);text-transform:uppercase}
+.rs-lh{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);font-weight:700}
+.rs-body{padding:12px;font-size:11px;color:var(--muted);line-height:1.6}
+
+.inf{padding:11px 14px;border-top:1px solid var(--border);background:var(--card);min-height:86px}
+.dn{font-size:15px;font-weight:800;line-height:1.15}
+.ds{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);margin-top:2px}
+.dd{font-size:10px;color:var(--muted);margin-top:4px;line-height:1.4}
+.pt{height:2px;background:var(--border)}.pff{height:100%;background:var(--accent);width:0%}
+
+/* Controls */
+.ctr{display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 0;background:transparent}
+.ctr-b{padding:6px 12px;background:var(--card-alt);border:1px solid var(--border);color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:1px}
+.ctr-b:hover{border-color:var(--border-hi);color:var(--fg)}
+.ctr-b.act{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+
+.pp-b{width:32px;height:32px;border-radius:50%;background:var(--accent);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-left:4px;transition:transform .2s;flex-shrink:0}
+.pp-b:active{transform:scale(.92)}
+.pp-i{width:12px;height:12px;fill:#000}
+
+/* Comparison Section (Below) */
+.cmp{width:100%;border-top:1px solid var(--border);padding-top:24px}
+.cmp-hd{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+.stag{font-family:'JetBrains Mono';font-size:10px;color:var(--accent);border:1px solid var(--accent-dim);padding:2px 8px;text-transform:uppercase;letter-spacing:1px}
+.stag-teal{font-family:'JetBrains Mono';font-size:10px;color:var(--teal);border:1px solid var(--teal-dim);padding:2px 8px;text-transform:uppercase;letter-spacing:1px}
+
+.cmp-box{width:100%;background:var(--card);border:1px solid var(--border);overflow:hidden;position:relative}
+.cmp-toggle{display:flex;border-bottom:1px solid var(--border)}
+.cmp-tbtn{flex:1;padding:10px;font-family:'JetBrains Mono';font-size:9px;background:none;border:none;color:var(--muted);cursor:pointer;transition:all .2s}
+.cmp-tbtn:first-child{border-right:1px solid var(--border)}
+.cmp-tbtn.act-lh{background:var(--accent-dim);color:var(--accent)}
+.cmp-tbtn.act-ls{background:var(--teal-dim);color:var(--teal)}
+
+.cmp-main{padding:24px;min-height:180px;display:flex;align-items:center;justify-content:center}
+.cmp-content{position:relative;padding-left:44px}
+.cmp-text{font-size:14px;line-height:2;color:var(--fg);position:relative;z-index:3}
+.cmp-meas{position:absolute;left:0;top:0;bottom:0;width:40px;opacity:0;transition:opacity .3s;pointer-events:none}
+.cmp-meas.sh{opacity:1}
+
+.m-brk{position:absolute;left:0;right:0;border-left:1.5px solid var(--accent);transition:all .3s}
+.m-brk::before,.m-brk::after{content:'';position:absolute;left:-4px;width:9px;height:9px;border:1.5px solid var(--accent);background:var(--card)}
+.m-brk::before{top:-4.5px}.m-brk::after{bottom:-4.5px}
+.m-brk-v{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono';font-size:10px;font-weight:700;color:var(--accent);white-space:nowrap}
+
+.m-xout{position:absolute;left:0;right:0;background:var(--teal-dim);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono';font-size:7px;color:var(--teal);opacity:.4;border-top:1px dashed var(--teal);border-bottom:1px dashed var(--teal)}
+
+.cmp-leg{padding:12px 24px;background:rgba(255,255,255,.01);border-top:1px solid var(--border);display:flex;gap:24px}
+.cmp-leg-i{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono';font-size:9px;color:var(--muted)}
+.cmp-dot{width:8px;height:8px;background:var(--accent)}
+.cmp-dot.ls{background:var(--teal)}
+
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="aw">
+<div class="ab-wrap">
+  <div class="hd"><span class="hd-t">LINE HEIGHT</span><span class="hd-f" id="hf">01 / 04</span></div>
+  <div class="la-wrap" id="la-wrap">
+    <div class="ab" id="ab">
+      <!-- State 1: Scale -->
+      <div class="fr" id="f0">
+        <div class="sc-wrap">
+          <div class="sc-left">
+            <div class="sc-num" id="scn">1.0</div>
+            <div class="sc-lbl">line-height</div>
+            <div class="sc-rail"><div class="sc-fill" id="scf"></div></div>
+          </div>
+          <div class="sc-right">
+            <div class="sc-txt" id="sct">Line height là khoảng cách từ đáy một dòng text đến đáy dòng tiếp theo. Giá trị này không phải là pixel — nó là hệ số nhân với font size. Line height 1.5 nghĩa là khoảng cách giữa các dòng bằng 1.5 lần kích thước chữ. Điều này ảnh hưởng trực tiếp đến khả năng đọc hiểu của user.</div>
+          </div>
+        </div>
+      </div>
+      <!-- State 2: Comparison -->
+      <div class="fr" id="f1">
+        <div class="bc-wrap">
+          <div class="bc-col">
+            <div class="bc-hdr"><span class="bc-val">1.2</span><span class="bc-tag">Tight</span></div>
+            <div class="bc-body" style="line-height:1.2">Line height là khoảng cách từ đáy một dòng text đến đáy dòng tiếp theo. Giá trị này không phải pixel, nó là hệ số nhân với font size. Dòng quá sát nhau gây khó đọc.</div>
+          </div>
+          <div class="bc-col best">
+            <div class="bc-hdr"><span class="bc-val">1.5</span><span class="bc-tag">Body text</span></div>
+            <div class="bc-body" style="line-height:1.5">Line height là khoảng cách từ đáy một dòng text đến đáy dòng tiếp theo. Giá trị này không phải pixel, nó là hệ số nhân with font size. Dòng này dễ đọc nhất.</div>
+          </div>
+          <div class="bc-col">
+            <div class="bc-hdr"><span class="bc-val">1.8</span><span class="bc-tag">Loose</span></div>
+            <div class="bc-body" style="line-height:1.8">Line height là khoảng cách từ đáy một dòng text đến đáy dòng tiếp theo. Giá trị này không phải pixel, nó là hệ số nhân with font size. Dòng quá rời rạc.</div>
+          </div>
+        </div>
+      </div>
+      <!-- State 3: UI -->
+      <div class="fr" id="f2">
+        <div class="uic-wrap">
+          <div class="uic-ann" id="ua">line-height: 1.0</div>
+          <div class="uic-list" id="uicl">
+            <div class="uic-li"><span>Deploy infrastructure</span><span style="color:var(--accent);font-family:'JetBrains Mono';font-size:9px">2h ago</span></div>
+            <div class="uic-li"><span>Scale database cluster</span><span style="color:var(--accent);font-family:'JetBrains Mono';font-size:9px">5h ago</span></div>
+            <div class="uic-li"><span>Update SSL certificates</span><span style="color:var(--accent);font-family:'JetBrains Mono';font-size:9px">1d ago</span></div>
+          </div>
+        </div>
+      </div>
+      <!-- State 4: Responsive -->
+      <div class="fr" id="f3">
+        <div class="rs-wrap">
+          <div class="rs-col">
+            <div class="rs-hdr"><span class="rs-dev">Mobile</span><span class="rs-lh">1.6</span></div>
+            <div class="rs-body" style="line-height:1.6">Text nhỏ trên màn hình nhỏ cần line-height cao hơn để mắt dễ theo dõi từ dòng này sang dòng khác.</div>
+          </div>
+          <div class="rs-col">
+            <div class="rs-hdr"><span class="rs-dev">Desktop</span><span class="rs-lh">1.4</span></div>
+            <div class="rs-body" style="line-height:1.4">Text lớn trên màn hình rộng cần line-height thấp hơn — đủ khoảng cách, không lãng phí không gian.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="inf">
+    <div class="dn" id="dn">Line Height Scale</div>
+    <div class="ds" id="ds">typography / spacing</div>
+    <div class="dd" id="dd">Kéo line-height từ 1.0 lên 2.0 — thấy text "thở" dần ra.</div>
+  </div>
+  <div class="pt"><div class="pff" id="pff"></div></div>
+</div>
+<div class="ctr">
+    <button class="ctr-b act" data-i="0">SCALE</button>
+    <button class="ctr-b" data-i="1">BODY</button>
+    <button class="ctr-b" data-i="2">UI</button>
+    <button class="ctr-b" data-i="3">RESPONSIVE</button>
+    <button class="pp-b" id="pp" title="Play/Pause">
+        <svg class="pp-i" id="pp-i" viewBox="0 0 24 24"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>
+    </button>
+</div>
+</div>
+
+<div class="cmp">
+  <div class="cmp-hd">
+    <span class="stag">so sánh</span>
+    <span class="stag-teal">thường bị nhầm</span>
+  </div>
+  <div class="cmp-box">
+    <div class="cmp-toggle">
+      <button class="cmp-tbtn act-lh" id="b-lh">LINE-HEIGHT (CSS)</button>
+      <button class="cmp-tbtn" id="b-ls">LINE SPACING (FIGMA)</button>
+    </div>
+    <div class="cmp-main">
+      <div class="cmp-content">
+        <div class="cmp-text">Cùng một đoạn text.<br>Cùng font, cùng size.<br>Khoảng cách nhìn giống nhau.</div>
+        
+        <!-- CSS View -->
+        <div class="cmp-meas sh" id="m-css">
+          <div class="m-brk" style="top:14px;height:28px"><span class="m-brk-v">1.5×</span></div>
+        </div>
+
+        <!-- Figma View -->
+        <div class="cmp-meas" id="m-fig">
+          <div class="m-xout" style="top:14px;height:14px"></div>
+          <div class="m-brk" style="top:28px;height:14px;border-color:var(--teal)"><span class="m-brk-v" style="color:var(--teal)">gap</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="cmp-leg">
+      <div class="cmp-leg-i"><div class="cmp-dot"></div><span>CSS: đo từ baseline</span></div>
+      <div class="cmp-leg-i"><div class="cmp-dot ls"></div><span>Figma: đo khoảng hở</span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const INFO=[
+  {nm:'Line Height Scale',sz:'TYPOGRAPHY / SPACING',dc:'Kéo line-height từ 1.0 lên 2.0 — thấy text "thở" dần ra. 1.0 là mức sát nhất, chữ dính nhau.'},
+  {nm:'Body Comparison',sz:'SWEET SPOT 1.5',dc:'Cùng nội dung, 3 giá trị khác nhau — mức 1.5 thường là tỷ lệ vàng cho văn bản dài.'},
+  {nm:'UI Components',sz:'NAV VS LIST',dc:'Nav cần line-height chặt (1.0 - 1.2), list cần line-height thoáng hơn (1.4 - 1.6) để phân biệt các item.'},
+  {nm:'Responsive UI',sz:'MOBILE VS DESKTOP',dc:'Mobile cần line-height cao hơn desktop một chút vì màn hình nhỏ khiến việc tìm dòng tiếp theo khó hơn.'}
+];
+
+const el={
+  dn:$('dn'),ds:$('ds'),dd:$('dd'),hf:$('hf'),pff:$('pff'),
+  scn:$('scn'),scf:$('scf'),sct:$('sct'),
+  ua:$('ua'),uicl:$('uicl'),
+  blh:$('b-lh'),bls:$('b-ls'),mcss:$('m-css'),mfig:$('m-fig')
+};
+const frs=[0,1,2,3].map(i=>$('f'+i));
+const ctrBs=document.querySelectorAll('.ctr-b');
+const ppB=$('pp'),ppI=$('pp-i');
+
+let cur=0,pa=null,t0=0,isPaused=false,sweepT=null;
+const DUR=4500;
+
+function $(id){return document.getElementById(id)}
+
+function apply(i){
+  cur=i;
+  const s=INFO[i];el.dn.textContent=s.nm;el.ds.textContent=s.sz;el.dd.textContent=s.dc;
+  el.hf.textContent='0'+(i+1)+' / 04';
+  ctrBs.forEach((b,j)=>b.classList.toggle('act',j===i));
+  frs.forEach((f,j)=>f.classList.toggle('show',j===i));
+  clearTimeout(sweepT);
+  if(i===0) runSweep();
+  if(i===2) runUI();
+}
+
+function runSweep(){
+  const vals=[1.0,1.2,1.4,1.5,1.6,1.8,2.0];
+  let si=0;
+  function nextV(){
+    if(si>=vals.length || cur!==0) return;
+    const v=vals[si];
+    el.sct.style.lineHeight=v;
+    el.scn.textContent=v.toFixed(1);
+    el.scf.style.height=((v-1.0)/1.0*100)+'%';
+    si++;
+    sweepT=setTimeout(nextV, 500);
+  }
+  nextV();
+}
+
+function runUI(){
+  const lis=el.uicl.querySelectorAll('.uic-li');
+  el.ua.textContent='line-height: 1.0';
+  lis.forEach(l=>l.style.lineHeight='1.0');
+  setTimeout(()=>{
+    if(cur!==2) return;
+    el.ua.textContent='line-height: 2.0';
+    lis.forEach(l=>l.style.lineHeight='2.0');
+    setTimeout(()=>{
+      if(cur!==2) return;
+      el.ua.textContent='line-height: 1.5';
+      lis.forEach(l=>l.style.lineHeight='1.5');
+    }, 1500);
+  }, 1500);
+}
+
+// Comparison Logic
+let cmpV = 'lh';
+function updateCmp(v){
+  cmpV = v;
+  el.blh.classList.toggle('act-lh', v==='lh');
+  el.bls.classList.toggle('act-ls', v==='ls');
+  el.mcss.classList.toggle('sh', v==='lh');
+  el.mfig.classList.toggle('sh', v==='ls');
+}
+el.blh.onclick=()=>updateCmp('lh');
+el.bls.onclick=()=>updateCmp('ls');
+
+// Auto-toggle comparison
+setInterval(()=>{
+  if(document.hidden) return;
+  updateCmp(cmpV==='lh'?'ls':'lh');
+}, 3000);
+
+function tk(n){
+    if(isPaused) return;
+    const p=Math.min(100,(n-t0)/DUR*100);
+    el.pff.style.width=p+'%';
+    if(p<100)pa=requestAnimationFrame(tk);
+    else next();
+}
+
+function startProg(){t0=performance.now();el.pff.style.transition='none';el.pff.style.width='0%';pa=requestAnimationFrame(tk)}
+function next(){if(isPaused)return;cur=(cur+1)%4;apply(cur);startProg()}
+
+function togglePP(){
+    isPaused=!isPaused;
+    ppI.innerHTML=isPaused ? '<path d="M8 5v14l11-7z"/>' : '<path d="M6 4h4v16H6zm8 0h4v16h-4z"/>';
+    if(!isPaused){
+        t0=performance.now() - (parseFloat(el.pff.style.width||0)/100*DUR);
+        pa=requestAnimationFrame(tk);
+    }
+}
+
+ctrBs.forEach(b=>{
+    b.onclick=()=>{
+        isPaused=true;
+        ppI.innerHTML='<path d="M8 5v14l11-7z"/>';
+        apply(parseInt(b.dataset.i));
+        el.pff.style.width='0%';
+    }
+});
+
+ppB.onclick=togglePP;
+
+function scale(){const w=$('la-wrap'),b=$('ab'),s=w.clientWidth/700;b.style.transform='scale('+s+')';w.style.height=Math.ceil(250*s)+'px'}
+window.addEventListener('resize',scale);
+requestAnimationFrame(()=>requestAnimationFrame(scale));
+
+apply(0);
+startProg();
+</script>
+</body>
+</html>
