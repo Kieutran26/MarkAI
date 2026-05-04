@@ -28,6 +28,8 @@ import frontendDemoHtml from '../../gif-frontend-demo.html?raw';
 import frontendPracticeHtml from '../../gif-frontend-practice.html?raw';
 import backendDemoHtml from '../../gif-backend-demo.html?raw';
 import backendPracticeHtml from '../../gif-backend-practice.html?raw';
+import breadcrumbDemoHtml from '../../gif-breadcrumb-demo.html?raw';
+import breadcrumbPracticeHtml from '../../gif-breadcrumb-practice.html?raw';
 import databaseDemoHtml from '../../gif-database-demo.html?raw';
 import databasePracticeHtml from '../../gif-database-practice.html?raw';
 import componentDemoHtml from '../../gif-component-demo.html?raw';
@@ -90,6 +92,7 @@ export default function GlossaryTermDetailPage() {
     if (id === 'card') return cardDemoHtml;
     if (id === 'frontend') return frontendDemoHtml;
     if (id === 'backend') return backendDemoHtml;
+    if (id === 'breadcrumb') return breadcrumbDemoHtml;
     if (id === 'database') return databaseDemoHtml;
     if (id === 'component') return componentDemoHtml;
     if (id === 'deploy') return deployDemoHtml;
@@ -119,6 +122,7 @@ export default function GlossaryTermDetailPage() {
     if (id === 'card') return cardPracticeHtml;
     if (id === 'frontend') return frontendPracticeHtml;
     if (id === 'backend') return backendPracticeHtml;
+    if (id === 'breadcrumb') return breadcrumbPracticeHtml;
     if (id === 'database') return databasePracticeHtml;
     if (id === 'component') return componentPracticeHtml;
     if (id === 'deploy') return deployPracticeHtml;

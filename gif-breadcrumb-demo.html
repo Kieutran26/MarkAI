@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Breadcrumb Demo — markAI</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f0f12;--fg:#e8e0d4;--muted:#706b64;--accent:#e88c2e;--accent-dim:rgba(232,140,46,.15);--card:#16161b;--card-alt:#1c1c22;--border:#282830;--border-hi:#44403a;--c1:#4a5a8a;--c2:#4a8a5a;--c3:#b89a2a}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:auto;overflow:hidden}
+body{background:var(--bg);background-image:radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:16px 16px;display:flex;flex-direction:column;align-items:center;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:12px 16px}
+
+.aw{width:100%}
+.ab{width:100%;height:260px;background:var(--card);border:1px solid var(--border);overflow:hidden;display:flex;flex-direction:column;position:relative}
+.hd{display:flex;align-items:center;justify-content:space-between;padding:7px 14px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
+.hd-t{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:2px}
+.hd-f{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
+
+.la{position:relative;flex:1;background:linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);background-size:30px 30px;overflow:hidden}
+.fr{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .3s}.fr.show{opacity:1;pointer-events:auto}
+
+/* Breadcrumb type badge */
+.bt{position:absolute;top:12px;right:20px;font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;letter-spacing:1.5px;color:var(--accent);border:1px solid var(--border);padding:2px 8px;opacity:0;transform:translateY(-3px);transition:opacity .3s,transform .3s;z-index:10}
+.fr.show .bt{opacity:1;transform:translateY(0)}
+
+/* Breadcrumb area */
+.ba{padding:10px 20px 0;flex-shrink:0;position:relative}
+.bc{display:flex;align-items:center;flex-wrap:wrap}
+.bw{position:relative;height:22px}
+.bc-f,.bc-c{position:absolute;inset:0;display:flex;align-items:center;transition:opacity .4s}.bc-c{opacity:0}
+.bi{font-size:12px;opacity:0;transform:translateX(-5px);transition:opacity .25s,transform .25s;white-space:nowrap}
+.fr.show .bi{opacity:1;transform:translateX(0)}
+.bi.cur{color:var(--accent);font-weight:700}
+.bi:not(.cur){color:var(--muted)}
+.bi.dot{color:var(--accent);font-weight:700;letter-spacing:2px}
+.bs{margin:0 6px;color:var(--border-hi);font-size:11px;opacity:0;transition:opacity .25s}
+.fr.show .bs{opacity:1}
+.bd{height:1px;background:var(--border);margin:8px 0 0;opacity:0;transition:opacity .3s}.fr.show .bd{opacity:1}
+
+/* Content mockups */
+.mc{flex:1;display:flex;align-items:center;justify-content:center;padding:0 20px 8px;opacity:0;transform:translateY(4px);transition:opacity .3s,transform .3s}
+.fr.show .mc{opacity:1;transform:translateY(0)}
+
+.mcp{display:flex;gap:10px;border:1px solid var(--border);padding:8px;background:var(--card-alt);max-width:340px;width:100%}
+.mcpi{width:60px;height:54px;background:var(--bg);border:1px solid var(--border);flex-shrink:0}
+.mcpi.in{background:linear-gradient(135deg,var(--accent-dim),var(--card))}
+.mci{display:flex;flex-direction:column;justify-content:center;gap:2px;min-width:0}
+.mcn{font-size:11px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mcpo{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent)}
+.mcb{padding:0 8px;height:20px;background:var(--accent);color:#fff;font-family:'Space Grotesk',sans-serif;font-size:9px;font-weight:600;display:inline-flex;align-items:center;align-self:flex-start;margin-top:2px;border:none}
+
+.mcd{display:flex;flex-direction:column;gap:6px;max-width:340px;width:100%}
+.mcm{display:flex;gap:6px}
+.mcv{flex:1;border:1px solid var(--border);padding:6px;background:var(--card-alt)}
+.mcvv{font-size:14px;font-weight:800}
+.mcml{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);margin-top:1px}
+.mcb2{display:flex;flex-direction:column;gap:4px;border:1px solid var(--border);padding:6px;background:var(--card-alt)}
+.mcbi{height:8px;background:var(--border);position:relative;overflow:hidden}
+.mcbf{height:100%;background:var(--accent);opacity:.5;transition:width .5s}
+.mcbi:nth-child(1) .mcbf{width:78%}.mcbi:nth-child(2) .mcbf{width:55%}.mcbi:nth-child(3) .mcbf{width:42%}
+
+.mca{max-width:340px;width:100%}
+.mcat{font-size:13px;font-weight:700;margin-bottom:6px;line-height:1.2}
+.mcal{height:3px;background:var(--border);margin-bottom:4px;border-radius:1px}
+.mcal:nth-child(3){width:95%}.mcal:nth-child(4){width:82%}.mcal:nth-child(5){width:88%}
+
+/* Info */
+.inf{padding:8px 14px;background:var(--card);border-top:1px solid var(--border);min-height:72px}
+.dn{font-size:14px;font-weight:800;line-height:1.1;color:var(--fg)}
+.ds{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);margin-top:2px;text-transform:uppercase;letter-spacing:1px}
+.dd{font-size:10px;color:var(--muted);margin-top:4px;line-height:1.4}
+
+.pt{height:2px;background:var(--border)}.pf{height:100%;background:var(--accent);width:0%}
+/* Controls */
+.ctr{display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 16px 12px;background:var(--bg)}
+.ctr-b{padding:6px 12px;background:var(--card-alt);border:1px solid var(--border);color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:1px}
+.ctr-b:hover{border-color:var(--border-hi);color:var(--fg)}
+.ctr-b.act{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+
+.pp-b{width:32px;height:32px;border-radius:50%;background:var(--accent);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-left:4px;transition:transform .2s;flex-shrink:0}
+.pp-b:active{transform:scale(.92)}
+.pp-i{width:12px;height:12px;fill:#000}
+
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="aw">
+    <div class="ab" id="ab">
+        <div class="hd"><span class="hd-t">BREADCRUMB</span><span class="hd-f" id="hf">01 / 04</span></div>
+        <div class="la">
+            <div class="fr" id="f0"></div>
+            <div class="fr" id="f1"></div>
+            <div class="fr" id="f2"></div>
+            <div class="fr" id="f3"></div>
+        </div>
+        <div class="inf">
+            <div class="dn" id="dn"></div>
+            <div class="ds" id="ds"></div>
+            <div class="dd" id="dd"></div>
+        </div>
+        <div class="pt"><div class="pf" id="pf"></div></div>
+    </div>
+    <div class="ctr">
+        <button class="ctr-b act" data-i="0">HIERARCHY</button>
+        <button class="ctr-b" data-i="1">LOCATION</button>
+        <button class="ctr-b" data-i="2">MULTI-LEVEL</button>
+        <button class="ctr-b" data-i="3">COLLAPSED</button>
+        <button class="pp-b" id="pp" title="Play/Pause">
+            <svg class="pp-i" id="pp-i" viewBox="0 0 24 24"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>
+        </button>
+    </div>
+</div>
+
+<script>
+const FRAMES=[
+    {type:'HIERARCHY',sub:'E-COMMERCE',tc:'var(--accent)',
+     items:[{t:'Home'},{t:'Laptops'},{t:'MacBook Pro 14',cur:true}],
+     content:'product',
+     nm:'Hierarchy',sz:'PHÂN CẤP — TỪ RỘNG ĐẾN HẸP',
+     dc:'Đi từ danh mục lớn đến sản phẩm cụ thể — cho user biết vị trí trong cây phân loại.'},
+    {type:'LOCATION',sub:'APP NAVIGATION',tc:'var(--c1)',
+     items:[{t:'Dashboard'},{t:'Sales'},{t:'Sales Overview',cur:true}],
+     content:'dashboard',
+     nm:'Location',sz:'VỊ TRÍ TRONG APP',
+     dc:'Cho user biết mình đang ở trang nào trong cấu trúc ứng dụng phức tạp.'},
+    {type:'MULTI-LEVEL',sub:'CONTENT SITE',tc:'var(--c2)',
+     items:[{t:'Blog'},{t:'UX Design'},{t:'Breadcrumb Best Practices',cur:true}],
+     content:'article',
+     nm:'Multi-level',sz:'NHIỀU CẤP — NỘI DUNG SÂU',
+     dc:'Càng vào sâu, breadcrumb càng quan trọng để không bị mất phương hướng.'},
+    {type:'COLLAPSED',sub:'ĐƯỜNG DẪN DÀI',tc:'var(--c3)',collapsed:true,
+     full:[{t:'Home'},{t:'Electronics'},{t:'Accessories'},{t:'Cables'},{t:'Adapters'},{t:'USB-C Hub',cur:true}],
+     items:[{t:'Home'},{t:'...',dot:true},{t:'USB-C Hub',cur:true}],
+     content:'product2',
+     nm:'Collapsed',sz:'THU GỌN KHI DÀI',
+     dc:'Path quá dài → thu gọn phần giữa, chỉ giữ điểm đầu và đích đến để giao diện gọn gàng.'}
+];
+
+function contentHTML(type){
+    if(type==='product') return '<div class="mcp"><div class="mcpi in"></div><div class="mci"><div class="mcn">MacBook Pro 14"</div><div class="mcpo">$2,499</div><button class="mcb">Add to Cart</button></div></div>';
+    if(type==='dashboard') return '<div class="mcd"><div class="mcm"><div class="mcv"><div class="mcvv">$24.5K</div><div class="mcml">Revenue</div></div><div class="mcv"><div class="mcvv">1,204</div><div class="mcml">Orders</div></div></div><div class="mcb2"><div class="mcbi"><div class="mcbf"></div></div><div class="mcbi"><div class="mcbf"></div></div><div class="mcbi"><div class="mcbf"></div></div></div></div>';
+    if(type==='article') return '<div class="mca"><div class="mcat">Breadcrumb Best Practices for UX Design</div><div class="mcal"></div><div class="mcal"></div><div class="mcal"></div><div class="mcal"></div></div>';
+    if(type==='product2') return '<div class="mcp"><div class="mcpi"></div><div class="mci"><div class="mcn">USB-C Hub 7-in-1</div><div class="mcpo">$49.99</div><button class="mcb">Add to Cart</button></div></div>';
+    return '';
+}
+
+function renderFrame(i){
+    const fr=document.getElementById('f'+i);
+    const d=FRAMES[i];
+    let h='<div class="bt" style="color:'+d.tc+';border-color:'+d.tc+'">'+d.type+'</div>';
+    h+='<div class="ba">';
+    if(d.collapsed){
+        h+='<div class="bw"><div class="bc bc-f" id="bcF">';
+        d.full.forEach((it,j)=>{if(j>0)h+='<span class="bs">›</span>';h+='<span class="bi'+(it.cur?' cur':'')+'">'+it.t+'</span>'});
+        h+='</div><div class="bc bc-c" id="bcC">';
+        d.items.forEach((it,j)=>{if(j>0)h+='<span class="bs">›</span>';h+='<span class="bi'+(it.cur?' cur':'')+(it.dot?' dot':'')+'">'+it.t+'</span>'});
+        h+='</div></div>';
+    }else{
+        h+='<div class="bc">';
+        d.items.forEach((it,j)=>{if(j>0)h+='<span class="bs">›</span>';h+='<span class="bi'+(it.cur?' cur':'')+'">'+it.t+'</span>'});
+        h+='</div>';
+    }
+    h+='<div class="bd"></div></div>';
+    h+='<div class="mc">'+contentHTML(d.content)+'</div>';
+    fr.innerHTML=h;
+}
+
+const frs=[0,1,2,3].map(i=>document.getElementById('f'+i));
+const el={dn:document.getElementById('dn'),ds:document.getElementById('ds'),dd:document.getElementById('dd'),hf:document.getElementById('hf'),pf:document.getElementById('pf')};
+const ctrBs=document.querySelectorAll('.ctr-b');
+const ppB=document.getElementById('pp');
+const ppI=document.getElementById('pp-i');
+
+let cur=0,ft=null,pa=null,t0=0,colT=null,isPaused=false;
+const DUR=3800;
+
+function apply(i){
+    clearTimeout(colT);
+    cur=i;
+    const d=FRAMES[i];
+    el.dn.textContent=d.nm;el.ds.textContent=d.sz;el.dd.textContent=d.dc;
+    el.hf.textContent='0'+(i+1)+' / 04';
+    ctrBs.forEach((b,j)=>b.classList.toggle('act',j===i));
+
+    frs.forEach(f=>f.classList.remove('show'));
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+        frs[i].classList.add('show');
+        const items=frs[i].querySelectorAll('.bi,.bs');
+        items.forEach((e,idx)=>{e.style.transitionDelay=(0.12+idx*0.08)+'s'});
+        
+        if(i===3){
+            const bcF=frs[i].querySelector('#bcF');
+            const bcC=frs[i].querySelector('#bcC');
+            if(bcF&&bcC){bcF.style.opacity='1';bcC.style.opacity='0';}
+            colT=setTimeout(()=>{if(bcF&&bcC){bcF.style.opacity='0';bcC.style.opacity='1';}},1800);
+        }
+    }));
+}
+
+function tk(n){
+    if(isPaused) return;
+    const p=Math.min(100,(n-t0)/DUR*100);
+    el.pf.style.width=p+'%';
+    if(p<100)pa=requestAnimationFrame(tk);
+    else next();
+}
+function startProg(){t0=performance.now();el.pf.style.transition='none';el.pf.style.width='0%';pa=requestAnimationFrame(tk)}
+function next(){if(isPaused)return;cur=(cur+1)%4;apply(cur);startProg()}
+
+function togglePP(){
+    isPaused=!isPaused;
+    ppI.innerHTML=isPaused ? '<path d="M8 5v14l11-7z"/>' : '<path d="M6 4h4v16H6zm8 0h4v16h-4z"/>';
+    if(!isPaused){t0=performance.now() - (parseFloat(el.pf.style.width)/100*DUR);pa=requestAnimationFrame(tk)}
+}
+
+ctrBs.forEach(b=>{
+    b.onclick=()=>{
+        isPaused=true;
+        ppI.innerHTML='<path d="M8 5v14l11-7z"/>';
+        apply(parseInt(b.dataset.i));
+        el.pf.style.width='0%';
+    }
+});
+
+ppB.onclick=togglePP;
+
+FRAMES.forEach((_,i)=>renderFrame(i));
+apply(0);
+startProg();
+
+document.addEventListener('visibilitychange',()=>{
+    if(document.hidden){cancelAnimationFrame(pa);clearTimeout(colT)}
+    else if(!isPaused){t0=performance.now() - (parseFloat(el.pf.style.width)/100*DUR);pa=requestAnimationFrame(tk)}
+});
+</script>
+</body>
+</html>

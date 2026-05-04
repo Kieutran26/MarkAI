@@ -30,6 +30,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'backend', name: 'Backend', nameEn: 'Phần sau / Server', letter: 'B', groups: ['infra', 'code'], definition: 'Phần người dùng không thấy — nơi data được lưu, xử lý, và bảo mật. Nếu frontend là mặt tiền cửa hàng, backend là kho hàng và văn phòng phía sau.', example: '"Form đăng ký của tôi lưu data ở đâu?" → Supabase là backend.', related: ['frontend', 'database'], demo: { kind: 'interactive', src: 'gif-backend-demo.html', alt: 'Mô phỏng 4 tầng backend: API, DB, Auth, Jobs' } },
   { id: 'build', name: 'Build', nameEn: 'Đóng gói / Compile', letter: 'B', groups: ['infra'], definition: 'Quá trình biến code thô thành file tối ưu để đưa lên internet. Giống như in ấn trước khi phát hành tài liệu.', example: '"Build failed" = quá trình đóng gói bị lỗi trước khi deploy. Thường do code bị lỗi syntax hoặc thiếu package.', related: ['deploy', 'environment'] },
   { id: 'boolean', name: 'Boolean', nameEn: 'True / False', letter: 'B', groups: ['code'], definition: 'Kiểu dữ liệu chỉ có 2 giá trị: đúng hoặc sai (true/false). Dùng để kiểm soát logic — ví dụ: "isLoggedIn: true" nghĩa là người dùng đã đăng nhập.', example: 'Prompt: "Thêm tính năng toggle — khi bật thì hiện banner, khi tắt thì ẩn." AI sẽ dùng boolean showBanner: true/false.' },
+  { id: 'breadcrumb', name: 'Breadcrumb', nameEn: 'Đường dẫn liên kết', letter: 'B', groups: ['design', 'code'], definition: 'Một dãy các liên kết giúp người dùng xác định vị trí hiện tại của mình trong cấu trúc website và dễ dàng quay lại các cấp cao hơn. Giúp công cụ tìm kiếm hiểu cấu trúc website và hiển thị kết quả tìm kiếm thân thiện hơn. Giảm tỷ lệ thoát khuyến khích người dùng khám phá thêm các danh mục khác', example: 'Trang "MacBook Pro 14" có breadcrumb: Home > Laptops > MacBook Pro 14. Marketer dùng breadcrumb để tăng UX và giúp Google hiểu cấu trúc trang tốt hơn (SEO).', related: ['url', 'hierarchy', 'navigation'], demo: { kind: 'interactive', src: 'gif-breadcrumb-demo.html', alt: 'Mô phỏng các loại breadcrumb: Hierarchy, Location, Multi-level và Collapsed' } },
   { id: 'cache', name: 'Cache', nameEn: 'Bộ nhớ đệm', letter: 'C', groups: ['infra'], definition: 'Lưu tạm kết quả để lần sau truy cập nhanh hơn. Giống như nhớ đường đi — lần đầu phải tra bản đồ, lần sau thuộc rồi đi liền.', example: '"Tôi sửa web rồi nhưng người dùng vẫn thấy phiên bản cũ" → Vấn đề cache. Xóa cache hoặc hard reload (Ctrl+Shift+R).' },
   { id: 'card', name: 'Card', nameEn: 'Thẻ nội dung', letter: 'C', groups: ['design', 'code'], definition: 'Một khối chứa thông tin — gom ảnh, tiêu đề, mô tả, nút hành động vào một hộp. Card giúp phân tách các nội dung khác nhau trên trang một cách rõ ràng và dễ quét.', example: 'Product card cho sản phẩm, Blog card cho bài viết. Card là đơn vị cơ bản nhất để build các trang kiểu Dashboard hoặc Landing Page.', related: ['component', 'padding', 'radius'], demo: { kind: 'interactive', src: 'gif-card-demo.html', alt: 'Mô phỏng các loại card: Basic, Horizontal, Featured, Stats' } },
   { id: 'cli', name: 'CLI', nameEn: 'Command Line Interface', letter: 'C', groups: ['infra'], definition: 'Giao diện dòng lệnh — bạn gõ lệnh chữ thay vì click. Terminal trong VS Code là CLI. Claude Code chạy trên CLI.', example: 'Gõ "npm run dev" vào terminal = CLI đang chạy lệnh khởi động server. Chỉ cần biết copy-paste đúng lệnh.', related: ['terminal', 'npm'] },
@@ -133,6 +134,7 @@ const deepDiveTermIds = new Set([
   'async',
   'backend',
   'border',
+  'breadcrumb',
   'breakpoint',
   'build',
   'card',
@@ -189,6 +191,11 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Breakpoint chính là "cửa ngõ" của thiết kế Responsive. Mỗi khi chiều rộng trình duyệt vượt qua một con số cụ thể (ví dụ 768px), một bộ CSS mới sẽ được kích hoạt để thay đổi layout.',
     'Với marketer, việc biết các mốc breakpoint giúp quá trình Review UI diễn ra chuyên nghiệp hơn. Thay vì nói "trên điện thoại bị lỗi", bạn có thể chỉ rõ "ở breakpoint dưới 480px, tiêu đề đang bị tràn".',
     'Trong mô phỏng, bạn sẽ thấy 4 mốc kinh điển: 768px (bắt đầu Tablet), 1024px (bắt đầu Laptop), 1440px (Desktop lớn). Mỗi mốc là một sự thay đổi về trải nghiệm người dùng.',
+  ],
+  breadcrumb: [
+    'Breadcrumb không chỉ là trang trí. Nó là công cụ SEO mạnh mẽ giúp Google hiển thị đẹp mắt ngay trên kết quả tìm kiếm.',
+    'Có 3 loại chính: Phân cấp (Hierarchy - phổ biến nhất), Lịch sử (History) và Thuộc tính (Attribute). Với website e-commerce, phân cấp là ưu tiên số 1.',
+    'Quy tắc vàng: Cấp cuối cùng trong breadcrumb (trang hiện tại) không nên có link để tránh việc user click lại chính trang đó.',
   ],
   card: [
     'Card là "nguyên tử" của layout hiện đại. Thay vì viết tràn lan, hãy gom nội dung vào card để trang trông ngăn nắp và chuyên nghiệp hơn.',
