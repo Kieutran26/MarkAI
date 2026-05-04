@@ -36,6 +36,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'cli', name: 'CLI', nameEn: 'Command Line Interface', letter: 'C', groups: ['infra'], definition: 'Giao diện dòng lệnh — bạn gõ lệnh chữ thay vì click. Terminal trong VS Code là CLI. Claude Code chạy trên CLI.', example: 'Gõ "npm run dev" vào terminal = CLI đang chạy lệnh khởi động server. Chỉ cần biết copy-paste đúng lệnh.', related: ['terminal', 'npm'] },
   { id: 'commit', name: 'Commit', nameEn: 'Lưu checkpoint code', letter: 'C', groups: ['workflow', 'code'], definition: 'Hành động lưu lại một điểm trong lịch sử code. Giống như Save game — bạn có thể quay lại đây bất cứ lúc nào nếu AI làm vỡ project.', example: 'Sau khi hero section chạy ổn: "git commit -m \'hero section done\'". Dù AI có làm hỏng phần sau, bạn vẫn rollback về được.', related: ['git', 'repository'] },
   { id: 'component', name: 'Component', nameEn: 'Khối giao diện tái dùng', letter: 'C', groups: ['code', 'design'], definition: 'Một khối giao diện độc lập, có thể dùng lại nhiều lần. Button, card sản phẩm, navbar, form — đều là component. Thiết kế một lần, dùng ở khắp nơi trong web.', example: '"Tôi có 12 trang web nhưng muốn cùng 1 footer." Đây là lúc dùng Footer component — sửa một chỗ, cập nhật khắp nơi.', related: ['props', 'state'], demo: { kind: 'interactive', src: 'gif-component-demo.html', alt: 'Mô phỏng 4 loại component phổ biến và code minh họa' } },
+  { id: 'contrast', name: 'Contrast', nameEn: 'Độ tương phản', letter: 'C', groups: ['design', 'code'], definition: 'Sự khác biệt về độ sáng (luminance) giữa chữ và nền. Độ tương phản cao giúp nội dung dễ đọc, đặc biệt quan trọng cho khả năng tiếp cận (accessibility). Chuẩn WCAG quy định các mức ratio như 4.5:1 cho chữ thường và 3:1 cho chữ lớn.', example: 'Prompt: "Kiểm tra độ tương phản của nút CTA này, nếu chưa đạt chuẩn AA (4.5:1) thì hãy chỉnh màu nền đậm hơn hoặc chữ sáng hơn."', related: ['accessibility', 'ui', 'color-palette', 'fontweight'], demo: { kind: 'interactive', src: 'gif-contrast-demo.html', alt: 'Mô phỏng các mức độ tương phản và chuẩn WCAG' } },
   { id: 'context-window', name: 'Context Window', nameEn: 'Bộ nhớ làm việc của AI', letter: 'C', groups: ['ai'], definition: 'Lượng text tối đa AI có thể "đọc" và xử lý trong một lần. Khi conversation quá dài, AI bắt đầu quên phần đầu.', example: '"Mình đã prompt rất nhiều nhưng AI bắt đầu sai lung tung" → Context window đầy rồi. Mở conversation mới và tóm tắt lại yêu cầu.', related: ['prompt', 'model'] },
   { id: 'css', name: 'CSS', nameEn: 'Cascading Style Sheets', letter: 'C', groups: ['design', 'code'], definition: 'Ngôn ngữ kiểm soát giao diện — màu sắc, kích thước, khoảng cách, font, layout. Nếu HTML là khung xương thì CSS là da thịt và quần áo.', example: 'Prompt: "Đổi màu nền hero section sang màu kem #f5f0e8, chữ heading to hơn, thêm padding trên dưới." → AI sẽ chỉnh CSS.', related: ['tailwind', 'flexbox'] },
   { id: 'deploy', name: 'Deploy', nameEn: 'Triển khai / Đưa lên server', letter: 'D', groups: ['infra', 'workflow'], definition: 'Quá trình đưa code từ môi trường bạn đang vibecode (như Cursor/Claude Code) lên server thực tế để mọi người truy cập. Quy trình này thường diễn ra tự động qua GitHub và Vercel: mỗi khi bạn "push" code mới, hệ thống sẽ tự động Build, Test và cập nhật bản Live. Nếu bản mới bị lỗi, bạn có thể dễ dàng Rollback về bản cũ trong tích tắc.', example: 'Sau khi bảo AI sửa xong giao diện, bạn gõ lệnh push. Vercel tự động nhận diện và chạy pipeline deploy. 5 phút sau, bạn thấy thay đổi xuất hiện trên link web chính thức của dự án.', related: ['build', 'vercel', 'git'], demo: { kind: 'interactive', src: 'gif-deploy-demo.html', alt: 'Mô phỏng quy trình deploy từ khi push code đến khi thành công hoặc rollback' } },
@@ -197,6 +198,7 @@ const deepDiveTermIds = new Set([
   'primary-color',
   'color-palette',
   'fontweight',
+  'contrast',
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -242,6 +244,11 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
   component: [
     'Component là tư duy "LEGO" trong lập trình hiện đại. Thay vì viết hàng ngàn dòng code cho mỗi trang, chúng ta chia nhỏ thành các khối độc lập.',
     'Khi bạn muốn "thay đổi style toàn trang", nếu project build bằng component, bạn chỉ cần bảo AI sửa 1 file duy nhất. Nếu không, AI phải đi dò và sửa từng trang một rất mất thời gian.',
+  ],
+  contrast: [
+    'Contrast (Độ tương phản) là yếu tố sống còn của khả năng tiếp cận (Accessibility). Một thiết kế đẹp nhưng không đọc được thì vẫn là một thiết kế thất bại.',
+    'Chuẩn WCAG 2.1 quy định: Mức AA cần ratio tối thiểu 4.5:1 cho văn bản thường và 3:1 cho văn bản lớn. Mức AAA (cao nhất) cần 7:1 cho văn bản thường.',
+    'Kinh nghiệm: Đừng chỉ tin vào mắt mình. Luôn dùng công cụ check ratio (như trong mô phỏng) vì mắt người có độ nhạy sáng khác nhau, đặc biệt là với những người có thị lực kém hoặc bị mù màu.',
   ],
   database: [
     'Database là nơi lưu dữ liệu thật, nên khi mô tả yêu cầu cho AI bạn thường nên nói rõ: lưu vào bảng nào, mỗi dòng đại diện cho cái gì.',

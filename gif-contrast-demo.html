@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contrast Ratio — Demo</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#cf5c27;--accent-dim:rgba(207,92,39,.15);--card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a;--pass:#2a6e4e;--pass-t:#7dcea0;--fail-bg:#4a2020;--fail-t:#c47070}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(207,92,39,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 100%,16px 16px;display:flex;flex-direction:column;align-items:center;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:12px;gap:8px}
+
+.aw{width:100%}
+.ab-wrap{width:100%;background:var(--card);border:2px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.la-wrap{width:100%;position:relative;overflow:hidden}
+.ab{width:700px;height:250px;transform-origin:top left;background:linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);background-size:30px 30px;position:relative}
+.hd{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
+.hd-t{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:2.5px}
+.hd-f{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
+
+.sbody{position:absolute;inset:0;display:flex;gap:16px;padding:20px;z-index:5;transition:opacity .3s ease}
+.sbody.fade{opacity:0}
+.cmp{flex:1;display:flex;flex-direction:column;gap:8px}
+.cmp-g{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;padding:4px 10px;display:inline-block;width:fit-content;text-transform:uppercase;font-weight:700}
+.cmp-g.pass{background:var(--pass);color:var(--pass-t)}
+.cmp-g.fail{background:var(--fail-bg);color:var(--fail-t)}
+.cmp-g.info{background:var(--card-alt);color:var(--muted);border:1px solid var(--border)}
+.cmp-s{flex:1;display:flex;flex-direction:column;justify-content:center;padding:16px;border:1px solid var(--border);overflow:hidden;background:var(--card-alt)}
+.cmp-r{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:var(--fg);line-height:1}
+.cmp-r span{font-size:12px;font-weight:400;color:var(--muted)}
+.cmp-w{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:2px;display:flex;gap:8px;align-items:center}
+.cmp-w .wc-pass{color:var(--pass-t)}
+.cmp-w .wc-fail{color:var(--fail-t)}
+
+.inf{padding:11px 14px;border-top:1px solid var(--border);background:var(--card);min-height:86px}
+.dn{font-size:15px;font-weight:800;line-height:1.15}
+.ds{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);margin-top:2px}
+.dd{font-size:10px;color:var(--muted);margin-top:4px;line-height:1.4}
+.pt{height:2px;background:var(--border)}.pff{height:100%;background:var(--accent);width:0%}
+
+/* Controls */
+.ctr{display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 0;background:transparent}
+.ctr-b{padding:6px 12px;background:var(--card-alt);border:1px solid var(--border);color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:1px}
+.ctr-b:hover{border-color:var(--border-hi);color:var(--fg)}
+.ctr-b.act{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+
+.pp-b{width:32px;height:32px;border-radius:50%;background:var(--accent);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-left:4px;transition:transform .2s;flex-shrink:0}
+.pp-b:active{transform:scale(.92)}
+.pp-i{width:12px;height:12px;fill:#000}
+
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="aw">
+<div class="ab-wrap">
+  <div class="hd"><span class="hd-t">CONTRAST RATIO</span><span class="hd-f" id="hf">01 / 04</span></div>
+  <div class="la-wrap" id="la-wrap">
+    <div class="ab" id="ab">
+      <div class="sbody" id="sbody"></div>
+    </div>
+  </div>
+  <div class="inf">
+    <div class="dn" id="dn">Text on Background</div>
+    <div class="ds" id="ds">01 / 04 SCENARIOS</div>
+    <div class="dd" id="dd">Cùng nền tối — text sáng đọc được, text tối mắt phải rướn mới thấy.</div>
+  </div>
+  <div class="pt"><div class="pff" id="pff"></div></div>
+</div>
+
+<div class="ctr">
+    <button class="ctr-b act" data-i="0">BASIC</button>
+    <button class="ctr-b" data-i="1">BUTTON</button>
+    <button class="ctr-b" data-i="2">SCALE</button>
+    <button class="ctr-b" data-i="3">MODE</button>
+    <button class="pp-b" id="pp" title="Play/Pause">
+        <svg class="pp-i" id="pp-i" viewBox="0 0 24 24"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>
+    </button>
+</div>
+</div>
+
+<script>
+const S=[
+  {
+    nm:'Basic Text',
+    ds:'01 / 04 SCENARIOS',
+    label:'01 TEXT ON BACKGROUND',
+    dc:'Cùng nền tối — text sáng đọc được, text tối mắt phải rướn mới thấy.',
+    panels:[
+      {grade:'PASS',gc:'pass',bg:'#0c0c0e',
+       html:'<div style="font-size:16px;font-weight:600;color:#fff">Sign up for free</div><div style="font-size:11px;color:rgba(255,255,255,.55);margin-top:3px">No credit card required</div>',
+       ratio:'19.56',wcag:[{t:'AA',p:true},{t:'AAA',p:true}]},
+      {grade:'FAIL',gc:'fail',bg:'#0c0c0e',
+       html:'<div style="font-size:16px;font-weight:600;color:#555">Sign up for free</div><div style="font-size:11px;color:#444;margin-top:3px">No credit card required</div>',
+       ratio:'2.63',wcag:[{t:'AA',p:false},{t:'AAA',p:false}]}
+    ]
+  },
+  {
+    nm:'Button Contrast',
+    ds:'02 / 04 SCENARIOS',
+    label:'02 BUTTON CONTRAST',
+    dc:'Text trên nút phải đủ tương phản — nút phải nổi bật trên nền trang.',
+    panels:[
+      {grade:'PASS',gc:'pass',bg:'#0c0c0e',
+       html:'<div style="display:inline-block;padding:8px 20px;background:#cf5c27;color:#fff;font-family:\'JetBrains Mono\',monospace;font-size:11px;font-weight:700;letter-spacing:.08em">GET STARTED</div><div style="font-family:\'JetBrains Mono\',monospace;font-size:8px;color:var(--muted);margin-top:6px">Text 4.67:1 · Nút 4.19:1</div>',
+       ratio:'4.67',wcag:[{t:'AA',p:true},{t:'AAA',p:false}]},
+      {grade:'FAIL',gc:'fail',bg:'#0c0c0e',
+       html:'<div style="display:inline-block;padding:8px 20px;background:#333;color:#555;font-family:\'JetBrains Mono\',monospace;font-size:11px;font-weight:700;letter-spacing:.08em">GET STARTED</div><div style="font-family:\'JetBrains Mono\',monospace;font-size:8px;color:var(--fail-t);margin-top:6px">Text 1.70:1 · Nút 1.55:1</div>',
+       ratio:'1.70',wcag:[{t:'AA',p:false},{t:'AAA',p:false}]}
+    ]
+  },
+  {
+    nm:'Large vs Small',
+    ds:'03 / 04 SCENARIOS',
+    label:'03 LARGE VS SMALL TEXT',
+    dc:'Cùng ratio 6.88:1 — text nhỏ chỉ qua AA, text lớn qua được AAA.',
+    panels:[
+      {grade:'SMALL 14PX',gc:'info',bg:'#0c0c0e',
+       html:'<div style="font-size:14px;font-weight:400;color:#999;line-height:1.5">Read documentation to get started.</div>',
+       ratio:'6.88',wcag:[{t:'AA',p:true},{t:'AAA',p:false}]},
+      {grade:'LARGE 24PX',gc:'info',bg:'#0c0c0e',
+       html:'<div style="font-size:24px;font-weight:700;color:#999;line-height:1.3">Read docs</div>',
+       ratio:'6.88',wcag:[{t:'AA',p:true},{t:'AAA',p:true}]}
+    ]
+  },
+  {
+    nm:'Light / Dark',
+    ds:'04 / 04 SCENARIOS',
+    label:'04 LIGHT / DARK MODE',
+    dc:'Cùng màu text — trên nền tối thì OK, chuyển sang nền sáng là mất.',
+    panels:[
+      {grade:'DARK MODE',gc:'pass',bg:'#0c0c0e',
+       html:'<div style="font-size:14px;font-weight:600;color:#ece8e1">Welcome back</div><div style="font-size:10px;color:rgba(236,232,225,.5);margin-top:3px">3 pending tasks</div>',
+       ratio:'16.01',wcag:[{t:'AA',p:true},{t:'AAA',p:true}]},
+      {grade:'LIGHT MODE',gc:'fail',bg:'#f5f5f0',
+       html:'<div style="font-size:14px;font-weight:600;color:#ece8e1">Welcome back</div><div style="font-size:10px;color:rgba(236,232,225,.5);margin-top:3px">3 pending tasks</div>',
+       ratio:'1.12',wcag:[{t:'AA',p:false},{t:'AAA',p:false}]}
+    ]
+  }
+];
+
+const el={sbody:document.getElementById('sbody'),dn:document.getElementById('dn'),ds:document.getElementById('ds'),dd:document.getElementById('dd'),hf:document.getElementById('hf'),pff:document.getElementById('pff')};
+const ctrBs=document.querySelectorAll('.ctr-b');
+const ppB=document.getElementById('pp'), ppI=document.getElementById('pp-i');
+
+let cur=0,pa=null,t0=0,isPaused=false;
+const DUR=3800;
+
+function apply(i){
+  cur=i;
+  const s=S[i];
+  el.dn.textContent=s.nm;el.ds.textContent=s.ds;el.dd.textContent=s.dc;
+  el.hf.textContent='0'+(i+1)+' / 04';
+  ctrBs.forEach((b,j)=>b.classList.toggle('act',j===i));
+  
+  el.sbody.classList.add('fade');
+  setTimeout(()=>{
+    el.sbody.innerHTML=s.panels.map(p=>{
+      const wc=p.wcag.map(w=>`<span class="${w.p?'wc-pass':'wc-fail'}">${w.t} ${w.p?'✓':'✗'}</span>`).join('');
+      return`<div class="cmp">
+        <div class="cmp-g ${p.gc}">${p.grade}</div>
+        <div class="cmp-s" style="background:${p.bg}">${p.html}</div>
+        <div class="cmp-r">${p.ratio}<span> : 1</span></div>
+        <div class="cmp-w">${wc}</div>
+      </div>`;
+    }).join('');
+    el.sbody.classList.remove('fade');
+  },150);
+}
+
+function tk(n){
+    if(isPaused) return;
+    const p=Math.min(100,(n-t0)/DUR*100);
+    el.pff.style.width=p+'%';
+    if(p<100)pa=requestAnimationFrame(tk);
+    else next();
+}
+
+function startProg(){t0=performance.now();el.pff.style.transition='none';el.pff.style.width='0%';pa=requestAnimationFrame(tk)}
+function next(){if(isPaused)return;cur=(cur+1)%4;apply(cur);startProg()}
+
+function togglePP(){
+    isPaused=!isPaused;
+    ppI.innerHTML=isPaused ? '<path d="M8 5v14l11-7z"/>' : '<path d="M6 4h4v16H6zm8 0h4v16h-4z"/>';
+    if(!isPaused){
+        t0=performance.now() - (parseFloat(el.pff.style.width||0)/100*DUR);
+        pa=requestAnimationFrame(tk);
+    }
+}
+
+ctrBs.forEach(b=>{
+    b.onclick=()=>{
+        isPaused=true;
+        ppI.innerHTML='<path d="M8 5v14l11-7z"/>';
+        apply(parseInt(b.dataset.i));
+        el.pff.style.width='0%';
+    }
+});
+
+ppB.onclick=togglePP;
+
+function scale(){const w=document.getElementById('la-wrap'),b=document.getElementById('ab'),s=w.clientWidth/700;b.style.transform='scale('+s+')';w.style.height=Math.ceil(250*s)+'px'}
+window.addEventListener('resize',scale);
+requestAnimationFrame(()=>requestAnimationFrame(scale));
+
+apply(0);
+startProg();
+
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden){cancelAnimationFrame(pa)}
+  else if(!isPaused){t0=performance.now() - (parseFloat(el.pff.style.width||0)/100*DUR);pa=requestAnimationFrame(tk);}
+});
+</script>
+</body>
+</html>
