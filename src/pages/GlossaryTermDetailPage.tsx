@@ -70,6 +70,8 @@ import stickyDemoHtml from '../../gif-sticky-demo.html?raw';
 import stickyPracticeHtml from '../../gif-sticky-practice.html?raw';
 import paginationDemoHtml from '../../gif-pagination-demo.html?raw';
 import paginationPracticeHtml from '../../gif-pagination-practice.html?raw';
+import popupDemoHtml from '../../gif-popup-demo.html?raw';
+import popupPracticeHtml from '../../gif-popup-practice.html?raw';
 
 
 export default function GlossaryTermDetailPage() {
@@ -121,6 +123,7 @@ export default function GlossaryTermDetailPage() {
     if (id === 'carousel') return carouselDemoHtml;
     if (id === 'sticky') return stickyDemoHtml;
     if (id === 'pagination') return paginationDemoHtml;
+    if (id === 'popup') return popupDemoHtml;
     return null;
   };
 
@@ -155,6 +158,7 @@ export default function GlossaryTermDetailPage() {
     if (id === 'carousel') return carouselPracticeHtml;
     if (id === 'sticky') return stickyPracticeHtml;
     if (id === 'pagination') return paginationPracticeHtml;
+    if (id === 'popup') return popupPracticeHtml;
     return null;
   };
 

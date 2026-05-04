@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Popup / Modal — Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;--card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a;--ok:#4a8a5a;--err:#a03030}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 100%,16px 16px;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:12px 16px;min-height:auto;overflow:hidden}
+
+.pw{width:100%;background:var(--card);border:1px solid var(--border);padding:20px 24px;position:relative;z-index:1}
+.pw-h{font-size:15px;font-weight:700;margin-bottom:2px}.pw-h span{color:var(--accent)}
+.pw-s{font-size:11px;color:var(--muted);margin-bottom:14px}
+.mbs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.mb{padding:6px 12px;border:2px solid var(--border);background:var(--card-alt);font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);cursor:pointer;transition:all .2s}.mb:hover{border-color:var(--border-hi)}.mb.on{border-color:var(--accent);color:var(--accent);background:rgba(212,113,42,.08)}
+
+.pcv{background:var(--card-alt);border:1px solid var(--border);height:200px;display:flex;justify-content:center;align-items:center;margin-bottom:12px;position:relative;overflow:hidden}
+
+/* Fake Page Background */
+.pg{position:absolute;inset:0;padding:12px 20px;display:flex;flex-direction:column;opacity:.15;filter:grayscale(1);pointer-events:none}
+.pg-nav{display:flex;align-items:center;justify-content:space-between;padding-bottom:8px;border-bottom:1px solid var(--border);margin-bottom:10px}
+.pg-brand{font-size:11px;font-weight:700;color:var(--accent)}
+.pg-bars{display:flex;flex-direction:column;gap:6px}
+.pg-bar{height:10px;background:var(--card-alt);border:1px solid var(--border)}
+
+/* Popup Elements */
+.ov{position:absolute;inset:0;background:rgba(10,9,12,.75);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;z-index:10}
+.ov.show{opacity:1;pointer-events:auto}
+
+.pp{background:var(--card);border:1px solid var(--border);padding:18px 22px;width:260px;transform:scale(.92);opacity:0;transition:transform .4s cubic-bezier(.175,.885,.32,1.275),opacity .3s}
+.ov.show .pp{transform:scale(1);opacity:1}
+
+.pp-i{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;margin-bottom:10px;margin-left:auto;margin-right:auto}
+.pp-i.warn{background:rgba(212,113,42,.15);color:var(--accent)}
+.pp-i.err{background:rgba(160,48,48,.15);color:var(--err)}
+.pp-i.ok{background:rgba(74,138,90,.15);color:var(--ok)}
+
+.pp-t{font-size:14px;font-weight:700;margin-bottom:4px;text-align:center}
+.pp-d{font-size:10px;color:var(--muted);line-height:1.4;margin-bottom:16px;text-align:center}
+.pp-acts{display:flex;gap:8px;justify-content:center}
+.pp-btn{padding:0 12px;height:28px;font-family:'Space Grotesk',sans-serif;font-size:9px;font-weight:700;border:1px solid var(--border);background:var(--card-alt);color:var(--fg);cursor:pointer;transition:all .15s}
+.pp-btn:hover{border-color:var(--border-hi)}
+.pp-btn.pri{background:var(--accent);border-color:var(--accent);color:#000}
+.pp-btn.err{background:var(--err);border-color:var(--err);color:#fff}
+
+.fb{display:flex;align-items:center;gap:8px;padding:10px 14px;font-size:11px;border:1px solid var(--border);background:var(--card-alt);font-family:'Space Grotesk',sans-serif;color:var(--muted)}
+.fb strong{color:var(--accent)}
+.fb.w{color:var(--fg);border-color:var(--border-hi)}
+
+.pht{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);opacity:.65}
+
+@media(max-width:520px){.pw{padding:16px}.pp{width:220px}}
+</style>
+</head>
+<body>
+
+<div class="pw">
+  <div class="pw-h">Thực hành — <span>Trigger Popup</span></div>
+  <div class="pw-s">Chọn một loại popup để xem cách nó xuất hiện và tương tác.</div>
+  
+  <div class="mbs" id="mbs">
+    <button class="mb on" data-i="0">Alert</button>
+    <button class="mb" data-i="1">Confirm</button>
+    <button class="mb" data-i="2">Form</button>
+    <button class="mb" data-i="3">Success</button>
+  </div>
+
+  <div class="pcv">
+    <div class="pg">
+      <div class="pg-nav"><span class="pg-brand">APP UI</span></div>
+      <div class="pg-bars"><div class="pg-bar" style="width:100%"></div><div class="pg-bar" style="width:80%"></div><div class="pg-bar" style="width:90%"></div></div>
+    </div>
+    <div class="ov" id="ov">
+        <div class="pp" id="pp-box"></div>
+    </div>
+  </div>
+
+  <div class="fb" id="fb">Click một nút phía trên để mở popup</div>
+  <div class="pht">Hint: Popup (Modal) luôn đi kèm với Overlay để làm mờ nội dung phía sau, giúp người dùng tập trung.</div>
+</div>
+
+<script>
+  const POPUPS = [
+    {
+      t: 'Alert',
+      html: '<div class="pp-i warn">!</div><div class="pp-t">System Update</div><div class="pp-d">A new system update is available. Please restart your application to apply changes.</div><div class="pp-acts"><button class="pp-btn pri" onclick="closeP()">Restart Now</button><button class="pp-btn" onclick="closeP()">Later</button></div>',
+      hint: '<strong>Alert:</strong> Dùng để thông báo thông tin quan trọng cần hành động ngay.'
+    },
+    {
+      t: 'Confirm',
+      html: '<div class="pp-i err">✕</div><div class="pp-t">Delete Project?</div><div class="pp-d">This will permanently delete the project "Summer Campaign". This action cannot be undone.</div><div class="pp-acts"><button class="pp-btn" onclick="closeP()">Cancel</button><button class="pp-btn err" onclick="closeP()">Delete</button></div>',
+      hint: '<strong>Confirm:</strong> Dùng để xác nhận các hành động nguy hiểm hoặc không thể hoàn tác.'
+    },
+    {
+      t: 'Form',
+      html: '<div class="pp-t" style="text-align:left">Enter Code</div><div class="pp-d" style="text-align:left">Please enter the 6-digit verification code sent to your email.</div><div style="width:100%;height:32px;background:var(--card-alt);border:1px solid var(--border);margin-bottom:12px;display:flex;align-items:center;padding:0 10px;font-family:monospace;font-size:12px;letter-spacing:4px">______</div><div class="pp-acts" style="justify-content:flex-end"><button class="pp-btn" onclick="closeP()">Cancel</button><button class="pp-btn pri" onclick="closeP()">Verify</button></div>',
+      hint: '<strong>Form:</strong> Dùng để thu thập dữ liệu nhanh mà không làm mất ngữ cảnh trang hiện tại.'
+    },
+    {
+      t: 'Success',
+      html: '<div class="pp-i ok">✓</div><div class="pp-t">Payment Success</div><div class="pp-d">Your subscription has been upgraded successfully. Welcome to the Pro plan!</div><div class="pp-acts"><button class="pp-btn pri" onclick="closeP()">Dismiss</button></div>',
+      hint: '<strong>Success:</strong> Dùng để xác nhận một hành động đã được thực hiện thành công.'
+    }
+  ];
+
+  const ov = document.getElementById('ov');
+  const ppBox = document.getElementById('pp-box');
+  const fb = document.getElementById('fb');
+  const mbs = document.getElementById('mbs');
+  let curI = -1;
+
+  function openP(i) {
+    curI = i;
+    const p = POPUPS[i];
+    ppBox.innerHTML = p.html;
+    ov.classList.add('show');
+    fb.innerHTML = p.hint;
+    fb.classList.add('w');
+    
+    document.querySelectorAll('.mb').forEach((b, idx) => b.classList.toggle('on', idx === i));
+  }
+
+  function closeP() {
+    ov.classList.remove('show');
+    fb.innerHTML = 'Popup đã đóng. Click nút phía trên để mở lại.';
+    fb.classList.remove('w');
+    document.querySelectorAll('.mb').forEach(b => b.classList.remove('on'));
+  }
+
+  mbs.addEventListener('click', (e) => {
+    const b = e.target.closest('.mb');
+    if (!b) return;
+    openP(parseInt(b.dataset.i));
+  });
+
+  ov.addEventListener('click', (e) => {
+    if (e.target === ov) closeP();
+  });
+</script>
+</body>
+</html>

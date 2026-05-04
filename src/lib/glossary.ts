@@ -105,6 +105,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'sticky', name: 'Sticky', nameEn: 'Dính / Cố định khi cuộn', letter: 'S', groups: ['design', 'code'], definition: 'Thuộc tính (position: sticky) giúp một thành phần giao diện cuộn theo trang nhưng dừng lại và "dính" vào một vị trí cụ thể trên màn hình khi đạt đến ngưỡng nhất định. Thường dùng cho navbar, sidebar, hoặc action bar.', example: 'Prompt: "Làm cho phần mục lục (table of contents) bên trái sticky để khi cuộn bài blog dài, người đọc luôn biết mình đang ở phần nào."', related: ['navbar', 'header', 'sidebar'], demo: { kind: 'interactive', src: 'gif-sticky-demo.html', alt: 'Mô phỏng các trạng thái sticky: Navbar, Sub-navigation, Sidebar và Action Bar' } },
   { id: 'carousel', name: 'Carousel', nameEn: 'Vòng lặp hình ảnh / Slider', letter: 'C', groups: ['design', 'code'], definition: 'Một thành phần giao diện cho phép trình chiếu nhiều nội dung (ảnh, thẻ, sản phẩm) trong cùng một không gian bằng cách trượt qua lại. Carousel giúp tiết kiệm diện tích và tăng tính tương tác cho trang web.', example: 'Prompt: "Làm một carousel cho phần Testimonials, tự động chuyển mỗi 5 giây, có mũi tên điều hướng và các chấm tròn (dots) ở dưới."', related: ['component', 'interface', 'slider', 'animation'], demo: { kind: 'interactive', src: 'gif-carousel-demo.html', alt: 'Mô phỏng các loại carousel: Single, Multiple, Center và Autoplay' } },
   { id: 'pagination', name: 'Pagination', nameEn: 'Phân trang', letter: 'P', groups: ['design', 'code'], definition: 'Cách chia một lượng lớn dữ liệu thành nhiều trang hoặc phần nhỏ hơn. Không chỉ là thêm "trang 1, 2, 3", pagination còn bao gồm nhiều hình thức khác nhau như Prev/Next hay Load More tùy thuộc vào luồng trải nghiệm.', example: 'Prompt: "Thêm Pagination kiểu Load More cho danh sách sản phẩm này, mỗi lần bấm sẽ tải thêm 12 sản phẩm thay vì phải nhảy sang trang mới."', related: ['component', 'interface', 'data', 'state'], demo: { kind: 'interactive', src: 'gif-pagination-demo.html', alt: 'Mô phỏng các loại pagination: Numeric, Prev/Next, First/Last và Load More' } },
+  { id: 'popup', name: 'Popup', nameEn: 'Cửa sổ bật lên / Modal', letter: 'P', groups: ['design', 'code'], definition: 'Một thành phần giao diện xuất hiện đè lên nội dung hiện tại, buộc người dùng phải tương tác hoặc đóng lại trước khi tiếp tục. Thường được gọi là Modal. Popup giúp tập trung sự chú ý tuyệt đối vào một thông điệp hoặc tác vụ cụ thể.', example: '"Khi click nút Xóa, một popup hiện ra hỏi \'Bạn có chắc không?\' — đây là cách ngăn lỗi lầm tai hại bằng cách chặn người dùng hành động vội vàng."', related: ['interface', 'element', 'state'], demo: { kind: 'interactive', src: 'gif-popup-demo.html', alt: 'Mô phỏng các loại popup: Alert, Confirm, Form và Success' } },
 ];
 
 export const quickRefItems = [
@@ -175,6 +176,7 @@ const deepDiveTermIds = new Set([
   'websocket',
   'sticky',
   'pagination',
+  'popup',
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -335,6 +337,12 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Nhiều marketer nghĩ "phân trang là có sẵn". Thực ra, dev/AI phải viết logic để cắt dữ liệu (slice), tính tổng số trang (total pages), và quản lý trang hiện tại (current page).',
     'Việc chọn đúng loại phân trang rất quan trọng với UX. Nếu bạn có một danh sách sản phẩm rất dài và muốn người dùng dễ dàng xem từng món mà không bị đứt đoạn, hãy cân nhắc "Load More".',
     'Ngược lại, nếu dữ liệu của bạn có ý nghĩa thứ tự (ví dụ bảng quản lý user, báo cáo doanh thu theo tháng) và người dùng thường cần nhảy ngay về đoạn cuối hoặc tìm kiếm chính xác, hãy dùng "Numeric" hoặc "First/Last".',
+  ],
+  popup: [
+    'Popup (Modal) là công cụ mạnh mẽ để thu hút sự chú ý tuyệt đối, nhưng nếu lạm dụng sẽ gây ức chế (spam) và làm đứt quãng dòng chảy trải nghiệm của người dùng.',
+    'Có 4 loại phổ biến: Alert (thông báo gấp), Confirm (xác nhận hành động nguy hiểm), Form (thu thập dữ liệu nhanh), và Success (phản hồi kết quả).',
+    'Quy tắc vàng: Luôn cung cấp một cách dễ dàng để đóng popup (nút Close, click ra ngoài vùng tối, hoặc phím Esc) trừ khi đó là tác vụ bắt buộc pháp lý hoặc kỹ thuật phải hoàn thành.',
+    'Trong Vibecode, khi bảo AI "làm popup", hãy nói rõ mục đích (xóa, mời thành viên, hay báo lỗi) để AI chọn đúng bộ nút và màu sắc tương ứng (ví dụ: Confirm xóa thì nút đỏ, Form mời thì nút thương hiệu).',
   ],
 };
 
