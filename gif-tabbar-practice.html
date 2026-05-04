@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tab Bar Practice — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#131313;--bg-card:#1a1a1a;--bg-el:#222;
+  --fg:#ede8df;--fg-dim:#9a9590;--fg-muted:#5c5752;
+  --accent:#d97706;--accent-br:#f59e0b;--accent-dm:#92400e;
+  --border:#2e2e2e;--radius:2px;
+  --sans:'Space Grotesk',sans-serif;--mono:'IBM Plex Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;-webkit-font-smoothing:antialiased}
+body{
+  font-family:var(--sans);color:var(--fg);line-height:1.5;min-height:auto;
+  background-color:var(--bg);
+}
+.entry{max-width:900px;margin:0 auto;padding:24px 20px 40px}
+
+.sec-lbl {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sec-lbl::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* === PRACTICE === */
+.practice{margin-bottom:0}
+.practice-hdr{margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:18px}
+.practice-hdr .badge{display:inline-block;font-family:var(--mono);font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent-dm);padding:3px 8px;border-radius:var(--radius);background:rgba(217,119,6,.08);margin-bottom:10px}
+.practice-hdr h2{margin-bottom:6px;font-size:clamp(1.1rem,2.5vw,1.35rem);font-weight:600;letter-spacing:-.02em;line-height:1.2}
+.practice-desc{font-size:.85rem;color:var(--fg-dim)}
+.practice-hint{font-family:var(--mono);font-size:.68rem;color:var(--fg-muted);margin-top:8px}
+.practice-body{display:flex;flex-direction:column;gap:16px;margin-bottom:16px}
+
+/* Practice tab bar */
+.prac-tabs{display:flex;border-bottom:1px solid var(--border);position:relative;background:var(--bg-card);border:1px solid var(--border);border-bottom:none;border-radius:var(--radius) var(--radius) 0 0}
+.prac-tab{padding:10px 18px;font-size:.68rem;font-weight:500;color:var(--fg-muted);cursor:pointer;position:relative;transition:color .15s;user-select:none;-webkit-tap-highlight-color:transparent;border:none;background:none;font-family:var(--sans)}
+.prac-tab:hover{color:var(--fg)}
+.prac-tab.active{color:var(--fg);font-weight:600}
+.prac-tab:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.prac-tab-ind{position:absolute;bottom:-1px;height:2px;background:var(--accent);border-radius:1px 1px 0 0;transition:left .25s ease,width .25s ease}
+
+/* Practice content */
+.prac-content{background:var(--bg-card);border:1px solid var(--border);border-radius:0 0 var(--radius) var(--radius);padding:20px;min-height:200px;position:relative;overflow:hidden}
+.prac-panel{position:absolute;inset:20px;display:flex;flex-direction:column;gap:8px;opacity:0;transition:opacity .2s ease;pointer-events:none}
+.prac-panel.active{opacity:1;pointer-events:auto;position:relative;inset:0}
+.prac-panel-title{font-size:.88rem;font-weight:700;color:var(--fg);line-height:1.2}
+.prac-panel-desc{font-size:.64rem;color:var(--fg-dim);line-height:1.5}
+.prac-panel-meta{display:flex;gap:12px;margin-top:4px}
+.prac-panel-meta span{font-family:var(--mono);font-size:.5rem;color:var(--fg-muted)}
+.prac-panel-chart{display:flex;align-items:flex-end;gap:4px;height:50px;margin-top:6px}
+.prac-panel-chart .bar{flex:1;border-radius:1px 1px 0 0;background:var(--accent-dm);min-height:4px}
+.prac-panel-chart .bar.hi{background:var(--accent)}
+.prac-panel-rows{display:flex;flex-direction:column;gap:4px;margin-top:8px}
+.prac-panel-row{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.52rem;color:var(--fg-muted);padding:4px 0;border-bottom:1px solid rgba(255,255,255,.03)}
+.prac-panel-row span:last-child{color:var(--fg-dim);font-weight:500}
+.prac-panel-val{font-family:var(--mono);font-size:1.1rem;font-weight:700;color:var(--accent-br)}
+.prac-panel-chg{font-family:var(--mono);font-size:.52rem;color:#4ade80;font-weight:600}
+.prac-state{font-family:var(--mono);font-size:.56rem;color:var(--fg-muted);text-align:center;margin-top:4px}
+.prac-state span{color:var(--accent-br);font-weight:600}
+
+</style>
+</head>
+<body>
+<div class="entry" id="app-root">
+
+    <div class="practice-body">
+      <!-- Tab Bar -->
+      <div class="prac-tabs" id="pracTabs">
+        <button class="prac-tab active" data-tab="0">Overview</button>
+        <button class="prac-tab" data-tab="1">Analytics</button>
+        <button class="prac-tab" data-tab="2">Reports</button>
+        <button class="prac-tab" data-tab="3">Settings</button>
+        <div class="prac-tab-ind" id="pracInd"></div>
+      </div>
+
+      <!-- Content -->
+      <div class="prac-content" id="pracContent">
+        <div class="prac-panel active" data-panel="0">
+          <div class="prac-panel-title">Sales Overview</div>
+          <div class="prac-panel-desc">Tổng quan doanh số ngày hôm nay. Đây là trang đầu tiên người dùng nhìn thấy khi mở dashboard.</div>
+          <div style="display:flex;align-items:baseline;gap:12px;margin-top:4px">
+            <span class="prac-panel-val">$12,430</span>
+            <span class="prac-panel-chg">+8.6% ↑</span>
+          </div>
+          <div class="prac-panel-meta"><span>Orders: 247</span><span>Avg: $50.3</span><span>Conv: 3.2%</span></div>
+          <div class="prac-panel-chart">
+            <div class="bar" style="height:30%"></div><div class="bar" style="height:55%"></div>
+            <div class="bar hi" style="height:80%"></div><div class="bar" style="height:45%"></div>
+            <div class="bar" style="height:65%"></div><div class="bar hi" style="height:100%"></div>
+            <div class="bar" style="height:70%"></div>
+          </div>
+        </div>
+        <div class="prac-panel" data-panel="1">
+          <div class="prac-panel-title">Analytics</div>
+          <div class="prac-panel-desc">Dữ liệu phân tiết về traffic, conversion rate, và user behavior trong khoảng thời gian đã chọn.</div>
+          <div style="display:flex;align-items:baseline;gap:12px;margin-top:4px">
+            <span class="prac-panel-val">8,241</span>
+            <span class="prac-panel-chg">+15.2% ↑</span>
+          </div>
+          <div class="prac-panel-meta"><span>PV: 42.1K</span><span>Bounce: 34%</span><span>Session: 4.2m</span></div>
+          <div class="prac-panel-chart">
+            <div class="bar" style="height:50%"></div><div class="bar hi" style="height:90%"></div>
+            <div class="bar" style="height:40%"></div><div class="bar hi" style="height:75%"></div>
+            <div class="bar" style="height:60%"></div><div class="bar" style="height:85%"></div>
+            <div class="bar" style="height:55%"></div>
+          </div>
+        </div>
+        <div class="prac-panel" data-panel="2">
+          <div class="prac-panel-title">Reports</div>
+          <div class="prac-panel-desc">Danh sách các báo cáo đã generate. Có thể xuất PDF hoặc chia sẻ link cho team.</div>
+          <div class="prac-panel-rows">
+            <div class="prac-panel-row"><span>Sales Report — Jun 2025</span><span>PDF</span></div>
+            <div class="prac-panel-row"><span>Marketing Spend — Q2</span><span>PDF</span></div>
+            <div class="prac-panel-row"><span>User Acquisition — May</span><span>Excel</span></div>
+            <div class="prac-panel-row"><span>Revenue Breakdown — Q1</span><span>PDF</span></div>
+          </div>
+        </div>
+        <div class="prac-panel" data-panel="3">
+          <div class="prac-panel-title">Settings</div>
+          <div class="prac-panel-desc">Cấu hình dashboard: theme, timezone, notifications, và các tùy chọn hiển thị.</div>
+          <div class="prac-panel-rows">
+            <div class="prac-panel-row"><span>Theme</span><span>Dark</span></div>
+            <div class="prac-panel-row"><span>Timezone</span><span>UTC+7</span></div>
+            <div class="prac-panel-row"><span>Notifications</span><span>On</span></div>
+            <div class="prac-panel-row"><span>Language</span><span>Tiếng Việt</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="prac-state" id="pracState">Tab active: <span>Overview</span></div>
+    </div>
+
+  </section>
+</div>
+
+<script>
+  /* === PRACTICE TAB LOGIC === */
+  var tabs = document.querySelectorAll('.prac-tab');
+  var panels = document.querySelectorAll('.prac-panel');
+  var indicator = document.getElementById('pracInd');
+  var pracState = document.getElementById('pracState');
+  var tabNames = ['Overview', 'Analytics', 'Reports', 'Settings'];
+  var activeTab = 0;
+
+  function setTab(index) {
+    activeTab = index;
+
+    /* Update tab styles */
+    tabs.forEach(function(t, i) {
+      if (i === index) {
+        t.classList.add('active');
+      } else {
+        t.classList.remove('active');
+      }
+    });
+
+    /* Update panels */
+    panels.forEach(function(p, i) {
+      if (i === index) {
+        p.classList.add('active');
+      } else {
+        p.classList.remove('active');
+      }
+    });
+
+    /* Update indicator position */
+    var tab = tabs[index];
+    indicator.style.left = tab.offsetLeft + 'px';
+    indicator.style.width = tab.offsetWidth + 'px';
+
+    /* Update state label */
+    pracState.innerHTML = 'Tab active: <span>' + tabNames[index] + '</span>';
+  }
+
+  /* Tab click events */
+  tabs.forEach(function(tab) {
+    tab.addEventListener('click', function() {
+      var idx = parseInt(this.getAttribute('data-tab'), 10);
+      setTab(idx);
+    });
+  });
+
+  /* Keyboard navigation */
+  document.getElementById('pracTabs').addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight') {
+      e.preventDefault();
+      setTab(Math.min(activeTab + 1, tabs.length - 1));
+      tabs[activeTab].focus();
+    } else if (e.key === 'ArrowLeft') {
+      e.preventDefault();
+      setTab(Math.max(activeTab - 1, 0));
+      tabs[activeTab].focus();
+    }
+  });
+
+  /* === INIT — set indicator after layout === */
+  function initIndicator() {
+    if (activeTab >= 0 && tabs[activeTab]) {
+      indicator.style.left = tabs[activeTab].offsetLeft + 'px';
+      indicator.style.width = tabs[activeTab].offsetWidth + 'px';
+    }
+  }
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(initIndicator);
+  } else {
+    window.addEventListener('load', initIndicator);
+  }
+  window.addEventListener('resize', initIndicator);
+
+</script>
+</body>
+</html>

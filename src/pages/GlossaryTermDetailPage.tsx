@@ -116,6 +116,8 @@ import hoverDemoHtml from '../../gif-hover-demo.html?raw';
 import hoverPracticeHtml from '../../gif-hover-practice.html?raw';
 import overflowDemoHtml from '../../gif-overflow-demo.html?raw';
 import overflowPracticeHtml from '../../gif-overflow-practice.html?raw';
+import tabbarDemoHtml from '../../gif-tabbar-demo.html?raw';
+import tabbarPracticeHtml from '../../gif-tabbar-practice.html?raw';
 
 
 // Final sync for viewport practice update
@@ -193,6 +195,7 @@ export default function GlossaryTermDetailPage() {
       case 'transition': return transitionDemoHtml;
       case 'hover': return hoverDemoHtml;
       case 'overflow': return overflowDemoHtml;
+      case 'tab-bar': return tabbarDemoHtml;
       default: return null;
     }
   };
@@ -254,6 +257,7 @@ export default function GlossaryTermDetailPage() {
       case 'transition': return transitionPracticeHtml;
       case 'hover': return hoverPracticeHtml;
       case 'overflow': return overflowPracticeHtml;
+      case 'tab-bar': return tabbarPracticeHtml;
       default: return null;
     }
   };

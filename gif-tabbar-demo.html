@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tab Bar Demo — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#131313;--bg-card:#1a1a1a;--bg-el:#222;
+  --fg:#ede8df;--fg-dim:#9a9590;--fg-muted:#5c5752;
+  --accent:#d97706;--accent-br:#f59e0b;--accent-dm:#92400e;
+  --border:#2e2e2e;--radius:2px;
+  --sans:'Space Grotesk',sans-serif;--mono:'IBM Plex Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;-webkit-font-smoothing:antialiased}
+body{
+  font-family:var(--sans);color:var(--fg);line-height:1.5;min-height:auto;
+  background-color:var(--bg);
+}
+.entry{max-width:900px;margin:0 auto;padding:24px 20px 40px}
+
+/* === GRID & PANEL === */
+.sim-grid{display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:28px}
+@media(min-width:640px){.sim-grid{grid-template-columns:1fr 1fr;gap:14px}}
+.sp{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.sp-label{font-family:var(--mono);font-size:.6rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-muted);padding:10px 14px 6px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
+.sp-body{padding:14px;min-height:210px;position:relative;display:flex;flex-direction:column}
+.sp-insight{font-family:var(--mono);font-size:.65rem;color:var(--fg-muted);padding:8px 14px;border-top:1px solid var(--border);background:rgba(255,255,255,.01)}
+.sp-insight em{color:var(--accent);font-style:normal}
+
+/* === DURATIONS === */
+.d1{--dur:8s}.d2{--dur:9.2s}.d3{--dur:8.6s}.d4{--dur:8s}
+
+/* === ANIMATED LABELS === */
+.albl{position:absolute;font-family:var(--mono);font-size:.46rem;font-weight:600;letter-spacing:.03em;padding:2px 6px;border-radius:var(--radius);pointer-events:none;z-index:10;white-space:nowrap;line-height:1.4}
+.albl-hl{color:var(--accent-br);background:rgba(217,119,6,.15);border:1px solid rgba(217,119,6,.3)}
+.albl-nt{color:var(--fg-dim);background:rgba(255,255,255,.05);border:1px solid var(--border)}
+.la{animation:lblA var(--dur) ease infinite}
+.lb{animation:lblB var(--dur) ease infinite}
+@keyframes lblA{0%,20%{opacity:1}26%,100%{opacity:0}}
+@keyframes lblB{0%,28%{opacity:0}34%,58%{opacity:1}64%,100%{opacity:0}}
+
+/* === PHONE FRAME (Panel 1) === */
+.phone{border:1px solid var(--border);border-radius:6px;overflow:hidden;background:var(--bg-el);flex:1;display:flex;flex-direction:column}
+.phone-status{height:14px;background:var(--bg-el);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:flex-end;padding:0 8px}
+.phone-status-dot{width:4px;height:4px;border-radius:50%;background:var(--fg-muted)}
+.phone-body{flex:1;display:flex;flex-direction:column;position:relative;overflow:hidden}
+.phone-content{flex:1;padding:10px;position:relative;z-index:1}
+.phone-tab-bar{display:flex;border-top:1px solid var(--border);background:var(--bg-el);position:relative;z-index:2}
+.phone-tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0;font-size:.44rem;color:var(--fg-muted);font-family:var(--mono);cursor:default;position:relative;transition:none}
+.phone-tab svg{width:16px;height:16px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.phone-tab.active{color:var(--accent)}
+.phone-tab-indicator{position:absolute;top:0;left:0;height:2px;background:var(--accent);border-radius:0 0 1px 1px;transition:none}
+/* Tab content areas */
+.tc{position:absolute;inset:0;padding:10px;display:flex;flex-direction:column;gap:4px}
+.tc-title{font-size:.6rem;font-weight:700;color:var(--fg)}
+.tc-line{height:4px;border-radius:1px;background:rgba(255,255,255,.06)}
+.tc-line.w80{width:80%}.tc-line.w60{width:60%}.tc-line.w90{width:90%}.tc-line.w70{width:70%}
+.tc-btn{font-family:var(--mono);font-size:.4rem;font-weight:600;padding:4px 8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:2px;color:var(--fg-dim);align-self:flex-start;margin-top:8px}
+.d1 .tc{animation:tcFade var(--dur) ease infinite;opacity:0}
+.d1 .tc:nth-child(1){animation-delay:0s}
+.d1 .tc:nth-child(2){animation-delay:2s}
+.d1 .tc:nth-child(3){animation-delay:4s}
+.d1 .tc:nth-child(4){animation-delay:6s}
+@keyframes tcFade{0%,22%{opacity:1}28%,100%{opacity:0}}
+/* Tab indicator animation — matches content panel timing: 0%, 25%, 50%, 75% */
+.d1 .phone-tab-indicator{animation:tabInd var(--dur) step-start infinite}
+@keyframes tabInd{0%{left:0;width:25%}25%{left:25%;width:25%}50%{left:50%;width:25%}75%{left:75%;width:25%}}
+/* Tab active animation — step-start so color flips exactly when content flips */
+.d1 .phone-tab:nth-child(2){animation:taA4 var(--dur) step-start infinite}
+.d1 .phone-tab:nth-child(3){animation:taB4 var(--dur) step-start infinite}
+.d1 .phone-tab:nth-child(4){animation:taC4 var(--dur) step-start infinite}
+.d1 .phone-tab:nth-child(5){animation:taD4 var(--dur) step-start infinite}
+@keyframes taA4{0%{color:var(--accent)}25%,50%,75%{color:var(--fg-muted)}}
+@keyframes taB4{0%{color:var(--fg-muted)}25%{color:var(--accent)}50%,75%{color:var(--fg-muted)}}
+@keyframes taC4{0%,25%{color:var(--fg-muted)}50%{color:var(--accent)}75%{color:var(--fg-muted)}}
+@keyframes taD4{0%,25%,50%{color:var(--fg-muted)}75%{color:var(--accent)}}
+
+/* === TOP TAB BAR (Panel 2) === */
+.top-tab-wrap{flex:1;display:flex;flex-direction:column}
+.top-tabs{display:flex;border-bottom:1px solid var(--border);position:relative;gap:0}
+.top-tab{padding:6px 0;font-size:.54rem;font-weight:500;color:var(--fg-muted);cursor:default;position:relative;transition:none;flex:1;text-align:center}
+.top-tab.active{color:var(--fg);font-weight:600}
+.top-tab-indicator{position:absolute;bottom:-1px;height:2px;background:var(--accent);border-radius:1px 1px 0 0;transition:none}
+.top-tab-content{flex:1;padding:10px 0;position:relative;overflow:hidden}
+.top-tc{position:absolute;inset:0;display:flex;flex-direction:column;gap:6px}
+.top-tc-title{font-size:.62rem;font-weight:700;color:var(--fg)}
+.top-chart{display:flex;align-items:flex-end;gap:3px;height:50px;margin-top:4px}
+.top-chart-bar{flex:1;border-radius:1px 1px 0 0;background:var(--accent-dm);min-height:4px}
+.top-chart-bar.hi{background:var(--accent)}
+.top-tc-row{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.46rem;color:var(--fg-muted)}
+.d2 .top-tc{animation:tcFade var(--dur) ease infinite;opacity:0}
+.d2 .top-tc:nth-child(1){animation-delay:0s}
+.d2 .top-tc:nth-child(2){animation-delay:2.3s}
+.d2 .top-tc:nth-child(3){animation-delay:4.6s}
+.d2 .top-tc:nth-child(4){animation-delay:6.9s}
+/* Top Tab indicator — d2 cycle 9.2s, 4 panels, each ~25% */
+.d2 .top-tab-indicator{animation:topInd var(--dur) step-start infinite}
+@keyframes topInd{0%{left:0;width:25%}25%{left:25%;width:25%}50%{left:50%;width:25%}75%{left:75%;width:25%}}
+/* Top tab active colors — sync with content delays 0s, 2.3s, 4.6s, 6.9s */
+.d2 .top-tab:nth-child(2){animation:ttA var(--dur) step-start infinite}
+.d2 .top-tab:nth-child(3){animation:ttB var(--dur) step-start infinite}
+.d2 .top-tab:nth-child(4){animation:ttC var(--dur) step-start infinite}
+.d2 .top-tab:nth-child(5){animation:ttD var(--dur) step-start infinite}
+@keyframes ttA{0%{color:var(--fg)}25%,50%,75%{color:var(--fg-muted)}}
+@keyframes ttB{0%{color:var(--fg-muted)}25%{color:var(--fg)}50%,75%{color:var(--fg-muted)}}
+@keyframes ttC{0%,25%{color:var(--fg-muted)}50%{color:var(--fg)}75%{color:var(--fg-muted)}}
+@keyframes ttD{0%,25%,50%{color:var(--fg-muted)}75%{color:var(--fg)}}
+
+/* Scrollable tabs — indicator INSIDE inner so it moves with scroll */
+.scroll-tabs{display:flex;border-bottom:1px solid var(--border);overflow:hidden;position:relative}
+.scroll-tabs-inner{display:flex;gap:0;transition:none;position:relative}
+.scroll-tab{padding:6px 12px;font-size:.5rem;font-weight:500;color:var(--fg-muted);white-space:nowrap;cursor:default;position:relative;flex-shrink:0;transition:none}
+.scroll-tab.active{color:var(--accent);font-weight:600}
+.scroll-tab-indicator{position:absolute;bottom:-1px;height:2px;background:var(--accent);border-radius:1px 1px 0 0;transition:none}
+.scroll-arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:5;width:18px;height:30px;display:flex;align-items:center;justify-content:center;background:var(--bg-card);border:1px solid var(--border);color:var(--fg-muted);font-size:.7rem;pointer-events:none;opacity:0;transition:opacity .2s}
+.scroll-arrow.show{opacity:1}
+.scroll-list{flex:1;padding:8px 0;position:relative;overflow:hidden}
+.scroll-list-items{position:absolute;inset:0;padding:8px 10px;display:flex;flex-direction:column;gap:6px}
+.sl-item{display:flex;align-items:center;gap:8px;padding:8px;background:var(--bg-el);border:1px solid var(--border);border-radius:3px}
+.sl-icon{width:20px;height:20px;border-radius:3px;background:rgba(217,119,6,.12);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sl-icon svg{width:11px;height:11px;stroke:var(--accent);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.sl-text{font-size:.54rem;color:var(--fg-dim);flex:1}
+.sl-meta{font-family:var(--mono);font-size:.42rem;color:var(--fg-muted)}
+/* scrollable: JS-driven for pixel-perfect indicator (see script below) */
+.scroll-tabs-inner{transition:transform 0.35s ease}
+.scroll-tab-indicator{transition:left 0.28s ease, width 0.28s ease}
+
+/* === SEGMENTED TAB (Panel 4) === */
+.seg-wrap{flex:1;display:flex;flex-direction:column}
+.seg-tabs{display:flex;background:var(--bg-el);border:1px solid var(--border);border-radius:4px;padding:2px;position:relative}
+.seg-tab{flex:1;padding:5px 8px;font-size:.5rem;font-weight:600;color:var(--fg-muted);text-align:center;border-radius:2px;cursor:default;position:relative;z-index:2;transition:none;font-family:var(--mono)}
+.seg-tab.active{color:var(--bg)}
+.seg-bg{position:absolute;top:2px;bottom:2px;border-radius:2px;background:var(--accent);transition:none;z-index:1}
+.seg-content{flex:1;padding:10px 0;position:relative;overflow:hidden}
+.seg-tc{position:absolute;inset:0;display:flex;flex-direction:column;gap:6px}
+.seg-tc-header{display:flex;justify-content:space-between;align-items:baseline}
+.seg-tc-title{font-size:.62rem;font-weight:700;color:var(--fg)}
+.seg-tc-val{font-family:var(--mono);font-size:.78rem;font-weight:700;color:var(--accent-br)}
+.seg-tc-chg{font-family:var(--mono);font-size:.46rem;color:#4ade80}
+.seg-chart{display:flex;align-items:flex-end;gap:4px;height:50px;margin-top:4px}
+.seg-bar{flex:1;border-radius:1px 1px 0 0;background:var(--accent-dm);min-height:4px}
+.seg-bar.hi{background:var(--accent)}
+.seg-tc-rows{display:flex;flex-direction:column;gap:3px;margin-top:6px}
+.seg-tc-row{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.44rem;color:var(--fg-muted)}
+.d4 .seg-tc{animation:tcFade3 var(--dur) ease infinite;opacity:0}
+.d4 .seg-tc:nth-child(1){animation-delay:0s}
+.d4 .seg-tc:nth-child(2){animation-delay:2.67s}
+.d4 .seg-tc:nth-child(3){animation-delay:5.33s}
+@keyframes tcFade3{0%,30%{opacity:1}38%,100%{opacity:0}}
+.d4 .seg-bg{animation:segBg var(--dur) step-start infinite}
+@keyframes segBg{0%{left:2px;width:calc(33% - 2px)}33%{left:calc(33% + 1px);width:calc(33% - 1px)}67%{left:calc(66% + 1px);width:calc(33% - 3px)}}
+/* seg-tab children: seg-bg=child1, Day=child2, Week=child3, Month=child4 */
+.d4 .seg-tab:nth-child(2){animation:taA3 var(--dur) step-start infinite}
+.d4 .seg-tab:nth-child(3){animation:taB3 var(--dur) step-start infinite}
+.d4 .seg-tab:nth-child(4){animation:taC3 var(--dur) step-start infinite}
+@keyframes taA3{0%{color:var(--bg)}33%,67%{color:var(--fg-muted)}}
+@keyframes taB3{0%{color:var(--fg-muted)}33%{color:var(--bg)}67%{color:var(--fg-muted)}}
+@keyframes taC3{0%,33%{color:var(--fg-muted)}67%{color:var(--bg)}}
+
+/* === INSIGHT BAR === */
+.insight-bar{background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--accent);padding:14px 18px;margin-top:12px;border-radius:0 var(--radius) var(--radius) 0}
+.insight-bar p{font-size:.88rem;color:var(--fg);line-height:1.5;font-weight:500}
+.insight-bar p span{color:var(--accent-br);font-weight:700}
+
+.sec-lbl {
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--fg-dim);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.sec-lbl::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* === REDUCED MOTION === */
+@media(prefers-reduced-motion:reduce){
+  .d1 .tc,.d2 .top-tc,.d3 .scroll-tabs-inner,.d4 .seg-tc,.d4 .seg-bg,
+  .d1 .phone-tab-indicator,.d2 .top-tab-indicator,.d3 .scroll-tab-indicator,
+  .d1 .phone-tab,.d2 .top-tab,.d3 .scroll-tab,.d4 .seg-tab,
+  .la,.lb{animation:none!important}
+  .d1 .tc:first-child,.d2 .top-tc:first-child,.d4 .seg-tc:first-child{opacity:1!important}
+  .d1 .phone-tab:first-child,.d2 .top-tab:first-child,.d3 .scroll-tab:first-child,.d4 .seg-tab:first-child{color:var(--accent)!important}
+  .d1 .phone-tab-indicator{left:0;width:25%!important}
+  .d2 .top-tab-indicator{left:0;width:25%!important}
+  .d3 .scroll-tab-indicator{left:0;width:44px!important}
+  .d4 .seg-bg{left:2px;width:33%!important}
+  .la,.lb{display:none!important}
+}
+</style>
+</head>
+<body>
+<div class="entry" id="app-root">
+  <!-- 4 ANIMATED PANELS -->
+  <div class="sim-grid">
+
+    <!-- PANEL 1: Bottom Tab Bar -->
+    <div class="sp d1">
+      <div class="sp-label">01 — Bottom Tab Bar</div>
+      <div class="sp-body">
+        <div class="phone">
+          <div class="phone-status"><span class="phone-status-dot"></span></div>
+          <div class="phone-body">
+            <div class="phone-content">
+              <div class="tc">
+                <div class="tc-title">Home</div>
+                <div class="tc-line w80"></div><div class="tc-line w60"></div><div class="tc-line w90"></div>
+                <div class="tc-btn">View All</div>
+              </div>
+              <div class="tc">
+                <div class="tc-title">Explore</div>
+                <div class="tc-line w70"></div><div class="tc-line w80"></div><div class="tc-line w60"></div>
+              </div>
+              <div class="tc">
+                <div class="tc-title">Notifications</div>
+                <div class="tc-line w90"></div><div class="tc-line w70"></div>
+              </div>
+              <div class="tc">
+                <div class="tc-title">Profile</div>
+                <div class="tc-line w60"></div><div class="tc-line w80"></div><div class="tc-line w70"></div><div class="tc-btn">Edit</div>
+              </div>
+            </div>
+            <div class="phone-tab-bar">
+              <div class="phone-tab-indicator"></div>
+              <div class="phone-tab active">
+                <svg viewBox="0 0 24 24"><path d="M4 12L12 4l8 8"/><path d="M6 10.5V19h4v-5h4v5h4v-8.5"/></svg>
+                Home
+              </div>
+              <div class="phone-tab">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M16.24 7.76a6 6 0 010 8.49"/></svg>
+                Explore
+              </div>
+              <div class="phone-tab">
+                <svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+                Alerts
+              </div>
+              <div class="phone-tab">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M5 20c0-4 3.5-7 7-7s7 3 7 7"/></svg>
+                Profile
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="albl albl-hl la" style="bottom:42px;right:6px">active tab đổi</div>
+        <div class="albl albl-nt lb" style="top:6px;right:6px">bottom bar — mobile</div>
+      </div>
+      <div class="sp-insight">Bottom tab = <em>điều hướng chính</em> trên mobile, icon + label ngắn</div>
+    </div>
+
+    <!-- PANEL 2: Top Tab Bar -->
+    <div class="sp d2">
+      <div class="sp-label">02 — Top Tab Bar</div>
+      <div class="sp-body">
+        <div class="top-tab-wrap">
+          <div class="top-tabs">
+            <div class="top-tab-indicator"></div>
+            <div class="top-tab active">Overview</div>
+            <div class="top-tab">Analytics</div>
+            <div class="top-tab">Reports</div>
+            <div class="top-tab">Settings</div>
+          </div>
+          <div class="top-tab-content">
+            <div class="top-tc">
+              <div class="top-tc-title">Overview</div>
+              <div class="top-chart">
+                <div class="top-chart-bar" style="height:30%"></div>
+                <div class="top-chart-bar" style="height:55%"></div>
+                <div class="top-chart-bar hi" style="height:80%"></div>
+                <div class="top-chart-bar" style="height:45%"></div>
+                <div class="top-chart-bar" style="height:65%"></div>
+                <div class="top-chart-bar hi" style="height:100%"></div>
+                <div class="top-chart-bar" style="height:70%"></div>
+              </div>
+              <div class="top-tc-row"><span>Total</span><span>$12,430</span></div>
+            </div>
+            <div class="top-tc">
+              <div class="top-tc-title">Analytics</div>
+              <div class="top-chart">
+                <div class="top-chart-bar" style="height:50%"></div>
+                <div class="top-chart-bar hi" style="height:90%"></div>
+                <div class="top-chart-bar" style="height:40%"></div>
+                <div class="top-chart-bar hi" style="height:75%"></div>
+                <div class="top-chart-bar" style="height:60%"></div>
+                <div class="top-chart-bar" style="height:85%"></div>
+                <div class="top-chart-bar" style="height:55%"></div>
+              </div>
+              <div class="top-tc-row"><span>Visitors</span><span>8,241</span></div>
+            </div>
+            <div class="top-tc">
+              <div class="top-tc-title">Reports</div>
+              <div class="top-tc-row"><span>Generated</span><span>3 reports</span></div>
+            </div>
+            <div class="top-tc">
+              <div class="top-tc-title">Settings</div>
+              <div class="top-tc-row"><span>Theme</span><span>Dark</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="albl albl-hl la" style="top:42px;left:6px">indicator slide</div>
+        <div class="albl albl-nt lb" style="bottom:6px;left:6px">top bar — desktop</div>
+      </div>
+      <div class="sp-insight">Top tab = <em>indicator slide</em> theo tab active, nội dung đổi bên dưới</div>
+    </div>
+
+    <!-- PANEL 3: Scrollable Tab Bar -->
+    <div class="sp d3">
+      <div class="sp-label">03 — Scrollable Tab Bar</div>
+      <div class="sp-body">
+        <div style="flex:1;display:flex;flex-direction:column">
+          <div class="scroll-tabs" style="position:relative">
+            <div class="scroll-tabs-inner">
+              <div class="scroll-tab-indicator"></div>
+              <div class="scroll-tab active">All</div>
+              <div class="scroll-tab">Design</div>
+              <div class="scroll-tab">Development</div>
+              <div class="scroll-tab">Marketing</div>
+              <div class="scroll-tab">Analytics</div>
+              <div class="scroll-tab">Research</div>
+            </div>
+            <div class="scroll-arrow show" style="right:0;border-radius:0 2px 2px 0">&#8594;</div>
+          </div>
+          <div class="scroll-list">
+            <div class="scroll-list-items">
+              <div class="sl-item">
+                <div class="sl-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18"/></svg></div>
+                <div class="sl-text">Landing Page Redesign</div>
+                <div class="sl-meta">Design</div>
+              </div>
+              <div class="sl-item">
+                <div class="sl-icon"><svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg></div>
+                <div class="sl-text">API Integration</div>
+                <div class="sl-meta">Dev</div>
+              </div>
+              <div class="sl-item">
+                <div class="sl-icon"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg></div>
+                <div class="sl-text">Q4 Campaign Assets</div>
+                <div class="sl-meta">Marketing</div>
+              </div>
+              <div class="sl-item">
+                <div class="sl-icon"><svg viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></div>
+                <div class="sl-text">User Behavior Study</div>
+                <div class="sl-meta">Research</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="albl albl-hl la" style="top:40px;right:6px">tabs trượt qua</div>
+        <div class="albl albl-nt lb" style="bottom:6px;left:6px">scrollable — nhiều tab</div>
+      </div>
+      <div class="sp-insight">Scrollable = tabs <em>trượt ngang</em> khi nhiều hơn khung nhìn, mũi tên chỉ có thể cuộn</div>
+    </div>
+
+    <!-- PANEL 4: Segmented Tab Bar -->
+    <div class="sp d4">
+      <div class="sp-label">04 — Segmented Tab Bar</div>
+      <div class="sp-body">
+        <div class="seg-wrap">
+          <div class="seg-tabs">
+            <div class="seg-bg"></div>
+            <div class="seg-tab active">Day</div>
+            <div class="seg-tab">Week</div>
+            <div class="seg-tab">Month</div>
+          </div>
+          <div class="seg-content">
+            <div class="seg-tc">
+              <div class="seg-tc-header"><span class="seg-tc-title">Sales Overview</span><span class="seg-tc-val">$12,430</span></div>
+              <div class="seg-tc-chg">+8.6% vs yesterday</div>
+              <div class="seg-chart">
+                <div class="seg-bar" style="height:35%"></div>
+                <div class="seg-bar" style="height:55%"></div>
+                <div class="seg-bar hi" style="height:80%"></div>
+                <div class="seg-bar" style="height:50%"></div>
+                <div class="seg-bar" style="height:65%"></div>
+                <div class="seg-bar hi" style="height:100%"></div>
+                <div class="seg-bar" style="height:45%"></div>
+              </div>
+              <div class="seg-tc-rows">
+                <div class="seg-tc-row"><span>Orders</span><span>247</span></div>
+                <div class="seg-tc-row"><span>Avg. Order</span><span>$50.3</span></div>
+                <div class="seg-tc-row"><span>Conv. Rate</span><span>3.2%</span></div>
+              </div>
+            </div>
+            <div class="seg-tc">
+              <div class="seg-tc-header"><span class="seg-tc-title">Weekly Sales</span><span class="seg-tc-val">$84,210</span></div>
+              <div class="seg-tc-chg">+12.3% vs last week</div>
+              <div class="seg-chart">
+                <div class="seg-bar" style="height:60%"></div>
+                <div class="seg-bar hi" style="height:90%"></div>
+                <div class="seg-bar" style="height:50%"></div>
+                <div class="seg-bar hi" style="height:85%"></div>
+                <div class="seg-bar" style="height:70%"></div>
+                <div class="seg-bar" style="height:55%"></div>
+                <div class="seg-bar" style="height:95%"></div>
+              </div>
+              <div class="seg-tc-rows">
+                <div class="seg-tc-row"><span>Total Orders</span><span>1,682</span></div>
+                <div class="seg-tc-row"><span>Peak Day</span><span>Wednesday</span></div>
+                <div class="seg-tc-row"><span>Avg. Daily</span><span>$12,030</span></div>
+              </div>
+            </div>
+            <div class="seg-tc">
+              <div class="seg-tc-header"><span class="seg-tc-title">Monthly Sales</span><span class="seg-tc-val">$342,800</span></div>
+              <div class="seg-tc-chg">+5.1% vs last month</div>
+              <div class="seg-tc-rows">
+                <div class="seg-tc-row"><span>Total Orders</span><span>6,841</span></div>
+                <div class="seg-tc-row"><span>Best Day</span><span>Jun 15</span></div>
+                <div class="seg-tc-row"><span>Growth</span><span>+5.1%</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="albl albl-hl la" style="top:36px;right:6px">bg slide</div>
+        <div class="albl albl-nt lb" style="bottom:6px;left:6px">segmented — compact</div>
+      </div>
+      <div class="sp-insight">Segmented = <em>nền trượt</em> theo active tab, gọn, không đường kẻ</div>
+    </div>
+
+  </div>
+
+  <!-- INSIGHT BAR -->
+  <div class="insight-bar">
+    <p>Tab bar = <span>cùng một vùng, nhiều trang nội dung</span>. Bấm tab nào → nội dung đó hiện, các tab khác ẩn. Chỉ một tab active tại một thời điểm.</p>
+  </div>
+</div>
+<script>
+/* === SCROLLABLE TAB PANEL — JS animation for pixel-perfect indicator === */
+(function() {
+  var inner = document.querySelector('.d3 .scroll-tabs-inner');
+  if (!inner) return;
+  /* tabs: indicator is child[0], real tabs start at child[1] */
+  var tabs = inner.querySelectorAll('.scroll-tab');
+  var ind  = inner.querySelector('.scroll-tab-indicator');
+  /* phases: [tabIndex in tabs NodeList, translateX offset to show tab clearly] */
+  var phases = [
+    { idx: 0, tx: 0 },      /* All — visible at start */
+    { idx: 2, tx: -90 },    /* Development — scroll left */
+    { idx: 3, tx: -160 }    /* Marketing — scroll further */
+  ];
+  var cur = 0;
+
+  function activate(phase) {
+    /* update scroll */
+    inner.style.transform = 'translateX(' + phase.tx + 'px)';
+    /* reset all tab colours */
+    tabs.forEach(function(t) { t.style.color = ''; t.style.fontWeight = ''; });
+    /* highlight active tab */
+    var activeTab = tabs[phase.idx];
+    activeTab.style.color = 'var(--accent)';
+    activeTab.style.fontWeight = '600';
+    /* position indicator using real DOM measurements */
+    ind.style.left  = activeTab.offsetLeft + 'px';
+    ind.style.width = activeTab.offsetWidth + 'px';
+  }
+
+  /* init after fonts load for accurate measurement */
+  function init() {
+    activate(phases[0]);
+    cur = 1;
+    setInterval(function() {
+      activate(phases[cur]);
+      cur = (cur + 1) % phases.length;
+    }, 2867); /* 8.6s / 3 phases */
+  }
+
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(init);
+  } else {
+    window.addEventListener('load', init);
+  }
+})();
+</script>
+</body>
+</html>

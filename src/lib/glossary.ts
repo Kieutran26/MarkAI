@@ -128,6 +128,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'progressbar', name: 'Progress Bar', nameEn: 'Thanh tiến trình', letter: 'P', groups: ['design', 'code'], definition: 'Thành phần giao diện hiển thị trạng thái hoàn thành của một tác vụ đang diễn ra. Progress Bar giúp người dùng ước lượng được thời gian chờ đợi và cảm thấy yên tâm rằng hệ thống đang hoạt động ổn định, thay vì bị "đứng hình" không rõ lý do.', example: 'Prompt: "Thêm một thanh progress bar ở đầu trang để chỉ rõ người dùng đã điền được bao nhiêu phần trăm form đăng ký, tự động cập nhật mỗi khi xong một field."', related: ['skeleton', 'spinner', 'state', 'ux'], demo: { kind: 'interactive', src: 'gif-progressbar-demo.html', alt: 'Mô phỏng 4 loại Progress Bar: Linear, Circular, Steps và Task' } },
   { id: 'transition', name: 'Transition', nameEn: 'Chuyển động mượt / Hiệu ứng chuyển cảnh', letter: 'T', groups: ['design', 'code'], definition: 'Thay đổi mượt mà giữa hai trạng thái — không nhảy giật, có đầu có cuối. Transition giúp người dùng nhận ra sự thay đổi của giao diện một cách tự nhiên thay vì bị bất ngờ.', example: 'Hover vào button thấy màu đổi từ xám sang cam trong 0.3s thay vì đổi cái rụp. Prompt: "Thêm transition 0.3s ease cho button để khi hover màu nền đổi mượt hơn."', related: ['animation', 'state', 'duration', 'easing'], demo: { kind: 'interactive', src: 'gif-transition-demo.html', alt: 'Mô phỏng các loại transition: Fade, Slide, Scale và Color' } },
   { id: 'overflow', name: 'Overflow', nameEn: 'Tràn nội dung', letter: 'O', groups: ['design', 'code'], definition: 'Quy định gì xảy ra khi nội dung lớn hơn container — tràn, cắt, hay cuộn. Overflow là thuộc tính quan trọng để kiểm soát tính thẩm mỹ và công năng của giao diện, tránh tình trạng text hay ảnh lọt ra ngoài khung hình làm hỏng layout.', example: 'Prompt: "Card này bị tràn text ra ngoài, hãy set overflow: hidden để cắt phần thừa, hoặc dùng overflow: auto để hiện thanh cuộn khi cần."', related: ['container', 'layout', 'css', 'card'], demo: { kind: 'interactive', src: 'gif-overflow-demo.html', alt: 'Mô phỏng 4 trạng thái overflow: Visible, Hidden, Scroll và Auto' } },
+  { id: 'tab-bar', name: 'Tab bar', nameEn: 'Thanh tab / Tab Bar', letter: 'T', groups: ['design', 'code'], definition: 'Thành phần điều hướng cho phép người dùng chuyển đổi giữa các vùng nội dung khác nhau trong cùng một màn hình mà không cần chuyển sang trang mới. Chỉ có một tab được kích hoạt (active) tại một thời điểm, và nội dung tương ứng sẽ được hiển thị.', example: 'Prompt: "Thêm một tab bar với 3 tab: Overview, Analytics và Settings. Khi click mỗi tab thì hiện nội dung tương ứng bên dưới."', related: ['navbar', 'interface', 'element', 'component'], demo: { kind: 'interactive', src: 'gif-tabbar-demo.html', alt: 'Mô phỏng các loại tab bar: Bottom, Top, Scrollable và Segmented' } },
 ];
 
 export const quickRefItems = [
@@ -221,6 +222,7 @@ const deepDiveTermIds = new Set([
   'progressbar',
   'transition',
   'overflow',
+  'tab-bar',
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -494,6 +496,12 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Overflow giống như một "người gác cổng" cho container. Nó quyết định xem phần nội dung thừa ra sẽ được hiển thị như thế nào: cho phép tràn (visible), cắt bỏ (hidden), hay cho phép người dùng cuộn (scroll/auto).',
     'Khi làm việc với AI, nếu bạn thấy giao diện bị vỡ do text quá dài, hãy dùng "overflow: hidden" kết hợp với "text-overflow: ellipsis" (hiện dấu ba chấm) để giữ layout ngăn nắp.',
     'Mẹo nhỏ: Hãy ưu tiên dùng "overflow: auto" thay vì "scroll". Với "auto", thanh cuộn chỉ xuất hiện khi thực sự cần thiết, giúp giao diện trông sạch sẽ hơn khi nội dung vừa vặn.',
+  ],
+  'tab-bar': [
+    'Tab bar là giải pháp kinh điển để giải quyết bài toán: quá nhiều thông tin trên một màn hình nhưng không muốn người dùng phải chuyển trang liên tục.',
+    '4 loại tab bar phổ biến: Bottom Tab (cho mobile app), Top Tab (cho web dashboard), Scrollable Tab (khi có quá nhiều tab), và Segmented Control (cho các lựa chọn ngắn, gọn).',
+    'Quy tắc vàng: Tab bar không phải là menu điều hướng toàn trang (như Navbar). Nó chỉ dùng để đổi nội dung trong MỘT vùng nhất định. Nếu bấm tab mà URL thay đổi hoàn toàn, đó thường là Navbar trá hình.',
+    'Khi prompt AI, hãy chỉ định rõ loại tab bar bạn muốn. Ví dụ: "Dùng segmented control cho phần filter thời gian" hoặc "Dùng scrollable tabs cho danh sách categories dài".',
   ],
 };
 
