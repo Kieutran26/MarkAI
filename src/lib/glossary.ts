@@ -108,6 +108,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'popup', name: 'Popup', nameEn: 'Cửa sổ bật lên / Modal', letter: 'P', groups: ['design', 'code'], definition: 'Một thành phần giao diện xuất hiện đè lên nội dung hiện tại, buộc người dùng phải tương tác hoặc đóng lại trước khi tiếp tục. Thường được gọi là Modal. Popup giúp tập trung sự chú ý tuyệt đối vào một thông điệp hoặc tác vụ cụ thể.', example: '"Khi click nút Xóa, một popup hiện ra hỏi \'Bạn có chắc không?\' — đây là cách ngăn lỗi lầm tai hại bằng cách chặn người dùng hành động vội vàng."', related: ['interface', 'element', 'state'], demo: { kind: 'interactive', src: 'gif-popup-demo.html', alt: 'Mô phỏng các loại popup: Alert, Confirm, Form và Success' } },
   { id: 'design-system', name: 'Design System', nameEn: 'Hệ thống thiết kế', letter: 'D', groups: ['design', 'workflow'], definition: 'Một bộ tiêu chuẩn hóa gồm các quy tắc thiết kế, các thành phần giao diện tái sử dụng và ngôn ngữ hình ảnh nhất quán. Design System là "nguồn sự thật duy nhất" giúp designer và developer làm việc nhanh hơn, giảm sai sót và đảm bảo trải nghiệm thương hiệu đồng nhất trên mọi sản phẩm.', example: 'Prompt: "Dùng các component trong Design System để build một trang Pricing mới, đảm bảo dùng đúng spacing scale và primary tokens."', related: ['component', 'ui', 'asset', 'css'], demo: { kind: 'interactive', src: 'gif-design-system-demo.html', alt: 'Mô phỏng 4 lớp cấu thành Design System: Colors, Typography, Components và Layout' } },
   { id: 'skeleton', name: 'Skeleton screen', nameEn: 'Màn hình khung xương / Loading placeholders', letter: 'S', groups: ['design', 'code'], definition: 'Giao diện ở trạng thái "chờ" — thay vì hiện vòng xoay (spinner) hay trang trắng, hệ thống hiện các khối màu xám mô phỏng hình dáng của nội dung sắp tải. Giúp người dùng hình dung được bố cục trang và cảm thấy thời gian chờ đợi ngắn hơn.', example: 'Khi mở Facebook hay Shopee lúc mạng yếu, bạn thấy các thanh xám dài ngắn khác nhau hiện lên trước khi ảnh và text xuất hiện — đó là skeleton screen.', related: ['interface', 'state', 'ux', 'performance'], demo: { kind: 'interactive', src: 'gif-skeleton-demo.html', alt: 'Mô phỏng skeleton screen cho Article, Dashboard, Product và Table' } },
+  { id: 'viewport', name: 'Viewport', nameEn: 'Khung hiển thị', letter: 'V', groups: ['design', 'code'], definition: 'Viewport là khu vực hiển thị nội dung của trang web mà người dùng nhìn thấy được trên màn hình thiết bị. Nó không phải là kích thước vật lý của màn hình, mà là kích thước "ảo" mà trình duyệt dùng để sắp xếp layout. Hiểu về viewport giúp marketer biết tại sao một thiết kế trông đẹp trên máy này nhưng lại bị vỡ trên máy khác dù cùng độ phân giải.', example: 'iPhone 15 Pro có màn hình 2556px nhưng viewport chỉ rộng 393px. Khi bạn bảo AI "chỉnh layout cho điện thoại", AI sẽ dùng viewport width (393px) để tính toán, không phải số pixel thực tế của màn hình.', related: ['responsive', 'breakpoint', 'layout'], demo: { kind: 'interactive', src: 'gif-viewport-demo.html', alt: 'Mô phỏng cách layout thay đổi theo các kích thước Viewport khác nhau' } },
 ];
 
 export const quickRefItems = [
@@ -181,6 +182,7 @@ const deepDiveTermIds = new Set([
   'popup',
   'design-system',
   'skeleton',
+  'viewport',
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -359,6 +361,12 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Quy tắc vàng: Skeleton phải khớp 100% với layout thật về kích thước và vị trí. Nếu skeleton một đằng, nội dung hiện ra một nẻo, user sẽ bị "giật mình" và khó chịu (layout shift).',
     'Trong Vibecode, khi bảo AI "làm loading", hãy thêm từ khóa "skeleton screen" để AI tạo ra các component placeholder xám mờ thay vì chỉ một cái vòng xoay đơn điệu.',
     'Mô phỏng thực hành giúp bạn thấy rõ sự khác biệt: Delay ngắn (0.3s) thì skeleton có thể gây "nháy" (flicker), nhưng delay dài (1s+) thì skeleton là cứu cánh cho trải nghiệm người dùng.',
+  ],
+  viewport: [
+    'Cần phân biệt rõ: Screen Resolution (độ phân giải vật lý) và Viewport Size (kích thước logic). Trình duyệt quan tâm đến Viewport.',
+    'Khi bạn bảo "web bị tràn trên di động", hãy cung cấp số Viewport Width (ví dụ: 375px) để dev/AI kiểm tra chính xác breakpoint nào đang lỗi.',
+    'Viewport không chỉ có chiều rộng (Width) mà còn có chiều cao (Height). Với các thiết kế "Full Screen" hoặc "Hero Banner", chiều cao viewport quyết định nội dung gì sẽ hiện ra',
+    'Mẹo nhỏ: Bạn có thể dùng tính năng Inspect (F12) trên Chrome, bật Toggle Device Toolbar để giả lập mọi loại Viewport phổ biến nhất hiện nay.',
   ],
 };
 
