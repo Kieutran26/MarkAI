@@ -3,244 +3,250 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Pagination Demo — markAI</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<title>Pagination — Animated</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#0f0f12;--bg-card:#16161b;--fg:#e8e4dc;--muted:#6e6e7a;
-    --accent:#e88c2e;--accent-soft:rgba(232,140,46,.12);
-    --accent-border:rgba(232,140,46,.3);--border:#282830;
-    --surface:#1c1c23;--shape-lt:#33333d;--bar-m:#44444f;
-    --mono:'JetBrains Mono',monospace;
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{
-    background:var(--bg);color:var(--fg);
-    font-family:'Space Grotesk',sans-serif;line-height:1.6;
-    overflow-x:hidden;
-  }
-  body::before{
-    content:'';position:fixed;inset:0;
-    background-image:radial-gradient(rgba(255,255,255,.022) 1px,transparent 1px);
-    background-size:20px 20px;pointer-events:none;z-index:0;
-  }
+:root{--bg:#0f0f12;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;--accent-dim:rgba(212,113,42,.15);--card:#16161b;--card-alt:#1c1c22;--border:#282830;--border-hi:#44403a;--ok:#4a8a5a}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);background-image:radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:16px 16px;display:flex;flex-direction:column;align-items:center;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:12px 16px 4px;overflow:hidden}
 
-  #app-root{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:24px}
+.aw{width:100%}
+.ab{width:100%;height:320px;background:var(--card);border:1px solid var(--border);overflow:hidden;display:flex;flex-direction:column;position:relative}
 
-  .sim-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
-  @media(max-width:800px){.sim-grid{grid-template-columns:repeat(2,1fr)}}
+.hd{display:flex;align-items:center;justify-content:space-between;padding:7px 14px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
+.hd-t{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:2.5px}
+.hd-f{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
 
-  .sc{
-    background:var(--bg-card);border:1px solid var(--border);
-    padding:20px 14px 18px;cursor:pointer;position:relative;overflow:hidden;
-    transition:border-color .3s,background .3s;
-    display:flex;flex-direction:column;
-  }
-  .sc::before{
-    content:'';position:absolute;top:0;left:0;right:0;height:2px;
-    background:var(--accent);transform:scaleX(0);transform-origin:left;
-    transition:transform .35s ease;
-  }
-  .sc:hover{border-color:var(--accent-border)}
-  .sc.on{border-color:var(--accent);background:var(--surface)}
-  .sc.on::before{transform:scaleX(1)}
+.la{position:relative;flex:1;background:linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);background-size:30px 30px;overflow:hidden}
+.fr{position:absolute;inset:0;display:flex;flex-direction:column;padding:14px 20px;opacity:0;pointer-events:none;transition:opacity .3s}.fr.show{opacity:1;pointer-events:auto}
+.si{opacity:0;transform:translateY(4px);transition:opacity .25s,transform .25s}.fr.show .si{opacity:1;transform:translateY(0)}
 
-  .sc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
-  .sc-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px}
-  .sc-tag{
-    font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;
-    text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);transition:color .3s;
-  }
-  .sc.on .sc-tag{color:var(--accent)}
+.fl{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
 
-  .sc-val{
-    font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);
-    text-align:center;transition:color .3s;margin-top:auto;
-  }
+/* Table */
+.tb{width:100%;border-collapse:collapse;margin-bottom:8px}
+.tb th{font-family:'JetBrains Mono',monospace;font-size:7px;font-weight:700;color:var(--muted);letter-spacing:1px;text-align:left;padding:4px 6px;border-bottom:1px solid var(--border);text-transform:uppercase}
+.tb td{font-size:9px;padding:4px 6px;border-bottom:1px solid rgba(48,44,40,.4);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:opacity .2s}
+.tb tr.ch td{opacity:.25}
+.st-b{display:inline-block;padding:1px 5px;font-family:'JetBrains Mono',monospace;font-size:7px;font-weight:700;border:1px solid var(--border)}
+.st-a{background:rgba(74,138,90,.12);border-color:var(--ok);color:var(--ok)}
+.st-i{color:var(--muted)}
 
-  .ins{
-    background:var(--surface);border:1px solid var(--border);
-    padding:18px 22px;display:flex;align-items:flex-start;gap:12px;min-height:80px;
-  }
-  .ins-i{color:var(--accent);font-size:13px;margin-top:3px;flex-shrink:0}
-  .ins-t{font-size:14px;color:var(--fg);opacity:.85;line-height:1.65;transition:opacity .25s,transform .25s}
-  .ins-t.fading{opacity:0;transform:translateY(6px)}
-  .ins-t strong{color:var(--accent);font-weight:600}
+/* Pagination controls */
+.pg{display:flex;align-items:center;gap:4px;justify-content:center;padding:6px 0 0;flex-shrink:0}
+.pn{min-width:24px;height:24px;border:1px solid var(--border);background:var(--card-alt);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);cursor:default;transition:all .25s}
+.pn.act{background:var(--accent);border-color:var(--accent);color:#000}
+.pn.flash{border-color:var(--accent);color:var(--accent)}
+.pa{min-width:auto;padding:0 8px;font-size:8px;font-family:'Space Grotesk',sans-serif;font-weight:600}
+.pgi{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);padding:0 6px}
+.lm-btn{padding:0 16px;height:28px;border:1px solid var(--border);background:var(--card-alt);font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:600;color:var(--fg);display:flex;align-items:center;justify-content:center;cursor:default;transition:all .25s;margin:0 auto}
+.lm-btn.flash{border-color:var(--accent);color:var(--accent)}
 
-  /* mini table */
-  .sc-view{margin-bottom:16px;min-height:90px;display:flex;flex-direction:column;justify-content:center}
-  .mt{border:1px solid var(--border);margin-bottom:6px;overflow:hidden;background:var(--bg)}
-  .mt-hd{display:flex;border-bottom:1px solid var(--border);background:var(--surface)}
-  .mt-hc{font-family:var(--mono);font-size:6px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;padding:4px;border-right:1px solid var(--border);flex:1}
-  .mt-hc:last-child{border-right:none}
-  .mt-row{display:flex;border-bottom:1px solid var(--border)}
-  .mt-row:last-child{border-bottom:none}
-  .mt-cell{font-family:var(--mono);font-size:6px;color:var(--muted);padding:4px;border-right:1px solid var(--border);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .mt-cell:last-child{border-right:none}
-  .mt-cell.c-hl{color:var(--fg)}
+.inf{padding:8px 14px;background:var(--card);border-top:1px solid var(--border);min-height:72px}
+.dn{font-size:14px;font-weight:800;line-height:1.1;color:var(--fg)}
+.ds{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);margin-top:2px;text-transform:uppercase;letter-spacing:1px}
+.dd{font-size:10px;color:var(--muted);margin-top:4px;line-height:1.4}
 
-  /* mini pagination */
-  .mp{display:flex;align-items:center;justify-content:center;gap:3px;padding:4px 0 0}
-  .mp-n{width:12px;height:12px;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:6px;color:var(--muted);transition:all .4s}
-  .sc.on .mp-n.on{background:var(--accent);border-color:var(--accent);color:var(--bg);font-weight:700}
-  .mp-n.on{background:var(--muted);border-color:var(--muted);color:var(--bg);font-weight:700}
-  .mp-btn{font-family:var(--mono);font-size:6px;color:var(--muted);background:var(--surface);border:1px solid var(--border);padding:2px 6px;transition:all .4s;white-space:nowrap}
-  .sc.on .mp-btn.on{color:var(--accent);border-color:var(--accent)}
-  .mp-btn.on{color:var(--fg);border-color:var(--muted)}
-  .mp-dots{font-family:var(--mono);font-size:6px;color:var(--muted);padding:0 1px}
+.pt{height:2px;background:var(--border)}.pf{height:100%;background:var(--accent);width:0%}
 
-  /* mini load more */
-  .mlm{border:1px solid var(--border);background:var(--surface);padding:4px 0;margin-top:4px;text-align:center;font-family:var(--mono);font-size:7px;color:var(--muted);transition:all .4s}
-  .sc.on .mlm{border-color:var(--accent-border);color:var(--accent)}
+/* Controls */
+.ctr{display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 16px 4px;background:transparent}
+.ctr-b{padding:6px 12px;background:var(--card-alt);border:1px solid var(--border);color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:1px}
+.ctr-b:hover{border-color:var(--border-hi);color:var(--fg)}
+.ctr-b.act{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
 
-  .ctr-bar{display:flex;justify-content:center;margin-bottom:20px;gap:10px}
-  .play-btn{
-    background:var(--surface);border:1px solid var(--border);color:var(--fg);
-    width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;
-    cursor:pointer;transition:border-color .3s,color .3s;
-  }
-  .play-btn:hover{border-color:var(--accent);color:var(--accent)}
+.pp-b{width:32px;height:32px;border-radius:50%;background:var(--accent);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-left:4px;transition:transform .2s;flex-shrink:0}
+.pp-b:active{transform:scale(.92)}
+.pp-bi{width:12px;height:12px;fill:#000}
 
-  @media(max-width:480px){
-    #app-root{padding:14px}
-    .ins{padding:14px 16px}
-  }
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
-<div id="app-root">
-  <section aria-label="Mô phỏng Pagination">
-    <div class="sim-grid" id="simGrid"></div>
-    <div class="ctr-bar">
-      <button class="play-btn" id="playBtn" title="Play/Pause">
-        <i class="fa-solid fa-pause"></i>
-      </button>
-    </div>
-    <div class="ins">
-      <i class="fa-solid fa-lightbulb ins-i"></i>
-      <p class="ins-t" id="insT">Đang tải...</p>
-    </div>
-  </section>
+
+<div class="aw">
+<div class="ab" id="ab">
+  <div class="hd"><span class="hd-t">PAGINATION</span><span class="hd-f" id="hf">01 / 04</span></div>
+  <div class="la" id="la">
+    <div class="fr" id="f0"></div>
+    <div class="fr" id="f1"></div>
+    <div class="fr" id="f2"></div>
+    <div class="fr" id="f3"></div>
+  </div>
+  <div class="inf">
+    <div class="dn" id="dn">Numeric</div>
+    <div class="ds" id="ds">SỐ TRANG RÕ RÀNG</div>
+    <div class="dd" id="dd">Hiển thị tất cả số trang — user chọn trực tiếp trang muốn xem</div>
+  </div>
+  <div class="pt"><div class="pf" id="pf"></div></div>
+</div>
+
+<div class="ctr">
+    <button class="ctr-b act" data-i="0">NUMERIC</button>
+    <button class="ctr-b" data-i="1">PREV/NEXT</button>
+    <button class="ctr-b" data-i="2">FIRST/LAST</button>
+    <button class="ctr-b" data-i="3">LOAD MORE</button>
+    <button class="pp-b" id="pp" title="Play/Pause">
+        <svg class="pp-bi" id="pp-bi" viewBox="0 0 24 24"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>
+    </button>
+</div>
 </div>
 
 <script>
-  const allData=[
-    {name:'Nguyen Van A',role:'Designer'},
-    {name:'Tran Thi B',role:'Developer'},
-    {name:'Le Van C',role:'Manager'},
-    {name:'Pham Thi D',role:'Analyst'},
-    {name:'Hoang E',role:'Designer'},
-    {name:'Vo Thi F',role:'Developer'}
-  ];
+/* ===== DATA ===== */
+const ROWS=[
+  {n:'Linh Nguyen',e:'linh@brand.co',r:'Designer',s:'a'},
+  {n:'Minh Tran',e:'minh@brand.co',r:'Developer',s:'a'},
+  {n:'Hoa Pham',e:'hoa@brand.co',r:'Manager',s:'i'},
+  {n:'Tuan Le',e:'tuan@brand.co',r:'Marketer',s:'a'},
+  {n:'Mai Vu',e:'mai@brand.co',r:'Analyst',s:'i'},
+  {n:'Hung Dao',e:'hung@brand.co',r:'Designer',s:'a'},
+  {n:'Yen Ngo',e:'yen@brand.co',r:'Developer',s:'a'},
+  {n:'Son Bui',e:'son@brand.co',r:'Support',s:'i'},
+  {n:'Lan Ho',e:'lan@brand.co',r:'Sales',s:'a'},
+  {n:'Khoa Dinh',e:'khoa@brand.co',r:'PM',s:'a'},
+  {n:'Trang Ly',e:'trang@brand.co',r:'Designer',s:'a'},
+  {n:'Phuc Vo',e:'phuc@brand.co',r:'Developer',s:'i'},
+  {n:'Thao Tran',e:'thao@brand.co',r:'Marketing',s:'a'},
+  {n:'Duc Nguyen',e:'duc@brand.co',r:'Analyst',s:'a'},
+  {n:'Gia Bui',e:'gia@brand.co',r:'Sales',s:'i'},
+  {n:'Ngoc Pham',e:'ngoc@brand.co',r:'Support',s:'a'},
+  {n:'Hai Vu',e:'hai@brand.co',r:'Developer',s:'a'},
+  {n:'Nhi Le',e:'nhi@brand.co',r:'Designer',s:'i'},
+  {n:'Bao Tran',e:'bao@brand.co',r:'PM',s:'a'},
+  {n:'Cam Dao',e:'cam@brand.co',r:'Marketing',s:'a'}
+];
+const PP=4,TP=Math.ceil(ROWS.length/PP);
+const INFO=[
+  {nm:'Numeric',sz:'SỐ TRANG RÕ RÀNG',dc:'Hiển thị tất cả số trang — user chọn trực tiếp trang muốn xem'},
+  {nm:'Prev / Next',sz:'TRƯỚC / SAU',dc:'Chỉ 2 nút — đơn giản nhưng không nhảy được đến trang xa'},
+  {nm:'First / Last',sz:'ĐẦU / CUỐI',dc:'Thêm nút nhảy đến trang đầu/cuối — tốt cho dataset lớn'},
+  {nm:'Load More',sz:'TẢI THÊM',dc:'Không chia trang — cứ bấm là thêm data vào cuối danh sách'}
+];
 
-  const presets = [
-    { num:'01', name:'Numeric', type:'NUMERIC', sub:'Click số trang',
-      ins:'<strong>Numeric</strong> = hiện số trang, click để nhảy (1 2 3 ... 10). User biết tổng bao nhiêu trang, chọn trực tiếp. Phổ biến nhất cho data table, search results. Nhưng khi quá nhiều trang → cần truncate (1 ... 5 6 7 ... 10).' },
-    { num:'02', name:'Prev/Next', type:'PREV / NEXT', sub:'Chỉ lùi hoặc tới',
-      ins:'<strong>Prev/Next</strong> = chỉ có 2 nút, lùi hoặc tới. Không biết mình ở trang mấy, không nhảy được. Dùng khi flow tuần tự quan trọng (onboarding, wizard, mobile). User không thể skip pages.' },
-    { num:'03', name:'First/Last', type:'FIRST / LAST', sub:'Nhảy đầu hoặc cuối',
-      ins:'<strong>First/Last</strong> = thêm nút nhảy về trang 1 hoặc trang cuối. Giải quyết vấn đề của prev/next: user muốn đến cuối nhanh. Dùng cho log, archive, history — nơi data rất dài nhưng thường chỉ cần xem đầu hoặc cuối.' },
-    { num:'04', name:'Load More', type:'LOAD MORE', sub:'Nối thêm data',
-      ins:'<strong>Load More</strong> = không có "trang", chỉ nút "tải thêm". Click → data nối xuống dưới. Dùng cho social feed, comment — nơi UX trải nghiệm luồng liên tục quan trọng hơn việc định hướng số trang.' }
-  ];
+/* ===== HELPERS ===== */
+function statusBadge(s){return `<span class="st-b ${s==='a'?'st-a':'st-i'}">${s==='a'?'Active':'Inactive'}</span>`}
+function tableHTML(page,animated){
+  const start=page*PP;
+  const rows=ROWS.slice(start,start+PP).map((r,i)=>{
+    const ch=animated?' class="ch"':'';
+    return `<tr${ch}><td>${r.n}</td><td>${r.e}</td><td>${r.r}</td><td>${statusBadge(r.s)}</td></tr>`;
+  }).join('');
+  return rows;
+}
 
-  const simGrid = document.getElementById('simGrid');
-  const insT = document.getElementById('insT');
-  const playBtn = document.getElementById('playBtn');
-  let activeI = 0;
-  let autoTimer;
-  let playing = true;
+/* ===== BUILD FRAMES ===== */
+function buildFrames(){
+  // F0: Numeric
+  let pg0='<div class="pg">';
+  for(let i=0;i<TP;i++)pg0+=`<span class="pn${i===0?' act':''}" id="p0n${i}">${i+1}</span>`;
+  pg0+='</div>';
+  document.getElementById('f0').innerHTML=`<div class="fl si">01 NUMERIC PAGINATION</div><div class="si"><table class="tb"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th></tr></thead><tbody id="tb0">${tableHTML(0,false)}</tbody></table>${pg0}</div>`;
 
-  function renderSim() {
-    simGrid.innerHTML = presets.map((p, i) => {
-      
-      let tbl='<div class="mt"><div class="mt-hd"><div class="mt-hc">Name</div><div class="mt-hc">Role</div></div>';
-      for(let r=0;r<3;r++){
-        let idx = (r + (i*2)) % allData.length;
-        tbl+='<div class="mt-row"><div class="mt-cell c-hl">'+allData[idx].name+'</div><div class="mt-cell">'+allData[idx].role+'</div></div>';
+  // F1: Prev/Next
+  document.getElementById('f1').innerHTML=`<div class="fl si">02 PREVIOUS / NEXT</div><div class="si"><table class="tb"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th></tr></thead><tbody id="tb1">${tableHTML(0,false)}</tbody></table><div class="pg"><span class="pn pa" id="p1prev">&lsaquo; Previous</span><span class="pgi" id="p1info">Page 1 of ${TP}</span><span class="pn pa" id="p1next">Next &rsaquo;</span></div></div>`;
+
+  // F2: First/Last
+  document.getElementById('f2').innerHTML=`<div class="fl si">03 FIRST / LAST</div><div class="si"><table class="tb"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th></tr></thead><tbody id="tb2">${tableHTML(0,false)}</tbody></table><div class="pg"><span class="pn pa" id="p2first">&laquo; First</span><span class="pn pa" id="p2prev">&lsaquo; Prev</span><span class="pgi" id="p2info">Page 1 of ${TP}</span><span class="pn pa" id="p2next">Next &rsaquo;</span><span class="pn pa" id="p2last">Last &raquo;</span></div></div>`;
+
+  // F3: Load More
+  document.getElementById('f3').innerHTML=`<div class="fl si">04 LOAD MORE</div><div class="si"><table class="tb"><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th></tr></thead><tbody id="tb3">${tableHTML(0,false)}</tbody></table><div style="padding-top:6px"><div class="lm-btn" id="p3lm">Load more</div></div></div>`;
+}
+buildFrames();
+
+/* ===== ANIMATION ===== */
+const frs=[0,1,2,3].map(i=>document.getElementById('f'+i));
+const el={dn:document.getElementById('dn'),ds:document.getElementById('ds'),dd:document.getElementById('dd'),hf:document.getElementById('hf'),pf:document.getElementById('pf')};
+const ctrBs=document.querySelectorAll('.ctr-b');
+const ppB=document.getElementById('pp');
+const ppI=document.getElementById('pp-bi');
+
+let cur=0,pa=null,t0=0,isPaused=false,ftimers=[];
+const DUR=3500;
+
+function setTB(id,page){
+  const target = document.getElementById(id);
+  if(!target) return;
+  target.innerHTML=tableHTML(page,true);
+  setTimeout(()=>{target.querySelectorAll('.ch').forEach(r=>r.classList.remove('ch'))},50)
+}
+
+function runF(fi){
+  ftimers.forEach(t=>clearTimeout(t));ftimers=[];
+  if(fi===0){
+    setTB('tb0',0);
+    ftimers.push(setTimeout(()=>{setTB('tb0',1);document.getElementById('p0n0')?.classList.remove('act');document.getElementById('p0n1')?.classList.add('act')},900));
+    ftimers.push(setTimeout(()=>{setTB('tb0',2);document.getElementById('p0n1')?.classList.remove('act');document.getElementById('p0n2')?.classList.add('act')},1900));
+  }else if(fi===1){
+    setTB('tb1',0);
+    ftimers.push(setTimeout(()=>{setTB('tb1',1);const info=document.getElementById('p1info');if(info)info.textContent='Page 2 of '+TP;const prev=document.getElementById('p1prev');if(prev){prev.classList.add('flash');setTimeout(()=>prev.classList.remove('flash'),400)}},900));
+  }else if(fi===2){
+    setTB('tb2',0);
+    ftimers.push(setTimeout(()=>{setTB('tb2',1);const info=document.getElementById('p2info');if(info)info.textContent='Page 2 of '+TP;const next=document.getElementById('p2next');if(next){next.classList.add('flash');setTimeout(()=>next.classList.remove('flash'),400)}},900));
+  }else{
+    setTB('tb3',0);
+    ftimers.push(setTimeout(()=>{
+      const tb = document.getElementById('tb3');
+      if(tb){
+        tb.innerHTML+=tableHTML(1,true).replace(/<tr class="ch">/g,'<tr>');
+        setTimeout(()=>{tb.querySelectorAll('.ch').forEach(r=>r.classList.remove('ch'))},50);
       }
-      tbl+='</div>';
-
-      let pag='';
-      if(i===0){
-        pag='<div class="mp">';
-        for(let j=1;j<=4;j++) pag+='<div class="mp-n'+(j===1?' on':'')+'">'+j+'</div>';
-        pag+='<div class="mp-dots">...</div>';
-        pag+='<div class="mp-n">10</div></div>';
-      }else if(i===1){
-        pag='<div class="mp"><div class="mp-btn on">&lt; Prev</div><div class="mp-btn on">Next &gt;</div></div>';
-      }else if(i===2){
-        pag='<div class="mp"><div class="mp-btn on">First</div><div class="mp-btn on">Last</div></div>';
-      }else{
-        pag='<div class="mlm">Load more &darr;</div>';
-      }
-
-      return `
-        <div class="sc" data-i="${i}" tabindex="0" role="button">
-          <div class="sc-top">
-            <span class="sc-num">${p.num}</span>
-            <span class="sc-tag">${p.name}</span>
-          </div>
-          <div class="sc-view">
-            ${tbl}${pag}
-          </div>
-          <div class="sc-val">${p.sub}</div>
-        </div>`;
-    }).join('');
-
-    simGrid.querySelectorAll('.sc').forEach(c => {
-      c.addEventListener('click', () => {
-        playing = false;
-        updatePlayBtn();
-        clearInterval(autoTimer);
-        activateCard(+c.dataset.i);
-      });
-    });
+      const lm=document.getElementById('p3lm');
+      if(lm){lm.classList.add('flash');setTimeout(()=>lm.classList.remove('flash'),400)}
+    },1000));
   }
+}
 
-  function activateCard(i) {
-    activeI = i;
-    simGrid.querySelectorAll('.sc').forEach((c, idx) => c.classList.toggle('on', idx === i));
-    setIns(presets[i].ins);
-  }
+function apply(i){
+  cur=i;
+  const s=INFO[i];el.dn.textContent=s.nm;el.ds.textContent=s.sz;el.dd.textContent=s.dc;
+  el.hf.textContent='0'+(i+1)+' / 04';
+  ctrBs.forEach((b,j)=>b.classList.toggle('act',j===i));
+  
+  frs.forEach(f=>f.classList.remove('show'));
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    frs[i].classList.add('show');
+    runF(i);
+  }));
+}
 
-  function setIns(t) {
-    insT.classList.add('fading');
-    setTimeout(() => { 
-      insT.innerHTML = t; 
-      insT.classList.remove('fading'); 
-    }, 250);
-  }
+function tk(n){
+    if(isPaused) return;
+    const p=Math.min(100,(n-t0)/DUR*100);
+    el.pf.style.width=p+'%';
+    if(p<100)pa=requestAnimationFrame(tk);
+    else next();
+}
+function startProg2(){t0=performance.now();el.pf.style.transition='none';el.pf.style.width='0%';pa=requestAnimationFrame(tk)}
+function next(){if(isPaused)return;cur=(cur+1)%4;apply(cur);startProg2()}
 
-  function startAuto() {
-    clearInterval(autoTimer);
-    autoTimer = setInterval(() => {
-      if(!playing) return;
-      activeI = (activeI + 1) % presets.length;
-      activateCard(activeI);
-    }, 4500);
-  }
-
-  function updatePlayBtn() {
-    playBtn.innerHTML = playing ? '<i class="fa-solid fa-pause"></i>' : '<i class="fa-solid fa-play"></i>';
-  }
-
-  playBtn.addEventListener('click', () => {
-    playing = !playing;
-    updatePlayBtn();
-    if(playing){
-      activeI = (activeI + 1) % presets.length;
-      activateCard(activeI);
-      startAuto();
-    } else {
-      clearInterval(autoTimer);
+function togglePP(){
+    isPaused=!isPaused;
+    ppI.innerHTML=isPaused ? '<path d="M8 5v14l11-7z"/>' : '<path d="M6 4h4v16H6zm8 0h4v16h-4z"/>';
+    if(!isPaused){
+        t0=performance.now() - (parseFloat(el.pf.style.width||0)/100*DUR);
+        pa=requestAnimationFrame(tk);
     }
-  });
+}
 
-  renderSim();
-  activateCard(0);
-  startAuto();
+ctrBs.forEach(b=>{
+    b.onclick=()=>{
+        isPaused=true;
+        ppI.innerHTML='<path d="M8 5v14l11-7z"/>';
+        apply(parseInt(b.dataset.i));
+        el.pf.style.width='0%';
+    }
+});
+
+ppB.onclick=togglePP;
+
+apply(0);
+startProg2();
+
+document.addEventListener('visibilitychange',()=>{
+    if(document.hidden){cancelAnimationFrame(pa);ftimers.forEach(t=>clearTimeout(t));}
+    else if(!isPaused){t0=performance.now() - (parseFloat(el.pf.style.width||0)/100*DUR);pa=requestAnimationFrame(tk);}
+});
 </script>
 </body>
 </html>
