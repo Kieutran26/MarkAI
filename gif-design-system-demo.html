@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Design System — Demo</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;--accent-dim:rgba(212,113,42,.15);--card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a;--ok:#4a8a5a;--warn:#b89a2a;--err:#a03030}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:auto;overflow:hidden}
+body{background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 100%,16px 16px;display:flex;flex-direction:column;align-items:center;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:12px 16px 8px}
+
+.aw{width:100%}
+.ab{width:100%;height:380px;background:var(--card);border:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;position:relative}
+.hd{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
+.hd-t{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:2.5px}
+.hd-f{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
+
+.la{position:relative;flex:1;background:linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);background-size:30px 30px;overflow:hidden}
+.fr{position:absolute;inset:0;display:flex;flex-direction:column;padding:12px 20px;opacity:0;pointer-events:none;transition:opacity .3s}.fr.show{opacity:1;pointer-events:auto}
+.si{opacity:0;transform:translateY(5px);transition:opacity .3s,transform .3s}.fr.show .si{opacity:1;transform:translateY(0)}
+.fl{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
+.fn{font-size:14px;font-weight:700;margin-bottom:8px}
+
+/* F1: Colors */
+.cr{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.cs{width:40px;height:40px;border:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:2px;position:relative}
+.cs::after{content:attr(data-l);font-family:'JetBrains Mono',monospace;font-size:6px;color:var(--muted);letter-spacing:.5px;position:absolute;bottom:-14px;white-space:nowrap}
+.cl{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--fg);opacity:.7}
+.csl{display:flex;flex-direction:column;gap:10px;margin-top:16px}
+.csg{display:flex;flex-direction:column;gap:3px}
+.csg-l{font-family:'JetBrains Mono',monospace;font-size:7px;font-weight:700;color:var(--muted);letter-spacing:1.5px}
+.csg-r{display:flex;gap:5px}
+.csg-s{width:32px;height:18px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--fg);opacity:.8}
+
+/* F2: Typography */
+.ts{display:flex;flex-direction:column;gap:0}
+.tr{display:flex;align-items:baseline;gap:12px;padding:4px 0;border-bottom:1px solid rgba(48,44,40,.5)}
+.tr:last-child{border-bottom:none}
+.tl{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);min-width:52px;letter-spacing:.5px}
+.tv{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ta{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--accent);min-width:80px;text-align:right}
+
+/* F3: Components */
+.cpg{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+.cpg-g{display:flex;flex-direction:column;gap:4px}
+.cpg-l{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);letter-spacing:1.5px}
+.cbtn{padding:0 12px;height:26px;font-family:'Space Grotesk',sans-serif;font-size:9px;font-weight:600;border:1.5px solid var(--border);cursor:default;white-space:nowrap}
+.cb-p{background:var(--accent);border-color:var(--accent);color:#fff}
+.cb-s{background:var(--card-alt);border-color:var(--border-hi);color:var(--fg)}
+.cinp{height:26px;border:1.5px solid var(--border);background:var(--card-alt);padding:0 8px;font-family:'Space Grotesk',monospace;font-size:9px;color:var(--muted);display:flex;align-items:center;width:120px}
+.cchk{display:flex;align-items:center;gap:5px;font-size:9px;color:var(--muted)}
+.ckb{width:14px;height:14px;border:1.5px solid var(--accent);border-radius:1px;display:flex;align-items:center;justify-content:center;background:var(--accent);flex-shrink:0}
+.ckb::after{content:'';display:block;width:3px;height:6px;border:solid #fff;border-width:0 1.5px 1.5px 0;transform:rotate(45deg) translate(-1px,-1px)}
+
+/* F4: Layout */
+.lsec{display:flex;gap:12px;flex:1;min-height:0}
+.lcol{display:flex;flex-direction:column;gap:3px;flex:1;min-width:0}
+.ll{font-family:'JetBrains Mono',monospace;font-size:7px;font-weight:700;color:var(--muted);letter-spacing:1.5px;margin-bottom:2px}
+.lbar{height:12px;border:1px solid var(--border);display:flex;align-items:center;padding:0 6px;font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--fg);opacity:.8}
+.lsh-i{height:18px;border:1px solid var(--border)}
+.lgr{position:relative;flex:1;border:1px solid var(--border);min-height:0}
+.lgl{position:absolute;inset:0;display:grid;grid-template-columns:repeat(12,1fr);pointer-events:none;opacity:0;transition:opacity .4s}
+.lgl.show{opacity:1}
+.lgc{border-right:1px solid rgba(212,113,42,.1)}
+
+.inf{padding:10px 14px;background:var(--card);border-top:1px solid var(--border);min-height:90px}
+.dn{font-size:16px;font-weight:800;line-height:1.15}
+.ds{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);margin-top:2px}
+.dd{font-size:10px;color:var(--muted);margin-top:4px;line-height:1.4}
+.di{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--accent);margin-top:6px;padding-top:6px;border-top:1px dashed var(--border);opacity:.7}
+
+.pt{height:2px;background:var(--border)}.pf{height:100%;background:var(--accent);width:0%}
+
+/* Controls Row */
+.ctr{display:flex;align-items:center;justify-content:center;gap:8px;padding:12px 16px 4px;background:transparent;width:100%}
+.ctr-b{padding:7px 14px;background:var(--card-alt);border:1px solid var(--border);color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:1px}
+.ctr-b:hover{border-color:var(--border-hi);color:var(--fg)}
+.ctr-b.act{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+
+.pp-b{width:36px;height:36px;border-radius:50%;background:var(--accent);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-left:8px;transition:transform .2s;flex-shrink:0}
+.pp-b:active{transform:scale(.92)}
+.pp-i{width:14px;height:14px;fill:#000}
+
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body id="app-root">
+
+<div class="aw">
+<div class="ab" id="ab">
+  <div class="hd"><span class="hd-t">DESIGN SYSTEM</span><span class="hd-f" id="hf">01 / 04</span></div>
+  <div class="la" id="la">
+    <div class="fr" id="f0"></div>
+    <div class="fr" id="f1"></div>
+    <div class="fr" id="f2"></div>
+    <div class="fr" id="f3"></div>
+  </div>
+  <div class="inf">
+    <div class="dn" id="dn">Colors</div>
+    <div class="ds" id="ds">MÀU SẮC — NỀN TẢNG THỨ NHẤT</div>
+    <div class="dd" id="dd">Primary cho brand, Semantic cho trạng thái, Neutral cho cấu trúc</div>
+    <div class="di" id="di">Báo dev "đổi màu nút" → cần nói rõ: primary color hay semantic color</div>
+  </div>
+  <div class="pt"><div class="pf" id="pf"></div></div>
+</div>
+
+<div class="ctr">
+    <button class="ctr-b act" data-i="0">COLORS</button>
+    <button class="ctr-b" data-i="1">TYPO</button>
+    <button class="ctr-b" data-i="2">COMPONENTS</button>
+    <button class="ctr-b" data-i="3">LAYOUT</button>
+    <button class="pp-b" id="pp" title="Play/Pause">
+        <svg class="pp-i" id="pp-i" viewBox="0 0 24 24"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>
+    </button>
+</div>
+</div>
+
+<script>
+const INFO=[
+  {nm:'Colors',sz:'MÀU SẮC — NỀN TẢNG THỨ NHẤT',dc:'Primary cho brand, Semantic cho trạng thái, Neutral cho cấu trúc',ins:'Báo dev "đổi màu nút" → cần nói rõ: primary color hay semantic color'},
+  {nm:'Typography',sz:'CHỮ — NỀN TẢNG THỨ HAI',dc:'Mỗi cấp bậc có kích thước, cân nặng riêng — không dùng bừa',ins:'Khi nói "to lên一点" → nói rõ H1 hay H2, dev mới biết chỉnh cái nào'},
+  {nm:'Components',sz:'THÀNH PHẦN — GẮN KẾT DS',dc:'Button, Input, Checkbox — mỗi cái có variant, state, size theo quy tắc DS',ins:'"Thêm nút bấm" chưa đủ → cần nói rõ: variant nào, size nào, icon bên trái hay phải'},
+  {nm:'Layout',sz:'BỐ CỤC — KẾT NỐI TẤT CẢ',dc:'Spacing scale, elevation, grid — skeleton để đặt mọi thứ lên',ins:'"Khoảng cách sai" → nói rõ: gap hay padding, dùng giá trị nào trong spacing scale'}
+];
+
+/* F0: Colors */
+document.getElementById('f0').innerHTML=`
+<div class="fl si">01 FOUNDATIONS — COLORS</div>
+<div style="display:flex;gap:30px;flex:1" class="si">
+  <div style="flex:1">
+    <div style="margin-bottom:12px">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);letter-spacing:1.5px;margin-bottom:4px">PRIMARY BRAND</div>
+      <div class="cr">
+        <div class="cs" style="background:#8b3a1a" data-l="700"><span class="cl">700</span></div>
+        <div class="cs" style="background:#b85a20" data-l="600"><span class="cl">600</span></div>
+        <div class="cs" style="background:var(--accent)" data-l="500"><span class="cl">500</span></div>
+        <div class="cs" style="background:#f0a060" data-l="400"><span class="cl">400</span></div>
+        <div class="cs" style="background:#f8c49c" data-l="300"><span class="cl">300</span></div>
+      </div>
+    </div>
+    <div class="csl">
+      <div class="csg"><div class="csg-l">SEMANTIC STATES</div><div class="csg-r">
+        <div class="csg-s" style="background:var(--ok)">Success</div>
+        <div class="csg-s" style="background:var(--warn)">Warning</div>
+        <div class="csg-s" style="background:var(--err)">Error</div>
+        <div class="csg-s" style="background:#3a6a9a">Info</div>
+      </div></div>
+      <div class="csg"><div class="csg-l">NEUTRAL / SURFACE</div><div class="csg-r" style="flex-wrap:wrap">
+        <div class="csg-s" style="background:#0a0908">900</div>
+        <div class="csg-s" style="background:#1c1a18">800</div>
+        <div class="csg-s" style="background:#302c28">700</div>
+        <div class="csg-s" style="background:#44403a">600</div>
+        <div class="csg-s" style="background:#706b64">400</div>
+        <div class="csg-s" style="background:#a09a90">200</div>
+        <div class="csg-s" style="background:#e8e0d4;color:#000">100</div>
+      </div></div>
+    </div>
+  </div>
+  <div style="width:160px;border-left:1px solid var(--border);padding-left:20px;display:flex;flex-direction:column;gap:12px">
+    <div class="csg"><div class="csg-l">ACCESSIBILITY</div>
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <div style="display:flex;align-items:center;justify-content:space-between;font-size:8px;padding:4px;background:rgba(255,255,255,.03)">
+          <span style="color:var(--muted)">Contrast AA</span>
+          <span style="color:var(--ok)">4.5:1</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;font-size:8px;padding:4px;background:rgba(255,255,255,.03)">
+          <span style="color:var(--muted)">Contrast AAA</span>
+          <span style="color:var(--ok)">7.0:1</span>
+        </div>
+      </div>
+    </div>
+    <div class="csg"><div class="csg-l">GRADIENTS</div>
+      <div style="height:20px;background:linear-gradient(90deg,var(--accent),#b85a20);border:1px solid var(--border)"></div>
+      <div style="height:20px;background:linear-gradient(90deg,#302c28,transparent);border:1px solid var(--border)"></div>
+    </div>
+    <div style="margin-top:auto;font-family:'JetBrains Mono',monospace;font-size:6px;color:var(--muted);line-height:1.2">
+      Tất cả các màu semantic và brand 500+ phải đạt độ tương phản tối thiểu trên nền tối.
+    </div>
+  </div>
+</div>`;
+
+/* F1: Typography */
+const tRows=[
+  {l:'Display',v:'Build better products',s:'48px',fs:24,fw:800},
+  {l:'H1',v:'Section heading',s:'32px',fs:18,fw:700},
+  {l:'Body',v:'Lorem ipsum dolor sit amet',s:'14px',fs:11,fw:400,c:'var(--muted)'},
+  {l:'Caption',v:'LABEL TEXT',s:'10px',fs:8,fw:400,c:'var(--accent)',ff:'JetBrains Mono,monospace',ls:'2px'}
+];
+document.getElementById('f1').innerHTML=`<div class="fl si">02 FOUNDATIONS — TYPOGRAPHY</div><div class="fn si">Font: Inter</div><div class="ts si">${tRows.map(r=>`<div class="tr"><span class="tl">${r.l}</span><span class="tv" style="font-size:${r.fs}px;font-weight:${r.fw};${r.c?'color:'+r.c:''};${r.ff?'font-family:'+r.ff:''};${r.ls?'letter-spacing:'+r.ls:''}">${r.v}</span><span class="ta">${r.s}</span></div>`).join('')}</div>`;
+
+/* F2: Components */
+document.getElementById('f2').innerHTML=`<div class="fl si">03 COMPONENTS — EXAMPLES</div>
+<div class="cpg si">
+  <div class="cpg-g"><div class="cpg-l">BUTTONS</div><div style="display:flex;gap:5px"><button class="cbtn cb-p">Primary</button><button class="cbtn cb-s">Secondary</button></div></div>
+  <div class="cpg-g"><div class="cpg-l">INPUTS</div><div class="cinp">hello@brand.com</div></div>
+</div>
+<div class="cpg si">
+  <div class="cpg-g"><div class="cpg-l">CHECKBOX</div><div class="cchk"><div class="ckb"></div>Option A</div></div>
+  <div class="cpg-g"><div class="cpg-l">BADGE</div><div style="display:flex;gap:4px"><span style="display:inline-flex;align-items:center;padding:0 6px;height:18px;background:var(--accent);color:#fff;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700">12</span></div></div>
+</div>`;
+
+/* F3: Layout */
+document.getElementById('f3').innerHTML=`<div class="fl si">04 LAYOUT — GRID & SPACING</div><div class="lsec si">
+<div class="lcol"><div class="ll">SPACING</div>
+  <div class="lbar" style="height:6px;width:16px">8px</div>
+  <div class="lbar" style="height:6px;width:32px">16px</div>
+  <div class="lbar" style="height:6px;width:48px">24px</div>
+</div>
+<div class="lcol"><div class="ll">ELEVATION</div>
+  <div style="display:flex;flex-direction:column;gap:4px">
+    <div class="lsh-i" style="background:var(--card);box-shadow:0 1px 3px rgba(0,0,0,.3)">1</div>
+    <div class="lsh-i" style="background:var(--card);box-shadow:0 8px 24px rgba(0,0,0,.5)">3</div>
+  </div>
+</div>
+<div class="lcol" style="flex:1.5"><div class="ll">GRID (12 COL)</div>
+  <div class="lgr" id="lgd"><div class="lgl" id="lgl"></div></div>
+</div>
+</div>`;
+
+const lgl=document.getElementById('lgl');
+for(let i=0;i<12;i++){const d=document.createElement('div');d.className='lgc';lgl.appendChild(d)}
+setTimeout(()=>{document.getElementById('lgd').classList.add('show');document.getElementById('lgl').classList.add('show')},100);
+
+/* ===== ANIMATION ===== */
+const frs=[0,1,2,3].map(i=>document.getElementById('f'+i));
+const el={dn:document.getElementById('dn'),ds:document.getElementById('ds'),dd:document.getElementById('dd'),di:document.getElementById('di'),hf:document.getElementById('hf'),pf:document.getElementById('pf')};
+const ctrBs=document.querySelectorAll('.ctr-b');
+const ppB=document.getElementById('pp');
+const ppI=document.getElementById('pp-i');
+let cur=0,pa=null,t0=0,isPaused=false;
+const DUR=3500;
+
+function apply(i){
+  cur=i;
+  const s=INFO[i];el.dn.textContent=s.nm;el.ds.textContent=s.sz;el.dd.textContent=s.dc;el.di.textContent=s.ins;
+  el.hf.textContent='0'+(i+1)+' / 04';
+  ctrBs.forEach((b,j)=>b.classList.toggle('act',j===i));
+  frs.forEach(f=>f.classList.remove('show'));
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    frs[i].classList.add('show');
+    frs[i].querySelectorAll('.si').forEach((e,j)=>{e.style.transitionDelay=(0.08+j*0.055)+'s'});
+  }));
+}
+
+function tk(n){
+    if(isPaused) return;
+    const p=Math.min(100,(n-t0)/DUR*100);
+    el.pf.style.width=p+'%';
+    if(p<100)pa=requestAnimationFrame(tk);
+    else next();
+}
+function startProg(){t0=performance.now();el.pf.style.transition='none';el.pf.style.width='0%';pa=requestAnimationFrame(tk)}
+function next(){if(isPaused)return;cur=(cur+1)%4;apply(cur);startProg()}
+
+function togglePP(){
+    isPaused=!isPaused;
+    ppI.innerHTML=isPaused ? '<path d="M8 5v14l11-7z"/>' : '<path d="M6 4h4v16H6zm8 0h4v16h-4z"/>';
+    if(!isPaused){
+        t0=performance.now() - (parseFloat(el.pf.style.width||0)/100*DUR);
+        pa=requestAnimationFrame(tk);
+    }
+}
+
+ctrBs.forEach(b=>{
+    b.onclick=()=>{
+        isPaused=true;
+        ppI.innerHTML='<path d="M8 5v14l11-7z"/>';
+        apply(parseInt(b.dataset.i));
+        el.pf.style.width='0%';
+    }
+});
+
+ppB.onclick=togglePP;
+apply(0);
+startProg();
+
+document.addEventListener('visibilitychange',()=>{
+    if(document.hidden){cancelAnimationFrame(pa);}
+    else if(!isPaused){t0=performance.now() - (parseFloat(el.pf.style.width||0)/100*DUR);pa=requestAnimationFrame(tk);}
+});
+</script>
+</body>
+</html>
