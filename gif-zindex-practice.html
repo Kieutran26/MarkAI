@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Z-index — Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;--card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a;--ok:#4a8a5a;--warn:#b89a2a;--info:#4a6a7a}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 100%,16px 16px;display:flex;flex-direction:column;align-items:center;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:12px;gap:16px}
+.pw{width:100%;background:var(--card);border:2px solid var(--border);padding:20px 24px}
+.pw-h{font-size:15px;font-weight:700;margin-bottom:2px}.pw-h span{color:var(--accent)}
+.pw-s{font-size:11px;color:var(--muted);margin-bottom:14px}
+.pc{position:relative;height:150px;border:1px solid var(--border);background:var(--card-alt);margin-bottom:14px;overflow:hidden}
+.pc-bg{position:absolute;inset:0;background:linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);background-size:20px 20px;pointer-events:none}
+.pc-inner{position:absolute;top:0;left:50%;width:380px;height:100%;transform-origin:top center}
+.pc-blk{position:absolute;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:box-shadow .2s;user-select:none}
+.pc-blk .pc-l{font-size:9px;font-weight:600;pointer-events:none;text-shadow:0 1px 2px rgba(0,0,0,.5)}
+.pc-blk .pc-z{position:absolute;top:3px;right:4px;font-family:'JetBrains Mono',monospace;font-size:7px;pointer-events:none;transition:color .2s}
+.pc-blk.sel{box-shadow:0 0 0 2px var(--accent)!important}
+.pc-blk.sel .pc-z{color:var(--accent)!important}
+.pc-blk.top{box-shadow:0 3px 12px rgba(0,0,0,.4)}
+.sr{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.sl{font-size:12px;min-width:80px}.sl span{color:var(--accent);font-weight:700}
+.sv{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);min-width:28px;text-align:right}
+input[type=range]{flex:1;-webkit-appearance:none;appearance:none;height:4px;background:var(--border);outline:none;border:none;cursor:pointer}
+input[type=range]:disabled{opacity:.3;cursor:default}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;background:var(--accent);border:2px solid var(--bg);cursor:pointer}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;background:var(--accent);border:2px solid var(--bg);cursor:pointer;border-radius:0}
+.po{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;align-items:center}
+.po-i{font-family:'JetBrains Mono',monospace;font-size:9px;padding:3px 8px;border:1px solid var(--border);background:var(--card-alt);display:flex;align-items:center;gap:5px}
+.po-dot{width:6px;height:6px;flex-shrink:0;border-radius:1px}
+.po-n{color:var(--fg)}.po-z{color:var(--accent)}
+.po-arrow{color:var(--muted);font-size:8px}
+.pfb{font-family:'JetBrains Mono',monospace;font-size:11px;min-height:18px;color:var(--muted);transition:color .2s;line-height:1.4}.pfb.w{color:var(--accent)}
+.pht{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);opacity:.65}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media(max-width:520px){.pw{padding:16px}.pc{height:120px}.sr{gap:8px}.sl{min-width:60px;font-size:11px}}
+</style>
+</head>
+<body>
+
+<div class="pw">
+  <div class="pw-h">Thực hành — <span>Đấu z-index</span></div>
+  <div class="pw-s">Click chọn 1 lớp → kéo slider đổi z-index → xem thứ tự stack thay đổi</div>
+  <div class="pc" id="pc">
+    <div class="pc-bg"></div>
+    <div class="pc-inner" id="pc-inner"></div>
+  </div>
+  <div class="sr">
+    <span class="sl">z-index: <span id="selN">—</span></span>
+    <input type="range" id="zsl" min="0" max="50" value="0" disabled>
+    <span class="sv" id="zsv">0</span>
+  </div>
+  <div class="po" id="po"></div>
+  <div class="pfb" id="pfb">Click vào 1 lớp để bắt đầu</div>
+  <div class="pht">Hint: Thử đặt Tooltip z:50, Modal z:1 → thấy "bug z-index" phổ biến</div>
+</div>
+
+<script>
+const LY=[
+  {name:'Tooltip', color:'var(--accent)', bg:'rgba(212,113,42,.18)', z:1, x:15, y:25, w:125, h:55},
+  {name:'Dropdown',color:'var(--info)',   bg:'rgba(74,106,122,.18)', z:5, x:75, y:50, w:145, h:70},
+  {name:'Modal',   color:'var(--fg)',     bg:'rgba(232,224,212,.12)',z:10,x:140,y:20, w:170, h:90},
+  {name:'Toast',   color:'var(--ok)',     bg:'rgba(74,138,90,.18)',  z:20,x:250,y:65, w:115, h:45}
+];
+const pc=document.getElementById('pc');
+const pcInner=document.getElementById('pc-inner');
+const zsl=document.getElementById('zsl');
+const zsv=document.getElementById('zsv');
+const selN=document.getElementById('selN');
+const po=document.getElementById('po');
+const pfb=document.getElementById('pfb');
+let sel=-1;
+const bEls=[];
+
+LY.forEach((l,i)=>{
+  const d=document.createElement('div');
+  d.className='pc-blk';
+  d.style.cssText='left:'+l.x+'px;top:'+l.y+'px;width:'+l.w+'px;height:'+l.h+'px;background:'+l.bg+';border:1px solid var(--border);border-left:3px solid '+l.color+';z-index:'+(l.z+1);
+  d.innerHTML='<span class="pc-l">'+l.name+'</span><span class="pc-z" style="color:var(--muted)">z:'+l.z+'</span>';
+  d.addEventListener('click',()=>selLayer(i));
+  pcInner.appendChild(d);
+  bEls.push(d);
+});
+
+function selLayer(i){
+  sel=i;
+  bEls.forEach((b,j)=>b.classList.toggle('sel',j===i));
+  zsl.disabled=false;
+  zsl.value=LY[i].z;
+  zsv.textContent=LY[i].z;
+  selN.textContent=LY[i].name;
+  updOrder();
+}
+
+zsl.addEventListener('input',()=>{
+  if(sel<0)return;
+  const v=+zsl.value;
+  LY[sel].z=v;
+  zsv.textContent=v;
+  bEls[sel].querySelector('.pc-z').textContent='z:'+v;
+  updOrder();
+});
+
+function updOrder(){
+  const sorted=[...LY].map((l,i)=>({...l,i})).sort((a,b)=>a.z-b.z);
+  sorted.forEach((l)=>{bEls[l.i].style.zIndex=l.z+1});
+  bEls.forEach(b=>b.classList.remove('top'));
+  bEls[sorted[sorted.length-1].i].classList.add('top');
+  po.innerHTML=sorted.map((l,k)=>{
+    const c=LY[l.i].color;
+    let h='<span class="po-i"><span class="po-dot" style="background:'+c+'"></span><span class="po-n">'+l.name+'</span><span class="po-z">z:'+l.z+'</span></span>';
+    if(k<sorted.length-1)h+='<span class="po-arrow">&#8594;</span>';
+    return h;
+  }).join('');
+
+  const tip=LY.find(l=>l.name==='Tooltip');
+  const mdl=LY.find(l=>l.name==='Modal');
+  const drp=LY.find(l=>l.name==='Dropdown');
+  const tst=LY.find(l=>l.name==='Toast');
+
+  if(tip.z>mdl.z){
+    pfb.textContent='Bug: Tooltip (z:'+tip.z+') trên Modal (z:'+mdl.z+') — sai thứ tự chuẩn';
+    pfb.className='pfb w';
+  }else if(drp.z>mdl.z){
+    pfb.textContent='Bug: Dropdown (z:'+drp.z+') trên Modal (z:'+mdl.z+') — modal nên luôn trên dropdown';
+    pfb.className='pfb w';
+  }else if(tip.z===mdl.z&&tip.z>0){
+    pfb.textContent='Tooltip = Modal cùng z:'+tip.z+' → document order quyết định, dễ gây bug';
+    pfb.className='pfb w';
+  }else if(tst.z<=mdl.z&&tst.z>0){
+    pfb.textContent='Bug: Toast (z:'+tst.z+') không trên Modal (z:'+mdl.z+') — toast phải cao nhất';
+    pfb.className='pfb w';
+  }else{
+    pfb.textContent='Stack OK: '+sorted.map(l=>l.name+'(z:'+l.z+')').join(' → ');
+    pfb.className='pfb';
+  }
+}
+updOrder();
+
+function rs(){
+  const w=pc.clientWidth;
+  const s=Math.min(1,w/380);
+  pcInner.style.transform=`translateX(-50%) scale(${s})`;
+}
+window.addEventListener('resize',rs);
+rs();
+</script>
+</body>
+</html>

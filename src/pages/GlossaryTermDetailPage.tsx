@@ -78,6 +78,8 @@ import skeletonDemoHtml from '../../gif-skeleton-demo.html?raw';
 import skeletonPracticeHtml from '../../gif-skeleton-practice.html?raw';
 import viewportDemoHtml from '../../gif-viewport-demo.html?raw';
 import viewportPracticeHtml from '../../gif-viewport-practice.html?raw';
+import zindexDemoHtml from '../../gif-zindex-demo.html?raw';
+import zindexPracticeHtml from '../../gif-zindex-practice.html?raw';
 
 
 // Final sync for viewport practice update
@@ -135,6 +137,7 @@ export default function GlossaryTermDetailPage() {
       case 'design-system': return designSystemDemoHtml;
       case 'skeleton': return skeletonDemoHtml;
       case 'viewport': return viewportDemoHtml;
+      case 'z-index': return zindexDemoHtml;
       default: return null;
     }
   };
@@ -175,6 +178,7 @@ export default function GlossaryTermDetailPage() {
       case 'design-system': return designSystemPracticeHtml;
       case 'skeleton': return skeletonPracticeHtml;
       case 'viewport': return viewportPracticeHtml;
+      case 'z-index': return zindexPracticeHtml;
       default: return null;
     }
   };

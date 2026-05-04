@@ -109,6 +109,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'design-system', name: 'Design System', nameEn: 'Hệ thống thiết kế', letter: 'D', groups: ['design', 'workflow'], definition: 'Một bộ tiêu chuẩn hóa gồm các quy tắc thiết kế, các thành phần giao diện tái sử dụng và ngôn ngữ hình ảnh nhất quán. Design System là "nguồn sự thật duy nhất" giúp designer và developer làm việc nhanh hơn, giảm sai sót và đảm bảo trải nghiệm thương hiệu đồng nhất trên mọi sản phẩm.', example: 'Prompt: "Dùng các component trong Design System để build một trang Pricing mới, đảm bảo dùng đúng spacing scale và primary tokens."', related: ['component', 'ui', 'asset', 'css'], demo: { kind: 'interactive', src: 'gif-design-system-demo.html', alt: 'Mô phỏng 4 lớp cấu thành Design System: Colors, Typography, Components và Layout' } },
   { id: 'skeleton', name: 'Skeleton screen', nameEn: 'Màn hình khung xương / Loading placeholders', letter: 'S', groups: ['design', 'code'], definition: 'Giao diện ở trạng thái "chờ" — thay vì hiện vòng xoay (spinner) hay trang trắng, hệ thống hiện các khối màu xám mô phỏng hình dáng của nội dung sắp tải. Giúp người dùng hình dung được bố cục trang và cảm thấy thời gian chờ đợi ngắn hơn.', example: 'Khi mở Facebook hay Shopee lúc mạng yếu, bạn thấy các thanh xám dài ngắn khác nhau hiện lên trước khi ảnh và text xuất hiện — đó là skeleton screen.', related: ['interface', 'state', 'ux', 'performance'], demo: { kind: 'interactive', src: 'gif-skeleton-demo.html', alt: 'Mô phỏng skeleton screen cho Article, Dashboard, Product và Table' } },
   { id: 'viewport', name: 'Viewport', nameEn: 'Khung hiển thị', letter: 'V', groups: ['design', 'code'], definition: 'Viewport là khu vực hiển thị nội dung của trang web mà người dùng nhìn thấy được trên màn hình thiết bị. Nó không phải là kích thước vật lý của màn hình, mà là kích thước "ảo" mà trình duyệt dùng để sắp xếp layout. Hiểu về viewport giúp marketer biết tại sao một thiết kế trông đẹp trên máy này nhưng lại bị vỡ trên máy khác dù cùng độ phân giải.', example: 'iPhone 15 Pro có màn hình 2556px nhưng viewport chỉ rộng 393px. Khi bạn bảo AI "chỉnh layout cho điện thoại", AI sẽ dùng viewport width (393px) để tính toán, không phải số pixel thực tế của màn hình.', related: ['responsive', 'breakpoint', 'layout'], demo: { kind: 'interactive', src: 'gif-viewport-demo.html', alt: 'Mô phỏng cách layout thay đổi theo các kích thước Viewport khác nhau' } },
+  { id: 'z-index', name: 'Z-index', nameEn: 'Z-index / Thứ tự lớp', letter: 'Z', groups: ['design', 'code'], definition: 'Z-index là thuộc tính quyết định thứ tự "nông sâu" của các thành phần trên màn hình (trục Z). Element nào có z-index cao hơn sẽ nằm đè lên element có z-index thấp hơn. Hãy tưởng tượng z-index giống như các lớp giấy xếp chồng lên nhau trên mặt bàn.', example: 'Khi bạn thấy modal bị che bởi navbar, đó là lỗi z-index. Cách fix: set z-index cho modal cao hơn (ví dụ: navbar z:100, modal z:1000).', related: ['layout', 'popup', 'sticky', 'interface'], demo: { kind: 'interactive', src: 'gif-zindex-demo.html', alt: 'Mô phỏng 4 lớp z-index phổ biến: Tooltip, Dropdown, Modal và Stack tổng thể' } },
 ];
 
 export const quickRefItems = [
@@ -183,6 +184,7 @@ const deepDiveTermIds = new Set([
   'design-system',
   'skeleton',
   'viewport',
+  'z-index',
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -367,6 +369,12 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Khi bạn bảo "web bị tràn trên di động", hãy cung cấp số Viewport Width (ví dụ: 375px) để dev/AI kiểm tra chính xác breakpoint nào đang lỗi.',
     'Viewport không chỉ có chiều rộng (Width) mà còn có chiều cao (Height). Với các thiết kế "Full Screen" hoặc "Hero Banner", chiều cao viewport quyết định nội dung gì sẽ hiện ra',
     'Mẹo nhỏ: Bạn có thể dùng tính năng Inspect (F12) trên Chrome, bật Toggle Device Toolbar để giả lập mọi loại Viewport phổ biến nhất hiện nay.',
+  ],
+  'z-index': [
+    'Z-index chỉ hoạt động khi element có thuộc tính position (như relative, absolute, fixed, sticky). Nếu set z-index mà không thấy tác dụng, hãy check lại position.',
+    'Quy tắc Stack: Các element nằm trong cùng một "container" sẽ so z-index với nhau. Một element z:9999 nằm trong container A có z:1 vẫn có thể bị đè bởi element z:2 ở ngoài. Đây là lỗi "Stacking Context" cực kỳ phổ biến.',
+    'Chiến lược z-index: Đừng đặt số ngẫu nhiên như 999999. Hãy chia theo lớp: Page (0), Components (1-10), Sticky (100), Dropdown (500), Modal (1000), Toast (9999).',
+    'Marketer cần biết z-index để feedback: "Popup này đang bị che" thay vì nói "nó bị lỗi hiển thị". Gợi ý cho AI: "Kiểm tra z-index của modal so với navbar".',
   ],
 };
 

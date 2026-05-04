@@ -5,27 +5,24 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Radius / Corner — Practice</title>
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;--card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a;--success:#3a9e5c}
+:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;--card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a;--success:#3a9e5c;--success-soft:rgba(58,158,92,.12);--warning:#c49030;--warning-soft:rgba(196,144,48,.1);--shape-lt:#33333d}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 100%,16px 16px;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:12px 16px;min-height:auto;overflow:hidden}
+body{background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 100%,16px 16px;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:12px;gap:16px}
 
-.pw{width:100%;background:var(--card);border:1px solid var(--border);padding:20px 24px;position:relative;z-index:1}
+.pw{width:100%;background:var(--card);border:2px solid var(--border);padding:20px 24px}
 .pw-h{font-size:15px;font-weight:700;margin-bottom:2px}.pw-h span{color:var(--accent)}
 .pw-s{font-size:11px;color:var(--muted);margin-bottom:14px}
-.mbs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
-.mb{padding:6px 12px;border:2px solid var(--border);background:var(--card-alt);font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);cursor:pointer;transition:all .2s}.mb:hover{border-color:var(--border-hi)}.mb.on{border-color:var(--accent);color:var(--accent);background:rgba(212,113,42,.08)}
 
-.pcv{background:var(--card-alt);border:1px solid var(--border);padding:32px;display:flex;justify-content:center;margin-bottom:12px;position:relative;transition:all .3s}
-.rpc{width:280px;background:var(--card);border:1px solid var(--border);padding:16px;display:flex;flex-direction:column;gap:12px;transition:border-radius .3s}
-.rpc-h{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
-.rpc-b{width:100%;height:36px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;transition:border-radius .3s}
-.rpc-i{width:100%;height:32px;background:var(--card-alt);border:1px solid var(--border);transition:border-radius .3s}
-.rpc-c{width:100%;height:80px;background:var(--card-alt);border:1px solid var(--border);transition:border-radius .3s}
+.ctx-r{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+.ctx-b{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;padding:6px 12px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:6px}
+.ctx-b:hover{border-color:var(--accent);color:var(--fg)}
+.ctx-b.on{border-color:var(--accent);color:var(--accent);background:rgba(212,113,42,.1)}
 
-.sl-sec{margin-bottom:16px}
+.sl-sec{margin-bottom:20px}
 .sl-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
-.sl-lbl{font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:1px}
+.sl-lbl{font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace}
 .sl-val{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700;color:var(--accent)}
 
 .sl-wrap{position:relative;height:30px;display:flex;align-items:center}
@@ -35,29 +32,33 @@ body{background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rg
 
 input[type=range]{-webkit-appearance:none;width:100%;height:100%;background:transparent;outline:none;cursor:pointer;position:relative;z-index:2}
 input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;background:var(--accent);border:2px solid var(--card);cursor:grab;border-radius:0}
-input[type=range]:active::-webkit-slider-thumb{cursor:grabbing}
 
-.fb{display:flex;align-items:center;gap:8px;padding:10px 14px;font-size:12px;border:1px solid var(--border);background:var(--card-alt);font-family:'Space Grotesk',sans-serif}
-.fb strong{color:var(--accent)}
-.fb.ok{border-color:var(--success);background:rgba(58,158,92,.05)}
-.fb.ok strong{color:var(--success)}
+.prev{background:var(--card-alt);border:1px solid var(--border);padding:32px 24px;margin-bottom:16px;min-height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative}
+.main-shape{width:180px;height:70px;background:var(--shape-lt);transition:border-radius .15s ease}
+.sec-shapes{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;justify-content:center}
+.prev-btn{padding:8px 16px;background:var(--accent);color:#fff;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;border:none;transition:border-radius .15s ease}
+.prev-chip{padding:4px 12px;background:rgba(212,113,42,.1);border:1px solid rgba(212,113,42,.3);color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:10px;transition:border-radius .15s ease}
+
+.fb{display:flex;align-items:center;gap:8px;padding:10px 14px;font-size:12px;border:1px solid var(--border);background:var(--card-alt)}
+.fb.ok{border-color:var(--success);background:rgba(58,158,92,.05);color:var(--success)}
+.fb.no{border-color:var(--warning);background:rgba(196,144,48,.05);color:var(--warning)}
 
 .pht{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);opacity:.65}
 
-@media(max-width:520px){.pw{padding:16px}.rpc{width:100%}}
+@media(max-width:520px){.pw{padding:16px}}
 </style>
 </head>
 <body>
 
 <div class="pw">
-  <div class="pw-h">Thực hành — <span>Radius Context</span></div>
-  <div class="pw-s">Chọn loại element → điều chỉnh radius vào vùng gợi ý</div>
-  
-  <div class="mbs" id="mbs"></div>
+  <div class="pw-h">Thực hành — <span>Vibe bo góc</span></div>
+  <div class="pw-s">Chọn loại element → kéo slider vào vùng cam để tìm radius "chuẩn"</div>
+
+  <div class="ctx-r" id="ctxR"></div>
 
   <div class="sl-sec">
     <div class="sl-head">
-      <span class="sl-lbl">Corner Radius</span>
+      <span class="sl-lbl">border-radius</span>
       <span class="sl-val" id="sV">0px</span>
     </div>
     <div class="sl-wrap">
@@ -67,33 +68,35 @@ input[type=range]:active::-webkit-slider-thumb{cursor:grabbing}
     </div>
   </div>
 
-  <div class="pcv" id="pcv">
-    <div class="rpc" id="rpc"><div class="rpc-h" id="rpcH">Card</div><div class="rpc-b" id="rpcB">BUTTON</div><div class="rpc-i" id="rpcI"></div><div class="rpc-c" id="rpcC"></div></div>
+  <div class="prev">
+    <div class="main-shape" id="mainS"></div>
+    <div class="sec-shapes" id="secS"></div>
   </div>
 
-  <div class="fb" id="fb">Chọn một loại element để bắt đầu</div>
+  <div class="fb" id="fb">Chọn loại element rồi kéo slider</div>
   <div class="pht">Hint: Chú ý sự nhất quán — card thường bo nhiều hơn button bên trong nó.</div>
 </div>
 
 <script>
   const ctxs = [
-    { id:'button', name:'Button', range:[4,10], hint:'Button cần bo vừa phải — sạch sẽ và chuyên nghiệp.' },
-    { id:'card', name:'Card', range:[8,16], hint:'Card thường bo nhiều hơn để tạo khối vững chãi.' },
-    { id:'input', name:'Input', range:[2,6], hint:'Input nên bo rất nhẹ để giữ phom dáng ngay ngắn.' },
-    { id:'badge', name:'Badge', range:[16,24], hint:'Badge/Tag thường bo mạnh (pill) để nổi bật.' }
+    { id:'button', name:'Button', range:[4,8], hint:'Button cần bo vừa phải — đủ mềm để chạm, không quá tròn.' },
+    { id:'card', name:'Card', range:[8,14], hint:'Card thường bo nhiều hơn button để tạo khối vững chãi.' },
+    { id:'input', name:'Input', range:[4,6], hint:'Input nên bo nhẹ để giữ phom dáng ngay ngắn, kỹ thuật.' },
+    { id:'badge', name:'Badge', range:[12,20], hint:'Badge/Chip thường bo mạnh (pill) để nổi bật nội dung phụ.' },
+    { id:'modal', name:'Modal', range:[12,18], hint:'Modal bo vừa — đủ mềm để nổi lên trên nền, không quá trẻ con.' }
   ];
 
-  const mbs=document.getElementById('mbs'), sR=document.getElementById('sR'), sV=document.getElementById('sV'), sZ=document.getElementById('sZ');
-  const fb=document.getElementById('fb'), rpc=document.getElementById('rpc'), rpcB=document.getElementById('rpcB'), rpcI=document.getElementById('rpcI'), rpcC=document.getElementById('rpcC'), rpcH=document.getElementById('rpcH');
+  const ctxR=document.getElementById('ctxR'), sR=document.getElementById('sR'), sV=document.getElementById('sV'), sZ=document.getElementById('sZ');
+  const fb=document.getElementById('fb'), mainS=document.getElementById('mainS'), secS=document.getElementById('secS');
 
-  let pm = ctxs[0];
+  let curCtx = ctxs[0];
 
-  function buildM(){
-    mbs.innerHTML = ctxs.map((c,i)=>`<button class="mb${i===0?' on':''}" data-id="${c.id}">${c.name}</button>`).join('');
-    mbs.querySelectorAll('.mb').forEach(b=>{
+  function renderCtx(){
+    ctxR.innerHTML = ctxs.map((c,i)=>`<button class="ctx-b${i===0?' on':''}" data-id="${c.id}">${c.name}</button>`).join('');
+    ctxR.querySelectorAll('.ctx-b').forEach(b=>{
       b.onclick=()=>{
-        pm=ctxs.find(x=>x.id===b.dataset.id);
-        mbs.querySelectorAll('.mb').forEach(x=>x.classList.toggle('on',x===b));
+        curCtx=ctxs.find(x=>x.id===b.dataset.id);
+        ctxR.querySelectorAll('.ctx-b').forEach(x=>x.classList.toggle('on',x===b));
         update();
       };
     });
@@ -103,34 +106,35 @@ input[type=range]:active::-webkit-slider-thumb{cursor:grabbing}
     const v = parseInt(sR.value);
     sV.textContent = v + 'px';
     
-    // Update elements
-    rpc.style.borderRadius = v + 'px';
-    rpcB.style.borderRadius = Math.min(v, 8) + 'px';
-    rpcI.style.borderRadius = Math.min(v, 6) + 'px';
-    rpcC.style.borderRadius = Math.min(v, 4) + 'px';
-    rpcH.textContent = pm.name + ' context';
+    mainS.style.borderRadius = v + 'px';
+    
+    let secH = '';
+    if(curCtx.id==='button' || curCtx.id==='badge'){
+        secH = `<div class="prev-btn" style="border-radius:${v}px">Submit</div><div class="prev-chip" style="border-radius:${v}px">v2.0</div>`;
+    } else {
+        secH = `<div class="prev-btn" style="border-radius:${Math.max(0, v-4)}px">Inner Btn</div><div class="prev-chip" style="border-radius:${Math.max(0, v-4)}px">Tag</div>`;
+    }
+    secS.innerHTML = secH;
 
-    // Zone logic
     const lo=0, hi=40;
-    const zl=pm.range[0], zh=pm.range[1];
+    const zl=curCtx.range[0], zh=curCtx.range[1];
     sZ.style.left = (zl/hi*100)+'%';
     sZ.style.width = ((zh-zl)/hi*100)+'%';
 
     const inZ = v >= zl && v <= zh;
-    sV.style.color = inZ ? 'var(--success)' : 'var(--accent)';
     sZ.classList.toggle('hit', inZ);
     
     if(inZ){
       fb.className='fb ok';
-      fb.innerHTML=`<strong>✓ Hợp lý!</strong> ${pm.hint}`;
+      fb.innerHTML=`<i class="fa-solid fa-check"></i> <span><strong>Hợp lý!</strong> ${curCtx.hint}</span>`;
     } else {
-      fb.className='fb';
-      fb.innerHTML=`<strong>× Chưa khớp.</strong> Kéo vào vùng sáng của ${pm.name} (${zl}-${zh}px)`;
+      fb.className='fb no';
+      fb.innerHTML=`<i class="fa-solid fa-xmark"></i> <span><strong>Chưa chuẩn.</strong> Thử tầm ${zl}-${zh}px cho ${curCtx.name.toLowerCase()}.</span>`;
     }
   }
 
   sR.oninput = update;
-  buildM();
+  renderCtx();
   update();
 </script>
 </body>
