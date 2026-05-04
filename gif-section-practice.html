@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section — Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;--card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a;--success:#3a9e5c;--success-soft:rgba(58,158,92,.12);--warning:#c49030;--warning-soft:rgba(196,144,48,.1);--bg2:#131315}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 100%,16px 16px;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:12px;gap:16px}
+
+.pw{width:100%;background:var(--card);border:2px solid var(--border);padding:20px 24px}
+.pw-h{font-size:15px;font-weight:700;margin-bottom:2px}.pw-h span{color:var(--accent)}
+.pw-s{font-size:11px;color:var(--muted);margin-bottom:14px;line-height:1.5}
+
+.clist{display:flex;flex-direction:column;gap:6px;margin-bottom:20px}
+.cd{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--card-alt);border:1px solid var(--border);cursor:grab;user-select:none;transition:border-color .2s,background .2s,opacity .2s}
+.cd:hover{border-color:rgba(212,113,42,.3);background:rgba(212,113,42,.03)}
+.cd.dragging{opacity:.4;border-color:var(--accent)}
+.cd.dragover{border-color:var(--accent);border-style:dashed}
+
+.cd-grip{font-size:14px;color:var(--muted);line-height:1;letter-spacing:2px;flex-shrink:0}
+.cd-idx{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:1px;flex-shrink:0;min-width:20px;font-weight:700}
+.cd-info{flex:1;min-width:0}
+.cd-name{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--fg);letter-spacing:1px;text-transform:uppercase}
+.cd-desc{font-size:8px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+.cd-arr{display:flex;flex-direction:column;gap:4px;flex-shrink:0}
+.cd-btn{background:none;border:1px solid var(--border);color:var(--muted);width:24px;height:18px;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .2s,color .2s;font-family:'JetBrains Mono',monospace}
+.cd-btn:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.cd-btn:disabled{opacity:.2;cursor:default}
+
+.pp{position:relative;width:100%;height:210px;background:var(--bg2);border:1px solid var(--border);overflow:hidden;margin-bottom:16px}
+.pp::before{content:'';position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:20px 20px}
+
+.pb{position:absolute;left:8%;right:8%;height:calc(25% - 8px);border:1px solid var(--border);display:flex;align-items:center;padding:0 12px;gap:12px;overflow:hidden;transition:top .4s cubic-bezier(.4,0,.2,1)}
+.pl{font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;color:var(--accent);flex-shrink:0;background:rgba(212,113,42,.1);padding:2px 5px;border:1px solid rgba(212,113,42,.2);font-weight:700}
+.pv{flex:1;height:40%}
+.pv-h{background:var(--accent);opacity:.7;width:60%}
+.pv-f{display:flex;gap:4px}.pv-f>div{flex:1;background:rgba(255,255,255,.08)}
+.pv-a{background:rgba(255,255,255,.06);width:70%}
+.pv-c{background:var(--accent);opacity:.5;width:40%}
+
+.pbg-h{background:rgba(212,113,42,.04)}
+.pbg-f{background:rgba(255,255,255,.015)}
+.pbg-a{background:transparent}
+.pbg-c{background:rgba(212,113,42,.06)}
+
+.flow-arrow{position:absolute;left:50%;transform:translateX(-50%);font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,.1);z-index:5;pointer-events:none}
+
+.fb{display:flex;align-items:flex-start;gap:10px;padding:12px 16px;font-size:12px;border:1px solid var(--border);background:var(--card-alt);line-height:1.5}
+.fb.ok{border-color:var(--success);background:var(--success-soft);color:var(--success)}
+.fb.no{border-color:var(--warning);background:var(--warning-soft);color:var(--warning)}
+
+.pht{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:16px;padding-top:12px;border-top:1px dashed var(--border);opacity:.8;line-height:1.5}
+
+@media(max-width:520px){
+  .pw{padding:16px}
+  .cd-desc{display:none}
+  .pp{height:220px}
+}
+</style>
+</head>
+<body>
+
+<div class="pw">
+  <div class="pw-h">Thực hành — <span>Page Flow</span></div>
+  <div class="pw-s">Kéo thả hoặc dùng mũi tên để sắp xếp lại thứ tự section — xem cách flow thông tin ảnh hưởng đến trải nghiệm người dùng.</div>
+
+  <div class="clist" id="cl"></div>
+
+  <div class="pp" id="pp"></div>
+
+  <div class="fb" id="fb"></div>
+  <div class="pht">Hint: Thử đưa CTA lên đầu — bạn sẽ thấy ngay tại sao thứ tự thuyết phục (persuasion flow) quan trọng.</div>
+</div>
+
+<script>
+const SEC = [
+  { id: 'hero', name: 'HERO SECTION', desc: 'First impression — hook user ngay lập tức', bg: 'pbg-h', vis: 'pv-h', lbl: 'HERO' },
+  { id: 'feat', name: 'FEATURES SECTION', desc: 'Liệt kê giá trị — user thấy được lợi ích gì', bg: 'pbg-f', vis: 'pv-f', lbl: 'FEATURES' },
+  { id: 'about', name: 'ABOUT SECTION', desc: 'Xây niềm tin — ai bạn là, làm gì, cho ai', bg: 'pbg-a', vis: 'pv-a', lbl: 'ABOUT' },
+  { id: 'cta', name: 'CTA SECTION', desc: 'Chốt chuyển đổi — một câu hỏi + một nút', bg: 'pbg-c', vis: 'pv-c', lbl: 'CTA' }
+];
+
+let order = [0, 1, 2, 3];
+let dragFrom = null;
+
+const $ = id => document.getElementById(id);
+
+function renderCards() {
+  const cl = $('cl'); cl.innerHTML = '';
+  order.forEach((si, pos) => {
+    const s = SEC[si];
+    const c = document.createElement('div');
+    c.className = 'cd'; c.draggable = true; c.dataset.pos = pos;
+    c.innerHTML = `
+      <span class="cd-grip" aria-hidden="true">⋮⋮</span>
+      <span class="cd-idx">${String(pos + 1).padStart(2, '0')}</span>
+      <div class="cd-info">
+        <div class="cd-name">${s.name}</div>
+        <div class="cd-desc">${s.desc}</div>
+      </div>
+      <div class="cd-arr">
+        <button class="cd-btn" data-d="u" ${pos === 0 ? 'disabled' : ''} aria-label="Lên">▲</button>
+        <button class="cd-btn" data-d="d" ${pos === 3 ? 'disabled' : ''} aria-label="Xuống">▼</button>
+      </div>`;
+
+    c.addEventListener('dragstart', e => { dragFrom = pos; c.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move' });
+    c.addEventListener('dragend', () => { dragFrom = null; c.classList.remove('dragging'); cl.querySelectorAll('.cd').forEach(x => x.classList.remove('dragover')) });
+    c.addEventListener('dragover', e => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; if (dragFrom !== null && dragFrom !== pos) c.classList.add('dragover') });
+    c.addEventListener('dragleave', () => c.classList.remove('dragover'));
+    c.addEventListener('drop', e => { e.preventDefault(); c.classList.remove('dragover'); if (dragFrom !== null && dragFrom !== pos) { swap(dragFrom, pos) } });
+
+    c.querySelectorAll('.cd-btn').forEach(b => b.addEventListener('click', () => {
+      const np = b.dataset.d === 'u' ? pos - 1 : pos + 1;
+      if (np >= 0 && np < order.length) swap(pos, np);
+    }));
+
+    let ty = null, tp = null;
+    c.addEventListener('touchstart', e => { ty = e.touches[0].clientY; tp = pos; c.classList.add('dragging') }, { passive: true });
+    c.addEventListener('touchmove', e => {
+      if (tp === null) return;
+      const dy = e.touches[0].clientY - ty;
+      const ch = c.offsetHeight + 6;
+      if (Math.abs(dy) > ch * 0.4) {
+        const np = dy < 0 ? tp - 1 : tp + 1;
+        if (np >= 0 && np < order.length && np !== tp) { swap(tp, np); tp = np; ty = e.touches[0].clientY }
+      }
+    }, { passive: true });
+    c.addEventListener('touchend', () => { tp = null; cl.querySelectorAll('.cd').forEach(x => x.classList.remove('dragging')) });
+
+    cl.appendChild(c);
+  });
+}
+
+function swap(a, b) {
+  [order[a], order[b]] = [order[b], order[a]];
+  renderCards(); renderPrev(); renderFB();
+}
+
+function renderPrev() {
+  const pp = $('pp'); pp.innerHTML = '';
+  order.forEach((si, pos) => {
+    const s = SEC[si];
+    const b = document.createElement('div');
+    b.className = 'pb ' + s.bg;
+    b.style.top = 'calc(' + pos * 25 + '% + 4px)';
+    
+    let vh = '';
+    if (s.id === 'hero') vh = '<div class="pv pv-h"></div>';
+    else if (s.id === 'feat') vh = '<div class="pv pv-f"><div></div><div></div><div></div></div>';
+    else if (s.id === 'about') vh = '<div class="pv pv-a"></div>';
+    else vh = '<div class="pv pv-c"></div>';
+    
+    b.innerHTML = '<span class="pl">' + s.lbl + '</span>' + vh;
+    pp.appendChild(b);
+  });
+  
+  for (let i = 0; i < 3; i++) {
+    const a = document.createElement('div');
+    a.className = 'flow-arrow';
+    a.style.top = 'calc(' + (i + 1) * 25 + '% - 7px)';
+    a.textContent = '↓';
+    pp.appendChild(a);
+  }
+}
+
+function renderFB() {
+  const n = order.map(i => SEC[i].id);
+  const fb = $('fb');
+  const msgs = [];
+  
+  const hi = n.indexOf('hero'), fi = n.indexOf('feat'), ai = n.indexOf('about'), cti = n.indexOf('cta');
+
+  if (n[0] !== 'hero') msgs.push('<strong>Hero không ở đầu</strong> — user mở trang không biết đây là trang gì, thoát ngay lập tức.');
+  if (n[0] === 'cta') msgs.push('<strong>CTA lên đầu tiên</strong> — như chưa chào hỏi đã xin số điện thoại, gây phản cảm.');
+  else if (cti < fi && cti < ai && cti > 0) msgs.push('<strong>CTA quá sớm</strong> — user chưa thấy đủ giá trị để bị hỏi hành động chuyển đổi.');
+  if (ai !== -1 && fi !== -1 && ai < fi) msgs.push('<strong>About trước Features</strong> — user chưa biết sản phẩm mang lại lợi ích gì đã phải đọc về lịch sử của bạn.');
+
+  if (n.join() === ['hero', 'feat', 'about', 'cta'].join()) {
+    fb.className = 'fb ok';
+    fb.innerHTML = '<i class="fa-solid fa-check" style="margin-top:2px"></i> <div><strong>Chuẩn flow persuasion!</strong> Hook (Hero) → Value (Features) → Trust (About) → Action (CTA).</div>';
+    return;
+  }
+  
+  if (n.join() === ['cta', 'about', 'feat', 'hero'].join()) {
+    msgs.push('<strong>Ngược hoàn toàn</strong> — user bị bối rối từ giây đầu tiên và flow hoàn toàn đứt gãy.');
+  }
+
+  fb.className = 'fb no';
+  fb.innerHTML = '<i class="fa-solid fa-xmark" style="margin-top:2px"></i> <div>' + msgs.join('<br><br>') + '</div>';
+}
+
+renderCards(); renderPrev(); renderFB();
+</script>
+</body>
+</html>

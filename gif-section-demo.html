@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section — Animated</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;--accent-dim:rgba(212,113,42,.15);--card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a;--surface:#1c1c23;--bg2:#131315}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 100%,16px 16px;display:flex;flex-direction:column;align-items:center;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:12px;gap:8px}
+
+.aw{width:100%}
+.ab-wrap{width:100%;background:var(--card);border:2px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.la-wrap{width:100%;position:relative;overflow:hidden}
+.ab{width:700px;height:300px;transform-origin:top left;background:var(--bg2);position:relative}
+.hd{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
+.hd-t{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:2.5px}
+.hd-f{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
+
+.inf{padding:11px 14px;border-top:1px solid var(--border);background:var(--card);min-height:86px}
+.dn{font-size:15px;font-weight:800;line-height:1.15}
+.ds{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);margin-top:2px}
+.dd{font-size:10px;color:var(--muted);margin-top:4px;line-height:1.4}
+.pt{height:2px;background:var(--border)}.pff{height:100%;background:var(--accent);width:0%}
+
+/* Controls */
+.ctr{display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 0;background:transparent;flex-wrap:wrap}
+.ctr-b{padding:6px 12px;background:var(--card-alt);border:1px solid var(--border);color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:1px}
+.ctr-b:hover{border-color:var(--border-hi);color:var(--fg)}
+.ctr-b.act{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+
+.pp-b{width:32px;height:32px;border-radius:50%;background:var(--accent);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-left:4px;transition:transform .2s;flex-shrink:0}
+.pp-b:active{transform:scale(.92)}
+.pp-i{width:12px;height:12px;fill:#000}
+
+/* === Simulation Specific === */
+.ab::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:1;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:20px 20px}
+
+.page{position:absolute;inset:15px 80px;display:flex;flex-direction:column;z-index:5;border:1px solid var(--border);background:var(--bg)}
+.page-sec{flex:1;position:relative;display:flex;align-items:center;padding:0 14%;transition:opacity .5s ease;overflow:hidden}
+.page-sec.dimmed{opacity:.15}
+
+.bline{position:absolute;left:6%;right:6%;height:0;border-top:1px dashed rgba(255,255,255,.1);z-index:6;pointer-events:none}
+.sec-pin{position:absolute;left:30px;z-index:12;font-family:'JetBrains Mono',monospace;font-size:7px;color:rgba(255,255,255,.2);letter-spacing:1px;transition:color .4s}
+.sec-pin.active{color:var(--accent)}
+
+.sh{font-size:10px;font-weight:700;color:var(--fg);line-height:1.2}
+.ss{font-size:7px;color:var(--muted);margin-top:2px}
+.sbtn{width:40px;height:6px;background:var(--accent);margin-top:6px;flex-shrink:0}
+.fh{font-size:8px;font-weight:600;color:var(--fg)}
+.frow{display:flex;gap:12px;margin-top:8px;width:100%}
+.fcard{flex:1;height:32px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.06)}
+.aline{height:4px;background:rgba(255,255,255,.08);margin-top:6px}
+.aline.w85{width:85%}
+.aline.w65{width:65%}
+.aline.w50{width:50%}
+
+.sec-hero{background:rgba(212,113,42,.05)}
+.sec-feat{background:rgba(255,255,255,.015)}
+.sec-about{background:transparent}
+.sec-cta{background:rgba(212,113,42,.08)}
+
+.scanner{position:absolute;left:40px;right:40px;height:25%;border:2px solid var(--accent);z-index:10;pointer-events:none;transition:top .6s cubic-bezier(.4,0,.2,1)}
+.scanner::after{content:'';position:absolute;inset:0;background:rgba(212,113,42,.05);pointer-events:none}
+.sc-label{position:absolute;right:0;top:50%;transform:translate(100%,-50%);margin-left:12px;font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:1px;color:#000;background:var(--accent);padding:2px 5px;white-space:nowrap;font-weight:700}
+
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="aw">
+<div class="ab-wrap">
+  <div class="hd"><span class="hd-t">SECTION</span><span class="hd-f" id="hf">01 / 04</span></div>
+  <div class="la-wrap" id="la-wrap">
+    <div class="ab" id="ab">
+
+      <div class="sec-pin active" id="pin0" style="top:calc(15px + 270px * 0.125 - 5px)">01</div>
+      <div class="sec-pin" id="pin1" style="top:calc(15px + 270px * 0.375 - 5px)">02</div>
+      <div class="sec-pin" id="pin2" style="top:calc(15px + 270px * 0.625 - 5px)">03</div>
+      <div class="sec-pin" id="pin3" style="top:calc(15px + 270px * 0.875 - 5px)">04</div>
+
+      <div class="page">
+        <div class="bline" style="top:25%"></div>
+        <div class="bline" style="top:50%"></div>
+        <div class="bline" style="top:75%"></div>
+
+        <div class="page-sec sec-hero">
+          <div style="display:flex;flex-direction:column;gap:0;width:100%">
+            <div class="sh">Build faster. Ship better.</div>
+            <div class="ss">The infrastructure platform for modern teams</div>
+            <div class="sbtn"></div>
+          </div>
+        </div>
+        <div class="page-sec sec-feat">
+          <div style="display:flex;flex-direction:column;width:100%">
+            <div class="fh">Everything you need</div>
+            <div class="frow">
+              <div class="fcard"></div>
+              <div class="fcard"></div>
+              <div class="fcard"></div>
+            </div>
+          </div>
+        </div>
+        <div class="page-sec sec-about">
+          <div style="display:flex;flex-direction:column;width:75%">
+            <div class="fh">Infrastructure that scales with you</div>
+            <div class="aline w85"></div>
+            <div class="aline w65"></div>
+            <div class="aline w50"></div>
+          </div>
+        </div>
+        <div class="page-sec sec-cta">
+          <div style="display:flex;flex-direction:column;align-items:center;width:100%;gap:0">
+            <div class="fh" style="text-align:center">Ready to get started?</div>
+            <div class="sbtn"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="scanner" id="sz">
+        <div class="sc-label" id="sl">HERO</div>
+      </div>
+
+    </div>
+  </div>
+  <div class="inf">
+    <div class="dn" id="dn">Hero Section</div>
+    <div class="ds" id="ds">FIRST IMPRESSION</div>
+    <div class="dd" id="dd">Section đầu tiên user thấy — quyết định họ ở lại hay rời đi. Chứa headline mạnh mẽ và nút CTA chính.</div>
+  </div>
+  <div class="pt"><div class="pff" id="pff"></div></div>
+</div>
+
+<div class="ctr">
+    <button class="ctr-b act" data-i="0">HERO</button>
+    <button class="ctr-b" data-i="1">FEATURES</button>
+    <button class="ctr-b" data-i="2">ABOUT</button>
+    <button class="ctr-b" data-i="3">CTA</button>
+    <button class="pp-b" id="pp" title="Play/Pause">
+        <svg class="pp-i" id="pp-i" viewBox="0 0 24 24"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>
+    </button>
+</div>
+</div>
+
+<script>
+const INFO=[
+  {nm:'Hero Section',sz:'FIRST IMPRESSION',dc:'Section đầu tiên user thấy — quyết định họ ở lại hay rời đi. Chứa headline mạnh mẽ và nút CTA chính.'},
+  {nm:'Features Section',sz:'VALUE PROPOSITION',dc:'Liệt kê giá trị từng khối nhỏ — user scan nhanh, hiểu ngay sản phẩm giúp họ được gì.'},
+  {nm:'About Section',sz:'TRUST BUILDING',dc:'Kể câu chuyện về bạn — tạo niềm tin trước khi chốt sale, giải thích "tại sao nên chọn chúng tôi".'},
+  {nm:'CTA Section',sz:'CONVERSION PUSH',dc:'Chốt chuyển đổi — một câu hỏi + một nút, không hơn không kém, đặt ở cuối luồng thông tin.'}
+];
+
+const el={dn:document.getElementById('dn'),ds:document.getElementById('ds'),dd:document.getElementById('dd'),hf:document.getElementById('hf'),pff:document.getElementById('pff'),sz:document.getElementById('sz'),sl:document.getElementById('sl')};
+const ctrBs=document.querySelectorAll('.ctr-b');
+const ppB=document.getElementById('pp');
+const ppI=document.getElementById('pp-i');
+const simSecs=document.querySelectorAll('.page-sec');
+const pins=[0,1,2,3].map(i=>document.getElementById('pin'+i));
+
+let cur=0,pa=null,t0=0,isPaused=false;
+const DUR=3500;
+
+function apply(i){
+  cur=i;
+  const s=INFO[i];el.dn.textContent=s.nm;el.ds.textContent=s.sz;el.dd.textContent=s.dc;
+  el.hf.textContent='0'+(i+1)+' / 04';
+  ctrBs.forEach((b,j)=>b.classList.toggle('act',j===i));
+  
+  simSecs.forEach((sec,j)=>sec.classList.toggle('dimmed',j!==i));
+  pins.forEach((p,j)=>p.classList.toggle('active',j===i));
+  
+  el.sz.style.top = (15 + i * (270/4)) + 'px';
+  el.sz.style.height = (270/4) + 'px';
+  el.sl.textContent = ctrBs[i].textContent;
+}
+
+function tk(n){
+    if(isPaused) return;
+    const p=Math.min(100,(n-t0)/DUR*100);
+    el.pff.style.width=p+'%';
+    if(p<100)pa=requestAnimationFrame(tk);
+    else next();
+}
+
+function startProg(){t0=performance.now();el.pff.style.transition='none';el.pff.style.width='0%';pa=requestAnimationFrame(tk)}
+function next(){if(isPaused)return;cur=(cur+1)%4;apply(cur);startProg()}
+
+function togglePP(){
+    isPaused=!isPaused;
+    ppI.innerHTML=isPaused ? '<path d="M8 5v14l11-7z"/>' : '<path d="M6 4h4v16H6zm8 0h4v16h-4z"/>';
+    if(!isPaused){
+        t0=performance.now() - (parseFloat(el.pff.style.width||0)/100*DUR);
+        pa=requestAnimationFrame(tk);
+    }
+}
+
+ctrBs.forEach(b=>{
+    b.onclick=()=>{
+        isPaused=true;
+        ppI.innerHTML='<path d="M8 5v14l11-7z"/>';
+        apply(parseInt(b.dataset.i));
+        el.pff.style.width='0%';
+    }
+});
+
+ppB.onclick=togglePP;
+
+function scale(){const w=document.getElementById('la-wrap'),b=document.getElementById('ab'),s=w.clientWidth/700;b.style.transform='scale('+s+')';w.style.height=Math.ceil(300*s)+'px'}
+window.addEventListener('resize',scale);
+requestAnimationFrame(()=>requestAnimationFrame(scale));
+
+apply(0);
+startProg();
+
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden){cancelAnimationFrame(pa)}
+  else if(!isPaused){t0=performance.now() - (parseFloat(el.pff.style.width||0)/100*DUR);pa=requestAnimationFrame(tk);}
+});
+</script>
+</body>
+</html>

@@ -54,6 +54,8 @@ import toggleDemoHtml from '../../gif-toggle-demo.html?raw';
 import togglePracticeHtml from '../../gif-toggle-practice.html?raw';
 import sidebarDemoHtml from '../../gif-sidebar-demo.html?raw';
 import sidebarPracticeHtml from '../../gif-sidebar-practice.html?raw';
+import sectionDemoHtml from '../../gif-section-demo.html?raw';
+import sectionPracticeHtml from '../../gif-section-practice.html?raw';
 import accordionDemoHtml from '../../gif-accordion-demo.html?raw';
 import accordionPracticeHtml from '../../gif-accordion-practice.html?raw';
 import headerDemoHtml from '../../gif-header-demo.html?raw';
@@ -129,6 +131,7 @@ export default function GlossaryTermDetailPage() {
       case 'footer': return footerDemoHtml;
       case 'toggle': return toggleDemoHtml;
       case 'sidebar': return sidebarDemoHtml;
+      case 'section': return sectionDemoHtml;
       case 'accordion': return accordionDemoHtml;
       case 'header': return headerDemoHtml;
       case 'breakpoint': return breakpointDemoHtml;
@@ -173,6 +176,7 @@ export default function GlossaryTermDetailPage() {
       case 'footer': return footerPracticeHtml;
       case 'toggle': return togglePracticeHtml;
       case 'sidebar': return sidebarPracticeHtml;
+      case 'section': return sectionPracticeHtml;
       case 'accordion': return accordionPracticeHtml;
       case 'header': return headerPracticeHtml;
       case 'breakpoint': return breakpointPracticeHtml;
