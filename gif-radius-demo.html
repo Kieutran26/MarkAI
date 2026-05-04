@@ -1,195 +1,409 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Radius / Corner — Animated</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<style>
-:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;--accent-dim:rgba(212,113,42,.15);--card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a;--surface:#1c1c23}
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 100%,16px 16px;display:flex;flex-direction:column;align-items:center;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:0;gap:8px}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Border Radius Demo — Vibecode Glossary</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #0f0f12;
+      --bg-card: #16161b;
+      --fg: #e8e4dc;
+      --muted: #6e6e7a;
+      --accent: #e88c2e;
+      --accent-soft: rgba(207, 92, 38, .12);
+      --accent-border: rgba(207, 92, 38, .3);
+      --border: #282830;
+      --surface: #1c1c23;
+      --success: #3a9e5c;
+      --success-soft: rgba(58, 158, 92, .12);
+      --warning: #c49030;
+      --warning-soft: rgba(196, 144, 48, .1);
+      --bar-d: #2a2a34;
+      --bar-m: #44444f;
+      --shape-lt: #33333d;
+    }
 
-.aw{width:100%}
-.ab-wrap{width:100%;background:var(--card);border:2px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
-.la-wrap{width:100%;position:relative;overflow:hidden}
-.ab{width:700px;height:250px;transform-origin:top left;background:linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);background-size:30px 30px;position:relative}
-.hd{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
-.hd-t{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:2.5px}
-.hd-f{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
-.fr{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 24px;opacity:0;pointer-events:none;transition:opacity .3s}.fr.show{opacity:1;pointer-events:auto}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
 
-/* Shapes */
-.sc-shapes{display:flex;flex-direction:column;gap:12px;width:100%;max-width:400px;align-items:center}
-.shape-row{display:flex;gap:10px;align-items:center;width:100%;justify-content:center}
-.sh{transition:border-radius .5s cubic-bezier(.4,0,.2,1);flex-shrink:0;position:relative;background:#33333d}
-.sh.lg{width:200px;height:48px}
-.sh.md{width:80px;height:48px}
-.sh.ac{width:48px;height:48px;background:var(--accent);opacity:.8}
-.sh.pill{height:32px;padding:0 16px;background:rgba(212,113,42,.15);border:1px solid rgba(212,113,42,.3);display:flex;align-items:center;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:.5px}
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'Space Grotesk', sans-serif;
+      min-height: auto;
+      line-height: 1.6;
+    }
 
-.arc-wrap{position:absolute;pointer-events:none;opacity:0;transition:opacity .4s ease;top:-2px;left:-2px}
-.fr.show .arc-wrap{opacity:1}
+    .entry {
+      position: relative;
+      z-index: 1;
+      max-width: 940px;
+      margin: 0 auto;
+      padding: 24px 24px 40px
+    }
 
-.inf{padding:11px 14px;border-top:1px solid var(--border);background:var(--card);min-height:86px}
-.dn{font-size:15px;font-weight:800;line-height:1.15}
-.ds{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);margin-top:2px}
-.dd{font-size:10px;color:var(--muted);margin-top:4px;line-height:1.4}
-.pt{height:2px;background:var(--border)}.pff{height:100%;background:var(--accent);width:0%}
+    .th {
+      margin-bottom: 28px
+    }
 
-/* Controls */
-.ctr{display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 0;background:transparent}
-.ctr-b{padding:6px 12px;background:var(--card-alt);border:1px solid var(--border);color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:1px}
-.ctr-b:hover{border-color:var(--border-hi);color:var(--fg)}
-.ctr-b.act{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+    .badge {
+      display: inline-block;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-soft);
+      border: 1px solid var(--accent-border);
+      padding: 4px 12px;
+      margin-bottom: 16px;
+    }
 
-.pp-b{width:32px;height:32px;border-radius:50%;background:var(--accent);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-left:4px;transition:transform .2s;flex-shrink:0}
-.pp-b:active{transform:scale(.92)}
-.pp-i{width:12px;height:12px;fill:#000}
+    .th h1 {
+      font-size: clamp(34px, 6vw, 54px);
+      font-weight: 800;
+      letter-spacing: -2px;
+      line-height: 1.08
+    }
 
-@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
-</style>
+    .th .sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 6px
+    }
+
+    .sec-lbl {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sec-lbl::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border)
+    }
+
+    /* ========== SIM CARDS ========== */
+    .sim-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      margin-bottom: 20px
+    }
+
+    @media(max-width:720px) {
+      .sim-grid {
+        grid-template-columns: repeat(2, 1fr)
+      }
+    }
+
+    .sc {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 20px 14px 18px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: border-color .3s, background .3s;
+    }
+
+    .sc::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--accent);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .35s ease;
+    }
+
+    .sc:hover {
+      border-color: var(--accent-border)
+    }
+
+    .sc.on {
+      border-color: var(--accent);
+      background: var(--surface)
+    }
+
+    .sc.on::before {
+      transform: scaleX(1)
+    }
+
+    .sc-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px
+    }
+
+    .sc-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: 1px
+    }
+
+    .sc-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+      transition: color .3s;
+    }
+
+    .sc.on .sc-tag {
+      color: var(--accent)
+    }
+
+    .sc-shapes {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 16px;
+      min-height: 110px;
+      justify-content: center
+    }
+
+    .shape-row {
+      display: flex;
+      gap: 8px;
+      align-items: center
+    }
+
+    .sh {
+      transition: border-radius .5s cubic-bezier(.4, 0, .2, 1), background .3s;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .sh.lg {
+      width: 100%;
+      height: 36px;
+      background: var(--shape-lt)
+    }
+
+    .sh.md {
+      width: 52px;
+      height: 36px;
+      background: var(--shape-lt)
+    }
+
+    .sh.ac {
+      width: 36px;
+      height: 36px;
+      background: var(--accent);
+      opacity: .8
+    }
+
+    .sh.sm {
+      width: 28px;
+      height: 28px;
+      background: var(--bar-m);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: var(--muted)
+    }
+
+    .sh.pill {
+      height: 28px;
+      padding: 0 12px;
+      background: var(--accent-soft);
+      border: 1px solid var(--accent-border);
+      display: flex;
+      align-items: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--accent);
+      letter-spacing: .5px;
+    }
+
+    .arc-wrap {
+      position: absolute;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .4s ease;
+    }
+
+    .sc.on .arc-wrap {
+      opacity: 1
+    }
+
+    .arc-svg {
+      overflow: visible
+    }
+
+    .sc-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--muted);
+      text-align: center;
+      transition: color .3s, font-weight .3s;
+    }
+
+    .sc.on .sc-val {
+      color: var(--accent);
+      font-weight: 600
+    }
+
+    .ins {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 18px 22px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 0;
+    }
+
+    .ins-i {
+      color: var(--accent);
+      font-size: 13px;
+      margin-top: 3px;
+      flex-shrink: 0
+    }
+
+    .ins-t {
+      font-size: 14px;
+      color: var(--fg);
+      opacity: .85;
+      line-height: 1.65;
+      transition: opacity .25s, transform .25s
+    }
+
+    .ins-t.fading {
+      opacity: 0;
+      transform: translateY(6px)
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="aw">
-<div class="ab-wrap">
-  <div class="hd"><span class="hd-t">BORDER RADIUS</span><span class="hd-f" id="hf">01 / 04</span></div>
-  <div class="la-wrap" id="la-wrap">
-    <div class="ab" id="ab">
+  <div class="entry" id="app-root">
 
-    <div class="fr" id="f">
-      <div class="sc-shapes">
-        <div class="shape-row">
-            <div class="sh lg" id="sh-lg">
-                <div class="arc-wrap" id="arc-lg"></div>
-            </div>
-        </div>
-        <div class="shape-row">
-            <div class="sh md" id="sh-md">
-                <div class="arc-wrap" id="arc-md"></div>
-            </div>
-            <div class="sh ac" id="sh-ac"></div>
-        </div>
-        <div class="shape-row">
-            <div class="sh pill" id="sh-pill">LABEL</div>
-        </div>
+    <section aria-label="Mô phỏng border radius">
+      <div class="sec-lbl">01 — Mô phỏng</div>
+      <div class="sim-grid" id="simGrid"></div>
+      <div class="ins">
+        <i class="fa-solid fa-lightbulb ins-i"></i>
+        <p class="ins-t" id="insT">Nhấn vào một mức radius để xem giải thích.</p>
       </div>
-    </div>
-
-    </div>
+    </section>
   </div>
-  <div class="inf">
-    <div class="dn" id="dn">Sharp</div>
-    <div class="ds" id="ds">GÓC VUÔNG 0PX</div>
-    <div class="dd" id="dd">Góc vuông sắc cạnh, không bo — tạo cảm giác kỹ thuật, cứng cáp và chính xác.</div>
-  </div>
-  <div class="pt"><div class="pff" id="pff"></div></div>
-</div>
 
-<div class="ctr">
-    <button class="ctr-b act" data-i="0">SHARP</button>
-    <button class="ctr-b" data-i="1">SUBTLE</button>
-    <button class="ctr-b" data-i="2">ROUNDED</button>
-    <button class="ctr-b" data-i="3">PILL</button>
-    <button class="pp-b" id="pp" title="Play/Pause">
-        <svg class="pp-i" id="pp-i" viewBox="0 0 24 24"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>
-    </button>
-</div>
-</div>
+  <script>
+    const presets = [
+      {
+        num: '01', name: 'Sharp', val: 0,
+        ins: 'Góc vuông hoàn toàn — sắc, cứng, "tool". Thường thấy trong dashboard, data table, terminal, code editor. Mang cảm giác control và precision. Không phải là "lỗi" — là lựa chọn có chủ đích.'
+      },
+      {
+        num: '02', name: 'Subtle', val: 4,
+        ins: 'Bo rất nhẹ — vừa đủ để bớt "gai" nhưng vẫn giữ cảm giác technical. Đây là mức default của nhiều design system cho button, input, card. An toàn, không sai vibe.'
+      },
+      {
+        num: '03', name: 'Rounded', val: 8,
+        ins: 'Bo rõ — bắt đầu có cảm giác "friendly". Phổ biến cho button trên mobile, chip/tag, toast notification. Mức này là ranh giới giữa technical và casual.'
+      },
+      {
+        num: '04', name: 'Pill', val: 16,
+        ins: 'Bo lớn — mềm mại, thân thiện, "consumer app". Dùng cho pill button, avatar, badge. Nhưng dùng cho card hoặc modal → nhìn "trẻ con". Context quyết định mọi thứ.'
+      }
+    ];
 
-<script>
-const INFO=[
-  {nm:'Sharp',sz:'GÓC VUÔNG 0PX',val:0,dc:'Góc vuông sắc cạnh, không bo — tạo cảm giác kỹ thuật, cứng cáp và chính xác. Thường thấy trong dashboard, data table.'},
-  {nm:'Subtle',sz:'BO NHẸ 4PX',val:4,dc:'Bo rất nhẹ — vừa đủ để bớt "gai" nhưng vẫn giữ cảm giác technical. Đây là mức default của nhiều design system.'},
-  {nm:'Rounded',sz:'BO RÕ RỆT 8PX',val:8,dc:'Bo rõ — bắt đầu có cảm giác "friendly". Phổ biến cho button trên mobile, chip/tag, toast notification.'},
-  {nm:'Pill',sz:'BO CỰC MẠNH 16PX+',val:16,dc:'Bo lớn — mềm mại, thân thiện. Dùng cho pill button, avatar, badge. Nhưng dùng cho card hoặc modal → nhìn "trẻ con".'}
-];
+    const simGrid = document.getElementById('simGrid');
+    const insT = document.getElementById('insT');
 
-const el={dn:document.getElementById('dn'),ds:document.getElementById('ds'),dd:document.getElementById('dd'),hf:document.getElementById('hf'),pff:document.getElementById('pff'),shLg:document.getElementById('sh-lg'),shMd:document.getElementById('sh-md'),shAc:document.getElementById('sh-ac'),shPill:document.getElementById('sh-pill'),arcLg:document.getElementById('arc-lg'),arcMd:document.getElementById('arc-md')};
-const fr=document.getElementById('f');
-const ctrBs=document.querySelectorAll('.ctr-b');
-const ppB=document.getElementById('pp');
-const ppI=document.getElementById('pp-i');
-
-let cur=0,pa=null,t0=0,isPaused=false;
-const DUR=3500;
-
-function arcSVG(size) {
-    if (size < 1) return '';
-    const s = Math.min(size, 20);
-    return `<svg width="${s+2}" height="${s+2}" viewBox="0 0 ${s+2} ${s+2}" style="overflow:visible">
-      <line x1="1" y1="${s+1}" x2="${s+1}" y2="${s+1}" stroke="rgba(212,113,42,0.3)" stroke-width="1"/>
-      <line x1="${s+1}" y1="1" x2="${s+1}" y2="${s+1}" stroke="rgba(212,113,42,0.3)" stroke-width="1"/>
-      <path d="M 1 ${s+1} A ${s} ${s} 0 0 1 ${s+1} 1" fill="none" stroke="rgba(212,113,42,0.6)" stroke-width="1"/>
-      <circle cx="1" cy="${s+1}" r="2" fill="rgba(212,113,42,0.5)"/>
+    function arcSVG(size) {
+      if (size < 1) return '';
+      const s = Math.min(size, 20);
+      return `<svg width="${s + 2}" height="${s + 2}" viewBox="0 0 ${s + 2} ${s + 2}" class="arc-svg">
+      <line x1="1" y1="${s + 1}" x2="${s + 1}" y2="${s + 1}" stroke="rgba(207,92,38,0.3)" stroke-width="1"/>
+      <line x1="${s + 1}" y1="1" x2="${s + 1}" y2="${s + 1}" stroke="rgba(207,92,38,0.3)" stroke-width="1"/>
+      <path d="M 1 ${s + 1} A ${s} ${s} 0 0 1 ${s + 1} 1" fill="none" stroke="rgba(207,92,38,0.6)" stroke-width="1"/>
+      <circle cx="1" cy="${s + 1}" r="2" fill="rgba(207,92,38,0.5)"/>
     </svg>`;
-}
-
-function apply(i){
-  cur=i;
-  const s=INFO[i];el.dn.textContent=s.nm;el.ds.textContent=s.sz;el.dd.textContent=s.dc;
-  el.hf.textContent='0'+(i+1)+' / 04';
-  ctrBs.forEach((b,j)=>b.classList.toggle('act',j===i));
-  
-  fr.classList.remove('show');
-  const r = s.val;
-  el.shLg.style.borderRadius = r + 'px';
-  el.shMd.style.borderRadius = r + 'px';
-  el.shAc.style.borderRadius = r + 'px';
-  el.shPill.style.borderRadius = (r > 8 ? 24 : r) + 'px';
-  
-  el.arcLg.innerHTML = arcSVG(r);
-  el.arcMd.innerHTML = arcSVG(Math.min(r, 14));
-
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{
-    fr.classList.add('show');
-  }));
-}
-
-function tk(n){
-    if(isPaused) return;
-    const p=Math.min(100,(n-t0)/DUR*100);
-    el.pff.style.width=p+'%';
-    if(p<100)pa=requestAnimationFrame(tk);
-    else next();
-}
-
-function startProg(){t0=performance.now();el.pff.style.transition='none';el.pff.style.width='0%';pa=requestAnimationFrame(tk)}
-function next(){if(isPaused)return;cur=(cur+1)%4;apply(cur);startProg()}
-
-function togglePP(){
-    isPaused=!isPaused;
-    ppI.innerHTML=isPaused ? '<path d="M8 5v14l11-7z"/>' : '<path d="M6 4h4v16H6zm8 0h4v16h-4z"/>';
-    if(!isPaused){
-        t0=performance.now() - (parseFloat(el.pff.style.width||0)/100*DUR);
-        pa=requestAnimationFrame(tk);
     }
-}
 
-ctrBs.forEach(b=>{
-    b.onclick=()=>{
-        isPaused=true;
-        ppI.innerHTML='<path d="M8 5v14l11-7z"/>';
-        apply(parseInt(b.dataset.i));
-        el.pff.style.width='0%';
+    function renderSim() {
+      simGrid.innerHTML = presets.map((p, ci) => {
+        const r = p.val;
+        return `
+        <div class="sc" data-i="${ci}" tabindex="0" role="button">
+          <div class="sc-top">
+            <span class="sc-num">${p.num}</span>
+            <span class="sc-tag">Radius ${r}</span>
+          </div>
+          <div class="sc-shapes">
+            <div class="shape-row">
+              <div class="sh lg" style="border-radius:${r}px;position:relative">
+                ${r > 0 ? `<div class="arc-wrap" style="top:-2px;left:-2px">${arcSVG(r)}</div>` : ''}
+              </div>
+            </div>
+            <div class="shape-row">
+              <div class="sh md" style="border-radius:${r}px;position:relative">
+                ${r > 0 ? `<div class="arc-wrap" style="top:-2px;left:-2px">${arcSVG(Math.min(r, 14))}</div>` : ''}
+              </div>
+              <div class="sh ac" style="border-radius:${r}px"></div>
+              <div class="sh sm" style="border-radius:${r}px">+</div>
+            </div>
+            <div class="shape-row">
+              <div class="sh pill" style="border-radius:${r}px">LABEL</div>
+            </div>
+          </div>
+          <div class="sc-val">${r}px</div>
+        </div>`;
+      }).join('');
+
+      simGrid.querySelectorAll('.sc').forEach(c => {
+        c.onclick = () => activateCard(+c.dataset.i);
+      });
     }
-});
 
-ppB.onclick=togglePP;
+    let activeI = -1;
+    function activateCard(i) {
+      simGrid.querySelectorAll('.sc').forEach(c => c.classList.remove('on'));
+      if (activeI === i) { activeI = -1; setIns('Nhấn vào một mức radius để xem giải thích.'); return; }
+      activeI = i;
+      simGrid.querySelector(`[data-i="${i}"]`).classList.add('on');
+      setIns(presets[i].ins);
+    }
 
-function scale(){const w=document.getElementById('la-wrap'),b=document.getElementById('ab'),s=w.clientWidth/700;b.style.transform='scale('+s+')';w.style.height=Math.ceil(250*s)+'px'}
-window.addEventListener('resize',scale);
-requestAnimationFrame(()=>requestAnimationFrame(scale));
+    function setIns(t) {
+      insT.classList.add('fading');
+      setTimeout(() => { insT.textContent = t; insT.classList.remove('fading'); }, 250);
+    }
 
-apply(0);
-startProg();
-
-document.addEventListener('visibilitychange',()=>{
-  if(document.hidden){cancelAnimationFrame(pa)}
-  else if(!isPaused){t0=performance.now() - (parseFloat(el.pff.style.width||0)/100*DUR);pa=requestAnimationFrame(tk);}
-});
-</script>
+    renderSim();
+  </script>
 </body>
+
 </html>

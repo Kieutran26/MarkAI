@@ -125,6 +125,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'spinner', name: 'Spinner', nameEn: 'Vòng quay chờ / Loading Indicator', letter: 'S', groups: ['design', 'code'], definition: 'Một biểu tượng đồ họa (thường là vòng tròn quay) dùng để thông báo cho người dùng rằng hệ thống đang xử lý tác vụ và họ cần chờ đợi. Spinner giúp giảm sự ức chế khi người dùng không biết hệ thống có đang hoạt động hay không.', example: 'Khi nhấn nút "Thanh toán", một spinner xuất hiện trên nút để báo hiệu đang gửi thông tin thẻ, ngăn người dùng bấm nhầm lần nữa.', related: ['skeleton', 'state', 'ux', 'async'], demo: { kind: 'interactive', src: 'gif-spinner-demo.html', alt: 'Mô phỏng 4 loại spinner và cách dùng trong flow thực tế' } },
   { id: 'container', name: 'Container', nameEn: 'Khung bao / Container', letter: 'C', groups: ['design', 'code'], definition: 'Thành phần bao bọc các thành phần khác bên trong để kiểm soát chiều rộng (width) và căn lề (alignment) của nội dung trên trang. Container giúp đảm bảo nội dung không bị tràn ra mép màn hình hoặc quá dài khó đọc trên màn hình lớn.', example: 'Prompt: "Dùng một container 1200px căn giữa cho phần nội dung chính, trên mobile thì chuyển sang full width có padding 16px hai bên."', related: ['layout', 'breakpoint', 'padding', 'margin'], demo: { kind: 'interactive', src: 'gif-container-demo.html', alt: 'Mô phỏng 4 loại container: Fixed, Fluid, Responsive và Nested' } },
   { id: 'progressbar', name: 'Progress Bar', nameEn: 'Thanh tiến trình', letter: 'P', groups: ['design', 'code'], definition: 'Thành phần giao diện hiển thị trạng thái hoàn thành của một tác vụ đang diễn ra. Progress Bar giúp người dùng ước lượng được thời gian chờ đợi và cảm thấy yên tâm rằng hệ thống đang hoạt động ổn định, thay vì bị "đứng hình" không rõ lý do.', example: 'Prompt: "Thêm một thanh progress bar ở đầu trang để chỉ rõ người dùng đã điền được bao nhiêu phần trăm form đăng ký, tự động cập nhật mỗi khi xong một field."', related: ['skeleton', 'spinner', 'state', 'ux'], demo: { kind: 'interactive', src: 'gif-progressbar-demo.html', alt: 'Mô phỏng 4 loại Progress Bar: Linear, Circular, Steps và Task' } },
+  { id: 'transition', name: 'Transition', nameEn: 'Chuyển động mượt / Hiệu ứng chuyển cảnh', letter: 'T', groups: ['design', 'code'], definition: 'Thay đổi mượt mà giữa hai trạng thái — không nhảy giật, có đầu có cuối. Transition giúp người dùng nhận ra sự thay đổi của giao diện một cách tự nhiên thay vì bị bất ngờ.', example: 'Hover vào button thấy màu đổi từ xám sang cam trong 0.3s thay vì đổi cái rụp. Prompt: "Thêm transition 0.3s ease cho button để khi hover màu nền đổi mượt hơn."', related: ['animation', 'state', 'duration', 'easing'], demo: { kind: 'interactive', src: 'gif-transition-demo.html', alt: 'Mô phỏng các loại transition: Fade, Slide, Scale và Color' } },
 ];
 
 export const quickRefItems = [
@@ -215,6 +216,7 @@ const deepDiveTermIds = new Set([
   'spinner',
   'container',
   'progressbar',
+  'transition',
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {

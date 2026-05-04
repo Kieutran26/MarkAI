@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transition Practice — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#131313;--bg-card:#1a1a1a;--bg-el:#222;
+  --fg:#ede8df;--fg-dim:#9a9590;--fg-muted:#5c5752;
+  --accent:#d97706;--accent-br:#f59e0b;--accent-dm:#92400e;
+  --border:#2e2e2e;--radius:2px;
+  --sans:'Space Grotesk',sans-serif;--mono:'IBM Plex Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;-webkit-font-smoothing:antialiased}
+body{
+  font-family:var(--sans);color:var(--fg);line-height:1.5;min-height:auto;
+  background-color:var(--bg);
+}
+.entry{position:relative;z-index:1;max-width:900px;margin:0 auto;padding:24px 24px 40px}
+
+h1{font-size:clamp(2.4rem,6vw,3.6rem);font-weight:700;letter-spacing:-.03em;line-height:1}
+h2{font-size:clamp(1.2rem,3vw,1.5rem);font-weight:600;letter-spacing:-.02em;line-height:1.2}
+.badge{display:inline-block;font-family:var(--mono);font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent-dm);padding:3px 8px;border-radius:var(--radius);background:rgba(217,119,6,.08)}
+.term-header{margin-bottom:36px;border-bottom:1px solid var(--border);padding-bottom:28px}
+.term-header .badge{margin-bottom:14px}
+.term-sub{margin-top:10px;font-size:1rem;color:var(--fg-dim);font-weight:400}
+
+/* === PRACTICE === */
+.practice{margin-bottom:0}
+.practice-hdr{margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:18px}
+.practice-hdr .badge{margin-bottom:10px}
+.practice-hdr h2{margin-bottom:6px}
+.practice-desc{font-size:.85rem;color:var(--fg-dim)}
+.practice-hint{font-family:var(--mono);font-size:.68rem;color:var(--fg-muted);margin-top:8px}
+.practice-body{display:grid;grid-template-columns:1fr;gap:20px;margin-bottom:16px}
+@media(min-width:640px){.practice-body{grid-template-columns:240px 1fr}}
+
+/* Button groups */
+.btn-group{display:flex;gap:0;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:14px}
+.btn-g{flex:1;padding:7px 4px;font-family:var(--mono);font-size:.52rem;font-weight:600;letter-spacing:.03em;text-transform:uppercase;background:var(--bg-card);color:var(--fg-muted);border:none;cursor:pointer;transition:all .15s;text-align:center;white-space:nowrap}
+.btn-g:hover{color:var(--fg)}
+.btn-g.active{background:var(--accent);color:var(--bg)}
+.btn-g:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+/* Slider */
+.ctrl-slider{margin-bottom:14px}
+.ctrl-slider-hdr{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.ctrl-slider-lbl{font-family:var(--mono);font-size:.56rem;color:var(--fg-muted);text-transform:uppercase;letter-spacing:.08em}
+.ctrl-slider-val{font-family:var(--mono);font-size:.78rem;font-weight:700;color:var(--accent-br);min-width:40px;text-align:right}
+.ctrl-slider input[type=range]{width:100%;height:6px;-webkit-appearance:none;appearance:none;background:var(--bg-el);border:1px solid var(--border);border-radius:3px;outline:none;cursor:pointer}
+.ctrl-slider input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;background:var(--accent);border-radius:50%;border:2px solid var(--bg);cursor:pointer}
+.ctrl-slider input[type=range]::-moz-range-thumb{width:16px;height:16px;background:var(--accent);border-radius:50%;border:2px solid var(--bg);cursor:pointer}
+.ctrl-slider input[type=range]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* Section label */
+.ctrl-section{font-family:var(--mono);font-size:.52rem;color:var(--fg-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+
+/* Note */
+.ctrl-note{font-family:var(--mono);font-size:.52rem;color:var(--fg-muted);line-height:1.5;padding:8px 0;border-top:1px solid var(--border)}
+.ctrl-note strong{color:var(--fg-dim);font-weight:600}
+
+/* Preview */
+.prev-wrap{display:flex;flex-direction:column;gap:12px}
+.prev-label{font-family:var(--mono);font-size:.56rem;color:var(--fg-muted);text-transform:uppercase;letter-spacing:.1em}
+.prev-scene{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;display:flex;flex-direction:column;gap:12px}
+
+/* Practice card */
+.prac-card{border:1px solid var(--border);border-radius:4px;overflow:hidden;display:flex;flex-direction:column;min-height:140px;position:relative}
+.prac-h{height:48px;display:flex;align-items:center;justify-content:center;position:relative}
+.prac-h-color{position:absolute;inset:0;transition:background-color var(--p-dur,.3s) var(--p-ease,ease)}
+.prac-h-text{position:relative;z-index:2;font-size:.68rem;font-weight:700;color:#fff}
+.prac-bd{padding:12px 14px;flex:1;display:flex;flex-direction:column;gap:4px}
+.prac-t{font-size:.78rem;font-weight:700;color:var(--fg);line-height:1.2;transition:opacity var(--p-dur,.3s) var(--p-ease,ease),transform var(--p-dur,.3s) var(--p-ease,ease)}
+.prac-s{font-size:.58rem;color:var(--fg-dim);line-height:1.4;transition:opacity var(--p-dur,.3s) var(--p-ease,ease),transform var(--p-dur,.3s) var(--p-ease,ease)}
+.prac-btn{font-family:var(--mono);font-size:.52rem;font-weight:600;padding:6px 14px;border:1px solid rgba(255,255,255,.12);border-radius:3px;color:var(--fg);align-self:flex-start;margin-top:auto;cursor:default;transition:background-color var(--p-dur,.3s) var(--p-ease,ease),opacity var(--p-dur,.3s) var(--p-ease,ease),transform var(--p-dur,.3s) var(--p-ease,ease)}
+
+/* Practice card states */
+.prac-card.state-a .prac-h-color{background-color:#92400e}
+.prac-card.state-a .prac-t{opacity:1;transform:translate(0,0)}
+.prac-card.state-a .prac-s{opacity:1;transform:translate(0,0)}
+.prac-card.state-a .prac-btn{background-color:rgba(255,255,255,.08);opacity:1;transform:translate(0,0)}
+
+.prac-card.state-b .prac-h-color{background-color:#1a3a5a}
+.prac-card.state-b .prac-t{opacity:.4;transform:translate(16px,0)}
+.prac-card.state-b .prac-s{opacity:.3;transform:translate(16px,0)}
+.prac-card.state-b .prac-btn{background-color:rgba(26,58,90,.3);opacity:.3;transform:translate(16px,0)}
+
+/* Transition overlay label */
+.prac-overlay{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:.48rem;font-weight:600;color:var(--accent-br);background:rgba(217,119,6,.15);border:1px solid rgba(217,119,6,.25);padding:2px 8px;border-radius:var(--radius);z-index:10;pointer-events:none;opacity:0;transition:opacity .15s;white-space:nowrap}
+.prac-overlay.show{opacity:1}
+
+/* State label */
+.prac-state{font-family:var(--mono);font-size:.56rem;color:var(--fg-muted);text-align:center}
+.prac-state span{font-weight:600}
+.prac-state .s-a{color:var(--fg-muted)}
+.prac-state .s-b{color:var(--accent-br)}
+.prac-state .s-t{color:var(--accent)}
+
+/* Trigger button */
+.trigger-btn{font-family:var(--mono);font-size:.62rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:10px 20px;background:var(--accent);border:none;border-radius:var(--radius);color:var(--bg);cursor:pointer;transition:background .15s;width:100%}
+.trigger-btn:hover{background:var(--accent-br)}
+.trigger-btn:active{transform:scale(.97)}
+.trigger-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* CSS Output */
+.css-out{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.css-out-hdr{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
+.css-out-lbl{font-family:var(--mono);font-size:.52rem;color:var(--fg-muted);text-transform:uppercase;letter-spacing:.08em}
+.css-copy{font-family:var(--mono);font-size:.52rem;font-weight:600;color:var(--accent);background:none;border:1px solid var(--accent-dm);padding:2px 8px;border-radius:var(--radius);cursor:pointer;transition:all .15s}
+.css-copy:hover{background:rgba(217,119,6,.1);border-color:var(--accent)}
+.css-code{padding:10px 12px;font-family:var(--mono);font-size:.58rem;color:var(--fg-dim);line-height:1.7;white-space:pre-wrap}
+.css-code .cv{color:var(--accent-br)}
+.css-copy-msg{font-family:var(--mono);font-size:.52rem;color:#4ade80;opacity:0;transition:opacity .2s}
+.css-copy-msg.show{opacity:1}
+
+.dv{display:flex;align-items:center;gap:14px;margin-bottom:30px}
+.dv::before,.dv::after{content:'';flex:1;height:1px;background:var(--border)}
+.dv span{
+  font-family:var(--mono);font-size:11px;font-weight:600;
+  letter-spacing:2px;text-transform:uppercase;color:var(--fg-muted);white-space:nowrap;
+}
+</style>
+</head>
+<body>
+
+<div class="entry" id="app-root">
+
+  <section class="practice" id="practice">
+    <div class="practice-hdr">
+      <h2>Điều chỉnh 3 thông số, thấy kết quả realtime</h2>
+      <p class="practice-desc">Chọn property, kéo duration, đổi easing — bấm Trigger để xem transition diễn ra.</p>
+      <p class="practice-hint">&#9889; Thử đổi easing từ linear sang ease-in-out để thấy sự khác biệt rõ nhất.</p>
+    </div>
+
+    <div class="practice-body">
+      <!-- Controls -->
+      <div>
+        <div class="ctrl-section">Property</div>
+        <div class="btn-group" id="propGroup">
+          <button class="btn-g active" data-prop="opacity">opacity</button>
+          <button class="btn-g" data-prop="transform">transform</button>
+          <button class="btn-g" data-prop="background-color">bg-color</button>
+        </div>
+
+        <div class="ctrl-section">Duration</div>
+        <div class="ctrl-slider">
+          <div class="ctrl-slider-hdr">
+            <span class="ctrl-slider-lbl">Thời gian</span>
+            <span class="ctrl-slider-val" id="durVal">0.3s</span>
+          </div>
+          <input type="range" min="1" max="30" value="3" id="durSlider" aria-label="Thời gian transition">
+        </div>
+
+        <div class="ctrl-section">Easing</div>
+        <div class="btn-group" id="easeGroup">
+          <button class="btn-g" data-ease="linear">linear</button>
+          <button class="btn-g active" data-ease="ease">ease</button>
+          <button class="btn-g" data-ease="ease-in">ease-in</button>
+          <button class="btn-g" data-ease="ease-out">ease-out</button>
+          <button class="btn-g" data-ease="ease-in-out">in-out</button>
+        </div>
+
+        <div class="ctrl-note">
+          <strong>Lưu ý:</strong> Chỉ property được chọn mới transition mượt. Các property khác thay đổi ngay lập tức — đây chính là điểm quan trọng của việc <strong>chỉ định property</strong>.
+        </div>
+      </div>
+
+      <!-- Preview -->
+      <div class="prev-wrap">
+        <div class="prev-label">Preview — click Trigger để chuyển state</div>
+        <div class="prev-scene">
+          <div class="prac-card state-a" id="pracCard">
+            <div class="prac-h">
+              <div class="prac-h-color"></div>
+              <span class="prac-h-text">Card Header</span>
+            </div>
+            <div class="prac-bd">
+              <div class="prac-t">Welcome to the Platform</div>
+              <div class="prac-s">Everything you need to manage projects in one place.</div>
+              <div class="prac-btn">Get Started</div>
+            </div>
+            <div class="prac-overlay" id="pracOverlay"></div>
+          </div>
+          <div class="prac-state" id="pracState">Trạng thái: <span class="s-a">State A</span></div>
+          <button class="trigger-btn" id="triggerBtn">Trigger Transition</button>
+        </div>
+        <div class="css-out">
+          <div class="css-out-hdr">
+            <span class="css-out-lbl">CSS Output</span>
+            <div style="display:flex;align-items:center;gap:6px">
+              <span class="css-copy-msg" id="copyMsg">Copied!</span>
+              <button class="css-copy" id="copyBtn">Copy</button>
+            </div>
+          </div>
+          <div class="css-code" id="cssCode"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+  /* === PRACTICE STATE === */
+  var prop = 'opacity';
+  var dur = 0.3;
+  var ease = 'ease';
+  var currentState = 'a';
+  var transitioning = false;
+
+  /* === DOM === */
+  var propBtns = document.querySelectorAll('#propGroup .btn-g');
+  var easeBtns = document.querySelectorAll('#easeGroup .btn-g');
+  var durSlider = document.getElementById('durSlider');
+  var durVal = document.getElementById('durVal');
+  var pracCard = document.getElementById('pracCard');
+  var pracOverlay = document.getElementById('pracOverlay');
+  var pracState = document.getElementById('pracState');
+  var triggerBtn = document.getElementById('triggerBtn');
+  var cssCode = document.getElementById('cssCode');
+  var copyBtn = document.getElementById('copyBtn');
+  var copyMsg = document.getElementById('copyMsg');
+
+  /* === PROPERTY DISPLAY NAMES === */
+  var propNames = {
+    'opacity': 'opacity',
+    'transform': 'transform',
+    'background-color': 'background-color'
+  };
+
+  /* === APPLY TRANSITION === */
+  function applyTransition() {
+    pracCard.style.transition = prop + ' ' + dur.toFixed(1) + 's ' + ease;
+    pracCard.style.setProperty('--p-dur', dur.toFixed(1) + 's');
+    pracCard.style.setProperty('--p-ease', ease);
+    updateCSS();
+  }
+
+  /* === UPDATE CSS OUTPUT === */
+  function updateCSS() {
+    var line1 = '<span class="cv">transition: ' + prop + ' ' + dur.toFixed(1) + 's ' + ease + ';</span>';
+    var line2 = '<span style="color:var(--fg-muted)">/* Chỉ ' + propNames[prop] + ' được transition mượt */</span>';
+    cssCode.innerHTML = line1 + '\n' + line2;
+  }
+
+  /* === TRIGGER === */
+  triggerBtn.addEventListener('click', function() {
+    if (transitioning) return;
+    transitioning = true;
+    if (currentState === 'a') {
+      pracCard.classList.remove('state-a');
+      pracCard.classList.add('state-b');
+      currentState = 'b';
+      pracState.innerHTML = 'Trạng thái: <span class="s-b">State B</span>';
+      pracOverlay.textContent = propNames[prop] + ': changing...';
+    } else {
+      pracCard.classList.remove('state-b');
+      pracCard.classList.add('state-a');
+      currentState = 'a';
+      pracState.innerHTML = 'Trạng thái: <span class="s-a">State A</span>';
+      pracOverlay.textContent = propNames[prop] + ': changing...';
+    }
+    pracOverlay.classList.add('show');
+    var ms = Math.max(50, dur * 1000 + 50);
+    setTimeout(function() {
+      pracOverlay.classList.remove('show');
+      transitioning = false;
+    }, ms);
+  });
+
+  /* === PROPERTY BUTTONS === */
+  propBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      propBtns.forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      prop = btn.getAttribute('data-prop');
+      pracCard.style.transition = 'none';
+      pracCard.classList.remove('state-b');
+      pracCard.classList.add('state-a');
+      currentState = 'a';
+      pracState.innerHTML = 'Trạng thái: <span class="s-a">State A</span>';
+      void pracCard.offsetHeight;
+      applyTransition();
+    });
+  });
+
+  /* === EASING BUTTONS === */
+  easeBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      easeBtns.forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      ease = btn.getAttribute('data-ease');
+      applyTransition();
+    });
+  });
+
+  /* === DURATION SLIDER === */
+  durSlider.addEventListener('input', function() {
+    dur = parseInt(this.value, 10) / 10;
+    durVal.textContent = dur.toFixed(1) + 's';
+    applyTransition();
+  });
+
+  /* === COPY === */
+  copyBtn.addEventListener('click', function() {
+    var text = 'transition: ' + prop + ' ' + dur.toFixed(1) + 's ' + ease + ';';
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(showCopy);
+    } else {
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.style.position = 'fixed'; ta.style.left = '-9999px';
+      document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+      document.body.removeChild(ta); showCopy();
+    }
+  });
+
+  function showCopy() {
+    copyMsg.classList.add('show');
+    setTimeout(function() { copyMsg.classList.remove('show'); }, 1500);
+  }
+
+  applyTransition();
+</script>
+</body>
+</html>

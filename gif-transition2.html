@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transition — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#131313;--bg-card:#1a1a1a;--bg-el:#222;
+  --fg:#ede8df;--fg-dim:#9a9590;--fg-muted:#5c5752;
+  --accent:#d97706;--accent-br:#f59e0b;--accent-dm:#92400e;
+  --border:#2e2e2e;--radius:2px;
+  --sans:'Space Grotesk',sans-serif;--mono:'IBM Plex Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;-webkit-font-smoothing:antialiased}
+body{
+  font-family:var(--sans);color:var(--fg);line-height:1.5;min-height:100vh;
+  background-color:var(--bg);
+  background-image:
+    radial-gradient(ellipse at 15% 0%,rgba(217,119,6,.03) 0%,transparent 55%),
+    radial-gradient(ellipse at 85% 100%,rgba(217,119,6,.02) 0%,transparent 55%),
+    linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);
+  background-size:100% 100%,100% 100%,22px 22px,22px 22px;
+}
+.container{max-width:900px;margin:0 auto;padding:40px 20px 60px}
+@media(min-width:768px){.container{padding:56px 32px 80px}}
+h1{font-size:clamp(2.4rem,6vw,3.6rem);font-weight:700;letter-spacing:-.03em;line-height:1}
+h2{font-size:clamp(1.2rem,3vw,1.5rem);font-weight:600;letter-spacing:-.02em;line-height:1.2}
+.badge{display:inline-block;font-family:var(--mono);font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent-dm);padding:3px 8px;border-radius:var(--radius);background:rgba(217,119,6,.08)}
+.term-header{margin-bottom:36px;border-bottom:1px solid var(--border);padding-bottom:28px}
+.term-header .badge{margin-bottom:14px}
+.term-sub{margin-top:10px;font-size:1rem;color:var(--fg-dim);font-weight:400}
+
+/* === SIM GRID & PANEL === */
+.sim-grid{display:grid;grid-template-columns:1fr;gap:16px;margin-bottom:28px}
+@media(min-width:640px){.sim-grid{grid-template-columns:1fr 1fr;gap:14px}}
+.sp{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.sp-label{font-family:var(--mono);font-size:.6rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-muted);padding:10px 14px 6px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
+.sp-body{padding:14px;min-height:200px;position:relative}
+.sp-insight{font-family:var(--mono);font-size:.65rem;color:var(--fg-muted);padding:8px 14px;border-top:1px solid var(--border);background:rgba(255,255,255,.01)}
+.sp-insight em{color:var(--accent);font-style:normal}
+
+/* === STATE VIEWPORT === */
+.st-vp{position:relative;width:100%;height:155px;border:1px dashed var(--border);border-radius:3px;overflow:hidden;background:rgba(255,255,255,.01)}
+
+/* === STATE CARD === */
+.st-c{position:absolute;inset:0;border:1px solid var(--border);border-radius:3px;overflow:hidden;display:flex;flex-direction:column}
+.st-h{height:48px;display:flex;align-items:center;justify-content:center}
+.st-bd{padding:10px 12px;flex:1;display:flex;flex-direction:column;gap:3px}
+.st-t{font-size:.72rem;font-weight:700;color:var(--fg);line-height:1.2}
+.st-s{font-size:.52rem;color:var(--fg-dim);line-height:1.4}
+.st-btn{font-family:var(--mono);font-size:.48rem;font-weight:600;padding:5px 10px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:3px;color:var(--fg);align-self:flex-start;margin-top:auto}
+
+/* === ANIMATED LABELS === */
+.st-lbl{position:absolute;font-family:var(--mono);font-size:.44rem;font-weight:600;letter-spacing:.02em;padding:2px 5px;border-radius:var(--radius);pointer-events:none;z-index:10;white-space:nowrap;line-height:1.35}
+.st-lbl-state{color:var(--fg-dim);background:rgba(255,255,255,.06);border:1px solid var(--border)}
+.st-lbl-prop{color:var(--accent-br);background:rgba(217,119,6,.14);border:1px solid rgba(217,119,6,.25)}
+.st-lbl-color{color:#60a5fa;background:rgba(37,99,235,.12);border:1px solid rgba(37,99,235,.2)}
+
+/* Shared label timings */
+.la{animation:lblA var(--dur) ease infinite}
+.lp{animation:lblP var(--dur) ease infinite}
+.lb{animation:lblB var(--dur) ease infinite}
+.lpr{animation:lblPR var(--dur) ease infinite}
+
+@keyframes lblA{0%,20%{opacity:1}26%,100%{opacity:0}}
+@keyframes lblP{0%,24%{opacity:0}29%,37%{opacity:1}42%,100%{opacity:0}}
+@keyframes lblB{0%,44%{opacity:0}49%,63%{opacity:1}68%,100%{opacity:0}}
+@keyframes lblPR{0%,64%{opacity:0}69%,77%{opacity:1}82%,100%{opacity:0}}
+
+/* === PANEL 1: FADE === */
+.p1{--dur:7.6s}
+.p1 .sa{animation:fadeA var(--dur) ease infinite}
+.p1 .sb{animation:fadeB var(--dur) ease infinite}
+@keyframes fadeA{0%,22%{opacity:1}40%,68%{opacity:0}86%,100%{opacity:1}}
+@keyframes fadeB{0%,26%{opacity:0}44%,64%{opacity:1}82%,100%{opacity:0}}
+
+/* === PANEL 2: SLIDE === */
+.p2{--dur:8.8s}
+.p2 .sa{animation:slideA var(--dur) ease infinite}
+.p2 .sb{animation:slideB var(--dur) ease infinite}
+@keyframes slideA{
+  0%,22%{transform:translateX(0);opacity:1}
+  32%{transform:translateX(-40%);opacity:.4}
+  42%,68%{transform:translateX(-105%);opacity:0}
+  78%{transform:translateX(-40%);opacity:.4}
+  88%,100%{transform:translateX(0);opacity:1}
+}
+@keyframes slideB{
+  0%,22%{transform:translateX(105%);opacity:0}
+  32%{transform:translateX(40%);opacity:.4}
+  42%,68%{transform:translateX(0);opacity:1}
+  78%{transform:translateX(40%);opacity:.4}
+  88%,100%{transform:translateX(105%);opacity:0}
+}
+
+/* === PANEL 3: SCALE === */
+.p3{--dur:7.2s}
+.p3 .sa{animation:scaleA var(--dur) ease infinite}
+.p3 .sb{animation:scaleB var(--dur) ease infinite}
+@keyframes scaleA{
+  0%,22%{transform:scale(1);opacity:1}
+  32%{transform:scale(.82);opacity:.4}
+  42%,68%{transform:scale(.55);opacity:0}
+  78%{transform:scale(.82);opacity:.4}
+  88%,100%{transform:scale(1);opacity:1}
+}
+@keyframes scaleB{
+  0%,22%{transform:scale(1.45);opacity:0}
+  32%{transform:scale(1.18);opacity:.4}
+  42%,68%{transform:scale(1);opacity:1}
+  78%{transform:scale(1.18);opacity:.4}
+  88%,100%{transform:scale(1.45);opacity:0}
+}
+
+/* === PANEL 4: COLOR === */
+.p4{--dur:9s}
+.p4 .color-bg{animation:colorBg var(--dur) ease infinite}
+.p4 .cta{animation:fadeA var(--dur) ease infinite}
+.p4 .ctb{animation:fadeB var(--dur) ease infinite}
+.p4 .color-bar{animation:colorBg var(--dur) ease infinite;border-radius:2px;height:8px;position:absolute;bottom:0;left:0;right:0;z-index:6}
+@keyframes colorBg{
+  0%,24%{background-color:#92400e}
+  44%,66%{background-color:#1a3a5a}
+  86%,100%{background-color:#92400e}
+}
+.p4 .color-inner{position:relative;z-index:3;height:100%;display:flex;flex-direction:column;gap:3px;padding:12px}
+.p4 .color-val{position:absolute;bottom:12px;right:12px;font-family:var(--mono);font-size:.48rem;z-index:5;animation:colorVal var(--dur) steps(1) infinite}
+@keyframes colorVal{
+  0%,24%{color:rgba(255,255,255,.4);content:"92400e"}
+  44%,66%{color:rgba(255,255,255,.4)}
+  86%,100%{color:rgba(255,255,255,.4)}
+}
+
+/* === INSIGHT BAR === */
+.insight-bar{background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--accent);padding:14px 18px;margin-bottom:40px;border-radius:0 var(--radius) var(--radius) 0}
+.insight-bar p{font-size:.88rem;color:var(--fg);line-height:1.5;font-weight:500}
+.insight-bar p span{color:var(--accent-br);font-weight:700}
+
+/* === PRACTICE === */
+.practice{margin-bottom:40px}
+.practice-hdr{margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:18px}
+.practice-hdr .badge{margin-bottom:10px}
+.practice-hdr h2{margin-bottom:6px}
+.practice-desc{font-size:.85rem;color:var(--fg-dim)}
+.practice-hint{font-family:var(--mono);font-size:.68rem;color:var(--fg-muted);margin-top:8px}
+.practice-body{display:grid;grid-template-columns:1fr;gap:20px;margin-bottom:16px}
+@media(min-width:640px){.practice-body{grid-template-columns:240px 1fr}}
+
+/* Button groups */
+.btn-group{display:flex;gap:0;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:14px}
+.btn-g{flex:1;padding:7px 4px;font-family:var(--mono);font-size:.52rem;font-weight:600;letter-spacing:.03em;text-transform:uppercase;background:var(--bg-card);color:var(--fg-muted);border:none;cursor:pointer;transition:all .15s;text-align:center;white-space:nowrap}
+.btn-g:hover{color:var(--fg)}
+.btn-g.active{background:var(--accent);color:var(--bg)}
+.btn-g:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+
+/* Slider */
+.ctrl-slider{margin-bottom:14px}
+.ctrl-slider-hdr{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.ctrl-slider-lbl{font-family:var(--mono);font-size:.56rem;color:var(--fg-muted);text-transform:uppercase;letter-spacing:.08em}
+.ctrl-slider-val{font-family:var(--mono);font-size:.78rem;font-weight:700;color:var(--accent-br);min-width:40px;text-align:right}
+.ctrl-slider input[type=range]{width:100%;height:6px;-webkit-appearance:none;appearance:none;background:var(--bg-el);border:1px solid var(--border);border-radius:3px;outline:none;cursor:pointer}
+.ctrl-slider input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;background:var(--accent);border-radius:50%;border:2px solid var(--bg);cursor:pointer}
+.ctrl-slider input[type=range]::-moz-range-thumb{width:16px;height:16px;background:var(--accent);border-radius:50%;border:2px solid var(--bg);cursor:pointer}
+.ctrl-slider input[type=range]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* Section label */
+.ctrl-section{font-family:var(--mono);font-size:.52rem;color:var(--fg-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+
+/* Note */
+.ctrl-note{font-family:var(--mono);font-size:.52rem;color:var(--fg-muted);line-height:1.5;padding:8px 0;border-top:1px solid var(--border)}
+.ctrl-note strong{color:var(--fg-dim);font-weight:600}
+
+/* Preview */
+.prev-wrap{display:flex;flex-direction:column;gap:12px}
+.prev-label{font-family:var(--mono);font-size:.56rem;color:var(--fg-muted);text-transform:uppercase;letter-spacing:.1em}
+.prev-scene{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;display:flex;flex-direction:column;gap:12px}
+
+/* Practice card */
+.prac-card{border:1px solid var(--border);border-radius:4px;overflow:hidden;display:flex;flex-direction:column;min-height:140px;position:relative}
+.prac-h{height:48px;display:flex;align-items:center;justify-content:center;position:relative}
+.prac-h-color{position:absolute;inset:0;transition:background-color var(--p-dur,.3s) var(--p-ease,ease)}
+.prac-h-text{position:relative;z-index:2;font-size:.68rem;font-weight:700;color:#fff}
+.prac-bd{padding:12px 14px;flex:1;display:flex;flex-direction:column;gap:4px}
+.prac-t{font-size:.78rem;font-weight:700;color:var(--fg);line-height:1.2;transition:opacity var(--p-dur,.3s) var(--p-ease,ease),transform var(--p-dur,.3s) var(--p-ease,ease)}
+.prac-s{font-size:.58rem;color:var(--fg-dim);line-height:1.4;transition:opacity var(--p-dur,.3s) var(--p-ease,ease),transform var(--p-dur,.3s) var(--p-ease,ease)}
+.prac-btn{font-family:var(--mono);font-size:.52rem;font-weight:600;padding:6px 14px;border:1px solid rgba(255,255,255,.12);border-radius:3px;color:var(--fg);align-self:flex-start;margin-top:auto;cursor:default;transition:background-color var(--p-dur,.3s) var(--p-ease,ease),opacity var(--p-dur,.3s) var(--p-ease,ease),transform var(--p-dur,.3s) var(--p-ease,ease)}
+
+/* Practice card states */
+.prac-card.state-a .prac-h-color{background-color:#92400e}
+.prac-card.state-a .prac-t{opacity:1;transform:translate(0,0)}
+.prac-card.state-a .prac-s{opacity:1;transform:translate(0,0)}
+.prac-card.state-a .prac-btn{background-color:rgba(255,255,255,.08);opacity:1;transform:translate(0,0)}
+
+.prac-card.state-b .prac-h-color{background-color:#1a3a5a}
+.prac-card.state-b .prac-t{opacity:.4;transform:translate(16px,0)}
+.prac-card.state-b .prac-s{opacity:.3;transform:translate(16px,0)}
+.prac-card.state-b .prac-btn{background-color:rgba(26,58,90,.3);opacity:.3;transform:translate(16px,0)}
+
+/* Transition overlay label */
+.prac-overlay{position:absolute;bottom:8px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:.48rem;font-weight:600;color:var(--accent-br);background:rgba(217,119,6,.15);border:1px solid rgba(217,119,6,.25);padding:2px 8px;border-radius:var(--radius);z-index:10;pointer-events:none;opacity:0;transition:opacity .15s;white-space:nowrap}
+.prac-overlay.show{opacity:1}
+
+/* State label */
+.prac-state{font-family:var(--mono);font-size:.56rem;color:var(--fg-muted);text-align:center}
+.prac-state span{font-weight:600}
+.prac-state .s-a{color:var(--fg-muted)}
+.prac-state .s-b{color:var(--accent-br)}
+.prac-state .s-t{color:var(--accent)}
+
+/* Trigger button */
+.trigger-btn{font-family:var(--mono);font-size:.62rem;font-weight:600;letter-spacing:.04em;text-transform:uppercase;padding:10px 20px;background:var(--accent);border:none;border-radius:var(--radius);color:var(--bg);cursor:pointer;transition:background .15s;width:100%}
+.trigger-btn:hover{background:var(--accent-br)}
+.trigger-btn:active{transform:scale(.97)}
+.trigger-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* CSS Output */
+.css-out{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+.css-out-hdr{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
+.css-out-lbl{font-family:var(--mono);font-size:.52rem;color:var(--fg-muted);text-transform:uppercase;letter-spacing:.08em}
+.css-copy{font-family:var(--mono);font-size:.52rem;font-weight:600;color:var(--accent);background:none;border:1px solid var(--accent-dm);padding:2px 8px;border-radius:var(--radius);cursor:pointer;transition:all .15s}
+.css-copy:hover{background:rgba(217,119,6,.1);border-color:var(--accent)}
+.css-code{padding:10px 12px;font-family:var(--mono);font-size:.58rem;color:var(--fg-dim);line-height:1.7;white-space:pre-wrap}
+.css-code .cv{color:var(--accent-br)}
+.css-copy-msg{font-family:var(--mono);font-size:.52rem;color:#4ade80;opacity:0;transition:opacity .2s}
+.css-copy-msg.show{opacity:1}
+
+/* === WHY === */
+.why{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
+.why h3{margin-bottom:14px}
+.why ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+.why li{font-size:.82rem;color:var(--fg-dim);line-height:1.5;padding-left:16px;position:relative}
+.why li::before{content:'';position:absolute;left:0;top:8px;width:6px;height:6px;background:var(--accent);border-radius:var(--radius)}
+.why li code{font-family:var(--mono);font-size:.72rem;background:rgba(217,119,6,.1);color:var(--accent-br);padding:1px 5px;border-radius:var(--radius)}
+
+/* === REDUCED MOTION === */
+@media(prefers-reduced-motion:reduce){
+  .sa,.sb,.cta,.ctb,.color-bg,.color-bar,.la,.lp,.lb,.lpr{animation:none!important}
+  .sa{opacity:0!important}.sb{opacity:1!important}
+  .cta{opacity:0!important}.ctb{opacity:1!important}
+  .color-bg{background-color:#92400e!important}
+  .la,.lp,.lb,.lpr{display:none!important}
+}
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <header class="term-header">
+    <div class="badge">design</div>
+    <h1>TRANSITION</h1>
+    <p class="term-sub">Thay đổi mượt mà giữa hai trạng thái — không nhảy giật, có đầu có cuối.</p>
+  </header>
+
+  <!-- 4 ANIMATED PANELS -->
+  <div class="sim-grid">
+
+    <!-- PANEL 1: Fade -->
+    <div class="sp p1">
+      <div class="sp-label">01 — Fade Transition</div>
+      <div class="sp-body">
+        <div class="st-vp">
+          <div class="st-c sa">
+            <div class="st-h" style="background:#92400e"><span style="color:rgba(255,255,255,.7);font-size:.52rem;font-family:var(--mono)">STATE A</span></div>
+            <div class="st-bd">
+              <div class="st-t">Discover the World</div>
+              <div class="st-s">Adventure awaits around every corner</div>
+              <div class="st-btn">Explore</div>
+            </div>
+          </div>
+          <div class="st-c sb">
+            <div class="st-h" style="background:#1a3a5a"><span style="color:rgba(255,255,255,.7);font-size:.52rem;font-family:var(--mono)">STATE B</span></div>
+            <div class="st-bd">
+              <div class="st-t">Start Your Journey</div>
+              <div class="st-s">Book your next trip today</div>
+              <div class="st-btn">Book Now</div>
+            </div>
+          </div>
+          <div class="st-lbl st-lbl-state la" style="top:4px;left:50%;transform:translateX(-50%)">STATE 1</div>
+          <div class="st-lbl st-lbl-prop lp" style="bottom:4px;left:50%;transform:translateX(-50%)">opacity: 1 → 0</div>
+          <div class="st-lbl st-lbl-state lb" style="top:4px;left:50%;transform:translateX(-50%)">STATE 2</div>
+          <div class="st-lbl st-lbl-prop lpr" style="bottom:4px;left:50%;transform:translateX(-50%)">opacity: 0 → 1</div>
+        </div>
+      </div>
+      <div class="sp-insight">Fade = <em>opacity</em> thay đổi mượt, nội dung không di chuyển</div>
+    </div>
+
+    <!-- PANEL 2: Slide -->
+    <div class="sp p2">
+      <div class="sp-label">02 — Slide Transition</div>
+      <div class="sp-body">
+        <div class="st-vp">
+          <div class="st-c sa">
+            <div class="st-h" style="background:#92400e"><span style="color:rgba(255,255,255,.7);font-size:.52rem;font-family:var(--mono)">STATE A</span></div>
+            <div class="st-bd">
+              <div class="st-t">New Collection</div>
+              <div class="st-s">Spring 2025 arrivals now live</div>
+              <div class="st-btn">View All</div>
+            </div>
+          </div>
+          <div class="st-c sb">
+            <div class="st-h" style="background:#059669"><span style="color:rgba(255,255,255,.7);font-size:.52rem;font-family:var(--mono)">STATE B</span></div>
+            <div class="st-bd">
+              <div class="st-t">Limited Edition</div>
+              <div class="st-s">Only 50 pieces available</div>
+              <div class="st-btn">Shop Now</div>
+            </div>
+          </div>
+          <div class="st-lbl st-lbl-state la" style="top:4px;left:50%;transform:translateX(-50%)">STATE 1</div>
+          <div class="st-lbl st-lbl-prop lp" style="bottom:4px;left:50%;transform:translateX(-50%)">translateX: 0 → -100%</div>
+          <div class="st-lbl st-lbl-state lb" style="top:4px;left:50%;transform:translateX(-50%)">STATE 2</div>
+          <div class="st-lbl st-lbl-prop lpr" style="bottom:4px;left:50%;transform:translateX(-50%)">translateX: 100% → 0</div>
+        </div>
+      </div>
+      <div class="sp-insight">Slide = <em>transform</em> di chuyển nội dung theo hướng xác định</div>
+    </div>
+
+    <!-- PANEL 3: Scale -->
+    <div class="sp p3">
+      <div class="sp-label">03 — Scale Transition</div>
+      <div class="sp-body">
+        <div class="st-vp">
+          <div class="st-c sa">
+            <div class="st-h" style="background:var(--bg-el);border-bottom:1px solid var(--border)"><span style="color:var(--fg-muted);font-size:.52rem;font-family:var(--mono)">STATE A</span></div>
+            <div class="st-bd">
+              <div class="st-t">Welcome Back</div>
+              <div class="st-s">Continue where you left off</div>
+              <div class="st-btn">Resume</div>
+            </div>
+          </div>
+          <div class="st-c sb">
+            <div class="st-h" style="background:var(--bg-el);border-bottom:1px solid var(--border)"><span style="color:var(--fg-muted);font-size:.52rem;font-family:var(--mono)">STATE B</span></div>
+            <div class="st-bd">
+              <div class="st-t">Dashboard</div>
+              <div class="st-s">3 new notifications waiting</div>
+              <div class="st-btn">View All</div>
+            </div>
+          </div>
+          <div class="st-lbl st-lbl-state la" style="top:4px;left:50%;transform:translateX(-50%)">STATE 1</div>
+          <div class="st-lbl st-lbl-prop lp" style="bottom:4px;left:50%;transform:translateX(-50%)">scale: 1 → 0.6</div>
+          <div class="st-lbl st-lbl-state lb" style="top:4px;left:50%;transform:translateX(-50%)">STATE 2</div>
+          <div class="st-lbl st-lbl-prop lpr" style="bottom:4px;left:50%;transform:translateX(-50%)">scale: 1.4 → 1</div>
+        </div>
+      </div>
+      <div class="sp-insight">Scale = <em>zoom in/out</em>, tạo cảm giác nội dung đến gần hoặc xa</div>
+    </div>
+
+    <!-- PANEL 4: Color -->
+    <div class="sp p4">
+      <div class="sp-label">04 — Color Transition</div>
+      <div class="sp-body">
+        <div class="st-vp">
+          <div class="color-bg" style="position:absolute;inset:0;z-index:1;border-radius:3px">
+            <div class="color-inner">
+              <div class="cta" style="position:absolute;inset:0;z-index:3;padding:12px;display:flex;flex-direction:column;gap:3px">
+                <div class="st-t" style="color:#fff">Summer Sale</div>
+                <div class="st-s" style="color:rgba(255,255,255,.65)">Up to 50% off everything</div>
+                <div class="st-btn" style="margin-top:auto">Shop</div>
+              </div>
+              <div class="ctb" style="position:absolute;inset:0;z-index:3;padding:12px;display:flex;flex-direction:column;gap:3px">
+                <div class="st-t" style="color:#fff">Winter Collection</div>
+                <div class="st-s" style="color:rgba(255,255,255,.65)">New arrivals just dropped</div>
+                <div class="st-btn" style="margin-top:auto">Browse</div>
+              </div>
+            </div>
+          </div>
+          <div class="color-bar"></div>
+          <div class="st-lbl st-lbl-state la" style="top:4px;left:50%;transform:translateX(-50%);z-index:8">STATE 1</div>
+          <div class="st-lbl st-lbl-color lp" style="bottom:14px;left:50%;transform:translateX(-50%);z-index:8">background-color: #92400e → #1a3a5a</div>
+          <div class="st-lbl st-lbl-state lb" style="top:4px;left:50%;transform:translateX(-50%);z-index:8">STATE 2</div>
+          <div class="st-lbl st-lbl-color lpr" style="bottom:14px;left:50%;transform:translateX(-50%);z-index:8">background-color: #1a3a5a → #92400e</div>
+        </div>
+      </div>
+      <div class="sp-insight">Color = <em>background-color</em> chuyển mượt, không nhảy đột ngột</div>
+    </div>
+
+  </div>
+
+  <!-- INSIGHT BAR -->
+  <div class="insight-bar">
+    <p>Transition = <span>3 thứ cần có</span>: property (đổi cái gì), duration (mất bao lâu), easing (như thế nào). Thiếu 1 trong 3 → không phải transition.</p>
+  </div>
+
+  <!-- PRACTICE -->
+  <section class="practice" aria-label="Thực hành">
+    <div class="practice-hdr">
+      <div class="badge">Thực hành</div>
+      <h2>Điều chỉnh 3 thông số, thấy kết quả realtime</h2>
+      <p class="practice-desc">Chọn property, kéo duration, đổi easing — bấm Trigger để xem transition diễn ra.</p>
+      <p class="practice-hint">&#9889; Thử đổi easing từ linear sang ease-in-out để thấy sự khác biệt rõ nhất.</p>
+    </div>
+
+    <div class="practice-body">
+      <!-- Controls -->
+      <div>
+        <div class="ctrl-section">Property</div>
+        <div class="btn-group" id="propGroup">
+          <button class="btn-g active" data-prop="opacity">opacity</button>
+          <button class="btn-g" data-prop="transform">transform</button>
+          <button class="btn-g" data-prop="background-color">bg-color</button>
+        </div>
+
+        <div class="ctrl-section">Duration</div>
+        <div class="ctrl-slider">
+          <div class="ctrl-slider-hdr">
+            <span class="ctrl-slider-lbl">Thời gian</span>
+            <span class="ctrl-slider-val" id="durVal">0.3s</span>
+          </div>
+          <input type="range" min="1" max="30" value="3" id="durSlider" aria-label="Thời gian transition">
+        </div>
+
+        <div class="ctrl-section">Easing</div>
+        <div class="btn-group" id="easeGroup">
+          <button class="btn-g" data-ease="linear">linear</button>
+          <button class="btn-g active" data-ease="ease">ease</button>
+          <button class="btn-g" data-ease="ease-in">ease-in</button>
+          <button class="btn-g" data-ease="ease-out">ease-out</button>
+          <button class="btn-g" data-ease="ease-in-out">in-out</button>
+        </div>
+
+        <div class="ctrl-note">
+          <strong>Lưu ý:</strong> Chỉ property được chọn mới transition mượt. Các property khác thay đổi ngay lập tức — đây chính là điểm quan trọng của việc <strong>chỉ định property</strong>.
+        </div>
+      </div>
+
+      <!-- Preview -->
+      <div class="prev-wrap">
+        <div class="prev-label">Preview — click Trigger để chuyển state</div>
+        <div class="prev-scene">
+          <div class="prac-card state-a" id="pracCard">
+            <div class="prac-h">
+              <div class="prac-h-color"></div>
+              <span class="prac-h-text">Card Header</span>
+            </div>
+            <div class="prac-bd">
+              <div class="prac-t">Welcome to the Platform</div>
+              <div class="prac-s">Everything you need to manage projects in one place.</div>
+              <div class="prac-btn">Get Started</div>
+            </div>
+            <div class="prac-overlay" id="pracOverlay"></div>
+          </div>
+          <div class="prac-state" id="pracState">Trạng thái: <span class="s-a">State A</span></div>
+          <button class="trigger-btn" id="triggerBtn">Trigger Transition</button>
+        </div>
+        <div class="css-out">
+          <div class="css-out-hdr">
+            <span class="css-out-lbl">CSS Output</span>
+            <div style="display:flex;align-items:center;gap:6px">
+              <span class="css-copy-msg" id="copyMsg">Copied!</span>
+              <button class="css-copy" id="copyBtn">Copy</button>
+            </div>
+          </div>
+          <div class="css-code" id="cssCode"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY IT MATTERS -->
+  <section class="why" aria-label="Tại sao quan trọng">
+    <h3>Tại sao quan trọng khi làm việc với AI/dev</h3>
+    <ul>
+      <li>Prompt đúng: <code>"transition: opacity 0.3s ease"</code> thay vì <code>"làm mượt đi"</code></li>
+      <li>Dev bảo <code>"thiếu transition"</code> — hiểu ngay là trạng thái thay đổi nhưng nhảy giật, cần thêm transition mượt</li>
+      <li>Khi AI ra UI mà element "nhảy" giữa hai trạng thái = <strong>thiếu transition</strong>, không phải lỗi rendering</li>
+    </ul>
+  </section>
+
+</div>
+
+<script>
+  /* === PRACTICE STATE === */
+  var prop = 'opacity';
+  var dur = 0.3;
+  var ease = 'ease';
+  var currentState = 'a';
+  var transitioning = false;
+
+  /* === DOM === */
+  var propBtns = document.querySelectorAll('#propGroup .btn-g');
+  var easeBtns = document.querySelectorAll('#easeGroup .btn-g');
+  var durSlider = document.getElementById('durSlider');
+  var durVal = document.getElementById('durVal');
+  var pracCard = document.getElementById('pracCard');
+  var pracOverlay = document.getElementById('pracOverlay');
+  var pracState = document.getElementById('pracState');
+  var triggerBtn = document.getElementById('triggerBtn');
+  var cssCode = document.getElementById('cssCode');
+  var copyBtn = document.getElementById('copyBtn');
+  var copyMsg = document.getElementById('copyMsg');
+
+  /* === PROPERTY DISPLAY NAMES === */
+  var propNames = {
+    'opacity': 'opacity',
+    'transform': 'transform',
+    'background-color': 'background-color'
+  };
+
+  /* === APPLY TRANSITION === */
+  function applyTransition() {
+    /* Set transition via inline style (can't use CSS var for property name) */
+    pracCard.style.transition = prop + ' ' + dur.toFixed(1) + 's ' + ease;
+
+    /* Also set CSS custom property for children that reference it */
+    pracCard.style.setProperty('--p-dur', dur.toFixed(1) + 's');
+    pracCard.style.setProperty('--p-ease', ease);
+
+    updateCSS();
+  }
+
+  /* === UPDATE CSS OUTPUT === */
+  function updateCSS() {
+    var line1 = '<span class="cv">transition: ' + prop + ' ' + dur.toFixed(1) + 's ' + ease + ';</span>';
+    var line2 = '<span style="color:var(--fg-muted)">/* Chỉ ' + propNames[prop] + ' được transition mượt */</span>';
+    cssCode.innerHTML = line1 + '\n' + line2;
+  }
+
+  /* === TRIGGER === */
+  triggerBtn.addEventListener('click', function() {
+    if (transitioning) return;
+    transitioning = true;
+
+    /* Toggle state */
+    if (currentState === 'a') {
+      pracCard.classList.remove('state-a');
+      pracCard.classList.add('state-b');
+      currentState = 'b';
+      pracState.innerHTML = 'Trạng thái: <span class="s-b">State B</span>';
+      pracOverlay.textContent = propNames[prop] + ': changing...';
+    } else {
+      pracCard.classList.remove('state-b');
+      pracCard.classList.add('state-a');
+      currentState = 'a';
+      pracState.innerHTML = 'Trạng thái: <span class="s-a">State A</span>';
+      pracOverlay.textContent = propNames[prop] + ': changing...';
+    }
+
+    /* Show overlay during transition */
+    pracOverlay.classList.add('show');
+
+    /* Hide overlay after transition ends */
+    var ms = Math.max(50, dur * 1000 + 50);
+    setTimeout(function() {
+      pracOverlay.classList.remove('show');
+      transitioning = false;
+    }, ms);
+  });
+
+  /* === PROPERTY BUTTONS === */
+  propBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      propBtns.forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      prop = btn.getAttribute('data-prop');
+
+      /* Reset to state A without transition, then reapply */
+      pracCard.style.transition = 'none';
+      pracCard.classList.remove('state-b');
+      pracCard.classList.add('state-a');
+      currentState = 'a';
+      pracState.innerHTML = 'Trạng thái: <span class="s-a">State A</span>';
+
+      /* Force reflow, then apply transition */
+      void pracCard.offsetHeight;
+      applyTransition();
+    });
+  });
+
+  /* === EASING BUTTONS === */
+  easeBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      easeBtns.forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      ease = btn.getAttribute('data-ease');
+      applyTransition();
+    });
+  });
+
+  /* === DURATION SLIDER === */
+  durSlider.addEventListener('input', function() {
+    dur = parseInt(this.value, 10) / 10;
+    durVal.textContent = dur.toFixed(1) + 's';
+    applyTransition();
+  });
+
+  /* === COPY === */
+  copyBtn.addEventListener('click', function() {
+    var text = 'transition: ' + prop + ' ' + dur.toFixed(1) + 's ' + ease + ';';
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(showCopy);
+    } else {
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.style.position = 'fixed'; ta.style.left = '-9999px';
+      document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+      document.body.removeChild(ta); showCopy();
+    }
+  });
+
+  function showCopy() {
+    copyMsg.classList.add('show');
+    setTimeout(function() { copyMsg.classList.remove('show'); }, 1500);
+  }
+
+  /* === INIT === */
+  applyTransition();
+</script>
+</body>
+</html>
