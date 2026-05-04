@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hero Section — Animated</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;--card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 100%,16px 16px;display:flex;flex-direction:column;align-items:center;min-height:100vh;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:12px;gap:16px}
+
+.aw{width:min(700px,100%)}
+.ab{width:700px;height:412px;background:var(--card);border:2px solid var(--border);transform-origin:top left;overflow:hidden}
+.hd{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
+.hd-t{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:2.5px}
+.hd-f{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
+.la{position:relative;width:100%;height:260px;background:linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);background-size:30px 30px;overflow:hidden}
+
+.fr{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .3s}.fr.show{opacity:1;pointer-events:auto}
+.si{opacity:0;transform:translateY(5px);transition:opacity .3s,transform .3s}.fr.show .si{opacity:1;transform:translateY(0)}
+
+.nh{display:flex;align-items:center;justify-content:space-between;padding:8px 20px;flex-shrink:0}
+.nh-l{display:flex;gap:3px}.nh-l span{display:block;width:4px;height:4px;border-radius:50%;background:var(--muted)}
+.nh-r{display:flex;gap:8px}.nh-r span{display:block;width:24px;height:3px;background:var(--border-hi);border-radius:1px}
+
+.ha{position:relative;flex:1;margin:0 20px 16px;border:1px solid var(--border);overflow:hidden;background:var(--card-alt)}
+.hb{font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:2px;color:var(--accent);margin-bottom:6px}
+.hh{font-size:18px;font-weight:800;line-height:1.15}
+.hs{font-size:8px;color:var(--muted);line-height:1.4;margin-top:5px;max-width:280px}
+.hc{display:flex;gap:6px;margin-top:10px}
+.hb1{padding:0 12px;height:22px;background:var(--accent);color:#fff;font-family:'Space Grotesk',sans-serif;font-size:8px;font-weight:600;display:inline-flex;align-items:center;white-space:nowrap}
+.hb2{padding:0 12px;height:22px;border:1px solid var(--border);color:var(--fg);font-family:'Space Grotesk',sans-serif;font-size:8px;font-weight:500;display:inline-flex;align-items:center;white-space:nowrap}
+
+.dia{position:absolute;transform:rotate(45deg)}.cir{position:absolute;border-radius:50%}.sq{position:absolute}
+.lt{position:absolute;bottom:6px;right:8px;font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:1.5px;color:var(--muted);opacity:.5;z-index:5}
+
+.inf{padding:11px 14px;border-top:1px solid var(--border)}
+.dn{font-size:17px;font-weight:800;line-height:1.15}
+.ds{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);margin-top:2px}
+.dd{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.4}
+.di{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);margin-top:6px;padding-top:6px;border-top:1px dashed var(--border);opacity:.78}
+.pt{height:2px;background:var(--border)}.pf{height:100%;background:var(--accent);width:0%}
+.fdw{display:flex;gap:4px;justify-content:center;padding:8px 0}
+.fdd{width:22px;height:2px;background:var(--border);transition:background .3s}.fdd.on{background:var(--accent)}
+
+/* ===== PRACTICE ===== */
+.pw{width:min(700px,100%);background:var(--card);border:2px solid var(--border);padding:20px 24px}
+.pw-h{font-size:15px;font-weight:700;margin-bottom:2px}.pw-h span{color:var(--accent)}
+.pw-s{font-size:11px;color:var(--muted);margin-bottom:14px}
+.mbs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.mb{padding:6px 12px;border:2px solid var(--border);background:var(--card-alt);font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);cursor:pointer;transition:all .2s}.mb:hover{border-color:var(--border-hi)}.mb.on{border-color:var(--accent);color:var(--accent);background:rgba(212,113,42,.08)}
+
+.ppv{position:relative;height:200px;border:1px solid var(--border);background:var(--card-alt);overflow:hidden;margin-bottom:14px}
+.pla{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .3s}.pla.show{opacity:1;pointer-events:auto}
+.pnh{display:flex;align-items:center;justify-content:space-between;padding:10px 24px;flex-shrink:0}
+.pnh-l{display:flex;gap:3px}.pnh-l span{display:block;width:5px;height:5px;border-radius:50%;background:var(--muted)}
+.pnh-r{display:flex;gap:10px}.pnh-r span{display:block;width:32px;height:3px;background:var(--border-hi);border-radius:1px}
+.phr{position:relative;flex:1;display:flex}
+.pb{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2.5px;color:var(--accent);margin-bottom:8px;transition:max-height .25s,opacity .25s,margin .25s;overflow:hidden;max-height:20px;opacity:1}.pb.off{max-height:0;opacity:0;margin:0}
+.ph{font-size:24px;font-weight:800;line-height:1.15}
+.ps{font-size:10px;color:var(--muted);line-height:1.5;margin-top:8px;max-width:340px;transition:max-height .25s,opacity .25s,margin .25s;overflow:hidden;max-height:40px;opacity:1}.ps.off{max-height:0;opacity:0;margin:0}
+.pc{display:flex;gap:8px;margin-top:14px}
+.pb1{padding:0 16px;height:28px;background:var(--accent);color:#fff;font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:600;display:inline-flex;align-items:center;white-space:nowrap}
+.pb2{padding:0 16px;height:28px;border:1px solid var(--border);color:var(--fg);font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:500;display:inline-flex;align-items:center;white-space:nowrap;transition:max-height .25s,opacity .25s;overflow:hidden;max-height:30px;opacity:1}.pb2.off{max-height:0;opacity:0}
+.plt{position:absolute;bottom:8px;right:10px;font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:1.5px;color:var(--muted);opacity:.4;z-index:5}
+
+.tgs{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:10px}
+.tgr{display:flex;align-items:center;gap:8px}
+.tgl-l{font-size:11px}
+.tgl-s{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);min-width:20px;text-align:right;transition:color .2s}
+.tgl{width:32px;height:18px;border:2px solid var(--border);background:var(--card-alt);cursor:pointer;position:relative;transition:all .2s;flex-shrink:0}
+.tgl::after{content:'';position:absolute;width:10px;height:10px;background:var(--muted);top:2px;left:2px;transition:all .2s}
+.tgl.on{border-color:var(--accent);background:rgba(212,113,42,.15)}
+.tgl.on::after{background:var(--accent);left:16px}
+
+.pfb{font-family:'JetBrains Mono',monospace;font-size:11px;min-height:18px;color:var(--muted);transition:color .2s;line-height:1.4}.pfb.w{color:var(--accent)}
+.pht{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);opacity:.65}
+
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media(max-width:520px){.pw{padding:16px}.mbs{gap:4px}.mb{padding:5px 8px;font-size:9px}.tgs{gap:10px}.ph{font-size:20px}.ppv{height:170px}}
+</style>
+</head>
+<body>
+
+<div class="aw">
+<div class="ab" id="ab">
+<div class="hd"><span class="hd-t">HERO SECTION</span><span class="hd-f" id="hf">01 / 04</span></div>
+<div class="la">
+
+<!-- F0: Left Aligned -->
+<div class="fr" id="f0">
+<div class="nh si"><div class="nh-l"><span></span><span></span><span></span></div><div class="nh-r"><span></span><span></span></div></div>
+<div class="ha">
+<div style="display:flex;align-items:center;height:100%;padding:16px 20px;gap:20px">
+<div style="flex:0 0 58%;display:flex;flex-direction:column;justify-content:center">
+<div class="hb si">[ BUILT FOR GROWTH ]</div>
+<div class="hh si">Build products<br>that scale.</div>
+<div class="hs si">Powerful infrastructure for modern teams. Deploy, scale, and ship faster.</div>
+<div class="hc si"><span class="hb1">GET STARTED</span><span class="hb2">LEARN MORE</span></div>
+</div>
+<div style="flex:1;position:relative;height:100%">
+<div class="dia si" style="width:70px;height:70px;border:2px solid var(--accent);top:15%;right:10%"></div>
+<div class="sq si" style="width:28px;height:28px;border:1px solid var(--border-hi);bottom:20%;right:35%"></div>
+</div>
+</div>
+<span class="lt">LEFT ALIGNED</span>
+</div>
+</div>
+
+<!-- F1: Centered -->
+<div class="fr" id="f1">
+<div class="nh si"><div class="nh-l"><span></span><span></span><span></span></div><div class="nh-r"><span></span><span></span></div></div>
+<div class="ha">
+<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:16px 20px;text-align:center;position:relative">
+<div class="dia si" style="width:50px;height:50px;border:2px solid rgba(212,113,42,.3);top:12%;right:15%;opacity:.4"></div>
+<div class="cir si" style="width:40px;height:40px;background:rgba(212,113,42,.08);bottom:18%;left:12%;opacity:.5"></div>
+<div class="hb si">[ BUILT FOR GROWTH ]</div>
+<div class="hh si">Build products<br>that scale.</div>
+<div class="hs si" style="text-align:center">Powerful infrastructure for modern teams. Deploy, scale, and ship faster.</div>
+<div class="hc si"><span class="hb1">GET STARTED</span><span class="hb2">LEARN MORE</span></div>
+</div>
+<span class="lt">CENTERED</span>
+</div>
+</div>
+
+<!-- F2: Split Layout -->
+<div class="fr" id="f2">
+<div class="nh si"><div class="nh-l"><span></span><span></span><span></span></div><div class="nh-r"><span></span><span></span></div></div>
+<div class="ha">
+<div style="display:flex;height:100%">
+<div style="flex:0 0 50%;display:flex;flex-direction:column;justify-content:center;padding:16px 20px;border-right:1px solid var(--border)">
+<div class="hb si">[ BUILT FOR GROWTH ]</div>
+<div class="hh si">Build products<br>that scale.</div>
+<div class="hs si">Powerful infrastructure for modern teams.</div>
+<div class="hc si"><span class="hb1">GET STARTED</span><span class="hb2">LEARN MORE</span></div>
+</div>
+<div style="flex:1;display:flex;align-items:center;justify-content:center;position:relative">
+<div class="dia si" style="width:90px;height:90px;border:2px solid var(--accent);background:rgba(212,113,42,.06)"></div>
+<div class="cir si" style="width:24px;height:24px;background:var(--border-hi);top:15%;right:20%"></div>
+</div>
+</div>
+<span class="lt">SPLIT LAYOUT</span>
+</div>
+</div>
+
+<!-- F3: Overlay Layout -->
+<div class="fr" id="f3">
+<div class="nh si"><div class="nh-l"><span></span><span></span><span></span></div><div class="nh-r"><span></span><span></span></div></div>
+<div class="ha">
+<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none">
+<div class="dia si" style="width:160px;height:160px;background:rgba(212,113,42,.08);border:2px solid rgba(212,113,42,.2)"></div>
+<div class="cir si" style="width:100px;height:100px;background:rgba(212,113,42,.05);border:1px solid rgba(212,113,42,.12);top:10%;left:8%"></div>
+<div class="sq si" style="width:40px;height:40px;border:1px solid rgba(212,113,42,.15);bottom:12%;right:10%"></div>
+</div>
+<div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:16px 20px;text-align:center">
+<div class="hb si">[ BUILT FOR GROWTH ]</div>
+<div class="hh si">Build products<br>that scale.</div>
+<div class="hs si" style="text-align:center">Powerful infrastructure for modern teams. Deploy, scale, and ship faster.</div>
+<div class="hc si"><span class="hb1">GET STARTED</span><span class="hb2">LEARN MORE</span></div>
+</div>
+<span class="lt">OVERLAY LAYOUT</span>
+</div>
+</div>
+
+</div>
+<div class="inf"><div class="dn" id="dn">Left Aligned</div><div class="ds" id="ds">CĂN TRÁI</div><div class="dd" id="dd">Text bên trái, visual bên phải — layout phổ biến nhất cho SaaS</div><div class="di" id="di">Khi nói "hero" không thêm gì → dev mặc định làm dạng này</div></div>
+<div class="pt"><div class="pf" id="pf"></div></div>
+<div class="fdw"><div class="fdd on" id="d0"></div><div class="fdd" id="d1"></div><div class="fdd" id="d2"></div><div class="fdd" id="d3"></div></div>
+</div>
+</div>
+
+<!-- PRACTICE -->
+<div class="pw">
+<div class="pw-h">Thực hành — <span>Cấu trúc Hero Section</span></div>
+<div class="pw-s">Chọn layout + bật/tắt từng element để thấy hero thay đổi</div>
+
+<div class="mbs" id="mbs">
+<button class="mb on" data-m="0">Left</button>
+<button class="mb" data-m="1">Centered</button>
+<button class="mb" data-m="2">Split</button>
+<button class="mb" data-m="3">Overlay</button>
+</div>
+
+<div class="ppv" id="ppv">
+
+<!-- P0: Left -->
+<div class="pla show" data-pm="0">
+<div class="pnh"><div class="pnh-l"><span></span><span></span><span></span></div><div class="pnh-r"><span></span><span></span></div></div>
+<div class="phr" style="align-items:center">
+<div style="flex:0 0 55%;display:flex;flex-direction:column;justify-content:center">
+<div class="pb">[ BUILT FOR GROWTH ]</div>
+<div class="ph">Build products<br>that scale.</div>
+<div class="ps">Powerful infrastructure for modern teams. Deploy, scale, and ship faster.</div>
+<div class="pc"><span class="pb1">GET STARTED</span><span class="pb2">LEARN MORE</span></div>
+</div>
+<div style="flex:1;position:relative;height:100%">
+<div class="dia" style="width:80px;height:80px;border:2px solid var(--accent);top:10%;right:8%"></div>
+<div class="sq" style="width:32px;height:32px;border:1px solid var(--border-hi);bottom:18%;right:30%"></div>
+</div>
+</div>
+<span class="plt">LEFT ALIGNED</span>
+</div>
+
+<!-- P1: Centered -->
+<div class="pla" data-pm="1">
+<div class="pnh"><div class="pnh-l"><span></span><span></span><span></span></div><div class="pnh-r"><span></span><span></span></div></div>
+<div class="phr" style="flex-direction:column;align-items:center;text-align:center;justify-content:center;position:relative">
+<div class="dia" style="width:55px;height:55px;border:2px solid rgba(212,113,42,.25);top:8%;right:12%;opacity:.35"></div>
+<div class="cir" style="width:45px;height:45px;background:rgba(212,113,42,.06);bottom:15%;left:10%;opacity:.45"></div>
+<div class="pb">[ BUILT FOR GROWTH ]</div>
+<div class="ph">Build products<br>that scale.</div>
+<div class="ps" style="text-align:center">Powerful infrastructure for modern teams. Deploy, scale, and ship faster.</div>
+<div class="pc"><span class="pb1">GET STARTED</span><span class="pb2">LEARN MORE</span></div>
+</div>
+<span class="plt">CENTERED</span>
+</div>
+
+<!-- P2: Split -->
+<div class="pla" data-pm="2">
+<div class="pnh"><div class="pnh-l"><span></span><span></span><span></span></div><div class="pnh-r"><span></span><span></span></div></div>
+<div class="phr" style="flex-direction:row">
+<div style="flex:0 0 50%;display:flex;flex-direction:column;justify-content:center;padding-right:20px;border-right:1px solid var(--border)">
+<div class="pb">[ BUILT FOR GROWTH ]</div>
+<div class="ph">Build products<br>that scale.</div>
+<div class="ps">Powerful infrastructure for modern teams.</div>
+<div class="pc"><span class="pb1">GET STARTED</span><span class="pb2">LEARN MORE</span></div>
+</div>
+<div style="flex:1;display:flex;align-items:center;justify-content:center;position:relative">
+<div class="dia" style="width:100px;height:100px;border:2px solid var(--accent);background:rgba(212,113,42,.05)"></div>
+<div class="cir" style="width:28px;height:28px;background:var(--border-hi);top:12%;right:18%"></div>
+</div>
+</div>
+<span class="plt">SPLIT LAYOUT</span>
+</div>
+
+<!-- P3: Overlay -->
+<div class="pla" data-pm="3">
+<div class="pnh"><div class="pnh-l"><span></span><span></span><span></span></div><div class="pnh-r"><span></span><span></span></div></div>
+<div class="phr" style="flex-direction:column;align-items:center;text-align:center;justify-content:center;position:relative">
+<div style="position:absolute;top:50%;left:50%;width:180px;height:180px;transform:translate(-50%,-50%) rotate(45deg);background:rgba(212,113,42,.06);border:2px solid rgba(212,113,42,.15);pointer-events:none"></div>
+<div class="cir" style="width:120px;height:120px;background:rgba(212,113,42,.03);border:1px solid rgba(212,113,42,.08);top:8%;left:5%"></div>
+<div class="sq" style="width:45px;height:45px;border:1px solid rgba(212,113,42,.12);bottom:10%;right:8%"></div>
+<div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center">
+<div class="pb">[ BUILT FOR GROWTH ]</div>
+<div class="ph">Build products<br>that scale.</div>
+<div class="ps" style="text-align:center">Powerful infrastructure for modern teams. Deploy, scale, and ship faster.</div>
+<div class="pc"><span class="pb1">GET STARTED</span><span class="pb2">LEARN MORE</span></div>
+</div>
+</div>
+<span class="plt">OVERLAY LAYOUT</span>
+</div>
+
+</div>
+
+<div class="tgs">
+<div class="tgr"><span class="tgl-l">Badge</span><div class="tgl on" id="tB"></div><span class="tgl-s" id="sB">ON</span></div>
+<div class="tgr"><span class="tgl-l">Subheading</span><div class="tgl on" id="tS"></div><span class="tgl-s" id="sS">ON</span></div>
+<div class="tgr"><span class="tgl-l">Secondary CTA</span><div class="tgl on" id="tC"></div><span class="tgl-s" id="sC">ON</span></div>
+</div>
+
+<div class="pfb" id="pfb">Left Aligned — layout mặc định phổ biến nhất cho SaaS</div>
+<div class="pht">Hint: Tắt badge + secondary CTA → thấy hero tối giản chỉ còn heading + nút chính</div>
+</div>
+
+<script>
+/* ===== ANIMATION ===== */
+const INFO=[
+    {nm:'Left Aligned',sz:'CĂN TRÁI',dc:'Text bên trái, visual bên phải — layout phổ biến nhất cho SaaS',ins:'Khi nói "hero" không thêm gì → dev mặc định làm dạng này'},
+    {nm:'Centered',sz:'CĂN GIỮA',dc:'Tất cả căn giữa — phù hợp landing page đơn, product launch',ins:'Nhấn mạnh thông điệp duy nhất — ít element, nhiều breathing space'},
+    {nm:'Split Layout',sz:'CHIA 50/50',dc:'Nửa text, nửa visual — cân bằng thông tin và hình ảnh',ins:'Khi cần "hero có hình bên phải" → đây là thuật ngữ chính xác'},
+    {nm:'Overlay Layout',sz:'TEXT NỀN HÌNH',dc:'Text nằm trên nền visual — tạo cảm giác immersive, cinematic',ins:'Khi nói "hero full-screen có background" → hiểu là overlay layout'}
+];
+
+const frs=[0,1,2,3].map(i=>document.getElementById('f'+i));
+const el={dn:document.getElementById('dn'),ds:document.getElementById('ds'),dd:document.getElementById('dd'),di:document.getElementById('di'),hf:document.getElementById('hf'),pf:document.getElementById('pf')};
+const dts=[0,1,2,3].map(i=>document.getElementById('d'+i));
+let cur=0,ft=null,pa=null,t0=0;const DUR=3500;
+
+function apply(i){
+    const s=INFO[i];el.dn.textContent=s.nm;el.ds.textContent=s.sz;el.dd.textContent=s.dc;el.di.textContent=s.ins;
+    el.hf.textContent='0'+(i+1)+' / 04';dts.forEach((d,j)=>d.classList.toggle('on',j===i));
+    frs.forEach(f=>{f.querySelectorAll('.si').forEach(e=>e.style.transitionDelay='0s');f.classList.remove('show')});
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+        frs[i].classList.add('show');
+        frs[i].querySelectorAll('.si').forEach((e,j)=>{e.style.transitionDelay=(0.1+j*0.07)+'s'});
+    }));
+}
+function startProg(){t0=performance.now();el.pf.style.transition='none';el.pf.style.width='0%';(function tk(n){const p=Math.min(100,(n-t0)/DUR*100);el.pf.style.width=p+'%';if(p<100)pa=requestAnimationFrame(tk)})(t0)}
+function next(){cur=(cur+1)%4;apply(cur);startProg()}
+function start(){apply(0);startProg();ft=setInterval(next,DUR)}
+function scale(){const w=document.querySelector('.aw'),b=document.getElementById('ab'),s=w.clientWidth/700;b.style.transform='scale('+s+')';w.style.height=Math.ceil(412*s)+'px'}
+
+/* ===== PRACTICE ===== */
+let pm=0;
+const layouts=document.querySelectorAll('.pla');
+const mbs=document.getElementById('mbs');
+const pfb=document.getElementById('pfb');
+const MODES=[
+    'Left Aligned — layout mặc định phổ biến nhất cho SaaS',
+    'Centered — mọi thứ căn giữa, nhấn mạnh thông điệp duy nhất',
+    'Split Layout — 50/50 text và visual, cân bằng hai bên',
+    'Overlay Layout — text trên nền visual, cinematic feel'
+];
+
+function setMode(m){
+    pm=m;
+    layouts.forEach(l=>l.classList.toggle('show',+l.dataset.pm===m));
+    mbs.querySelectorAll('.mb').forEach(b=>b.classList.toggle('on',+b.dataset.m===m));
+    pfb.textContent=MODES[m];pfb.className='pfb'+(m===3?' w':'');
+}
+mbs.addEventListener('click',e=>{const b=e.target.closest('.mb');if(b)setMode(+b.dataset.m)});
+
+/* Toggles — apply to ALL layouts */
+function setupToggle(tId,sId,sel){
+    const t=document.getElementById(tId),s=document.getElementById(sId);
+    t.addEventListener('click',()=>{
+        t.classList.toggle('on');const on=t.classList.contains('on');
+        s.textContent=on?'ON':'OFF';s.style.color=on?'var(--muted)':'var(--accent)';
+        layouts.forEach(l=>l.querySelectorAll(sel).forEach(el=>el.classList.toggle('off',!on)));
+    });
+}
+setupToggle('tB','sB','.pb');
+setupToggle('tS','sS','.ps');
+setupToggle('tC','sC','.pb2');
+
+/* ===== INIT ===== */
+window.addEventListener('resize',scale);
+requestAnimationFrame(()=>requestAnimationFrame(scale));
+start();
+document.addEventListener('visibilitychange',()=>{
+    if(document.hidden){clearInterval(ft);cancelAnimationFrame(pa)}else{start()}
+});
+</script>
+</body>
+</html>

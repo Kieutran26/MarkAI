@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hero Section — Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#e88c2e;--card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(232,140,46,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 100%,16px 16px;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:12px;gap:16px}
+
+.pw{width:100%;background:var(--card);border:2px solid var(--border);padding:20px 24px}
+.pw-h{font-size:15px;font-weight:700;margin-bottom:2px}.pw-h span{color:var(--accent)}
+.pw-s{font-size:11px;color:var(--muted);margin-bottom:14px}
+.mbs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.mb{padding:6px 12px;border:2px solid var(--border);background:var(--card-alt);font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);cursor:pointer;transition:all .2s}.mb:hover{border-color:var(--border-hi)}.mb.on{border-color:var(--accent);color:var(--accent);background:rgba(232,140,46,.08)}
+
+.ppv{position:relative;height:300px;border:1px solid var(--border);background:var(--card-alt);overflow:hidden;margin-bottom:14px}
+.pla{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .3s}.pla.show{opacity:1;pointer-events:auto}
+.pnh{display:flex;align-items:center;justify-content:space-between;padding:10px 24px;flex-shrink:0}
+.pnh-l{display:flex;gap:3px}.pnh-l span{display:block;width:5px;height:5px;border-radius:50%;background:var(--muted)}
+.pnh-r{display:flex;gap:10px}.pnh-r span{display:block;width:32px;height:3px;background:var(--border-hi);border-radius:1px}
+.phr{position:relative;flex:1;display:flex;padding:0 24px 16px}
+.pb{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2.5px;color:var(--accent);margin-bottom:8px;transition:max-height .25s,opacity .25s,margin .25s;overflow:hidden;max-height:20px;opacity:1}.pb.off{max-height:0;opacity:0;margin:0}
+.ph{font-size:24px;font-weight:800;line-height:1.15}
+.ps{font-size:10px;color:var(--muted);line-height:1.5;margin-top:8px;max-width:340px;transition:max-height .25s,opacity .25s,margin .25s;overflow:hidden;max-height:40px;opacity:1}.ps.off{max-height:0;opacity:0;margin:0}
+.pc{display:flex;gap:8px;margin-top:14px}
+.pb1{padding:0 16px;height:28px;background:var(--accent);color:#fff;font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:600;display:inline-flex;align-items:center;white-space:nowrap}
+.pb2{padding:0 16px;height:28px;border:1px solid var(--border);color:var(--fg);font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:500;display:inline-flex;align-items:center;white-space:nowrap;transition:max-height .25s,opacity .25s;overflow:hidden;max-height:30px;opacity:1}.pb2.off{max-height:0;opacity:0}
+.plt{position:absolute;bottom:8px;right:10px;font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:1.5px;color:var(--muted);opacity:.4;z-index:5}
+
+.tgs{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:10px}
+.tgr{display:flex;align-items:center;gap:8px}
+.tgl-l{font-size:11px}
+.tgl-s{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);min-width:20px;text-align:right;transition:color .2s}
+.tgl{width:32px;height:18px;border:2px solid var(--border);background:var(--card-alt);cursor:pointer;position:relative;transition:all .2s;flex-shrink:0}
+.tgl::after{content:'';position:absolute;width:10px;height:10px;background:var(--muted);top:2px;left:2px;transition:all .2s}
+.tgl.on{border-color:var(--accent);background:rgba(232,140,46,.15)}
+.tgl.on::after{background:var(--accent);left:16px}
+
+.pfb{font-family:'JetBrains Mono',monospace;font-size:11px;min-height:18px;color:var(--muted);transition:color .2s;line-height:1.4}.pfb.w{color:var(--accent)}
+.pht{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);opacity:.65}
+
+/* Refined Hero Visual */
+.h-vis{position:relative;width:120px;height:120px;border:2px solid var(--accent);background:rgba(232,140,46,0.05);transition:all 0.3s}
+.h-vis::after{content:'';position:absolute;top:50%;right:-12px;width:12px;height:24px;background:var(--border-hi);transform:translateY(-50%)}
+.h-vis::before{content:'';position:absolute;inset:8px;border:1px solid rgba(255,255,255,0.03);pointer-events:none}
+
+/* Inverted / Overlay mode like Demo */
+.pla.inverted{background:var(--accent);color:var(--bg);--border:rgba(12,12,14,0.2);--fg:var(--bg);--muted:rgba(12,12,14,0.6)}
+.pla.inverted::after{content:'';position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(12,12,14,0.05) 0px,rgba(12,12,14,0.05) 1px,transparent 1px,transparent 10px);pointer-events:none;z-index:1}
+.pla.inverted .pnh-l span{background:rgba(12,12,14,0.3)}
+.pla.inverted .pnh-r span{background:rgba(12,12,14,0.15)}
+.pla.inverted .ph{color:var(--bg)}
+.pla.inverted .pb{color:var(--bg);opacity:0.7}
+.pla.inverted .ps{color:var(--bg);opacity:0.8}
+.pla.inverted .pb1{background:var(--bg);color:var(--accent)}
+.pla.inverted .pb2{border-color:rgba(12,12,14,0.3);color:var(--bg)}
+.pla.inverted .plt{color:var(--bg);opacity:0.4}
+
+@media(max-width:520px){.pw{padding:16px}.mbs{gap:4px}.mb{padding:5px 8px;font-size:9px}.tgs{gap:10px}.ph{font-size:20px}.ppv{height:240px}}
+</style>
+</head>
+<body>
+
+<div class="pw">
+<div class="pw-h">Thực hành — <span>Cấu trúc Hero Section</span></div>
+<div class="pw-s">Chọn layout + bật/tắt từng element để thấy hero thay đổi</div>
+
+<div class="mbs" id="mbs">
+<button class="mb on" data-m="0">Left</button>
+<button class="mb" data-m="1">Centered</button>
+<button class="mb" data-m="2">Split</button>
+<button class="mb" data-m="3">Overlay</button>
+</div>
+
+<div class="ppv" id="ppv">
+
+<!-- P0: Left -->
+<div class="pla show" data-pm="0">
+<div class="pnh"><div class="pnh-l"><span></span><span></span><span></span></div><div class="pnh-r"><span></span><span></span></div></div>
+<div class="phr" style="align-items:center">
+<div style="flex:0 0 58%;display:flex;flex-direction:column;justify-content:center">
+<div class="pb">[ BUILT FOR GROWTH ]</div>
+<div class="ph">Build products<br>that scale.</div>
+<div class="ps">Powerful infrastructure for modern teams. Deploy, scale, and ship faster.</div>
+<div class="pc"><span class="pb1">GET STARTED</span><span class="pb2">LEARN MORE</span></div>
+</div>
+<div style="flex:1;display:flex;align-items:center;justify-content:center;position:relative;height:100%">
+    <div class="h-vis" style="transform: scale(0.85); margin-left: 20px;"></div>
+</div>
+</div>
+<span class="plt">LEFT ALIGNED</span>
+</div>
+
+<!-- P1: Centered -->
+<div class="pla" data-pm="1">
+<div class="pnh"><div class="pnh-l"><span></span><span></span><span></span></div><div class="pnh-r"><span></span><span></span></div></div>
+<div class="phr" style="flex-direction:column;align-items:center;text-align:center;justify-content:center;position:relative">
+<div class="dia" style="width:55px;height:55px;border:2px solid rgba(232,140,46,.25);top:8%;right:12%;opacity:.35"></div>
+<div class="cir" style="width:45px;height:45px;background:rgba(232,140,46,.06);bottom:15%;left:10%;opacity:.45"></div>
+<div class="pb">[ BUILT FOR GROWTH ]</div>
+<div class="ph" style="text-align:center">Build products<br>that scale.</div>
+<div class="ps" style="text-align:center">Powerful infrastructure for modern teams. Deploy, scale, and ship faster.</div>
+<div class="pc" style="justify-content:center"><span class="pb1">GET STARTED</span><span class="pb2">LEARN MORE</span></div>
+</div>
+<span class="plt">CENTERED</span>
+</div>
+
+<!-- P2: Split -->
+<div class="pla" data-pm="2">
+<div class="pnh"><div class="pnh-l"><span></span><span></span><span></span></div><div class="pnh-r"><span></span><span></span></div></div>
+<div class="phr" style="flex-direction:row">
+<div style="flex:0 0 50%;display:flex;flex-direction:column;justify-content:center;padding-right:24px;border-right:1px solid var(--border)">
+<div class="pb">[ BUILT FOR GROWTH ]</div>
+<div class="ph">Build products<br>that scale.</div>
+<div class="ps">Powerful infrastructure for modern teams.</div>
+<div class="pc"><span class="pb1">GET STARTED</span><span class="pb2">LEARN MORE</span></div>
+</div>
+<div style="flex:1;display:flex;align-items:center;justify-content:center;position:relative">
+    <div class="h-vis"></div>
+</div>
+</div>
+<span class="plt">SPLIT LAYOUT</span>
+</div>
+
+    <!-- P3: Overlay -->
+    <div class="pla inverted" data-pm="3">
+        <div class="pnh"><div class="pnh-l"><span></span><span></span><span></span></div><div class="pnh-r"><span></span><span></span></div></div>
+        <div class="phr" style="flex-direction:column;align-items:center;text-align:center;justify-content:center;position:relative;z-index:2">
+            <div style="display:flex;flex-direction:column;align-items:center;width:100%">
+                <div class="pb">[ BUILT FOR GROWTH ]</div>
+                <div class="ph" style="text-align:center">Build products<br>that scale.</div>
+                <div class="ps" style="text-align:center">Powerful infrastructure for modern teams. Deploy, scale, and ship faster.</div>
+                <div class="pc" style="justify-content:center"><span class="pb1">GET STARTED</span><span class="pb2">LEARN MORE</span></div>
+            </div>
+        </div>
+        <span class="plt">OVERLAY LAYOUT</span>
+    </div>
+
+</div>
+
+<div class="tgs">
+<div class="tgr"><span class="tgl-l">Badge</span><div class="tgl on" id="tB"></div><span class="tgl-s" id="sB">ON</span></div>
+<div class="tgr"><span class="tgl-l">Subheading</span><div class="tgl on" id="tS"></div><span class="tgl-s" id="sS">ON</span></div>
+<div class="tgr"><span class="tgl-l">Secondary CTA</span><div class="tgl on" id="tC"></div><span class="tgl-s" id="sC">ON</span></div>
+</div>
+
+<div class="pfb" id="pfb">Left Aligned — layout mặc định phổ biến nhất cho SaaS</div>
+<div class="pht">Hint: Tắt badge + secondary CTA → thấy hero tối giản chỉ còn heading + nút chính</div>
+</div>
+
+<script>
+let pm=0;
+const layouts=document.querySelectorAll('.pla');
+const mbs=document.getElementById('mbs');
+const pfb=document.getElementById('pfb');
+const MODES=[
+    'Left Aligned — layout mặc định phổ biến nhất cho SaaS',
+    'Centered — mọi thứ căn giữa, nhấn mạnh thông điệp duy nhất',
+    'Split Layout — 50/50 text và visual, cân bằng hai bên',
+    'Overlay Layout — text trên nền visual, cinematic feel'
+];
+
+function setMode(m){
+    pm=m;
+    layouts.forEach(l=>l.classList.toggle('show',+l.dataset.pm===m));
+    mbs.querySelectorAll('.mb').forEach(b=>b.classList.toggle('on',+b.dataset.m===m));
+    pfb.textContent=MODES[m];pfb.className='pfb'+(m===3?' w':'');
+}
+mbs.addEventListener('click',e=>{const b=e.target.closest('.mb');if(b)setMode(+b.dataset.m)});
+
+/* Toggles — apply to ALL layouts */
+function setupToggle(tId,sId,sel){
+    const t=document.getElementById(tId),s=document.getElementById(sId);
+    t.addEventListener('click',()=>{
+        t.classList.toggle('on');const on=t.classList.contains('on');
+        s.textContent=on?'ON':'OFF';s.style.color=on?'var(--muted)':'var(--accent)';
+        layouts.forEach(l=>l.querySelectorAll(sel).forEach(el=>el.classList.toggle('off',!on)));
+    });
+}
+setupToggle('tB','sB','.pb');
+setupToggle('tS','sS','.ps');
+setupToggle('tC','sC','.pb2');
+</script>
+</body>
+</html>
