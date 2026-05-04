@@ -53,6 +53,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'function', name: 'Function', nameEn: 'Hàm / Khối code tái dùng', letter: 'F', groups: ['code'], definition: 'Một khối code làm một việc cụ thể, có thể gọi đi gọi lại. Giống như quy trình SOP — viết một lần, áp dụng nhiều lần.', example: '"Hàm formatDate() nhận ngày tháng và trả về dạng \'DD/MM/YYYY\'" — gọi function này ở bất kỳ đâu trong app.' },
   { id: 'git', name: 'Git', nameEn: 'Hệ thống quản lý phiên bản', letter: 'G', groups: ['workflow'], definition: 'Công cụ lưu lịch sử thay đổi của code. Giống như Track Changes trong Word nhưng mạnh hơn. Cho phép quay lại bất kỳ phiên bản nào trong quá khứ.', example: 'AI làm vỡ project → "git stash" để undo hết thay đổi chưa save, quay về trạng thái ổn. Đây là lifesaver khi vibecode gặp sự cố.', related: ['commit', 'repository'] },
   { id: 'grid', name: 'Grid', nameEn: 'Hệ thống layout lưới', letter: 'G', groups: ['design', 'code'], definition: 'Hệ thống các đường kẻ ngang và dọc (lưới) dùng để sắp xếp các thành phần trên trang web một cách ngăn nắp. 12 cột là "tiêu chuẩn vàng" vì nó dễ dàng chia thành 2, 3, 4, hoặc 6 phần đều nhau.', example: 'Khi bạn muốn "3 bài blog trên 1 hàng", bạn đang dùng Grid 12 cột với mỗi bài chiếm 4 cột. Prompt: "Dùng grid 12 cột, mỗi card sản phẩm chiếm 3 cột trên desktop và 6 cột trên tablet".', related: ['flexbox', 'responsive', 'breakpoint'], demo: { kind: 'interactive', src: 'gif-grid-demo.html', alt: 'Mô phỏng hệ thống Grid layout: 8, 12, 16 cột và Nested Grid' } },
+  { id: 'gutter', name: 'Gutter', nameEn: 'Khoảng cách giữa các cột/hàng', letter: 'G', groups: ['design', 'code'], definition: 'Khoảng trống giữa các cột (column) hoặc các hàng (row) trong một hệ thống lưới (grid). Gutter giúp phân tách các thành phần nội dung, tạo "khoảng thở" và giúp giao diện trông chuyên nghiệp, dễ đọc hơn.', example: 'Prompt: "Tăng gutter giữa các cột lên 24px để nội dung thoáng hơn, còn gutter giữa các hàng thì để 32px để phân tách rõ các section."', related: ['grid', 'spacing', 'padding', 'margin'], demo: { kind: 'interactive', src: 'gif-gutter-demo.html', alt: 'Mô phỏng các loại gutter: Column, Row, Nested và Responsive' } },
   { id: 'github', name: 'GitHub', nameEn: 'Cloud lưu code', letter: 'G', groups: ['workflow'], definition: 'Nơi lưu code trên cloud — giống Google Drive nhưng cho code, với full lịch sử thay đổi. Vercel kết nối với GitHub để tự động deploy mỗi khi bạn push code mới.', example: 'Flow chuẩn: code trên máy → commit → push lên GitHub → Vercel tự build và deploy → có link live trong vài phút.', related: ['git', 'vercel'] },
   { id: 'hook', name: 'Hook', nameEn: 'Móc chức năng React', letter: 'H', groups: ['code'], definition: 'Hàm đặc biệt trong React để quản lý state và side effects. useEffect, useState là các hook phổ biến. AI tự viết hook cho bạn.', example: '"Khi trang load, tự động fetch danh sách sản phẩm từ database" — AI dùng useEffect hook để chạy logic này khi component mount.' },
   { id: 'hosting', name: 'Hosting', nameEn: 'Lưu trữ web', letter: 'H', groups: ['infra'], definition: 'Dịch vụ cung cấp "chỗ ở" cho web của bạn trên internet. Vercel là hosting miễn phí tốt nhất cho Next.js project. Không cần biết server — Vercel lo hết.', example: '"Tôi cần hosting cho web campaign" → Dùng Vercel (miễn phí, dễ setup, tự động deploy từ GitHub).', related: ['vercel', 'deploy'] },
@@ -148,6 +149,7 @@ const deepDiveTermIds = new Set([
   'footer',
   'frontend',
   'grid',
+  'gutter',
   'header',
   'json',
   'margin',
@@ -215,6 +217,11 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
   grid: [
     'Grid là "bộ khung" vô hình bên dưới mọi website. 12 cột là quy chuẩn vì tính linh hoạt cực cao: bạn có thể chia đôi (6-6), chia ba (4-4-4), chia bốn (3-3-3-3) hoặc chia lẻ (8-4) đều rất dễ dàng.',
     'Khi bảo AI "dùng grid 12 cột", bạn đang giúp AI hiểu cấu trúc layout nhanh hơn. Nếu layout bị lệch, hãy check ngay 2 thông số: số lượng cột và gutter (khoảng cách giữa các cột).',
+  ],
+  gutter: [
+    'Gutter là "khoảng thở" giữa các item. Đừng nhầm lẫn gutter với padding (khoảng trống bên trong item) hay margin (khoảng cách đẩy bên ngoài item).',
+    'Trong hệ thống Grid hiện đại (như Tailwind hay Figma), gutter thường được gọi là "Gap". Khi layout bị dính vào nhau, thứ đầu tiên bạn nên bảo AI điều chỉnh chính là Gap/Gutter này.',
+    'Tư duy Responsive: Gutter không nhất thiết phải cố định. Trên Desktop màn hình rộng, bạn có thể để gutter 32px cho thoáng, nhưng trên Mobile nên giảm xuống 16px hoặc 12px để tiết kiệm diện tích.',
   ],
   element: [
     'Element là "đơn vị cơ bản nhất" — khi bạn bảo AI thay đổi giao diện, hãy dùng tên element chính xác để AI không làm nhầm (ví dụ: Button thay vì "cái nút tròn tròn").',

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gutter Demo — markAI</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f0f12;--fg:#e8e0d4;--muted:#706b64;--accent:#e88c2e;--accent-dim:rgba(232,140,46,.15);--card:#16161b;--card-alt:#1c1c22;--border:#282830;--border-hi:#44403a;--c1:#4a5a8a;--c2:#4a8a5a;--c3:#b89a2a}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:auto;overflow:hidden}
+body{background:var(--bg);background-image:radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:16px 16px;display:flex;flex-direction:column;align-items:center;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:12px 16px}
+
+.aw{width:100%}
+.ab{width:100%;height:260px;background:var(--card);border:1px solid var(--border);overflow:hidden;display:flex;flex-direction:column;position:relative}
+.hd{display:flex;align-items:center;justify-content:space-between;padding:7px 14px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
+.hd-t{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:2px}
+.hd-f{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
+
+.la{position:relative;flex:1;background:linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);background-size:30px 30px;overflow:hidden}
+.fr{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .3s}.fr.show{opacity:1;pointer-events:auto}
+
+/* Param badges */
+.gp{display:flex;gap:8px;padding:12px 20px 0;flex-shrink:0}
+.gpm{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;color:var(--accent);letter-spacing:1.5px;border:1px solid var(--border);padding:2px 7px;opacity:0;transform:translateY(-4px);transition:opacity .3s,transform .3s}
+.fr.show .gpm{opacity:1;transform:translateY(0)}
+
+/* Gutter visualization area */
+.gva{position:relative;flex:1;margin:8px 20px 12px}
+
+/* Column blocks */
+.col-block{background:var(--card-alt);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;flex-direction:column;opacity:0;transition:all .5s cubic-bezier(.4,0,.2,1)}
+.fr.show .col-block{opacity:1}
+.col-lbl{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:1px}
+.col-w{font-size:11px;font-weight:600;margin-top:2px}
+
+/* Gutter highlight strip */
+.gut-hl{background:var(--accent);opacity:0;transition:opacity .4s;flex-shrink:0;position:relative}
+.fr.show .gut-hl{opacity:.6}
+.gut-tag{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-90deg);font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;color:#fff;white-space:nowrap;letter-spacing:1px;opacity:0;transition:opacity .3s .3s}
+.fr.show .gut-tag{opacity:1}
+
+/* Row card blocks */
+.row-card{background:var(--card-alt);border:1px solid var(--border);border-left:3px solid var(--accent);padding:6px 10px;display:flex;flex-direction:column;justify-content:center;opacity:0;transition:all .5s cubic-bezier(.4,0,.2,1)}
+.fr.show .row-card{opacity:1}
+.row-card.c1{border-left-color:var(--c1)}.row-card.c2{border-left-color:var(--c2)}
+.rc-t{font-size:10px;font-weight:600}.rc-d{font-size:8px;color:var(--muted);margin-top:2px}
+
+/* Nested containers */
+.nest-outer{border:1px dashed var(--border);display:flex;flex-direction:column;opacity:0;transition:opacity .4s}
+.fr.show .nest-outer{opacity:1}
+.nest-block{background:var(--card-alt);border:1px solid var(--border);flex:1;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:600;opacity:0;transition:opacity .3s}
+.fr.show .nest-block{opacity:1}
+.ngl{position:absolute;font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:1px;color:var(--accent);opacity:0;transition:opacity .3s .4s;z-index:5;pointer-events:none}
+
+/* Responsive */
+.rsp-dev{border:1px solid var(--border);background:var(--card-alt);display:flex;flex-direction:column;opacity:0;transform:translateY(6px);transition:all .4s cubic-bezier(.4,0,.2,1)}
+.fr.show .rsp-dev{opacity:1;transform:translateY(0)}
+.rsp-dl{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);letter-spacing:1.5px;padding:4px 6px;border-bottom:1px solid var(--border);text-align:center}
+.rsp-body{flex:1;padding:4px;position:relative;display:flex;flex-direction:column}
+.rsp-row{display:flex;flex:1;position:relative}
+.rsp-bk{background:var(--card-alt);border:1px solid var(--border);flex:1;display:flex;align-items:center;justify-content:center;font-size:7px;color:var(--muted)}
+.rsp-gut{flex-shrink:0;background:var(--accent);opacity:.5;position:relative}
+.rsp-gut-lbl{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-90deg);font-family:'JetBrains Mono',monospace;font-size:6px;font-weight:700;color:#fff;white-space:nowrap;z-index:2}
+
+/* Info */
+.inf{padding:8px 14px;background:var(--card);border-top:1px solid var(--border);min-height:72px}
+.dn{font-size:14px;font-weight:800;line-height:1.1;color:var(--fg)}
+.ds{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);margin-top:2px;text-transform:uppercase;letter-spacing:1px}
+.dd{font-size:10px;color:var(--muted);margin-top:4px;line-height:1.4}
+
+.pt{height:2px;background:var(--border)}.pf{height:100%;background:var(--accent);width:0%}
+
+/* Controls */
+.ctr{display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 16px 32px;background:var(--bg)}
+.ctr-b{padding:6px 12px;background:var(--card-alt);border:1px solid var(--border);color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:1px}
+.ctr-b:hover{border-color:var(--border-hi);color:var(--fg)}
+.ctr-b.act{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+
+.pp-b{width:32px;height:32px;border-radius:50%;background:var(--accent);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-left:4px;transition:transform .2s;flex-shrink:0}
+.pp-b:active{transform:scale(.92)}
+.pp-i{width:12px;height:12px;fill:#000}
+
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="aw" id="app-root">
+    <div class="ab" id="ab">
+        <div class="hd"><span class="hd-t">GUTTER</span><span class="hd-f" id="hf">01 / 04</span></div>
+        <div class="la">
+            <div class="fr" id="f0"></div>
+            <div class="fr" id="f1"></div>
+            <div class="fr" id="f2"></div>
+            <div class="fr" id="f3"></div>
+        </div>
+        <div class="inf">
+            <div class="dn" id="dn"></div>
+            <div class="ds" id="ds"></div>
+            <div class="dd" id="dd"></div>
+        </div>
+        <div class="pt"><div class="pf" id="pf"></div></div>
+    </div>
+    <div class="ctr">
+        <button class="ctr-b act" data-i="0">COLUMN</button>
+        <button class="ctr-b" data-i="1">ROW</button>
+        <button class="ctr-b" data-i="2">NESTED</button>
+        <button class="ctr-b" data-i="3">RESPONSIVE</button>
+        <button class="pp-b" id="pp" title="Play/Pause">
+            <svg class="pp-i" id="pp-i" viewBox="0 0 24 24"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>
+        </button>
+    </div>
+</div>
+
+<script>
+const INFO=[
+    {nm:'Column Gutter',sz:'Khoảng cách giữa cột',dc:'Khoảng trống ngang giữa các cột — giúp nội dung không bị dính vào nhau.',type:'COLUMN',val:'24PX'},
+    {nm:'Row Gutter',sz:'Khoảng cách giữa hàng',dc:'Khoảng trống dọc giữa các hàng card — giữ các khối tách biệt rõ ràng.',type:'ROW',val:'24PX'},
+    {nm:'Nested Gutter',sz:'Gutter lồng nhau',dc:'Outer gutter lớn, inner gutter nhỏ — tạo cấp bậc khoảng cách rõ ràng.',type:'NESTED',val:'OUTER 32PX'},
+    {nm:'Responsive Gutter',sz:'Gutter thích ứng',dc:'Desktop gap lớn, mobile gap nhỏ — thay đổi theo kích thước màn hình.',type:'RESPONSIVE',val:'ADAPTIVE'}
+];
+
+function renderFrames(){
+    /* F0: Column Gutter */
+    const f0=document.getElementById('f0');
+    let h='<div class="gp"><span class="gpm">COLUMN GUTTER</span><span class="gpm">24PX</span></div>';
+    h+='<div class="gva" style="display:flex;align-items:stretch">';
+    const cols=[{w:'25%',l:'COL 1',d:'25%'},{w:'25%',l:'COL 2',d:'25%'},{w:'25%',l:'COL 3',d:'25%'},{w:'25%',l:'COL 4',d:'25%'}];
+    cols.forEach((c,i)=>{
+        if(i>0) h+='<div class="gut-hl" style="width:24px;transition-delay:'+(0.3+i*0.15)+'s"><span class="gut-tag">24px</span></div>';
+        h+='<div class="col-block" style="flex:'+c.w+';transition-delay:'+(0.1+i*0.1)+'s"><span class="col-lbl">'+c.l+'</span><span class="col-w">'+c.d+'</span></div>';
+    });
+    h+='</div>';f0.innerHTML=h;
+
+    /* F1: Row Gutter */
+    const f1=document.getElementById('f1');
+    h='<div class="gp"><span class="gpm">ROW GUTTER</span><span class="gpm">24PX</span></div>';
+    h+='<div class="gva" style="display:flex;flex-direction:column">';
+    const rows=[
+        [{t:'Analytics Dashboard',d:'Real-time data',c:0},{t:'Campaign Builder',d:'Create campaigns',c:1},{t:'Team Settings',d:'Manage access',c:2}],
+        [{t:'API Documentation',d:'Endpoints & auth',c:1},{t:'Performance Report',d:'Monthly metrics',c:2},{t:'Integrations Hub',d:'Connect tools',c:0}]
+    ];
+    rows.forEach((row,ri)=>{
+        if(ri>0) h+='<div class="gut-hl" style="height:24px;transition-delay:0.4s"><span class="gut-tag">24px</span></div>';
+        h+='<div style="display:flex;flex:1;gap:0">';
+        row.forEach((card,ci)=>{
+            h+='<div class="row-card c'+card.c+'" style="flex:1;margin-left:'+(ci>0?'24px':'0')+';transition-delay:'+(0.15+ri*0.1+ci*0.08)+'s"><span class="rc-t">'+card.t+'</span><span class="rc-d">'+card.d+'</span></div>';
+        });
+        h+='</div>';
+    });
+    h+='</div>';f1.innerHTML=h;
+
+    /* F2: Nested Gutter */
+    const f2=document.getElementById('f2');
+    h='<div class="gp"><span class="gpm">NESTED GUTTER</span><span class="gpm">OUTER 32PX</span><span class="gpm">INNER 24PX</span></div>';
+    h+='<div class="gva" style="display:flex;gap:0">';
+    h+='<div class="nest-outer" style="flex:2;padding:0;gap:0;transition-delay:0.1s">';
+    h+='<div class="nest-block" style="transition-delay:0.25s">Sidebar</div>';
+    h+='<div style="width:32px;background:var(--accent);opacity:.5;position:relative;flex-shrink:0"><span class="ngl" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-90deg);font-size:7px;color:#fff;letter-spacing:1px;opacity:0;transition:opacity .3s .5s">32px</span></div>';
+    h+='<div class="nest-inner" style="padding:0;gap:0;flex:1;display:flex">';
+    h+='<div class="nest-block" style="transition-delay:0.35s">Nav</div>';
+    h+='<div style="width:24px;background:var(--accent);opacity:.4;flex-shrink:0;position:relative"><span class="ngl" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-90deg);font-size:6px;color:#fff;letter-spacing:1px;opacity:0;transition:opacity .3s .6s">24px</span></div>';
+    h+='<div class="nest-block" style="transition-delay:0.4s">Nav</div>';
+    h+='</div></div>';
+    h+='<div style="width:32px;background:var(--accent);opacity:.5;flex-shrink:0;position:relative"><span class="ngl" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-90deg);font-size:7px;color:#fff;letter-spacing:1px;opacity:0;transition:opacity .3s .5s">32px</span></div>';
+    h+='<div class="nest-outer" style="flex:3;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;transition-delay:0.15s">';
+    h+='<div class="nest-block" style="transition-delay:0.3s;border-bottom:24px solid rgba(232,140,46,.4);border-right:24px solid rgba(232,140,46,.4)">Card A</div>';
+    h+='<div class="nest-block" style="transition-delay:0.35s;border-bottom:24px solid rgba(232,140,46,.4)">Card B</div>';
+    h+='<div class="nest-block" style="transition-delay:0.4s;border-right:24px solid rgba(232,140,46,.4)">Card C</div>';
+    h+='<div class="nest-block" style="transition-delay:0.45s">Card D</div>';
+    h+='</div></div>';
+    f2.innerHTML=h;
+
+    /* F3: Responsive Gutter */
+    const f3=document.getElementById('f3');
+    h='<div class="gp"><span class="gpm">RESPONSIVE GUTTER</span><span class="gpm">ADAPTIVE</span></div>';
+    h+='<div class="gva" style="display:flex;gap:12px;align-items:stretch">';
+    const devs=[
+        {w:'flex:3',g:32,cols:3,lbl:'DESKTOP',sub:'32px'},
+        {w:'flex:2',g:24,cols:2,lbl:'TABLET',sub:'24px'},
+        {w:'flex:1.2',g:16,cols:1,lbl:'MOBILE',sub:'16px'}
+    ];
+    devs.forEach((d,di)=>{
+        const delay=0.15+di*0.18;
+        h+='<div class="rsp-dev" style="'+d.w+';transition-delay:'+delay+'s">';
+        h+='<div class="rsp-dl">'+d.lbl+'</div>';
+        h+='<div class="rsp-body">';
+        h+='<div class="rsp-row" style="margin-bottom:'+d.g/2+'px">';
+        for(let c=0;c<d.cols;c++){
+            if(c>0) h+='<div class="rsp-gut" style="width:'+d.g/2+'px"></div>';
+            h+='<div class="rsp-bk"></div>';
+        }
+        h+='</div><div class="rsp-row">';
+        for(let c=0;c<d.cols;c++){
+            if(c>0) h+='<div class="rsp-gut" style="width:'+d.g/2+'px"></div>';
+            h+='<div class="rsp-bk"></div>';
+        }
+        h+='</div></div>';
+        h+='<div style="padding:3px;border-top:1px solid var(--border);text-align:center;font-family:JetBrains Mono,monospace;font-size:7px;color:var(--accent);font-weight:700">'+d.sub+'</div>';
+        h+='</div>';
+    });
+    h+='</div>';f3.innerHTML=h;
+}
+
+const frs=[0,1,2,3].map(i=>document.getElementById('f'+i));
+const el={dn:document.getElementById('dn'),ds:document.getElementById('ds'),dd:document.getElementById('dd'),hf:document.getElementById('hf'),pf:document.getElementById('pf')};
+const ctrBs=document.querySelectorAll('.ctr-b');
+const ppB=document.getElementById('pp');
+const ppI=document.getElementById('pp-i');
+
+let cur=0,ft=null,pa=null,t0=0,isPaused=false;
+const DUR=3800;
+
+function apply(i){
+    cur=i;
+    const d=INFO[i];
+    el.dn.textContent=d.nm;el.ds.textContent=d.sz;el.dd.textContent=d.dc;
+    el.hf.textContent='0'+(i+1)+' / 04';
+    ctrBs.forEach((b,j)=>b.classList.toggle('act',j===i));
+    frs.forEach(f=>f.classList.remove('show'));
+    requestAnimationFrame(()=>requestAnimationFrame(()=>{
+        frs[i].classList.add('show');
+        if(i===2) frs[i].querySelectorAll('.ngl').forEach(e=>e.style.opacity='1');
+    }));
+}
+
+function tk(n){
+    if(isPaused) return;
+    const p=Math.min(100,(n-t0)/DUR*100);
+    el.pf.style.width=p+'%';
+    if(p<100)pa=requestAnimationFrame(tk);
+    else next();
+}
+function startProg(){t0=performance.now();el.pf.style.transition='none';el.pf.style.width='0%';pa=requestAnimationFrame(tk)}
+function next(){if(isPaused)return;cur=(cur+1)%4;apply(cur);startProg()}
+
+function togglePP(){
+    isPaused=!isPaused;
+    ppI.innerHTML=isPaused ? '<path d="M8 5v14l11-7z"/>' : '<path d="M6 4h4v16H6zm8 0h4v16h-4z"/>';
+    if(!isPaused){t0=performance.now() - (parseFloat(el.pf.style.width)/100*DUR);pa=requestAnimationFrame(tk)}
+}
+
+ctrBs.forEach(b=>{
+    b.onclick=()=>{
+        isPaused=true;
+        ppI.innerHTML='<path d="M8 5v14l11-7z"/>';
+        apply(parseInt(b.dataset.i));
+        el.pf.style.width='0%';
+    }
+});
+
+ppB.onclick=togglePP;
+
+renderFrames();
+apply(0);
+startProg();
+
+document.addEventListener('visibilitychange',()=>{
+    if(document.hidden) cancelAnimationFrame(pa);
+    else if(!isPaused){t0=performance.now() - (parseFloat(el.pf.style.width)/100*DUR);pa=requestAnimationFrame(tk)}
+});
+</script>
+</body>
+</html>
