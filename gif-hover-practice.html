@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hover Practice — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#131313;--bg-card:#1a1a1a;--bg-el:#222;
+  --fg:#ede8df;--fg-dim:#9a9590;--fg-muted:#5c5752;
+  --accent:#d97706;--accent-br:#f59e0b;--accent-dm:#92400e;
+  --border:#2e2e2e;--radius:2px;
+  --sans:'Space Grotesk',sans-serif;--mono:'IBM Plex Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px;-webkit-font-smoothing:antialiased}
+body{
+  font-family:var(--sans);color:var(--fg);line-height:1.5;
+  background-color:var(--bg);
+}
+#app-root{padding:20px}
+
+
+/* === PRACTICE === */
+.practice{margin-bottom:40px}
+.practice-hdr{margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:18px}
+.practice-hdr .badge{margin-bottom:10px}
+.practice-hdr h2{margin-bottom:6px;font-size:clamp(1.1rem,2.5vw,1.35rem);font-weight:600;letter-spacing:-.02em;line-height:1.2}
+.practice-desc{font-size:.85rem;color:var(--fg-dim)}
+.practice-hint{font-family:var(--mono);font-size:.68rem;color:var(--fg-muted);margin-top:8px}
+.practice-body{display:grid;grid-template-columns:1fr;gap:20px;margin-bottom:16px}
+@media(min-width:640px){.practice-body{grid-template-columns:240px 1fr}}
+
+/* Toggle rows */
+.ctrl-section{font-family:var(--mono);font-size:.52rem;color:var(--fg-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
+.ctrl-toggles{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.ctrl-toggle{display:flex;align-items:center;justify-content:space-between;padding:6px 0}
+.ctrl-toggle-name{font-size:.78rem;color:var(--fg);font-weight:500}
+.ctrl-toggle-sub{font-family:var(--mono);font-size:.48rem;color:var(--fg-muted);display:block;margin-top:1px}
+.toggle-sw{position:relative;width:38px;height:20px;flex-shrink:0;cursor:pointer}
+.toggle-sw input{opacity:0;width:0;height:0;position:absolute}
+.toggle-track{position:absolute;inset:0;background:var(--bg-el);border:1px solid var(--border);border-radius:10px;transition:background .2s,border-color .2s}
+.toggle-sw input:checked+.toggle-track{background:var(--accent);border-color:var(--accent)}
+.toggle-knob{position:absolute;top:2px;left:2px;width:16px;height:16px;background:var(--fg-dim);border-radius:50%;transition:transform .2s,background .2s;pointer-events:none}
+.toggle-sw input:checked~.toggle-knob{transform:translateX(18px);background:var(--bg)}
+.toggle-sw:focus-within .toggle-track{outline:2px solid var(--accent);outline-offset:2px}
+
+/* Slider */
+.ctrl-slider{margin-bottom:14px}
+.ctrl-slider-hdr{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.ctrl-slider-lbl{font-family:var(--mono);font-size:.56rem;color:var(--fg-muted);text-transform:uppercase;letter-spacing:.08em}
+.ctrl-slider-val{font-family:var(--mono);font-size:.78rem;font-weight:700;color:var(--accent-br);min-width:36px;text-align:right}
+.ctrl-slider input[type=range]{width:100%;height:6px;-webkit-appearance:none;appearance:none;background:var(--bg-el);border:1px solid var(--border);border-radius:3px;outline:none;cursor:pointer}
+.ctrl-slider input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;background:var(--accent);border-radius:50%;border:2px solid var(--bg);cursor:pointer}
+.ctrl-slider input[type=range]::-moz-range-thumb{width:16px;height:16px;background:var(--accent);border-radius:50%;border:2px solid var(--bg);cursor:pointer}
+
+.ctrl-note{font-family:var(--mono);font-size:.52rem;color:var(--fg-muted);line-height:1.5;padding:8px 0;border-top:1px solid var(--border)}
+.ctrl-note strong{color:var(--fg-dim);font-weight:600}
+
+/* Preview */
+.prev-wrap{display:flex;flex-direction:column;gap:12px}
+.prev-label{font-family:var(--mono);font-size:.56rem;color:var(--fg-muted);text-transform:uppercase;letter-spacing:.1em}
+.prev-scene{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;align-items:center;gap:14px}
+
+/* Practice card */
+.prac-card{width:100%;max-width:320px;border:1px solid var(--border);border-radius:4px;background:var(--bg-el);overflow:hidden}
+.prac-card-h{height:48px;background:linear-gradient(135deg,#92400e,#d97706);display:flex;align-items:center;justify-content:center}
+.prac-card-h span{font-size:.6rem;color:rgba(255,255,255,.65);font-family:var(--mono);font-weight:500}
+.prac-card-bd{padding:14px 16px;display:flex;flex-direction:column;gap:4px}
+.prac-card-t{font-size:.82rem;font-weight:700;color:var(--fg);line-height:1.2}
+.prac-card-s{font-size:.58rem;color:var(--fg-dim);line-height:1.5}
+.prac-card-btn{font-family:var(--mono);font-size:.52rem;font-weight:600;padding:7px 14px;border:1px solid rgba(255,255,255,.1);border-radius:3px;color:var(--fg-dim);align-self:flex-start;margin-top:8px;display:inline-block}
+
+/* Practice button */
+.prac-btn{font-family:var(--mono);font-size:.58rem;font-weight:600;padding:9px 22px;border:none;border-radius:3px;color:#fff;background:var(--accent);cursor:default}
+
+/* State indicator */
+.prac-state{font-family:var(--mono);font-size:.56rem;color:var(--fg-muted);text-align:center;transition:color .2s}
+.prac-state span{font-weight:600}
+.prac-state .s-def{color:var(--fg-muted)}
+.prac-state .s-hov{color:var(--accent-br)}
+
+/* CSS Output */
+.css-out{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;width:100%}
+.css-out-hdr{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
+.css-out-lbl{font-family:var(--mono);font-size:.52rem;color:var(--fg-muted);text-transform:uppercase;letter-spacing:.08em}
+.css-copy{font-family:var(--mono);font-size:.52rem;font-weight:600;color:var(--accent);background:none;border:1px solid var(--accent-dm);padding:2px 8px;border-radius:var(--radius);cursor:pointer;transition:all .15s}
+.css-copy:hover{background:rgba(217,119,6,.1);border-color:var(--accent)}
+.css-code{padding:10px 12px;font-family:var(--mono);font-size:.56rem;color:var(--fg-dim);line-height:1.7;white-space:pre-wrap}
+.css-code .cv{color:var(--accent-br)}
+.css-code .cm{color:var(--fg-muted)}
+.css-copy-msg{font-family:var(--mono);font-size:.5rem;color:#4ade80;opacity:0;transition:opacity .2s}
+.css-copy-msg.show{opacity:1}
+
+</style>
+</head>
+<body>
+<div id="app-root">
+  <!-- PRACTICE -->
+  <section class="practice" aria-label="Thực hành">
+    <div class="practice-hdr">
+      <h2>Bật/tắt property hover, rồi di chuột vào để thấy</h2>
+      <p class="practice-desc">Chọn property → điều chỉnh thời gian → hover trực tiếp lên element phía dưới.</p>
+      <p class="practice-hint">&#9889; Tắt tất cả property rồi hover — không có gì thay đổi. Bật lại từng cái để thấy khác biệt.</p>
+    </div>
+
+    <div class="practice-body">
+      <!-- Controls -->
+      <div>
+        <div class="ctrl-section">Hover Properties</div>
+        <div class="ctrl-toggles">
+          <label class="ctrl-toggle">
+            <div>
+              <span class="ctrl-toggle-name">Background Color</span>
+              <span class="ctrl-toggle-sub">background-color thay đổi</span>
+            </div>
+            <span class="toggle-sw"><input type="checkbox" data-prop="bg" checked><span class="toggle-track"></span><span class="toggle-knob"></span></span>
+          </label>
+          <label class="ctrl-toggle">
+            <div>
+              <span class="ctrl-toggle-name">Box Shadow</span>
+              <span class="ctrl-toggle-sub">bóng đổ xuất hiện</span>
+            </div>
+            <span class="toggle-sw"><input type="checkbox" data-prop="shadow" checked><span class="toggle-track"></span><span class="toggle-knob"></span></span>
+          </label>
+          <label class="ctrl-toggle">
+            <div>
+              <span class="ctrl-toggle-name">Lift Up</span>
+              <span class="ctrl-toggle-sub">translateY(-4px)</span>
+            </div>
+            <span class="toggle-sw"><input type="checkbox" data-prop="lift"><span class="toggle-track"></span><span class="toggle-knob"></span></span>
+          </label>
+          <label class="ctrl-toggle">
+            <div>
+              <span class="ctrl-toggle-name">Scale Up</span>
+              <span class="ctrl-toggle-sub">scale(1.03)</span>
+            </div>
+            <span class="toggle-sw"><input type="checkbox" data-prop="scale"><span class="toggle-track"></span><span class="toggle-knob"></span></span>
+          </label>
+        </div>
+
+        <div class="ctrl-section">Transition Duration</div>
+        <div class="ctrl-slider">
+          <div class="ctrl-slider-hdr">
+            <span class="ctrl-slider-lbl">Thời gian</span>
+            <span class="ctrl-slider-val" id="durVal">0.2s</span>
+          </div>
+          <input type="range" min="0" max="15" value="2" id="durSlider" aria-label="Thời gian transition">
+        </div>
+
+        <div class="ctrl-note">
+          <strong>Lưu ý:</strong> Duration = 0 → hover thay đổi ngay lập tức (giật). Duration lớn → chuyển đổi chậm mượt.
+        </div>
+      </div>
+
+      <!-- Preview -->
+      <div class="prev-wrap">
+        <div class="prev-label">Di chuột vào element bên dưới</div>
+        <div class="prev-scene">
+          <div class="prac-card" id="pracCard">
+            <div class="prac-card-h"><span>CARD</span></div>
+            <div class="prac-card-bd">
+              <div class="prac-card-t">Summer Campaign 2025</div>
+              <div class="prac-card-s">Quản lý toàn bộ chiến dịch quảng cáo cho mùa hè — budget, creatives, performance.</div>
+              <span class="prac-card-btn">View Details</span>
+            </div>
+          </div>
+          <button class="prac-btn" id="pracBtn">Submit</button>
+          <div class="prac-state" id="pracState">Trạng thái: <span class="s-def">default</span></div>
+        </div>
+        <div class="css-out">
+          <div class="css-out-hdr">
+            <span class="css-out-lbl">CSS Output</span>
+            <div style="display:flex;align-items:center;gap:6px">
+              <span class="css-copy-msg" id="copyMsg">Copied!</span>
+              <button class="css-copy" id="copyBtn">Copy</button>
+            </div>
+          </div>
+          <div class="css-code" id="cssCode"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- Dynamic hover styles — updated by JS -->
+<style id="dynStyles"></style>
+
+<script>
+  /* === STATE === */
+  var props = { bg: true, shadow: true, lift: false, scale: false };
+  var dur = 0.2;
+
+  /* === DOM === */
+  var toggles = document.querySelectorAll('.ctrl-toggles input[type=checkbox]');
+  var durSlider = document.getElementById('durSlider');
+  var durVal = document.getElementById('durVal');
+  var pracCard = document.getElementById('pracCard');
+  var pracBtn = document.getElementById('pracBtn');
+  var pracState = document.getElementById('pracState');
+  var dynStyles = document.getElementById('dynStyles');
+  var cssCode = document.getElementById('cssCode');
+  var copyBtn = document.getElementById('copyBtn');
+  var copyMsg = document.getElementById('copyMsg');
+
+  /* === BUILD HOVER CSS === */
+  function buildHoverCSS() {
+    var rules = [];
+
+    /* Build transform value */
+    var tParts = [];
+    if (props.lift) tParts.push('translateY(-4px)');
+    if (props.scale) tParts.push('scale(1.03)');
+    var transformVal = tParts.length > 0 ? tParts.join(' ') : 'none';
+
+    /* Card hover */
+    var cardProps = [];
+    if (props.bg) cardProps.push('background-color: #292524');
+    if (props.shadow) cardProps.push('box-shadow: 0 8px 24px rgba(0,0,0,.35)');
+    if (tParts.length > 0) cardProps.push('transform: ' + transformVal);
+    var cardHover = cardProps.length > 0 ? cardProps.join(';\n  ') : '/* không có property */';
+
+    /* Button hover */
+    var btnProps = [];
+    if (props.bg) btnProps.push('background-color: #92400e');
+    if (props.shadow) btnProps.push('box-shadow: 0 4px 12px rgba(0,0,0,.3)');
+    if (tParts.length > 0) btnProps.push('transform: ' + transformVal);
+    var btnHover = btnProps.length > 0 ? btnProps.join(';\n  ') : '/* không có property */';
+
+    /* Transition line */
+    var transLine = dur > 0
+      ? 'transition: all ' + dur.toFixed(1) + 's ease;'
+      : 'transition: none; /* không mượt */';
+
+    /* Write to dynamic style */
+    dynStyles.textContent =
+      '.prac-card{' + transLine + '}\n' +
+      '.prac-card:hover{' + (cardProps.length > 0 ? '\n  ' + cardHover + ';\n}' : ' /* no hover */ }') + '\n\n' +
+      '.prac-btn{' + transLine + '}\n' +
+      '.prac-btn:hover{' + (btnProps.length > 0 ? '\n  ' + btnHover + ';\n}' : ' /* no hover */ }');
+
+    /* Update CSS output display */
+    var outputLines = [];
+    outputLines.push('<span class="cm">/* Card */</span>');
+    outputLines.push('<span class="cv">.card { ' + transLine + ' }</span>');
+    outputLines.push('<span class="cv">.card:hover {</span>');
+    if (cardProps.length > 0) {
+      cardProps.forEach(function(p) { outputLines.push('<span class="cv">  ' + p + ';</span>'); });
+    } else {
+      outputLines.push('<span class="cm">  /* không có property */</span>');
+    }
+    outputLines.push('<span class="cv">}</span>');
+    outputLines.push('');
+    outputLines.push('<span class="cm">/* Button — tương tự */</span>');
+    cssCode.innerHTML = outputLines.join('\n');
+  }
+
+  /* === TOGGLE EVENTS === */
+  toggles.forEach(function(tog) {
+    tog.addEventListener('change', function() {
+      props[this.getAttribute('data-prop')] = this.checked;
+      buildHoverCSS();
+    });
+  });
+
+  /* === DURATION SLIDER === */
+  durSlider.addEventListener('input', function() {
+    dur = parseInt(this.value, 10) / 10;
+    durVal.textContent = dur.toFixed(1) + 's';
+    buildHoverCSS();
+  });
+
+  /* === HOVER STATE DETECTION === */
+  function onEnter() {
+    pracState.innerHTML = 'Trạng thái: <span class="s-hov">:hover active</span>';
+  }
+  function onLeave() {
+    pracState.innerHTML = 'Trạng thái: <span class="s-def">default</span>';
+  }
+  pracCard.addEventListener('mouseenter', onEnter);
+  pracCard.addEventListener('mouseleave', onLeave);
+  pracBtn.addEventListener('mouseenter', onEnter);
+  pracBtn.addEventListener('mouseleave', onLeave);
+
+  /* Touch support — toggle hover state on tap */
+  var isHovered = false;
+  function toggleHover() {
+    isHovered = !isHovered;
+    if (isHovered) { onEnter(); } else { onLeave(); }
+  }
+  pracCard.addEventListener('touchstart', function(e) { e.preventDefault(); toggleHover(); }, { passive: false });
+  pracBtn.addEventListener('touchstart', function(e) { e.preventDefault(); toggleHover(); }, { passive: false });
+
+  /* === COPY === */
+  copyBtn.addEventListener('click', function() {
+    var text = dynStyles.textContent;
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(showCopy);
+    } else {
+      var ta = document.createElement('textarea');
+      ta.value = text; ta.style.position = 'fixed'; ta.style.left = '-9999px';
+      document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+      document.body.removeChild(ta); showCopy();
+    }
+  });
+
+  function showCopy() {
+    copyMsg.classList.add('show');
+    setTimeout(function() { copyMsg.classList.remove('show'); }, 1500);
+  }
+
+  /* === INIT === */
+  buildHoverCSS();
+</script>
+</body>
+</html>

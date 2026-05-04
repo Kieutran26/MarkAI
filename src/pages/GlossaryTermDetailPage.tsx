@@ -112,6 +112,8 @@ import progressbarDemoHtml from '../../gif-progressbar-demo.html?raw';
 import progressbarPracticeHtml from '../../gif-progressbar-practice.html?raw';
 import transitionDemoHtml from '../../gif-transition-demo.html?raw';
 import transitionPracticeHtml from '../../gif-transition-practice.html?raw';
+import hoverDemoHtml from '../../gif-hover-demo.html?raw';
+import hoverPracticeHtml from '../../gif-hover-practice.html?raw';
 
 
 // Final sync for viewport practice update
@@ -187,6 +189,7 @@ export default function GlossaryTermDetailPage() {
       case 'container': return containerDemoHtml;
       case 'progressbar': return progressbarDemoHtml;
       case 'transition': return transitionDemoHtml;
+      case 'hover': return hoverDemoHtml;
       default: return null;
     }
   };
@@ -246,6 +249,7 @@ export default function GlossaryTermDetailPage() {
       case 'container': return containerPracticeHtml;
       case 'progressbar': return progressbarPracticeHtml;
       case 'transition': return transitionPracticeHtml;
+      case 'hover': return hoverPracticeHtml;
       default: return null;
     }
   };

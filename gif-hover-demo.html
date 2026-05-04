@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hover Demo — Vibecode Glossary</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #131313;
+      --bg-card: #1a1a1a;
+      --bg-el: #222;
+      --fg: #ede8df;
+      --fg-dim: #9a9590;
+      --fg-muted: #5c5752;
+      --accent: #d97706;
+      --accent-br: #f59e0b;
+      --accent-dm: #92400e;
+      --border: #2e2e2e;
+      --radius: 2px;
+      --sans: 'Space Grotesk', sans-serif;
+      --mono: 'IBM Plex Mono', monospace;
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    html {
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased
+    }
+
+    body {
+      font-family: var(--sans);
+      color: var(--fg);
+      line-height: 1.5;
+      background-color: var(--bg);
+      background-image:
+        radial-gradient(ellipse at 15% 0%, rgba(217, 119, 6, .03) 0%, transparent 55%),
+        radial-gradient(ellipse at 85% 100%, rgba(217, 119, 6, .02) 0%, transparent 55%),
+        linear-gradient(rgba(255, 255, 255, .015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, .015) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 22px 22px, 22px 22px;
+    }
+
+    #app-root {
+      padding: 20px
+    }
+
+    /* === GRID & PANEL === */
+    .sim-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-bottom: 28px
+    }
+
+    @media(min-width:640px) {
+      .sim-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 14px
+      }
+    }
+
+    .sp {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden
+    }
+
+    .sp-label {
+      font-family: var(--mono);
+      font-size: .6rem;
+      font-weight: 500;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--fg-muted);
+      padding: 10px 14px 6px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, .01)
+    }
+
+    .sp-body {
+      padding: 20px 16px;
+      min-height: 195px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center
+    }
+
+    .sp-insight {
+      font-family: var(--mono);
+      font-size: .65rem;
+      color: var(--fg-muted);
+      padding: 8px 14px;
+      border-top: 1px solid var(--border);
+      background: rgba(255, 255, 255, .01)
+    }
+
+    .sp-insight em {
+      color: var(--accent);
+      font-style: normal
+    }
+
+    /* === HOVER HIGHLIGHT BORDER === */
+    .hover-hl {
+      position: absolute;
+      border: 2px dashed var(--accent);
+      pointer-events: none;
+      z-index: 10;
+      opacity: 0;
+      transition: opacity .15s
+    }
+
+    /* === SIMULATED CURSOR === */
+    .sim-cur {
+      position: absolute;
+      z-index: 15;
+      pointer-events: none;
+      opacity: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center
+    }
+
+    .sim-cur svg {
+      width: 18px;
+      height: 18px;
+      filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.4))
+    }
+
+    /* === ANIMATED LABELS === */
+    .albl {
+      position: absolute;
+      font-family: var(--mono);
+      font-size: .46rem;
+      font-weight: 600;
+      letter-spacing: .03em;
+      padding: 2px 6px;
+      border-radius: var(--radius);
+      pointer-events: none;
+      z-index: 12;
+      white-space: nowrap;
+      line-height: 1.4
+    }
+
+    .albl-st {
+      color: var(--fg-muted);
+      background: rgba(255, 255, 255, .05);
+      border: 1px solid var(--border)
+    }
+
+    .albl-hv {
+      color: var(--accent-br);
+      background: rgba(217, 119, 6, .15);
+      border: 1px solid rgba(217, 119, 6, .3);
+      font-weight: 700
+    }
+
+    .albl-pr {
+      color: var(--accent);
+      background: rgba(217, 119, 6, .1);
+      border: 1px solid rgba(217, 119, 6, .2)
+    }
+
+    /* Shared label animations */
+    .ld {
+      animation: lblDef var(--dur) ease infinite
+    }
+
+    .lh {
+      animation: lblHov var(--dur) ease infinite
+    }
+
+    .lp {
+      animation: lblProp var(--dur) ease infinite
+    }
+
+    .lc {
+      animation: lblCur var(--dur) ease infinite
+    }
+
+    @keyframes lblDef {
+
+      0%,
+      18% {
+        opacity: 1
+      }
+
+      24%,
+      100% {
+        opacity: 0
+      }
+    }
+
+    @keyframes lblHov {
+
+      0%,
+      28% {
+        opacity: 0
+      }
+
+      34%,
+      60% {
+        opacity: 1
+      }
+
+      66%,
+      100% {
+        opacity: 0
+      }
+    }
+
+    @keyframes lblProp {
+
+      0%,
+      36% {
+        opacity: 0
+      }
+
+      42%,
+      56% {
+        opacity: 1
+      }
+
+      62%,
+      100% {
+        opacity: 0
+      }
+    }
+
+    @keyframes lblCur {
+      0% {
+        opacity: 0;
+        transform: translate(-30px, -30px)
+      }
+
+      22% {
+        opacity: 0;
+        transform: translate(-30px, -30px)
+      }
+
+      32%,
+      64% {
+        opacity: 1;
+        transform: translate(0, 0)
+      }
+
+      72% {
+        opacity: 0;
+        transform: translate(10px, 10px)
+      }
+
+      100% {
+        opacity: 0
+      }
+    }
+
+    /* Shared highlight animation */
+    .hla {
+      animation: hlOn var(--dur) ease infinite
+    }
+
+    @keyframes hlOn {
+
+      0%,
+      24% {
+        opacity: 0
+      }
+
+      32%,
+      58% {
+        opacity: 1
+      }
+
+      66%,
+      100% {
+        opacity: 0
+      }
+    }
+
+    /* === PANEL DURATIONS === */
+    .d1 {
+      --dur: 7.2s
+    }
+
+    .d2 {
+      --dur: 8.4s
+    }
+
+    .d3 {
+      --dur: 7.8s
+    }
+
+    .d4 {
+      --dur: 9s
+    }
+
+    /* === PANEL 1: BUTTON HOVER === */
+    .dem-btn {
+      font-family: var(--mono);
+      font-size: .6rem;
+      font-weight: 600;
+      padding: 9px 22px;
+      border: none;
+      border-radius: 3px;
+      color: #fff;
+      background: var(--accent);
+      cursor: default;
+      transition: none
+    }
+
+    .d1 .dem-btn {
+      animation: btnHov var(--dur) ease infinite
+    }
+
+    @keyframes btnHov {
+
+      0%,
+      26% {
+        background-color: var(--accent);
+        box-shadow: none
+      }
+
+      36%,
+      54% {
+        background-color: var(--accent-dm);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, .35)
+      }
+
+      64%,
+      100% {
+        background-color: var(--accent);
+        box-shadow: none
+      }
+    }
+
+    /* === PANEL 2: NAV LINK HOVER === */
+    .dem-nav {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      padding: 8px 12px;
+      background: var(--bg-el);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      width: 100%
+    }
+
+    .dem-nav-logo {
+      font-family: var(--mono);
+      font-size: .52rem;
+      font-weight: 700;
+      color: var(--fg);
+      letter-spacing: .06em
+    }
+
+    .dem-nav-link {
+      font-size: .56rem;
+      color: var(--fg-dim);
+      position: relative;
+      padding-bottom: 2px;
+      cursor: default
+    }
+
+    .dem-nav-link-svc .dem-nav-text {
+      animation: navClr var(--dur) ease infinite
+    }
+
+    .dem-nav-link-svc .dem-nav-line {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 1px;
+      transform: scaleX(0);
+      transform-origin: left;
+      animation: navLine var(--dur) ease infinite
+    }
+
+    @keyframes navClr {
+
+      0%,
+      26% {
+        color: var(--fg-dim)
+      }
+
+      36%,
+      54% {
+        color: var(--accent-br)
+      }
+
+      64%,
+      100% {
+        color: var(--fg-dim)
+      }
+    }
+
+    @keyframes navLine {
+
+      0%,
+      26% {
+        transform: scaleX(0)
+      }
+
+      36%,
+      54% {
+        transform: scaleX(1)
+      }
+
+      64%,
+      100% {
+        transform: scaleX(0)
+      }
+    }
+
+    /* === PANEL 3: CARD HOVER === */
+    .dem-card {
+      width: 85%;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      background: var(--bg-el);
+      overflow: hidden;
+      cursor: default;
+      transition: none
+    }
+
+    .dem-card-h {
+      height: 36px;
+      background: linear-gradient(135deg, #92400e, #d97706);
+      display: flex;
+      align-items: center;
+      justify-content: center
+    }
+
+    .dem-card-h span {
+      font-size: .5rem;
+      color: rgba(255, 255, 255, .6);
+      font-family: var(--mono)
+    }
+
+    .dem-card-bd {
+      padding: 10px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px
+    }
+
+    .dem-card-t {
+      font-size: .68rem;
+      font-weight: 700;
+      color: var(--fg)
+    }
+
+    .dem-card-s {
+      font-size: .5rem;
+      color: var(--fg-dim);
+      line-height: 1.4
+    }
+
+    .dem-card-btn {
+      font-family: var(--mono);
+      font-size: .46rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      background: rgba(255, 255, 255, .06);
+      border: 1px solid rgba(255, 255, 255, .1);
+      border-radius: 3px;
+      color: var(--fg-dim);
+      align-self: flex-start;
+      margin-top: 6px
+    }
+
+    .d3 .dem-card {
+      animation: cardHov var(--dur) ease infinite
+    }
+
+    @keyframes cardHov {
+
+      0%,
+      26% {
+        transform: translateY(0);
+        box-shadow: none
+      }
+
+      36%,
+      54% {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, .3)
+      }
+
+      64%,
+      100% {
+        transform: translateY(0);
+        box-shadow: none
+      }
+    }
+
+    /* === PANEL 4: ICON HOVER === */
+    .dem-icon {
+      cursor: default;
+      transition: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px
+    }
+
+    .dem-icon svg {
+      transition: none
+    }
+
+    .dem-icon-label {
+      font-family: var(--mono);
+      font-size: .48rem;
+      color: var(--fg-muted)
+    }
+
+    .d4 .dem-icon {
+      animation: iconHov var(--dur) ease infinite
+    }
+
+    .d4 .dem-icon svg {
+      animation: iconSvg var(--dur) ease infinite
+    }
+
+    @keyframes iconHov {
+
+      0%,
+      26% {
+        transform: scale(1)
+      }
+
+      36%,
+      54% {
+        transform: scale(1.2)
+      }
+
+      64%,
+      100% {
+        transform: scale(1)
+      }
+    }
+
+    @keyframes iconSvg {
+
+      0%,
+      26% {
+        stroke: var(--fg-muted);
+        fill: none
+      }
+
+      36%,
+      54% {
+        stroke: #ef4444;
+        fill: rgba(239, 68, 68, .15)
+      }
+
+      64%,
+      100% {
+        stroke: var(--fg-muted);
+        fill: none
+      }
+    }
+
+    /* === INSIGHT BAR === */
+    .insight-bar {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent);
+      padding: 14px 18px;
+      margin-bottom: 0;
+      border-radius: 0 var(--radius) var(--radius) 0
+    }
+
+    .insight-bar p {
+      font-size: .88rem;
+      color: var(--fg);
+      line-height: 1.5;
+      font-weight: 500
+    }
+
+    .insight-bar p span {
+      color: var(--accent-br);
+      font-weight: 700
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+
+      .d1 .dem-btn,
+      .d2 .dem-nav-link-svc .dem-nav-text,
+      .d2 .dem-nav-link-svc .dem-nav-line,
+      .d3 .dem-card,
+      .d4 .dem-icon,
+      .d4 .dem-icon svg,
+      .ld,
+      .lh,
+      .lp,
+      .lc,
+      .hla {
+        animation: none !important
+      }
+
+      .d1 .dem-btn {
+        background-color: var(--accent-dm);
+        box-shadow: 0 4px 14px rgba(0, 0, 0, .35)
+      }
+
+      .d2 .dem-nav-link-svc .dem-nav-text {
+        color: var(--accent-br)
+      }
+
+      .d2 .dem-nav-link-svc .dem-nav-line {
+        transform: scaleX(1)
+      }
+
+      .d3 .dem-card {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, .3)
+      }
+
+      .d4 .dem-icon {
+        transform: scale(1.2)
+      }
+
+      .d4 .dem-icon svg {
+        stroke: #ef4444;
+        fill: rgba(239, 68, 68, .15)
+      }
+
+      .ld,
+      .lh,
+      .lp,
+      .lc {
+        display: none !important
+      }
+
+      .hla {
+        opacity: 1 !important
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app-root">
+    <div class="sim-grid">
+      <!-- PANEL 1: Button Hover -->
+      <div class="sp d1">
+        <div class="sp-label">01 — Button Hover</div>
+        <div class="sp-body">
+          <div class="hover-hl hla" style="inset:8px 20px;border-radius:5px"></div>
+          <div class="sim-cur lc" style="top:25px;left:35%">
+            <svg viewBox="0 0 24 24">
+              <path d="M4 4l7.07 16.97 2.51-7.39 7.39-2.51L4 4z" fill="white" stroke="black" stroke-width="1.5" />
+            </svg>
+          </div>
+          <button class="dem-btn">Get Started</button>
+          <div class="albl albl-st ld" style="bottom:10px;left:50%;transform:translateX(-50%)">default</div>
+          <div class="albl albl-hv lh" style="bottom:10px;left:50%;transform:translateX(-50%)">:hover active</div>
+          <div class="albl albl-pr lp" style="top:10px;right:10px">bg darkens + shadow</div>
+        </div>
+        <div class="sp-insight">Button hover = <em>background + shadow</em> thay đổi khi chuột vào</div>
+      </div>
+
+      <!-- PANEL 2: Nav Link Hover -->
+      <div class="sp d2">
+        <div class="sp-label">02 — Nav Link Hover</div>
+        <div class="sp-body" style="flex-direction:column;align-items:stretch;justify-content:center">
+          <div class="dem-nav">
+            <span class="dem-nav-logo">NOVA</span>
+            <span class="dem-nav-link">Home</span>
+            <span class="dem-nav-link">About</span>
+            <span class="dem-nav-link dem-nav-link-svc">
+              <span class="dem-nav-text">Services</span>
+              <span class="dem-nav-line"></span>
+            </span>
+            <span class="dem-nav-link">Contact</span>
+          </div>
+          <div class="hover-hl hla" style="top:4px;height:28px;border-radius:3px" id="navHl"></div>
+          <div class="sim-cur lc" style="top:20px;right:40%">
+            <svg viewBox="0 0 24 24">
+              <path d="M4 4l7.07 16.97 2.51-7.39 7.39-2.51L4 4z" fill="white" stroke="black" stroke-width="1.5" />
+            </svg>
+          </div>
+          <div class="albl albl-st ld" style="bottom:10px;left:10px">default</div>
+          <div class="albl albl-hv lh" style="bottom:10px;left:10px">:hover active</div>
+          <div class="albl albl-pr lp" style="bottom:10px;right:10px">color + underline</div>
+        </div>
+        <div class="sp-insight">Link hover = <em>màu + gạch chân</em>, cho biết link có thể bấm</div>
+      </div>
+
+      <!-- PANEL 3: Card Hover -->
+      <div class="sp d3">
+        <div class="sp-label">03 — Card Hover</div>
+        <div class="sp-body">
+          <div class="hover-hl hla" style="inset:6px;border-radius:6px"></div>
+          <div class="sim-cur lc" style="top:40px;right:25%">
+            <svg viewBox="0 0 24 24">
+              <path d="M4 4l7.07 16.97 2.51-7.39 7.39-2.51L4 4z" fill="white" stroke="black" stroke-width="1.5" />
+            </svg>
+          </div>
+          <div class="dem-card">
+            <div class="dem-card-h"><span>CARD</span></div>
+            <div class="dem-card-bd">
+              <div class="dem-card-t">Mountain Retreat</div>
+              <div class="dem-card-s">Escape to the mountains for a weekend of peace</div>
+              <span class="dem-card-btn">View Details</span>
+            </div>
+          </div>
+          <div class="albl albl-st ld" style="bottom:10px;left:10px">default</div>
+          <div class="albl albl-hv lh" style="bottom:10px;left:10px">:hover active</div>
+          <div class="albl albl-pr lp" style="top:10px;right:10px">lift + shadow grows</div>
+        </div>
+        <div class="sp-insight">Card hover = <em>nâng lên + bóng đổ</em>, tạo cảm giác "sẵn sàng bấm"</div>
+      </div>
+
+      <!-- PANEL 4: Icon Hover -->
+      <div class="sp d4">
+        <div class="sp-label">04 — Icon Hover</div>
+        <div class="sp-body">
+          <div class="hover-hl hla" style="inset:14px 30px;border-radius:8px"></div>
+          <div class="sim-cur lc" style="top:30px;left:40%">
+            <svg viewBox="0 0 24 24">
+              <path d="M4 4l7.07 16.97 2.51-7.39 7.39-2.51L4 4z" fill="white" stroke="black" stroke-width="1.5" />
+            </svg>
+          </div>
+          <div class="dem-icon">
+            <svg viewBox="0 0 24 24" width="52" height="52" stroke="currentColor" stroke-width="1.5" fill="none"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z" />
+            </svg>
+            <span class="dem-icon-label">Add to favorites</span>
+          </div>
+          <div class="albl albl-st ld" style="bottom:10px;left:50%;transform:translateX(-50%)">default</div>
+          <div class="albl albl-hv lh" style="bottom:10px;left:50%;transform:translateX(-50%)">:hover active</div>
+          <div class="albl albl-pr lp" style="top:10px;right:10px">scale up + fill color</div>
+        </div>
+        <div class="sp-insight">Icon hover = <em>phóng to + đổi màu</em>, phản hồi tức thì cho action nhỏ</div>
+      </div>
+    </div>
+
+    <!-- INSIGHT BAR -->
+    <div class="insight-bar">
+      <p>Hover = <span>chỉ hoạt động khi chuột TRÊN element</span>. Rút ra = quay về cũ. Không cần click, không cần
+        load.</p>
+    </div>
+  </div>
+</body>
+
+</html>
