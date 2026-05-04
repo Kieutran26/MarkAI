@@ -110,6 +110,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'skeleton', name: 'Skeleton screen', nameEn: 'Màn hình khung xương / Loading placeholders', letter: 'S', groups: ['design', 'code'], definition: 'Giao diện ở trạng thái "chờ" — thay vì hiện vòng xoay (spinner) hay trang trắng, hệ thống hiện các khối màu xám mô phỏng hình dáng của nội dung sắp tải. Giúp người dùng hình dung được bố cục trang và cảm thấy thời gian chờ đợi ngắn hơn.', example: 'Khi mở Facebook hay Shopee lúc mạng yếu, bạn thấy các thanh xám dài ngắn khác nhau hiện lên trước khi ảnh và text xuất hiện — đó là skeleton screen.', related: ['interface', 'state', 'ux', 'performance'], demo: { kind: 'interactive', src: 'gif-skeleton-demo.html', alt: 'Mô phỏng skeleton screen cho Article, Dashboard, Product và Table' } },
   { id: 'viewport', name: 'Viewport', nameEn: 'Khung hiển thị', letter: 'V', groups: ['design', 'code'], definition: 'Viewport là khu vực hiển thị nội dung của trang web mà người dùng nhìn thấy được trên màn hình thiết bị. Nó không phải là kích thước vật lý của màn hình, mà là kích thước "ảo" mà trình duyệt dùng để sắp xếp layout. Hiểu về viewport giúp marketer biết tại sao một thiết kế trông đẹp trên máy này nhưng lại bị vỡ trên máy khác dù cùng độ phân giải.', example: 'iPhone 15 Pro có màn hình 2556px nhưng viewport chỉ rộng 393px. Khi bạn bảo AI "chỉnh layout cho điện thoại", AI sẽ dùng viewport width (393px) để tính toán, không phải số pixel thực tế của màn hình.', related: ['responsive', 'breakpoint', 'layout'], demo: { kind: 'interactive', src: 'gif-viewport-demo.html', alt: 'Mô phỏng cách layout thay đổi theo các kích thước Viewport khác nhau' } },
   { id: 'z-index', name: 'Z-index', nameEn: 'Z-index / Thứ tự lớp', letter: 'Z', groups: ['design', 'code'], definition: 'Z-index là thuộc tính quyết định thứ tự "nông sâu" của các thành phần trên màn hình (trục Z). Element nào có z-index cao hơn sẽ nằm đè lên element có z-index thấp hơn. Hãy tưởng tượng z-index giống như các lớp giấy xếp chồng lên nhau trên mặt bàn.', example: 'Khi bạn thấy modal bị che bởi navbar, đó là lỗi z-index. Cách fix: set z-index cho modal cao hơn (ví dụ: navbar z:100, modal z:1000).', related: ['layout', 'popup', 'sticky', 'interface'], demo: { kind: 'interactive', src: 'gif-zindex-demo.html', alt: 'Mô phỏng 4 lớp z-index phổ biến: Tooltip, Dropdown, Modal và Stack tổng thể' } },
+  { id: 'primary-color', name: 'Primary / Secondary Color', nameEn: 'Màu chính / Màu phụ', letter: 'P', groups: ['design', 'code'], definition: 'Màu chính (Primary) và màu phụ (Secondary) là nền tảng của hệ thống màu sắc. Primary dành cho nút hành động chính (CTA) và điểm nhấn quan trọng nhất. Secondary hỗ trợ Primary, dùng cho các nút phụ, badge hoặc thông tin cần phân cấp thấp hơn.', example: 'Prompt: "Đổi nút Mua hàng thành Primary, nút Xem thêm thành Secondary để người dùng tập trung vào việc mua."', related: ['design-system', 'interface', 'css', 'element'], demo: { kind: 'interactive', src: 'gif-primary-color-demo.html', alt: 'Mô phỏng 4 cách ứng dụng Primary / Secondary Color: Button, Card, Form và Chart' } },
 ];
 
 export const quickRefItems = [
@@ -185,6 +186,7 @@ const deepDiveTermIds = new Set([
   'skeleton',
   'viewport',
   'z-index',
+  'primary-color',
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -375,6 +377,11 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Quy tắc Stack: Các element nằm trong cùng một "container" sẽ so z-index với nhau. Một element z:9999 nằm trong container A có z:1 vẫn có thể bị đè bởi element z:2 ở ngoài. Đây là lỗi "Stacking Context" cực kỳ phổ biến.',
     'Chiến lược z-index: Đừng đặt số ngẫu nhiên như 999999. Hãy chia theo lớp: Page (0), Components (1-10), Sticky (100), Dropdown (500), Modal (1000), Toast (9999).',
     'Marketer cần biết z-index để feedback: "Popup này đang bị che" thay vì nói "nó bị lỗi hiển thị". Gợi ý cho AI: "Kiểm tra z-index của modal so với navbar".',
+  ],
+  'primary-color': [
+    'Phân biệt rõ ràng giữa Primary và Secondary giúp tạo ra Visual Hierarchy (hệ thống phân cấp thị giác) cực kỳ mạnh mẽ. Nếu dùng Primary quá nhiều, trang sẽ bị quá chói mắt và người dùng không biết nên bấm vào đâu.',
+    'Khi làm việc với dev hoặc AI, đừng chỉ nói "nút màu cam". Hãy dùng thuật ngữ "nút Primary" hoặc "nút Secondary" để hệ thống tự động map đúng biến màu (color token) trong Design System.',
+    'Trong Data Visualization (biểu đồ), việc kết hợp Primary và Secondary giúp so sánh dữ liệu dễ dàng hơn. Ví dụ: Primary cho số liệu năm nay, Secondary cho số liệu năm ngoái.',
   ],
 };
 

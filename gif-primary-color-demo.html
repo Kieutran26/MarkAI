@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Primary / Secondary Color — Animated</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--pri:#d4712a;--pri-dim:#8b3a1a;--sec:#4a6a7a;--sec-dim:#2a4048;--card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a;--ok:#4a8a5a;--accent:var(--pri);--accent-dim:rgba(212,113,42,.15)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 100%,16px 16px;display:flex;flex-direction:column;align-items:center;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:12px;gap:8px}
+
+.aw{width:100%}
+.ab-wrap{width:100%;background:var(--card);border:2px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.la-wrap{width:100%;position:relative;overflow:hidden}
+.ab{width:700px;height:280px;transform-origin:top left;background:linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);background-size:30px 30px;position:relative}
+.hd{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
+.hd-t{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--pri);letter-spacing:2.5px}
+.hd-f{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
+
+.fr{position:absolute;inset:0;display:flex;flex-direction:column;padding:14px 20px;opacity:0;pointer-events:none;transition:opacity .3s}.fr.show{opacity:1;pointer-events:auto}
+.si{opacity:0;transform:translateY(4px);transition:opacity .25s,transform .25s}.fr.show .si{opacity:1;transform:translateY(0)}
+.fl{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;color:var(--pri);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+
+/* Color swatches */
+.csw{display:flex;gap:16px;margin-bottom:10px}
+.csw-i{display:flex;flex-direction:column;gap:3px;align-items:center}
+.csw-b{width:36px;height:36px;border:1px solid var(--border)}
+.csw-l{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);letter-spacing:1px}
+
+/* Buttons */
+.br{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
+.bt{padding:0 18px;height:32px;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;border:2px solid var(--border);cursor:default;white-space:nowrap;transition:all .25s}
+.bt-p{background:var(--pri);border-color:var(--pri);color:#fff}
+.bt-s{background:var(--sec);border-color:var(--sec);color:#fff}
+.bt-po{background:transparent;border-color:var(--pri);color:var(--pri)}
+.bt-so{background:transparent;border-color:var(--sec);color:var(--sec)}
+.bt-d{background:var(--card-alt);border-color:var(--border);color:var(--muted);opacity:.45}
+.bl{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);letter-spacing:1px;opacity:0;transition:opacity .3s}.fr.show .bl{opacity:1}
+
+/* Cards */
+.cr{display:flex;gap:8px;flex:1;min-height:0}
+.cd{flex:1;border:1px solid var(--border);background:var(--card-alt);padding:8px;display:flex;flex-direction:column;overflow:hidden;transition:border-color .3s}
+.cd.pri{border-color:var(--pri);border-top:3px solid var(--pri)}
+.cd.sec{border-color:var(--sec);border-top:3px solid var(--sec)}
+.cd-img{height:32px;margin-bottom:6px;display:flex;align-items:center;justify-content:center}
+.cd-img-i{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);letter-spacing:1px}
+.cd-t{font-size:10px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cd-p{font-size:9px;font-weight:600;margin-top:auto;white-space:nowrap}
+.cd-p.pri{color:var(--pri)}.cd-p.sec{color:var(--sec)}
+.cd-b{font-size:7px;color:var(--muted);margin-top:2px}
+
+/* Form */
+.fg{display:flex;flex-direction:column;gap:8px;flex:1}
+.fi{display:flex;flex-direction:column;gap:2px}
+.fi-l{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:1px;transition:color .3s}
+.fi-l.pri{color:var(--pri)}.fi-l.sec{color:var(--sec)}
+.fi-in{height:30px;border:2px solid var(--border);background:var(--card-alt);padding:0 10px;font-family:'Space Grotesk',monospace;font-size:10px;color:var(--fg);display:flex;align-items:center;transition:border-color .3s}
+.fi-in.pri{border-color:var(--pri)}.fi-in.sec{border-color:var(--sec)}
+.fi-h{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);opacity:.5;margin-top:1px}
+
+/* Chart */
+.ch-row{display:flex;gap:12px;flex:1;min-height:0}
+.ch{flex:1;border:1px solid var(--border);background:var(--card-alt);padding:10px;display:flex;flex-direction:column}
+.ch-t{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);letter-spacing:1.5px;margin-bottom:8px}
+.ch-bars{display:flex;align-items:flex-end;gap:4px;flex:1;min-height:0}
+.ch-b{flex:1;transition:height .4s;border-radius:1px 1px 0 0}
+.ch-b.pri{background:var(--pri)}.ch-b.sec{background:var(--sec)}
+.ch-b.pri-d{background:var(--pri-dim)}.ch-b.sec-d{background:var(--sec-dim)}
+.ch-leg{display:flex;gap:10px;margin-top:6px}
+.ch-li{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);display:flex;align-items:center;gap:4px}
+.ch-ld{width:8px;height:3px;border-radius:1px}
+.ch-ui{display:flex;gap:6px;margin-top:8px}
+.ch-u{width:20px;height:3px;border-radius:1px}
+
+/* Controls structure like radius */
+.inf{padding:11px 14px;border-top:1px solid var(--border);background:var(--card);min-height:86px}
+.dn{font-size:15px;font-weight:800;line-height:1.15}
+.ds{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);margin-top:2px}
+.dd{font-size:10px;color:var(--muted);margin-top:4px;line-height:1.4}
+.pt{height:2px;background:var(--border)}.pff{height:100%;background:var(--accent);width:0%}
+
+.ctr{display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 0;background:transparent}
+.ctr-b{padding:6px 12px;background:var(--card-alt);border:1px solid var(--border);color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:1px}
+.ctr-b:hover{border-color:var(--border-hi);color:var(--fg)}
+.ctr-b.act{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+
+.pp-b{width:32px;height:32px;border-radius:50%;background:var(--accent);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-left:4px;transition:transform .2s;flex-shrink:0}
+.pp-b:active{transform:scale(.92)}
+.pp-i{width:12px;height:12px;fill:#000}
+
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="aw">
+<div class="ab-wrap">
+  <div class="hd"><span class="hd-t">PRIMARY / SECONDARY COLOR</span><span class="hd-f" id="hf">01 / 04</span></div>
+  <div class="la-wrap" id="la-wrap">
+    <div class="ab" id="ab">
+      <!-- F0 -->
+      <div class="fr" id="f0">
+        <div class="fl si">01 BUTTON OPTIONS</div>
+        <div class="csw si">
+          <div class="csw-i"><div class="csw-b" style="background:var(--pri)"></div><span class="csw-l">PRIMARY</span></div>
+          <div class="csw-i"><div class="csw-b" style="background:var(--sec)"></div><span class="csw-l">SECONDARY</span></div>
+        </div>
+        <div class="si" style="flex:1;display:flex;flex-direction:column;gap:10px;justify-content:center">
+          <div class="br"><button class="bt bt-p">Get Started</button><span class="bl">primary · filled</span></div>
+          <div class="br"><button class="bt bt-s">Learn More</button><span class="bl">secondary · filled</span></div>
+          <div class="br"><button class="bt bt-po">View Plans</button><span class="bl">primary · outline</span><button class="bt bt-so">Contact</button><span class="bl">secondary · outline</span></div>
+        </div>
+      </div>
+      <!-- F1 -->
+      <div class="fr" id="f1">
+        <div class="fl si">02 CARDS & HIGHLIGHTS</div>
+        <div class="csw si">
+          <div class="csw-i"><div class="csw-b" style="background:var(--pri)"></div><span class="csw-l">PRIMARY</span></div>
+          <div class="csw-i"><div class="csw-b" style="background:var(--sec)"></div><span class="csw-l">SECONDARY</span></div>
+        </div>
+        <div class="cr si">
+          <div class="cd pri"><div class="cd-img" style="background:#252018"><span class="cd-img-i">HEADPHONES</span></div><div class="cd-t">Wireless Pro</div><div class="cd-p pri">$199.00</div><div class="cd-b">Bestseller</div></div>
+          <div class="cd sec"><div class="cd-img" style="background:#182220"><span class="cd-img-i">WATCH</span></div><div class="cd-t">Smart Watch</div><div class="cd-p sec">$149.00</div><div class="cd-b">New</div></div>
+          <div class="cd"><div class="cd-img" style="background:#1a1a18"><span class="cd-img-i">LAMP</span></div><div class="cd-t">Desk Lamp</div><div class="cd-p" style="color:var(--muted)">$79.00</div><div class="cd-b">Standard</div></div>
+        </div>
+      </div>
+      <!-- F2 -->
+      <div class="fr" id="f2">
+        <div class="fl si">03 FORM ELEMENTS</div>
+        <div class="csw si">
+          <div class="csw-i"><div class="csw-b" style="background:var(--pri)"></div><span class="csw-l">PRIMARY</span></div>
+          <div class="csw-i"><div class="csw-b" style="background:var(--sec)"></div><span class="csw-l">SECONDARY</span></div>
+        </div>
+        <div class="fg si">
+          <div class="fi"><div class="fi-l pri">FULL NAME</div><div class="fi-in pri">Linh Nguyen</div><div class="fi-h">primary · active field</div></div>
+          <div class="fi"><div class="fi-l sec">EMAIL</div><div class="fi-in sec">linh@brand.co</div><div class="fi-h">secondary · active field</div></div>
+          <div class="fi"><div class="fi-l">PHONE</div><div class="fi-in">+84 123 456 789</div><div class="fi-h">default · inactive field</div></div>
+        </div>
+      </div>
+      <!-- F3 -->
+      <div class="fr" id="f3">
+        <div class="fl si">04 DATA VISUALIZATION & UI ACCENTS</div>
+        <div class="csw si">
+          <div class="csw-i"><div class="csw-b" style="background:var(--pri)"></div><span class="csw-l">PRIMARY</span></div>
+          <div class="csw-i"><div class="csw-b" style="background:var(--sec)"></div><span class="csw-l">SECONDARY</span></div>
+        </div>
+        <div class="ch-row si">
+          <div class="ch">
+            <div class="ch-t">REVENUE COMPARISON</div>
+            <div class="ch-bars"><div class="ch-b pri" style="height:75%"></div><div class="ch-b sec" style="height:55%"></div><div class="ch-b pri" style="height:90%"></div><div class="ch-b sec" style="height:45%"></div><div class="ch-b pri" style="height:65%"></div><div class="ch-b sec" style="height:80%"></div></div>
+            <div class="ch-leg"><div class="ch-li"><div class="ch-ld" style="background:var(--pri)"></div>2024</div><div class="ch-li"><div class="ch-ld" style="background:var(--sec)"></div>2023</div></div>
+          </div>
+          <div class="ch" style="flex:0 0 160px">
+            <div class="ch-t">UI ACCENTS</div>
+            <div class="ch-ui"><div class="ch-u" style="background:var(--pri)"></div><div class="ch-u" style="background:var(--pri-dim)"></div><div class="ch-u" style="background:var(--sec)"></div><div class="ch-u" style="background:var(--sec-dim)"></div></div>
+            <div style="font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);margin-top:6px;line-height:1.5">Primary: data, CTA<br>Secondary: compare, labels</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="inf">
+    <div class="dn" id="dn">Button Options</div>
+    <div class="ds" id="ds">NÚT BẤM</div>
+    <div class="dd" id="dd">Primary = hành động chính, Secondary = hành động phụ — cùng pattern, khác mức nhấn</div>
+  </div>
+  <div class="pt"><div class="pff" id="pff"></div></div>
+</div>
+
+<div class="ctr">
+    <button class="ctr-b act" data-i="0">BUTTONS</button>
+    <button class="ctr-b" data-i="1">CARDS</button>
+    <button class="ctr-b" data-i="2">FORMS</button>
+    <button class="ctr-b" data-i="3">CHART</button>
+    <button class="pp-b" id="pp" title="Play/Pause">
+        <svg class="pp-i" id="pp-i" viewBox="0 0 24 24"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>
+    </button>
+</div>
+</div>
+
+<script>
+const INFO=[
+  {nm:'Button Options',sz:'NÚT BẤM',dc:'Primary = hành động chính, Secondary = hành động phụ — cùng pattern, khác mức nhấn. Khi feedback "đổi nút màu cam", hãy dùng từ "Primary" để AI áp đúng mã màu.'},
+  {nm:'Cards & Highlights',sz:'CARD & HIGHLIGHT',dc:'Primary highlight cho sản phẩm nổi bật, secondary cho lựa chọn thay thế. "Đổi màu card" cần nói rõ highlight nào, vì primary/secondary có ý nghĩa phân cấp.'},
+  {nm:'Form Elements',sz:'FORM INPUT',dc:'Primary border cho field quan trọng nhất, secondary cho field phụ. "Input bị lỗi màu" có thể do field đang dùng sai trạng thái primary hay secondary focus.'},
+  {nm:'Data Visualization',sz:'CHART & UI ACCENT',dc:'Primary cho dữ liệu chính, secondary cho so sánh — chart cần cả 2 mới có chiều sâu. "Đổi màu chart" nên nói rõ đổi primary dataset hay secondary.'}
+];
+
+const el={dn:document.getElementById('dn'),ds:document.getElementById('ds'),dd:document.getElementById('dd'),hf:document.getElementById('hf'),pff:document.getElementById('pff')};
+const frs=[0,1,2,3].map(i=>document.getElementById('f'+i));
+const ctrBs=document.querySelectorAll('.ctr-b');
+const ppB=document.getElementById('pp');
+const ppI=document.getElementById('pp-i');
+
+let cur=0,pa=null,t0=0,isPaused=false;
+const DUR=3500;
+
+function apply(i){
+  cur=i;
+  const s=INFO[i];el.dn.textContent=s.nm;el.ds.textContent=s.sz;el.dd.textContent=s.dc;
+  el.hf.textContent='0'+(i+1)+' / 04';
+  ctrBs.forEach((b,j)=>b.classList.toggle('act',j===i));
+  
+  frs.forEach(f=>f.classList.remove('show'));
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    frs[i].classList.add('show');
+  }));
+}
+
+function tk(n){
+    if(isPaused) return;
+    const p=Math.min(100,(n-t0)/DUR*100);
+    el.pff.style.width=p+'%';
+    if(p<100)pa=requestAnimationFrame(tk);
+    else next();
+}
+
+function startProg(){t0=performance.now();el.pff.style.transition='none';el.pff.style.width='0%';pa=requestAnimationFrame(tk)}
+function next(){if(isPaused)return;cur=(cur+1)%4;apply(cur);startProg()}
+
+function togglePP(){
+    isPaused=!isPaused;
+    ppI.innerHTML=isPaused ? '<path d="M8 5v14l11-7z"/>' : '<path d="M6 4h4v16H6zm8 0h4v16h-4z"/>';
+    if(!isPaused){
+        t0=performance.now() - (parseFloat(el.pff.style.width||0)/100*DUR);
+        pa=requestAnimationFrame(tk);
+    }
+}
+
+ctrBs.forEach(b=>{
+    b.onclick=()=>{
+        isPaused=true;
+        ppI.innerHTML='<path d="M8 5v14l11-7z"/>';
+        apply(parseInt(b.dataset.i));
+        el.pff.style.width='0%';
+    }
+});
+
+ppB.onclick=togglePP;
+
+function scale(){const w=document.getElementById('la-wrap'),b=document.getElementById('ab'),s=w.clientWidth/700;b.style.transform='scale('+s+')';w.style.height=Math.ceil(280*s)+'px'}
+window.addEventListener('resize',scale);
+requestAnimationFrame(()=>requestAnimationFrame(scale));
+
+apply(0);
+startProg();
+
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden){cancelAnimationFrame(pa)}
+  else if(!isPaused){t0=performance.now() - (parseFloat(el.pff.style.width||0)/100*DUR);pa=requestAnimationFrame(tk);}
+});
+</script>
+</body>
+</html>

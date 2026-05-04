@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Primary / Secondary Color — Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--pri:#d4712a;--pri-dim:#8b3a1a;--sec:#4a6a7a;--sec-dim:#2a4048;--card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a;--ok:#4a8a5a;--accent:var(--pri)}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 100%,16px 16px;display:flex;flex-direction:column;align-items:center;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:12px;gap:8px}
+
+.pw{width:100%;background:var(--card);border:2px solid var(--border);padding:20px 24px}
+.pw-h{font-size:15px;font-weight:700;margin-bottom:2px}.pw-h span{color:var(--pri)}
+.pw-s{font-size:11px;color:var(--muted);margin-bottom:14px}
+.sw-row{display:flex;align-items:center;gap:14px;margin-bottom:14px;padding:10px 14px;border:1px dashed var(--border);background:var(--card-alt)}
+.sw-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1px;min-width:60px}
+.sw-ar{font-size:16px;color:var(--muted);flex-shrink:0;transition:transform .3s}.sw-ar.flip{transform:rotate(180deg)}
+.tgl{width:44px;height:24px;border:2px solid var(--border);background:var(--card-alt);cursor:pointer;position:relative;transition:all .2s;flex-shrink:0}
+.tgl::after{content:'';position:absolute;width:16px;height:16px;background:var(--muted);top:2px;left:2px;transition:all .2s}
+.tgl.on{border-color:var(--pri);background:var(--pri-dim)}
+.tgl.on::after{background:var(--pri);left:22px}
+
+.pp{border:1px solid var(--border);background:var(--card-alt);overflow:hidden;margin-bottom:10px;transition:border-color .3s}
+.pp-lbl{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:2px;padding:6px 14px 0;opacity:.4}
+.pp-inner{padding:10px 14px 14px}
+
+.pp-hero{display:flex;align-items:center;gap:14px;margin-bottom:10px}
+.pp-hero-t{font-size:18px;font-weight:800;flex:1;line-height:1.1;transition:color .3s}
+.pp-hero-t.pri{color:var(--pri)}.pp-hero-t.sec{color:var(--sec)}
+.pp-btn{padding:0 16px;height:30px;font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:600;border:2px solid;cursor:default;transition:all .3s;white-space:nowrap}
+.pp-btn.pri{background:var(--pri);border-color:var(--pri);color:#fff}
+.pp-btn.sec{background:var(--sec);border-color:var(--sec);color:#fff}
+
+.pp-cards{display:flex;gap:8px;margin-bottom:10px}
+.pp-cd{flex:1;border:1px solid var(--border);background:var(--card);padding:8px;transition:all .3s}
+.pp-cd.hl{border-top:3px solid}
+.pp-cd.hl.pri{border-top-color:var(--pri);border-color:rgba(212,113,42,.3)}
+.pp-cd.hl.sec{border-top-color:var(--sec);border-color:rgba(74,106,122,.3)}
+.pp-cd-t{font-size:9px;font-weight:700;margin-bottom:2px}
+.pp-cd-d{font-size:8px;color:var(--muted);line-height:1.3}
+.pp-cd-p{font-size:10px;font-weight:700;margin-top:4px;transition:color .3s}
+.pp-cd-p.pri{color:var(--pri)}.pp-cd-p.sec{color:var(--sec)}
+
+.pp-form{display:flex;gap:8px;margin-bottom:8px}
+.pp-fi{flex:1;display:flex;flex-direction:column;gap:2px}
+.pp-fi-l{font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:1px;transition:color .3s}
+.pp-fi-l.pri{color:var(--pri)}.pp-fi-l.sec{color:var(--sec)}
+.pp-fi-in{height:26px;border:2px solid var(--border);background:var(--card);padding:0 8px;font-size:9px;color:var(--fg);display:flex;align-items:center;transition:border-color .3s}
+.pp-fi-in.pri{border-color:var(--pri)}.pp-fi-in.sec{border-color:var(--sec)}
+
+.pp-bar{display:flex;align-items:flex-end;gap:4px;height:30px}
+.pp-b{width:20px;transition:background .3s;border-radius:1px 1px 0 0}
+.pp-b.pri{background:var(--pri)}.pp-b.sec{background:var(--sec)}
+.pp-b.pri-d{background:var(--pri-dim)}.pp-b.sec-d{background:var(--sec-dim)}
+
+.pfb{font-family:'JetBrains Mono',monospace;font-size:11px;min-height:18px;color:var(--muted);transition:color .2s;line-height:1.4}.pfb.w{color:var(--pri)}
+.pht{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);opacity:.65}
+
+@media(max-width:520px){.pw{padding:16px}.pp-cards{flex-direction:column}.pp-form{flex-direction:column}}
+</style>
+</head>
+<body>
+<div class="pw">
+  <div class="pw-h">Thực hành — <span>Swap Primary / Secondary</span></div>
+  <div class="pw-s">Bật toggle để đổi vai trò 2 màu → thấy visual hierarchy thay đổi</div>
+  <div class="sw-row">
+    <span class="sw-lbl">NORMAL</span>
+    <span class="sw-ar" id="swAr">&#8596;</span>
+    <div class="tgl" id="swTgl"></div>
+    <span class="sw-ar flip" id="swAr2">&#8596;</span>
+    <span class="sw-lbl">SWAPPED</span>
+  </div>
+  <div class="pp" id="ppBox">
+    <div class="pp-lbl">PREVIEW</div>
+    <div class="pp-inner" id="ppIn">
+      <div class="pp-hero">
+        <span class="pp-hero-t pri" id="ppT">Special Offer</span>
+        <button class="pp-btn pri" id="ppBtn">Shop Now</button>
+      </div>
+      <div class="pp-cards">
+        <div class="pp-cd hl pri" id="ppC1"><div class="pp-cd-t">Featured</div><div class="pp-cd-d">Highlight product</div><div class="pp-cd-p pri" id="ppC1p">$199</div></div>
+        <div class="pp-cd hl sec" id="ppC2"><div class="pp-cd-t">Alternative</div><div class="pp-cd-d">Support option</div><div class="pp-cd-p sec" id="ppC2p">$149</div></div>
+        <div class="pp-cd" id="ppC3"><div class="pp-cd-t">Standard</div><div class="pp-cd-d">Default item</div><div class="pp-cd-p" style="color:var(--muted)">$79</div></div>
+      </div>
+      <div class="pp-form">
+        <div class="pp-fi"><div class="pp-fi-l pri" id="ppFl1">PRIORITY FIELD</div><div class="pp-fi-in pri" id="ppFi1">important data</div></div>
+        <div class="pp-fi"><div class="pp-fi-l sec" id="ppFl2">SUPPORT FIELD</div><div class="pp-fi-in sec" id="ppFi2">optional data</div></div>
+      </div>
+      <div class="pp-bar" id="ppBar">
+        <div class="pp-b pri" style="height:80%"></div>
+        <div class="pp-b sec" style="height:55%"></div>
+        <div class="pp-b pri" style="height:90%"></div>
+        <div class="pp-b sec" style="height:40%"></div>
+        <div class="pp-b pri" style="height:65%"></div>
+      </div>
+    </div>
+  </div>
+  <div class="pfb" id="pfb">Normal — Primary (cam) nhấn hành động chính, Secondary (xanh) hỗ trợ</div>
+  <div class="pht">Hint: Bật swap → để ý button "Shop Now" đổi màu, featured card đổi highlight, chart đổi meaning</div>
+</div>
+<script>
+let swapped=false;
+const swTgl=document.getElementById('swTgl');
+const pfb=document.getElementById('pfb');
+const swapMap=[
+  ['ppT','pri','sec'],
+  ['ppBtn','pri','sec'],
+  ['ppC1','pri','sec'],
+  ['ppC1p','pri','sec'],
+  ['ppC2','sec','pri'],
+  ['ppC2p','sec','pri'],
+  ['ppFl1','pri','sec'],
+  ['ppFl2','sec','pri'],
+  ['ppFi1','pri','sec'],
+  ['ppFi2','sec','pri']
+];
+const barEls=document.getElementById('ppBar').children;
+
+function doSwap(){
+  swapped=!swapped;
+  swTgl.classList.toggle('on',swapped);
+  document.getElementById('swAr').classList.toggle('flip',swapped);
+  document.getElementById('swAr2').classList.toggle('flip',!swapped);
+
+  swapMap.forEach(([id,c1,c2])=>{
+    const el=document.getElementById(id);
+    if(swapped){el.classList.remove(c1);el.classList.add(c2)}
+    else{el.classList.remove(c2);el.classList.add(c1)}
+  });
+
+  for(let i=0;i<barEls.length;i++){
+    barEls[i].classList.toggle('pri',!swapped===(i%2===0));
+    barEls[i].classList.toggle('sec',swapped===(i%2===0));
+  }
+
+  const ppBox=document.getElementById('ppBox');
+  ppBox.style.borderColor=swapped?'var(--sec)':'var(--border)';
+
+  if(!swapped){
+    pfb.textContent='Normal — Primary (cam) nhấn hành động chính, Secondary (xanh) hỗ trợ';
+    pfb.className='pfb';
+  }else{
+    pfb.textContent='Swapped — Secondary (xanh) thành chính, Primary (cam) thành phụ → hierarchy đảo ngược';
+    pfb.className='pfb w';
+  }
+}
+swTgl.addEventListener('click',doSwap);
+</script>
+</body>
+</html>

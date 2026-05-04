@@ -80,6 +80,8 @@ import viewportDemoHtml from '../../gif-viewport-demo.html?raw';
 import viewportPracticeHtml from '../../gif-viewport-practice.html?raw';
 import zindexDemoHtml from '../../gif-zindex-demo.html?raw';
 import zindexPracticeHtml from '../../gif-zindex-practice.html?raw';
+import primaryColorDemoHtml from '../../gif-primary-color-demo.html?raw';
+import primaryColorPracticeHtml from '../../gif-primary-color-practice.html?raw';
 
 
 // Final sync for viewport practice update
@@ -138,6 +140,7 @@ export default function GlossaryTermDetailPage() {
       case 'skeleton': return skeletonDemoHtml;
       case 'viewport': return viewportDemoHtml;
       case 'z-index': return zindexDemoHtml;
+      case 'primary-color': return primaryColorDemoHtml;
       default: return null;
     }
   };
@@ -179,6 +182,7 @@ export default function GlossaryTermDetailPage() {
       case 'skeleton': return skeletonPracticeHtml;
       case 'viewport': return viewportPracticeHtml;
       case 'z-index': return zindexPracticeHtml;
+      case 'primary-color': return primaryColorPracticeHtml;
       default: return null;
     }
   };
