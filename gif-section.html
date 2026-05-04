@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Section — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+  --bg:#0f0f12;--bg-card:#16161b;--fg:#e8e4dc;--muted:#6e6e7a;
+  --accent:#cf5c26;--accent-soft:rgba(207,92,38,.12);
+  --accent-border:rgba(207,92,38,.3);--border:#282830;
+  --surface:#1c1c23;--success:#3a9e5c;--success-soft:rgba(58,158,92,.12);
+  --success-border:rgba(58,158,92,.3);--warning:#c49030;
+  --bar-d:#2a2a34;--bar-m:#44444f;--shape-lt:#33333d;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:'Space Grotesk',sans-serif;min-height:100vh;line-height:1.6}
+body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(rgba(255,255,255,.022) 1px,transparent 1px);background-size:20px 20px;pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;bottom:-20%;left:-8%;width:500px;height:500px;background:radial-gradient(circle,rgba(207,92,38,.03) 0%,transparent 70%);pointer-events:none;z-index:0}
+.entry{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:48px 24px 90px}
+
+.th{margin-bottom:28px}
+.badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);border:1px solid var(--accent-border);padding:4px 12px;margin-bottom:16px}
+.th h1{font-size:clamp(34px,6vw,54px);font-weight:800;letter-spacing:-2px;line-height:1.08}
+.th .sub{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--muted);margin-top:6px}
+.oneliner{font-size:16px;color:var(--fg);opacity:.85;max-width:700px;line-height:1.7;padding:18px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:40px}
+.oneliner strong{color:var(--accent);font-weight:600}
+.sec-lbl{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.sec-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ===== SIM GRID ===== */
+.sim-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px}
+@media(max-width:560px){.sim-grid{grid-template-columns:1fr}}
+.sc{background:var(--bg-card);border:1px solid var(--border);cursor:pointer;position:relative;overflow:hidden;transition:border-color .3s,background .3s}
+.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .35s ease;z-index:2}
+.sc:hover{border-color:var(--accent-border)}
+.sc.on{border-color:var(--accent);background:var(--surface)}
+.sc.on::before{transform:scaleX(1)}
+.sc-head{padding:14px 14px 8px;display:flex;justify-content:space-between;align-items:center}
+.sc-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px}
+.sc-tag{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);transition:color .3s}
+.sc.on .sc-tag{color:var(--accent)}
+
+.sc-preview{padding:0 14px 8px;position:relative}
+/* Mini page frame */
+.mp{width:100%;height:120px;background:var(--bg);border:1px solid var(--border);overflow:hidden;position:relative}
+.mp::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.006) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.006) 1px,transparent 1px);background-size:8px 8px;pointer-events:none}
+.mp-section{position:absolute;left:0;right:0;opacity:0;transition:opacity .4s ease}
+.sc.on .mp-section{opacity:1}
+
+/* Hero mini */
+.mp-hero{top:0;height:45%;background:linear-gradient(180deg,rgba(207,92,38,.15) 0%,transparent 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
+.mp-hero-t{height:5px;width:60%;background:var(--fg);opacity:.7}
+.mp-hero-d{height:3px;width:40%;background:var(--muted);opacity:.4}
+.mp-hero-b{height:8px;width:30%;background:var(--accent);opacity:.6;margin-top:2px}
+.mp-hero-label{position:absolute;top:3px;left:4px;font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--accent);opacity:0;transition:opacity .3s}
+.sc.on .mp-hero-label{opacity:.7}
+
+/* Features mini */
+.mp-feat{top:48%;left:0;right:0;display:flex;gap:3px;padding:0 4px}
+.mp-feat-item{flex:1;border:1px solid var(--border);background:var(--bg);padding:3px;display:flex;flex-direction:column;gap:2px}
+.mp-feat-icon{width:100%;height:8px;background:var(--bar-d)}
+.mp-feat-t{height:2px;width:70%;background:var(--bar-m)}
+.mp-feat-d{height:2px;width:90%;background:var(--bar-d)}
+.mp-feat-label{position:absolute;top:calc(48% - 10px);left:4px;font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--accent);opacity:0;transition:opacity .3s}
+.sc.on .mp-feat-label{opacity:.7}
+
+/* About mini */
+.mp-about{top:48%;left:0;right:0;padding:0 6px;display:flex;gap:4px}
+.mp-about-text{flex:1;display:flex;flex-direction:column;gap:2px;justify-content:center}
+.mp-about-t{height:3px;width:50%;background:var(--bar-m)}
+.mp-about-d{height:2px;background:var(--bar-d)}
+.mp-about-d2{height:2px;width:80%;background:var(--bar-d)}
+.mp-about-img{width:35%;height:100%;background:var(--bar-d);border:1px solid var(--border)}
+.mp-about-label{position:absolute;top:calc(48% - 10px);left:4px;font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--accent);opacity:0;transition:opacity .3s}
+.sc.on .mp-about-label{opacity:.7}
+
+/* CTA mini */
+.mp-cta{bottom:0;left:0;right:0;height:30%;background:var(--surface);border-top:1px solid var(--border);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px}
+.mp-cta-t{height:3px;width:50%;background:var(--fg);opacity:.6}
+.mp-cta-b{height:7px;width:25%;background:var(--accent);opacity:.6}
+.mp-cta-label{position:absolute;bottom:3px;right:4px;font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--accent);opacity:0;transition:opacity .3s}
+.sc.on .mp-cta-label{opacity:.7}
+
+/* Code */
+.sc-code{padding:0 14px 6px;max-height:0;overflow:hidden;transition:max-height .4s ease,opacity .3s;opacity:0}
+.sc.on .sc-code{max-height:60px;opacity:1}
+.code-l{font-family:'JetBrains Mono',monospace;font-size:7.5px;color:var(--muted);line-height:1.5}
+.code-l .p{color:var(--accent)}.code-l .v{color:var(--fg);opacity:.5}
+
+.sc-ins{padding:0 14px 12px;font-size:10.5px;color:var(--muted);opacity:0;max-height:0;overflow:hidden;transition:all .4s ease;line-height:1.5}
+.sc.on .sc-ins{opacity:.65;max-height:55px;margin-top:-2px}
+
+/* ===== PAGE STRUCTURE ===== */
+.page-struct{background:var(--surface);border:1px solid var(--border);padding:20px 24px;margin-bottom:48px;display:flex;gap:20px;align-items:stretch}
+@media(max-width:560px){.page-struct{flex-direction:column;gap:14px}}
+.ps-label{writing-mode:vertical-lr;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);opacity:.4;flex-shrink:0}
+.ps-blocks{flex:1;display:flex;flex-direction:column;gap:4px;justify-content:center}
+.ps-block{display:flex;align-items:center;gap:10px;padding:6px 10px;border:1px solid var(--border);background:var(--bg-card);transition:border-color .3s}
+.ps-block .ps-dot{width:8px;height:8px;flex-shrink:0}
+.ps-block .ps-name{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;color:var(--fg);opacity:.7;flex:1}
+.ps-block .ps-role{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);opacity:.4}
+.ps-block:nth-child(1) .ps-dot{background:var(--accent)}
+.ps-block:nth-child(2) .ps-dot{background:var(--bar-m)}
+.ps-block:nth-child(3) .ps-dot{background:var(--success)}
+.ps-block:nth-child(4) .ps-dot{background:var(--warning)}
+.ps-arrow{text-align:center;color:var(--muted);opacity:.2;font-size:10px;line-height:1}
+.ps-text{font-size:13px;color:var(--fg);opacity:.8;line-height:1.55}
+.ps-text strong{color:var(--accent)}
+
+.ins{background:var(--surface);border:1px solid var(--border);padding:18px 22px;display:flex;align-items:flex-start;gap:12px;margin-bottom:48px}
+.ins-i{color:var(--accent);font-size:13px;margin-top:3px;flex-shrink:0}
+.ins-t{font-size:14px;color:var(--fg);opacity:.85;line-height:1.65;transition:opacity .25s,transform .25s}
+.ins-t.fading{opacity:0;transform:translateY(6px)}
+
+.dv{display:flex;align-items:center;gap:14px;margin-bottom:30px}
+.dv::before,.dv::after{content:'';flex:1;height:1px;background:var(--border)}
+.dv span{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+
+/* ===== PRACTICE: REORDER ===== */
+.pg{font-size:15px;color:var(--fg);opacity:.8;margin-bottom:8px;line-height:1.6}
+.pg span{color:var(--accent);font-weight:600}
+.pg-sub{font-size:13px;color:var(--muted);opacity:.6;margin-bottom:22px}
+
+/* Section palette */
+.sec-pool{display:flex;flex-direction:column;gap:8px;margin-bottom:20px}
+.sec-item{
+  padding:12px 16px;border:1px solid var(--border);background:var(--bg-card);
+  cursor:grab;display:flex;align-items:center;gap:12px;transition:all .25s;
+  user-select:none;touch-action:none;position:relative;
+}
+.sec-item:hover{border-color:var(--accent-border);background:var(--surface)}
+.sec-item.dragging{opacity:.35;border-color:var(--accent);transform:scale(.98)}
+.sec-item .si-icon{width:28px;height:28px;border:1px solid var(--border);background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0}
+.sec-item .si-info{flex:1}
+.sec-item .si-name{font-size:13px;font-weight:600}
+.sec-item .si-desc{font-size:11px;color:var(--muted);opacity:.6;margin-top:1px}
+.sec-item .si-grip{color:var(--muted);opacity:.3;font-size:12px}
+.sec-item .si-order{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);opacity:.5;min-width:20px;text-align:center}
+
+/* Drop zone labels */
+.drop-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);opacity:.4;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.drop-label::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* Preview page */
+.page-preview{background:var(--bg-card);border:1px solid var(--border);min-height:380px;position:relative;overflow:hidden;margin-bottom:16px;transition:border-color .3s}
+.page-preview::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.004) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.004) 1px,transparent 1px);background-size:14px 14px;pointer-events:none}
+.page-preview-lbl{position:absolute;top:8px;right:12px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);opacity:.3;z-index:2}
+
+/* Preview sections */
+.pv-section{position:relative;z-index:1;animation:secIn .4s ease}
+@keyframes secIn{from{opacity:0;transform:translateY(-10px)}to{opacity:1;transform:translateY(0)}}
+.pv-hero{padding:40px 24px 32px;text-align:center;background:linear-gradient(180deg,rgba(207,92,38,.08) 0%,transparent 100%)}
+.pv-hero-title{font-size:22px;font-weight:800;color:var(--fg);margin-bottom:8px}
+.pv-hero-desc{font-size:12px;color:var(--muted);max-width:320px;margin:0 auto 16px;line-height:1.5}
+.pv-hero-btn{display:inline-block;padding:9px 24px;background:var(--accent);color:#fff;font-size:12px;font-weight:600}
+.pv-hero-tag{position:absolute;top:10px;left:14px;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--accent);opacity:.5;letter-spacing:1px}
+
+.pv-features{padding:20px 16px;display:flex;gap:10px}
+@media(max-width:500px){.pv-features{flex-direction:column}}
+.pv-feat{flex:1;border:1px solid var(--border);background:var(--bg);padding:12px;position:relative}
+.pv-feat-icon{width:24px;height:24px;background:var(--bar-d);margin-bottom:8px;display:flex;align-items:center;justify-content:center;font-size:10px}
+.pv-feat-title{font-size:12px;font-weight:700;margin-bottom:4px}
+.pv-feat-desc{font-size:10px;color:var(--muted);line-height:1.4}
+.pv-feat-tag{position:absolute;top:6px;right:8px;font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--accent);opacity:.4}
+
+.pv-about{padding:20px 16px;display:flex;gap:14px;align-items:center}
+@media(max-width:500px){.pv-about{flex-direction:column;text-align:center}}
+.pv-about-img{width:80px;height:80px;background:var(--bar-d);border:1px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px;color:var(--muted);opacity:.3}
+.pv-about-title{font-size:14px;font-weight:700;margin-bottom:4px}
+.pv-about-desc{font-size:11px;color:var(--muted);line-height:1.5}
+.pv-about-tag{position:absolute;top:6px;left:14px;font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--accent);opacity:.4}
+
+.pv-cta{padding:28px 16px;background:var(--surface);border-top:1px solid var(--border);text-align:center}
+.pv-cta-title{font-size:16px;font-weight:700;margin-bottom:6px}
+.pv-cta-desc{font-size:11px;color:var(--muted);margin-bottom:14px}
+.pv-cta-btn{display:inline-block;padding:10px 28px;background:var(--accent);color:#fff;font-size:12px;font-weight:600}
+.pv-cta-tag{position:absolute;top:6px;right:14px;font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--accent);opacity:.4}
+
+/* Order feedback */
+.order-fb{background:var(--surface);border:1px solid var(--border);padding:14px 18px;margin-bottom:12px;display:flex;align-items:center;gap:10px;transition:all .3s}
+.order-fb i{font-size:13px;flex-shrink:0}
+.order-fb.ok{border-color:var(--success-border);background:var(--success-soft)}
+.order-fb.ok i{color:var(--success)}
+.order-fb.no{border-color:var(--accent-border);background:var(--accent-soft)}
+.order-fb.no i{color:var(--accent)}
+.order-fb .fb-text{font-size:13px;line-height:1.4}
+.order-fb.ok .fb-text{color:var(--success)}
+.order-fb.no .fb-text{color:var(--fg);opacity:.8}
+
+.reset-btn{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:500;padding:8px 16px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .25s;display:inline-flex;align-items:center;gap:6px}
+.reset-btn:hover{border-color:var(--accent-border);color:var(--fg)}
+
+.hint{font-size:12px;color:var(--muted);opacity:.5;margin-top:10px;display:flex;align-items:center;gap:6px}
+.hint i{font-size:10px;color:var(--accent)}
+
+.why{margin-top:36px;border:1px solid var(--border);padding:20px 22px;background:var(--surface)}
+.why h3{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--accent);margin-bottom:10px}
+.why p{font-size:14px;color:var(--fg);opacity:.75;line-height:1.65}
+.why code{font-family:'JetBrains Mono',monospace;font-size:12px;background:var(--bg-card);padding:2px 6px;border:1px solid var(--border);color:var(--accent)}
+
+.fu{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.fu.in{opacity:1;transform:translateY(0)}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="entry">
+
+<header class="th fu">
+  <div class="badge">DESIGN</div>
+  <h1>Section</h1>
+  <p class="sub">phần — mỗi khối nội dung độc lập trên trang web</p>
+</header>
+
+<p class="oneliner fu">
+  <strong>Section</strong> là một khối nội dung riêng biệt trên trang web — Hero, Features, About, CTA. Mỗi section có mục đích riêng, được xếp theo thứ tự để tạo "câu chuyện" cho user đọc. Đổi thứ tự section = đổi cảm giác của cả trang.
+</p>
+
+<section class="fu" aria-label="Mô phỏng section">
+  <div class="sec-lbl">01 — Mô phỏng</div>
+  <div class="sim-grid" id="simGrid"></div>
+
+  <div class="page-struct fu">
+    <div class="ps-label">PAGE</div>
+    <div class="ps-blocks">
+      <div class="ps-block"><div class="ps-dot"></div><span class="ps-name">Hero Section</span><span class="ps-role">Hook注意力</span></div>
+      <div class="ps-block"><div class="ps-dot"></div><span class="ps-name">Features Section</span><span class="ps-role">Tính năng</span></div>
+      <div class="ps-block"><div class="ps-dot"></div><span class="ps-name">About Section</span><span class="ps-role">Xây dựng niềm tin</span></div>
+      <div class="ps-block"><div class="ps-dot"></div><span class="ps-name">CTA Section</span><span class="ps-role">Kêu gọi hành động</span></div>
+    </div>
+    <div class="ps-text"><strong>Mỗi section = một mục đích.</strong> Hero thu hút → Features thuyết phục → About tin tưởng → CTA chuyển đổi. Đúng thứ tự = đúng tâm lý user.</div>
+  </div>
+
+  <div class="ins">
+    <i class="fa-solid fa-lightbulb ins-i"></i>
+    <p class="ins-t" id="insT">Nhấn vào một section để xem code và vai trò của nó.</p>
+  </div>
+</section>
+
+<div class="dv fu"><span>02 — Thực hành</span></div>
+
+<section class="fu" aria-label="Thực hành sắp xếp section">
+  <p class="pg"><span>Mục tiêu:</span> Kéo thả để sắp xếp 4 section theo đúng thứ tự landing page tiêu chuẩn.</p>
+  <p class="pg-sub">Thử đổi thứ tự rồi quan sát — page nhìn "lạ" là do section sai vị trí.</p>
+
+  <div class="drop-label"><i class="fa-solid fa-grip-vertical" style="font-size:10px"></i> Kéo để sắp xếp</div>
+  <div class="sec-pool" id="secPool"></div>
+
+  <div class="drop-label"><i class="fa-solid fa-eye" style="font-size:10px"></i> Preview theo thứ tự</div>
+  <div class="page-preview" id="pagePreview">
+    <span class="page-preview-lbl">LIVE PREVIEW</span>
+  </div>
+
+  <div class="order-fb" id="orderFb">
+    <i class="fa-solid fa-circle-info"></i>
+    <span class="fb-text">Kéo các section vào đúng thứ tự landing page tiêu chuẩn.</span>
+  </div>
+
+  <button class="reset-btn" id="resetBtn"><i class="fa-solid fa-rotate-left"></i> Đặt lại thứ tự</button>
+
+  <p class="hint">
+    <i class="fa-solid fa-arrow-up-right"></i>
+    Thứ tự đúng: Hero → Features → About → CTA. Thử đặt CTA lên đầu để thấy "sai vibe" trông như thế nào.
+  </p>
+
+  <div class="why fu">
+    <h3>Tại sao marketer cần biết</h3>
+    <p>
+      Khi feedback "đổi chỗ phần này với phần kia" — dev cần biết chính xác section nào. Nói "đổi thứ tự section" thay vì "đổi chỗ cái này" giúp dev hiểu ngay. Khi thấy design có <code>&lt;section id="hero"&gt;</code> — bạn biết đó là block có thể di chuyển độc lập. Biết section = biết yêu cầu sắp xếp content, không chỉ "làm đẹp".
+    </p>
+  </div>
+</section>
+
+</div>
+
+<script>
+/* ===== DỮ LIỆU MÔ PHỎNG ===== */
+const sections = [
+  {
+    num:'01', tag:'Hero Section',
+    ins:'Hero là section đầu tiên user thấy — nhiệm vụ duy nhất: thu hút sự chú ý trong 3 giây. Chứa headline lớn, subtitle, và 1 CTA. Sai hero = user rời trang ngay, phần còn lại vô nghĩa.',
+    preview:`<div class="mp-hero"><div class="mp-hero-label">HERO</div><div class="mp-hero-t"></div><div class="mp-hero-d"></div><div class="mp-hero-b"></div></div>`,
+    code:`<span class="p">&lt;section</span> id=<span class="v">"hero"</span><span class="p">&gt;</span>\n  <span class="p">&lt;h1&gt;</span>Build faster<span class="p">&lt;/h1&gt;</span>\n  <span class="p">&lt;Button&gt;</span>Get Started<span class="p">&lt;/Button&gt;</span>\n<span class="p">&lt;/section&gt;</span>`
+  },
+  {
+    num:'02', tag:'Features Section',
+    ins:'Features liệt kê tính năng — thường 3 cột, mỗi cột 1 icon + title + mô tả ngắn. Vai trò: thuyết phục user "sản phẩm này có gì". Nằm sau Hero vì user cần bị thu hút trước khi nghe giải thích.',
+    preview:`<div class="mp-feat"><div class="mp-feat-label">FEATURES</div><div class="mp-feat-item"><div class="mp-feat-icon"></div><div class="mp-feat-t"></div><div class="mp-feat-d"></div></div><div class="mp-feat-item"><div class="mp-feat-icon"></div><div class="mp-feat-t"></div><div class="mp-feat-d"></div></div><div class="mp-feat-item"><div class="mp-feat-icon"></div><div class="mp-feat-t"></div><div class="mp-feat-d"></div></div></div>`,
+    code:`<span class="p">&lt;section</span> id=<span class="v">"features"</span><span class="p">&gt;</span>\n  <span class="p">&lt;FeatureCard</span> ... <span class="p">/&gt;</span> ×3\n<span class="p">&lt;/section&gt;</span>`
+  },
+  {
+    num:'03', tag:'About Section',
+    ins:'About xây dựng niềm tin — thường text + ảnh/video bên cạnh. Vai trò: cho user thấy "ai đứng sau sản phẩm". Nằm sau Features vì user cần biết sản phẩm làm gì trước khi quan tâm ai làm.',
+    preview:`<div class="mp-about"><div class="mp-about-label">ABOUT</div><div class="mp-about-text"><div class="mp-about-t"></div><div class="mp-about-d"></div><div class="mp-about-d2"></div></div><div class="mp-about-img"></div></div>`,
+    code:`<span class="p">&lt;section</span> id=<span class="v">"about"</span><span class="p">&gt;</span>\n  <span class="p">&lt;img</span> ... <span class="p">/&gt;</span>\n  <span class="p">&lt;p&gt;</span>We build...<span class="p">&lt;/p&gt;</span>\n<span class="p">&lt;/section&gt;</span>`
+  },
+  {
+    num:'04', tag:'CTA Section',
+    ins:'CTA (Call To Action) là section cuối cùng — nhiệm vụ: thúc đẩy user hành động (đăng ký, mua, liên hệ). Nằm cuối vì user cần đi qua toàn bộ câu chuyện rồi mới sẵn sàng hành động.',
+    preview:`<div class="mp-cta"><div class="mp-cta-t"></div><div class="mp-cta-b"></div><div class="mp-cta-label">CTA</div></div>`,
+    code:`<span class="p">&lt;section</span> id=<span class="v">"cta"</span><span class="p">&gt;</span>\n  <span class="p">&lt;h2&gt;</span>Ready?<span class="p">&lt;/h2&gt;</span>\n  <span class="p">&lt;Button&gt;</span>Get Started<span class="p">&lt;/Button&gt;</span>\n<span class="p">&lt;/section&gt;</span>`
+  }
+];
+
+let activeSim = -1;
+const simGrid = document.getElementById('simGrid');
+const insT = document.getElementById('insT');
+
+function renderSim(){
+  simGrid.innerHTML = sections.map((s,i)=>`
+    <div class="sc" data-i="${i}" tabindex="0" role="button" aria-label="${s.tag}">
+      <div class="sc-head"><span class="sc-num">${s.num}</span><span class="sc-tag">${s.tag}</span></div>
+      <div class="sc-preview"><div class="mp">${s.preview}</div></div>
+      <div class="sc-code"><div class="code-l">${s.code}</div></div>
+      <div class="sc-ins">${s.ins}</div>
+    </div>`).join('');
+  simGrid.querySelectorAll('.sc').forEach(c=>{
+    const h=()=>activateSim(+c.dataset.i);
+    c.addEventListener('click',h);
+    c.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();h()}});
+  });
+}
+function activateSim(i){
+  simGrid.querySelectorAll('.sc').forEach(c=>c.classList.remove('on'));
+  if(activeSim===i){activeSim=-1;setIns('Nhấn vào một section để xem code và vai trò của nó.');return}
+  activeSim=i;simGrid.querySelector(`[data-i="${i}"]`).classList.add('on');setIns(sections[i].ins);
+}
+function setIns(t){insT.classList.add('fading');setTimeout(()=>{insT.textContent=t;insT.classList.remove('fading')},250)}
+
+/* ===== THỰC HÀNH: REORDER ===== */
+const CORRECT_ORDER = ['hero','features','about','cta'];
+
+const secDefs = [
+  {id:'hero',name:'Hero Section',desc:'Hook — thu hút trong 3 giây đầu',icon:'fa-bolt',
+   pvHtml:`<div class="pv-section pv-hero"><span class="pv-hero-tag">HERO</span><div class="pv-hero-title">Build faster. Ship better.</div><div class="pv-hero-desc">The modern platform for teams who move fast and deliver results.</div><div class="pv-hero-btn">Get Started</div></div>`},
+  {id:'features',name:'Features Section',desc:'Thuyết phục — liệt kê tính năng',icon:'fa-puzzle-piece',
+   pvHtml:`<div class="pv-section pv-features"><span class="pv-feat-tag">FEATURES</span><div class="pv-feat"><div class="pv-feat-icon"><i class="fa-solid fa-shield-halved" style="color:var(--success);font-size:11px"></i></div><div class="pv-feat-title">Reliable</div><div class="pv-feat-desc">99.99% uptime guaranteed</div></div><div class="pv-feat"><div class="pv-feat-icon"><i class="fa-solid fa-bolt" style="color:var(--warning);font-size:11px"></i></div><div class="pv-feat-title">Fast</div><div class="pv-feat-desc">Sub-100ms response time</div></div><div class="pv-feat"><div class="pv-feat-icon"><i class="fa-solid fa-lock" style="color:var(--accent);font-size:11px"></i></div><div class="pv-feat-title">Secure</div><div class="pv-feat-desc">Enterprise-grade security</div></div></div>`},
+  {id:'about',name:'About Section',desc:'Niềm tin — ai đứng sau sản phẩm',icon:'fa-users',
+   pvHtml:`<div class="pv-section pv-about"><span class="pv-about-tag">ABOUT</span><div class="pv-about-img"><i class="fa-solid fa-building"></i></div><div><div class="pv-about-title">We build infrastructure that scales with you</div><div class="pv-about-desc">Founded in 2020, our team has helped 2,000+ companies ship faster with confidence.</div></div></div>`},
+  {id:'cta',name:'CTA Section',desc:'Hành động — thúc đẩy user đăng ký/mua',icon:'fa-arrow-right',
+   pvHtml:`<div class="pv-section pv-cta"><span class="pv-cta-tag">CTA</span><div class="pv-cta-title">Ready to get started?</div><div class="pv-cta-desc">Join thousands of teams already shipping faster.</div><div class="pv-cta-btn">Start Free Trial</div></div>`}
+];
+
+let currentOrder = [];
+const secPool = document.getElementById('secPool');
+const pagePreview = document.getElementById('pagePreview');
+const orderFb = document.getElementById('orderFb');
+const resetBtn = document.getElementById('resetBtn');
+let dragEl = null;
+
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}
+  return a;
+}
+
+function renderPool(){
+  secPool.innerHTML = currentOrder.map((id,i)=>{
+    const s=secDefs.find(d=>d.id===id);
+    return `<div class="sec-item" data-id="${id}" draggable="true">
+      <span class="si-grip"><i class="fa-solid fa-grip-vertical"></i></span>
+      <div class="si-icon"><i class="fa-solid ${s.icon}"></i></div>
+      <div class="si-info"><div class="si-name">${s.name}</div><div class="si-desc">${s.desc}</div></div>
+      <span class="si-order">${i+1}</span>
+    </div>`;
+  }).join('');
+  attachDrag();
+  renderPreview();
+  checkOrder();
+}
+
+function renderPreview(){
+  const lbl = pagePreview.querySelector('.page-preview-lbl');
+  let html = '';
+  currentOrder.forEach(id=>{
+    const s = secDefs.find(d=>d.id===id);
+    html += s.pvHtml;
+  });
+  /* Keep label */
+  pagePreview.innerHTML = `<span class="page-preview-lbl">LIVE PREVIEW</span>` + html;
+}
+
+function checkOrder(){
+  const correct = currentOrder.every((id,i)=>id===CORRECT_ORDER[i]);
+  if(correct){
+    orderFb.className = 'order-fb ok';
+    orderFb.innerHTML = `<i class="fa-solid fa-check-circle"></i><span class="fb-text">Đúng thứ tự landing page tiêu chuẩn: Hero → Features → About → CTA.</span>`;
+  } else {
+    const first = currentOrder[0];
+    let msg = 'Thứ tự chưa đúng. ';
+    if(first !== 'hero') msg += `Section "${secDefs.find(d=>d.id===first).name}" không nên ở đầu — Hero cần xuất hiện đầu tiên để thu hút user.`;
+    else msg += 'Hero đúng vị trí rồi, kiểm tra các section còn lại.';
+    orderFb.className = 'order-fb no';
+    orderFb.innerHTML = `<i class="fa-solid fa-circle-info"></i><span class="fb-text">${msg}</span>`;
+  }
+}
+
+/* Drag & Drop */
+function attachDrag(){
+  const items = secPool.querySelectorAll('.sec-item');
+  items.forEach(item=>{
+    item.addEventListener('dragstart',e=>{
+      dragEl=item;
+      item.classList.add('dragging');
+      e.dataTransfer.effectAllowed='move';
+      e.dataTransfer.setData('text/plain',item.dataset.id);
+    });
+    item.addEventListener('dragend',()=>{item.classList.remove('dragging');dragEl=null});
+    /* Touch */
+    let clone=null,ox=0,oy=0,startY=0;
+    item.addEventListener('touchstart',e=>{
+      dragEl=item;item.classList.add('dragging');
+      const t=e.touches[0],r=item.getBoundingClientRect();
+      ox=t.clientX-r.left;oy=t.clientY-r.top;startY=t.clientY;
+      clone=item.cloneNode(true);
+      clone.style.cssText=`position:fixed;left:${t.clientX-ox}px;top:${t.clientY-oy}px;width:${r.width}px;z-index:999;pointer-events:none;opacity:.9;border-color:var(--accent)`;
+      document.body.appendChild(clone);
+    },{passive:true});
+    item.addEventListener('touchmove',e=>{
+      if(!clone)return;
+      const t=e.touches[0];
+      clone.style.left=(t.clientX-ox)+'px';
+      clone.style.top=(t.clientY-oy)+'px';
+    },{passive:true});
+    item.addEventListener('touchend',e=>{
+      if(!clone)return;
+      clone.remove();clone=null;
+      const t=e.changedTouches[0];
+      const poolRect=secPool.getBoundingClientRect();
+      items.forEach(it=>{
+        const r=it.getBoundingClientRect();
+        const midY=r.top+r.height/2;
+        if(t.clientY>=r.top&&t.clientY<=r.bottom&&it!==item){
+          const fromIdx=[...currentOrder].indexOf(item.dataset.id);
+          const toIdx=[...currentOrder].indexOf(it.dataset.id);
+          currentOrder.splice(fromIdx,1);
+          currentOrder.splice(toIdx,0,item.dataset.id);
+          renderPool();
+          return;
+        }
+      });
+      item.classList.remove('dragging');dragEl=null;
+    });
+  });
+  secPool.addEventListener('dragover',e=>{
+    e.preventDefault();
+    const items=[...secPool.querySelectorAll('.sec-item')];
+    const afterEl=getDragAfterElement(secPool,e.clientY);
+    if(!afterEl) secPool.appendChild(dragEl);
+    else secPool.insertBefore(dragEl,afterEl);
+    /* Update order from DOM */
+    currentOrder=[...secPool.querySelectorAll('.sec-item')].map(el=>el.dataset.id);
+    secPool.querySelectorAll('.si-order').forEach((el,i)=>el.textContent=i+1);
+    renderPreview();checkOrder();
+  });
+}
+
+function getDragAfterElement(container,y){
+  const els=[...container.querySelectorAll('.sec-item:not(.dragging)')];
+  return els.reduce((closest,child)=>{
+    const box=child.getBoundingClientRect();
+    const offset=y-box.top-box.height/2;
+    if(offset<0&&offset>closest.offset) return {offset,element:child};
+    return closest;
+  },{offset:Number.NEGATIVE_INFINITY}).element;
+}
+
+resetBtn.addEventListener('click',()=>{
+  currentOrder=shuffle(CORRECT_ORDER);
+  /* Đảm bảo không phải thứ tự đúng */
+  if(currentOrder.every((id,i)=>id===CORRECT_ORDER[i])){
+    currentOrder.reverse();
+  }
+  renderPool();
+});
+
+/* ===== FADE IN ===== */
+function initFU(){document.querySelectorAll('.fu').forEach((el,i)=>{setTimeout(()=>el.classList.add('in'),60+i*100)})}
+renderSim();
+currentOrder=shuffle(CORRECT_ORDER);
+if(currentOrder.every((id,i)=>id===CORRECT_ORDER[i]))currentOrder.reverse();
+renderPool();initFU();
+</script>
+</body>
+</html>

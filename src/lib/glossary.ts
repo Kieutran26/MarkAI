@@ -111,6 +111,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'viewport', name: 'Viewport', nameEn: 'Khung hiển thị', letter: 'V', groups: ['design', 'code'], definition: 'Viewport là khu vực hiển thị nội dung của trang web mà người dùng nhìn thấy được trên màn hình thiết bị. Nó không phải là kích thước vật lý của màn hình, mà là kích thước "ảo" mà trình duyệt dùng để sắp xếp layout. Hiểu về viewport giúp marketer biết tại sao một thiết kế trông đẹp trên máy này nhưng lại bị vỡ trên máy khác dù cùng độ phân giải.', example: 'iPhone 15 Pro có màn hình 2556px nhưng viewport chỉ rộng 393px. Khi bạn bảo AI "chỉnh layout cho điện thoại", AI sẽ dùng viewport width (393px) để tính toán, không phải số pixel thực tế của màn hình.', related: ['responsive', 'breakpoint', 'layout'], demo: { kind: 'interactive', src: 'gif-viewport-demo.html', alt: 'Mô phỏng cách layout thay đổi theo các kích thước Viewport khác nhau' } },
   { id: 'z-index', name: 'Z-index', nameEn: 'Z-index / Thứ tự lớp', letter: 'Z', groups: ['design', 'code'], definition: 'Z-index là thuộc tính quyết định thứ tự "nông sâu" của các thành phần trên màn hình (trục Z). Element nào có z-index cao hơn sẽ nằm đè lên element có z-index thấp hơn. Hãy tưởng tượng z-index giống như các lớp giấy xếp chồng lên nhau trên mặt bàn.', example: 'Khi bạn thấy modal bị che bởi navbar, đó là lỗi z-index. Cách fix: set z-index cho modal cao hơn (ví dụ: navbar z:100, modal z:1000).', related: ['layout', 'popup', 'sticky', 'interface'], demo: { kind: 'interactive', src: 'gif-zindex-demo.html', alt: 'Mô phỏng 4 lớp z-index phổ biến: Tooltip, Dropdown, Modal và Stack tổng thể' } },
   { id: 'primary-color', name: 'Primary / Secondary Color', nameEn: 'Màu chính / Màu phụ', letter: 'P', groups: ['design', 'code'], definition: 'Màu chính (Primary) và màu phụ (Secondary) là nền tảng của hệ thống màu sắc. Primary dành cho nút hành động chính (CTA) và điểm nhấn quan trọng nhất. Secondary hỗ trợ Primary, dùng cho các nút phụ, badge hoặc thông tin cần phân cấp thấp hơn.', example: 'Prompt: "Đổi nút Mua hàng thành Primary, nút Xem thêm thành Secondary để người dùng tập trung vào việc mua."', related: ['design-system', 'interface', 'css', 'element'], demo: { kind: 'interactive', src: 'gif-primary-color-demo.html', alt: 'Mô phỏng 4 cách ứng dụng Primary / Secondary Color: Button, Card, Form và Chart' } },
+  { id: 'color-palette', name: 'Color Palette', nameEn: 'Bảng màu thiết kế', letter: 'C', groups: ['design', 'code'], definition: 'Tập hợp các màu sắc được phân loại theo vai trò rõ ràng trong hệ thống thiết kế. Một bảng màu chuyên nghiệp thường có 4 nhóm: Brand (nhận diện cốt lõi), Semantic (truyền tải trạng thái), Neutral (trung tính cho nền, text, viền) và Extended (hỗ trợ illustration, biểu đồ).', example: 'Prompt: "Dùng Brand Palette cho nút submit chính, và dùng Semantic Error cho các thông báo điền sai form."', related: ['design-system', 'primary-color', 'css'], demo: { kind: 'interactive', src: 'gif-colorpalette-demo.html', alt: 'Mô phỏng 4 nhóm màu trong Color Palette và vai trò của từng nhóm' } },
 ];
 
 export const quickRefItems = [
@@ -187,6 +188,7 @@ const deepDiveTermIds = new Set([
   'viewport',
   'z-index',
   'primary-color',
+  'color-palette',
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -382,6 +384,11 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Phân biệt rõ ràng giữa Primary và Secondary giúp tạo ra Visual Hierarchy (hệ thống phân cấp thị giác) cực kỳ mạnh mẽ. Nếu dùng Primary quá nhiều, trang sẽ bị quá chói mắt và người dùng không biết nên bấm vào đâu.',
     'Khi làm việc với dev hoặc AI, đừng chỉ nói "nút màu cam". Hãy dùng thuật ngữ "nút Primary" hoặc "nút Secondary" để hệ thống tự động map đúng biến màu (color token) trong Design System.',
     'Trong Data Visualization (biểu đồ), việc kết hợp Primary và Secondary giúp so sánh dữ liệu dễ dàng hơn. Ví dụ: Primary cho số liệu năm nay, Secondary cho số liệu năm ngoái.',
+  ],
+  'color-palette': [
+    'Bảng màu (Color Palette) không chỉ là chọn màu cho đẹp. Nó là việc gán "ý nghĩa" cho mỗi màu. Khi marketer yêu cầu AI tạo web, việc gọi tên màu theo chức năng (ví dụ: "dùng màu semantic warning") sẽ tốt hơn nhiều so với việc mô tả theo cảm tính.',
+    '4 nhóm màu kinh điển: Brand Color chỉ nên chiếm khoảng 10% giao diện để tập trung sự chú ý vào nút CTA. Semantic Color dùng cho trạng thái đúng/sai/cảnh báo. Grayscale Scale là "bộ xương" chiếm 80% không gian hiển thị (nền, text, divider).',
+    'Với AI hiện tại, nếu bạn chỉ đưa cho nó mã hex màu chính (Primary), nó có thể tự nội suy (interpolate) ra toàn bộ Color Palette bằng cách điều chỉnh độ sáng tối (Luminance) hoặc sắc độ (Saturation).',
   ],
 };
 

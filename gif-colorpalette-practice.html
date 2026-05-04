@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Color Palette — Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;--card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a;--success:#3a9e5c;--error:#c93b3b;--warning:#c49030;--info:#3a829e}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 100%,16px 16px;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:12px;gap:16px}
+
+.pw{width:100%;background:var(--card);border:2px solid var(--border);padding:20px 24px}
+.pw-h{font-size:15px;font-weight:700;margin-bottom:2px}.pw-h span{color:var(--accent)}
+.pw-s{font-size:11px;color:var(--muted);margin-bottom:14px}
+
+.match-wrap{display:flex;flex-direction:column;gap:16px;background:var(--card-alt);border:1px solid var(--border);padding:20px;margin-bottom:16px}
+.match-col{display:flex;flex-direction:column;gap:10px}
+.match-lbl{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;border-bottom:1px dashed var(--border);padding-bottom:6px;width:100%}
+.match-row{display:flex;flex-wrap:wrap;gap:12px}
+
+/* Ô màu */
+.m-color{width:48px;height:48px;border:2px solid var(--border);cursor:pointer;transition:all .2s;position:relative}
+.m-color:hover{transform:scale(1.05)}
+.m-color.sel{border-color:var(--accent)}
+.m-color.ok{border-color:var(--success);opacity:.6;cursor:default;transform:none}
+.m-color.ok::after{content:'\f00c';font-family:'FontAwesome';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:16px;color:var(--success)}
+.m-color.err{border-color:var(--error);animation:shake .3s}
+
+/* Nút label */
+.m-label{padding:10px 16px;background:var(--card);border:1px solid var(--border);color:var(--fg);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;cursor:pointer;transition:all .2s;text-transform:uppercase}
+.m-label:hover{border-color:var(--border-hi);background:var(--border)}
+.m-label.sel{border-color:var(--accent);background:rgba(212,113,42,.1);color:var(--accent)}
+.m-label.ok{border-color:var(--success);background:rgba(58,158,92,.1);color:var(--success);opacity:.6;cursor:default}
+.m-label.err{border-color:var(--error);background:rgba(201,59,59,.1);color:var(--error);animation:shake .3s}
+
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+
+.fb{display:flex;align-items:center;gap:8px;padding:10px 14px;font-size:12px;border:1px solid var(--border);background:var(--card-alt)}
+.fb.ok{border-color:var(--success);background:rgba(58,158,92,.05);color:var(--success)}
+.fb.no{border-color:var(--error);background:rgba(201,59,59,.05);color:var(--error)}
+
+.score-bar{display:flex;gap:8px;margin-top:16px}
+.score-pip{flex:1;height:4px;background:var(--border);transition:background .3s}
+.score-pip.filled{background:var(--success)}
+
+.ctx-b{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;padding:6px 12px;border:1px solid var(--border);background:var(--card-alt);color:var(--muted);cursor:pointer;transition:all .25s;display:inline-flex;align-items:center;gap:6px;margin-top:16px}
+.ctx-b:hover{border-color:var(--fg);color:var(--fg)}
+
+@media(max-width:520px){.pw{padding:16px}.m-color{width:42px;height:42px}.m-label{font-size:10px;padding:8px 12px}}
+</style>
+</head>
+<body>
+
+<div class="pw">
+  <div class="pw-h">Thực hành — <span>Color Palette Roles</span></div>
+  <div class="pw-s">Ghép đúng mỗi màu với vai trò của nó. Bấm ô màu, rồi bấm tên vai trò tương ứng.</div>
+
+  <div class="match-wrap">
+      <div class="match-col">
+        <div class="match-lbl">Màu (Color)</div>
+        <div class="match-row" id="mColors"></div>
+      </div>
+      <div class="match-col" style="margin-top:8px">
+        <div class="match-lbl">Vai trò (Role)</div>
+        <div class="match-row" id="mLabels"></div>
+      </div>
+  </div>
+
+  <div class="fb" id="mFb">Chọn một ô màu để bắt đầu</div>
+  <div class="score-bar" id="scoreBar"></div>
+  <button class="ctx-b" id="rstBtn"><i class="fa-solid fa-rotate-right"></i> Reset</button>
+</div>
+
+<script>
+const MP=[
+  {c:'#d4712a',l:'Primary'},
+  {c:'#3a9e5c',l:'Success'},
+  {c:'#c93b3b',l:'Error'},
+  {c:'#c49030',l:'Warning'},
+  {c:'#706b64',l:'Neutral'},
+];
+
+const mColors=document.getElementById('mColors'),mLabels=document.getElementById('mLabels'),mFb=document.getElementById('mFb'),scoreBar=document.getElementById('scoreBar');
+let selCI=null,matched=new Set();
+
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=0|Math.random()*(i+1);[b[i],b[j]]=[b[j],b[i]]}return b}
+
+function buildScore(){
+  scoreBar.innerHTML='';
+  for(let i=0;i<MP.length;i++){
+    const pip=document.createElement('div');pip.className='score-pip';
+    if(matched.has(i))pip.classList.add('filled');
+    scoreBar.appendChild(pip);
+  }
+}
+
+function buildMatch(){
+  mColors.innerHTML='';mLabels.innerHTML='';
+  matched.clear();selCI=null;
+  mFb.innerHTML='<i class="fa-solid fa-circle-info"></i> <span>Chọn một ô màu để bắt đầu.</span>';
+  mFb.className='fb';
+  buildScore();
+
+  MP.forEach((p,i)=>{
+    const el=document.createElement('div');
+    el.className='m-color';el.style.backgroundColor=p.c;el.dataset.i=i;
+    el.setAttribute('role','button');el.setAttribute('aria-label','Màu '+p.l);
+    el.addEventListener('click',()=>pickColor(i,el));
+    mColors.appendChild(el);
+  });
+
+  shuffle(MP.map((p,i)=>({l:p.l,i}))).forEach(s=>{
+    const el=document.createElement('button');
+    el.className='m-label';el.textContent=s.l;el.dataset.i=s.i;
+    el.addEventListener('click',()=>pickLabel(s.i,el));
+    mLabels.appendChild(el);
+  });
+}
+
+function pickColor(i,el){
+  if(matched.has(i))return;
+  mColors.querySelectorAll('.m-color').forEach(c=>c.classList.remove('sel'));
+  selCI=i;el.classList.add('sel');
+  mFb.innerHTML='<i class="fa-solid fa-arrow-pointer"></i> <span>Đã chọn màu. Giờ hãy chọn vai trò tương ứng.</span>';
+  mFb.className='fb';
+}
+
+function pickLabel(i,el){
+  if(matched.has(i))return;
+  if(selCI===null){
+      mFb.innerHTML='<i class="fa-solid fa-circle-exclamation"></i> <span>Hãy bấm chọn một ô màu trước.</span>';
+      mFb.className='fb';
+      return;
+  }
+
+  const cEl=mColors.querySelector('.m-color[data-i="'+selCI+'"]');
+
+  if(selCI===i){
+    matched.add(i);
+    cEl.classList.remove('sel');cEl.classList.add('ok');
+    el.classList.add('ok');selCI=null;
+    buildScore();
+    if(matched.size===MP.length){
+      mFb.innerHTML='<i class="fa-solid fa-check-circle"></i> <span><strong>Tất cả đều đúng!</strong> Mỗi màu trong Palette đều có một vai trò rõ ràng và không thể thay thế.</span>';
+      mFb.className='fb ok';
+    }else{
+      mFb.innerHTML=`<i class="fa-solid fa-check"></i> <span>Đúng rồi! <strong>${MP[i].l}</strong> đã được ghép xong.</span>`;
+      mFb.className='fb ok';
+    }
+  }else{
+    cEl.classList.remove('sel');cEl.classList.add('err');
+    el.classList.add('err');selCI=null;
+    mFb.innerHTML='<i class="fa-solid fa-xmark"></i> <span>Sai rồi. Màu này không phải là vai trò đó. Hãy thử lại.</span>';
+    mFb.className='fb no';
+    setTimeout(()=>{cEl.classList.remove('err');el.classList.remove('err')},400);
+  }
+}
+
+document.getElementById('rstBtn').addEventListener('click',buildMatch);
+buildMatch();
+</script>
+</body>
+</html>
