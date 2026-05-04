@@ -104,6 +104,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'header', name: 'Header', nameEn: 'Đầu trang / Hero Area', letter: 'H', groups: ['design', 'code'], definition: 'Vùng phía trên cùng của trang — thường gồm navbar (logo + menu) và đôi khi thêm hero banner + nút CTA. Header là "vùng chứa" lớn hơn navbar, xuất hiện ngay lập tức khi user truy cập và thường được giữ cố định (sticky) khi cuộn trang.', example: 'Khi marketer yêu cầu "thêm banner vào header", dev sẽ đưa khối hình ảnh/text lớn vào dưới navbar. Header chuyên nghiệp giúp định vị thương hiệu và dẫn dắt hành động (CTA) ngay từ giây đầu tiên.', related: ['navbar', 'component', 'sticky', 'interface'], demo: { kind: 'interactive', src: 'gif-header-demo.html', alt: 'Mô phỏng các trạng thái của header: Default, Scrolled, CTA Focus và Mobile Menu' } },
   { id: 'sticky', name: 'Sticky', nameEn: 'Dính / Cố định khi cuộn', letter: 'S', groups: ['design', 'code'], definition: 'Thuộc tính (position: sticky) giúp một thành phần giao diện cuộn theo trang nhưng dừng lại và "dính" vào một vị trí cụ thể trên màn hình khi đạt đến ngưỡng nhất định. Thường dùng cho navbar, sidebar, hoặc action bar.', example: 'Prompt: "Làm cho phần mục lục (table of contents) bên trái sticky để khi cuộn bài blog dài, người đọc luôn biết mình đang ở phần nào."', related: ['navbar', 'header', 'sidebar'], demo: { kind: 'interactive', src: 'gif-sticky-demo.html', alt: 'Mô phỏng các trạng thái sticky: Navbar, Sub-navigation, Sidebar và Action Bar' } },
   { id: 'carousel', name: 'Carousel', nameEn: 'Vòng lặp hình ảnh / Slider', letter: 'C', groups: ['design', 'code'], definition: 'Một thành phần giao diện cho phép trình chiếu nhiều nội dung (ảnh, thẻ, sản phẩm) trong cùng một không gian bằng cách trượt qua lại. Carousel giúp tiết kiệm diện tích và tăng tính tương tác cho trang web.', example: 'Prompt: "Làm một carousel cho phần Testimonials, tự động chuyển mỗi 5 giây, có mũi tên điều hướng và các chấm tròn (dots) ở dưới."', related: ['component', 'interface', 'slider', 'animation'], demo: { kind: 'interactive', src: 'gif-carousel-demo.html', alt: 'Mô phỏng các loại carousel: Single, Multiple, Center và Autoplay' } },
+  { id: 'pagination', name: 'Pagination', nameEn: 'Phân trang', letter: 'P', groups: ['design', 'code'], definition: 'Cách chia một lượng lớn dữ liệu thành nhiều trang hoặc phần nhỏ hơn. Không chỉ là thêm "trang 1, 2, 3", pagination còn bao gồm nhiều hình thức khác nhau như Prev/Next hay Load More tùy thuộc vào luồng trải nghiệm.', example: 'Prompt: "Thêm Pagination kiểu Load More cho danh sách sản phẩm này, mỗi lần bấm sẽ tải thêm 12 sản phẩm thay vì phải nhảy sang trang mới."', related: ['component', 'interface', 'data', 'state'], demo: { kind: 'interactive', src: 'gif-pagination-demo.html', alt: 'Mô phỏng các loại pagination: Numeric, Prev/Next, First/Last và Load More' } },
 ];
 
 export const quickRefItems = [
@@ -173,6 +174,7 @@ const deepDiveTermIds = new Set([
   'webhook',
   'websocket',
   'sticky',
+  'pagination',
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -327,7 +329,12 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
   sticky: [
     'Sticky không phải là "Fixed" (cố định vĩnh viễn ở một chỗ). Sticky chỉ bắt đầu "dính" khi người dùng cuộn đến vị trí của nó, và nó sẽ bị cuộn đi nếu phần nội dung cha (parent) của nó đã cuộn hết.',
     'Thanh điều hướng (Navbar) và Sidebar là 2 ứng dụng phổ biến nhất của Sticky. Trong UI phức tạp, Action Bar (chứa nút Save/Submit) dưới cùng màn hình cũng thường được thiết kế sticky để người dùng có thể lưu bất cứ lúc nào.',
-    'Khi kiểm tra sticky, hãy đảm bảo bạn kéo thanh cuộn lên xuống nhiều lần để xem nó có hoạt động mượt mà không, đặc biệt là trên giao diện mobile nơi không gian màn hình rất hạn chế.',
+    'Khi kiểm tra sticky, hãy đảm bảo bạn kéo thanh cuộn lên xuống nhiều lần để xem nó có hoạt động mượt mà không, đặc biệt là trên giao diện mobile nơi không gian màn hình rất hạn chế. Khi bảo AI "làm sticky", cần nói rõ: element nào, stick ở top hay bottom, offset bao nhiêu.',
+  ],
+  pagination: [
+    'Nhiều marketer nghĩ "phân trang là có sẵn". Thực ra, dev/AI phải viết logic để cắt dữ liệu (slice), tính tổng số trang (total pages), và quản lý trang hiện tại (current page).',
+    'Việc chọn đúng loại phân trang rất quan trọng với UX. Nếu bạn có một danh sách sản phẩm rất dài và muốn người dùng dễ dàng xem từng món mà không bị đứt đoạn, hãy cân nhắc "Load More".',
+    'Ngược lại, nếu dữ liệu của bạn có ý nghĩa thứ tự (ví dụ bảng quản lý user, báo cáo doanh thu theo tháng) và người dùng thường cần nhảy ngay về đoạn cuối hoặc tìm kiếm chính xác, hãy dùng "Numeric" hoặc "First/Last".',
   ],
 };
 

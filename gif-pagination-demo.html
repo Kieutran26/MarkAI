@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pagination Demo — markAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  :root{
+    --bg:#0f0f12;--bg-card:#16161b;--fg:#e8e4dc;--muted:#6e6e7a;
+    --accent:#e88c2e;--accent-soft:rgba(232,140,46,.12);
+    --accent-border:rgba(232,140,46,.3);--border:#282830;
+    --surface:#1c1c23;--shape-lt:#33333d;--bar-m:#44444f;
+    --mono:'JetBrains Mono',monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:var(--bg);color:var(--fg);
+    font-family:'Space Grotesk',sans-serif;line-height:1.6;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:'';position:fixed;inset:0;
+    background-image:radial-gradient(rgba(255,255,255,.022) 1px,transparent 1px);
+    background-size:20px 20px;pointer-events:none;z-index:0;
+  }
+
+  #app-root{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:24px}
+
+  .sim-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
+  @media(max-width:800px){.sim-grid{grid-template-columns:repeat(2,1fr)}}
+
+  .sc{
+    background:var(--bg-card);border:1px solid var(--border);
+    padding:20px 14px 18px;cursor:pointer;position:relative;overflow:hidden;
+    transition:border-color .3s,background .3s;
+    display:flex;flex-direction:column;
+  }
+  .sc::before{
+    content:'';position:absolute;top:0;left:0;right:0;height:2px;
+    background:var(--accent);transform:scaleX(0);transform-origin:left;
+    transition:transform .35s ease;
+  }
+  .sc:hover{border-color:var(--accent-border)}
+  .sc.on{border-color:var(--accent);background:var(--surface)}
+  .sc.on::before{transform:scaleX(1)}
+
+  .sc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+  .sc-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px}
+  .sc-tag{
+    font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;
+    text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);transition:color .3s;
+  }
+  .sc.on .sc-tag{color:var(--accent)}
+
+  .sc-val{
+    font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);
+    text-align:center;transition:color .3s;margin-top:auto;
+  }
+
+  .ins{
+    background:var(--surface);border:1px solid var(--border);
+    padding:18px 22px;display:flex;align-items:flex-start;gap:12px;min-height:80px;
+  }
+  .ins-i{color:var(--accent);font-size:13px;margin-top:3px;flex-shrink:0}
+  .ins-t{font-size:14px;color:var(--fg);opacity:.85;line-height:1.65;transition:opacity .25s,transform .25s}
+  .ins-t.fading{opacity:0;transform:translateY(6px)}
+  .ins-t strong{color:var(--accent);font-weight:600}
+
+  /* mini table */
+  .sc-view{margin-bottom:16px;min-height:90px;display:flex;flex-direction:column;justify-content:center}
+  .mt{border:1px solid var(--border);margin-bottom:6px;overflow:hidden;background:var(--bg)}
+  .mt-hd{display:flex;border-bottom:1px solid var(--border);background:var(--surface)}
+  .mt-hc{font-family:var(--mono);font-size:6px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;padding:4px;border-right:1px solid var(--border);flex:1}
+  .mt-hc:last-child{border-right:none}
+  .mt-row{display:flex;border-bottom:1px solid var(--border)}
+  .mt-row:last-child{border-bottom:none}
+  .mt-cell{font-family:var(--mono);font-size:6px;color:var(--muted);padding:4px;border-right:1px solid var(--border);flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .mt-cell:last-child{border-right:none}
+  .mt-cell.c-hl{color:var(--fg)}
+
+  /* mini pagination */
+  .mp{display:flex;align-items:center;justify-content:center;gap:3px;padding:4px 0 0}
+  .mp-n{width:12px;height:12px;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:6px;color:var(--muted);transition:all .4s}
+  .sc.on .mp-n.on{background:var(--accent);border-color:var(--accent);color:var(--bg);font-weight:700}
+  .mp-n.on{background:var(--muted);border-color:var(--muted);color:var(--bg);font-weight:700}
+  .mp-btn{font-family:var(--mono);font-size:6px;color:var(--muted);background:var(--surface);border:1px solid var(--border);padding:2px 6px;transition:all .4s;white-space:nowrap}
+  .sc.on .mp-btn.on{color:var(--accent);border-color:var(--accent)}
+  .mp-btn.on{color:var(--fg);border-color:var(--muted)}
+  .mp-dots{font-family:var(--mono);font-size:6px;color:var(--muted);padding:0 1px}
+
+  /* mini load more */
+  .mlm{border:1px solid var(--border);background:var(--surface);padding:4px 0;margin-top:4px;text-align:center;font-family:var(--mono);font-size:7px;color:var(--muted);transition:all .4s}
+  .sc.on .mlm{border-color:var(--accent-border);color:var(--accent)}
+
+  .ctr-bar{display:flex;justify-content:center;margin-bottom:20px;gap:10px}
+  .play-btn{
+    background:var(--surface);border:1px solid var(--border);color:var(--fg);
+    width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    cursor:pointer;transition:border-color .3s,color .3s;
+  }
+  .play-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+  @media(max-width:480px){
+    #app-root{padding:14px}
+    .ins{padding:14px 16px}
+  }
+</style>
+</head>
+<body>
+<div id="app-root">
+  <section aria-label="Mô phỏng Pagination">
+    <div class="sim-grid" id="simGrid"></div>
+    <div class="ctr-bar">
+      <button class="play-btn" id="playBtn" title="Play/Pause">
+        <i class="fa-solid fa-pause"></i>
+      </button>
+    </div>
+    <div class="ins">
+      <i class="fa-solid fa-lightbulb ins-i"></i>
+      <p class="ins-t" id="insT">Đang tải...</p>
+    </div>
+  </section>
+</div>
+
+<script>
+  const allData=[
+    {name:'Nguyen Van A',role:'Designer'},
+    {name:'Tran Thi B',role:'Developer'},
+    {name:'Le Van C',role:'Manager'},
+    {name:'Pham Thi D',role:'Analyst'},
+    {name:'Hoang E',role:'Designer'},
+    {name:'Vo Thi F',role:'Developer'}
+  ];
+
+  const presets = [
+    { num:'01', name:'Numeric', type:'NUMERIC', sub:'Click số trang',
+      ins:'<strong>Numeric</strong> = hiện số trang, click để nhảy (1 2 3 ... 10). User biết tổng bao nhiêu trang, chọn trực tiếp. Phổ biến nhất cho data table, search results. Nhưng khi quá nhiều trang → cần truncate (1 ... 5 6 7 ... 10).' },
+    { num:'02', name:'Prev/Next', type:'PREV / NEXT', sub:'Chỉ lùi hoặc tới',
+      ins:'<strong>Prev/Next</strong> = chỉ có 2 nút, lùi hoặc tới. Không biết mình ở trang mấy, không nhảy được. Dùng khi flow tuần tự quan trọng (onboarding, wizard, mobile). User không thể skip pages.' },
+    { num:'03', name:'First/Last', type:'FIRST / LAST', sub:'Nhảy đầu hoặc cuối',
+      ins:'<strong>First/Last</strong> = thêm nút nhảy về trang 1 hoặc trang cuối. Giải quyết vấn đề của prev/next: user muốn đến cuối nhanh. Dùng cho log, archive, history — nơi data rất dài nhưng thường chỉ cần xem đầu hoặc cuối.' },
+    { num:'04', name:'Load More', type:'LOAD MORE', sub:'Nối thêm data',
+      ins:'<strong>Load More</strong> = không có "trang", chỉ nút "tải thêm". Click → data nối xuống dưới. Dùng cho social feed, comment — nơi UX trải nghiệm luồng liên tục quan trọng hơn việc định hướng số trang.' }
+  ];
+
+  const simGrid = document.getElementById('simGrid');
+  const insT = document.getElementById('insT');
+  const playBtn = document.getElementById('playBtn');
+  let activeI = 0;
+  let autoTimer;
+  let playing = true;
+
+  function renderSim() {
+    simGrid.innerHTML = presets.map((p, i) => {
+      
+      let tbl='<div class="mt"><div class="mt-hd"><div class="mt-hc">Name</div><div class="mt-hc">Role</div></div>';
+      for(let r=0;r<3;r++){
+        let idx = (r + (i*2)) % allData.length;
+        tbl+='<div class="mt-row"><div class="mt-cell c-hl">'+allData[idx].name+'</div><div class="mt-cell">'+allData[idx].role+'</div></div>';
+      }
+      tbl+='</div>';
+
+      let pag='';
+      if(i===0){
+        pag='<div class="mp">';
+        for(let j=1;j<=4;j++) pag+='<div class="mp-n'+(j===1?' on':'')+'">'+j+'</div>';
+        pag+='<div class="mp-dots">...</div>';
+        pag+='<div class="mp-n">10</div></div>';
+      }else if(i===1){
+        pag='<div class="mp"><div class="mp-btn on">&lt; Prev</div><div class="mp-btn on">Next &gt;</div></div>';
+      }else if(i===2){
+        pag='<div class="mp"><div class="mp-btn on">First</div><div class="mp-btn on">Last</div></div>';
+      }else{
+        pag='<div class="mlm">Load more &darr;</div>';
+      }
+
+      return `
+        <div class="sc" data-i="${i}" tabindex="0" role="button">
+          <div class="sc-top">
+            <span class="sc-num">${p.num}</span>
+            <span class="sc-tag">${p.name}</span>
+          </div>
+          <div class="sc-view">
+            ${tbl}${pag}
+          </div>
+          <div class="sc-val">${p.sub}</div>
+        </div>`;
+    }).join('');
+
+    simGrid.querySelectorAll('.sc').forEach(c => {
+      c.addEventListener('click', () => {
+        playing = false;
+        updatePlayBtn();
+        clearInterval(autoTimer);
+        activateCard(+c.dataset.i);
+      });
+    });
+  }
+
+  function activateCard(i) {
+    activeI = i;
+    simGrid.querySelectorAll('.sc').forEach((c, idx) => c.classList.toggle('on', idx === i));
+    setIns(presets[i].ins);
+  }
+
+  function setIns(t) {
+    insT.classList.add('fading');
+    setTimeout(() => { 
+      insT.innerHTML = t; 
+      insT.classList.remove('fading'); 
+    }, 250);
+  }
+
+  function startAuto() {
+    clearInterval(autoTimer);
+    autoTimer = setInterval(() => {
+      if(!playing) return;
+      activeI = (activeI + 1) % presets.length;
+      activateCard(activeI);
+    }, 4500);
+  }
+
+  function updatePlayBtn() {
+    playBtn.innerHTML = playing ? '<i class="fa-solid fa-pause"></i>' : '<i class="fa-solid fa-play"></i>';
+  }
+
+  playBtn.addEventListener('click', () => {
+    playing = !playing;
+    updatePlayBtn();
+    if(playing){
+      activeI = (activeI + 1) % presets.length;
+      activateCard(activeI);
+      startAuto();
+    } else {
+      clearInterval(autoTimer);
+    }
+  });
+
+  renderSim();
+  activateCard(0);
+  startAuto();
+</script>
+</body>
+</html>

@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pagination Practice — markAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  :root{
+    --bg:#0f0f12;--bg-card:#16161b;--fg:#e8e4dc;--muted:#6e6e7a;
+    --accent:#e88c2e;--accent-soft:rgba(232,140,46,.12);
+    --accent-border:rgba(232,140,46,.3);--border:#282830;
+    --surface:#1c1c23;--shape-lt:#33333d;--bar-m:#44444f;
+    --mono:'JetBrains Mono',monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:var(--bg);color:var(--fg);
+    font-family:'Space Grotesk',sans-serif;line-height:1.6;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:'';position:fixed;inset:0;
+    background-image:radial-gradient(rgba(255,255,255,.022) 1px,transparent 1px);
+    background-size:20px 20px;pointer-events:none;z-index:0;
+  }
+
+  #app-root{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:24px}
+
+  .pg{font-size:15px;color:var(--fg);opacity:.8;margin-bottom:22px;line-height:1.6}
+  .pg span{color:var(--accent);font-weight:600}
+
+  .presets{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+  .pre-btn{
+    font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;
+    color:var(--muted);background:var(--bg);border:1px solid var(--border);
+    padding:8px 16px;cursor:pointer;transition:all .2s;text-transform:uppercase;
+  }
+  .pre-btn:hover, .pre-btn.on{color:var(--fg);border-color:var(--accent);background:var(--accent-soft)}
+
+  /* practice table */
+  .pt-wrap{border:1px solid var(--border);background:var(--bg-card);margin-bottom:20px;overflow:hidden}
+  .pt-hd{display:flex;border-bottom:1px solid var(--border);background:var(--surface)}
+  .pt-hc{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:1px;padding:12px 16px;border-right:1px solid var(--border);flex:1}
+  .pt-hc:last-child{border-right:none}
+  .pt-body{transition:opacity .2s}
+  .pt-body.fading{opacity:0}
+  .pt-row{display:flex;border-bottom:1px solid var(--border);transition:background .15s}
+  .pt-row:last-child{border-bottom:none}
+  .pt-row:hover{background:var(--surface)}
+  .pt-cell{font-family:var(--mono);font-size:12px;color:var(--muted);padding:10px 16px;border-right:1px solid var(--border);flex:1}
+  .pt-cell:last-child{border-right:none}
+  .pt-cell.name-c{color:var(--fg);font-weight:600}
+
+  /* practice pagination */
+  .pp{display:flex;align-items:center;justify-content:center;gap:6px;padding:16px;border-top:1px solid var(--border);background:var(--bg);flex-wrap:wrap}
+  .pp-n{width:36px;height:36px;background:var(--bg-card);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:12px;color:var(--muted);cursor:pointer;transition:all .2s;user-select:none;border-radius:2px}
+  .pp-n:hover{border-color:var(--muted);color:var(--fg)}
+  .pp-n.on{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700;cursor:default}
+  .pp-btn{font-family:var(--mono);font-size:11px;font-weight:600;color:var(--muted);background:var(--bg-card);border:1px solid var(--border);padding:10px 16px;cursor:pointer;transition:all .2s;user-select:none;white-space:nowrap;border-radius:2px;text-transform:uppercase;}
+  .pp-btn:hover:not(:disabled){border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+  .pp-btn:disabled{opacity:.3;cursor:default}
+  .pp-dots{font-family:var(--mono);font-size:14px;color:var(--muted);padding:0 4px;letter-spacing:2px}
+  .pp-load{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--accent);background:var(--bg);border:1px solid var(--accent);padding:12px 32px;cursor:pointer;transition:all .2s;user-select:none;border-radius:2px;text-transform:uppercase;letter-spacing:1px}
+  .pp-load:hover{background:var(--accent-soft)}
+  .pp-load:disabled{opacity:.4;cursor:default}
+
+  .vfb{
+    border:1px solid var(--border);background:var(--bg-card);
+    padding:16px 20px;display:flex;align-items:center;gap:15px;flex-wrap:wrap;
+  }
+  .vtag{
+    font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;
+    color:var(--bg);background:var(--accent);padding:4px 10px;
+    white-space:nowrap;transition:background .3s;
+  }
+  .vdesc{font-size:13px;color:var(--fg);opacity:.8;line-height:1.4;flex:1}
+  .vstats{
+    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);
+    border-left:1px solid var(--border);padding-left:15px;
+  }
+
+  @media(max-width:768px){
+    .pt-hd{overflow-x:auto}
+    .pt-hc{min-width:120px}
+    .vstats{border-left:none;padding-left:0;width:100%;border-top:1px solid var(--border);padding-top:10px;margin-top:5px}
+  }
+</style>
+</head>
+<body>
+
+<div id="app-root">
+  <section aria-label="Thực hành Pagination">
+    <p class="pg">
+      <span>Thực hành:</span> Chuyển đổi giữa các loại Pagination và thao tác để cảm nhận sự khác biệt về trải nghiệm điều hướng.
+    </p>
+
+    <div class="presets" id="presets">
+      <button class="pre-btn on" data-mode="numeric">Numeric</button>
+      <button class="pre-btn" data-mode="prevnext">Prev / Next</button>
+      <button class="pre-btn" data-mode="firstlast">First / Last</button>
+      <button class="pre-btn" data-mode="loadmore">Load More</button>
+    </div>
+
+    <div class="pt-wrap" id="ptWrap">
+      <!-- table and pagination rendered here -->
+    </div>
+
+    <div class="vfb">
+      <span class="vtag" id="vtag">NUMERIC</span>
+      <span class="vdesc" id="vdesc">Numeric pagination, page 1 of 10, 5 items per page. Có thể jump đến bất kì trang nào.</span>
+      <span class="vstats" id="vstats">1-5 / 20 items</span>
+    </div>
+  </section>
+</div>
+
+<script>
+  const allData=[
+    {name:'Nguyen Van A',email:'nguyen.a@co.com',role:'Designer',dept:'Design'},
+    {name:'Tran Thi B',email:'tran.b@co.com',role:'Developer',dept:'Engineering'},
+    {name:'Le Van C',email:'le.c@co.com',role:'Manager',dept:'Marketing'},
+    {name:'Pham Thi D',email:'pham.d@co.com',role:'Analyst',dept:'Data'},
+    {name:'Hoang Van E',email:'hoang.e@co.com',role:'Designer',dept:'Design'},
+    {name:'Vo Thi F',email:'vo.f@co.com',role:'Developer',dept:'Engineering'},
+    {name:'Bui Van G',email:'bui.g@co.com',role:'Manager',dept:'Sales'},
+    {name:'Do Thi H',email:'do.h@co.com',role:'Analyst',dept:'Data'},
+    {name:'Ngo Van I',email:'ngo.i@co.com',role:'Developer',dept:'Engineering'},
+    {name:'Dang Thi K',email:'dang.k@co.com',role:'Designer',dept:'Design'},
+    {name:'Ly Van L',email:'ly.l@co.com',role:'Manager',dept:'Marketing'},
+    {name:'Cao Thi M',email:'cao.m@co.com',role:'Analyst',dept:'Data'},
+    {name:'Truong N',email:'truong.n@co.com',role:'Developer',dept:'Engineering'},
+    {name:'Huynh Thi O',email:'huynh.o@co.com',role:'Designer',dept:'Design'},
+    {name:'Phan Van P',email:'phan.p@co.com',role:'Manager',dept:'Sales'},
+    {name:'Vu Thi Q',email:'vu.q@co.com',role:'Analyst',dept:'Data'},
+    {name:'Dinh Van R',email:'dinh.r@co.com',role:'Developer',dept:'Engineering'},
+    {name:'Bach Thi S',email:'bach.s@co.com',role:'Designer',dept:'Design'},
+    {name:'Lai Van T',email:'lai.t@co.com',role:'Manager',dept:'Marketing'},
+    {name:'Duong Thi U',email:'duong.u@co.com',role:'Analyst',dept:'Data'}
+  ];
+
+  const PER_PAGE=5;
+  const TOTAL_PAGES=Math.ceil(allData.length/PER_PAGE);
+
+  let mode='numeric';
+  let curPage=1;
+  let loadedCount=5;
+
+  const ptWrap=document.getElementById('ptWrap');
+  const vtag=document.getElementById('vtag');
+  const vdesc=document.getElementById('vdesc');
+  const vstats=document.getElementById('vstats');
+  const preBtns = document.querySelectorAll('.pre-btn');
+
+  function getPageData(page){
+    let start=(page-1)*PER_PAGE;
+    return allData.slice(start,start+PER_PAGE);
+  }
+
+  function buildTable(data){
+    let html='<div class="pt-hd"><div class="pt-hc">Name</div><div class="pt-hc">Email</div><div class="pt-hc">Role</div><div class="pt-hc">Dept</div></div>';
+    html+='<div class="pt-body" id="ptBody">';
+    data.forEach(row=>{
+      html+='<div class="pt-row"><div class="pt-cell name-c">'+row.name+'</div><div class="pt-cell">'+row.email+'</div><div class="pt-cell">'+row.role+'</div><div class="pt-cell">'+row.dept+'</div></div>';
+    });
+    html+='</div>';
+    return html;
+  }
+
+  function buildPagination(){
+    if(mode==='numeric'){
+      let html='<div class="pp">';
+      for(let p=1;p<=TOTAL_PAGES;p++){
+        let cls=p===curPage?'pp-n on':'pp-n';
+        if(p>3&&p<TOTAL_PAGES-1&&p!==curPage&&p!==curPage-1&&p!==curPage+1) continue;
+        if(p===4&&curPage<3) html+='<div class="pp-dots">...</div>';
+        if(p===TOTAL_PAGES-2&&curPage>TOTAL_PAGES-3) html+='<div class="pp-dots">...</div>';
+        html+='<div class="'+cls+'" data-p="'+p+'">'+p+'</div>';
+      }
+      html+='</div>';
+      return html;
+    }
+    if(mode==='prevnext'){
+      let disP=curPage<=1?'disabled':'';
+      let disN=curPage>=TOTAL_PAGES?'disabled':'';
+      return '<div class="pp"><button class="pp-btn" id="ppPrev" '+disP+'>&lt; Previous</button><button class="pp-btn" id="ppNext" '+disN+'>Next &gt;</button></div>';
+    }
+    if(mode==='firstlast'){
+      let disF=curPage<=1?'disabled':'';
+      let disL=curPage>=TOTAL_PAGES?'disabled':'';
+      return '<div class="pp"><button class="pp-btn" id="ppFirst" '+disF+'>First</button><button class="pp-btn" id="ppLast" '+disL+'>Last</button></div>';
+    }
+    /* load more */
+    let dis=loadedCount>=allData.length?'disabled':'';
+    return '<div class="pp"><button class="pp-load" id="ppLoad" '+dis+'>Load more ('+loadedCount+' / '+allData.length+')</button></div>';
+  }
+
+  function updPractice(){
+    let data;
+    if(mode==='loadmore'){
+      data=allData.slice(0,loadedCount);
+    }else{
+      data=getPageData(curPage);
+    }
+
+    ptWrap.innerHTML=buildTable(data)+buildPagination();
+
+    /* bind events */
+    if(mode==='numeric'){
+      ptWrap.querySelectorAll('.pp-n').forEach(el=>{
+        el.addEventListener('click',function(){
+          curPage=parseInt(this.dataset.p);
+          updPractice();
+        });
+      });
+    }else if(mode==='prevnext'){
+      let prev=ptWrap.querySelector('#ppPrev');
+      let next=ptWrap.querySelector('#ppNext');
+      if(prev) prev.addEventListener('click',()=>{if(curPage>1){curPage--;updPractice()}});
+      if(next) next.addEventListener('click',()=>{if(curPage<TOTAL_PAGES){curPage++;updPractice()}});
+    }else if(mode==='firstlast'){
+      let first=ptWrap.querySelector('#ppFirst');
+      let last=ptWrap.querySelector('#ppLast');
+      if(first) first.addEventListener('click',()=>{if(curPage>1){curPage=1;updPractice()}});
+      if(last) last.addEventListener('click',()=>{if(curPage<TOTAL_PAGES){curPage=TOTAL_PAGES;updPractice()}});
+    }else{
+      let load=ptWrap.querySelector('#ppLoad');
+      if(load) load.addEventListener('click',()=>{
+        if(loadedCount<allData.length){
+          loadedCount=Math.min(loadedCount+PER_PAGE,allData.length);
+          updPractice();
+        }
+      });
+    }
+
+    /* Update Info */
+    let typeLabel=mode==='numeric'?'NUMERIC':mode==='prevnext'?'PREV / NEXT':mode==='firstlast'?'FIRST / LAST':'LOAD MORE';
+    vtag.textContent = typeLabel;
+
+    let txt='';
+    if(mode==='numeric') txt='Numeric pagination cho phép người dùng nhìn thấy tổng số trang và nhảy đến vị trí mong muốn ngay lập tức.';
+    else if(mode==='prevnext') txt='Prev/Next hướng người dùng đi theo luồng tuyến tính. Phù hợp cho wizard, onboarding, hoặc giao diện mobile hẹp.';
+    else if(mode==='firstlast') txt='Có thêm tùy chọn First/Last giúp giải quyết nhược điểm của Prev/Next khi dữ liệu quá dài, cần quay lại điểm đầu/cuối nhanh.';
+    else txt='Load More nối tiếp dữ liệu, giúp trải nghiệm cuộn không bị ngắt quãng. Phù hợp với timeline, social feed.';
+    vdesc.textContent = txt;
+
+    let rangeTxt=mode==='loadmore'?'1 - '+loadedCount:((curPage-1)*PER_PAGE+1)+' - '+Math.min(curPage*PER_PAGE,allData.length);
+    vstats.textContent = rangeTxt + ' / ' + allData.length + ' items (Page ' + (mode==='loadmore'?'N/A':curPage) + ')';
+  }
+
+  preBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      preBtns.forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      mode = btn.dataset.mode;
+      curPage=1;
+      loadedCount=PER_PAGE;
+      updPractice();
+    });
+  });
+
+  updPractice();
+</script>
+</body>
+</html>
