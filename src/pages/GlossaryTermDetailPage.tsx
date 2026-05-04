@@ -94,6 +94,8 @@ import fontWeightDemoHtml from '../../gif-fontweight-demo.html?raw';
 import fontWeightPracticeHtml from '../../gif-fontweight-practice.html?raw';
 import contrastDemoHtml from '../../gif-contrast-demo.html?raw';
 import contrastPracticeHtml from '../../gif-contrast-practice.html?raw';
+import hierarchyDemoHtml from '../../gif-hierarchy-demo.html?raw';
+import hierarchyPracticeHtml from '../../gif-hierarchy-practice.html?raw';
 
 
 // Final sync for viewport practice update
@@ -160,6 +162,7 @@ export default function GlossaryTermDetailPage() {
       case 'hero-section': return heroSectionDemoHtml;
       case 'fontweight': return fontWeightDemoHtml;
       case 'contrast': return contrastDemoHtml;
+      case 'hierarchy': return hierarchyDemoHtml;
       default: return null;
     }
   };
@@ -210,6 +213,7 @@ export default function GlossaryTermDetailPage() {
       case 'hero-section': return heroSectionPracticeHtml;
       case 'fontweight': return fontWeightPracticeHtml;
       case 'contrast': return contrastPracticeHtml;
+      case 'hierarchy': return hierarchyPracticeHtml;
       default: return null;
     }
   };

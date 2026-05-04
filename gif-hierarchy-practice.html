@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Visual Hierarchy — Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  /* === DESIGN TOKENS === */
+  :root {
+    --bg: #131110;
+    --fg: #e8e0d4;
+    --muted: #706b64;
+    --accent: #e88c2e;
+    --card: #1c1a18;
+    --card-alt: #242120;
+    --border: #302c28;
+    --border-hi: #44403a;
+    --success: #3a9e5c;
+    --error: #e14949;
+    --radius: 2px;
+    --sans: 'Space Grotesk', sans-serif;
+    --mono: 'IBM Plex Mono', monospace;
+  }
+
+  /* === RESET & BASE === */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    background-image: 
+      radial-gradient(ellipse at 25% 15%, rgba(232, 140, 46, 0.035) 0%, transparent 55%),
+      radial-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+    background-size: 100% 100%, 16px 16px;
+    font-family: var(--sans);
+    color: var(--fg);
+    padding: 12px;
+  }
+
+  .pw { 
+    width: 100%; 
+    background: var(--card); 
+    border: 2px solid var(--border); 
+    padding: 20px 24px;
+  }
+  .pw-h { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+  .pw-h span { color: var(--accent); }
+  .pw-s { font-size: 11px; color: var(--muted); margin-bottom: 20px; }
+
+  /* Reorder List */
+  .reorder-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 24px;
+  }
+  .reorder-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 14px;
+    background: var(--card-alt);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    cursor: grab;
+    user-select: none;
+    transition: all 0.2s ease;
+  }
+  .reorder-item:active { cursor: grabbing; opacity: 0.8; transform: scale(0.98); }
+  .reorder-item.dragging { opacity: 0.5; border-style: dashed; }
+  
+  .reorder-rank {
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--accent);
+    background: rgba(232, 140, 46, 0.1);
+    min-width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+  }
+  .reorder-label { font-size: 12px; font-weight: 600; flex: 1; }
+  .reorder-handle { color: var(--muted); font-size: 10px; cursor: grab; }
+
+  /* Preview */
+  .prev {
+    background: var(--bg);
+    border: 1px solid var(--border-hi);
+    padding: 16px;
+    border-radius: var(--radius);
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-height: 140px;
+  }
+  .prev-h { font-family: var(--mono); font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px; }
+  
+  /* Feedback */
+  .fb {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+    font-size: 11px;
+    border: 1px solid var(--border);
+    background: var(--card-alt);
+    border-radius: var(--radius);
+    min-height: 42px;
+  }
+  .fb.ok { border-color: var(--success); color: var(--success); background: rgba(58, 158, 92, 0.05); }
+  .fb.no { border-color: var(--error); color: var(--error); background: rgba(225, 73, 73, 0.05); }
+
+  .btn-check {
+    margin-top: 16px;
+    width: 100%;
+    padding: 10px;
+    background: var(--accent);
+    border: none;
+    color: #000;
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border-radius: var(--radius);
+    transition: all 0.2s;
+  }
+  .btn-check:hover { background: #f0a060; }
+  .btn-check:active { transform: scale(0.98); }
+
+  /* Item Styles */
+  .p-h1 { font-size: 1.2rem; font-weight: 700; color: var(--fg); line-height: 1.2; }
+  .p-h2 { font-size: 0.9rem; font-weight: 600; color: var(--fg); line-height: 1.3; }
+  .p-meta { font-family: var(--mono); font-size: 0.65rem; color: var(--muted); }
+  .p-body { font-size: 0.75rem; color: var(--muted); line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<div class="pw">
+  <div class="pw-h">Thực hành — <span>Hierarchy</span></div>
+  <div class="pw-s">Kéo thả để sắp xếp các phần tử theo thứ tự quan trọng từ cao xuống thấp (1 -> 4).</div>
+
+  <div class="reorder-list" id="list">
+    <!-- Items will be injected here -->
+  </div>
+
+  <div class="prev">
+    <div class="prev-h">Giao diện xem trước</div>
+    <div id="preview-content"></div>
+  </div>
+
+  <div class="fb" id="fb">Sắp xếp các mục rồi nhấn Kiểm tra</div>
+  <button class="btn-check" id="checkBtn">Kiểm tra kết quả</button>
+</div>
+
+<script>
+  const items = [
+    { id: 'h1', label: 'Tiêu đề bài viết (H1)', type: 'p-h1', text: 'Hierarchy quyết định UX như thế nào?', weight: 1 },
+    { id: 'h2', label: 'Tiêu đề phụ (H2)', type: 'p-h2', text: 'Bí mật của những Landing Page chuyển đổi cao', weight: 2 },
+    { id: 'meta', label: 'Thông tin Meta', type: 'p-meta', text: 'Tác giả: MarkAI &middot; 5 phút đọc', weight: 3 },
+    { id: 'body', label: 'Nội dung văn bản', type: 'p-body', text: 'Visual Hierarchy là cách sắp xếp các thành phần thiết kế để dẫn dắt mắt người dùng qua một trang web theo thứ tự quan trọng...', weight: 4 }
+  ];
+
+  let currentOrder = [...items].sort(() => Math.random() - 0.5);
+
+  const listEl = document.getElementById('list');
+  const previewEl = document.getElementById('preview-content');
+  const fbEl = document.getElementById('fb');
+  const checkBtn = document.getElementById('checkBtn');
+
+  function render() {
+    listEl.innerHTML = '';
+    previewEl.innerHTML = '';
+
+    currentOrder.forEach((item, index) => {
+      // List Item
+      const li = document.createElement('div');
+      li.className = 'reorder-item';
+      li.draggable = true;
+      li.dataset.id = item.id;
+      li.innerHTML = `
+        <span class="reorder-rank">${index + 1}</span>
+        <span class="reorder-label">${item.label}</span>
+        <i class="fa-solid fa-grip-vertical reorder-handle"></i>
+      `;
+      
+      li.addEventListener('dragstart', handleDragStart);
+      li.addEventListener('dragover', handleDragOver);
+      li.addEventListener('drop', handleDrop);
+      li.addEventListener('dragend', handleDragEnd);
+      
+      listEl.appendChild(li);
+
+      // Preview Item
+      const pItem = document.createElement('div');
+      pItem.className = item.type;
+      pItem.innerHTML = item.text;
+      previewEl.appendChild(pItem);
+    });
+  }
+
+  let dragSource = null;
+
+  function handleDragStart(e) {
+    dragSource = this;
+    this.classList.add('dragging');
+    e.dataTransfer.effectAllowed = 'move';
+  }
+
+  function handleDragOver(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    return false;
+  }
+
+  function handleDrop(e) {
+    e.stopPropagation();
+    if (dragSource !== this) {
+      const sourceId = dragSource.dataset.id;
+      const targetId = this.dataset.id;
+      
+      const sourceIdx = currentOrder.findIndex(i => i.id === sourceId);
+      const targetIdx = currentOrder.findIndex(i => i.id === targetId);
+      
+      const [movedItem] = currentOrder.splice(sourceIdx, 1);
+      currentOrder.splice(targetIdx, 0, movedItem);
+      
+      render();
+    }
+    return false;
+  }
+
+  function handleDragEnd() {
+    this.classList.remove('dragging');
+  }
+
+  checkBtn.onclick = () => {
+    const isCorrect = currentOrder.every((item, idx) => item.weight === idx + 1);
+    
+    if (isCorrect) {
+      fbEl.className = 'fb ok';
+      fbEl.innerHTML = '<i class="fa-solid fa-check"></i> <span><strong>Chính xác!</strong> Bạn đã sắp xếp đúng thứ tự phân cấp thị giác chuẩn.</span>';
+    } else {
+      fbEl.className = 'fb no';
+      fbEl.innerHTML = '<i class="fa-solid fa-xmark"></i> <span><strong>Chưa đúng.</strong> Hãy nhớ: Tiêu đề lớn nhất luôn ở trên cùng (1), sau đó đến tiêu đề phụ (2)...</span>';
+    }
+  };
+
+  render();
+</script>
+</body>
+</html>
