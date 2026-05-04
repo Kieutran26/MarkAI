@@ -122,6 +122,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'opacity', name: 'Opacity', nameEn: 'Độ trong suốt / Transparency', letter: 'O', groups: ['design', 'code'], definition: 'Độ trong suốt của một phần tử, từ 0 (vô hình) đến 1 (đậm đặc hoàn toàn). Opacity là công cụ mạnh mẽ để tạo phân cấp thị giác, trạng thái tương tác (hover, disabled) và các hiệu ứng lớp phủ (overlay) mà không cần thay đổi màu sắc gốc.', example: 'Prompt: "Giảm opacity của ảnh nền xuống 0.5 để text phía trên dễ đọc hơn, hoặc set opacity 0.4 cho nút bấm khi ở trạng thái disabled."', related: ['color-palette', 'contrast', 'hierarchy', 'interface'], demo: { kind: 'interactive', src: 'gif-opacity-demo.html', alt: 'Mô phỏng các ứng dụng của Opacity: Text, Background, Icon và Component' } },
   { id: 'flat-design', name: 'Flat Design', nameEn: 'Thiết kế phẳng', letter: 'F', groups: ['design'], definition: 'Phong cách thiết kế loại bỏ các hiệu ứng giả 3D như đổ bóng (shadow), độ dốc màu (gradient), hay các chi tiết nổi khối (skeuomorphism). Flat Design tập trung vào sự đơn giản, sử dụng màu sắc phẳng, hình khối rõ ràng và typography mạnh mẽ để truyền tải thông tin.', example: 'Sự thay đổi của iOS từ bản 6 sang bản 7 là minh chứng rõ nhất cho việc chuyển từ Skeuomorphism sang Flat Design. Prompt: "Hãy thiết kế UI theo style flat, bỏ hết shadow và gradient để giao diện trông hiện đại hơn."', related: ['skeuomorphism', 'minimalism', 'ui', 'design-system'], demo: { kind: 'interactive', src: 'gif-flatdesign-demo.html', alt: 'Mô phỏng 4 ví dụ về Flat Design: Hero, Pricing, Dashboard và Chat UI' } },
   { id: 'glassmorphism', name: 'Glassmorphism', nameEn: 'Hiệu ứng kính mờ', letter: 'G', groups: ['design'], definition: 'Phong cách thiết kế sử dụng các lớp nền trong suốt kết hợp với hiệu ứng làm mờ (blur) phía sau và đường viền mờ, tạo cảm giác như đang nhìn qua một tấm kính mờ. Glassmorphism giúp tạo chiều sâu, sự phân cấp và vẻ hiện đại cho giao diện mà vẫn giữ được sự liên kết với nền.', example: 'Prompt: "Tạo một card thông báo theo phong cách glassmorphism với backdrop-filter: blur(16px), nền trắng 10% opacity và viền trắng mờ 1px để làm nổi bật thông tin trên nền gradient rực rỡ."', related: ['ui', 'opacity', 'blur', 'depth', 'design-system'], demo: { kind: 'interactive', src: 'gif-glassmorphism-demo.html', alt: 'Mô phỏng 4 ứng dụng của Glassmorphism: Card, Dark Card, Nav và Modal' } },
+  { id: 'spinner', name: 'Spinner', nameEn: 'Vòng quay chờ / Loading Indicator', letter: 'S', groups: ['design', 'code'], definition: 'Một biểu tượng đồ họa (thường là vòng tròn quay) dùng để thông báo cho người dùng rằng hệ thống đang xử lý tác vụ và họ cần chờ đợi. Spinner giúp giảm sự ức chế khi người dùng không biết hệ thống có đang hoạt động hay không.', example: 'Khi nhấn nút "Thanh toán", một spinner xuất hiện trên nút để báo hiệu đang gửi thông tin thẻ, ngăn người dùng bấm nhầm lần nữa.', related: ['skeleton', 'state', 'ux', 'async'], demo: { kind: 'interactive', src: 'gif-spinner-demo.html', alt: 'Mô phỏng 4 loại spinner và cách dùng trong flow thực tế' } },
 ];
 
 export const quickRefItems = [
@@ -209,6 +210,7 @@ const deepDiveTermIds = new Set([
   'opacity',
   'flat-design',
   'glassmorphism',
+  'spinner',
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -454,6 +456,12 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     '3 thành phần cốt lõi tạo nên glass effect: Nền bán trong suốt (Transparency), Hiệu ứng mờ phía sau (Backdrop Blur) và Đường viền mờ (Subtle Border). Thiếu 1 trong 3, hiệu ứng sẽ không ra chất "kính".',
     'Quy tắc vàng: Glassmorphism chỉ thực sự đẹp khi đặt trên một nền có màu sắc hoặc hình khối rực rỡ (như các blobs màu trong mô phỏng). Nếu đặt trên nền trắng tinh hoặc xám đặc, nó sẽ trông như một mảng màu xám bẩn.',
     'Cảnh báo hiệu năng: Backdrop-blur là một thuộc tính "ngốn" tài nguyên trình duyệt. Đừng dùng quá nhiều lớp glass chồng lên nhau hoặc dùng trên các bảng dữ liệu cực lớn vì có thể gây lag khi scroll.',
+  ],
+  spinner: [
+    'Spinner là tín hiệu "đang bận" phổ biến nhất. Tuy nhiên, nếu spinner quay quá 3-5 giây mà không có thông tin bổ sung, user sẽ bắt đầu cảm thấy lo lắng hoặc mất kiên nhẫn.',
+    '4 loại spinner cơ bản: Basic (nhiều kích thước), With Text (có ngữ cảnh), Overlay (chặn tương tác toàn trang), và Inline (nằm trong element như button/input).',
+    'Quy tắc vàng: Luôn vô hiệu hóa (disable) các nút bấm khi spinner đang quay để tránh việc user gửi yêu cầu trùng lặp gây lỗi dữ liệu.',
+    'Nếu tác vụ mất hơn 10 giây, hãy cân nhắc dùng Progress Bar (thanh tiến trình) thay vì Spinner để user biết chính xác họ phải chờ bao lâu nữa.',
   ],
 };
 

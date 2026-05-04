@@ -104,6 +104,8 @@ import gradientDemoHtml from '../../gif-gradient-demo.html?raw';
 import gradientPracticeHtml from '../../gif-gradient-practice.html?raw';
 import glassmorphismDemoHtml from '../../gif-glassmorphism-demo.html?raw';
 import glassmorphismPracticeHtml from '../../gif-glassmorphism-practice.html?raw';
+import spinnerDemoHtml from '../../gif-spinner-demo.html?raw';
+import spinnerPracticeHtml from '../../gif-spinner-practice.html?raw';
 
 
 // Final sync for viewport practice update
@@ -175,6 +177,7 @@ export default function GlossaryTermDetailPage() {
       case 'flat-design': return flatDesignDemoHtml;
       case 'gradient': return gradientDemoHtml;
       case 'glassmorphism': return glassmorphismDemoHtml;
+      case 'spinner': return spinnerDemoHtml;
       default: return null;
     }
   };
@@ -230,6 +233,7 @@ export default function GlossaryTermDetailPage() {
       case 'flat-design': return flatDesignPracticeHtml;
       case 'gradient': return gradientPracticeHtml;
       case 'glassmorphism': return glassmorphismPracticeHtml;
+      case 'spinner': return spinnerPracticeHtml;
       default: return null;
     }
   };
