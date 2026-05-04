@@ -4,118 +4,174 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Contrast Ratio — Practice</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#cf5c27;--card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a;--pass:#2a6e4e;--pass-t:#7dcea0;--fail-bg:#4a2020;--fail-t:#c47070}
+:root{
+  --bg:#0c0c0e;--bg2:#131315;--fg:#ece8e1;--muted:#706b64;
+  --accent:#e88c2e;--card:#1a1a1e;--border:#26262a;
+  --mono:'Space Mono',monospace;--sans:'Space Grotesk',sans-serif;
+  --pass:#2a6e4e;--pass-t:#7dcea0;--fail-bg:#4a2020;--fail-t:#c47070;
+}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(207,92,39,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 100%,16px 16px;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:12px;gap:16px}
+body{
+  background:var(--bg);color:var(--fg);font-family:var(--sans);
+  min-height:100vh;display:flex;align-items:flex-start;justify-content:center;
+  padding:16px;
+  background-image:
+    radial-gradient(ellipse 60% 40% at 50% 0%,rgba(232,140,46,.04) 0%,transparent 100%),
+    linear-gradient(rgba(255,255,255,.016) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.016) 1px,transparent 1px);
+  background-size:100% 100%,28px 28px,28px 28px;
+}
+.wrap{width:100%;max-width:100%}
 
-.pw{width:100%;background:var(--card);border:2px solid var(--border);padding:20px 24px}
-.pw-h{font-size:15px;font-weight:700;margin-bottom:2px}.pw-h span{color:var(--accent)}
-.pw-s{font-size:11px;color:var(--muted);margin-bottom:14px}
+.stag{
+  font-family:var(--mono);font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--accent);
+  border:1px solid rgba(232,140,46,.35);display:inline-block;
+  padding:3px 10px;margin-bottom:10px;
+}
+.prac{margin-top:0;padding:24px;background:var(--card);border:2px solid var(--border)}
+.phd{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:16px;flex-wrap:wrap}
+.pgoal{font-family:var(--mono);font-size:11px;color:var(--muted);line-height:1.6;max-width:440px}
+.pgoal strong{color:var(--fg);font-weight:600}
+.phint{font-family:var(--mono);font-size:10px;color:rgba(232,140,46,.55);text-align:right;line-height:1.5}
 
-.ctx-r{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
-.ctx-b{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;padding:6px 12px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:6px}
-.ctx-b:hover{border-color:var(--accent);color:var(--fg)}
-.ctx-b.on{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+/* Controls */
+.pctrl{
+  display:flex;align-items:center;gap:16px;flex-wrap:wrap;
+  padding:12px 14px;background:var(--card);border:1px solid var(--border);
+  margin-bottom:14px;
+}
+.pctrl-label{
+  font-family:var(--mono);font-size:9px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--muted);white-space:nowrap;
+}
+.bg-tog{display:flex;border:1px solid var(--border);overflow:hidden}
+.bg-btn{
+  font-family:var(--mono);font-size:9px;letter-spacing:.1em;
+  padding:5px 12px;border:none;cursor:pointer;
+  background:var(--bg2);color:var(--muted);
+  transition:background .2s,color .2s;
+}
+.bg-btn:hover{color:var(--fg)}
+.bg-btn.on{background:var(--accent);color:var(--bg)}
 
-.sl-sec{margin-bottom:20px}
-.sl-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
-.sl-lbl{font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace}
-.sl-val{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700;color:var(--accent)}
+.slider-wrap{display:flex;align-items:center;gap:10px;flex:1;min-width:160px}
+input[type="range"]{
+  -webkit-appearance:none;appearance:none;flex:1;height:3px;
+  background:var(--border);border:none;outline:none;cursor:pointer;
+}
+input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:14px;height:14px;
+  background:var(--accent);border:2px solid var(--bg);cursor:pointer;
+}
+input[type="range"]::-moz-range-thumb{
+  width:14px;height:14px;background:var(--accent);
+  border:2px solid var(--bg);cursor:pointer;border-radius:0;
+}
+.hex-v{
+  font-family:var(--mono);font-size:11px;color:var(--fg);
+  min-width:62px;text-align:right;letter-spacing:.04em;
+}
 
-.sl-wrap{position:relative;height:30px;display:flex;align-items:center}
-.sl-track{position:absolute;left:0;right:0;height:4px;background:var(--border)}
-
-input[type=range]{-webkit-appearance:none;width:100%;height:100%;background:transparent;outline:none;cursor:pointer;position:relative;z-index:2}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;background:var(--accent);border:2px solid var(--card);cursor:grab;border-radius:0}
-
-.met-row{display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap}
-.ratio-box{flex:1;min-width:140px;background:var(--card-alt);border:1px solid var(--border);padding:12px;display:flex;flex-direction:column;align-items:center;justify-content:center}
-.ratio-n{font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:700;color:var(--fg);line-height:1}
+/* Metrics row */
+.pmet{display:flex;align-items:stretch;gap:12px;margin-bottom:14px}
+.ratio-box{
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:12px 20px;background:var(--card);border:1px solid var(--border);
+  min-width:120px;
+}
+.ratio-n{font-family:var(--mono);font-size:28px;font-weight:700;color:var(--fg);line-height:1}
 .ratio-n span{font-size:14px;font-weight:400;color:var(--muted)}
-.ratio-lbl{font-size:8px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-top:4px}
-
-.grades{flex:2;min-width:240px;display:flex;flex-direction:column;gap:6px}
+.ratio-lbl{font-family:var(--mono);font-size:8px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-top:4px}
+.grades{display:flex;flex-direction:column;gap:4px;flex:1;justify-content:center}
 .gr-row{display:flex;align-items:center;gap:8px}
-.gr-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);min-width:90px}
-.gr-bar{flex:1;height:4px;background:var(--border);position:relative}
-.gr-fill{height:100%;transition:width .2s, background .2s}
-.gr-val{font-family:'JetBrains Mono',monospace;font-size:9px;padding:2px 6px;min-width:44px;text-align:center;font-weight:700}
-.gr-val.pass{background:var(--pass);color:var(--pass-t)}
-.gr-val.fail{background:var(--fail-bg);color:var(--fail-t)}
+.gr-lbl{font-family:var(--mono);font-size:9px;color:var(--muted);min-width:56px;letter-spacing:.06em}
+.gr-bar{flex:1;height:4px;background:var(--border);position:relative;overflow:visible}
+.gr-fill{height:100%;transition:width .15s,background .15s}
+.gr-thresh{position:absolute;top:-3px;height:10px;width:1px;background:rgba(255,255,255,.12)}
+.gr-thresh-lbl{
+  position:absolute;top:-14px;font-family:var(--mono);font-size:7px;
+  color:rgba(255,255,255,.2);transform:translateX(-50%);white-space:nowrap;
+}
+.gr-badge{
+  font-family:var(--mono);font-size:8px;letter-spacing:.08em;
+  padding:2px 6px;min-width:36px;text-align:center;
+  transition:background .2s,color .2s;
+}
+.gr-badge.pass{background:var(--pass);color:var(--pass-t)}
+.gr-badge.fail{background:var(--fail-bg);color:var(--fail-t)}
 
-.prev{background:var(--card-alt);border:1px solid var(--border);padding:24px;margin-bottom:16px;min-height:120px;display:flex;flex-direction:column;justify-content:center;transition:background .2s}
-.pp-sm{font-size:13px;line-height:1.5;margin-bottom:6px}
-.pp-lg{font-size:24px;font-weight:700;line-height:1.2}
+/* Preview */
+.pprev{
+  position:relative;height:120px;border:1px solid var(--border);overflow:hidden;
+  display:flex;flex-direction:column;justify-content:center;
+  padding:16px 20px;transition:background-color .2s;
+}
+.pprev-sm{font-size:13px;line-height:1.5;margin-bottom:6px;transition:color .15s}
+.pprev-lg{font-size:24px;font-weight:700;line-height:1.3;transition:color .15s}
 
-.fb{padding:10px 14px;font-size:11px;border:1px solid var(--border);background:var(--card-alt);line-height:1.5;min-height:48px}
-.fb em{color:var(--accent);font-style:normal;font-weight:700}
+/* Feedback */
+.fb{margin-top:10px;font-family:var(--mono);font-size:10px;color:var(--muted);line-height:1.7;min-height:16px;transition:opacity .25s}
+.fb em{color:var(--fg);font-style:normal}
 
-@media(max-width:520px){.pw{padding:16px}}
+/* Mobile */
+@media(max-width:640px){
+  body{padding:14px 10px 36px}
+  .phd{flex-direction:column}.phint{text-align:left}
+  .pctrl{flex-direction:column;align-items:stretch;gap:10px}
+  .slider-wrap{min-width:0}
+  .pmet{flex-direction:column}
+  .ratio-box{flex-direction:row;gap:12px;min-width:0;justify-content:flex-start;padding:10px 14px}
+  .ratio-n{font-size:22px}
+  .pprev{height:100px;padding:12px 14px}
+  .pprev-lg{font-size:20px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
-
-<div class="pw">
-  <div class="pw-h">Thực hành — <span>Contrast Ratio</span></div>
-  <div class="pw-s">Chọn nền → kéo slider đổi độ sáng text để tìm ratio đạt chuẩn WCAG</div>
-
-  <div class="ctx-r" id="bgTog">
-    <button class="ctx-b on" data-bg="dark"><i class="fa-solid fa-moon"></i> Nền Tối</button>
-    <button class="ctx-b" data-bg="light"><i class="fa-solid fa-sun"></i> Nền Sáng</button>
-  </div>
-
-  <div class="sl-sec">
-    <div class="sl-head">
-      <span class="sl-lbl">text-brightness (hex)</span>
-      <span class="sl-val" id="hexV">#ECE8E1</span>
+<div class="wrap">
+  <div class="prac">
+    <span class="stag">thực hành</span>
+    <div class="phd">
+      <p class="pgoal"><strong>Kéo slider</strong> để đổi độ sáng text — xem ratio và WCAG grade thay đổi realtime.</p>
+      <p class="phint">Thử chuyển nền sáng/tối rồi kéo slider — cùng một màu text, kết quả khác hẳn.</p>
     </div>
-    <div class="sl-wrap">
-      <div class="sl-track"></div>
-      <input type="range" id="lSlider" min="0" max="255" value="236">
-    </div>
-  </div>
 
-  <div class="met-row">
-    <div class="ratio-box">
-      <div class="ratio-n" id="rNum">16.01<span> : 1</span></div>
-      <div class="ratio-lbl">contrast ratio</div>
-    </div>
-    <div class="grades" id="grades">
-      <div class="gr-row">
-        <span class="gr-lbl">AA Large Text</span>
-        <div class="gr-bar"><div class="gr-fill" id="gf0"></div></div>
-        <div class="gr-val" id="gb0">PASS</div>
+    <div class="pctrl">
+      <span class="pctrl-label">Nền</span>
+      <div class="bg-tog" id="bgTog">
+        <button class="bg-btn on" data-bg="dark">TỐI</button>
+        <button class="bg-btn" data-bg="light">SÁNG</button>
       </div>
-      <div class="gr-row">
-        <span class="gr-lbl">AA Small Text</span>
-        <div class="gr-bar"><div class="gr-fill" id="gf1"></div></div>
-        <div class="gr-val" id="gb1">PASS</div>
-      </div>
-      <div class="gr-row">
-        <span class="gr-lbl">AAA Large Text</span>
-        <div class="gr-bar"><div class="gr-fill" id="gf2"></div></div>
-        <div class="gr-val" id="gb2">PASS</div>
-      </div>
-      <div class="gr-row">
-        <span class="gr-lbl">AAA Small Text</span>
-        <div class="gr-bar"><div class="gr-fill" id="gf3"></div></div>
-        <div class="gr-val" id="gb3">PASS</div>
+      <span class="pctrl-label">Độ sáng text</span>
+      <div class="slider-wrap">
+        <input type="range" id="lSlider" min="0" max="255" value="236" aria-label="Độ sáng text">
+        <span class="hex-v" id="hexV">#ECE8E1</span>
       </div>
     </div>
-  </div>
 
-  <div class="prev" id="pprev">
-    <div class="pp-sm" id="ppSm">Văn bản nhỏ 14px — đoạn mô tả ngắn cho sản phẩm.</div>
-    <div class="pp-lg" id="ppLg">Tiêu đề lớn 24px bold</div>
-  </div>
+    <div class="pmet">
+      <div class="ratio-box">
+        <div class="ratio-n" id="rNum">16.01<span> : 1</span></div>
+        <div class="ratio-lbl">contrast ratio</div>
+      </div>
+      <div class="grades" id="grades"></div>
+    </div>
 
-  <div class="fb" id="pfb"></div>
+    <div class="pprev" id="pprev">
+      <div class="pprev-sm" id="ppSm">Văn bản nhỏ 14px — đoạn mô tả ngắn cho sản phẩm.</div>
+      <div class="pprev-lg" id="ppLg">Tiêu đề lớn 24px bold</div>
+    </div>
+
+    <div class="fb" id="pfb"></div>
+  </div>
 </div>
 
 <script>
+const $ = id => document.getElementById(id);
 function lum(r,g,b){
   const [rs,gs,bs]=[r,g,b].map(c=>{c/=255;return c<=0.03928?c/12.92:Math.pow((c+.055)/1.055,2.4)});
   return .2126*rs+.7152*gs+.0722*bs;
@@ -126,11 +182,34 @@ function cr(r1,g1,b1,r2,g2,b2){
 }
 function toHex(v){return v.toString(16).padStart(2,'0').toUpperCase()}
 
-const lSlider=document.getElementById('lSlider'),hexV=document.getElementById('hexV'),rNum=document.getElementById('rNum'),grades=document.getElementById('grades');
-const pprev=document.getElementById('pprev'),ppSm=document.getElementById('ppSm'),ppLg=document.getElementById('ppLg'),pfb=document.getElementById('pfb');
+const lSlider=$('lSlider'),hexV=$('hexV'),rNum=$('rNum'),grades=$('grades');
+const pprev=$('pprev'),ppSm=$('ppSm'),ppLg=$('ppLg'),pfb=$('pfb');
 let bgMode='dark';
 
 const BG={dark:[12,12,14],light:[245,245,240]};
+
+/* WCAG thresholds for the grade bars */
+const GRADES=[
+  {label:'AA large text',thresh:3,maxW:3/21},
+  {label:'AA small text',thresh:4.5,maxW:4.5/21},
+  {label:'AAA large text',thresh:4.5,maxW:4.5/21},
+  {label:'AAA small text',thresh:7,maxW:7/21}
+];
+
+function buildGrades(){
+  grades.innerHTML=GRADES.map((g,i)=>{
+    const pct=Math.min(100,(g.thresh/21)*100);
+    return`<div class="gr-row">
+      <span class="gr-lbl">${g.label}</span>
+      <div class="gr-bar">
+        <div class="gr-fill" id="gf${i}" style="width:0"></div>
+        <div class="gr-thresh" style="left:${pct}%"><div class="gr-thresh-lbl">${g.thresh}:1</div></div>
+      </div>
+      <div class="gr-badge" id="gb${i}">—</div>
+    </div>`;
+  }).join('');
+}
+buildGrades();
 
 function updatePrac(){
   const v=parseInt(lSlider.value);
@@ -141,35 +220,45 @@ function updatePrac(){
   const ratio=cr(v,v,v,br,bg,bb);
   rNum.innerHTML=ratio.toFixed(2)+'<span> : 1</span>';
 
+  /* Update preview */
   pprev.style.backgroundColor=bgMode==='dark'?'#0c0c0e':'#f5f5f0';
   ppSm.style.color=hex;
   ppLg.style.color=hex;
 
-  const thresholds=[3, 4.5, 4.5, 7];
-  thresholds.forEach((t,i)=>{
-    const pass = ratio >= t;
-    const fill = document.getElementById('gf'+i);
-    const val = document.getElementById('gb'+i);
-    fill.style.width = Math.min(100, (ratio/21)*100)+'%';
-    fill.style.background = pass ? 'var(--pass)' : 'var(--fail-t)';
-    val.className = 'gr-val ' + (pass?'pass':'fail');
-    val.textContent = pass ? 'PASS' : 'FAIL';
+  /* Grade bars */
+  const checks=[
+    ratio>=3,ratio>=4.5,ratio>=4.5,ratio>=7
+  ];
+  GRADES.forEach((g,i)=>{
+    const fillPct=Math.min(100,(ratio/21)*100);
+    const fill=document.getElementById('gf'+i);
+    const badge=document.getElementById('gb'+i);
+    fill.style.width=fillPct+'%';
+    fill.style.background=checks[i]?'var(--pass)':'var(--fail-t)';
+    badge.className='gr-badge '+(checks[i]?'pass':'fail');
+    badge.textContent=checks[i]?'PASS':'FAIL';
   });
 
-  let msg = '';
-  if(ratio<3) msg = 'Ratio <em>'+ratio.toFixed(2)+'</em> — Quá thấp, không đạt chuẩn nào. Khó đọc cho tất cả người dùng.';
-  else if(ratio<4.5) msg = 'Ratio <em>'+ratio.toFixed(2)+'</em> — Chỉ đạt AA cho chữ lớn. Chữ nhỏ vẫn khó đọc.';
-  else if(ratio<7) msg = 'Ratio <em>'+ratio.toFixed(2)+'</em> — Đạt chuẩn AA cho cả chữ lớn và nhỏ. Chưa đạt AAA.';
-  else msg = 'Ratio <em>'+ratio.toFixed(2)+'</em> — Tuyệt vời! Đạt cả chuẩn AA và AAA cho mọi kích thước chữ.';
+  /* Feedback */
+  const parts=[];
+  if(ratio<3)parts.push('Ratio <em>'+ratio.toFixed(2)+'</em> — quá thấp, <span style="color:var(--fail-t)">không đạt chuẩn nào</span>. Mọi loại text đều khó đọc.');
+  else if(ratio<4.5)parts.push('Ratio <em>'+ratio.toFixed(2)+'</em> — chỉ qua <em>AA large text</em>. Text nhỏ vẫn chưa đủ.');
+  else if(ratio<7)parts.push('Ratio <em>'+ratio.toFixed(2)+'</em> — qua <em>AA</em> cả lớn lẫn nhỏ. AAA chưa đạt.');
+  else parts.push('Ratio <em>'+ratio.toFixed(2)+'</em> — qua <span style="color:var(--pass-t)">AA + AAA</span> cho mọi loại text.');
 
-  pfb.innerHTML = msg;
+  if(bgMode==='light'&&v>180)parts.push('Màu text gần màu nền sáng → contrast tụt nhanh.');
+  if(bgMode==='dark'&&v<60)parts.push('Màu text gần màu nền tối → cùng kết quả.');
+  if(Math.abs(v-128)<20)parts.push('Vùng xám giữa (~128) thường là điểm nguy hiểm nhất trên cả hai nền.');
+
+  pfb.innerHTML=parts.join(' ');
 }
 
-lSlider.oninput = updatePrac;
+lSlider.addEventListener('input',updatePrac);
 
-document.querySelectorAll('#bgTog .ctx-b').forEach(b=>b.addEventListener('click',()=>{
+/* Background toggle */
+document.querySelectorAll('#bgTog .bg-btn').forEach(b=>b.addEventListener('click',()=>{
   bgMode=b.dataset.bg;
-  document.querySelectorAll('#bgTog .ctx-b').forEach(x=>x.classList.toggle('on',x===b));
+  document.querySelectorAll('#bgTog .bg-btn').forEach(x=>x.classList.toggle('on',x===b));
   updatePrac();
 }));
 

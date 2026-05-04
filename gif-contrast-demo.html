@@ -1,217 +1,595 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Contrast Ratio — Demo</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<style>
-:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#cf5c27;--accent-dim:rgba(207,92,39,.15);--card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a;--pass:#2a6e4e;--pass-t:#7dcea0;--fail-bg:#4a2020;--fail-t:#c47070}
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(207,92,39,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 100%,16px 16px;display:flex;flex-direction:column;align-items:center;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:12px;gap:8px}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contrast Ratio — Demo</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #131110;
+      --fg: #e8e0d4;
+      --muted: #706b64;
+      --accent: #e88c2e;
+      --card: #1c1a18;
+      --card-alt: #242120;
+      --border: #302c28;
+      --border-hi: #44403a;
+      --ok: #4a8a5a;
+      --err: #a03030;
+      --warn: #b89a2a
+    }
 
-.aw{width:100%}
-.ab-wrap{width:100%;background:var(--card);border:2px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
-.la-wrap{width:100%;position:relative;overflow:hidden}
-.ab{width:700px;height:250px;transform-origin:top left;background:linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);background-size:30px 30px;position:relative}
-.hd{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
-.hd-t{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:2.5px}
-.hd-f{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
 
-.sbody{position:absolute;inset:0;display:flex;gap:16px;padding:20px;z-index:5;transition:opacity .3s ease}
-.sbody.fade{opacity:0}
-.cmp{flex:1;display:flex;flex-direction:column;gap:8px}
-.cmp-g{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:.12em;padding:4px 10px;display:inline-block;width:fit-content;text-transform:uppercase;font-weight:700}
-.cmp-g.pass{background:var(--pass);color:var(--pass-t)}
-.cmp-g.fail{background:var(--fail-bg);color:var(--fail-t)}
-.cmp-g.info{background:var(--card-alt);color:var(--muted);border:1px solid var(--border)}
-.cmp-s{flex:1;display:flex;flex-direction:column;justify-content:center;padding:16px;border:1px solid var(--border);overflow:hidden;background:var(--card-alt)}
-.cmp-r{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:700;color:var(--fg);line-height:1}
-.cmp-r span{font-size:12px;font-weight:400;color:var(--muted)}
-.cmp-w{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:2px;display:flex;gap:8px;align-items:center}
-.cmp-w .wc-pass{color:var(--pass-t)}
-.cmp-w .wc-fail{color:var(--fail-t)}
+    body {
+      background: var(--bg);
+      background-image: radial-gradient(ellipse at 25% 15%, rgba(212, 113, 42, .035) 0%, transparent 55%), radial-gradient(rgba(255, 255, 255, .018) 1px, transparent 1px);
+      background-size: 100% 100%, 16px 16px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-family: 'Space Grotesk', sans-serif;
+      color: var(--fg);
+      padding: 12px;
+      gap: 8px
+    }
 
-.inf{padding:11px 14px;border-top:1px solid var(--border);background:var(--card);min-height:86px}
-.dn{font-size:15px;font-weight:800;line-height:1.15}
-.ds{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);margin-top:2px}
-.dd{font-size:10px;color:var(--muted);margin-top:4px;line-height:1.4}
-.pt{height:2px;background:var(--border)}.pff{height:100%;background:var(--accent);width:0%}
+    .aw {
+      width: 100%
+    }
 
-/* Controls */
-.ctr{display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 0;background:transparent}
-.ctr-b{padding:6px 12px;background:var(--card-alt);border:1px solid var(--border);color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:1px}
-.ctr-b:hover{border-color:var(--border-hi);color:var(--fg)}
-.ctr-b.act{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+    .ab {
+      width: 700px;
+      height: 326px;
+      background: var(--card);
+      border: 2px solid var(--border);
+      transform-origin: top left;
+      overflow: hidden
+    }
 
-.pp-b{width:32px;height:32px;border-radius:50%;background:var(--accent);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-left:4px;transition:transform .2s;flex-shrink:0}
-.pp-b:active{transform:scale(.92)}
-.pp-i{width:12px;height:12px;fill:#000}
+    .hd {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 9px 14px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, .01)
+    }
 
-@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
-</style>
+    .hd-t {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 2.5px
+    }
+
+    .hd-f {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--muted)
+    }
+
+    .la {
+      position: relative;
+      width: 100%;
+      height: 200px;
+      background: linear-gradient(rgba(255, 255, 255, .01) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, .01) 1px, transparent 1px);
+      background-size: 30px 30px;
+      overflow: hidden
+    }
+
+    .fr {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      padding: 14px 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .3s
+    }
+
+    .fr.show {
+      opacity: 1;
+      pointer-events: auto
+    }
+
+    .si {
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity .25s, transform .25s
+    }
+
+    .fr.show .si {
+      opacity: 1;
+      transform: translateY(0)
+    }
+
+    .fl {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 8px
+    }
+
+    /* Contrast pair */
+    .cp {
+      display: flex;
+      gap: 14px;
+      flex: 1;
+      min-height: 0
+    }
+
+    .cp-side {
+      flex: 1;
+      display: flex;
+      flex-direction: column
+    }
+
+    .cp-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px
+    }
+
+    .cp-box {
+      flex: 1;
+      border: 1px solid var(--border);
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
+      transition: background .3s
+    }
+
+    .cp-text {
+      font-size: 10px;
+      line-height: 1.4
+    }
+
+    .cp-small {
+      font-size: 7px;
+      line-height: 1.3
+    }
+
+    .cp-ratio {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      gap: 6px
+    }
+
+    .cp-grade {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 2px 6px;
+      letter-spacing: 1px
+    }
+
+    .pass {
+      color: var(--ok);
+      border: 1px solid rgba(74, 138, 90, .4);
+      background: rgba(74, 138, 90, .08)
+    }
+
+    .fail {
+      color: var(--err);
+      border: 1px solid rgba(160, 48, 48, .4);
+      background: rgba(160, 48, 48, .08)
+    }
+
+    .cp-arrow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: var(--muted);
+      flex-shrink: 0
+    }
+
+    /* Button examples */
+    .cp-btns {
+      display: flex;
+      gap: 6px;
+      margin-top: 4px
+    }
+
+    .cp-b {
+      padding: 0 14px;
+      height: 26px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      border: 2px solid;
+      cursor: default;
+      white-space: nowrap
+    }
+
+    /* Light/Dark pair */
+    .ld-row {
+      display: flex;
+      gap: 10px;
+      flex: 1;
+      min-height: 0
+    }
+
+    .ld-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column
+    }
+
+    .ld-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7px;
+      color: var(--muted);
+      letter-spacing: 1.5px;
+      margin-bottom: 4px;
+      text-transform: uppercase
+    }
+
+    .ld-box {
+      flex: 1;
+      border: 1px solid var(--border);
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px
+    }
+
+    .inf {
+      padding: 11px 14px;
+      border-top: 1px solid var(--border)
+    }
+
+    .dn {
+      font-size: 15px;
+      font-weight: 800;
+      line-height: 1.15
+    }
+
+    .ds {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--accent);
+      margin-top: 2px
+    }
+
+    .dd {
+      font-size: 10px;
+      color: var(--muted);
+      margin-top: 4px;
+      line-height: 1.4
+    }
+
+    .di {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      color: var(--accent);
+      margin-top: 6px;
+      padding-top: 6px;
+      border-top: 1px dashed var(--border);
+      opacity: .78
+    }
+
+    .pt {
+      height: 2px;
+      background: var(--border)
+    }
+
+    .pf {
+      height: 100%;
+      background: var(--accent);
+      width: 0%
+    }
+
+    .ctr {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 8px 0;
+      background: transparent
+    }
+
+    .ctr-b {
+      padding: 6px 12px;
+      background: var(--card-alt);
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all .2s;
+      letter-spacing: 1px
+    }
+
+    .ctr-b:hover {
+      border-color: var(--border-hi);
+      color: var(--fg)
+    }
+
+    .ctr-b.act {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-dim)
+    }
+
+    .pp-b {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      margin-left: 4px;
+      transition: transform .2s;
+      flex-shrink: 0
+    }
+
+    .pp-b:active {
+      transform: scale(.92)
+    }
+
+    .pp-i {
+      width: 12px;
+      height: 12px;
+      fill: #000
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+      * {
+        transition: none !important;
+        animation: none !important
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="aw">
-<div class="ab-wrap">
-  <div class="hd"><span class="hd-t">CONTRAST RATIO</span><span class="hd-f" id="hf">01 / 04</span></div>
-  <div class="la-wrap" id="la-wrap">
-    <div class="ab" id="ab">
-      <div class="sbody" id="sbody"></div>
+  <div class="aw">
+    <div class="ab-wrap" id="ab-wrap" style="width:100%;position:relative;overflow:hidden">
+      <div class="ab" id="ab">
+        <div class="hd"><span class="hd-t">CONTRAST RATIO</span><span class="hd-f" id="hf">01 / 04</span></div>
+        <div class="la" id="la">
+
+          <!-- F0: Text Background -->
+          <div class="fr" id="f0">
+            <div class="fl si">01 TEXT / BACKGROUND CONTRAST</div>
+            <div class="cp si">
+              <div class="cp-side">
+                <div class="cp-label" style="color:var(--ok)"><span
+                    style="display:inline-block;width:8px;height:8px;background:var(--ok)"></span> GOOD</div>
+                <div class="cp-box" style="background:#1c1a18">
+                  <div class="cp-text" style="color:#e8e0d4">This text is easy to read on dark background</div>
+                  <div class="cp-ratio" style="color:var(--ok)">12.63:1 <span class="cp-grade pass">AAA</span></div>
+                </div>
+              </div>
+              <div class="cp-arrow">&#8594;</div>
+              <div class="cp-side">
+                <div class="cp-label" style="color:var(--err)"><span
+                    style="display:inline-block;width:8px;height:8px;background:var(--err)"></span> BAD</div>
+                <div class="cp-box" style="background:#1c1a18">
+                  <div class="cp-text" style="color:#706b64">This text is hard to read on dark background</div>
+                  <div class="cp-ratio" style="color:var(--err)">2.85:1 <span class="cp-grade fail">FAIL</span></div>
+                </div>
+              </div>
+            </div>
+            <div
+              style="font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);margin-top:auto;opacity:.5;letter-spacing:1px"
+              class="si">WCAG AA: 4.5:1 minimum &middot; AAA: 7:1 enhanced</div>
+          </div>
+
+          <!-- F1: Button -->
+          <div class="fr" id="f1">
+            <div class="fl si">02 UI BUTTON CONTRAST</div>
+            <div class="cp si">
+              <div class="cp-side">
+                <div class="cp-label" style="color:var(--ok)"><span
+                    style="display:inline-block;width:8px;height:8px;background:var(--ok)"></span> GOOD</div>
+                <div class="cp-box" style="background:#1c1a18">
+                  <div class="cp-btns"><button class="cp-b"
+                      style="background:var(--accent);border-color:var(--accent);color:#fff">Get Started</button><button
+                      class="cp-b" style="background:transparent;border-color:var(--accent);color:var(--accent)">Learn
+                      More</button></div>
+                  <div class="cp-ratio" style="color:var(--ok)">5.72:1 <span class="cp-grade pass">AA</span></div>
+                </div>
+              </div>
+              <div class="cp-arrow">&#8594;</div>
+              <div class="cp-side">
+                <div class="cp-label" style="color:var(--err)"><span
+                    style="display:inline-block;width:8px;height:8px;background:var(--err)"></span> BAD</div>
+                <div class="cp-box" style="background:#1c1a18">
+                  <div class="cp-btns"><button class="cp-b"
+                      style="background:#8b3a1a;border-color:#8b3a1a;color:#b08060">Get Started</button><button
+                      class="cp-b" style="background:transparent;border-color:#4a4038;color:#4a4038">Learn More</button>
+                  </div>
+                  <div class="cp-ratio" style="color:var(--err)">1.98:1 <span class="cp-grade fail">FAIL</span></div>
+                </div>
+              </div>
+            </div>
+            <div
+              style="font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);margin-top:auto;opacity:.5;letter-spacing:1px"
+              class="si">Button text must meet AA (4.5:1) &middot; outline button: text vs adjacent bg</div>
+          </div>
+
+          <!-- F2: Large Text -->
+          <div class="fr" id="f2">
+            <div class="fl si">03 LARGE TEXT CONTRAST</div>
+            <div class="cp si">
+              <div class="cp-side">
+                <div class="cp-label" style="color:var(--ok)"><span
+                    style="display:inline-block;width:8px;height:8px;background:var(--ok)"></span> GOOD</div>
+                <div class="cp-box" style="background:#e8e0d4">
+                  <div class="cp-text" style="font-size:20px;font-weight:700;color:#302c28">Large heading text</div>
+                  <div class="cp-ratio" style="color:var(--ok)">9.21:1 <span class="cp-grade pass">AAA</span></div>
+                </div>
+              </div>
+              <div class="cp-arrow">&#8594;</div>
+              <div class="cp-side">
+                <div class="cp-label" style="color:var(--warn)"><span
+                    style="display:inline-block;width:8px;height:8px;background:var(--warn)"></span> BORDERLINE</div>
+                <div class="cp-box" style="background:#e8e0d4">
+                  <div class="cp-text" style="font-size:20px;font-weight:700;color:#706b64">Large heading text</div>
+                  <div class="cp-ratio" style="color:var(--warn)">3.21:1 <span class="cp-grade fail">FAIL</span></div>
+                </div>
+              </div>
+            </div>
+            <div
+              style="font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);margin-top:auto;opacity:.5;letter-spacing:1px"
+              class="si">Large text (&ge;18pt / 14pt bold) &rarr; AA minimum only 3:1 &middot; AAA still 4.5:1</div>
+          </div>
+
+          <!-- F3: Light/Dark -->
+          <div class="fr" id="f3">
+            <div class="fl si">04 LIGHT / DARK MODE CONTRAST</div>
+            <div class="ld-row si">
+              <div class="ld-col">
+                <div class="ld-label">LIGHT MODE</div>
+                <div class="ld-box" style="background:#f5f0ea">
+                  <div class="cp-text" style="color:#302c28">Body text on light background</div>
+                  <div class="cp-small" style="color:#706b64">Secondary text is lighter</div>
+                  <div class="cp-ratio" style="color:var(--ok);font-size:10px">15.91:1 <span
+                      class="cp-grade pass">AAA</span></div>
+                </div>
+              </div>
+              <div class="ld-col">
+                <div class="ld-label">DARK MODE</div>
+                <div class="ld-box" style="background:#131110">
+                  <div class="cp-text" style="color:#e8e0d4">Body text on dark background</div>
+                  <div class="cp-small" style="color:#706b64">Secondary text must still pass AA</div>
+                  <div class="cp-ratio" style="color:var(--ok);font-size:10px">12.63:1 <span
+                      class="cp-grade pass">AAA</span></div>
+                </div>
+              </div>
+            </div>
+            <div
+              style="font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);margin-top:auto;opacity:.5;letter-spacing:1px;padding:0 2px"
+              class="si">Same content, different mode &rarr; contrast must be rechecked. Tool: WebAIM Contrast Checker
+            </div>
+          </div>
+        </div>
+
+        <div class="inf">
+          <div class="dn" id="dn">Text / Background</div>
+          <div class="ds" id="ds">TỶ LỆ TƯƠNG PHẢN</div>
+          <div class="dd" id="dd">Con số đo độ khác biệt giữa text và nền — số càng cao càng dễ đọc</div>
+          <div class="di" id="di">Báo "text mờ" → nói rõ "contrast ratio thấp", dev biết đúng cần tăng độ sáng text
+          </div>
+        </div>
+        <div class="pt">
+          <div class="pf" id="pf"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ctr">
+      <button class="ctr-b act" data-i="0">TEXT</button>
+      <button class="ctr-b" data-i="1">BUTTON</button>
+      <button class="ctr-b" data-i="2">LARGE</button>
+      <button class="ctr-b" data-i="3">MODE</button>
+      <button class="pp-b" id="pp" title="Play/Pause">
+        <svg class="pp-i" id="pp-i" viewBox="0 0 24 24">
+          <path d="M6 4h4v16H6zm8 0h4v16h-4z" />
+        </svg>
+      </button>
     </div>
   </div>
-  <div class="inf">
-    <div class="dn" id="dn">Text on Background</div>
-    <div class="ds" id="ds">01 / 04 SCENARIOS</div>
-    <div class="dd" id="dd">Cùng nền tối — text sáng đọc được, text tối mắt phải rướn mới thấy.</div>
-  </div>
-  <div class="pt"><div class="pff" id="pff"></div></div>
-</div>
 
-<div class="ctr">
-    <button class="ctr-b act" data-i="0">BASIC</button>
-    <button class="ctr-b" data-i="1">BUTTON</button>
-    <button class="ctr-b" data-i="2">SCALE</button>
-    <button class="ctr-b" data-i="3">MODE</button>
-    <button class="pp-b" id="pp" title="Play/Pause">
-        <svg class="pp-i" id="pp-i" viewBox="0 0 24 24"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>
-    </button>
-</div>
-</div>
+  <script>
+    /* ===== DATA ===== */
+    const INFO = [
+      { nm: 'Text / Background', sz: 'TỶ LỆ TƯƠNG PHẢN', dc: 'Con số đo độ khác biệt giữa text và nền — số càng cao càng dễ đọc', ins: 'Báo "text mờ" → nói rõ "contrast ratio thấp", dev biết đúng cần tăng độ sáng text' },
+      { nm: 'UI Button', sz: 'NÚT BẤM', dc: 'Text trên button phải đạt ít nhất AA — kể cả outline button', ins: '"Nút không thấy" → kiểm tra contrast ratio trước khi đổi màu, đừng đoán' },
+      { nm: 'Large Text', sz: 'TEXT LỚN', dc: 'Text &ge;18pt (hoặc 14pt bold) → ngưỡng AA thấp hơn, chỉ cần 3:1', ins: 'Heading lớn dễ đọc hơn body text → ngưỡng thấp hơn, nhưng AAA vẫn là 4.5:1' },
+      { nm: 'Light / Dark Mode', sz: 'SÁNG / TỐI', dc: 'Cùng content, đổi mode → contrast có thể fail ở mode còn lại', ins: '"Dark mode text mờ" → không phải bug, mà là contrast ratio chưa được check for dark bg' }
+    ];
 
-<script>
-const S=[
-  {
-    nm:'Basic Text',
-    ds:'01 / 04 SCENARIOS',
-    label:'01 TEXT ON BACKGROUND',
-    dc:'Cùng nền tối — text sáng đọc được, text tối mắt phải rướn mới thấy.',
-    panels:[
-      {grade:'PASS',gc:'pass',bg:'#0c0c0e',
-       html:'<div style="font-size:16px;font-weight:600;color:#fff">Sign up for free</div><div style="font-size:11px;color:rgba(255,255,255,.55);margin-top:3px">No credit card required</div>',
-       ratio:'19.56',wcag:[{t:'AA',p:true},{t:'AAA',p:true}]},
-      {grade:'FAIL',gc:'fail',bg:'#0c0c0e',
-       html:'<div style="font-size:16px;font-weight:600;color:#555">Sign up for free</div><div style="font-size:11px;color:#444;margin-top:3px">No credit card required</div>',
-       ratio:'2.63',wcag:[{t:'AA',p:false},{t:'AAA',p:false}]}
-    ]
-  },
-  {
-    nm:'Button Contrast',
-    ds:'02 / 04 SCENARIOS',
-    label:'02 BUTTON CONTRAST',
-    dc:'Text trên nút phải đủ tương phản — nút phải nổi bật trên nền trang.',
-    panels:[
-      {grade:'PASS',gc:'pass',bg:'#0c0c0e',
-       html:'<div style="display:inline-block;padding:8px 20px;background:#cf5c27;color:#fff;font-family:\'JetBrains Mono\',monospace;font-size:11px;font-weight:700;letter-spacing:.08em">GET STARTED</div><div style="font-family:\'JetBrains Mono\',monospace;font-size:8px;color:var(--muted);margin-top:6px">Text 4.67:1 · Nút 4.19:1</div>',
-       ratio:'4.67',wcag:[{t:'AA',p:true},{t:'AAA',p:false}]},
-      {grade:'FAIL',gc:'fail',bg:'#0c0c0e',
-       html:'<div style="display:inline-block;padding:8px 20px;background:#333;color:#555;font-family:\'JetBrains Mono\',monospace;font-size:11px;font-weight:700;letter-spacing:.08em">GET STARTED</div><div style="font-family:\'JetBrains Mono\',monospace;font-size:8px;color:var(--fail-t);margin-top:6px">Text 1.70:1 · Nút 1.55:1</div>',
-       ratio:'1.70',wcag:[{t:'AA',p:false},{t:'AAA',p:false}]}
-    ]
-  },
-  {
-    nm:'Large vs Small',
-    ds:'03 / 04 SCENARIOS',
-    label:'03 LARGE VS SMALL TEXT',
-    dc:'Cùng ratio 6.88:1 — text nhỏ chỉ qua AA, text lớn qua được AAA.',
-    panels:[
-      {grade:'SMALL 14PX',gc:'info',bg:'#0c0c0e',
-       html:'<div style="font-size:14px;font-weight:400;color:#999;line-height:1.5">Read documentation to get started.</div>',
-       ratio:'6.88',wcag:[{t:'AA',p:true},{t:'AAA',p:false}]},
-      {grade:'LARGE 24PX',gc:'info',bg:'#0c0c0e',
-       html:'<div style="font-size:24px;font-weight:700;color:#999;line-height:1.3">Read docs</div>',
-       ratio:'6.88',wcag:[{t:'AA',p:true},{t:'AAA',p:true}]}
-    ]
-  },
-  {
-    nm:'Light / Dark',
-    ds:'04 / 04 SCENARIOS',
-    label:'04 LIGHT / DARK MODE',
-    dc:'Cùng màu text — trên nền tối thì OK, chuyển sang nền sáng là mất.',
-    panels:[
-      {grade:'DARK MODE',gc:'pass',bg:'#0c0c0e',
-       html:'<div style="font-size:14px;font-weight:600;color:#ece8e1">Welcome back</div><div style="font-size:10px;color:rgba(236,232,225,.5);margin-top:3px">3 pending tasks</div>',
-       ratio:'16.01',wcag:[{t:'AA',p:true},{t:'AAA',p:true}]},
-      {grade:'LIGHT MODE',gc:'fail',bg:'#f5f5f0',
-       html:'<div style="font-size:14px;font-weight:600;color:#ece8e1">Welcome back</div><div style="font-size:10px;color:rgba(236,232,225,.5);margin-top:3px">3 pending tasks</div>',
-       ratio:'1.12',wcag:[{t:'AA',p:false},{t:'AAA',p:false}]}
-    ]
-  }
-];
+    const frs = [0, 1, 2, 3].map(i => document.getElementById('f' + i));
+    const el = { dn: document.getElementById('dn'), ds: document.getElementById('ds'), dd: document.getElementById('dd'), di: document.getElementById('di'), hf: document.getElementById('hf'), pf: document.getElementById('pf') };
+    let cur = 0, pa = null, t0 = 0, isPaused = false;
+    const DUR = 3500;
 
-const el={sbody:document.getElementById('sbody'),dn:document.getElementById('dn'),ds:document.getElementById('ds'),dd:document.getElementById('dd'),hf:document.getElementById('hf'),pff:document.getElementById('pff')};
-const ctrBs=document.querySelectorAll('.ctr-b');
-const ppB=document.getElementById('pp'), ppI=document.getElementById('pp-i');
+    const ctrBs = document.querySelectorAll('.ctr-b');
+    const ppB = document.getElementById('pp'), ppI = document.getElementById('pp-i');
 
-let cur=0,pa=null,t0=0,isPaused=false;
-const DUR=3800;
-
-function apply(i){
-  cur=i;
-  const s=S[i];
-  el.dn.textContent=s.nm;el.ds.textContent=s.ds;el.dd.textContent=s.dc;
-  el.hf.textContent='0'+(i+1)+' / 04';
-  ctrBs.forEach((b,j)=>b.classList.toggle('act',j===i));
-  
-  el.sbody.classList.add('fade');
-  setTimeout(()=>{
-    el.sbody.innerHTML=s.panels.map(p=>{
-      const wc=p.wcag.map(w=>`<span class="${w.p?'wc-pass':'wc-fail'}">${w.t} ${w.p?'✓':'✗'}</span>`).join('');
-      return`<div class="cmp">
-        <div class="cmp-g ${p.gc}">${p.grade}</div>
-        <div class="cmp-s" style="background:${p.bg}">${p.html}</div>
-        <div class="cmp-r">${p.ratio}<span> : 1</span></div>
-        <div class="cmp-w">${wc}</div>
-      </div>`;
-    }).join('');
-    el.sbody.classList.remove('fade');
-  },150);
-}
-
-function tk(n){
-    if(isPaused) return;
-    const p=Math.min(100,(n-t0)/DUR*100);
-    el.pff.style.width=p+'%';
-    if(p<100)pa=requestAnimationFrame(tk);
-    else next();
-}
-
-function startProg(){t0=performance.now();el.pff.style.transition='none';el.pff.style.width='0%';pa=requestAnimationFrame(tk)}
-function next(){if(isPaused)return;cur=(cur+1)%4;apply(cur);startProg()}
-
-function togglePP(){
-    isPaused=!isPaused;
-    ppI.innerHTML=isPaused ? '<path d="M8 5v14l11-7z"/>' : '<path d="M6 4h4v16H6zm8 0h4v16h-4z"/>';
-    if(!isPaused){
-        t0=performance.now() - (parseFloat(el.pff.style.width||0)/100*DUR);
-        pa=requestAnimationFrame(tk);
+    function apply(i) {
+      const s = INFO[i]; el.dn.textContent = s.nm; el.ds.textContent = s.sz; el.dd.textContent = s.dc; el.di.textContent = s.ins;
+      el.hf.textContent = '0' + (i + 1) + ' / 04';
+      ctrBs.forEach((b, j) => b.classList.toggle('act', j === i));
+      frs.forEach(f => f.classList.remove('show'));
+      requestAnimationFrame(() => requestAnimationFrame(() => { frs[i].classList.add('show') }));
     }
-}
-
-ctrBs.forEach(b=>{
-    b.onclick=()=>{
-        isPaused=true;
-        ppI.innerHTML='<path d="M8 5v14l11-7z"/>';
-        apply(parseInt(b.dataset.i));
-        el.pff.style.width='0%';
+    function tk(n) {
+      if (isPaused) return;
+      const p = Math.min(100, (n - t0) / DUR * 100);
+      el.pf.style.width = p + '%';
+      if (p < 100) pa = requestAnimationFrame(tk);
+      else next();
     }
-});
+    function startProg() { t0 = performance.now(); el.pf.style.transition = 'none'; el.pf.style.width = '0%'; pa = requestAnimationFrame(tk) }
+    function next() { if (isPaused) return; cur = (cur + 1) % 4; apply(cur); startProg() }
 
-ppB.onclick=togglePP;
+    function togglePP() {
+      isPaused = !isPaused;
+      ppI.innerHTML = isPaused ? '<path d="M8 5v14l11-7z"/>' : '<path d="M6 4h4v16H6zm8 0h4v16h-4z"/>';
+      if (!isPaused) {
+        t0 = performance.now() - (parseFloat(el.pf.style.width || 0) / 100 * DUR);
+        pa = requestAnimationFrame(tk);
+      }
+    }
 
-function scale(){const w=document.getElementById('la-wrap'),b=document.getElementById('ab'),s=w.clientWidth/700;b.style.transform='scale('+s+')';w.style.height=Math.ceil(250*s)+'px'}
-window.addEventListener('resize',scale);
-requestAnimationFrame(()=>requestAnimationFrame(scale));
+    ctrBs.forEach(b => {
+      b.onclick = () => {
+        isPaused = true;
+        ppI.innerHTML = '<path d="M8 5v14l11-7z"/>';
+        cur = parseInt(b.dataset.i);
+        apply(cur);
+        el.pf.style.width = '0%';
+      }
+    });
 
-apply(0);
-startProg();
+    ppB.onclick = togglePP;
 
-document.addEventListener('visibilitychange',()=>{
-  if(document.hidden){cancelAnimationFrame(pa)}
-  else if(!isPaused){t0=performance.now() - (parseFloat(el.pff.style.width||0)/100*DUR);pa=requestAnimationFrame(tk);}
-});
-</script>
+    function scale() { const w = document.getElementById('ab-wrap'), b = document.getElementById('ab'), s = w.clientWidth / 700; b.style.transform = 'scale(' + s + ')'; w.style.height = Math.ceil(326 * s) + 'px' }
+
+    window.addEventListener('resize', scale);
+    requestAnimationFrame(() => requestAnimationFrame(scale));
+    apply(0);
+    startProg();
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) { cancelAnimationFrame(pa) }
+      else if (!isPaused) { t0 = performance.now() - (parseFloat(el.pf.style.width || 0) / 100 * DUR); pa = requestAnimationFrame(tk); }
+    });
+  </script>
 </body>
+
 </html>
