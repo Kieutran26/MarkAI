@@ -118,6 +118,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'primary-color', name: 'Primary / Secondary Color', nameEn: 'Màu chính / Màu phụ', letter: 'P', groups: ['design', 'code'], definition: 'Màu chính (Primary) và màu phụ (Secondary) là nền tảng của hệ thống màu sắc. Primary dành cho nút hành động chính (CTA) và điểm nhấn quan trọng nhất. Secondary hỗ trợ Primary, dùng cho các nút phụ, badge hoặc thông tin cần phân cấp thấp hơn.', example: 'Prompt: "Đổi nút Mua hàng thành Primary, nút Xem thêm thành Secondary để người dùng tập trung vào việc mua."', related: ['design-system', 'interface', 'css', 'element'], demo: { kind: 'interactive', src: 'gif-primary-color-demo.html', alt: 'Mô phỏng 4 cách ứng dụng Primary / Secondary Color: Button, Card, Form và Chart' } },
   { id: 'color-palette', name: 'Color Palette', nameEn: 'Bảng màu thiết kế', letter: 'C', groups: ['design', 'code'], definition: 'Tập hợp các màu sắc được phân loại theo vai trò rõ ràng trong hệ thống thiết kế. Một bảng màu chuyên nghiệp thường có 4 nhóm: Brand (nhận diện cốt lõi), Semantic (truyền tải trạng thái), Neutral (trung tính cho nền, text, viền) và Extended (hỗ trợ illustration, biểu đồ).', example: 'Prompt: "Dùng Brand Palette cho nút submit chính, và dùng Semantic Error cho các thông báo điền sai form."', related: ['design-system', 'primary-color', 'css'], demo: { kind: 'interactive', src: 'gif-colorpalette-demo.html', alt: 'Mô phỏng 4 nhóm màu trong Color Palette và vai trò của từng nhóm' } },
   { id: 'fontweight', name: 'Font weight', nameEn: 'Độ đậm của chữ', letter: 'F', groups: ['design', 'code'], definition: 'Độ dày hoặc mỏng của các nét chữ. Trong thiết kế web, font weight thường được biểu diễn bằng các con số từ 100 (Thin) đến 900 (Black). Font weight là công cụ quan trọng nhất để tạo phân cấp thị giác (hierarchy) mà không cần thay đổi kích thước chữ quá nhiều.', example: 'Prompt: "Dùng font weight 700 cho tiêu đề để tạo sự mạnh mẽ, và 400 cho phần nội dung để đảm bảo tính dễ đọc."', related: ['typography', 'letter-spacing', 'line-spacing', 'css'], demo: { kind: 'interactive', src: 'gif-fontweight-demo.html', alt: 'Mô phỏng thang đo font-weight và cách ứng dụng trong hierarchy' } },
+  { id: 'opacity', name: 'Opacity', nameEn: 'Độ trong suốt / Transparency', letter: 'O', groups: ['design', 'code'], definition: 'Độ trong suốt của một phần tử, từ 0 (vô hình) đến 1 (đậm đặc hoàn toàn). Opacity là công cụ mạnh mẽ để tạo phân cấp thị giác, trạng thái tương tác (hover, disabled) và các hiệu ứng lớp phủ (overlay) mà không cần thay đổi màu sắc gốc.', example: 'Prompt: "Giảm opacity của ảnh nền xuống 0.5 để text phía trên dễ đọc hơn, hoặc set opacity 0.4 cho nút bấm khi ở trạng thái disabled."', related: ['color-palette', 'contrast', 'hierarchy', 'interface'], demo: { kind: 'interactive', src: 'gif-opacity-demo.html', alt: 'Mô phỏng các ứng dụng của Opacity: Text, Background, Icon và Component' } },
 ];
 
 export const quickRefItems = [
@@ -201,6 +202,7 @@ const deepDiveTermIds = new Set([
   'fontweight',
   'contrast',
   'hierarchy',
+  'opacity',
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {

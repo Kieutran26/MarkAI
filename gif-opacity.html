@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Opacity — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#131313;--bg-card:#1a1a1a;--bg-elevated:#222;
+    --fg:#ede8df;--fg-dim:#9a9590;--fg-muted:#5c5752;
+    --accent:#d97706;--accent-bright:#f59e0b;--accent-dim:#92400e;
+    --border:#2e2e2e;
+    --success:#16a34a;--error:#dc2626;
+    --sans:'Space Grotesk',sans-serif;--mono:'IBM Plex Mono',monospace;
+    --radius:2px;
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html{font-size:16px;-webkit-font-smoothing:antialiased}
+  body{
+    font-family:var(--sans);color:var(--fg);line-height:1.5;min-height:100vh;
+    background-color:var(--bg);
+    background-image:
+      radial-gradient(ellipse at 12% 0%,rgba(217,119,6,.035) 0%,transparent 55%),
+      radial-gradient(ellipse at 88% 100%,rgba(217,119,6,.02) 0%,transparent 55%),
+      linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);
+    background-size:100% 100%,100% 100%,20px 20px,20px 20px;
+  }
+  .container{max-width:900px;margin:0 auto;padding:40px 20px 60px}
+  @media(min-width:768px){.container{padding:56px 32px 80px}}
+  h1{font-size:clamp(2.4rem,6vw,3.6rem);font-weight:700;letter-spacing:-.03em;line-height:1}
+  h2{font-size:clamp(1.15rem,3vw,1.4rem);font-weight:600;letter-spacing:-.02em;line-height:1.2}
+  h3{font-size:1rem;font-weight:600}
+  .badge{display:inline-block;font-family:var(--mono);font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent-dim);padding:3px 8px;border-radius:var(--radius);background:rgba(217,119,6,.08)}
+
+  /* HEADER */
+  .term-header{margin-bottom:36px;border-bottom:1px solid var(--border);padding-bottom:28px}
+  .term-header .badge{margin-bottom:14px}
+  .term-sub{margin-top:10px;font-size:1rem;color:var(--fg-dim);font-weight:400}
+
+  /* SIM GRID */
+  .sim-grid{display:grid;grid-template-columns:1fr;gap:14px;margin-bottom:28px}
+  @media(min-width:640px){.sim-grid{grid-template-columns:1fr 1fr;gap:12px}}
+
+  /* PANEL */
+  .sim-panel{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
+  .panel-label{font-family:var(--mono);font-size:.58rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--fg-muted);padding:10px 14px 6px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
+  .panel-body{padding:14px;min-height:180px;position:relative}
+  .panel-insight{font-family:var(--mono);font-size:.63rem;color:var(--fg-muted);padding:8px 14px;border-top:1px solid var(--border);background:rgba(255,255,255,.01)}
+  .panel-insight em{color:var(--accent);font-style:normal}
+
+  /* OPACITY ROW */
+  .op-row{display:flex;align-items:center;gap:10px;padding:5px 0;position:relative}
+  .op-ind{position:absolute;left:-14px;top:2px;bottom:2px;width:3px;background:var(--accent);border-radius:1px;opacity:0}
+  .op-val{font-family:var(--mono);font-size:.62rem;font-weight:600;color:var(--fg-muted);min-width:28px;transition:color .2s}
+  .op-val.active{color:var(--accent-bright)}
+  .op-target{flex:1;transition:color .2s}
+  .op-use{font-family:var(--mono);font-size:.5rem;color:var(--fg-muted);text-align:right;min-width:72px;transition:color .2s}
+  .op-use.active{color:var(--accent)}
+
+  /* KEYFRAMES — 4 slots, stagger via delay */
+  @keyframes indShow{
+    0%,2%{opacity:0}6%{opacity:1}22%{opacity:1}26%,100%{opacity:0}
+  }
+
+  /* Panel durations */
+  .pd1{--dur:7.6s}.pd2{--dur:8.8s}.pd3{--dur:7.2s}.pd4{--dur:8.4s}
+  .op-row:nth-child(1) .op-ind{animation:indShow var(--dur) ease infinite;animation-delay:0s}
+  .op-row:nth-child(2) .op-ind{animation:indShow var(--dur) ease infinite;animation-delay:calc(var(--dur)/4)}
+  .op-row:nth-child(3) .op-ind{animation:indShow var(--dur) ease infinite;animation-delay:calc(var(--dur)/2)}
+  .op-row:nth-child(4) .op-ind{animation:indShow var(--dur) ease infinite;animation-delay:calc(var(--dur)*3/4)}
+
+  /* Value/use highlight synced */
+  @keyframes valHL{
+    0%,2%{color:var(--fg-muted)}6%{color:var(--accent-bright)}22%{color:var(--accent-bright)}26%,100%{color:var(--fg-muted)}
+  }
+  @keyframes useHL{
+    0%,2%{color:var(--fg-muted)}6%{color:var(--accent)}22%{color:var(--accent)}26%,100%{color:var(--fg-muted)}
+  }
+  .op-row:nth-child(1) .op-val{animation:valHL var(--dur) ease infinite;animation-delay:0s}
+  .op-row:nth-child(2) .op-val{animation:valHL var(--dur) ease infinite;animation-delay:calc(var(--dur)/4)}
+  .op-row:nth-child(3) .op-val{animation:valHL var(--dur) ease infinite;animation-delay:calc(var(--dur)/2)}
+  .op-row:nth-child(4) .op-val{animation:valHL var(--dur) ease infinite;animation-delay:calc(var(--dur)*3/4)}
+  .op-row:nth-child(1) .op-use{animation:useHL var(--dur) ease infinite;animation-delay:0s}
+  .op-row:nth-child(2) .op-use{animation:useHL var(--dur) ease infinite;animation-delay:calc(var(--dur)/4)}
+  .op-row:nth-child(3) .op-use{animation:useHL var(--dur) ease infinite;animation-delay:calc(var(--dur)/2)}
+  .op-row:nth-child(4) .op-use{animation:useHL var(--dur) ease infinite;animation-delay:calc(var(--dur)*3/4)}
+
+  /* BG OPACITY BOXES */
+  .bg-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;position:relative}
+  .bg-box{position:relative;height:60px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--border)}
+  .bg-box-base{
+    position:absolute;inset:0;
+    background:linear-gradient(135deg,#d97706 0%,#dc2626 50%,#f59e0b 100%);
+  }
+  .bg-box-pattern{
+    position:absolute;inset:0;
+    background-image:
+      linear-gradient(45deg,rgba(255,255,255,.12) 25%,transparent 25%),
+      linear-gradient(-45deg,rgba(255,255,255,.12) 25%,transparent 25%),
+      linear-gradient(45deg,transparent 75%,rgba(255,255,255,.12) 75%),
+      linear-gradient(-45deg,transparent 75%,rgba(255,255,255,.12) 75%);
+    background-size:10px 10px;
+    background-position:0 0,0 5px,5px -5px,-5px 0;
+  }
+  .bg-box-overlay{position:absolute;inset:0;background:rgba(13,13,13,var(--ov))}
+  .bg-box-label{
+    position:absolute;bottom:4px;right:6px;font-family:var(--mono);font-size:.52rem;
+    font-weight:600;color:rgba(255,255,255,.7);z-index:2;text-shadow:0 1px 3px rgba(0,0,0,.6);
+  }
+  .bg-box-ind{
+    position:absolute;top:3px;left:3px;width:8px;height:8px;border:1.5px solid var(--accent);
+    border-radius:var(--radius);z-index:3;opacity:0;background:rgba(217,119,6,.3);
+  }
+  /* stagger for 4 boxes */
+  .bg-box:nth-child(1) .bg-box-ind{animation:indShow var(--dur) ease infinite;animation-delay:0s}
+  .bg-box:nth-child(2) .bg-box-ind{animation:indShow var(--dur) ease infinite;animation-delay:calc(var(--dur)/4)}
+  .bg-box:nth-child(3) .bg-box-ind{animation:indShow var(--dur) ease infinite;animation-delay:calc(var(--dur)/2)}
+  .bg-box:nth-child(4) .bg-box-ind{animation:indShow var(--dur) ease infinite;animation-delay:calc(var(--dur)*3/4)}
+
+  /* ICON OPACITY */
+  .icon-row{display:flex;gap:6px;align-items:flex-end;justify-content:center;padding:12px 0 4px}
+  .icon-col{display:flex;flex-direction:column;align-items:center;gap:6px;position:relative}
+  .icon-col svg{width:32px;height:32px;transition:color .2s}
+  .icon-col-val{font-family:var(--mono);font-size:.52rem;color:var(--fg-muted);transition:color .2s}
+  .icon-col-ind{
+    position:absolute;top:-8px;width:6px;height:6px;background:var(--accent);border-radius:var(--radius);opacity:0;
+  }
+  .icon-col:nth-child(1) .icon-col-ind{animation:indShow var(--dur) ease infinite;animation-delay:0s}
+  .icon-col:nth-child(2) .icon-col-ind{animation:indShow var(--dur) ease infinite;animation-delay:calc(var(--dur)/4)}
+  .icon-col:nth-child(3) .icon-col-ind{animation:indShow var(--dur) ease infinite;animation-delay:calc(var(--dur)/2)}
+  .icon-col:nth-child(4) .icon-col-ind{animation:indShow var(--dur) ease infinite;animation-delay:calc(var(--dur)*3/4)}
+  .icon-col:nth-child(1) .icon-col-val{animation:valHL var(--dur) ease infinite;animation-delay:0s}
+  .icon-col:nth-child(2) .icon-col-val{animation:valHL var(--dur) ease infinite;animation-delay:calc(var(--dur)/4)}
+  .icon-col:nth-child(3) .icon-col-val{animation:valHL var(--dur) ease infinite;animation-delay:calc(var(--dur)/2)}
+  .icon-col:nth-child(4) .icon-col-val{animation:valHL var(--dur) ease infinite;animation-delay:calc(var(--dur)*3/4)}
+  .icon-use-row{display:flex;gap:6px;justify-content:center;padding-top:4px}
+  .icon-use-item{flex:1;text-align:center;font-family:var(--mono);font-size:.45rem;color:var(--fg-muted);transition:color .2s}
+  .icon-use-item:nth-child(1){animation:useHL var(--dur) ease infinite;animation-delay:0s}
+  .icon-use-item:nth-child(2){animation:useHL var(--dur) ease infinite;animation-delay:calc(var(--dur)/4)}
+  .icon-use-item:nth-child(3){animation:useHL var(--dur) ease infinite;animation-delay:calc(var(--dur)/2)}
+  .icon-use-item:nth-child(4){animation:useHL var(--dur) ease infinite;animation-delay:calc(var(--dur)*3/4)}
+
+  /* COMPONENT OPACITY */
+  .comp-row{display:flex;flex-direction:column;gap:8px;padding:6px 0}
+  .comp-item{display:flex;align-items:center;gap:10px;position:relative}
+  .comp-btn{
+    font-family:var(--mono);font-size:.58rem;font-weight:600;padding:7px 16px;
+    border:1px solid var(--accent);background:var(--accent);color:var(--bg);
+    border-radius:var(--radius);white-space:nowrap;
+  }
+  .comp-val{font-family:var(--mono);font-size:.55rem;color:var(--fg-muted);min-width:26px;transition:color .2s}
+  .comp-use{font-family:var(--mono);font-size:.48rem;color:var(--fg-muted);flex:1;text-align:right;transition:color .2s}
+  .comp-ind{position:absolute;left:-14px;top:2px;bottom:2px;width:3px;background:var(--accent);border-radius:1px;opacity:0}
+  .comp-item:nth-child(1) .comp-ind{animation:indShow var(--dur) ease infinite;animation-delay:0s}
+  .comp-item:nth-child(2) .comp-ind{animation:indShow var(--dur) ease infinite;animation-delay:calc(var(--dur)/4)}
+  .comp-item:nth-child(3) .comp-ind{animation:indShow var(--dur) ease infinite;animation-delay:calc(var(--dur)/2)}
+  .comp-item:nth-child(4) .comp-ind{animation:indShow var(--dur) ease infinite;animation-delay:calc(var(--dur)*3/4)}
+  .comp-item:nth-child(1) .comp-val{animation:valHL var(--dur) ease infinite;animation-delay:0s}
+  .comp-item:nth-child(2) .comp-val{animation:valHL var(--dur) ease infinite;animation-delay:calc(var(--dur)/4)}
+  .comp-item:nth-child(3) .comp-val{animation:valHL var(--dur) ease infinite;animation-delay:calc(var(--dur)/2)}
+  .comp-item:nth-child(4) .comp-val{animation:valHL var(--dur) ease infinite;animation-delay:calc(var(--dur)*3/4)}
+  .comp-item:nth-child(1) .comp-use{animation:useHL var(--dur) ease infinite;animation-delay:0s}
+  .comp-item:nth-child(2) .comp-use{animation:useHL var(--dur) ease infinite;animation-delay:calc(var(--dur)/4)}
+  .comp-item:nth-child(3) .comp-use{animation:useHL var(--dur) ease infinite;animation-delay:calc(var(--dur)/2)}
+  .comp-item:nth-child(4) .comp-use{animation:useHL var(--dur) ease infinite;animation-delay:calc(var(--dur)*3/4)}
+
+  /* INSIGHT BAR */
+  .insight-bar{background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--accent);padding:14px 18px;margin-bottom:40px;border-radius:0 var(--radius) var(--radius) 0}
+  .insight-bar p{font-size:.88rem;color:var(--fg);line-height:1.5;font-weight:500}
+  .insight-bar p span{color:var(--accent-bright);font-weight:700}
+
+  /* PRACTICE */
+  .practice{margin-bottom:40px}
+  .practice-hdr{margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:18px}
+  .practice-hdr .badge{margin-bottom:10px}
+  .practice-hdr h2{margin-bottom:6px}
+  .practice-desc{font-size:.85rem;color:var(--fg-dim)}
+  .practice-hint{font-family:var(--mono);font-size:.68rem;color:var(--fg-muted);margin-top:8px}
+
+  /* Slider area */
+  .slider-area{margin-bottom:20px;padding:18px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius)}
+  .slider-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+  .slider-lbl{font-family:var(--mono);font-size:.58rem;color:var(--fg-muted);text-transform:uppercase;letter-spacing:.08em}
+  .slider-val{font-family:var(--mono);font-size:1.4rem;font-weight:700;color:var(--accent-bright);transition:color .2s}
+  input[type="range"]{
+    -webkit-appearance:none;appearance:none;width:100%;height:6px;
+    background:var(--border);border-radius:3px;outline:none;cursor:pointer;
+  }
+  input[type="range"]::-webkit-slider-thumb{
+    -webkit-appearance:none;width:22px;height:22px;background:var(--accent);border-radius:50%;
+    cursor:pointer;border:2px solid var(--bg);box-shadow:0 0 0 2px var(--accent-dim);
+  }
+  input[type="range"]::-moz-range-thumb{
+    width:22px;height:22px;background:var(--accent);border-radius:50%;
+    cursor:pointer;border:2px solid var(--bg);box-shadow:0 0 0 2px var(--accent-dim);
+  }
+  input[type="range"]:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+  .slider-range{display:flex;justify-content:space-between;margin-top:6px}
+  .slider-range span{font-family:var(--mono);font-size:.5rem;color:var(--fg-muted)}
+  .context-label{
+    font-family:var(--mono);font-size:.68rem;margin-top:10px;padding:8px 10px;
+    border-radius:var(--radius);border:1px solid var(--border);background:rgba(255,255,255,.015);
+    color:var(--fg-dim);transition:all .2s;min-height:36px;display:flex;align-items:center;
+  }
+  .context-label .cl-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);margin-right:8px;flex-shrink:0;transition:background .2s}
+
+  /* Preview grid */
+  .prev-grid{display:grid;grid-template-columns:1fr;gap:12px}
+  @media(min-width:560px){.prev-grid{grid-template-columns:1fr 1fr}}
+  .prev-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:14px;overflow:hidden}
+  .prev-card-label{font-family:var(--mono);font-size:.52rem;letter-spacing:.08em;text-transform:uppercase;color:var(--fg-muted);margin-bottom:10px}
+
+  /* Preview: Text */
+  .prev-text-sample{font-size:.85rem;font-weight:600;color:var(--fg);line-height:1.4;transition:opacity .1s}
+  .prev-text-sub{font-size:.68rem;color:var(--fg-dim);margin-top:4px;transition:opacity .1s}
+
+  /* Preview: Background overlay */
+  .prev-bg-wrap{position:relative;height:80px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--border)}
+  .prev-bg-base{position:absolute;inset:0;background:linear-gradient(135deg,#d97706,#dc2626,#f59e0b)}
+  .prev-bg-pattern{
+    position:absolute;inset:0;
+    background-image:
+      linear-gradient(45deg,rgba(255,255,255,.1) 25%,transparent 25%),
+      linear-gradient(-45deg,rgba(255,255,255,.1) 25%,transparent 25%),
+      linear-gradient(45deg,transparent 75%,rgba(255,255,255,.1) 75%),
+      linear-gradient(-45deg,transparent 75%,rgba(255,255,255,.1) 75%);
+    background-size:12px 12px;background-position:0 0,0 6px,6px -6px,-6px 0;
+  }
+  .prev-bg-overlay{position:absolute;inset:0;background:rgba(13,13,13,.5);transition:opacity .1s}
+  .prev-bg-text{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:.7rem;font-weight:600;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,.5);z-index:2}
+
+  /* Preview: Icon */
+  .prev-icons{display:flex;gap:16px;align-items:center;justify-content:center;padding:8px 0}
+  .prev-icons svg{width:28px;height:28px;transition:opacity .1s}
+
+  /* Preview: Button */
+  .prev-btn-wrap{display:flex;flex-direction:column;gap:8px;align-items:center;padding:6px 0}
+  .prev-btn{
+    font-family:var(--mono);font-size:.65rem;font-weight:600;padding:9px 24px;
+    border:1px solid var(--accent);background:var(--accent);color:var(--bg);
+    border-radius:var(--radius);transition:opacity .1s;cursor:default;
+  }
+  .prev-btn-label{font-family:var(--mono);font-size:.5rem;color:var(--fg-muted);margin-top:2px}
+
+  /* WHY */
+  .why{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px}
+  .why h3{margin-bottom:14px}
+  .why ul{list-style:none;display:flex;flex-direction:column;gap:10px}
+  .why li{font-size:.82rem;color:var(--fg-dim);line-height:1.5;padding-left:16px;position:relative}
+  .why li::before{content:'';position:absolute;left:0;top:8px;width:6px;height:6px;background:var(--accent);border-radius:var(--radius)}
+  .why li code{font-family:var(--mono);font-size:.72rem;background:rgba(217,119,6,.1);color:var(--accent-bright);padding:1px 5px;border-radius:var(--radius)}
+
+  @media(prefers-reduced-motion:reduce){
+    .op-ind,.bg-box-ind,.icon-col-ind,.comp-ind{animation:none!important;opacity:1!important}
+    .op-val,.op-use,.icon-col-val,.icon-use-item,.comp-val,.comp-use{animation:none!important;color:var(--fg-muted)!important}
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <!-- HEADER -->
+  <header class="term-header">
+    <div class="badge">design</div>
+    <h1>OPACITY</h1>
+    <p class="term-sub">Độ trong suốt — từ 0 (tàng hình) đến 1 (đậm đặc hoàn toàn).</p>
+  </header>
+
+  <!-- 4 ANIMATED PANELS -->
+  <div class="sim-grid">
+
+    <!-- PANEL 1: Text Opacity -->
+    <div class="sim-panel pd1">
+      <div class="panel-label">01 — Text Opacity</div>
+      <div class="panel-body">
+        <div class="op-row">
+          <div class="op-ind"></div>
+          <div class="op-val">1.0</div>
+          <div class="op-target" style="opacity:1;font-size:.88rem;font-weight:700">Tiêu đề chính</div>
+          <div class="op-use">Đọc đầu tiên</div>
+        </div>
+        <div class="op-row">
+          <div class="op-ind"></div>
+          <div class="op-val">0.7</div>
+          <div class="op-target" style="opacity:.7;font-size:.78rem;font-weight:500">Mô tả phụ</div>
+          <div class="op-use">Hỗ trợ đọc</div>
+        </div>
+        <div class="op-row">
+          <div class="op-ind"></div>
+          <div class="op-val">0.5</div>
+          <div class="op-target" style="opacity:.5;font-size:.68rem;font-weight:400">Ghi chú thêm</div>
+          <div class="op-use">Nhìn nếu cần</div>
+        </div>
+        <div class="op-row">
+          <div class="op-ind"></div>
+          <div class="op-val">0.3</div>
+          <div class="op-target" style="opacity:.3;font-size:.58rem;font-weight:400">Watermark / caption</div>
+          <div class="op-use">Gần như ẩn</div>
+        </div>
+      </div>
+      <div class="panel-insight">Cùng chữ, opacity khác → <em>thứ tự đọc khác</em></div>
+    </div>
+
+    <!-- PANEL 2: Background Opacity -->
+    <div class="sim-panel pd2">
+      <div class="panel-label">02 — Background Opacity</div>
+      <div class="panel-body">
+        <div class="bg-grid">
+          <div class="bg-box">
+            <div class="bg-box-base"></div>
+            <div class="bg-box-pattern"></div>
+            <div class="bg-box-overlay" style="--ov:0;opacity:0"></div>
+            <div class="bg-box-label">0.0</div>
+            <div class="bg-box-ind"></div>
+          </div>
+          <div class="bg-box">
+            <div class="bg-box-base"></div>
+            <div class="bg-box-pattern"></div>
+            <div class="bg-box-overlay" style="--ov:.3"></div>
+            <div class="bg-box-label">0.3</div>
+            <div class="bg-box-ind"></div>
+          </div>
+          <div class="bg-box">
+            <div class="bg-box-base"></div>
+            <div class="bg-box-pattern"></div>
+            <div class="bg-box-overlay" style="--ov:.6"></div>
+            <div class="bg-box-label">0.6</div>
+            <div class="bg-box-ind"></div>
+          </div>
+          <div class="bg-box">
+            <div class="bg-box-base"></div>
+            <div class="bg-box-pattern"></div>
+            <div class="bg-box-overlay" style="--ov:.85"></div>
+            <div class="bg-box-label">0.85</div>
+            <div class="bg-box-ind"></div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-insight">Overlay opacity = <em>độ đậm</em> của lớp phủ trên nền</div>
+    </div>
+
+    <!-- PANEL 3: Icon Opacity -->
+    <div class="sim-panel pd3">
+      <div class="panel-label">03 — Icon Opacity</div>
+      <div class="panel-body" style="display:flex;flex-direction:column;justify-content:center;gap:2px">
+        <div class="icon-row">
+          <div class="icon-col">
+            <div class="icon-col-ind"></div>
+            <svg viewBox="0 0 24 24" fill="var(--accent)" style="opacity:1"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <span class="icon-col-val">1.0</span>
+          </div>
+          <div class="icon-col">
+            <div class="icon-col-ind"></div>
+            <svg viewBox="0 0 24 24" fill="var(--accent)" style="opacity:.7"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <span class="icon-col-val">0.7</span>
+          </div>
+          <div class="icon-col">
+            <div class="icon-col-ind"></div>
+            <svg viewBox="0 0 24 24" fill="var(--accent)" style="opacity:.4"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <span class="icon-col-val">0.4</span>
+          </div>
+          <div class="icon-col">
+            <div class="icon-col-ind"></div>
+            <svg viewBox="0 0 24 24" fill="var(--accent)" style="opacity:.15"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            <span class="icon-col-val">0.15</span>
+          </div>
+        </div>
+        <div class="icon-use-row">
+          <div class="icon-use-item">Active</div>
+          <div class="icon-use-item">Hover</div>
+          <div class="icon-use-item">Inactive</div>
+          <div class="icon-use-item">Disabled</div>
+        </div>
+      </div>
+      <div class="panel-insight">Opacity tạo <em>cấp độ trạng thái</em> cho cùng một icon</div>
+    </div>
+
+    <!-- PANEL 4: Component Opacity -->
+    <div class="sim-panel pd4">
+      <div class="panel-label">04 — Component Opacity</div>
+      <div class="panel-body">
+        <div class="comp-row">
+          <div class="comp-item">
+            <div class="comp-ind"></div>
+            <div class="comp-val">1.0</div>
+            <button class="comp-btn" style="opacity:1">Submit</button>
+            <div class="comp-use">Bình thường, có thể bấm</div>
+          </div>
+          <div class="comp-item">
+            <div class="comp-ind"></div>
+            <div class="comp-val">0.7</div>
+            <button class="comp-btn" style="opacity:.7">Submit</button>
+            <div class="comp-use">Đang loading</div>
+          </div>
+          <div class="comp-item">
+            <div class="comp-ind"></div>
+            <div class="comp-val">0.4</div>
+            <button class="comp-btn" style="opacity:.4">Submit</button>
+            <div class="comp-use">Disabled</div>
+          </div>
+          <div class="comp-item">
+            <div class="comp-ind"></div>
+            <div class="comp-val">0.1</div>
+            <button class="comp-btn" style="opacity:.1">Submit</button>
+            <div class="comp-use">Gần như ẩn</div>
+          </div>
+        </div>
+      </div>
+      <div class="panel-insight">Opacity thấp = tín hiệu <em>"không thể tác động"</em></div>
+    </div>
+
+  </div>
+
+  <!-- INSIGHT BAR -->
+  <div class="insight-bar">
+    <p>Opacity = <span>điều chỉnh độ nổi</span> mà không đổi màu. Cùng một màu, cùng một kích thước — chỉ đổi opacity là đổi được thứ tự nhìn.</p>
+  </div>
+
+  <!-- PRACTICE -->
+  <section class="practice" aria-label="Thực hành">
+    <div class="practice-hdr">
+      <div class="badge">Thực hành</div>
+      <h2>Kéo slider để thấy opacity tác động thực tế</h2>
+      <p class="practice-desc">Một giá trị opacity — áp dụng lên 4 kiểu element khác nhau. Quan sát cái gì thay đổi, cái gì không.</p>
+      <p class="practice-hint">&#9889; Kéo từ 0 lên 1 rồi quay lại. Chú ý: màu có đổi không? Kích thước có đổi không?</p>
+    </div>
+
+    <!-- Slider -->
+    <div class="slider-area">
+      <div class="slider-top">
+        <span class="slider-lbl">opacity</span>
+        <span class="slider-val" id="sVal">0.50</span>
+      </div>
+      <input type="range" id="opSlider" min="0" max="100" value="50" step="1" aria-label="Opacity slider">
+      <div class="slider-range"><span>0 — vô hình</span><span>1 — đậm đặc</span></div>
+      <div class="context-label" id="ctxLabel">
+        <span class="cl-dot"></span>
+        <span id="ctxText">Nửa trong — overlay nhẹ, text cần contrast cao để đọc</span>
+      </div>
+    </div>
+
+    <!-- Preview grid -->
+    <div class="prev-grid">
+      <!-- Text -->
+      <div class="prev-card">
+        <div class="prev-card-label">Text</div>
+        <div class="prev-text-sample" id="pvText" style="opacity:.5">Khám phá gói Pro mới</div>
+        <div class="prev-text-sub" id="pvTextSub" style="opacity:.5">Truy cập API không giới hạn cho mọi dự án</div>
+      </div>
+      <!-- Background -->
+      <div class="prev-card">
+        <div class="prev-card-label">Background Overlay</div>
+        <div class="prev-bg-wrap">
+          <div class="prev-bg-base"></div>
+          <div class="prev-bg-pattern"></div>
+          <div class="prev-bg-overlay" id="pvBgOv" style="opacity:.5"></div>
+          <div class="prev-bg-text">Nội dung phía trên</div>
+        </div>
+      </div>
+      <!-- Icon -->
+      <div class="prev-card">
+        <div class="prev-card-label">Icon</div>
+        <div class="prev-icons">
+          <svg id="pvIc1" viewBox="0 0 24 24" fill="var(--accent)" style="opacity:.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+          <svg id="pvIc2" viewBox="0 0 24 24" fill="var(--accent)" style="opacity:.5"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+          <svg id="pvIc3" viewBox="0 0 24 24" fill="var(--accent)" style="opacity:.5"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+        </div>
+      </div>
+      <!-- Component -->
+      <div class="prev-card">
+        <div class="prev-card-label">Component</div>
+        <div class="prev-btn-wrap">
+          <button class="prev-btn" id="pvBtn" style="opacity:.5">Đăng ký ngay</button>
+          <span class="prev-btn-label" id="pvBtnLabel">opacity: 0.50</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY IT MATTERS -->
+  <section class="why" aria-label="Tại sao quan trọng">
+    <h3>Tại sao quan trọng khi làm việc với AI/dev</h3>
+    <ul>
+      <li>Khi AI sinh ra nút <code>quá mờ</code> — nói đúng: <code>"opacity: 0.3 là quá thấp cho CTA, tăng lên 0.8+"</code></li>
+      <li>Dev báo <code>"nội dung bị chìm"</code> — hiểu ngay là opacity thấp hoặc overlay quá đậm</li>
+      <li>Prompt hiệu quả: <code>"text phụ dùng opacity 0.6, không đổi màu"</code> thay vì mô tả chung chung</li>
+    </ul>
+  </section>
+
+</div>
+
+<script>
+  /* === PRACTICE: Slider controls opacity across 4 previews === */
+  var slider = document.getElementById('opSlider');
+  var sVal = document.getElementById('sVal');
+  var pvText = document.getElementById('pvText');
+  var pvTextSub = document.getElementById('pvTextSub');
+  var pvBgOv = document.getElementById('pvBgOv');
+  var pvIc1 = document.getElementById('pvIc1');
+  var pvIc2 = document.getElementById('pvIc2');
+  var pvIc3 = document.getElementById('pvIc3');
+  var pvBtn = document.getElementById('pvBtn');
+  var pvBtnLabel = document.getElementById('pvBtnLabel');
+  var ctxText = document.getElementById('ctxText');
+  var ctxLabel = document.getElementById('ctxLabel');
+  var clDot = document.querySelector('.cl-dot');
+
+  /* Context labels for different opacity ranges */
+  var contexts = [
+    { max: 0.05, text: 'Vô hình hoàn toàn — phần tử vẫn chiếm chỗ nhưng không nhìn thấy. Giống display:none nhưng giữ layout.', color: 'var(--fg-muted)', dot: 'var(--fg-muted)' },
+    { max: 0.2, text: 'Rất mờ — chỉ thấy vệt nhạt. Thường dùng cho watermark hoặc placeholder ghost.', color: 'var(--fg-muted)', dot: 'var(--fg-muted)' },
+    { max: 0.35, text: 'Mờ — disabled state, icon không khả dụng. Tín hiệu "đừng bấm vào cái này."', color: 'var(--error)', dot: 'var(--error)' },
+    { max: 0.55, text: 'Nửa trong — overlay nhẹ trên hero/banner. Text phía trên cần contrast cao để đọc.', color: 'var(--accent)', dot: 'var(--accent)' },
+    { max: 0.75, text: 'Nhìn rõ — text phụ, caption, metadata. Đủ đọc nhưng không tranh attention với text chính.', color: 'var(--fg-dim)', dot: 'var(--accent-bright)' },
+    { max: 0.9, text: 'Gần hết — dùng cho text thông thường khi muốn mềm hơn text chính một chút.', color: 'var(--fg-dim)', dot: 'var(--accent-bright)' },
+    { max: 1.01, text: 'Đậm đặc hoàn toàn — text chính, CTA, bất cứ thứ gì cần đọc rõ nhất. Đây là mặc định.', color: 'var(--success)', dot: 'var(--success)' }
+  ];
+
+  function update() {
+    var raw = parseInt(slider.value, 10);
+    var op = raw / 100;
+    var opStr = op.toFixed(2);
+
+    /* Display value */
+    sVal.textContent = opStr;
+
+    /* Update all previews */
+    pvText.style.opacity = op;
+    pvTextSub.style.opacity = op;
+    pvBgOv.style.opacity = op;
+    pvIc1.style.opacity = op;
+    pvIc2.style.opacity = op;
+    pvIc3.style.opacity = op;
+    pvBtn.style.opacity = op;
+    pvBtnLabel.textContent = 'opacity: ' + opStr;
+
+    /* Context label */
+    var ctx = contexts[0];
+    for (var i = 0; i < contexts.length; i++) {
+      if (op <= contexts[i].max) { ctx = contexts[i]; break; }
+    }
+    ctxText.textContent = ctx.text;
+    ctxLabel.style.color = ctx.color;
+    clDot.style.background = ctx.dot;
+
+    /* Slider value color */
+    if (op <= 0.15) {
+      sVal.style.color = 'var(--fg-muted)';
+    } else if (op <= 0.4) {
+      sVal.style.color = 'var(--error)';
+    } else if (op >= 0.95) {
+      sVal.style.color = 'var(--success)';
+    } else {
+      sVal.style.color = 'var(--accent-bright)';
+    }
+  }
+
+  slider.addEventListener('input', update);
+
+  /* Init */
+  update();
+</script>
+</body>
+</html>
