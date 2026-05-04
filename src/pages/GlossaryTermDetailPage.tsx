@@ -118,6 +118,8 @@ import overflowDemoHtml from '../../gif-overflow-demo.html?raw';
 import overflowPracticeHtml from '../../gif-overflow-practice.html?raw';
 import tabbarDemoHtml from '../../gif-tabbar-demo.html?raw';
 import tabbarPracticeHtml from '../../gif-tabbar-practice.html?raw';
+import chipsDemoHtml from '../../gif-chips-demo.html?raw';
+import chipsPracticeHtml from '../../gif-chips-practice.html?raw';
 
 
 // Final sync for viewport practice update
@@ -196,6 +198,7 @@ export default function GlossaryTermDetailPage() {
       case 'hover': return hoverDemoHtml;
       case 'overflow': return overflowDemoHtml;
       case 'tab-bar': return tabbarDemoHtml;
+      case 'chips': return chipsDemoHtml;
       default: return null;
     }
   };
@@ -258,6 +261,7 @@ export default function GlossaryTermDetailPage() {
       case 'hover': return hoverPracticeHtml;
       case 'overflow': return overflowPracticeHtml;
       case 'tab-bar': return tabbarPracticeHtml;
+      case 'chips': return chipsPracticeHtml;
       default: return null;
     }
   };

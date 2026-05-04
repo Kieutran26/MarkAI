@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chips Practice — Vibecode Glossary</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --bg: #141413;
+            --bg-card: #1c1c1a;
+            --fg: #e8e0d4;
+            --muted: #6e6a63;
+            --accent: #d97706;
+            --accent-dim: rgba(217,119,6,.14);
+            --accent-glow: rgba(217,119,6,.3);
+            --border: #2e2c28;
+            --border-hi: #3e3b35;
+            --slate: #33312d;
+            --cream: #f5f0e8;
+            --red: #ef4444;
+            --green: #22c55e;
+            --mono: 'JetBrains Mono', monospace;
+            --sans: 'Space Grotesk', sans-serif;
+        }
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        body{
+            background:var(--bg);color:var(--fg);font-family:var(--sans);
+            min-height:auto;
+            background-image:
+                linear-gradient(rgba(255,255,255,.016) 1px,transparent 1px),
+                linear-gradient(90deg,rgba(255,255,255,.016) 1px,transparent 1px);
+            background-size:20px 20px;
+        }
+
+        /* ===== Chip base ===== */
+        .chip{
+            display:inline-flex;align-items:center;gap:5px;
+            padding:5px 10px;font-family:var(--mono);font-size:10px;
+            border:1px solid var(--border);background:var(--bg);color:var(--fg);
+            border-radius:2px;transition:all .25s;white-space:nowrap;flex-shrink:0;
+        }
+        .chip.on{border-color:var(--accent);background:var(--accent-dim);color:var(--accent)}
+
+        /* ===== Divider ===== */
+        .divider{
+            max-width:920px;margin:20px auto 0;padding:0 16px;
+            display:flex;align-items:center;gap:14px;
+        }
+        .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+        .divider span{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);flex-shrink:0}
+
+        /* ===== Practice ===== */
+        .practice{
+            max-width:920px;margin:16px auto 60px;padding:0 16px 40px;
+        }
+        .practice-goal{
+            font-family:var(--mono);font-size:11px;color:var(--fg);
+            margin-bottom:14px;line-height:1.6;
+        }
+        .practice-goal strong{color:var(--accent);font-weight:600}
+        .p-filter-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+        .p-chip{
+            display:inline-flex;align-items:center;gap:5px;
+            padding:6px 12px;font-family:var(--mono);font-size:10px;
+            border:1px solid var(--border);background:var(--bg-card);color:var(--fg);
+            border-radius:2px;cursor:pointer;transition:all .2s;user-select:none;
+        }
+        .p-chip:hover{border-color:var(--border-hi)}
+        .p-chip.on{border-color:var(--accent);background:var(--accent-dim);color:var(--accent)}
+        .p-count{font-family:var(--mono);font-size:10px;color:var(--muted);margin-bottom:10px}
+        .p-count em{color:var(--accent);font-style:normal;font-weight:600}
+        .p-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:18px}
+        @media(max-width:700px){.p-grid{grid-template-columns:1fr 1fr}}
+        @media(max-width:380px){.p-grid{grid-template-columns:1fr}}
+        .p-card{
+            background:var(--bg-card);border:1px solid var(--border);border-radius:2px;
+            padding:10px 10px 8px;transition:all .35s;
+        }
+        .p-card.dim{opacity:.12;transform:scale(.97);pointer-events:none}
+        .p-card .pc-name{font-size:11px;font-weight:600;color:var(--cream);margin-bottom:5px}
+        .p-card .pc-cat{
+            font-family:var(--mono);font-size:8px;color:var(--muted);
+            display:inline-block;padding:2px 6px;border:1px solid var(--border);border-radius:1px;
+        }
+
+        /* Input chip area */
+        .p-input-area{border-top:1px solid var(--border);padding-top:14px}
+        .p-input-label{font-family:var(--mono);font-size:8px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:8px}
+        .p-input-wrap{
+            display:flex;align-items:center;gap:0;
+            border:1px solid var(--border-hi);background:var(--bg-card);border-radius:2px;
+            padding:0;overflow:hidden;flex-wrap:wrap;
+        }
+        .p-input-wrap .p-ichips{display:flex;flex-wrap:wrap;gap:0;padding:6px 0 6px 8px}
+        .p-input-wrap .p-ichip{
+            display:inline-flex;align-items:center;gap:4px;
+            padding:3px 8px;font-family:var(--mono);font-size:9px;
+            background:var(--accent-dim);color:var(--accent);border:1px solid rgba(217,119,6,.2);
+            border-radius:1px;margin-right:4px;animation:chipIn .25s ease;
+        }
+        .p-input-wrap .p-ichip .ix{opacity:.5;font-size:7px;cursor:pointer;transition:opacity .2s}
+        .p-input-wrap .p-ichip .ix:hover{opacity:1}
+        .p-input-field{
+            flex:1;min-width:80px;border:none;outline:none;background:transparent;
+            font-family:var(--mono);font-size:11px;color:var(--cream);
+            padding:8px 10px;
+        }
+        .p-input-field::placeholder{color:var(--muted);opacity:.5}
+        .p-hint{font-family:var(--mono);font-size:9px;color:var(--muted);margin-top:10px;line-height:1.5}
+        .p-hint em{color:var(--accent);font-style:normal}
+
+        @keyframes chipIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+        @keyframes chipOut{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(.8)}}
+
+        @media(prefers-reduced-motion:reduce){
+            *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+        }
+    </style>
+</head>
+<body>
+
+<div id="app-root">
+<section class="practice" aria-label="Thực hành Chips">
+    <p class="practice-goal"><strong>Mục tiêu:</strong> Dùng filter chips để lọc danh sách campaign. Nhấn chip → quan sát nội dung thay đổi ngay.</p>
+
+    <div class="p-filter-row" id="pFilters">
+        <div class="p-chip" data-cat="Design"><i class="fas fa-palette"></i> Design</div>
+        <div class="p-chip" data-cat="Code"><i class="fas fa-code"></i> Code</div>
+        <div class="p-chip" data-cat="Marketing"><i class="fas fa-bullhorn"></i> Marketing</div>
+        <div class="p-chip" data-cat="Data"><i class="fas fa-chart-bar"></i> Data</div>
+    </div>
+
+    <div class="p-count" id="pCount">Hien thi <em>8</em>/8</div>
+
+    <div class="p-grid" id="pGrid"></div>
+
+    <div class="p-input-area">
+        <div class="p-input-label">Them tag chip — go va nhan Enter</div>
+        <div class="p-input-wrap">
+            <div class="p-ichips" id="pIChips"></div>
+            <input class="p-input-field" id="pInput" placeholder="Nhap tag..." aria-label="Nhập tag">
+        </div>
+    </div>
+
+    <p class="p-hint"><em>Hint:</em> Chon nhieu filter chip cung luc, roi bo tung cai de thay hieu ung loc ket hop.</p>
+</section>
+</div>
+
+<script>
+/* ======== PRACTICE: Filter + Input Chips ======== */
+(function() {
+    const campaigns = [
+        { name: 'Landing Page Q4', cat: 'Design' },
+        { name: 'Email Automation', cat: 'Marketing' },
+        { name: 'Dashboard Setup', cat: 'Code' },
+        { name: 'Brand Guidelines', cat: 'Design' },
+        { name: 'A/B Test Report', cat: 'Data' },
+        { name: 'CRM Integration', cat: 'Code' },
+        { name: 'Social Calendar', cat: 'Marketing' },
+        { name: 'Funnel Analysis', cat: 'Data' },
+    ];
+
+    const grid = document.getElementById('pGrid');
+    const filters = document.querySelectorAll('#pFilters .p-chip');
+    const countEl = document.getElementById('pCount');
+    const input = document.getElementById('pInput');
+    const iChipsWrap = document.getElementById('pIChips');
+    const activeCats = new Set();
+
+    /* Render campaign cards */
+    campaigns.forEach(c => {
+        const card = document.createElement('div');
+        card.className = 'p-card';
+        card.dataset.cat = c.cat;
+        card.innerHTML = `<div class="pc-name">${c.name}</div><span class="pc-cat">${c.cat}</span>`;
+        grid.appendChild(card);
+    });
+    const cards = grid.querySelectorAll('.p-card');
+
+    function updateFilter() {
+        const any = activeCats.size > 0;
+        let vis = 0;
+        cards.forEach(cd => {
+            const show = !any || activeCats.has(cd.dataset.cat);
+            cd.classList.toggle('dim', !show);
+            if (show) vis++;
+        });
+        countEl.innerHTML = `Hien thi <em>${vis}</em>/${campaigns.length}`;
+    }
+
+    /* Filter chip click */
+    filters.forEach(chip => {
+        chip.addEventListener('click', () => {
+            const cat = chip.dataset.cat;
+            if (activeCats.has(cat)) activeCats.delete(cat);
+            else activeCats.add(cat);
+            chip.classList.toggle('on', activeCats.has(cat));
+            updateFilter();
+        });
+    });
+
+    /* Input chip: Enter để thêm */
+    input.addEventListener('keydown', e => {
+        if (e.key === 'Enter' && input.value.trim()) {
+            e.preventDefault();
+            const val = input.value.trim();
+            const el = document.createElement('span');
+            el.className = 'p-ichip';
+            el.innerHTML = `${val}<span class="ix"><i class="fas fa-xmark"></i></span>`;
+            el.querySelector('.ix').addEventListener('click', () => {
+                el.style.animation = 'chipOut .2s ease forwards';
+                setTimeout(() => el.remove(), 220);
+            });
+            iChipsWrap.appendChild(el);
+            input.value = '';
+            input.focus();
+        }
+    });
+})();
+</script>
+</body>
+</html>

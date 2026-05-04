@@ -129,6 +129,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'transition', name: 'Transition', nameEn: 'Chuyển động mượt / Hiệu ứng chuyển cảnh', letter: 'T', groups: ['design', 'code'], definition: 'Thay đổi mượt mà giữa hai trạng thái — không nhảy giật, có đầu có cuối. Transition giúp người dùng nhận ra sự thay đổi của giao diện một cách tự nhiên thay vì bị bất ngờ.', example: 'Hover vào button thấy màu đổi từ xám sang cam trong 0.3s thay vì đổi cái rụp. Prompt: "Thêm transition 0.3s ease cho button để khi hover màu nền đổi mượt hơn."', related: ['animation', 'state', 'duration', 'easing'], demo: { kind: 'interactive', src: 'gif-transition-demo.html', alt: 'Mô phỏng các loại transition: Fade, Slide, Scale và Color' } },
   { id: 'overflow', name: 'Overflow', nameEn: 'Tràn nội dung', letter: 'O', groups: ['design', 'code'], definition: 'Quy định gì xảy ra khi nội dung lớn hơn container — tràn, cắt, hay cuộn. Overflow là thuộc tính quan trọng để kiểm soát tính thẩm mỹ và công năng của giao diện, tránh tình trạng text hay ảnh lọt ra ngoài khung hình làm hỏng layout.', example: 'Prompt: "Card này bị tràn text ra ngoài, hãy set overflow: hidden để cắt phần thừa, hoặc dùng overflow: auto để hiện thanh cuộn khi cần."', related: ['container', 'layout', 'css', 'card'], demo: { kind: 'interactive', src: 'gif-overflow-demo.html', alt: 'Mô phỏng 4 trạng thái overflow: Visible, Hidden, Scroll và Auto' } },
   { id: 'tab-bar', name: 'Tab bar', nameEn: 'Thanh tab / Tab Bar', letter: 'T', groups: ['design', 'code'], definition: 'Thành phần điều hướng cho phép người dùng chuyển đổi giữa các vùng nội dung khác nhau trong cùng một màn hình mà không cần chuyển sang trang mới. Chỉ có một tab được kích hoạt (active) tại một thời điểm, và nội dung tương ứng sẽ được hiển thị.', example: 'Prompt: "Thêm một tab bar với 3 tab: Overview, Analytics và Settings. Khi click mỗi tab thì hiện nội dung tương ứng bên dưới."', related: ['navbar', 'interface', 'element', 'component'], demo: { kind: 'interactive', src: 'gif-tabbar-demo.html', alt: 'Mô phỏng các loại tab bar: Bottom, Top, Scrollable và Segmented' } },
+  { id: 'chips', name: 'Chips', nameEn: 'Chips / Tags', letter: 'C', groups: ['design', 'code'], definition: 'Các khối nhỏ chứa text (và đôi khi là icon), dùng để biểu diễn các thuộc tính, lựa chọn hoặc hành động một cách gọn gàng. Chip giúp phân loại thông tin và tương tác nhanh mà không chiếm nhiều diện tích như button hay checkbox truyền thống.', example: 'Prompt: "Thêm các chip tag cho bài blog, mỗi chip có nút X để xóa, khi click vào chip thì lọc bài viết theo tag đó."', related: ['component', 'interface', 'element', 'card'], demo: { kind: 'interactive', src: 'gif-chips-demo.html', alt: 'Mô phỏng 4 kiểu chip phổ biến: Input, Filter, Choice và Action' } },
 ];
 
 export const quickRefItems = [
@@ -223,6 +224,7 @@ const deepDiveTermIds = new Set([
   'transition',
   'overflow',
   'tab-bar',
+  'chips',
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -502,6 +504,12 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     '4 loại tab bar phổ biến: Bottom Tab (cho mobile app), Top Tab (cho web dashboard), Scrollable Tab (khi có quá nhiều tab), và Segmented Control (cho các lựa chọn ngắn, gọn).',
     'Quy tắc vàng: Tab bar không phải là menu điều hướng toàn trang (như Navbar). Nó chỉ dùng để đổi nội dung trong MỘT vùng nhất định. Nếu bấm tab mà URL thay đổi hoàn toàn, đó thường là Navbar trá hình.',
     'Khi prompt AI, hãy chỉ định rõ loại tab bar bạn muốn. Ví dụ: "Dùng segmented control cho phần filter thời gian" hoặc "Dùng scrollable tabs cho danh sách categories dài".',
+  ],
+  'chips': [
+    'Chip là công cụ "nén" thông tin cực tốt. Thay vì dùng một danh sách dài dằng dặc, chip gom các nhãn (labels) vào không gian hẹp, giúp giao diện trông hiện đại và chuyên nghiệp hơn.',
+    '4 kiểu chip phổ biến: Input (nhập tag), Filter (lọc dữ liệu), Choice (chọn 1 hoặc nhiều), và Action (shortcut thực hiện lệnh nhanh).',
+    'Khi làm việc với AI, hãy phân biệt rõ: nếu bạn muốn người dùng chọn rồi "Lưu", hãy dùng Filter/Choice chip. Nếu bạn muốn bấm vào là chạy lệnh ngay (như Download, Share), hãy dùng Action chip.',
+    'Về thiết kế, chip thường có bo góc (radius) lớn hơn button một chút để tạo sự khác biệt, và thường đi kèm icon nhỏ ở bên trái để tăng tính trực quan.',
   ],
 };
 
