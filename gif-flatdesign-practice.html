@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flat Design — Interactive Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+    --bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;--accent-dim:rgba(212,113,42,.15);
+    --card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+    background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);
+    background-size:100% 100%,16px 16px;display:flex;flex-direction:column;align-items:center;
+    font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:0;overflow:hidden;
+}
+
+.aw{width:100%}
+.ab-wrap{width:100%;background:var(--card);border:2px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.hd{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
+.hd-t{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:2.5px;text-transform:uppercase}
+.hd-f{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
+
+.la-wrap{width:100%;position:relative;overflow:hidden;background:#111}
+.ab{width:800px;height:420px;transform-origin:top left;padding:30px 40px;position:relative;background:linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);background-size:30px 30px}
+
+/* Practice Content */
+.practice-header{margin-bottom:24px}
+.practice-title{font-size:22px;font-weight:800;color:#fff;margin-bottom:6px;line-height:1.2}
+.practice-sub{font-size:12px;color:var(--muted);line-height:1.5}
+
+.practice-content{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:stretch}
+
+/* Left Panel: Toggles */
+.control-panel{
+    border:1px solid var(--border);background:rgba(255,255,255,0.02);
+    padding:30px;border-radius:4px;display:flex;flex-direction:column;
+}
+.toggle-group{display:flex;flex-direction:column;gap:18px;margin-top:24px}
+.toggle-item{display:flex;justify-content:space-between;align-items:center}
+.toggle-info{display:flex;flex-direction:column;gap:1px}
+.toggle-name{font-size:14px;font-weight:700;color:#ede8df}
+.toggle-desc{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted)}
+
+.sw{position:relative;display:inline-block;width:40px;height:22px}
+.sw input{opacity:0;width:0;height:0}
+.sw-sl{position:absolute;cursor:pointer;inset:0;background-color:#333;transition:.3s;border-radius:22px}
+.sw-sl:before{position:absolute;content:"";height:16px;width:16px;left:3px;bottom:3px;background-color:#fff;transition:.3s;border-radius:50%}
+input:checked + .sw-sl{background-color:var(--accent)}
+input:checked + .sw-sl:before{transform:translateX(18px)}
+
+.preview-area{display:flex;flex-direction:column;align-items:center}
+.preview-label{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--muted);letter-spacing:0.1em;margin-bottom:16px;align-self:flex-start}
+
+.target-card{width:320px;background:#1a1a1a;border:1px solid #2e2e2e;transition:all 0.4s cubic-bezier(0.4, 0, 0.2, 1);overflow:hidden}
+.target-card.has-shadow{box-shadow:0 20px 50px rgba(0,0,0,0.5)}
+.target-card.has-radius{border-radius:16px}
+
+.card-hdr{padding:20px;background:#3b82f6;position:relative;min-height:90px;display:flex;align-items:flex-end}
+.card-hdr.has-gradient::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.2),transparent,rgba(0,0,0,0.3))}
+.card-hdr-txt{font-size:16px;font-weight:800;color:#fff;position:relative;z-index:2}
+
+.card-body{padding:20px;display:flex;flex-direction:column;gap:16px}
+.card-desc{font-size:11px;color:#aaa;line-height:1.5}
+.card-btn{padding:10px 20px;background:#2563eb;color:#fff;font-weight:700;font-size:11px;border:none;align-self:flex-start;transition:all 0.3s ease}
+.card-btn.has-shadow{box-shadow:0 8px 20px rgba(37,99,235,0.4)}
+.card-btn.has-radius{border-radius:6px}
+
+.inf{padding:11px 14px;border-top:1px solid var(--border);background:var(--card);display:flex;justify-content:space-between;align-items:center}
+.prog-wrap{flex:1;margin-right:30px}
+.prog-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:6px;text-transform:uppercase}
+.prog-bar{height:2px;background:#222;overflow:hidden}
+.prog-fill{height:100%;background:var(--accent);width:0%;transition:width 0.4s ease}
+.prog-val{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:800;color:var(--accent)}
+.status-txt{font-size:10px;color:var(--muted);margin-left:15px}
+
+</style>
+</head>
+<body>
+
+<div class="aw">
+<div class="ab-wrap">
+  <div class="hd"><span class="hd-t">FLAT DESIGN PRACTICE</span><span class="hd-f">INTERACTIVE</span></div>
+  <div class="la-wrap" id="la-wrap">
+    <div class="ab" id="ab">
+      
+      <div class="practice-content">
+        <div class="control-panel">
+            <div class="practice-header">
+                <h2 class="practice-title">Tắt hiệu ứng để tạo Flat Design</h2>
+                <p class="practice-sub">Mỗi toggle = một hiệu ứng loại bỏ. Tắt hết để thấy bản chất.</p>
+            </div>
+            <div class="toggle-group">
+                <div class="toggle-item">
+                    <div class="toggle-info"><span class="toggle-name">Bóng đổ</span><span class="toggle-desc">box-shadow trên card & button</span></div>
+                    <label class="sw"><input type="checkbox" id="sw-shadow" checked><span class="sw-sl"></span></label>
+                </div>
+                <div class="toggle-item">
+                    <div class="toggle-info"><span class="toggle-name">Gradient</span><span class="toggle-desc">background gradient → solid color</span></div>
+                    <label class="sw"><input type="checkbox" id="sw-gradient" checked><span class="sw-sl"></span></label>
+                </div>
+                <div class="toggle-item">
+                    <div class="toggle-info"><span class="toggle-name">Độ sâu</span><span class="toggle-desc">border-radius to + cảm giác 3D</span></div>
+                    <label class="sw"><input type="checkbox" id="sw-depth" checked><span class="sw-sl"></span></label>
+                </div>
+            </div>
+        </div>
+
+        <div class="preview-area">
+            <div class="preview-label">PREVIEW REALTIME</div>
+            <div class="target-card has-shadow has-radius" id="card">
+                <div class="card-hdr has-gradient" id="hdr"><div class="card-hdr-txt">Khám phá gói Pro</div></div>
+                <div class="card-body">
+                    <p class="card-desc">Truy cập API không giới hạn, hỗ trợ ưu tiên, và 50GB storage.</p>
+                    <button class="card-btn has-shadow has-radius" id="btn">Nâng cấp ngay</button>
+                </div>
+            </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <div class="inf">
+    <div class="prog-wrap">
+        <div class="prog-lbl">Mức độ Flat</div>
+        <div class="prog-bar"><div class="prog-fill" id="fill"></div></div>
+    </div>
+    <div class="prog-val" id="val">0%</div>
+    <div class="status-txt" id="status">Trạng thái: Có hiệu ứng</div>
+  </div>
+</div>
+</div>
+
+<script>
+const swShadow=document.getElementById('sw-shadow'),swGradient=document.getElementById('sw-gradient'),swDepth=document.getElementById('sw-depth');
+const card=document.getElementById('card'),hdr=document.getElementById('hdr'),btn=document.getElementById('btn');
+const fill=document.getElementById('fill'),val=document.getElementById('val'),statusEl=document.getElementById('status');
+
+function update(){
+    const s=swShadow.checked,g=swGradient.checked,d=swDepth.checked;
+    card.classList.toggle('has-shadow',s);btn.classList.toggle('has-shadow',s);
+    hdr.classList.toggle('has-gradient',g);
+    card.classList.toggle('has-radius',d);btn.classList.toggle('has-radius',d);
+    let p=Math.round(((3-((s?1:0)+(g?1:0)+(d?1:0)))/3)*100);
+    fill.style.width=p+'%';val.textContent=p+'%';
+    statusEl.textContent=p===100?'Trạng thái: Flat hoàn toàn':p>0?'Trạng thái: Modern Flat':'Trạng thái: Có hiệu ứng';
+}
+swShadow.onchange=swGradient.onchange=swDepth.onchange=update;
+function scale(){const w=document.getElementById('la-wrap'),b=document.getElementById('ab'),s=w.clientWidth/800;b.style.transform='scale('+s+')';w.style.height=Math.ceil(420*s)+'px'}
+window.addEventListener('resize',scale);scale();
+</script>
+</body>
+</html>

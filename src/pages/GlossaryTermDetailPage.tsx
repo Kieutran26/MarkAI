@@ -98,6 +98,8 @@ import hierarchyDemoHtml from '../../gif-hierarchy-demo.html?raw';
 import hierarchyPracticeHtml from '../../gif-hierarchy-practice.html?raw';
 import opacityDemoHtml from '../../gif-opacity-demo.html?raw';
 import opacityPracticeHtml from '../../gif-opacity-practice.html?raw';
+import flatDesignDemoHtml from '../../gif-flatdesign-demo.html?raw';
+import flatDesignPracticeHtml from '../../gif-flatdesign-practice.html?raw';
 
 
 // Final sync for viewport practice update
@@ -166,6 +168,7 @@ export default function GlossaryTermDetailPage() {
       case 'contrast': return contrastDemoHtml;
       case 'hierarchy': return hierarchyDemoHtml;
       case 'opacity': return opacityDemoHtml;
+      case 'flat-design': return flatDesignDemoHtml;
       default: return null;
     }
   };
@@ -218,6 +221,7 @@ export default function GlossaryTermDetailPage() {
       case 'contrast': return contrastPracticeHtml;
       case 'hierarchy': return hierarchyPracticeHtml;
       case 'opacity': return opacityPracticeHtml;
+      case 'flat-design': return flatDesignPracticeHtml;
       default: return null;
     }
   };

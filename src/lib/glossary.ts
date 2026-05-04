@@ -119,6 +119,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'color-palette', name: 'Color Palette', nameEn: 'Bảng màu thiết kế', letter: 'C', groups: ['design', 'code'], definition: 'Tập hợp các màu sắc được phân loại theo vai trò rõ ràng trong hệ thống thiết kế. Một bảng màu chuyên nghiệp thường có 4 nhóm: Brand (nhận diện cốt lõi), Semantic (truyền tải trạng thái), Neutral (trung tính cho nền, text, viền) và Extended (hỗ trợ illustration, biểu đồ).', example: 'Prompt: "Dùng Brand Palette cho nút submit chính, và dùng Semantic Error cho các thông báo điền sai form."', related: ['design-system', 'primary-color', 'css'], demo: { kind: 'interactive', src: 'gif-colorpalette-demo.html', alt: 'Mô phỏng 4 nhóm màu trong Color Palette và vai trò của từng nhóm' } },
   { id: 'fontweight', name: 'Font weight', nameEn: 'Độ đậm của chữ', letter: 'F', groups: ['design', 'code'], definition: 'Độ dày hoặc mỏng của các nét chữ. Trong thiết kế web, font weight thường được biểu diễn bằng các con số từ 100 (Thin) đến 900 (Black). Font weight là công cụ quan trọng nhất để tạo phân cấp thị giác (hierarchy) mà không cần thay đổi kích thước chữ quá nhiều.', example: 'Prompt: "Dùng font weight 700 cho tiêu đề để tạo sự mạnh mẽ, và 400 cho phần nội dung để đảm bảo tính dễ đọc."', related: ['typography', 'letter-spacing', 'line-spacing', 'css'], demo: { kind: 'interactive', src: 'gif-fontweight-demo.html', alt: 'Mô phỏng thang đo font-weight và cách ứng dụng trong hierarchy' } },
   { id: 'opacity', name: 'Opacity', nameEn: 'Độ trong suốt / Transparency', letter: 'O', groups: ['design', 'code'], definition: 'Độ trong suốt của một phần tử, từ 0 (vô hình) đến 1 (đậm đặc hoàn toàn). Opacity là công cụ mạnh mẽ để tạo phân cấp thị giác, trạng thái tương tác (hover, disabled) và các hiệu ứng lớp phủ (overlay) mà không cần thay đổi màu sắc gốc.', example: 'Prompt: "Giảm opacity của ảnh nền xuống 0.5 để text phía trên dễ đọc hơn, hoặc set opacity 0.4 cho nút bấm khi ở trạng thái disabled."', related: ['color-palette', 'contrast', 'hierarchy', 'interface'], demo: { kind: 'interactive', src: 'gif-opacity-demo.html', alt: 'Mô phỏng các ứng dụng của Opacity: Text, Background, Icon và Component' } },
+  { id: 'flat-design', name: 'Flat Design', nameEn: 'Thiết kế phẳng', letter: 'F', groups: ['design'], definition: 'Phong cách thiết kế loại bỏ các hiệu ứng giả 3D như đổ bóng (shadow), độ dốc màu (gradient), hay các chi tiết nổi khối (skeuomorphism). Flat Design tập trung vào sự đơn giản, sử dụng màu sắc phẳng, hình khối rõ ràng và typography mạnh mẽ để truyền tải thông tin.', example: 'Sự thay đổi của iOS từ bản 6 sang bản 7 là minh chứng rõ nhất cho việc chuyển từ Skeuomorphism sang Flat Design. Prompt: "Hãy thiết kế UI theo style flat, bỏ hết shadow và gradient để giao diện trông hiện đại hơn."', related: ['skeuomorphism', 'minimalism', 'ui', 'design-system'], demo: { kind: 'interactive', src: 'gif-flatdesign-demo.html', alt: 'Mô phỏng 4 ví dụ về Flat Design: Hero, Pricing, Dashboard và Chat UI' } },
 ];
 
 export const quickRefItems = [
@@ -203,6 +204,7 @@ const deepDiveTermIds = new Set([
   'contrast',
   'hierarchy',
   'opacity',
+  'flat-design',
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -432,6 +434,11 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Đừng lạm dụng quá nhiều Font Weight trên một trang. Quy tắc "an toàn" là dùng tối đa 3 mức: 400 (Body), 600/700 (Heading/Subheading) và 500 (Links/Buttons).',
     'Lưu ý về hiệu năng: Mỗi mức Font Weight là một file font riêng biệt cần tải về. Càng dùng nhiều weight, web càng load chậm. Đây là lý do designer chuyên nghiệp luôn giới hạn bảng weight trong Design System.',
     'Khi prompt AI "làm chữ đậm lên", hãy thử dùng số cụ thể (ví dụ: 600) thay vì nói chung chung. Điều này giúp code CSS sạch hơn và tránh việc AI tự ý chọn những weight lạ không có trong font-family của bạn.',
+  ],
+  'flat-design': [
+    'Flat Design không chỉ là "bỏ hiệu ứng", nó là tư duy ưu tiên nội dung và hiệu năng. Giao diện phẳng thường load nhanh hơn và dễ dàng co giãn trên mọi kích cỡ màn hình.',
+    'Khi làm việc với AI, nếu thấy kết quả ra quá nhiều bóng đổ hoặc gradient "sến", hãy dùng ngay từ khóa "Flat Design" để AI dọn dẹp lại giao diện.',
+    'Mô phỏng thực hành giúp bạn nhận diện 3 cấp độ: Skeuomorphic (nhiều hiệu ứng), Modern Flat (có bo góc nhẹ, màu hiện đại) và Pure Flat (cực kỳ tối giản).',
   ],
 };
 

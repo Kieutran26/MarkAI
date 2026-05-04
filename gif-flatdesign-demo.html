@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flat Design — Animated Demo</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+    --bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;--accent-dim:rgba(212,113,42,.15);
+    --card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a;--surface:#1c1c23;
+    --success:#3a9e5c;--remove:#c2410c;--remove-bg:rgba(194,65,12,0.14);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+    background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);
+    background-size:100% 100%,16px 16px;display:flex;flex-direction:column;align-items:center;
+    font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:0;overflow:hidden;
+}
+
+.aw{width:100%}
+.ab-wrap{width:100%;background:var(--card);border:2px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.hd{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
+.hd-t{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:2.5px;text-transform:uppercase}
+.hd-f{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
+
+.la-wrap{width:100%;position:relative;overflow:hidden;background:#111}
+.ab{width:800px;height:520px;transform-origin:top left;padding:20px;position:relative;background:linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);background-size:30px 30px}
+
+/* Grid Layout */
+.sim-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;height:100%}
+
+.sim-panel{background:#1a1a1a;border:1px solid #2e2e2e;border-radius:2px;overflow:hidden;display:flex;flex-direction:column;position:relative}
+.panel-label{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#5c5752;padding:8px 12px 6px;border-bottom:1px solid #2e2e2e;background:rgba(255,255,255,.01)}
+.panel-body{padding:12px;flex:1;position:relative;display:flex;flex-direction:column;justify-content:center}
+.panel-insight{font-family:'JetBrains Mono',monospace;font-size:9px;color:#5c5752;padding:8px 12px;border-top:1px solid #2e2e2e;background:rgba(255,255,255,.01)}
+.panel-insight em{color:var(--accent);font-style:normal}
+
+.grad-ov{position:absolute;inset:0;pointer-events:none;z-index:1;transition:opacity 0.6s ease;opacity:0}
+.flat-hero{border-radius:6px;overflow:hidden;display:flex;flex-direction:column;transition:all 0.6s ease;box-shadow:0 10px 25px rgba(0,0,0,0.5)}
+.flat-hero-bg{background:linear-gradient(135deg,#93c5fd 0%,#1e40af 100%);padding:24px 14px;position:relative;min-height:80px;display:flex;flex-direction:column;justify-content:flex-end}
+.flat-hero-bg .grad-ov{background:#2563eb}
+.flat-hero-title{font-size:16px;font-weight:800;color:#fff;line-height:1.1;position:relative;z-index:2}
+.flat-hero-sub{font-size:9px;color:rgba(255,255,255,.7);margin-top:4px;position:relative;z-index:2}
+.flat-hero-bar{padding:10px 14px;background:#fff;display:flex;align-items:center;gap:8px}
+.flat-btn{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;padding:6px 12px;background:#2563eb;color:#fff;border-radius:4px;transition:all 0.6s ease;box-shadow:0 4px 10px rgba(37,99,235,0.3)}
+.flat-btn-link{font-size:8px;color:#666;font-weight:600}
+
+.pricing-cards{display:flex;flex-direction:column;gap:6px;width:100%}
+.pricing-card{padding:10px;border:1px solid #2e2e2e;border-radius:4px;background:#222;position:relative;overflow:hidden;transition:all 0.6s ease;box-shadow:0 4px 12px rgba(0,0,0,0.2)}
+.pricing-card.pop{border-color:rgba(217,119,6,.4);background:linear-gradient(135deg,rgba(217,119,6,.35) 0%,rgba(217,119,6,.02) 100%)}
+.pricing-card.pop .grad-ov{background:#222}
+.pricing-hdr{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:2}
+.pricing-tier{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;text-transform:uppercase;color:#5c5752}
+.pricing-price{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:#ede8df}
+.pricing-pop-tag{font-size:7px;background:var(--accent);color:#000;padding:1px 4px;border-radius:2px;font-weight:800}
+
+.dash-top{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
+.dash-card{padding:10px;border:1px solid #2e2e2e;border-radius:4px;background:#222;transition:all 0.6s ease;box-shadow:0 4px 12px rgba(0,0,0,0.2)}
+.dash-lbl{font-size:9px;color:#5c5752}
+.dash-val{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:800;color:#ede8df}
+.dash-chg{font-size:8px;color:var(--success)}
+.dash-chart{padding:10px;border:1px solid #2e2e2e;border-radius:4px;background:#222;height:60px;display:flex;align-items:flex-end;gap:4px;transition:all 0.6s ease}
+.dash-bar{flex:1;background:var(--accent);min-height:4px}
+
+.chat-area{display:flex;flex-direction:column;gap:6px}
+.chat-bub{max-width:85%;padding:8px 12px;border-radius:12px;font-size:10px;line-height:1.4;position:relative;overflow:hidden;transition:all 0.6s ease;box-shadow:0 4px 10px rgba(0,0,0,0.2)}
+.chat-bub.sent{align-self:flex-end;background:linear-gradient(135deg,#60a5fa 0%,#1e3a8a 100%);color:#fff}
+.chat-bub.sent .grad-ov{background:#2563eb}
+.chat-bub.recv{align-self:flex-start;background:#222;border:1px solid #2e2e2e;color:#ede8df}
+
+.rm-label{position:absolute;font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;color:var(--remove);background:var(--remove-bg);padding:2px 6px;border-radius:2px;border:1px solid rgba(194,65,12,.25);z-index:10;opacity:0;transition:opacity 0.3s ease}
+.flat-tag{position:absolute;font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:800;color:var(--accent);background:rgba(212,113,42,0.15);border:1px solid rgba(212,113,42,0.3);padding:2px 6px;border-radius:2px;z-index:10;opacity:0;transition:opacity 0.3s ease}
+
+.is-flat .grad-ov{opacity:1}
+.is-flat .flat-hero, .is-flat .pricing-card, .is-flat .dash-card, .is-flat .dash-chart, .is-flat .chat-bub{box-shadow:none;border-radius:2px}
+.is-flat .flat-btn{box-shadow:none;border-radius:2px}
+.is-flat .rm-label, .is-flat .flat-tag{opacity:1}
+
+.inf{padding:11px 14px;border-top:1px solid var(--border);background:var(--card);min-height:86px}
+.dn{font-size:15px;font-weight:800;line-height:1.15}
+.ds{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);margin-top:2px}
+.dd{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.4}
+.pt{height:2px;background:var(--border)}.pff{height:100%;background:var(--accent);width:0%}
+
+.ctr{display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 0;background:transparent}
+.ctr-b{padding:6px 12px;background:var(--card-alt);border:1px solid var(--border);color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:1px}
+.ctr-b:hover{border-color:var(--border-hi);color:var(--fg)}
+.ctr-b.act{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+.pp-b{width:32px;height:32px;border-radius:50%;background:var(--accent);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-left:4px;transition:transform .2s;flex-shrink:0}
+.pp-i{width:12px;height:12px;fill:#000}
+
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="aw">
+<div class="ab-wrap">
+  <div class="hd"><span class="hd-t">FLAT DESIGN SIMULATION</span><span class="hd-f" id="hf">01 / 02</span></div>
+  <div class="la-wrap" id="la-wrap">
+    <div class="ab" id="ab">
+      <div class="sim-grid" id="sim-grid">
+        <div class="sim-panel" id="p1">
+            <div class="panel-label">01 — WEBSITE HERO</div>
+            <div class="panel-body">
+                <div class="flat-hero">
+                    <div class="flat-hero-bg">
+                        <div class="flat-tag" style="top:4px; right:4px">FLAT</div>
+                        <div class="grad-ov"></div>
+                        <div class="flat-hero-title">Build better experiences</div>
+                        <div class="flat-hero-sub">Simple, clean, no decoration</div>
+                    </div>
+                    <div class="flat-hero-bar">
+                        <span class="flat-btn" style="position:relative; overflow:hidden">
+                            <div class="grad-ov" style="background:#2563eb; opacity:inherit"></div>
+                            <span style="position:relative;z-index:2">Get Started</span>
+                        </span>
+                        <span class="flat-btn-link">Learn more →</span>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-insight">Cùng nội dung — <em>không bóng, không gradient</em></div>
+        </div>
+        <div class="sim-panel" id="p2">
+            <div class="panel-label">02 — PRICING TABLE</div>
+            <div class="panel-body">
+                <div class="rm-label" style="top:4px; right:4px">−shadow</div>
+                <div class="pricing-cards">
+                    <div class="pricing-card">
+                        <div class="pricing-hdr"><span class="pricing-tier">Basic</span><span class="pricing-price">$0/mo</span></div>
+                    </div>
+                    <div class="rm-label" style="position:relative; top:0; left:50%; transform:translateX(-50%); width:fit-content; margin-bottom:4px">−gradient</div>
+                    <div class="pricing-card pop">
+                        <div class="grad-ov" style="opacity:inherit"></div>
+                        <div class="pricing-hdr"><span class="pricing-tier">Pro</span><div style="display:flex;align-items:center;gap:4px"><span class="pricing-price">$9/mo</span><span class="pricing-pop-tag">POPULAR</span></div></div>
+                    </div>
+                    <div class="pricing-card"><div class="pricing-hdr"><span class="pricing-tier">Team</span><span class="pricing-price">$29/mo</span></div></div>
+                </div>
+            </div>
+            <div class="panel-insight">Gói nổi bật dùng <em>màu accent</em>, không cần đổ bóng</div>
+        </div>
+        <div class="sim-panel" id="p3">
+            <div class="panel-label">03 — DASHBOARD</div>
+            <div class="panel-body">
+                <div class="dash-top">
+                    <div class="dash-card"><div class="dash-lbl">Users</div><div class="dash-val">1,245</div><div class="dash-chg">+12.3% ↑</div></div>
+                    <div class="dash-card"><div class="dash-lbl">Revenue</div><div class="dash-val">$12,430</div><div class="dash-chg">+8.7% ↑</div></div>
+                </div>
+                <div class="dash-chart">
+                    <div class="dash-bar" style="height:35%"></div><div class="dash-bar" style="height:55%"></div><div class="dash-bar" style="height:42%"></div><div class="dash-bar" style="height:70%"></div><div class="dash-bar" style="height:88%"></div><div class="dash-bar" style="height:60%"></div><div class="dash-bar" style="height:100%"></div>
+                </div>
+            </div>
+            <div class="panel-insight">Số lớn = <em>chiếm spotlight</em>, không cần hiệu ứng 3D</div>
+        </div>
+        <div class="sim-panel" id="p4">
+            <div class="panel-label">04 — APP INTERFACE</div>
+            <div class="panel-body">
+                <div class="flat-tag" style="top:4px; right:4px">FLAT</div>
+                <div class="chat-area">
+                    <div style="display:flex; align-items:center; gap:8px"><div class="chat-bub recv">Xin chào! Bạn cần hỗ trợ gì?</div><div class="rm-label" style="position:static; opacity: inherit">−gradient</div></div>
+                    <div class="chat-bub sent">
+                        <div class="grad-ov" style="opacity: inherit"></div>
+                        <span style="position:relative;z-index:2">Mình muốn nâng cấp lên gói Pro</span>
+                    </div>
+                    <div class="chat-bub recv">Được chứ! Gói Pro có API access...</div>
+                </div>
+            </div>
+            <div class="panel-insight">Tin nhắn gửi = <em>màu khác</em>, không cần bóng để phân biệt</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="inf">
+    <div class="dn" id="dn">Skeuomorphic State</div>
+    <div class="ds" id="ds">HIỆU ỨNG ĐỔ BÓNG & GRADIENT</div>
+    <div class="dd" id="dd">Giao diện truyền thống sử dụng bóng đổ (shadow) và dải màu (gradient) để tạo cảm giác về độ sâu và chất liệu thực tế.</div>
+  </div>
+  <div class="pt"><div class="pff" id="pff"></div></div>
+</div>
+
+<div class="ctr">
+    <button class="ctr-b act" data-i="0">SKEUO</button>
+    <button class="ctr-b" data-i="1">FLAT</button>
+    <button class="pp-b" id="pp" title="Play/Pause">
+        <svg class="pp-i" id="pp-i" viewBox="0 0 24 24"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>
+    </button>
+</div>
+</div>
+
+<script>
+const INFO=[
+  {nm:'Skeuomorphic State',sz:'HIỆU ỨNG ĐỔ BÓNG & GRADIENT',dc:'Giao diện truyền thống sử dụng bóng đổ (shadow) và dải màu (gradient) để tạo cảm giác về độ sâu và chất liệu thực tế (giả lập 3D).'},
+  {nm:'Flat Design State',sz:'LOẠI BỎ ĐỘ SÂU GIẢ',dc:'Bỏ bóng đổ, bỏ gradient, bỏ 3D — chỉ giữ màu sắc, hình khối, chữ. Giúp giao diện sạch sẽ, hiện đại và tối ưu tốc độ load.'}
+];
+const el={dn:document.getElementById('dn'),ds:document.getElementById('ds'),dd:document.getElementById('dd'),hf:document.getElementById('hf'),pff:document.getElementById('pff')};
+const grid=document.getElementById('sim-grid'),ctrBs=document.querySelectorAll('.ctr-b'),ppB=document.getElementById('pp'),ppI=document.getElementById('pp-i');
+let cur=0,pa=null,t0=0,isPaused=false;
+const DUR=4000;
+function apply(i){
+  cur=i;const s=INFO[i];el.dn.textContent=s.nm;el.ds.textContent=s.sz;el.dd.textContent=s.dc;el.hf.textContent='0'+(i+1)+' / 02';
+  ctrBs.forEach((b,j)=>b.classList.toggle('act',j===i));
+  grid.classList.toggle('is-flat', i===1);
+}
+function tk(n){if(isPaused)return;const p=Math.min(100,(n-t0)/DUR*100);el.pff.style.width=p+'%';if(p<100)pa=requestAnimationFrame(tk);else next()}
+function startProg(){t0=performance.now();el.pff.style.transition='none';el.pff.style.width='0%';pa=requestAnimationFrame(tk)}
+function next(){if(isPaused)return;cur=(cur+1)%2;apply(cur);startProg()}
+function togglePP(){isPaused=!isPaused;ppI.innerHTML=isPaused?'<path d="M8 5v14l11-7z"/>':'<path d="M6 4h4v16H6zm8 0h4v16h-4z"/>';if(!isPaused){t0=performance.now()-(parseFloat(el.pff.style.width||0)/100*DUR);pa=requestAnimationFrame(tk)}}
+ctrBs.forEach(b=>{b.onclick=()=>{isPaused=true;ppI.innerHTML='<path d="M8 5v14l11-7z"/>';apply(parseInt(b.dataset.i));el.pff.style.width='0%'}});
+ppB.onclick=togglePP;
+function scale(){const w=document.getElementById('la-wrap'),b=document.getElementById('ab'),s=w.clientWidth/800;b.style.transform='scale('+s+')';w.style.height=Math.ceil(520*s)+'px'}
+window.addEventListener('resize',scale);requestAnimationFrame(()=>requestAnimationFrame(scale));
+apply(0);startProg();
+</script>
+</body>
+</html>
