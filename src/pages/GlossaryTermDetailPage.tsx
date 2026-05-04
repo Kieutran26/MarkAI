@@ -64,6 +64,8 @@ import gridDemoHtml from '../../gif-grid-demo.html?raw';
 import gridPracticeHtml from '../../gif-grid-practice.html?raw';
 import gutterDemoHtml from '../../gif-gutter-demo.html?raw';
 import gutterPracticeHtml from '../../gif-gutter-practice.html?raw';
+import carouselDemoHtml from '../../gif-carousel-demo.html?raw';
+import carouselPracticeHtml from '../../gif-carousel-practice.html?raw';
 
 
 export default function GlossaryTermDetailPage() {
@@ -112,6 +114,7 @@ export default function GlossaryTermDetailPage() {
     if (id === 'breakpoint') return breakpointDemoHtml;
     if (id === 'grid') return gridDemoHtml;
     if (id === 'gutter') return gutterDemoHtml;
+    if (id === 'carousel') return carouselDemoHtml;
     return null;
   };
 
@@ -143,6 +146,7 @@ export default function GlossaryTermDetailPage() {
     if (id === 'breakpoint') return breakpointPracticeHtml;
     if (id === 'grid') return gridPracticeHtml;
     if (id === 'gutter') return gutterPracticeHtml;
+    if (id === 'carousel') return carouselPracticeHtml;
     return null;
   };
 

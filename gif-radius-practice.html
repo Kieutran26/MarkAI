@@ -3,139 +3,97 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Border Radius Practice — markAI</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>Radius / Corner — Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#0f0f12;--bg-card:#16161b;--bg-el:#222;--border:#282830;
-  --border-active:#e88c2e;--accent:#e88c2e;
-  --accent-glow:rgba(232,140,46,.18);--accent-soft:rgba(232,140,46,.07);
-  --cream:#EDE4D8;--text:#D8D0C8;--muted:#777770;
-  --success:#3a9e5c;--success-soft:rgba(58,158,92,.12);
-  --warning:#c49030;--warning-soft:rgba(196,144,48,.1);
-  --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
-}
+:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;--card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a;--success:#3a9e5c}
 *{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--text);font-family:var(--sans);overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;
-  background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
-  background-size:48px 48px;pointer-events:none;z-index:0}
+body{background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 100%,16px 16px;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:12px 16px;min-height:auto;overflow:hidden}
 
-#app-root{position:relative;z-index:1;padding:24px 16px}
+.pw{width:100%;background:var(--card);border:1px solid var(--border);padding:20px 24px;position:relative;z-index:1}
+.pw-h{font-size:15px;font-weight:700;margin-bottom:2px}.pw-h span{color:var(--accent)}
+.pw-s{font-size:11px;color:var(--muted);margin-bottom:14px}
+.mbs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.mb{padding:6px 12px;border:2px solid var(--border);background:var(--card-alt);font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);cursor:pointer;transition:all .2s}.mb:hover{border-color:var(--border-hi)}.mb.on{border-color:var(--accent);color:var(--accent);background:rgba(212,113,42,.08)}
 
-.pg{font-size:14px;color:var(--text);line-height:1.6;margin-bottom:20px}
-.pg span{color:var(--accent);font-weight:700}
+.pcv{background:var(--card-alt);border:1px solid var(--border);padding:32px;display:flex;justify-content:center;margin-bottom:12px;position:relative;transition:all .3s}
+.rpc{width:280px;background:var(--card);border:1px solid var(--border);padding:16px;display:flex;flex-direction:column;gap:12px;transition:border-radius .3s}
+.rpc-h{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
+.rpc-b{width:100%;height:36px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;transition:border-radius .3s}
+.rpc-i{width:100%;height:32px;background:var(--card-alt);border:1px solid var(--border);transition:border-radius .3s}
+.rpc-c{width:100%;height:80px;background:var(--card-alt);border:1px solid var(--border);transition:border-radius .3s}
 
-.ctx-r{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
-.ctx-b{
-  font-family:var(--sans);font-size:13px;font-weight:600;
-  padding:8px 14px;border:1px solid var(--border);background:var(--bg-card);
-  color:var(--muted);cursor:pointer;transition:all .25s;
-}
-.ctx-b:hover{border-color:var(--accent);color:var(--text)}
-.ctx-b.on{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.sl-sec{margin-bottom:16px}
+.sl-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
+.sl-lbl{font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace;text-transform:uppercase;letter-spacing:1px}
+.sl-val{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700;color:var(--accent)}
 
-.sl-sec{margin-bottom:28px}
-.sl-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
-.sl-lbl{font-size:12px;color:var(--muted);font-family:var(--mono);text-transform:uppercase;letter-spacing:1px}
-.sl-val{font-family:var(--mono);font-size:18px;font-weight:700;color:var(--accent)}
-.sl-val.ok{color:var(--success)}
+.sl-wrap{position:relative;height:30px;display:flex;align-items:center}
+.sl-track{position:absolute;left:0;right:0;height:4px;background:var(--border)}
+.sl-zone{position:absolute;height:4px;background:rgba(212,113,42,.2);border-left:1px solid var(--accent);border-right:1px solid var(--accent);z-index:1;pointer-events:none;transition:all .3s ease}
+.sl-zone.hit{background:rgba(58,158,92,.2);border-color:var(--success)}
 
-.sl-wrap{position:relative;height:34px}
-.sl-track{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);height:4px;background:var(--border)}
-.sl-zone{
-  position:absolute;top:50%;transform:translateY(-50%);
-  height:4px;background:var(--accent-soft);border:1px solid var(--accent-border);
-  z-index:1;pointer-events:none;transition:all .3s ease;
-}
-.sl-zone.hit{background:var(--success-soft);border-color:rgba(58,158,92,.35)}
+input[type=range]{-webkit-appearance:none;width:100%;height:100%;background:transparent;outline:none;cursor:pointer;position:relative;z-index:2}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;background:var(--accent);border:2px solid var(--card);cursor:grab;border-radius:0}
+input[type=range]:active::-webkit-slider-thumb{cursor:grabbing}
 
-input[type=range]{
-  -webkit-appearance:none;width:100%;height:34px;background:transparent;
-  outline:none;cursor:pointer;position:absolute;top:0;left:0;z-index:2;
-}
-input[type=range]::-webkit-slider-thumb{
-  -webkit-appearance:none;width:18px;height:18px;background:var(--accent);
-  border:2px solid var(--bg);cursor:grab;
-}
-input[type=range].ok::-webkit-slider-thumb{background:var(--success)}
+.fb{display:flex;align-items:center;gap:8px;padding:10px 14px;font-size:12px;border:1px solid var(--border);background:var(--card-alt);font-family:'Space Grotesk',sans-serif}
+.fb strong{color:var(--accent)}
+.fb.ok{border-color:var(--success);background:rgba(58,158,92,.05)}
+.fb.ok strong{color:var(--success)}
 
-/* Preview area */
-.prev-box{
-  background:var(--bg-card);border:1px solid var(--border);
-  padding:32px 24px;margin-bottom:18px;position:relative;
-  transition:border-color .3s;
-}
-.prev-box.ok-b{border-color:rgba(58,158,92,.3)}
+.pht{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);opacity:.65}
 
-/* Element Card */
-.el-card{width:280px;margin:0 auto;background:var(--bg);border:1px solid var(--border);padding:16px;transition:border-radius .2s}
-.el-badge{display:inline-block;padding:2px 8px;background:var(--accent);color:#000;font-family:var(--mono);font-size:9px;font-weight:800;margin-bottom:10px;transition:border-radius .2s}
-.el-h3{font-size:16px;font-weight:700;color:var(--cream);margin-bottom:4px}
-.el-p{font-size:11px;color:var(--muted);line-height:1.45;margin-bottom:12px}
-.el-input{width:100%;height:32px;background:var(--bg-card);border:1px solid var(--border);margin-bottom:12px;transition:border-radius .2s}
-.el-btn{width:100%;height:36px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12px;transition:border-radius .2s}
-
-.fb{display:flex;align-items:center;gap:8px;padding:10px 14px;font-size:13px;border:1px solid var(--border);background:var(--bg-card)}
-.fb.ok{border-color:var(--success);color:var(--success);background:var(--success-soft)}
-.fb.no{border-color:var(--warning);color:var(--warning);background:var(--warning-soft)}
-
-@media(max-width:480px){ .el-card{width:100%} }
+@media(max-width:520px){.pw{padding:16px}.rpc{width:100%}}
 </style>
 </head>
 <body>
-<div id="app-root">
-    <p class="pg"><span>Mục tiêu:</span> Kéo slider để điều chỉnh radius cho toàn bộ card bên dưới. Hãy tìm mức radius phù hợp cho <span>thành phần đang chọn</span>.</p>
 
-    <div class="ctx-r" id="ctxR"></div>
+<div class="pw">
+  <div class="pw-h">Thực hành — <span>Radius Context</span></div>
+  <div class="pw-s">Chọn loại element → điều chỉnh radius vào vùng gợi ý</div>
+  
+  <div class="mbs" id="mbs"></div>
 
-    <div class="sl-sec">
-      <div class="sl-head">
-        <span class="sl-lbl">Border Radius</span>
-        <span class="sl-val" id="sV">0px</span>
-      </div>
-      <div class="sl-wrap">
-        <div class="sl-track"></div>
-        <div class="sl-zone" id="sZ"></div>
-        <input type="range" id="sR" min="0" max="40" step="1" value="0">
-      </div>
+  <div class="sl-sec">
+    <div class="sl-head">
+      <span class="sl-lbl">Corner Radius</span>
+      <span class="sl-val" id="sV">0px</span>
     </div>
-
-    <div class="prev-box" id="pBox">
-      <div class="el-card" id="eCard">
-        <div class="el-badge" id="eBadge">PROMPT</div>
-        <div class="el-h3">Giao diện sạch</div>
-        <div class="el-p">Mọi element đều chịu ảnh hưởng của radius.</div>
-        <div class="el-input" id="eInput"></div>
-        <div class="el-btn" id="eBtn">ACTION</div>
-      </div>
+    <div class="sl-wrap">
+      <div class="sl-track"></div>
+      <div class="sl-zone" id="sZ"></div>
+      <input type="range" id="sR" min="0" max="40" step="1" value="0">
     </div>
+  </div>
 
-    <div class="fb" id="fb">Chọn một loại element để bắt đầu</div>
+  <div class="pcv" id="pcv">
+    <div class="rpc" id="rpc"><div class="rpc-h" id="rpcH">Card</div><div class="rpc-b" id="rpcB">BUTTON</div><div class="rpc-i" id="rpcI"></div><div class="rpc-c" id="rpcC"></div></div>
+  </div>
+
+  <div class="fb" id="fb">Chọn một loại element để bắt đầu</div>
+  <div class="pht">Hint: Chú ý sự nhất quán — card thường bo nhiều hơn button bên trong nó.</div>
 </div>
 
 <script>
   const ctxs = [
-    { id:'button', name:'Button', range:[6,12], hint:'Button cần bo vừa phải — thân thiện nhưng chuyên nghiệp.' },
-    { id:'card', name:'Card', range:[8,16], hint:'Card thường bo nhiều hơn button một chút để tạo khối.' },
-    { id:'input', name:'Input', range:[4,8], hint:'Input cần bo rất nhẹ — giữ sự ngay ngắn cho form.' },
-    { id:'badge', name:'Badge', range:[16,24], hint:'Badge/Tag thường bo mạnh (pill) để tách biệt với khối.' }
+    { id:'button', name:'Button', range:[4,10], hint:'Button cần bo vừa phải — sạch sẽ và chuyên nghiệp.' },
+    { id:'card', name:'Card', range:[8,16], hint:'Card thường bo nhiều hơn để tạo khối vững chãi.' },
+    { id:'input', name:'Input', range:[2,6], hint:'Input nên bo rất nhẹ để giữ phom dáng ngay ngắn.' },
+    { id:'badge', name:'Badge', range:[16,24], hint:'Badge/Tag thường bo mạnh (pill) để nổi bật.' }
   ];
 
-  const ctxR=document.getElementById('ctxR'), sR=document.getElementById('sR'), sV=document.getElementById('sV'), sZ=document.getElementById('sZ');
-  const pBox=document.getElementById('pBox'), fb=document.getElementById('fb');
-  const eCard=document.getElementById('eCard'), eBadge=document.getElementById('eBadge'), eInput=document.getElementById('eInput'), eBtn=document.getElementById('eBtn');
+  const mbs=document.getElementById('mbs'), sR=document.getElementById('sR'), sV=document.getElementById('sV'), sZ=document.getElementById('sZ');
+  const fb=document.getElementById('fb'), rpc=document.getElementById('rpc'), rpcB=document.getElementById('rpcB'), rpcI=document.getElementById('rpcI'), rpcC=document.getElementById('rpcC'), rpcH=document.getElementById('rpcH');
 
-  let curCtx = ctxs[0];
+  let pm = ctxs[0];
 
-  function renderCtx(){
-    ctxR.innerHTML = ctxs.map(function(c,i){
-      return '<button class="ctx-b'+(i===0?' on':'')+'" data-id="'+c.id+'">'+c.name+'</button>';
-    }).join('');
-    ctxR.querySelectorAll('.ctx-b').forEach(function(b){
-      b.onclick=function(){
-        curCtx=ctxs.find(function(x){return x.id===b.dataset.id});
-        ctxR.querySelectorAll('.ctx-b').forEach(function(x){x.classList.toggle('on',x===b)});
+  function buildM(){
+    mbs.innerHTML = ctxs.map((c,i)=>`<button class="mb${i===0?' on':''}" data-id="${c.id}">${c.name}</button>`).join('');
+    mbs.querySelectorAll('.mb').forEach(b=>{
+      b.onclick=()=>{
+        pm=ctxs.find(x=>x.id===b.dataset.id);
+        mbs.querySelectorAll('.mb').forEach(x=>x.classList.toggle('on',x===b));
         update();
       };
     });
@@ -145,35 +103,34 @@ input[type=range].ok::-webkit-slider-thumb{background:var(--success)}
     const v = parseInt(sR.value);
     sV.textContent = v + 'px';
     
-    /* Update all elements radius */
-    eCard.style.borderRadius = v + 'px';
-    eInput.style.borderRadius = Math.min(v, 8) + 'px'; // Input usually capped
-    eBtn.style.borderRadius = v + 'px';
-    eBadge.style.borderRadius = v + 'px';
+    // Update elements
+    rpc.style.borderRadius = v + 'px';
+    rpcB.style.borderRadius = Math.min(v, 8) + 'px';
+    rpcI.style.borderRadius = Math.min(v, 6) + 'px';
+    rpcC.style.borderRadius = Math.min(v, 4) + 'px';
+    rpcH.textContent = pm.name + ' context';
 
-    /* Check zone */
-    const lo=0, hi=40, span=hi-lo;
-    const zl=curCtx.range[0], zh=curCtx.range[1];
-    sZ.style.left = ((zl-lo)/span*100)+'%';
-    sZ.style.width = ((zh-zl)/span*100)+'%';
+    // Zone logic
+    const lo=0, hi=40;
+    const zl=pm.range[0], zh=pm.range[1];
+    sZ.style.left = (zl/hi*100)+'%';
+    sZ.style.width = ((zh-zl)/hi*100)+'%';
 
     const inZ = v >= zl && v <= zh;
-    sR.classList.toggle('ok', inZ);
-    sV.classList.toggle('ok', inZ);
+    sV.style.color = inZ ? 'var(--success)' : 'var(--accent)';
     sZ.classList.toggle('hit', inZ);
-    pBox.classList.toggle('ok-b', inZ);
-
+    
     if(inZ){
       fb.className='fb ok';
-      fb.innerHTML='<strong>✓ Phù hợp!</strong> '+curCtx.hint;
+      fb.innerHTML=`<strong>✓ Hợp lý!</strong> ${pm.hint}`;
     } else {
-      fb.className='fb no';
-      fb.innerHTML='<strong>× Chưa khớp.</strong> Kéo slider vào vùng cam của '+curCtx.name;
+      fb.className='fb';
+      fb.innerHTML=`<strong>× Chưa khớp.</strong> Kéo vào vùng sáng của ${pm.name} (${zl}-${zh}px)`;
     }
   }
 
   sR.oninput = update;
-  renderCtx();
+  buildM();
   update();
 </script>
 </body>

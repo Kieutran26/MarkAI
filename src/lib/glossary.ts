@@ -102,6 +102,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'sidebar', name: 'Sidebar', nameEn: 'Thanh bên / Navigation Rail', letter: 'S', groups: ['design', 'code'], definition: 'Thanh điều hướng hoặc chứa thông tin bổ sung nằm ở cạnh trái hoặc phải của trang web. Sidebar giúp tận dụng chiều ngang của màn hình desktop để giữ các chức năng quan trọng luôn trong tầm tay mà không chiếm dụng không gian phía trên như Navbar.', example: 'Dashboard của các tool SaaS thường có sidebar bên trái để chuyển giữa các tính năng. Prompt: "Thêm một collapsible sidebar bên trái chứa các mục: Dashboard, Reports, Settings."', related: ['navbar', 'interface', 'layout'], demo: { kind: 'interactive', src: 'gif-sidebar-demo.html', alt: 'Mô phỏng các loại sidebar: Static, Collapsible, Overlay và Right' } },
   { id: 'accordion', name: 'Accordion', nameEn: 'Danh sách mở rộng / Thu gọn', letter: 'A', groups: ['design', 'code'], definition: 'Một thành phần giao diện cho phép ẩn/hiện nội dung chi tiết bằng cách nhấp vào tiêu đề. Accordion giúp tối ưu hóa không gian hiển thị, đặc biệt hữu ích cho các trang FAQ, cấu hình cài đặt hoặc các khối thông tin dài cần phân loại.', example: 'Prompt: "Làm một accordion cho phần Câu hỏi thường gặp, mặc định đóng hết, khi mở cái này thì cái kia tự đóng để tiết kiệm diện tích."', related: ['component', 'interface', 'element', 'card'], demo: { kind: 'interactive', src: 'gif-accordion-demo.html', alt: 'Mô phỏng các loại accordion: Single Open, Multiple Open, With Icons và In Card' } },
   { id: 'header', name: 'Header', nameEn: 'Đầu trang / Hero Area', letter: 'H', groups: ['design', 'code'], definition: 'Vùng phía trên cùng của trang — thường gồm navbar (logo + menu) và đôi khi thêm hero banner + nút CTA. Header là "vùng chứa" lớn hơn navbar, xuất hiện ngay lập tức khi user truy cập và thường được giữ cố định (sticky) khi cuộn trang.', example: 'Khi marketer yêu cầu "thêm banner vào header", dev sẽ đưa khối hình ảnh/text lớn vào dưới navbar. Header chuyên nghiệp giúp định vị thương hiệu và dẫn dắt hành động (CTA) ngay từ giây đầu tiên.', related: ['navbar', 'component', 'sticky', 'interface'], demo: { kind: 'interactive', src: 'gif-header-demo.html', alt: 'Mô phỏng các trạng thái của header: Default, Scrolled, CTA Focus và Mobile Menu' } },
+  { id: 'carousel', name: 'Carousel', nameEn: 'Vòng lặp hình ảnh / Slider', letter: 'C', groups: ['design', 'code'], definition: 'Một thành phần giao diện cho phép trình chiếu nhiều nội dung (ảnh, thẻ, sản phẩm) trong cùng một không gian bằng cách trượt qua lại. Carousel giúp tiết kiệm diện tích và tăng tính tương tác cho trang web.', example: 'Prompt: "Làm một carousel cho phần Testimonials, tự động chuyển mỗi 5 giây, có mũi tên điều hướng và các chấm tròn (dots) ở dưới."', related: ['component', 'interface', 'slider', 'animation'], demo: { kind: 'interactive', src: 'gif-carousel-demo.html', alt: 'Mô phỏng các loại carousel: Single, Multiple, Center và Autoplay' } },
 ];
 
 export const quickRefItems = [
@@ -139,6 +140,7 @@ const deepDiveTermIds = new Set([
   'breakpoint',
   'build',
   'card',
+  'carousel',
   'component',
   'corner',
   'database',
@@ -184,6 +186,11 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Accordion là giải pháp tuyệt vời để quản lý nội dung dài mà không làm người dùng bị choáng ngợp (information overload).',
     'Hai chế độ quan trọng: Single Open (chỉ mở 1 cái) giúp tập trung, và Multiple Open (mở nhiều cái) giúp so sánh dữ liệu dễ hơn.',
     'Khi prompt AI, hãy nói rõ bạn muốn Single hay Multiple Open để AI viết đúng logic xử lý state ngay từ đầu.',
+  ],
+  carousel: [
+    'Carousel (hay Slider) là "con dao hai lưỡi": nó tiết kiệm diện tích nhưng nếu làm không tốt sẽ khiến user bị rối hoặc bỏ lỡ thông tin quan trọng.',
+    'Các dạng phổ biến: Single (mỗi lần 1 cái), Multi (hiện nhiều cái cùng lúc), Center (tập trung vào item giữa) và Autoplay (tự động chạy).',
+    'Quy tắc vàng: Đừng bao giờ ẩn các nút điều hướng (mũi tên/dots) vì user cần cảm giác mình vẫn đang làm chủ giao diện.',
   ],
   border: [
     'Border là đường viền của element. Thiếu style (ví dụ style="none") thì border sẽ biến mất hoàn toàn dù bạn có set width và color.',
