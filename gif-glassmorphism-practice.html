@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glassmorphism — Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+  --bg:#0c0c0e;--bg2:#131315;--fg:#ece8e1;--muted:#706b64;
+  --accent:#cf5c27;--card:#1a1a1e;--card-alt:#242120;--border:#26262a;
+  --mono:'Space Mono',monospace;--sans:'Space Grotesk',sans-serif;
+  --jetbrains:'JetBrains Mono',monospace;
+  --success:#3a9e5c;--success-soft:rgba(58,158,92,.12);
+  --warning:#cf5c27;--warning-soft:rgba(207,92,39,.1);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--bg);color:var(--fg);font-family:var(--sans);
+  padding:12px;display:flex;flex-direction:column;gap:16px;
+}
+
+.pw{width:100%;background:var(--card);border:2px solid var(--border);padding:20px 24px}
+.pw-h{font-size:15px;font-weight:700;margin-bottom:2px}.pw-h span{color:var(--accent)}
+.pw-s{font-size:11px;color:var(--muted);margin-bottom:14px}
+
+/* Controls */
+.cp{display:flex;gap:20px;margin-bottom:20px;flex-wrap:wrap}
+.cp-item{flex:1;min-width:180px}
+.cp-label{font-family:var(--mono);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px;display:flex;justify-content:space-between}
+.cp-label b{color:var(--accent);font-weight:400}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:3px;background:var(--border);outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;background:var(--accent);border:none;cursor:pointer}
+input[type=range]::-moz-range-thumb{width:14px;height:14px;background:var(--accent);border:none;cursor:pointer;border-radius:0}
+
+/* Preview area */
+.prev{width:100%;height:180px;background:#1a1820;border:1px solid var(--border);position:relative;overflow:hidden;margin-bottom:16px}
+.pp-blobs{position:absolute;inset:0}
+.pp-blob{position:absolute;border-radius:50%;filter:blur(30px);opacity:.7;transition:filter .3s}
+.pp-b1{width:40%;height:65%;background:#cf5c27;top:-10%;left:-5%}
+.pp-b2{width:35%;height:55%;background:#2a6a5a;bottom:-10%;right:-5%}
+.pp-b3{width:25%;height:40%;background:#8a4a2a;top:25%;right:20%}
+
+.pp-card{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:clamp(200px,55%,380px);padding:clamp(14px,2vw,22px);border-radius:16px;display:flex;flex-direction:column;gap:clamp(4px,.6vw,8px);transition:background .15s,backdrop-filter .15s,-webkit-backdrop-filter .15s,border-color .15s;z-index:5}
+.pp-card-title{font-size:clamp(11px,1.5vw,15px);font-weight:700;color:#fff}
+.pp-card-desc{font-size:clamp(8px,1vw,11px);color:rgba(255,255,255,.45);line-height:1.5;flex:1}
+.pp-card-row{display:flex;gap:clamp(4px,.8vw,8px);border-top:1px solid rgba(255,255,255,.08);padding-top:clamp(6px,1vw,10px)}
+.pp-card-stat{flex:1}
+.pp-card-stat-lbl{font-size:clamp(6px,.7vw,8px);color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:.08em}
+.pp-card-stat-val{font-family:var(--mono);font-size:clamp(10px,1.3vw,14px);color:rgba(255,255,255,.8);margin-top:1px}
+
+/* Feedback area */
+.fb{display:flex;align-items:center;gap:8px;padding:10px 14px;font-size:12px;border:1px solid var(--border);background:var(--card-alt);min-height:44px}
+.fb.ok{border-color:var(--success);background:rgba(58,158,92,.05);color:var(--success)}
+.fb.no{border-color:var(--warning);background:rgba(207,92,39,.05);color:var(--warning)}
+.fb span em{font-style:normal;font-weight:700;color:var(--fg)}
+
+/* CSS output */
+.cpp{margin-top:10px;font-family:var(--mono);font-size:9px;color:var(--muted);line-height:1.7;letter-spacing:0.04em;padding:8px 12px;border:1px solid var(--border);background:rgba(255,255,255,0.01);word-break:break-all}
+.cpp b{color:var(--accent);font-weight:400}
+
+.pht{font-family:var(--jetbrains);font-size:9px;color:var(--muted);margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);opacity:.65}
+
+@media(max-width:640px){
+  .cp{flex-direction:column;gap:10px}
+  .cp-item{min-width:0}
+}
+</style>
+</head>
+<body>
+
+<div class="pw">
+  <div class="pw-h">Thực hành — <span>Vibe Glassmorphism</span></div>
+  <div class="pw-s">Kéo 3 slider để thấy blur, opacity và border ảnh hưởng glass effect ra sao.</div>
+
+  <div class="cp">
+    <div class="cp-item">
+      <div class="cp-label">BLUR <b id="bvVal">16px</b></div>
+      <input type="range" id="bvSlider" min="0" max="40" step="1" value="16">
+    </div>
+    <div class="cp-item">
+      <div class="cp-label">OPACITY <b id="opVal">8%</b></div>
+      <input type="range" id="opSlider" min="0" max="60" step="1" value="8">
+    </div>
+    <div class="cp-item">
+      <div class="cp-label">BORDER <b id="bdVal">12%</b></div>
+      <input type="range" id="bdSlider" min="0" max="50" step="1" value="12">
+    </div>
+  </div>
+
+  <div class="prev">
+    <div class="pp-blobs">
+      <div class="pp-blob pp-b1"></div>
+      <div class="pp-blob pp-b2"></div>
+      <div class="pp-blob pp-b3"></div>
+    </div>
+    <div class="glass pp-card" id="ppCard" style="background: rgba(255,255,255,0.08); backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.12);">
+      <div class="pp-card-title">Monthly Revenue</div>
+      <div class="pp-card-desc">Track your earnings and spending patterns across all channels in one place.</div>
+      <div class="pp-card-row">
+        <div class="pp-card-stat"><div class="pp-card-stat-lbl">Revenue</div><div class="pp-card-stat-val">$8,420</div></div>
+        <div class="pp-card-stat"><div class="pp-card-stat-lbl">Growth</div><div class="pp-card-stat-val">+24.5%</div></div>
+        <div class="pp-card-stat"><div class="pp-card-stat-lbl">Clients</div><div class="pp-card-stat-val">142</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="fb" id="pfb">Kéo các slider để bắt đầu...</div>
+  
+  <div class="cpp" id="cppOut">
+    background: <b>rgba(255,255,255,0.08)</b>;<br>
+    backdrop-filter: <b>blur(16px)</b>;<br>
+    border: <b>1px solid rgba(255,255,255,0.12)</b>;
+  </div>
+
+  <div class="pht">Hint: Tắt hết 3 thuộc tính = card vô hình. Vùng "Sweet Spot" là Blur 10-20px, Opacity 4-15%, Border 5-20%.</div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+let blur=16,opacity=8,border=12;
+const ppCard=$('ppCard');
+
+function updatePreview(){
+  const bg='rgba(255,255,255,'+(opacity/100).toFixed(2)+')';
+  const bd='rgba(255,255,255,'+(border/100).toFixed(2)+')';
+  const blurVal=blur+'px';
+
+  ppCard.style.background=bg;
+  ppCard.style.backdropFilter='blur('+blurVal+')';
+  ppCard.style.webkitBackdropFilter='blur('+blurVal+')';
+  ppCard.style.border='1px solid '+bd;
+
+  $('bvVal').textContent=blurVal;
+  $('opVal').textContent=opacity+'%';
+  $('bdVal').textContent=border+'%';
+
+  $('cppOut').innerHTML='background: <b>'+bg+'</b>;<br>backdrop-filter: <b>blur('+blurVal+')</b>;<br>border: <b>1px solid '+bd+'</b>;';
+
+  const fb=$('pfb');
+  let msg = '';
+  let isOk = false;
+
+  if(blur===0){
+    msg = 'Blur = 0 — không có glass effect. Card chỉ là nền bán trong suốt.';
+  } else if(blur<=4){
+    msg = 'Blur quá thấp — chưa tạo cảm giác "kính mờ" rõ rệt.';
+  } else if(blur<=20){
+    msg = `<em>Blur ${blur}px</em> — range tốt. Nền bị mờ vừa đủ.`;
+    isOk = true;
+  } else {
+    msg = 'Blur cao — nền gần như hoàn toàn mờ, mất đi hiệu ứng "nhìn qua kính".';
+  }
+
+  if(opacity>=50){
+    msg += ' <span style="color:var(--accent)">Opacity quá cao — card gần như đặc.</span>';
+    isOk = false;
+  }
+  
+  if(blur>=10&&blur<=20&&opacity>=4&&opacity<=15&&border>=5&&border<=20){
+    msg = 'Đây là <em>sweet spot</em> cho glassmorphism. Cực kỳ chuyên nghiệp!';
+    isOk = true;
+  }
+
+  fb.className = isOk ? 'fb ok' : 'fb no';
+  fb.innerHTML = `<span>${msg}</span>`;
+}
+
+ $('bvSlider').addEventListener('input',e=>{blur=+e.target.value;updatePreview()});
+ $('opSlider').addEventListener('input',e=>{opacity=+e.target.value;updatePreview()});
+ $('bdSlider').addEventListener('input',e=>{border=+e.target.value;updatePreview()});
+
+updatePreview();
+</script>
+</body>
+</html>

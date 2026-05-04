@@ -121,6 +121,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'fontweight', name: 'Font weight', nameEn: 'Độ đậm của chữ', letter: 'F', groups: ['design', 'code'], definition: 'Độ dày hoặc mỏng của các nét chữ. Trong thiết kế web, font weight thường được biểu diễn bằng các con số từ 100 (Thin) đến 900 (Black). Font weight là công cụ quan trọng nhất để tạo phân cấp thị giác (hierarchy) mà không cần thay đổi kích thước chữ quá nhiều.', example: 'Prompt: "Dùng font weight 700 cho tiêu đề để tạo sự mạnh mẽ, và 400 cho phần nội dung để đảm bảo tính dễ đọc."', related: ['typography', 'letter-spacing', 'line-spacing', 'css'], demo: { kind: 'interactive', src: 'gif-fontweight-demo.html', alt: 'Mô phỏng thang đo font-weight và cách ứng dụng trong hierarchy' } },
   { id: 'opacity', name: 'Opacity', nameEn: 'Độ trong suốt / Transparency', letter: 'O', groups: ['design', 'code'], definition: 'Độ trong suốt của một phần tử, từ 0 (vô hình) đến 1 (đậm đặc hoàn toàn). Opacity là công cụ mạnh mẽ để tạo phân cấp thị giác, trạng thái tương tác (hover, disabled) và các hiệu ứng lớp phủ (overlay) mà không cần thay đổi màu sắc gốc.', example: 'Prompt: "Giảm opacity của ảnh nền xuống 0.5 để text phía trên dễ đọc hơn, hoặc set opacity 0.4 cho nút bấm khi ở trạng thái disabled."', related: ['color-palette', 'contrast', 'hierarchy', 'interface'], demo: { kind: 'interactive', src: 'gif-opacity-demo.html', alt: 'Mô phỏng các ứng dụng của Opacity: Text, Background, Icon và Component' } },
   { id: 'flat-design', name: 'Flat Design', nameEn: 'Thiết kế phẳng', letter: 'F', groups: ['design'], definition: 'Phong cách thiết kế loại bỏ các hiệu ứng giả 3D như đổ bóng (shadow), độ dốc màu (gradient), hay các chi tiết nổi khối (skeuomorphism). Flat Design tập trung vào sự đơn giản, sử dụng màu sắc phẳng, hình khối rõ ràng và typography mạnh mẽ để truyền tải thông tin.', example: 'Sự thay đổi của iOS từ bản 6 sang bản 7 là minh chứng rõ nhất cho việc chuyển từ Skeuomorphism sang Flat Design. Prompt: "Hãy thiết kế UI theo style flat, bỏ hết shadow và gradient để giao diện trông hiện đại hơn."', related: ['skeuomorphism', 'minimalism', 'ui', 'design-system'], demo: { kind: 'interactive', src: 'gif-flatdesign-demo.html', alt: 'Mô phỏng 4 ví dụ về Flat Design: Hero, Pricing, Dashboard và Chat UI' } },
+  { id: 'glassmorphism', name: 'Glassmorphism', nameEn: 'Hiệu ứng kính mờ', letter: 'G', groups: ['design'], definition: 'Phong cách thiết kế sử dụng các lớp nền trong suốt kết hợp với hiệu ứng làm mờ (blur) phía sau và đường viền mờ, tạo cảm giác như đang nhìn qua một tấm kính mờ. Glassmorphism giúp tạo chiều sâu, sự phân cấp và vẻ hiện đại cho giao diện mà vẫn giữ được sự liên kết với nền.', example: 'Prompt: "Tạo một card thông báo theo phong cách glassmorphism với backdrop-filter: blur(16px), nền trắng 10% opacity và viền trắng mờ 1px để làm nổi bật thông tin trên nền gradient rực rỡ."', related: ['ui', 'opacity', 'blur', 'depth', 'design-system'], demo: { kind: 'interactive', src: 'gif-glassmorphism-demo.html', alt: 'Mô phỏng 4 ứng dụng của Glassmorphism: Card, Dark Card, Nav và Modal' } },
 ];
 
 export const quickRefItems = [
@@ -207,6 +208,7 @@ const deepDiveTermIds = new Set([
   'hierarchy',
   'opacity',
   'flat-design',
+  'glassmorphism',
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -446,6 +448,12 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Flat Design không chỉ là "bỏ hiệu ứng", nó là tư duy ưu tiên nội dung và hiệu năng. Giao diện phẳng thường load nhanh hơn và dễ dàng co giãn trên mọi kích cỡ màn hình.',
     'Khi làm việc với AI, nếu thấy kết quả ra quá nhiều bóng đổ hoặc gradient "sến", hãy dùng ngay từ khóa "Flat Design" để AI dọn dẹp lại giao diện.',
     'Mô phỏng thực hành giúp bạn nhận diện 3 cấp độ: Skeuomorphic (nhiều hiệu ứng), Modern Flat (có bo góc nhẹ, màu hiện đại) và Pure Flat (cực kỳ tối giản).',
+  ],
+  glassmorphism: [
+    'Glassmorphism là "con cưng" của thiết kế hiện đại, giúp giải quyết bài toán: làm sao để giao diện vừa có chiều sâu, vừa không bị nặng nề bởi các mảng màu đặc.',
+    '3 thành phần cốt lõi tạo nên glass effect: Nền bán trong suốt (Transparency), Hiệu ứng mờ phía sau (Backdrop Blur) và Đường viền mờ (Subtle Border). Thiếu 1 trong 3, hiệu ứng sẽ không ra chất "kính".',
+    'Quy tắc vàng: Glassmorphism chỉ thực sự đẹp khi đặt trên một nền có màu sắc hoặc hình khối rực rỡ (như các blobs màu trong mô phỏng). Nếu đặt trên nền trắng tinh hoặc xám đặc, nó sẽ trông như một mảng màu xám bẩn.',
+    'Cảnh báo hiệu năng: Backdrop-blur là một thuộc tính "ngốn" tài nguyên trình duyệt. Đừng dùng quá nhiều lớp glass chồng lên nhau hoặc dùng trên các bảng dữ liệu cực lớn vì có thể gây lag khi scroll.',
   ],
 };
 
