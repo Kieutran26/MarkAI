@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gradient — Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #131110;
+    --fg: #e8e0d4;
+    --muted: #706b64;
+    --accent: #e88c2e;
+    --accent-br: #f59e0b;
+    --card: #1c1a18;
+    --card-alt: #242120;
+    --border: #302c28;
+    --border-hi: #44403a;
+    --radius: 2px;
+    --sans: 'Space Grotesk', sans-serif;
+    --mono: 'IBM Plex Mono', monospace;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    background-image: 
+      radial-gradient(ellipse at 25% 15%, rgba(232, 140, 46, 0.035) 0%, transparent 55%),
+      radial-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+    background-size: 100% 100%, 16px 16px;
+    font-family: var(--sans);
+    color: var(--fg);
+    padding: 12px;
+  }
+
+  .pw { width: 100%; background: var(--card); border: 2px solid var(--border); padding: 20px 24px; border-radius: var(--radius); }
+  .pw-h { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
+  .pw-h span { color: var(--accent); }
+  .pw-s { font-size: 11px; color: var(--muted); margin-bottom: 14px; }
+
+  .practice-body { display: grid; grid-template-columns: 1fr; gap: 20px; }
+  @media(min-width: 640px) { .practice-body { grid-template-columns: 260px 1fr; } }
+
+  /* Type toggle */
+  .type-group { display: flex; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 16px; }
+  .type-btn { flex: 1; padding: 8px; font-family: var(--mono); font-size: 10px; font-weight: 700; text-transform: uppercase; background: var(--card-alt); color: var(--muted); border: none; cursor: pointer; transition: all 0.15s; }
+  .type-btn:hover { color: var(--fg); }
+  .type-btn.active { background: var(--accent); color: var(--bg); }
+
+  /* Angle slider */
+  .angle-ctrl { margin-bottom: 16px; }
+  .angle-hdr { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+  .angle-lbl { font-family: var(--mono); font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
+  .angle-val { font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--accent); min-width: 36px; text-align: right; }
+  input[type=range] { width: 100%; height: 6px; -webkit-appearance: none; appearance: none; background: var(--bg); border: 1px solid var(--border); border-radius: 3px; outline: none; cursor: pointer; }
+  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; background: var(--accent); border-radius: 0; cursor: pointer; }
+  .angle-ctrl.disabled { opacity: 0.35; pointer-events: none; }
+
+  /* Color swatches */
+  .color-row { margin-bottom: 14px; }
+  .color-row-lbl { font-family: var(--mono); font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+  .color-hex { font-weight: 600; color: var(--accent); }
+  .swatches { display: flex; gap: 4px; flex-wrap: wrap; }
+  .sw { width: 24px; height: 24px; border: 2px solid transparent; border-radius: var(--radius); cursor: pointer; transition: all 0.1s; }
+  .sw:hover { transform: scale(1.1); }
+  .sw.active { border-color: var(--fg); }
+
+  /* Preview */
+  .prev-wrap { display: flex; flex-direction: column; gap: 10px; }
+  .prev-label { font-family: var(--mono); font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; }
+  .prev-card { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: background 0.3s; }
+  .prev-card-inner { padding: 20px; display: flex; flex-direction: column; gap: 8px; }
+  .prev-title { font-size: 1rem; font-weight: 700; line-height: 1.2; position: relative; z-index: 1; transition: color 0.3s; }
+  .prev-sub { font-size: 0.75rem; font-weight: 500; line-height: 1.4; position: relative; z-index: 1; transition: color 0.3s; }
+  .prev-body { font-size: 0.65rem; color: rgba(255,255,255,0.7); line-height: 1.5; position: relative; z-index: 1; margin-bottom: 6px; }
+  .prev-btn { display: inline-block; font-family: var(--mono); font-size: 10px; font-weight: 700; padding: 8px 16px; color: #fff; border: none; border-radius: 2px; cursor: default; position: relative; z-index: 1; transition: background 0.3s; align-self: flex-start; text-transform: uppercase; }
+
+  /* CSS Output */
+  .css-out { background: var(--card-alt); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-top: 10px; }
+  .css-out-hdr { display: flex; justify-content: space-between; align-items: center; padding: 6px 12px; border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.01); }
+  .css-out-lbl { font-family: var(--mono); font-size: 9px; color: var(--muted); text-transform: uppercase; }
+  .css-copy { font-family: var(--mono); font-size: 9px; font-weight: 700; color: var(--accent); background: none; border: 1px solid var(--accent); padding: 2px 8px; cursor: pointer; transition: all 0.15s; }
+  .css-copy:hover { background: var(--accent-dim); }
+  .css-code { padding: 10px; font-family: var(--mono); font-size: 9px; color: var(--muted); line-height: 1.6; white-space: pre-wrap; word-break: break-all; }
+  .css-code .cm { color: var(--muted); opacity: 0.6; }
+  .css-code .cv { color: var(--fg); }
+  .css-copy-msg { font-family: var(--mono); font-size: 9px; color: #3a9e5c; padding: 2px 8px; opacity: 0; transition: opacity 0.2s; }
+  .css-copy-msg.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div class="pw">
+  <div class="pw-h">Thực hành — <span>Gradient Creator</span></div>
+  <div class="pw-s">Tùy chỉnh kiểu màu chuyển mượt và copy mã CSS cho dự án của bạn</div>
+
+  <div class="practice-body">
+    <!-- Controls -->
+    <div>
+      <div class="type-group">
+        <button class="type-btn active" data-type="linear">Linear</button>
+        <button class="type-btn" data-type="radial">Radial</button>
+      </div>
+      <div class="angle-ctrl" id="angleCtrl">
+        <div class="angle-hdr">
+          <span class="angle-lbl">Góc quay</span>
+          <span class="angle-val" id="angleVal">135°</span>
+        </div>
+        <input type="range" min="0" max="360" value="135" id="angleSlider">
+      </div>
+      <div class="color-row">
+        <div class="color-row-lbl">Bắt đầu <span class="color-hex" id="hex1">#d97706</span></div>
+        <div class="swatches" id="sw1">
+          <button class="sw active" data-c="#d97706" style="background:#d97706"></button>
+          <button class="sw" data-c="#dc2626" style="background:#dc2626"></button>
+          <button class="sw" data-c="#059669" style="background:#059669"></button>
+          <button class="sw" data-c="#2563eb" style="background:#2563eb"></button>
+          <button class="sw" data-c="#7c3aed" style="background:#7c3aed"></button>
+          <button class="sw" data-c="#f97316" style="background:#f97316"></button>
+        </div>
+      </div>
+      <div class="color-row">
+        <div class="color-row-lbl">Kết thúc <span class="color-hex" id="hex2">#92400e</span></div>
+        <div class="swatches" id="sw2">
+          <button class="sw" data-c="#92400e" style="background:#92400e"></button>
+          <button class="sw active" data-c="#92400e" style="background:#92400e"></button>
+          <button class="sw" data-c="#451a03" style="background:#451a03"></button>
+          <button class="sw" data-c="#1e3a8a" style="background:#1e3a8a"></button>
+          <button class="sw" data-c="#4c1d95" style="background:#4c1d95"></button>
+          <button class="sw" data-c="#7c2d12" style="background:#7c2d12"></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Preview -->
+    <div class="prev-wrap">
+      <div class="prev-label">Kết quả Realtime</div>
+      <div class="prev-card" id="prevCard">
+        <div class="prev-card-inner">
+          <div class="prev-title" id="prevTitle">Creative Solutions</div>
+          <div class="prev-sub" id="prevSub">for modern brands</div>
+          <div class="prev-body">Nền tảng thiết kế hiện đại giúp team của bạn làm việc nhanh hơn và sáng tạo hơn.</div>
+          <span class="prev-btn" id="prevBtn">Get Started</span>
+        </div>
+      </div>
+      <div class="css-out">
+        <div class="css-out-hdr">
+          <span class="css-out-lbl">CSS Code</span>
+          <div style="display:flex;align-items:center;gap:6px">
+            <span class="css-copy-msg" id="copyMsg">Copied!</span>
+            <button class="css-copy" id="copyBtn">COPY</button>
+          </div>
+        </div>
+        <div class="css-code" id="cssCode"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* === STATE === */
+  var gType = 'linear';
+  var gAngle = 135;
+  var c1 = '#d97706';
+  var c2 = '#92400e';
+
+  /* === DOM === */
+  var typeBtns = document.querySelectorAll('.type-btn');
+  var angleCtrl = document.getElementById('angleCtrl');
+  var angleSlider = document.getElementById('angleSlider');
+  var angleVal = document.getElementById('angleVal');
+  var sw1 = document.getElementById('sw1');
+  var sw2 = document.getElementById('sw2');
+  var hex1 = document.getElementById('hex1');
+  var hex2 = document.getElementById('hex2');
+  var prevCard = document.getElementById('prevCard');
+  var prevTitle = document.getElementById('prevTitle');
+  var prevSub = document.getElementById('prevSub');
+  var prevBtn = document.getElementById('prevBtn');
+  var cssCode = document.getElementById('cssCode');
+  var copyBtn = document.getElementById('copyBtn');
+  var copyMsg = document.getElementById('copyMsg');
+
+  function gradCSS() {
+    if (gType === 'linear') {
+      return 'linear-gradient(' + gAngle + 'deg, ' + c1 + ', ' + c2 + ')';
+    }
+    // Use gAngle to shift the center position for Radial mode (mapped to 0-100%)
+    const pos = Math.round((gAngle / 360) * 100);
+    return 'radial-gradient(circle at ' + pos + '% 50%, ' + c1 + ', ' + c2 + ')';
+  }
+
+  function update() {
+    var g = gradCSS();
+    prevCard.style.background = g;
+    prevBtn.style.background = g;
+    
+    [prevTitle, prevSub].forEach(el => {
+      el.style.background = g;
+      el.style.webkitBackgroundClip = 'text';
+      el.style.backgroundClip = 'text';
+      el.style.webkitTextFillColor = 'transparent';
+      el.style.color = 'transparent';
+    });
+
+    if (gType === 'linear') {
+      angleVal.textContent = gAngle + '\u00B0';
+      document.querySelector('.angle-lbl').textContent = 'Góc quay';
+    } else {
+      const pos = Math.round((gAngle / 360) * 100);
+      angleVal.textContent = pos + '%';
+      document.querySelector('.angle-lbl').textContent = 'Vị trí tâm';
+    }
+
+    var bgLine = 'background: ' + g + ';';
+    var txtExtra = '-webkit-background-clip: text;\n-webkit-text-fill-color: transparent;';
+    cssCode.innerHTML =
+      '<span class="cm">/* Background & Button */</span>\n' +
+      '<span class="cv">' + escHTML(bgLine) + '</span>\n\n' +
+      '<span class="cm">/* Text Gradient */</span>\n' +
+      '<span class="cv">' + escHTML(bgLine) + '</span>\n' +
+      '<span class="cv">' + escHTML(txtExtra) + '</span>';
+  }
+
+  function escHTML(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  typeBtns.forEach(function(btn) {
+    btn.onclick = function() {
+      typeBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      gType = btn.dataset.type;
+      update();
+    };
+  });
+
+  angleSlider.oninput = function() {
+    gAngle = parseInt(this.value, 10);
+    update();
+  };
+
+  function setupSwatches(container, hexDisplay, setter) {
+    container.onclick = function(e) {
+      var sw = e.target.closest('.sw');
+      if (!sw) return;
+      container.querySelectorAll('.sw').forEach(s => s.classList.remove('active'));
+      sw.classList.add('active');
+      var color = sw.dataset.c;
+      hexDisplay.textContent = color;
+      setter(color);
+      update();
+    };
+  }
+  setupSwatches(sw1, hex1, v => c1 = v);
+  setupSwatches(sw2, hex2, v => c2 = v);
+
+  copyBtn.onclick = function() {
+    var g = gradCSS();
+    var text = '/* Background & Button */\nbackground: ' + g + ';\n\n/* Text Gradient */\nbackground: ' + g + ';\n-webkit-background-clip: text;\n-webkit-text-fill-color: transparent;';
+    navigator.clipboard.writeText(text).then(() => {
+      copyMsg.classList.add('show');
+      setTimeout(() => copyMsg.classList.remove('show'), 1500);
+    });
+  };
+
+  update();
+</script>
+</body>
+</html>

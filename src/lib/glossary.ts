@@ -53,6 +53,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'framework', name: 'Framework', nameEn: 'Khung làm việc', letter: 'F', groups: ['infra', 'code'], definition: 'Bộ khung có sẵn giúp bạn không phải xây từ đầu. Next.js là framework cho web — nó đã lo routing, SEO, performance. Bạn chỉ cần tập trung vào logic và giao diện.', example: 'markAI.vn dùng Next.js framework + Tailwind CSS framework. Hai thứ này cùng nhau giúp vibecoder build web chuyên nghiệp.' },
   { id: 'function', name: 'Function', nameEn: 'Hàm / Khối code tái dùng', letter: 'F', groups: ['code'], definition: 'Một khối code làm một việc cụ thể, có thể gọi đi gọi lại. Giống như quy trình SOP — viết một lần, áp dụng nhiều lần.', example: '"Hàm formatDate() nhận ngày tháng và trả về dạng \'DD/MM/YYYY\'" — gọi function này ở bất kỳ đâu trong app.' },
   { id: 'git', name: 'Git', nameEn: 'Hệ thống quản lý phiên bản', letter: 'G', groups: ['workflow'], definition: 'Công cụ lưu lịch sử thay đổi của code. Giống như Track Changes trong Word nhưng mạnh hơn. Cho phép quay lại bất kỳ phiên bản nào trong quá khứ.', example: 'AI làm vỡ project → "git stash" để undo hết thay đổi chưa save, quay về trạng thái ổn. Đây là lifesaver khi vibecode gặp sự cố.', related: ['commit', 'repository'] },
+  { id: 'gradient', name: 'Gradient', nameEn: 'Màu chuyển mượt', letter: 'G', groups: ['design', 'code'], definition: 'Sự chuyển đổi mượt mà giữa hai hay nhiều màu sắc. Gradient giúp tạo ra chiều sâu, sự tinh tế và cảm giác hiện đại cho giao diện mà không cần sử dụng các tệp hình ảnh nặng. Có hai loại phổ biến: Linear (chuyển theo đường thẳng) và Radial (chuyển từ tâm ra ngoài).', example: 'Prompt: "Dùng gradient từ cam #d97706 sang đỏ #dc2626 cho nút CTA chính, góc 135 độ để tạo cảm giác năng động."', related: ['color-palette', 'primary-color', 'css'], demo: { kind: 'interactive', src: 'gif-gradient-demo.html', alt: 'Mô phỏng các loại gradient: Background, Button, Text và Overlay' } },
   { id: 'grid', name: 'Grid', nameEn: 'Hệ thống layout lưới', letter: 'G', groups: ['design', 'code'], definition: 'Hệ thống các đường kẻ ngang và dọc (lưới) dùng để sắp xếp các thành phần trên trang web một cách ngăn nắp. 12 cột là "tiêu chuẩn vàng" vì nó dễ dàng chia thành 2, 3, 4, hoặc 6 phần đều nhau.', example: 'Khi bạn muốn "3 bài blog trên 1 hàng", bạn đang dùng Grid 12 cột với mỗi bài chiếm 4 cột. Prompt: "Dùng grid 12 cột, mỗi card sản phẩm chiếm 3 cột trên desktop và 6 cột trên tablet".', related: ['flexbox', 'responsive', 'breakpoint'], demo: { kind: 'interactive', src: 'gif-grid-demo.html', alt: 'Mô phỏng hệ thống Grid layout: 8, 12, 16 cột và Nested Grid' } },
   { id: 'gutter', name: 'Gutter', nameEn: 'Khoảng cách giữa các cột/hàng', letter: 'G', groups: ['design', 'code'], definition: 'Khoảng trống giữa các cột (column) hoặc các hàng (row) trong một hệ thống lưới (grid). Gutter giúp phân tách các thành phần nội dung, tạo "khoảng thở" và giúp giao diện trông chuyên nghiệp, dễ đọc hơn.', example: 'Prompt: "Tăng gutter giữa các cột lên 24px để nội dung thoáng hơn, còn gutter giữa các hàng thì để 32px để phân tách rõ các section."', related: ['grid', 'spacing', 'padding', 'margin'], demo: { kind: 'interactive', src: 'gif-gutter-demo.html', alt: 'Mô phỏng các loại gutter: Column, Row, Nested và Responsive' } },
   { id: 'github', name: 'GitHub', nameEn: 'Cloud lưu code', letter: 'G', groups: ['workflow'], definition: 'Nơi lưu code trên cloud — giống Google Drive nhưng cho code, với full lịch sử thay đổi. Vercel kết nối với GitHub để tự động deploy mỗi khi bạn push code mới.', example: 'Flow chuẩn: code trên máy → commit → push lên GitHub → Vercel tự build và deploy → có link live trong vài phút.', related: ['git', 'vercel'] },
@@ -167,6 +168,7 @@ const deepDiveTermIds = new Set([
   'env',
   'footer',
   'frontend',
+  'gradient',
   'grid',
   'gutter',
   'header',
@@ -208,6 +210,11 @@ const deepDiveTermIds = new Set([
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
+  gradient: [
+    'Gradient là một trong những công cụ mạnh nhất để tạo ra chiều sâu (depth) mà không làm tăng dung lượng trang web như khi dùng ảnh.',
+    'Khi làm việc với AI, hãy nhớ hai loại chính: Linear (chuyển theo hướng) và Radial (chuyển từ tâm). Linear thường dùng cho nền hoặc button, Radial thường dùng để giả lập ánh sáng hoặc hiệu ứng "glow".',
+    'Quy tắc vàng: Đừng dùng quá nhiều màu trong một gradient nếu không muốn giao diện bị "sến". Thường 2 màu là đủ, và nên chọn các màu gần nhau trên vòng tròn màu (analogous colors) để sự chuyển tiếp được mượt mà nhất.',
+  ],
   api: [
     'Nghĩ theo kiểu marketer: API là chiếc ống nối giữa tool A và tool B, để dữ liệu tự chảy thay vì bạn copy tay.',
     'Chỉ cần nhớ 3 mảnh chính: endpoint để gọi đúng chỗ, request là dữ liệu mình gửi đi, response là thứ hệ thống trả về.',
