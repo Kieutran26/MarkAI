@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sticky — Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;--card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 100%,16px 16px;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:12px 16px;min-height:auto;overflow:hidden}
+
+.pw{width:100%;background:var(--card);border:1px solid var(--border);padding:20px 24px;position:relative;z-index:1}
+.pw-h{font-size:15px;font-weight:700;margin-bottom:2px}.pw-h span{color:var(--accent)}
+.pw-s{font-size:11px;color:var(--muted);margin-bottom:14px}
+
+.pp{position:relative;width:100%;height:200px;overflow:hidden;border:1px solid var(--border);background:var(--bg);margin-bottom:14px}
+.pp .bc{position:relative;z-index:100;height:14px;background:var(--card-alt);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 8px;gap:4px;flex-shrink:0}
+.bc-d{width:5px;height:5px;border-radius:50%;background:var(--border-hi)}
+.pp-label{position:absolute;bottom:4px;right:6px;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);opacity:.4;z-index:12;pointer-events:none}
+
+.pp-sk{position:absolute;z-index:5;transition:transform .25s ease-out}
+.pp-nav{top:14px;left:0;right:0;height:20px;background:var(--card-alt);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 8px;gap:8px}
+.pp-nav-b{font-size:8px;font-weight:800;color:var(--accent);letter-spacing:1px}
+.pp-nav-l{font-size:7px;color:var(--muted)}
+.pp-sub{top:34px;left:0;right:0;height:16px;background:rgba(212,113,42,.08);border-bottom:1px solid rgba(212,113,42,.2);display:flex;align-items:center;padding:0 8px;gap:6px;font-family:'JetBrains Mono',monospace;font-size:7px;font-weight:600;color:var(--accent)}
+.pp-page{position:absolute;left:0;right:108px;top:50px;bottom:28px;transition:transform .25s ease-out}
+.pp-blk{background:var(--card-alt);border:1px solid var(--border);border-left:2px solid var(--border-hi);padding:3px 6px;margin:0 6px 3px;height:38px;display:flex;flex-direction:column;justify-content:center}
+.pp-blk-l{font-family:'JetBrains Mono',monospace;font-size:6px;color:var(--muted);letter-spacing:1px}
+.pp-blk-t{font-size:8px;font-weight:600;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pp-side{top:50px;right:0;width:108px;bottom:28px;background:var(--card-alt);border-left:1px solid var(--border);padding:6px;display:flex;flex-direction:column;gap:4px}
+.pp-side-t{font-family:'JetBrains Mono',monospace;font-size:6px;font-weight:700;color:var(--accent);letter-spacing:1.5px;margin-bottom:1px}
+.pp-side-i{font-size:7px;color:var(--muted);padding:2px 4px;border:1px solid var(--border)}
+.pp-act{bottom:0;left:0;right:0;height:24px;background:var(--card-alt);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 8px}
+.pp-act-l{font-size:7px;color:var(--muted)}
+.pp-act-b{padding:1px 8px;background:var(--accent);border:none;color:#fff;font-family:'Space Grotesk',sans-serif;font-size:7px;font-weight:600}
+
+.tgs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.tgr{display:flex;justify-content:space-between;align-items:center}
+.tgl-l{font-size:11px}
+.tgl-s{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);min-width:24px;text-align:right;transition:color .2s}
+.tgl{width:34px;height:18px;border:2px solid var(--border);background:var(--card-alt);cursor:pointer;position:relative;transition:all .2s;flex-shrink:0}
+.tgl::after{content:'';position:absolute;width:10px;height:10px;background:var(--muted);top:2px;left:2px;transition:all .2s}
+.tgl.on{border-color:var(--accent);background:rgba(212,113,42,.15)}.tgl.on::after{background:var(--accent);left:18px}
+.tgl:hover{border-color:var(--border-hi)}
+
+.slr-c{margin-bottom:14px}
+.slr-r{display:flex;align-items:center;gap:10px}
+.slr-l{font-size:11px;min-width:50px}
+.slr-v{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);min-width:40px;text-align:right}
+input[type=range]{flex:1;-webkit-appearance:none;appearance:none;height:4px;background:var(--border);outline:none;border:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;background:var(--accent);border:2px solid var(--bg);cursor:pointer}
+input[type=range]::-moz-range-thumb{width:14px;height:14px;background:var(--accent);border:2px solid var(--bg);cursor:pointer;border-radius:0}
+
+.pfb{font-family:'JetBrains Mono',monospace;font-size:11px;min-height:18px;color:var(--muted);transition:color .2s;line-height:1.4}.pfb.w{color:var(--accent)}
+.pht{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);opacity:.65}
+
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media(max-width:520px){.pw{padding:16px}.tgs{grid-template-columns:1fr}.pp{height:170px}}
+</style>
+</head>
+<body>
+
+<div class="pw">
+  <div class="pw-h">Thực hành — <span>Bật / tắt Sticky</span></div>
+  <div class="pw-s">Kéo thanh cuộn → bật/tắt sticky từng phần để thấy khác biệt</div>
+
+  <div class="pp" id="ppv">
+    <div class="bc"><span class="bc-d"></span><span class="bc-d"></span><span class="bc-d"></span></div>
+    <div class="pp-sk pp-nav" id="pNav"><span class="pp-nav-b">BRAND</span><span class="pp-nav-l">Home</span><span class="pp-nav-l">About</span></div>
+    <div class="pp-sk pp-sub" id="pSub">All &nbsp; Active &nbsp; Archived</div>
+    <div class="pp-page" id="pPage">
+      <div class="pp-blk"><span class="pp-blk-l">HERO</span><span class="pp-blk-t">Welcome section</span></div>
+      <div class="pp-blk"><span class="pp-blk-l">CARD</span><span class="pp-blk-t">Feature overview</span></div>
+      <div class="pp-blk"><span class="pp-blk-l">CARD</span><span class="pp-blk-t">Pricing details</span></div>
+      <div class="pp-blk"><span class="pp-blk-l">CARD</span><span class="pp-blk-t">Testimonials</span></div>
+      <div class="pp-blk"><span class="pp-blk-l">CARD</span><span class="pp-blk-t">Contact form</span></div>
+    </div>
+    <div class="pp-sk pp-side" id="pSide"><span class="pp-side-t">SIDEBAR</span><span class="pp-side-i">Filter A</span><span class="pp-side-i">Filter B</span><span class="pp-side-i">Filter C</span></div>
+    <div class="pp-sk pp-act" id="pAct"><span class="pp-act-l">2 items selected</span><span class="pp-act-b">Add to Cart</span></div>
+    <span class="pp-label">SCROLL →</span>
+  </div>
+
+  <div class="slr-c">
+    <div class="slr-r">
+      <span class="slr-l">Scroll</span>
+      <input type="range" id="pSlider" min="0" max="100" value="0">
+      <span class="slr-v" id="pSv">0px</span>
+    </div>
+  </div>
+
+  <div class="tgs">
+    <div class="tgr"><span class="tgl-l">Navbar</span><div class="tgl on" id="tNav"></div><span class="tgl-s" id="sNav">ON</span></div>
+    <div class="tgr"><span class="tgl-l">Sub-nav</span><div class="tgl on" id="tSub"></div><span class="tgl-s" id="sSub">ON</span></div>
+    <div class="tgr"><span class="tgl-l">Sidebar</span><div class="tgl on" id="tSide"></div><span class="tgl-s" id="sSide">ON</span></div>
+    <div class="tgr"><span class="tgl-l">Action bar</span><div class="tgl on" id="tAct"></div><span class="tgl-s" id="sAct">ON</span></div>
+  </div>
+
+  <div class="pfb" id="pfb">Tất cả sticky — mọi phần đều dính khi cuộn</div>
+  <div class="pht">Hint: Tắt hết sticky rồi kéo scroll → thấy mọi phần trôi đi. Bật lại từng cái để so sánh</div>
+</div>
+
+<script>
+const pSlider=document.getElementById('pSlider');
+const pSv=document.getElementById('pSv');
+const pPage=document.getElementById('pPage');
+const pfb=document.getElementById('pfb');
+const MAX_SCROLL=80;
+
+const tgs=[
+  {tgl:document.getElementById('tNav'),st:document.getElementById('sNav'),el:document.getElementById('pNav'),on:true},
+  {tgl:document.getElementById('tSub'),st:document.getElementById('sSub'),el:document.getElementById('pSub'),on:true},
+  {tgl:document.getElementById('tSide'),st:document.getElementById('sSide'),el:document.getElementById('pSide'),on:true},
+  {tgl:document.getElementById('tAct'),st:document.getElementById('sAct'),el:document.getElementById('pAct'),on:true}
+];
+
+tgs.forEach(t=>{
+  t.tgl.addEventListener('click',()=>{
+    t.on=!t.on;
+    t.tgl.classList.toggle('on',t.on);
+    t.st.textContent=t.on?'ON':'OFF';
+    t.st.style.color=t.on?'var(--muted)':'var(--accent)';
+    updateP();
+  });
+});
+
+pSlider.addEventListener('input',updateP);
+
+function updateP(){
+  const sv=+pSlider.value;
+  const scrollY=sv/100*MAX_SCROLL;
+  pSv.textContent=Math.round(scrollY)+'px';
+  pPage.style.transform='translateY(-'+scrollY+'px)';
+
+  tgs.forEach(t=>{
+    if(t.on){t.el.style.transform='none';}
+    else{t.el.style.transform='translateY(-'+scrollY+'px)';}
+  });
+
+  /* Feedback */
+  const onNames=tgs.filter(t=>t.on).map(t=>t.tgl.parentElement.querySelector('.tgl-l').textContent);
+  const offNames=tgs.filter(t=>!t.on).map(t=>t.tgl.parentElement.querySelector('.tgl-l').textContent);
+
+  if(!offNames.length){pfb.textContent='Tất cả sticky — mọi phần đều dính khi cuộn';pfb.className='pfb';}
+  else if(!onNames.length){pfb.textContent='Không sticky — tất cả trôi theo scroll';pfb.className='pfb w';}
+  else{pfb.textContent=offNames.join(', ')+' trôi đi · '+onNames.join(', ')+' dính lại';pfb.className='pfb w';}
+}
+
+updateP();
+</script>
+</body>
+</html>

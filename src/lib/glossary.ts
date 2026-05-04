@@ -102,6 +102,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'sidebar', name: 'Sidebar', nameEn: 'Thanh bên / Navigation Rail', letter: 'S', groups: ['design', 'code'], definition: 'Thanh điều hướng hoặc chứa thông tin bổ sung nằm ở cạnh trái hoặc phải của trang web. Sidebar giúp tận dụng chiều ngang của màn hình desktop để giữ các chức năng quan trọng luôn trong tầm tay mà không chiếm dụng không gian phía trên như Navbar.', example: 'Dashboard của các tool SaaS thường có sidebar bên trái để chuyển giữa các tính năng. Prompt: "Thêm một collapsible sidebar bên trái chứa các mục: Dashboard, Reports, Settings."', related: ['navbar', 'interface', 'layout'], demo: { kind: 'interactive', src: 'gif-sidebar-demo.html', alt: 'Mô phỏng các loại sidebar: Static, Collapsible, Overlay và Right' } },
   { id: 'accordion', name: 'Accordion', nameEn: 'Danh sách mở rộng / Thu gọn', letter: 'A', groups: ['design', 'code'], definition: 'Một thành phần giao diện cho phép ẩn/hiện nội dung chi tiết bằng cách nhấp vào tiêu đề. Accordion giúp tối ưu hóa không gian hiển thị, đặc biệt hữu ích cho các trang FAQ, cấu hình cài đặt hoặc các khối thông tin dài cần phân loại.', example: 'Prompt: "Làm một accordion cho phần Câu hỏi thường gặp, mặc định đóng hết, khi mở cái này thì cái kia tự đóng để tiết kiệm diện tích."', related: ['component', 'interface', 'element', 'card'], demo: { kind: 'interactive', src: 'gif-accordion-demo.html', alt: 'Mô phỏng các loại accordion: Single Open, Multiple Open, With Icons và In Card' } },
   { id: 'header', name: 'Header', nameEn: 'Đầu trang / Hero Area', letter: 'H', groups: ['design', 'code'], definition: 'Vùng phía trên cùng của trang — thường gồm navbar (logo + menu) và đôi khi thêm hero banner + nút CTA. Header là "vùng chứa" lớn hơn navbar, xuất hiện ngay lập tức khi user truy cập và thường được giữ cố định (sticky) khi cuộn trang.', example: 'Khi marketer yêu cầu "thêm banner vào header", dev sẽ đưa khối hình ảnh/text lớn vào dưới navbar. Header chuyên nghiệp giúp định vị thương hiệu và dẫn dắt hành động (CTA) ngay từ giây đầu tiên.', related: ['navbar', 'component', 'sticky', 'interface'], demo: { kind: 'interactive', src: 'gif-header-demo.html', alt: 'Mô phỏng các trạng thái của header: Default, Scrolled, CTA Focus và Mobile Menu' } },
+  { id: 'sticky', name: 'Sticky', nameEn: 'Dính / Cố định khi cuộn', letter: 'S', groups: ['design', 'code'], definition: 'Thuộc tính (position: sticky) giúp một thành phần giao diện cuộn theo trang nhưng dừng lại và "dính" vào một vị trí cụ thể trên màn hình khi đạt đến ngưỡng nhất định. Thường dùng cho navbar, sidebar, hoặc action bar.', example: 'Prompt: "Làm cho phần mục lục (table of contents) bên trái sticky để khi cuộn bài blog dài, người đọc luôn biết mình đang ở phần nào."', related: ['navbar', 'header', 'sidebar'], demo: { kind: 'interactive', src: 'gif-sticky-demo.html', alt: 'Mô phỏng các trạng thái sticky: Navbar, Sub-navigation, Sidebar và Action Bar' } },
   { id: 'carousel', name: 'Carousel', nameEn: 'Vòng lặp hình ảnh / Slider', letter: 'C', groups: ['design', 'code'], definition: 'Một thành phần giao diện cho phép trình chiếu nhiều nội dung (ảnh, thẻ, sản phẩm) trong cùng một không gian bằng cách trượt qua lại. Carousel giúp tiết kiệm diện tích và tăng tính tương tác cho trang web.', example: 'Prompt: "Làm một carousel cho phần Testimonials, tự động chuyển mỗi 5 giây, có mũi tên điều hướng và các chấm tròn (dots) ở dưới."', related: ['component', 'interface', 'slider', 'animation'], demo: { kind: 'interactive', src: 'gif-carousel-demo.html', alt: 'Mô phỏng các loại carousel: Single, Multiple, Center và Autoplay' } },
 ];
 
@@ -171,6 +172,7 @@ const deepDiveTermIds = new Set([
   'toggle',
   'webhook',
   'websocket',
+  'sticky',
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -321,6 +323,11 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
   header: [
     'Header là "vùng chứa" (container), còn Navbar là "thành phần" (component) nằm bên trong. Marketer nên phân biệt rõ để feedback chính xác: sửa menu là sửa navbar, còn thêm banner/ảnh nền là sửa header.',
     'Trạng thái "Scrolled" rất quan trọng: thường header sẽ thu nhỏ lại hoặc thêm shadow để tiết kiệm diện tích nhưng vẫn giữ được các nút điều hướng quan trọng nhất.',
+  ],
+  sticky: [
+    'Sticky không phải là "Fixed" (cố định vĩnh viễn ở một chỗ). Sticky chỉ bắt đầu "dính" khi người dùng cuộn đến vị trí của nó, và nó sẽ bị cuộn đi nếu phần nội dung cha (parent) của nó đã cuộn hết.',
+    'Thanh điều hướng (Navbar) và Sidebar là 2 ứng dụng phổ biến nhất của Sticky. Trong UI phức tạp, Action Bar (chứa nút Save/Submit) dưới cùng màn hình cũng thường được thiết kế sticky để người dùng có thể lưu bất cứ lúc nào.',
+    'Khi kiểm tra sticky, hãy đảm bảo bạn kéo thanh cuộn lên xuống nhiều lần để xem nó có hoạt động mượt mà không, đặc biệt là trên giao diện mobile nơi không gian màn hình rất hạn chế.',
   ],
 };
 

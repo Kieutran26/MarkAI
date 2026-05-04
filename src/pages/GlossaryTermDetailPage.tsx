@@ -66,6 +66,8 @@ import gutterDemoHtml from '../../gif-gutter-demo.html?raw';
 import gutterPracticeHtml from '../../gif-gutter-practice.html?raw';
 import carouselDemoHtml from '../../gif-carousel-demo.html?raw';
 import carouselPracticeHtml from '../../gif-carousel-practice.html?raw';
+import stickyDemoHtml from '../../gif-sticky-demo.html?raw';
+import stickyPracticeHtml from '../../gif-sticky-practice.html?raw';
 
 
 export default function GlossaryTermDetailPage() {
@@ -115,6 +117,7 @@ export default function GlossaryTermDetailPage() {
     if (id === 'grid') return gridDemoHtml;
     if (id === 'gutter') return gutterDemoHtml;
     if (id === 'carousel') return carouselDemoHtml;
+    if (id === 'sticky') return stickyDemoHtml;
     return null;
   };
 
@@ -147,6 +150,7 @@ export default function GlossaryTermDetailPage() {
     if (id === 'grid') return gridPracticeHtml;
     if (id === 'gutter') return gutterPracticeHtml;
     if (id === 'carousel') return carouselPracticeHtml;
+    if (id === 'sticky') return stickyPracticeHtml;
     return null;
   };
 
