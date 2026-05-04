@@ -21,9 +21,8 @@
     padding-left: 0;
   }
 }
-.glossary-page .glossary-alpha { scrollbar-width: thin; }
-.glossary-page .glossary-alpha::-webkit-scrollbar { width: 3px; }
-.glossary-page .glossary-alpha::-webkit-scrollbar-thumb { background: var(--border); }
+.glossary-page .glossary-alpha { scrollbar-width: none; -ms-overflow-style: none; }
+.glossary-page .glossary-alpha::-webkit-scrollbar { display: none; }
 .glossary-term-grid {
   display: grid;
   gap: 16px;
