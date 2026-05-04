@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Overflow Practice — Vibecode Glossary</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #0f0f12;
+      --bg-card: #16161b;
+      --fg: #e8e4dc;
+      --muted: #6e6e7a;
+      --accent: #e88c2e;
+      --accent-soft: rgba(232, 140, 46, 0.12);
+      --accent-border: rgba(232, 140, 46, 0.3);
+      --border: #282830;
+      --surface: #1c1c23;
+      --success: #3a9e5c;
+      --warning: #c49030;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: 'Space Grotesk', sans-serif;
+      min-height: auto;
+      line-height: 1.6;
+    }
+
+    #app-root {
+      max-width: 940px;
+      margin: 0 auto;
+      padding: 24px 24px 40px
+    }
+
+    .sec-lbl {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sec-lbl::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border)
+    }
+
+    /* ========== PRACTICE BODY ========== */
+    .practice-body {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 24px;
+      margin-bottom: 24px
+    }
+
+    @media(max-width:768px) {
+      .practice-body {
+        grid-template-columns: 1fr
+      }
+    }
+
+    /* Controls */
+    .ctrl-group {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .ctrl-item {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .ctrl-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--muted);
+    }
+
+    /* Buttons */
+    .btn-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .btn-ov {
+      padding: 10px 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      background: var(--bg-card);
+      color: var(--muted);
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+
+    .btn-ov:hover {
+      border-color: var(--accent-border);
+      color: var(--fg);
+    }
+
+    .btn-ov.active {
+      background: var(--accent);
+      color: var(--bg);
+      border-color: var(--accent);
+    }
+
+    /* Slider */
+    .slider-wrap {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 16px;
+    }
+
+    .slider-hdr {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 12px;
+    }
+
+    .slider-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    input[type=range] {
+      width: 100%;
+      height: 4px;
+      background: var(--border);
+      border-radius: 2px;
+      -webkit-appearance: none;
+      cursor: pointer;
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      background: var(--accent);
+      border-radius: 50%;
+      border: 2px solid var(--bg-card);
+    }
+
+    /* Preview */
+    .prev-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .prev-box {
+      border: 1px dashed var(--border);
+      background: var(--surface);
+      position: relative;
+      transition: height 0.25s ease;
+      border-radius: 4px;
+    }
+
+    /* Custom scrollbar */
+    .ov-scroll::-webkit-scrollbar {
+      width: 4px;
+    }
+    .ov-scroll::-webkit-scrollbar-track {
+      background: var(--surface);
+    }
+    .ov-scroll::-webkit-scrollbar-thumb {
+      background: var(--accent);
+      border-radius: 10px;
+    }
+    .ov-scroll {
+      scrollbar-width: thin;
+      scrollbar-color: var(--accent) var(--surface);
+    }
+
+    .prev-content {
+      font-size: 14px;
+      color: var(--fg);
+      opacity: 0.8;
+      line-height: 1.6;
+      padding: 12px 16px;
+    }
+
+    .prev-dim {
+      position: absolute;
+      top: 4px;
+      right: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--muted);
+      z-index: 10;
+    }
+
+    /* Practice Spill Highlight */
+    .prev-spill-box {
+      position: absolute;
+      left: -1px;
+      right: -1px;
+      border: 1px dashed var(--error-border);
+      background: var(--error-soft);
+      pointer-events: none;
+      z-index: 5;
+      display: none;
+    }
+
+    .prev-spill-tag {
+      position: absolute;
+      top: -10px;
+      right: 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--error-border);
+      color: var(--error);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      font-weight: 700;
+      padding: 1px 6px;
+      z-index: 10;
+    }
+
+    .prev-status {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--muted);
+      text-align: center;
+      padding-top: 8px;
+      border-top: 1px solid var(--border);
+    }
+
+    .prev-status span {
+      font-weight: 600;
+    }
+
+    .s-ov { color: var(--accent); }
+    .s-ok { color: var(--success); }
+
+    /* CSS Output */
+    .css-out {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      position: relative;
+    }
+
+    .css-hdr {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 16px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .css-copy {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--accent);
+      background: var(--accent-soft);
+      border: 1px solid var(--accent-border);
+      padding: 2px 8px;
+      cursor: pointer;
+    }
+
+    .css-code {
+      padding: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      color: var(--fg);
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+
+    .cv { color: var(--accent); }
+    .cm { color: var(--muted); }
+
+    .copy-msg {
+      position: absolute;
+      top: 8px;
+      right: 70px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--success);
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    .copy-msg.show { opacity: 1; }
+  </style>
+</head>
+
+<body>
+  <div id="app-root">
+    <div class="practice-body">
+        <!-- Controls -->
+        <div class="ctrl-group">
+          <div class="ctrl-item">
+            <span class="ctrl-label">Overflow Property</span>
+            <div class="btn-grid" id="ovGroup">
+              <button class="btn-ov active" data-ov="visible">visible</button>
+              <button class="btn-ov" data-ov="hidden">hidden</button>
+              <button class="btn-ov" data-ov="scroll">scroll</button>
+              <button class="btn-ov" data-ov="auto">auto</button>
+            </div>
+          </div>
+
+          <div class="ctrl-item">
+            <span class="ctrl-label">Container Height</span>
+            <div class="slider-wrap">
+              <div class="slider-hdr">
+                <span class="ctrl-label">Height</span>
+                <span class="slider-val" id="hVal">80px</span>
+              </div>
+              <input type="range" min="40" max="240" value="80" id="hSlider">
+            </div>
+          </div>
+
+          <div class="ctrl-item">
+            <p style="font-size: 12px; color: var(--muted); line-height: 1.5; font-style: italic;">
+              <strong>Thử:</strong> Kéo slider nhỏ hơn 100px để thấy nội dung bắt đầu tràn. Với <em>auto</em>, thanh cuộn sẽ tự biến mất khi height đủ lớn.
+            </p>
+          </div>
+        </div>
+
+        <!-- Preview -->
+        <div class="ctrl-group">
+          <div class="prev-card">
+            <div class="prev-box" id="prevBox" style="height:80px;overflow:visible">
+              <span class="prev-dim" id="prevDim">80px</span>
+              <div class="prev-content" id="pContent">Đây là nội dung dài dùng để minh họa cách overflow hoạt động trong CSS. Container có chiều cao thay đổi bằng slider. Khi container nhỏ hơn nội dung, hành vi overflow quyết định phần vượt qua sẽ như thế nào. Kéo slider để thấy điểm nội dung bắt đầu tràn. Thêm một số dòng để thấy rõ hơn sự tràn ra ngoài của văn bản khi container bị bóp nhỏ lại.</div>
+              <div id="spillOverlay" class="prev-spill-box">
+                <span class="prev-spill-tag">tràn ra ngoài</span>
+              </div>
+            </div>
+            <div class="prev-status" id="prevStatus">Trạng thái: <span class="s-ov">Nội dung đang tràn</span></div>
+          </div>
+
+          <div class="css-out">
+            <div class="css-hdr">
+              <span class="ctrl-label">CSS Output</span>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span class="copy-msg" id="copyMsg">Copied!</span>
+                <button class="css-copy" id="copyBtn">Copy</button>
+              </div>
+            </div>
+            <div class="css-code" id="cssCode"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let ov = 'visible';
+    let boxH = 80;
+    
+    const ovBtns = document.querySelectorAll('.btn-ov');
+    const hSlider = document.getElementById('hSlider');
+    const hVal = document.getElementById('hVal');
+    const prevBox = document.getElementById('prevBox');
+    const prevDim = document.getElementById('prevDim');
+    const prevStatus = document.getElementById('prevStatus');
+    const cssCode = document.getElementById('cssCode');
+    const pContent = document.getElementById('pContent');
+    const spillOverlay = document.getElementById('spillOverlay');
+    const copyBtn = document.getElementById('copyBtn');
+    const copyMsg = document.getElementById('copyMsg');
+
+    let contentHeight = 0;
+
+    function measure() {
+      prevBox.style.overflow = 'visible';
+      prevBox.style.height = 'auto';
+      contentHeight = pContent.offsetHeight + 24; /* Add padding buffer */
+      prevBox.style.height = boxH + 'px';
+      update();
+    }
+
+    function update() {
+      prevBox.style.height = boxH + 'px';
+      hVal.textContent = boxH + 'px';
+      prevDim.textContent = boxH + 'px';
+
+      const isOver = boxH < contentHeight;
+
+      if (ov === 'visible') {
+        prevBox.style.overflow = 'visible';
+        prevBox.classList.remove('ov-scroll');
+        if (isOver) {
+          spillOverlay.style.display = 'block';
+          spillOverlay.style.top = boxH + 'px';
+          spillOverlay.style.height = (contentHeight - boxH) + 'px';
+        } else {
+          spillOverlay.style.display = 'none';
+        }
+      } else if (ov === 'hidden') {
+        prevBox.style.overflow = 'hidden';
+        prevBox.classList.remove('ov-scroll');
+        spillOverlay.style.display = 'none';
+      } else {
+        prevBox.style.overflowY = ov;
+        prevBox.classList.add('ov-scroll');
+        spillOverlay.style.display = 'none';
+      }
+      if (ov === 'visible') {
+        prevStatus.innerHTML = `Trạng thái: <span class="${isOver ? 's-ov' : 's-ok'}">${isOver ? 'Tràn nội dung' : 'Vừa vặn'}</span>`;
+      } else if (ov === 'hidden') {
+        prevStatus.innerHTML = `Trạng thái: <span class="${isOver ? 's-ov' : 's-ok'}">${isOver ? 'Bị cắt mất' : 'Vừa vặn'}</span>`;
+      } else if (ov === 'scroll') {
+        prevStatus.innerHTML = `Thanh cuộn: <span class="s-ov">Luôn hiện</span>`;
+      } else {
+        prevStatus.innerHTML = `Thanh cuộn: <span class="${isOver ? 's-ov' : 's-ok'}">${isOver ? 'Tự động hiện' : 'Tự động ẩn'}</span>`;
+      }
+
+      updateCSS();
+    }
+
+    function updateCSS() {
+      const prop = (ov === 'visible' || ov === 'hidden') ? `overflow: ${ov};` : `overflow-y: ${ov};`;
+      const isOver = boxH < contentHeight;
+      let note = '';
+      if (ov === 'visible' && isOver) note = ' /* Nội dung lọt ra ngoài */';
+      else if (ov === 'hidden' && isOver) note = ' /* Nội dung bị cắt mất */';
+      else if (ov === 'scroll') note = ' /* Luôn hiện thanh cuộn */';
+      else if (ov === 'auto') note = isOver ? ' /* Hiện cuộn khi cần */' : ' /* Không tràn -> ẩn cuộn */';
+
+      cssCode.innerHTML = `<span class="cv">.container {</span>
+  <span class="cv">${prop}</span>
+  <span class="cv">height: ${boxH}px;</span>${note ? `<span class="cm">${note}</span>` : ''}
+<span class="cv">}</span>`;
+    }
+
+    ovBtns.forEach(btn => {
+      btn.onclick = () => {
+        ovBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        ov = btn.dataset.ov;
+        prevBox.scrollTop = 0;
+        update();
+      };
+    });
+
+    hSlider.oninput = (e) => {
+      boxH = e.target.value;
+      update();
+    };
+
+    copyBtn.onclick = () => {
+      const prop = (ov === 'visible' || ov === 'hidden') ? `overflow: ${ov};` : `overflow-y: ${ov};`;
+      const text = `.container {\n  ${prop}\n  height: ${boxH}px;\n}`;
+      navigator.clipboard.writeText(text).then(() => {
+        copyMsg.classList.add('show');
+        setTimeout(() => copyMsg.classList.remove('show'), 1500);
+      });
+    };
+
+    window.onload = measure;
+    window.onresize = measure;
+  </script>
+</body>
+
+</html>

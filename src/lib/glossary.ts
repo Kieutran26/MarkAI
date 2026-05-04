@@ -127,6 +127,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'container', name: 'Container', nameEn: 'Khung bao / Container', letter: 'C', groups: ['design', 'code'], definition: 'Thành phần bao bọc các thành phần khác bên trong để kiểm soát chiều rộng (width) và căn lề (alignment) của nội dung trên trang. Container giúp đảm bảo nội dung không bị tràn ra mép màn hình hoặc quá dài khó đọc trên màn hình lớn.', example: 'Prompt: "Dùng một container 1200px căn giữa cho phần nội dung chính, trên mobile thì chuyển sang full width có padding 16px hai bên."', related: ['layout', 'breakpoint', 'padding', 'margin'], demo: { kind: 'interactive', src: 'gif-container-demo.html', alt: 'Mô phỏng 4 loại container: Fixed, Fluid, Responsive và Nested' } },
   { id: 'progressbar', name: 'Progress Bar', nameEn: 'Thanh tiến trình', letter: 'P', groups: ['design', 'code'], definition: 'Thành phần giao diện hiển thị trạng thái hoàn thành của một tác vụ đang diễn ra. Progress Bar giúp người dùng ước lượng được thời gian chờ đợi và cảm thấy yên tâm rằng hệ thống đang hoạt động ổn định, thay vì bị "đứng hình" không rõ lý do.', example: 'Prompt: "Thêm một thanh progress bar ở đầu trang để chỉ rõ người dùng đã điền được bao nhiêu phần trăm form đăng ký, tự động cập nhật mỗi khi xong một field."', related: ['skeleton', 'spinner', 'state', 'ux'], demo: { kind: 'interactive', src: 'gif-progressbar-demo.html', alt: 'Mô phỏng 4 loại Progress Bar: Linear, Circular, Steps và Task' } },
   { id: 'transition', name: 'Transition', nameEn: 'Chuyển động mượt / Hiệu ứng chuyển cảnh', letter: 'T', groups: ['design', 'code'], definition: 'Thay đổi mượt mà giữa hai trạng thái — không nhảy giật, có đầu có cuối. Transition giúp người dùng nhận ra sự thay đổi của giao diện một cách tự nhiên thay vì bị bất ngờ.', example: 'Hover vào button thấy màu đổi từ xám sang cam trong 0.3s thay vì đổi cái rụp. Prompt: "Thêm transition 0.3s ease cho button để khi hover màu nền đổi mượt hơn."', related: ['animation', 'state', 'duration', 'easing'], demo: { kind: 'interactive', src: 'gif-transition-demo.html', alt: 'Mô phỏng các loại transition: Fade, Slide, Scale và Color' } },
+  { id: 'overflow', name: 'Overflow', nameEn: 'Tràn nội dung', letter: 'O', groups: ['design', 'code'], definition: 'Quy định gì xảy ra khi nội dung lớn hơn container — tràn, cắt, hay cuộn. Overflow là thuộc tính quan trọng để kiểm soát tính thẩm mỹ và công năng của giao diện, tránh tình trạng text hay ảnh lọt ra ngoài khung hình làm hỏng layout.', example: 'Prompt: "Card này bị tràn text ra ngoài, hãy set overflow: hidden để cắt phần thừa, hoặc dùng overflow: auto để hiện thanh cuộn khi cần."', related: ['container', 'layout', 'css', 'card'], demo: { kind: 'interactive', src: 'gif-overflow-demo.html', alt: 'Mô phỏng 4 trạng thái overflow: Visible, Hidden, Scroll và Auto' } },
 ];
 
 export const quickRefItems = [
@@ -219,6 +220,7 @@ const deepDiveTermIds = new Set([
   'container',
   'progressbar',
   'transition',
+  'overflow',
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -487,6 +489,11 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     '4 loại pattern kinh điển: Linear (thanh ngang đơn giản), Circular (vòng tròn cho không gian hẹp), Steps (theo từng giai đoạn) và Task Progress (tổng hợp từ nhiều task nhỏ).',
     'Quy tắc UX: Nếu tác vụ dưới 2 giây, đừng hiện gì cả. Từ 2-10 giây dùng Spinner. Trên 10 giây hoặc có thể tính toán được % thì BẮT BUỘC dùng Progress Bar.',
     'Lỗi "99% bị đứng": Đây là trải nghiệm tệ nhất. Nếu không thể lấy số % chính xác từ server, hãy dùng hiệu ứng "Indeterminate" (thanh chạy vô tận) thay vì đoán mò con số.',
+  ],
+  overflow: [
+    'Overflow giống như một "người gác cổng" cho container. Nó quyết định xem phần nội dung thừa ra sẽ được hiển thị như thế nào: cho phép tràn (visible), cắt bỏ (hidden), hay cho phép người dùng cuộn (scroll/auto).',
+    'Khi làm việc với AI, nếu bạn thấy giao diện bị vỡ do text quá dài, hãy dùng "overflow: hidden" kết hợp với "text-overflow: ellipsis" (hiện dấu ba chấm) để giữ layout ngăn nắp.',
+    'Mẹo nhỏ: Hãy ưu tiên dùng "overflow: auto" thay vì "scroll". Với "auto", thanh cuộn chỉ xuất hiện khi thực sự cần thiết, giúp giao diện trông sạch sẽ hơn khi nội dung vừa vặn.',
   ],
 };
 
