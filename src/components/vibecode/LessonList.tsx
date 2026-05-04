@@ -13,7 +13,7 @@ export default function LessonList() {
               <div key={lesson.id} className="relative group/card cursor-pointer">
                 <Link 
                   to={`/vibecode/${lesson.slug}`}
-                  className="h-full border border-[var(--border)] bg-[var(--bg)]/40 group-hover/card:bg-white group-hover/card:border-[var(--accent)] transition-all p-7 flex flex-col no-underline text-inherit"
+                  className="h-full border border-[var(--border)] bg-[var(--bg)]/40 group-hover/card:bg-[#f7f5f0] group-hover/card:border-[var(--accent)] transition-all p-7 flex flex-col no-underline text-inherit"
                 >
                   <div className="flex justify-between items-start mb-8">
                     <div>
