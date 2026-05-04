@@ -1,12 +1,12 @@
 import { Fragment, useEffect, useRef } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import '../components/glossary/glossary.css';
-import ApiPracticePanel from '../components/glossary/ApiPracticePanel';
 import AuthPracticePanel from '../components/glossary/AuthPracticePanel';
 import SpacingPracticePanel from '../components/glossary/SpacingPracticePanel';
 import LetterSpacingPracticePanel from '../components/glossary/LetterSpacingPracticePanel';
 import { getTermById, getTermDeepDiveNotes, GlossaryTerm } from '../lib/glossary';
 import apiDemoHtml from '../../gif-api-demo.html?raw';
+import apiPracticeHtml from '../../gif-api-practice.html?raw';
 import authDemoHtml from '../../gif-auth-demo.html?raw';
 import spacingDemoHtml from '../../gif-spacing-demo.html?raw';
 import letterSpacingDemoHtml from '../../gif-letter-spacing-demo.html?raw';
@@ -147,6 +147,7 @@ export default function GlossaryTermDetailPage() {
 
   const getPracticeHtml = (id: string) => {
     switch (id) {
+      case 'api': return apiPracticeHtml;
       case 'margin': return marginPracticeHtml;
       case 'padding': return paddingPracticeHtml;
       case 'line-spacing': return lineSpacingPracticeHtml;
@@ -429,7 +430,6 @@ function TermDisplaySection({
               />
             </div>
           ) : null}
-          {term.id === 'api' ? <ApiPracticePanel /> : null}
           {term.id === 'auth' ? <AuthPracticePanel /> : null}
           {term.id === 'spacing' ? <SpacingPracticePanel /> : null}
           {term.id === 'letter-spacing' ? <LetterSpacingPracticePanel /> : null}

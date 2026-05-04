@@ -3,374 +3,523 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>API Key Demo</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>API Demo — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-  :root {
-    --bg: #000000;
-    --card: #0b0b0f;
-    --line: #202028;
-    --fg: #f0ece4;
-    --muted: #8a8a96;
-    --accent: #e88c2e;
+  :root{
+    --bg:#0f0f12;--bg-card:#16161b;--fg:#e8e4dc;--muted:#6e6e7a;
+    --accent:#e88c2e;--accent-soft:rgba(232,140,46,.12);
+    --accent-border:rgba(232,140,46,.3);--border:#282830;
+    --surface:#1c1c23;--success:#3a9e5c;--success-soft:rgba(58,158,92,.12);
+    --warning:#c49030;--warning-soft:rgba(196,144,48,.1);
+    --danger:#c44030;--danger-soft:rgba(196,64,48,.1);
+    --danger-border:rgba(196,64,48,.35);--bar-d:#2a2a34;--bar-m:#44444f;
   }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { background: var(--bg); color: var(--fg); font-family: 'Space Grotesk', sans-serif; overflow: hidden; }
-  #app-root { position: relative; padding: 28px 20px 22px; }
-  .bg-grid {
-    position: absolute;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(255,255,255,0.018) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
-    background-size: 48px 48px;
-    pointer-events: none;
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--fg);font-family:'Space Grotesk',sans-serif;min-height:100vh;line-height:1.6}
+  body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(rgba(255,255,255,.022) 1px,transparent 1px);background-size:20px 20px;pointer-events:none;z-index:0}
+  body::after{content:'';position:fixed;bottom:-20%;left:-8%;width:550px;height:550px;background:radial-gradient(circle,rgba(232,140,46,.03) 0%,transparent 70%);pointer-events:none;z-index:0}
+  .entry{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:48px 24px 90px}
+
+  .badge{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--accent);background:var(--accent-soft);border:1px solid var(--accent-border);padding:4px 12px;margin-bottom:16px}
+  .th h1{font-size:clamp(34px,6vw,54px);font-weight:800;letter-spacing:-2px;line-height:1.08}
+  .th .sub{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--muted);margin-top:6px}
+  .oneliner{font-size:16px;color:var(--fg);opacity:.85;max-width:660px;line-height:1.7;padding:18px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:40px}
+  .oneliner strong{color:var(--accent);font-weight:600}
+
+  .sec-lbl{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+  .sec-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+
+  /* ===== STEPPER ===== */
+  .stepper{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:28px}
+  .st-dot{
+    width:36px;height:36px;border:1px solid var(--border);background:transparent;
+    font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;
+    color:var(--muted);cursor:pointer;transition:all .3s;display:flex;align-items:center;justify-content:center;
+    position:relative;
   }
-  h1 {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    font-size: clamp(30px, 4.5vw, 48px);
-    line-height: 1;
+  .st-dot:hover{border-color:var(--accent-border);color:var(--fg)}
+  .st-dot.active{border-color:var(--accent);color:#fff;background:var(--accent)}
+  .st-dot.done{border-color:var(--success);color:var(--success);background:var(--success-soft)}
+  .st-line{width:48px;height:1px;background:var(--border);transition:background .4s}
+  .st-line.done{background:var(--success)}
+
+  /* ===== STEP PANELS ===== */
+  .panels-wrap{position:relative;min-height:460px;margin-bottom:20px}
+  .stp{position:absolute;inset:0;opacity:0;transform:translateX(20px);pointer-events:none;transition:opacity .4s ease,transform .4s ease}
+  .stp.active{opacity:1;transform:translateX(0);pointer-events:auto}
+
+  .stp-card{background:var(--bg-card);border:1px solid var(--border);padding:28px;position:relative;overflow:hidden}
+  .stp-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .4s ease}
+  .stp.active .stp-card::before{transform:scaleX(1)}
+
+  .stp-title{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:18px;display:flex;align-items:center;gap:10px}
+  .stp-title i{font-size:11px;opacity:.7}
+
+  /* Key display */
+  .key-row{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+  .key-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);min-width:70px}
+  .key-val{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--fg);background:var(--surface);border:1px solid var(--border);padding:8px 14px;flex:1;letter-spacing:.5px;position:relative;overflow:hidden}
+  .key-val .dot{color:var(--muted)}
+  .key-val .chr{color:var(--accent);opacity:0;transition:opacity .08s}
+  .key-val .chr.show{opacity:1}
+  .key-val .chr.hide{opacity:0}
+
+  .meta-row{display:flex;gap:24px;margin-bottom:16px}
+  .meta-item{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)}
+  .meta-item span{color:var(--fg);opacity:.7}
+
+  .reveal-btn{
+    font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;
+    padding:8px 18px;border:1px solid var(--accent-border);background:var(--accent-soft);
+    color:var(--accent);cursor:pointer;transition:all .25s;display:inline-flex;align-items:center;gap:8px;
   }
-  h1 span { color: var(--accent); }
-  .tabs {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin: 20px 0 18px;
+  .reveal-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .reveal-btn:disabled{opacity:.4;cursor:not-allowed}
+  .reveal-btn:disabled:hover{background:var(--accent-soft);color:var(--accent);border-color:var(--accent-border)}
+  .reveal-countdown{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--warning);margin-left:4px}
+
+  /* Copy */
+  .copy-feedback{
+    display:inline-flex;align-items:center;gap:8px;padding:10px 16px;
+    background:var(--success-soft);border:1px solid rgba(58,158,92,.3);
+    font-size:13px;color:var(--success);font-weight:500;
+    opacity:0;transform:translateY(8px);transition:all .3s ease;
   }
-  .tab {
-    border: 1px solid var(--line);
-    background: transparent;
-    color: var(--muted);
-    padding: 10px 16px;
-    font: 500 12px 'JetBrains Mono', monospace;
-    cursor: pointer;
+  .copy-feedback.show{opacity:1;transform:translateY(0)}
+  .copy-btn{
+    font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;
+    padding:8px 18px;border:1px solid var(--border);background:transparent;
+    color:var(--fg);cursor:pointer;transition:all .25s;display:inline-flex;align-items:center;gap:8px;
   }
-  .tab.active {
-    border-color: var(--accent);
-    color: var(--fg);
-    background: rgba(232,140,46,0.08);
+  .copy-btn:hover{border-color:var(--accent);color:var(--accent)}
+
+  /* Regenerate warning */
+  .warn-box{background:var(--danger-soft);border:1px solid var(--danger-border);padding:16px 20px;margin-bottom:18px;display:flex;align-items:flex-start;gap:12px}
+  .warn-box i{color:var(--danger);font-size:14px;margin-top:2px;flex-shrink:0}
+  .warn-box p{font-size:13px;color:var(--fg);opacity:.85;line-height:1.6}
+  .warn-box strong{color:var(--danger)}
+
+  .regen-btn{
+    font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;
+    padding:8px 18px;border:1px solid var(--danger-border);background:var(--danger-soft);
+    color:var(--danger);cursor:pointer;transition:all .25s;display:inline-flex;align-items:center;gap:8px;
   }
-  .panel {
-    position: relative;
-    z-index: 1;
-    border: 1px solid var(--line);
-    background: var(--card);
-    padding: 22px;
+  .regen-btn:hover{background:var(--danger);color:#fff;border-color:var(--danger)}
+  .regen-btn:disabled{opacity:.4;cursor:not-allowed}
+
+  .old-key{position:relative}
+  .old-key::after{content:'';position:absolute;left:0;right:0;top:50%;height:2px;background:var(--danger);transform:scaleX(0);transform-origin:left;transition:transform .4s ease}
+  .old-key.struck::after{transform:scaleX(1)}
+  .old-key.struck .key-val{opacity:.35}
+
+  .new-key-indicator{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--success);display:flex;align-items:center;gap:6px;opacity:0;transform:translateY(8px);transition:all .4s ease;margin-top:12px}
+  .new-key-indicator.show{opacity:1;transform:translateY(0)}
+
+  /* Restrict */
+  .restrict-rows{display:flex;flex-direction:column;gap:12px}
+  .restrict-row{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--surface);border:1px solid var(--border)}
+  .restrict-row .rr-label{font-size:13px;color:var(--fg)}
+  .restrict-row .rr-desc{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:2px}
+  .toggle{position:relative;width:40px;height:22px;cursor:pointer}
+  .toggle input{opacity:0;width:0;height:0}
+  .toggle .track{position:absolute;inset:0;background:var(--bar-d);border:1px solid var(--border);transition:all .25s}
+  .toggle .track::after{content:'';position:absolute;left:2px;top:2px;width:16px;height:16px;background:var(--muted);transition:all .25s}
+  .toggle input:checked+.track{background:var(--accent-soft);border-color:var(--accent)}
+  .toggle input:checked+.track::after{left:20px;background:var(--accent)}
+  .toggle input:focus-visible+.track{outline:2px solid var(--accent);outline-offset:2px}
+
+  .restrict-summary{
+    margin-top:16px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);
+    font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);line-height:1.7;
+    transition:border-color .3s;
   }
-  .meta {
-    display: flex;
-    justify-content: space-between;
-    gap: 12px;
-    font: 500 10px 'JetBrains Mono', monospace;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--muted);
+  .restrict-summary.safe{border-color:rgba(58,158,92,.25)}
+  .restrict-summary .hl{color:var(--success)}
+
+  /* Step nav */
+  .step-nav{display:flex;justify-content:space-between;margin-bottom:16px}
+  .sn-btn{
+    font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:500;
+    padding:9px 20px;border:1px solid var(--border);background:transparent;
+    color:var(--muted);cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:8px;
   }
-  .meta .value { color: var(--accent); }
-  .flow {
-    display: grid;
-    gap: 16px;
-    margin-top: 18px;
-    align-items: center;
+  .sn-btn:hover:not(:disabled){border-color:var(--accent);color:var(--fg)}
+  .sn-btn:disabled{opacity:.3;cursor:not-allowed}
+  .sn-btn.next{border-color:var(--accent);color:var(--accent)}
+  .sn-btn.next:hover:not(:disabled){background:var(--accent);color:#fff}
+
+  /* Insight */
+  .ins{background:var(--surface);border:1px solid var(--border);padding:18px 22px;display:flex;align-items:flex-start;gap:12px;margin-bottom:0;transition:border-color .3s}
+  .ins-i{color:var(--accent);font-size:13px;margin-top:3px;flex-shrink:0}
+  .ins-t{font-size:14px;color:var(--fg);opacity:.85;line-height:1.65;transition:opacity .25s,transform .25s}
+  .ins-t.fading{opacity:0;transform:translateY(6px)}
+
+  /* ===== SECURITY WARNING ===== */
+  .sec-warning{
+    background:var(--danger-soft);border:2px solid var(--danger-border);
+    padding:28px 28px 24px;margin:44px 0 0;position:relative;overflow:hidden;
   }
-  .node {
-    border: 1px solid var(--line);
-    background: #141419;
-    padding: 16px;
-    min-height: 126px;
-    transition: border-color 0.3s ease, background 0.3s ease;
+  .sec-warning::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--danger)}
+  .sw-head{display:flex;align-items:center;gap:12px;margin-bottom:16px}
+  .sw-icon{
+    width:40px;height:40px;border:2px solid var(--danger);display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;color:var(--danger);font-size:16px;
   }
-  .node.active {
-    border-color: var(--accent);
-    background: rgba(232,140,46,0.08);
+  .sw-title{font-size:18px;font-weight:800;color:var(--danger);letter-spacing:-.5px}
+  .sw-rules{list-style:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+  .sw-rules li{
+    display:flex;align-items:flex-start;gap:10px;font-size:13px;color:var(--fg);opacity:.8;line-height:1.5;
   }
-  .node-label {
-    font: 500 10px 'JetBrains Mono', monospace;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--accent);
-  }
-  .node-title {
-    margin-top: 8px;
-    font-size: 20px;
-    line-height: 1.1;
-  }
-  .node-copy {
-    margin-top: 8px;
-    font-size: 13px;
-    line-height: 1.65;
-    color: var(--muted);
-  }
-  .arrow-wrap {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    color: var(--muted);
-    font: 500 10px 'JetBrains Mono', monospace;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
-  .arrow {
-    font-size: 30px;
-    line-height: 1;
-    color: #5d5d67;
-    transition: color 0.3s ease, transform 0.3s ease;
-  }
-  .arrow.active {
-    color: var(--accent);
-    transform: translateX(4px);
-  }
-  .progress {
-    margin-top: 18px;
-    height: 3px;
-    background: var(--line);
-  }
-  .progress-fill {
-    height: 100%;
-    width: 0;
-    background: var(--accent);
-    transition: width 0.1s linear;
-  }
-  .controls {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 16px;
-  }
-  .btn {
-    border: 1px solid var(--line);
-    background: transparent;
-    color: var(--muted);
-    padding: 10px 18px;
-    font: 500 12px 'JetBrains Mono', monospace;
-    cursor: pointer;
-  }
-  .btn.playing, .btn:hover {
-    border-color: var(--accent);
-    color: var(--fg);
-  }
-  @media (min-width: 860px) {
-    .flow { grid-template-columns: 1fr 90px 1fr 90px 1fr; }
-  }
-  @media (max-width: 859px) {
-    .arrow.active { transform: translateY(3px); }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  .sw-rules li i{color:var(--danger);font-size:10px;margin-top:5px;flex-shrink:0}
+  .sw-rules li strong{color:var(--danger)}
+
+  .fu{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+  .fu.in{opacity:1;transform:translateY(0)}
+
+  @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+  @media(max-width:600px){
+    .entry{padding:28px 14px 60px}
+    .stp-card{padding:20px 16px}
+    .sw-rules{grid-template-columns:1fr}
+    .meta-row{flex-direction:column;gap:8px}
+    .st-line{width:24px}
   }
 </style>
 </head>
 <body>
-<div id="app-root">
-  <div class="bg-grid"></div>
-  <h1>4 Bước Lấy <span>API Key</span></h1>
-  <div class="tabs" id="tabs"></div>
+<div class="entry">
 
-  <section class="panel">
-    <div class="meta">
-      <span id="leftMeta">Lấy từ platform AI</span>
-      <span class="value" id="rightMeta">Lưu trong .env</span>
+  <!-- ===== 01 — MÔ PHỎNG ===== -->
+  <section class="fu" aria-label="Mô phỏng API key lifecycle">
+
+    <div class="stepper" id="stepper">
+      <div class="st-dot active" data-s="0" tabindex="0" role="button" aria-label="Bước 1: Xem key">01</div>
+      <div class="st-line" data-l="0"></div>
+      <div class="st-dot" data-s="1" tabindex="0" role="button" aria-label="Bước 2: Copy key">02</div>
+      <div class="st-line" data-l="1"></div>
+      <div class="st-dot" data-s="2" tabindex="0" role="button" aria-label="Bước 3: Tạo key mới">03</div>
+      <div class="st-line" data-l="2"></div>
+      <div class="st-dot" data-s="3" tabindex="0" role="button" aria-label="Bước 4: Giới hạn key">04</div>
     </div>
 
-    <div class="flow">
-      <article class="node" id="node1">
-        <div class="node-label">Bước 01</div>
-        <div class="node-title" id="sourceTitle"></div>
-        <p class="node-copy" id="sourceCopy"></p>
-      </article>
-
-      <div class="arrow-wrap">
-        <div class="arrow" id="arrow1">→</div>
-        <div>Copy key</div>
+    <div class="panels-wrap" id="panelsWrap">
+      <!-- STEP 0: VIEW -->
+      <div class="stp active" data-s="0">
+        <div class="stp-card">
+          <div class="stp-title"><i class="fa-solid fa-eye"></i> View API Key</div>
+          <div class="key-row">
+            <span class="key-label">API Key</span>
+            <div class="key-val" id="viewKeyVal"></div>
+          </div>
+          <div class="meta-row">
+            <div class="meta-item">Created <span>May 24, 2024</span></div>
+            <div class="meta-item">Last used <span>2 hours ago</span></div>
+          </div>
+          <button class="reveal-btn" id="revealBtn"><i class="fa-solid fa-eye"></i> Reveal Key <span class="reveal-countdown" id="revealCd"></span></button>
+        </div>
       </div>
 
-      <article class="node" id="node2">
-        <div class="node-label">Bước 02</div>
-        <div class="node-title">API key</div>
-        <p class="node-copy" id="apiCopy"></p>
-      </article>
-
-      <div class="arrow-wrap">
-        <div class="arrow" id="arrow2">→</div>
-        <div>Giữ bí mật</div>
+      <!-- STEP 1: COPY -->
+      <div class="stp" data-s="1">
+        <div class="stp-card">
+          <div class="stp-title"><i class="fa-solid fa-copy"></i> Copy API Key</div>
+          <div class="key-row">
+            <span class="key-label">API Key</span>
+            <div class="key-val" id="copyKeyVal"></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:14px;margin-top:4px">
+            <button class="copy-btn" id="copyBtn"><i class="fa-regular fa-clipboard"></i> Copy to Clipboard</button>
+            <div class="copy-feedback" id="copyFb"><i class="fa-solid fa-check"></i> API key copied to clipboard!</div>
+          </div>
+        </div>
       </div>
 
-      <article class="node" id="node3">
-        <div class="node-label">Bước 03</div>
-        <div class="node-title" id="targetTitle"></div>
-        <p class="node-copy" id="targetCopy"></p>
-      </article>
+      <!-- STEP 2: REGENERATE -->
+      <div class="stp" data-s="2">
+        <div class="stp-card">
+          <div class="stp-title"><i class="fa-solid fa-rotate"></i> Regenerate API Key</div>
+          <div class="warn-box">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+            <p><strong>Việc tạo lại API key sẽ làm vô hiệu hóa key hiện tại.</strong> Hành động này không thể hoàn tác. Mọi công cụ đang sử dụng key này sẽ lập tức ngừng hoạt động.</p>
+          </div>
+          <div class="key-row old-key" id="oldKeyRow">
+            <span class="key-label">Current</span>
+            <div class="key-val" id="regenOldVal"></div>
+          </div>
+          <div style="margin-top:14px">
+            <button class="regen-btn" id="regenBtn"><i class="fa-solid fa-rotate"></i> Regenerate Key</button>
+          </div>
+          <div class="new-key-indicator" id="newKeyInd"><i class="fa-solid fa-circle-check"></i> Key mới đã có hiệu lực — hãy cập nhật lại các tích hợp</div>
+        </div>
+      </div>
+
+      <!-- STEP 3: RESTRICT -->
+      <div class="stp" data-s="3">
+        <div class="stp-card">
+          <div class="stp-title"><i class="fa-solid fa-shield-halved"></i> Restrict API Key</div>
+          <div class="restrict-rows">
+            <div class="restrict-row">
+              <div><div class="rr-label">Read Data</div><div class="rr-desc">GET requests — xem dữ liệu</div></div>
+              <label class="toggle"><input type="checkbox" checked data-perm="read"><span class="track"></span></label>
+            </div>
+            <div class="restrict-row">
+              <div><div class="rr-label">Write Data</div><div class="rr-desc">POST/PUT — tạo/sửa dữ liệu</div></div>
+              <label class="toggle"><input type="checkbox" data-perm="write"><span class="track"></span></label>
+            </div>
+            <div class="restrict-row">
+              <div><div class="rr-label">Delete Data</div><div class="rr-desc">DELETE — xóa dữ liệu</div></div>
+              <label class="toggle"><input type="checkbox" data-perm="delete"><span class="track"></span></label>
+            </div>
+            <div class="restrict-row">
+              <div><div class="rr-label">Allowed IPs</div><div class="rr-desc">Giới hạn IP được phép gọi API</div></div>
+              <span style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted)">0.0.0.0/0</span>
+            </div>
+          </div>
+          <div class="restrict-summary" id="restrictSum">
+            Permissions: <span class="hl">read</span> &middot; IP: <span style="color:var(--danger)">all IPs allowed</span>
+          </div>
+        </div>
+      </div>
     </div>
 
-    <div class="progress">
-      <div class="progress-fill" id="progress"></div>
+    <div class="step-nav">
+      <button class="sn-btn" id="prevBtn" disabled><i class="fa-solid fa-arrow-left"></i> Previous</button>
+      <button class="sn-btn next" id="nextBtn">Next <i class="fa-solid fa-arrow-right"></i></button>
+    </div>
+
+    <div class="ins" id="insBox">
+      <i class="fa-solid fa-lightbulb ins-i"></i>
+      <p class="ins-t" id="insT">API key là "chìa khóa" truy cập dịch vụ. Ai có key, ai có quyền dùng — và bị tính phí.</p>
     </div>
   </section>
 
-  <div class="controls">
-    <button class="btn" id="playBtn">Tự động</button>
-    <button class="btn" id="resetBtn">Đặt lại</button>
+  <!-- ===== SECURITY WARNING ===== -->
+  <div class="sec-warning fu">
+    <div class="sw-head">
+      <div class="sw-icon"><i class="fa-solid fa-skull-crossbones"></i></div>
+      <div class="sw-title">API KEY = TIỀN THẬT</div>
+    </div>
+    <ul class="sw-rules">
+      <li><i class="fa-solid fa-xmark"></i> <div><strong>Không bao giờ</strong> commit API key vào Git — bot scan sẽ lấy key trong vài phút.</div></li>
+      <li><i class="fa-solid fa-xmark"></i> <div><strong>Không gửi</strong> API key qua Slack, email, Google Docs — bất kỳ ai đọc được đều có thể dùng.</div></li>
+      <li><i class="fa-solid fa-xmark"></i> <div><strong>Không để</strong> API key trong file public (HTML, JS client) — inspect element là thấy.</div></li>
+      <li><i class="fa-solid fa-check"></i> <div><strong>Luôn để</strong> API key trong <strong>.env</strong> hoặc environment variable — chỉ server mới đọc được.</div></li>
+    </ul>
   </div>
+
 </div>
 
 <script>
-  const flows = [
-    {
-      tab: '01 Mở dashboard',
-      left: 'Vào platform AI',
-      right: 'Tìm chỗ API keys',
-      sourceTitle: 'Dashboard AI',
-      sourceCopy: 'Bạn vào OpenAI hoặc nền tảng AI khác, mở phần developer hoặc API keys.',
-      apiCopy: 'Ở đây platform cho bạn một API key để app được phép gọi model.',
-      targetTitle: 'Trang API keys',
-      targetCopy: 'Bạn nhìn thấy nút tạo key mới và danh sách key đang dùng.'
-    },
-    {
-      tab: '02 Tạo key',
-      left: 'Bấm Create key',
-      right: 'Platform trả API key',
-      sourceTitle: 'Nút tạo key',
-      sourceCopy: 'Bạn bấm tạo key mới cho project hoặc app đang làm.',
-      apiCopy: 'Platform sinh ra một chuỗi bí mật kiểu `sk-...` và chỉ hiện rõ lúc mới tạo.',
-      targetTitle: 'API key mới',
-      targetCopy: 'Bạn phải copy ngay vì thường platform sẽ không hiện lại đầy đủ lần nữa.'
-    },
-    {
-      tab: '03 Copy và cất',
-      left: 'Copy key vừa tạo',
-      right: 'Dán vào file .env',
-      sourceTitle: 'Copy API key',
-      sourceCopy: 'Bạn sao chép key để mang về project đang dùng model AI.',
-      apiCopy: 'Chỗ an toàn nhất thường là file `.env`, không phải giao diện public hay file code đẩy lên GitHub.',
-      targetTitle: 'File .env',
-      targetCopy: 'App đọc key từ đây để gọi AI, còn người dùng bình thường sẽ không nhìn thấy.'
-    },
-    {
-      tab: '04 Đừng để lộ',
-      left: 'API key = tiền',
-      right: 'Lộ key là mất phí',
-      sourceTitle: 'Key bí mật',
-      sourceCopy: 'API key giống chìa khóa ví điện tử: ai cầm được có thể gọi model bằng tài khoản của bạn.',
-      apiCopy: 'Vì thế key không nên dán vào ảnh chụp màn hình, gửi chat bừa, hay commit lên repo public.',
-      targetTitle: 'Dùng an toàn',
-      targetCopy: 'Nhớ quy tắc ngắn: lấy key, copy key, cất vào `.env`, giữ kín.'
-    }
+  /* ===== FAKE KEY ===== */
+  const FAKE_KEY = 'sk-proj-aB3dE5fG7hI9jK1mN3pQ5rS7tU';
+
+  /* ===== DOM REFS ===== */
+  const dots = document.querySelectorAll('.st-dot');
+  const lines = document.querySelectorAll('.st-line');
+  const panels = document.querySelectorAll('.stp');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const insT = document.getElementById('insT');
+
+  let curStep = 0;
+  let revealing = false;
+  let regenDone = false;
+
+  const insights = [
+    'API key là "chìa khóa" truy cập dịch vụ. Ai có key, ai có quyền dùng — và bị tính phí.',
+    'Copy key để dán vào code/tool. Nhưng copy = rò rỉ. Không bao giờ paste key vào chat, email, hay file public.',
+    'Tạo key mới = khóa key cũ ngay lập tức. Dùng khi nghi ngờ key bị lộ. Mọi tool đang dùng key cũ sẽ lập tức lỗi.',
+    'Giới hạn quyền và IP = giảm thiểu thiệt hại nếu key bị lộ. Key chỉ có quyền đọc + chỉ cho phép IP công ty → dù bị lộ cũng không thể xóa dữ liệu.'
   ];
 
-  const tabs = document.getElementById('tabs');
-  const playBtn = document.getElementById('playBtn');
-  const resetBtn = document.getElementById('resetBtn');
-  const progress = document.getElementById('progress');
-  const arrow1 = document.getElementById('arrow1');
-  const arrow2 = document.getElementById('arrow2');
-  const node1 = document.getElementById('node1');
-  const node2 = document.getElementById('node2');
-  const node3 = document.getElementById('node3');
-  const refs = {
-    leftMeta: document.getElementById('leftMeta'),
-    rightMeta: document.getElementById('rightMeta'),
-    sourceTitle: document.getElementById('sourceTitle'),
-    sourceCopy: document.getElementById('sourceCopy'),
-    apiCopy: document.getElementById('apiCopy'),
-    targetTitle: document.getElementById('targetTitle'),
-    targetCopy: document.getElementById('targetCopy')
-  };
-
-  let index = 0;
-  let autoPlaying = false;
-  let stepTimer = null;
-  let progressTimer = null;
-  const interval = 3200;
-
-  function clearState() {
-    node1.classList.remove('active');
-    node2.classList.remove('active');
-    node3.classList.remove('active');
-    arrow1.classList.remove('active');
-    arrow2.classList.remove('active');
+  /* ===== RENDER KEY (masked) ===== */
+  function renderMaskedKey(el, key) {
+    if (!el) return;
+    el.innerHTML = '';
+    for (let i = 0; i < key.length; i++) {
+      if (i >= key.length - 4) {
+        el.innerHTML += `<span class="chr show">${key[i]}</span>`;
+      } else {
+        el.innerHTML += `<span class="dot">&bull;</span>`;
+      }
+    }
   }
 
-  function animateFlow() {
-    clearState();
-    node1.classList.add('active');
-    window.setTimeout(() => {
-      arrow1.classList.add('active');
-      node2.classList.add('active');
-    }, 350);
-    window.setTimeout(() => {
-      arrow2.classList.add('active');
-      node3.classList.add('active');
-    }, 850);
-  }
+  /* ===== INIT VIEW KEY ===== */
+  const viewKeyVal = document.getElementById('viewKeyVal');
+  renderMaskedKey(viewKeyVal, FAKE_KEY);
 
-  function renderTabs() {
-    tabs.innerHTML = '';
-    flows.forEach((flow, flowIndex) => {
-      const button = document.createElement('button');
-      button.className = `tab${flowIndex === index ? ' active' : ''}`;
-      button.textContent = flow.tab;
-      button.addEventListener('click', () => showFlow(flowIndex));
-      tabs.appendChild(button);
+  /* ===== INIT COPY KEY ===== */
+  const copyKeyVal = document.getElementById('copyKeyVal');
+  renderMaskedKey(copyKeyVal, FAKE_KEY);
+
+  /* ===== INIT REGEN KEY ===== */
+  const regenOldVal = document.getElementById('regenOldVal');
+  renderMaskedKey(regenOldVal, FAKE_KEY);
+
+  /* ===== REVEAL ===== */
+  const revealBtn = document.getElementById('revealBtn');
+  const revealCd = document.getElementById('revealCd');
+  let countdownTimer = null;
+
+  if (revealBtn) {
+    revealBtn.addEventListener('click', () => {
+      if (revealing) return;
+      revealing = true;
+      revealBtn.disabled = true;
+
+      const keyChars = FAKE_KEY.split('');
+      const dotsNodes = viewKeyVal.querySelectorAll('.dot');
+      dotsNodes.forEach((dot, i) => {
+        const span = document.createElement('span');
+        span.className = 'chr show';
+        span.textContent = keyChars[i];
+        span.style.color = 'var(--accent)';
+        dot.replaceWith(span);
+      });
+
+      let sec = 5;
+      revealCd.textContent = `(${sec}s)`;
+      countdownTimer = setInterval(() => {
+        sec--;
+        revealCd.textContent = `(${sec}s)`;
+        if (sec <= 0) {
+          clearInterval(countdownTimer);
+          const allChars = viewKeyVal.querySelectorAll('.chr');
+          allChars.forEach((ch, i) => {
+            if (i < keyChars.length - 4) {
+              const dot = document.createElement('span');
+              dot.className = 'dot';
+              dot.innerHTML = '&bull;';
+              ch.replaceWith(dot);
+            }
+          });
+          revealing = false;
+          revealBtn.disabled = false;
+          revealCd.textContent = '';
+        }
+      }, 1000);
     });
   }
 
-  function showFlow(nextIndex) {
-    index = nextIndex;
-    const flow = flows[index];
-    refs.leftMeta.textContent = flow.left;
-    refs.rightMeta.textContent = flow.right;
-    refs.sourceTitle.textContent = flow.sourceTitle;
-    refs.sourceCopy.textContent = flow.sourceCopy;
-    refs.apiCopy.textContent = flow.apiCopy;
-    refs.targetTitle.textContent = flow.targetTitle;
-    refs.targetCopy.textContent = flow.targetCopy;
-    renderTabs();
-    animateFlow();
+  /* ===== COPY ===== */
+  const copyBtn = document.getElementById('copyBtn');
+  const copyFb = document.getElementById('copyFb');
+  let copyTimeout = null;
+
+  if (copyBtn) {
+    copyBtn.addEventListener('click', () => {
+      const dotsNodes = copyKeyVal.querySelectorAll('.dot');
+      const keyChars = FAKE_KEY.split('');
+      dotsNodes.forEach((dot, i) => {
+        const span = document.createElement('span');
+        span.className = 'chr show';
+        span.textContent = keyChars[i];
+        dot.replaceWith(span);
+      });
+
+      copyBtn.style.display = 'none';
+      copyFb.classList.add('show');
+
+      clearTimeout(copyTimeout);
+      copyTimeout = setTimeout(() => {
+        copyFb.classList.remove('show');
+        copyBtn.style.display = '';
+      }, 2500);
+    });
   }
 
-  function startAuto() {
-    autoPlaying = true;
-    playBtn.classList.add('playing');
-    playBtn.textContent = 'Tạm dừng';
-    clearInterval(stepTimer);
-    clearInterval(progressTimer);
-    progress.style.width = '0%';
-    let value = 0;
-    progressTimer = window.setInterval(() => {
-      value += 100 / (interval / 40);
-      progress.style.width = `${Math.min(100, value)}%`;
-    }, 40);
-    stepTimer = window.setInterval(() => {
-      progress.style.width = '0%';
-      showFlow((index + 1) % flows.length);
-    }, interval);
+  /* ===== REGENERATE ===== */
+  const regenBtn = document.getElementById('regenBtn');
+  const oldKeyRow = document.getElementById('oldKeyRow');
+  const newKeyInd = document.getElementById('newKeyInd');
+
+  if (regenBtn) {
+    regenBtn.addEventListener('click', () => {
+      if (regenDone) return;
+      regenDone = true;
+      regenBtn.disabled = true;
+
+      oldKeyRow.classList.add('struck');
+
+      setTimeout(() => {
+        newKeyInd.classList.add('show');
+      }, 500);
+    });
   }
 
-  function stopAuto() {
-    autoPlaying = false;
-    playBtn.classList.remove('playing');
-    playBtn.textContent = 'Tự động';
-    clearInterval(stepTimer);
-    clearInterval(progressTimer);
-    progress.style.width = '0%';
+  /* ===== RESTRICT TOGGLES ===== */
+  const toggles = document.querySelectorAll('.restrict-rows .toggle input');
+  const restrictSum = document.getElementById('restrictSum');
+
+  if (restrictSum) {
+    toggles.forEach(t => {
+      t.addEventListener('change', updateRestrictSummary);
+    });
   }
 
-  playBtn.addEventListener('click', () => autoPlaying ? stopAuto() : startAuto());
-  resetBtn.addEventListener('click', () => {
-    stopAuto();
-    showFlow(0);
+  function updateRestrictSummary() {
+    const perms = [];
+    toggles.forEach(t => {
+      if (t.checked) perms.push(t.dataset.perm);
+    });
+    const permStr = perms.length > 0
+      ? perms.map(p => `<span class="hl">${p}</span>`).join(' &middot; ')
+      : '<span style="color:var(--danger)">none (key vô dụng)</span>';
+
+    const ipStr = '<span style="color:var(--warning)">all IPs allowed (không an toàn)</span>';
+
+    restrictSum.innerHTML = `Permissions: ${permStr}<br>IP: ${ipStr}`;
+    restrictSum.classList.toggle('safe', perms.length > 0 && perms.length < 3 && false);
+  }
+
+  /* ===== STEP NAVIGATION ===== */
+  function goToStep(s) {
+    if (s < 0 || s > 3) return;
+    curStep = s;
+
+    dots.forEach((d, i) => {
+      d.classList.toggle('active', i === s);
+      d.classList.toggle('done', i < s);
+    });
+    lines.forEach((l, i) => {
+      l.classList.toggle('done', i < s);
+    });
+    panels.forEach((p, i) => {
+      p.classList.toggle('active', i === s);
+    });
+
+    if (prevBtn) prevBtn.disabled = s === 0;
+    if (nextBtn) {
+      nextBtn.textContent = s === 3 ? 'Done' : 'Next';
+      nextBtn.innerHTML = s === 3 ? 'Done <i class="fa-solid fa-check"></i>' : 'Next <i class="fa-solid fa-arrow-right"></i>';
+    }
+
+    setIns(insights[s]);
+  }
+
+  function setIns(t) {
+    if (!insT) return;
+    insT.classList.add('fading');
+    setTimeout(() => { insT.textContent = t; insT.classList.remove('fading'); }, 250);
+  }
+
+  dots.forEach(d => {
+    d.addEventListener('click', () => goToStep(+d.dataset.s));
+    d.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); goToStep(+d.dataset.s); } });
   });
 
-  showFlow(0);
+  if (prevBtn) prevBtn.addEventListener('click', () => goToStep(curStep - 1));
+  if (nextBtn) nextBtn.addEventListener('click', () => {
+    if (curStep < 3) goToStep(curStep + 1);
+  });
+
+  /* ===== FADE IN ===== */
+  document.querySelectorAll('.fu').forEach((el, i) => {
+    setTimeout(() => el.classList.add('in'), 60 + i * 110);
+  });
 </script>
 </body>
 </html>
