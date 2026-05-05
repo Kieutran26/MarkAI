@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>List Practice — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #1a1a1a;
+    --bg-card: #222222;
+    --accent: #d97706;
+    --accent-dim: #92400e;
+    --accent-glow: rgba(217, 119, 6, 0.12);
+    --fg: #e8e4df;
+    --fg-muted: #8a8580;
+    --fg-dim: #5a5550;
+    --border: #3a3a3a;
+    --border-accent: #d97706;
+    --success: #22c55e;
+    --success-bg: rgba(34, 197, 94, 0.1);
+    --error: #ef4444;
+    --error-bg: rgba(239, 68, 68, 0.1);
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Space Grotesk', sans-serif;
+    --radius: 2px;
+  }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--sans);
+    line-height: 1.5;
+    min-height: 100vh;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  .page-wrapper { max-width: 960px; margin: 0 auto; padding: 10px 14px; }
+
+  .practice-card {
+    background: transparent; border: none;
+    border-radius: 0; padding: 0; margin-bottom: 20px;
+  }
+  .practice-goal {
+    font-family: var(--mono); font-size: 11px; color: var(--fg-muted);
+    margin-bottom: 20px; line-height: 1.6;
+    padding-left: 12px; border-left: 2px solid var(--accent-dim);
+  }
+  .practice-goal strong { color: var(--fg); font-weight: 600; }
+
+  .reset-btn {
+    font-family: var(--mono); font-size: 10px; font-weight: 600;
+    letter-spacing: 1px; text-transform: uppercase; color: var(--fg-dim);
+    background: transparent; border: 1px solid var(--border);
+    padding: 6px 14px; border-radius: var(--radius); cursor: pointer; transition: all 0.25s;
+  }
+  .reset-btn:hover { border-color: var(--fg-dim); color: var(--fg-muted); }
+
+  .hint-bar {
+    margin-top: 12px; padding: 6px 12px;
+    background: rgba(255,255,255,0.02); border: 1px solid var(--border);
+    border-radius: var(--radius); font-family: var(--mono);
+    font-size: 9px; color: var(--fg-dim); letter-spacing: 0.3px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .hint-bar::before {
+    content: '?'; display: inline-flex; align-items: center; justify-content: center;
+    width: 14px; height: 14px; background: var(--border); color: var(--fg-muted);
+    font-size: 9px; font-weight: 700; border-radius: var(--radius); flex-shrink: 0;
+  }
+
+  @keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    20% { transform: translateX(-4px); }
+    40% { transform: translateX(4px); }
+    60% { transform: translateX(-3px); }
+    80% { transform: translateX(3px); }
+  }
+
+  /* Reorder */
+  .reorder-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media (max-width: 700px) { .reorder-layout { grid-template-columns: 1fr; } }
+  .reorder-panel { background: #1a1a1a; border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; }
+  .reorder-panel-title {
+    font-family: var(--mono); font-size: 9px; font-weight: 600;
+    letter-spacing: 2px; text-transform: uppercase; color: var(--fg-dim); margin-bottom: 12px;
+  }
+  .reorder-item {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px; border: 1px solid var(--border);
+    border-radius: var(--radius); margin-bottom: 6px;
+    cursor: pointer; transition: all 0.25s; user-select: none;
+  }
+  .reorder-item:hover { border-color: var(--fg-dim); background: rgba(255,255,255,0.02); }
+  .reorder-item.selected { border-color: var(--border-accent); background: var(--accent-glow); }
+  .reorder-item.placed { border-color: var(--border); opacity: 0.6; cursor: default; }
+  .reorder-rank { font-family: var(--mono); font-size: 10px; font-weight: 700; color: var(--fg-dim); width: 18px; text-align: center; flex-shrink: 0; }
+  .reorder-item.selected .reorder-rank { color: var(--accent); }
+  .reorder-text { font-size: 12px; color: var(--fg-muted); }
+  .reorder-item.selected .reorder-text { color: var(--fg); }
+  .reorder-handle { margin-left: auto; font-family: var(--mono); font-size: 10px; color: var(--fg-dim); opacity: 0.4; }
+  .reorder-slot {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 14px; border: 1px dashed var(--border);
+    border-radius: var(--radius); margin-bottom: 6px; min-height: 42px;
+    transition: all 0.25s;
+  }
+  .reorder-slot.filled { border-style: solid; border-color: var(--border); }
+  .reorder-slot.filled-correct { border-color: var(--success); background: var(--success-bg); }
+  .reorder-slot.filled-wrong { border-color: var(--error); background: var(--error-bg); }
+  .reorder-slot-rank { font-family: var(--mono); font-size: 10px; font-weight: 700; color: var(--fg-dim); width: 18px; text-align: center; flex-shrink: 0; }
+  .reorder-slot-text { font-size: 12px; color: var(--fg-muted); }
+  .reorder-slot-hint { font-family: var(--mono); font-size: 9px; color: var(--fg-dim); opacity: 0.5; }
+  .reorder-result {
+    margin-top: 12px; padding: 8px 12px; border-radius: var(--radius);
+    font-size: 11px; font-family: var(--mono); line-height: 1.5;
+    opacity: 0; transform: translateY(4px); transition: all 0.3s;
+  }
+  .reorder-result.visible { opacity: 1; transform: translateY(0); }
+  .reorder-result.result-correct { background: var(--success-bg); border: 1px solid rgba(34,197,94,0.2); color: var(--success); }
+  .reorder-result.result-wrong { background: var(--error-bg); border: 1px solid rgba(239,68,68,0.2); color: var(--error); }
+  .reorder-result.result-partial { background: var(--accent-glow); border: 1px solid rgba(217,119,6,0.2); color: var(--accent); }
+  .counter-label { font-family: var(--mono); font-size: 9px; color: var(--fg-dim); letter-spacing: 1px; text-transform: uppercase; margin-top: 8px; text-align: right; }
+</style>
+</head>
+<body>
+<div class="page-wrapper" id="app-root">
+
+  <div class="practice-card">
+    <div class="practice-goal">
+      <strong>Mục tiêu:</strong> Sắp xếp thứ tự item trong list theo đúng nguyên tắc UX — hiểu rằng thứ tự trong list quyết định hiệu quả.
+    </div>
+    <div class="reorder-layout">
+      <div class="reorder-panel">
+        <div class="reorder-panel-title">Chọn item, rồi click slot bên phải</div>
+        <div id="reorder-source"></div>
+        <div class="counter-label" id="reorder-counter">0 / 4 đã xếp</div>
+      </div>
+      <div class="reorder-panel">
+        <div class="reorder-panel-title">Thứ tự đúng theo nguyên tắc UX</div>
+        <div id="reorder-target"></div>
+        <div id="reorder-result" class="reorder-result"></div>
+      </div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;margin-top:8px;">
+      <button class="reset-btn" id="reset-reorder">Làm lại</button>
+    </div>
+    <div class="hint-bar">Nguyên tắc: item hay dùng nhất ở trên, "nguy hiểm" ở dưới cùng, nhóm liên quan cạnh nhau.</div>
+  </div>
+
+</div>
+
+<script>
+(function() {
+  const items = [
+    { id: 'profile', text: 'Chỉnh sửa thông tin cá nhân' },
+    { id: 'password', text: 'Đổi mật khẩu' },
+    { id: 'notif', text: 'Cài đặt thông báo' },
+    { id: 'delete', text: 'Xóa tài khoản' }
+  ];
+  const correctOrder = ['profile', 'notif', 'password', 'delete'];
+  let selectedId = null, placed = [], completed = false;
+  const sourceEl = document.getElementById('reorder-source');
+  const targetEl = document.getElementById('reorder-target');
+  const resultEl = document.getElementById('reorder-result');
+  const counterEl = document.getElementById('reorder-counter');
+
+  function render() {
+    selectedId = null; placed = []; completed = false;
+    resultEl.className = 'reorder-result'; resultEl.innerHTML = '';
+    const shuffled = [...items].sort(() => Math.random() - 0.5);
+    sourceEl.innerHTML = shuffled.map((item, i) => `
+      <div class="reorder-item" data-id="${item.id}">
+        <span class="reorder-rank">${i + 1}</span>
+        <span class="reorder-text">${item.text}</span>
+        <span class="reorder-handle">&#8942;&#8942;</span>
+      </div>
+    `).join('');
+    const slotLabels = ['Thứ 1 (trên cùng)', 'Thứ 2', 'Thứ 3', 'Thứ 4 (dưới cùng)'];
+    targetEl.innerHTML = slotLabels.map((label, i) => `
+      <div class="reorder-slot" data-slot="${i}">
+        <span class="reorder-slot-rank">${i + 1}</span>
+        <span class="reorder-slot-hint">${label}</span>
+      </div>
+    `).join('');
+    counterEl.textContent = '0 / 4 đã xếp';
+    bindSource(); bindTarget();
+  }
+
+  function bindSource() {
+    sourceEl.querySelectorAll('.reorder-item').forEach(el => {
+      el.addEventListener('click', function() {
+        if (completed) return;
+        const id = this.dataset.id;
+        if (placed.find(p => p.id === id)) return;
+        sourceEl.querySelectorAll('.reorder-item').forEach(r => r.classList.remove('selected'));
+        this.classList.add('selected');
+        selectedId = id;
+      });
+    });
+  }
+
+  function bindTarget() {
+    targetEl.querySelectorAll('.reorder-slot').forEach(el => {
+      el.addEventListener('click', function() {
+        if (completed || !selectedId) return;
+        const slotIndex = parseInt(this.dataset.slot);
+        if (placed.find(p => p.slotIndex === slotIndex)) return;
+        placed.push({ id: selectedId, slotIndex });
+        const itemData = items.find(it => it.id === selectedId);
+        this.classList.add('filled');
+        this.innerHTML = `<span class="reorder-slot-rank">${slotIndex + 1}</span><span class="reorder-slot-text">${itemData.text}</span>`;
+        const sourceItem = sourceEl.querySelector(`.reorder-item[data-id="${selectedId}"]`);
+        if (sourceItem) { sourceItem.classList.remove('selected'); sourceItem.classList.add('placed'); }
+        selectedId = null;
+        counterEl.textContent = placed.length + ' / 4 đã xếp';
+        if (placed.length === 4) { completed = true; checkResult(); }
+      });
+    });
+  }
+
+  function checkResult() {
+    let correctCount = 0;
+    targetEl.querySelectorAll('.reorder-slot').forEach((slot, i) => {
+      const p = placed.find(p => p.slotIndex === i);
+      if (p && p.id === correctOrder[i]) { correctCount++; slot.classList.add('filled-correct'); }
+      else { slot.classList.add('filled-wrong'); }
+    });
+    if (correctCount === 4) {
+      resultEl.className = 'reorder-result result-correct visible';
+      resultEl.innerHTML = '&#10003; Hoàn hảo! Profile ở trên (hay dùng) → Delete ở dưới cùng (nguy hiểm, xa tầm tay). Đây là nguyên tắc "frequency + safety" trong list UX.';
+    } else if (correctCount >= 2) {
+      resultEl.className = 'reorder-result result-partial visible';
+      resultEl.innerHTML = `&#9679; ${correctCount}/4 đúng. Nguyên tắc: item hay dùng lên trên, hành vi "nguy hiểm" (xóa) xuống dưới cùng, nhóm liên quan cạnh nhau. Thử lại!`;
+    } else {
+      resultEl.className = 'reorder-result result-wrong visible';
+      resultEl.innerHTML = `&#10007; ${correctCount}/4 đúng. Gợi ý: "Chỉnh sửa thông tin" là hay dùng nhất → trên cùng. "Xóa tài khoản" là nguy hiểm nhất → dưới cùng. Đổi chỗ rồi thử lại.`;
+    }
+  }
+
+  render();
+  document.getElementById('reset-reorder').addEventListener('click', render);
+})();
+</script>
+</body>
+</html>

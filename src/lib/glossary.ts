@@ -133,6 +133,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'chips', name: 'Chips', nameEn: 'Chips / Tags', letter: 'C', groups: ['design', 'code'], definition: 'Các khối nhỏ chứa text (và đôi khi là icon), dùng để biểu diễn các thuộc tính, lựa chọn hoặc hành động một cách gọn gàng. Chip giúp phân loại thông tin và tương tác nhanh mà không chiếm nhiều diện tích như button hay checkbox truyền thống.', example: 'Prompt: "Thêm các chip tag cho bài blog, mỗi chip có nút X để xóa, khi click vào chip thì lọc bài viết theo tag đó."', related: ['component', 'interface', 'element', 'card'], demo: { kind: 'interactive', src: 'gif-chips-demo.html', alt: 'Mô phỏng 4 kiểu chip phổ biến: Input, Filter, Choice và Action' } },
   { id: 'badge', name: 'Badge', nameEn: 'Huy hiệu / Badge', letter: 'B', groups: ['design', 'code'], definition: 'Một khối nhỏ chứa text, con số hoặc chỉ là một chấm màu, dùng để chỉ thị trạng thái, thông báo hoặc phân loại thông tin. Badge giúp thu hút sự chú ý vào các điểm quan trọng mà không làm vỡ bố cục tổng thể.', example: 'Prompt: "Thêm một badge màu đỏ hiện số lượng tin nhắn chưa đọc vào icon tin nhắn, và một badge \'New\' màu xanh lá cho bài viết mới."', related: ['chips', 'status', 'notification', 'ui'], demo: { kind: 'interactive', src: 'gif-badge-demo.html', alt: 'Mô phỏng 4 loại badge: Notification, Status, Count và Avatar' } },
   { id: 'divider', name: 'Divider', nameEn: 'Đường phân bản / Divider', letter: 'D', groups: ['design', 'code'], definition: 'Thành phần giao diện dùng để phân tách các khối nội dung, tạo ra cấu trúc và nhịp điệu cho trang web. Divider giúp người dùng dễ dàng quét (scan) thông tin mà không bị choáng ngợp bởi một khối nội dung liên tục.', example: 'Prompt: "Thêm một đường kẻ ngang mờ để tách biệt phần Header và Nội dung chính, hoặc dùng divider có chữ \'HOẶC\' ở giữa để phân chia các phương thức đăng nhập."', related: ['spacing', 'border', 'layout', 'margin'], demo: { kind: 'interactive', src: 'gif-divider-demo.html', alt: 'Mô phỏng 4 loại divider phổ biến: Ngang, Dọc, Có chữ và Trong danh sách' } },
+  { id: 'list', name: 'List', nameEn: 'Danh sách / List View', letter: 'L', groups: ['design', 'code'], definition: 'Thành phần giao diện hiển thị nhiều item theo chiều dọc, mỗi item chia sẻ cùng cấu trúc. Có 4 biến thể chính: Single Line (1 dòng cho menu/action), Two Line (2 dòng cho email/tin nhắn), With Avatars (có ảnh đại diện cho danh sách người), và Section Headers (có tiêu đề nhóm cho cài đặt). Chọn đúng kiểu list giúp người dùng quét thông tin nhanh hơn.', example: 'Prompt: "Danh sách thành viên nhóm hiển thị avatar, tên, vai trò và badge trạng thái online/offline theo kiểu list với avatar — đừng dùng card vì tốn diện tích."', related: ['component', 'sidebar', 'navbar', 'accordion'], demo: { kind: 'interactive', src: 'gif-list-demo.html', alt: 'Mô phỏng 4 kiểu list: Single Line, Two Line, Icons & Avatars và Section Headers' } },
 ];
 
 export const quickRefItems = [
@@ -231,6 +232,7 @@ const deepDiveTermIds = new Set([
   'chips',
   'badge',
   'divider',
+  'list',
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -530,6 +532,10 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Divider không chỉ là một đường kẻ. Nó có thể là một khoảng trống (whitespace), một sự thay đổi màu nền, hoặc một đường kẻ có các biến thể (dotted, dashed, thick).',
     'Quy tắc vàng: Đừng lạm dụng divider. Nếu khoảng trắng đã đủ để phân tách nội dung, hãy ưu tiên dùng khoảng trắng để giao diện trông sạch sẽ và hiện đại hơn.',
     'Có 4 kiểu divider phổ biến: Ngang (Horizontal) để tách section, Dọc (Vertical) để tách cột, Có chữ (With Text) cho các form login/social, và Trong danh sách (In List) để tách các item.',
+  ],
+  'list': [
+    'Chọn sai kiểu list làm người dùng mất thời gian scan. Single Line cho menu (người dùng chỉ cần tên). Two Line cho email/chat (cần thêm preview). Avatar List cho danh sách người (cần nhận diện nhanh).',
+    'Khi prompt AI, mô tả rõ: "danh sách gì, mỗi item mấy dòng, có ảnh không, cần chia nhóm không" thay vì chỉ nói "thêm list". AI sẽ chọn đúng kiểu list ngay từ đầu.',
   ],
 };
 

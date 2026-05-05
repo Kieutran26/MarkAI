@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>List — Vibecode Glossary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#141413;--bg-card:#1c1b19;--fg:#e5ddd0;--muted:#6e675d;
+  --accent:#d4722a;--accent-glow:rgba(212,114,42,.1);
+  --border:#2e2a26;--label:#a89d90;
+  --ok:#5a9e6f;--err:#c45c4a;
+  --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--bg);color:var(--fg);font-family:var(--sans);
+  min-height:100vh;-webkit-font-smoothing:antialiased;
+  background-image:
+    linear-gradient(rgba(255,255,255,.016) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.016) 1px,transparent 1px);
+  background-size:20px 20px;
+}
+.wrap{max-width:860px;margin:0 auto;padding:28px 14px 52px}
+
+/* ── Header ── */
+.hd-label{font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:2.5px;margin-bottom:5px}
+.hd-title{font-size:clamp(22px,5vw,30px);font-weight:700;line-height:1.15}
+.hd-title em{font-style:normal;color:var(--accent)}
+
+/* ── Grid ── */
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+
+/* ── Card ── */
+.card{background:var(--bg-card);border:1px solid var(--border);overflow:hidden}
+.card-top{padding:9px 13px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:7px}
+.card-dot{width:5px;height:5px;background:var(--accent);flex-shrink:0}
+.card-tag{font-family:var(--mono);font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;font-weight:600}
+.card-stage{padding:18px 14px;min-height:192px;display:flex;flex-direction:column;justify-content:center}
+.card-bot{padding:6px 13px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.card-bot span{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.3px}
+.loop{display:flex;align-items:center;gap:5px}
+.loop-dot{width:4px;height:4px;border-radius:50%;background:var(--accent);animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:.2}50%{opacity:1}}
+
+/* ════════════════════════════════════
+   ANIM 1 — SINGLE LINE LIST
+   ════════════════════════════════════ */
+.sl-list{display:flex;flex-direction:column;width:100%}
+.sl-item{
+  display:flex;align-items:center;gap:10px;
+  padding:7px 10px;position:relative;
+  border-left:2px solid transparent;
+  transition:opacity .3s,background .3s,border-color .3s;
+}
+.sl-item.dim{opacity:.3}
+.sl-item.on{opacity:1;border-left-color:var(--accent);background:var(--accent-glow)}
+.sl-item svg{width:14px;height:14px;fill:none;stroke:var(--muted);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;transition:stroke .3s}
+.sl-item.on svg{stroke:var(--accent)}
+.sl-item span{font-size:12px;color:var(--label);transition:color .3s}
+.sl-item.on span{color:var(--fg)}
+
+/* ════════════════════════════════════
+   ANIM 2 — TWO LINE LIST
+   ════════════════════════════════════ */
+.tl-list{display:flex;flex-direction:column;gap:2px;width:100%}
+.tl-item{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:8px 10px;
+  opacity:0;transform:translateX(18px);
+  transition:opacity .35s,transform .35s;
+}
+.tl-item.show{opacity:1;transform:translateX(0)}
+.tl-avatar{width:28px;height:28px;border-radius:50%;background:var(--border);flex-shrink:0}
+.tl-body{flex:1;min-width:0}
+.tl-name{font-size:12px;color:var(--fg);font-weight:500}
+.tl-sub{font-size:10px;color:var(--muted);margin-top:1px}
+.tl-time{font-family:var(--mono);font-size:9px;color:var(--muted);flex-shrink:0;margin-top:2px}
+
+/* ════════════════════════════════════
+   ANIM 3 — LIST WITH AVATARS
+   ════════════════════════════════════ */
+.av-list{display:flex;flex-direction:column;gap:2px;width:100%}
+.av-item{
+  display:flex;align-items:center;gap:10px;
+  padding:7px 10px;
+  opacity:0;transform:translateX(-18px);
+  transition:opacity .35s,transform .35s;
+}
+.av-item.show{opacity:1;transform:translateX(0)}
+.av-circle{
+  width:30px;height:30px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--mono);font-size:10px;font-weight:600;
+  color:#fff;flex-shrink:0;position:relative;
+}
+.av-circle.c1{background:#b85c2a}
+.av-circle.c2{background:#4a7a6a}
+.av-circle.c3{background:#8a5a6a}
+.av-status{
+  position:absolute;bottom:-1px;right:-1px;
+  width:8px;height:8px;border-radius:50%;
+  border:2px solid var(--bg-card);
+}
+.av-status.online{background:var(--ok)}
+.av-status.offline{background:var(--muted)}
+.av-info{flex:1;min-width:0}
+.av-name{font-size:12px;color:var(--fg)}
+.av-role{font-size:10px;color:var(--muted)}
+.av-badge{
+  font-family:var(--mono);font-size:8px;padding:2px 6px;
+  border:1px solid var(--border);color:var(--muted);
+  letter-spacing:.5px;text-transform:uppercase;
+}
+.av-badge.on{border-color:var(--ok);color:var(--ok)}
+
+/* ════════════════════════════════════
+   ANIM 4 — SECTION HEADERS
+   ════════════════════════════════════ */
+.sh-list{display:flex;flex-direction:column;width:100%}
+.sh-header{
+  font-family:var(--mono);font-size:9px;text-transform:uppercase;
+  letter-spacing:1.5px;color:var(--accent);padding:6px 10px;
+  background:rgba(212,114,42,.05);
+  opacity:0;transform:translateY(-6px);
+  transition:opacity .25s,transform .25s;
+}
+.sh-header.show{opacity:1;transform:translateY(0)}
+.sh-item{
+  padding:7px 10px 7px 22px;font-size:12px;color:var(--label);
+  opacity:0;transform:translateY(-4px);
+  transition:opacity .25s,transform .25s;
+  display:flex;align-items:center;gap:8px;
+}
+.sh-item.show{opacity:1;transform:translateY(0)}
+.sh-item svg{width:12px;height:12px;fill:none;stroke:var(--muted);stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+.sh-item .ic-star{stroke:#c49a2a}
+
+/* ════════════════════════════════════
+   SECTION DIVIDER
+   ════════════════════════════════════ */
+.sec-div{display:flex;align-items:center;gap:14px;margin:34px 0 22px}
+.sec-div::before,.sec-div::after{content:'';flex:1;height:1px;background:var(--border)}
+.sec-div span{font-family:var(--mono);font-size:10px;color:var(--accent);text-transform:uppercase;letter-spacing:2px;white-space:nowrap}
+
+/* ════════════════════════════════════
+   PRACTICE
+   ════════════════════════════════════ */
+.prac-goal{font-size:13px;color:var(--label);line-height:1.55;margin-bottom:14px;max-width:560px}
+.prac-goal strong{color:var(--fg);font-weight:600}
+
+.prac-progress{display:flex;gap:6px;margin-bottom:16px}
+.prac-dot{width:28px;height:4px;background:var(--border);transition:background .35s}
+.prac-dot.done{background:var(--accent)}
+
+.prac-rows{display:flex;flex-direction:column;gap:6px}
+.prac-row{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 12px;border:1px solid var(--border);
+  background:var(--bg-card);
+  border-left:2px solid transparent;
+  transition:border-color .3s;
+  flex-wrap:wrap;
+}
+.prac-row.solved{border-left-color:var(--ok)}
+.prac-num{font-family:var(--mono);font-size:10px;color:var(--muted);min-width:18px}
+.prac-desc{font-size:12px;color:var(--fg);flex:1;min-width:150px}
+.prac-opts{display:flex;gap:5px;flex-wrap:wrap}
+
+.opt{
+  font-family:var(--mono);font-size:9px;letter-spacing:.4px;
+  padding:5px 10px;border:1px solid var(--border);
+  background:transparent;color:var(--label);cursor:pointer;
+  transition:all .2s;touch-action:manipulation;user-select:none;
+}
+.opt:hover{border-color:var(--accent);color:var(--fg)}
+.opt.correct{background:var(--accent);border-color:var(--accent);color:#fff}
+.opt.wrong{background:var(--err);border-color:var(--err);color:#fff}
+.opt:disabled{opacity:.25;cursor:default;pointer-events:none}
+
+.prac-hint{
+  font-family:var(--mono);font-size:10px;color:var(--muted);
+  margin-top:16px;padding:9px 12px;border:1px solid var(--border);
+  background:rgba(212,114,42,.03);line-height:1.5;
+}
+.prac-hint em{font-style:normal;color:var(--accent)}
+
+.prac-done{
+  margin-top:14px;padding:14px 16px;
+  border:1px solid var(--ok);background:rgba(90,158,111,.05);
+  font-size:12px;color:var(--label);line-height:1.65;
+  max-height:0;overflow:hidden;opacity:0;transform:translateY(6px);
+  transition:opacity .4s,transform .4s,max-height .45s;
+}
+.prac-done.show{opacity:1;transform:translateY(0);max-height:100px}
+.prac-done strong{color:var(--ok)}
+
+.prac-reset{
+  font-family:var(--mono);font-size:10px;color:var(--muted);
+  background:none;border:1px solid var(--border);
+  padding:5px 14px;cursor:pointer;margin-top:12px;
+  opacity:0;pointer-events:none;
+  transition:opacity .3s,color .2s,border-color .2s;
+}
+.prac-reset.show{opacity:1;pointer-events:auto}
+.prac-reset:hover{color:var(--fg);border-color:var(--accent)}
+
+@media(max-width:520px){
+  .prac-row{flex-direction:column;align-items:flex-start;gap:6px}
+  .prac-opts{width:100%}
+  .opt{flex:1;text-align:center;min-width:0}
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition-duration:0s!important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="hd-label">design — list</div>
+    <h1 class="hd-title">List <em>× 4</em></h1>
+  </header>
+
+  <!-- ════════ SIMULATION ════════ -->
+  <div class="grid">
+
+    <!-- 1. SINGLE LINE -->
+    <div class="card">
+      <div class="card-top"><div class="card-dot"></div><span class="card-tag">Single Line</span></div>
+      <div class="card-stage">
+        <div class="sl-list" id="a1">
+          <div class="sl-item on">
+            <svg viewBox="0 0 12 12"><path d="M2 6.5l4-4 4 4"/><path d="M3.5 5.5V10h5V5.5"/></svg>
+            <span>Home</span>
+          </div>
+          <div class="sl-item dim">
+            <svg viewBox="0 0 12 12"><circle cx="5" cy="5" r="3"/><path d="M7.5 7.5L10 10"/></svg>
+            <span>Search</span>
+          </div>
+          <div class="sl-item dim">
+            <svg viewBox="0 0 12 12"><path d="M6 1.5a3 3 0 013 3V7H3V4.5a3 3 0 013-3z"/><path d="M4.5 9h3"/></svg>
+            <span>Notifications</span>
+          </div>
+          <div class="sl-item dim">
+            <svg viewBox="0 0 12 12"><circle cx="6" cy="6" r="2"/><path d="M6 1v2M6 9v2M1 6h2M9 6h2M2.8 2.8l1.4 1.4M7.8 7.8l1.4 1.4M2.8 9.2l1.4-1.4M7.8 4.2l1.4-1.4"/></svg>
+            <span>Settings</span>
+          </div>
+          <div class="sl-item dim">
+            <svg viewBox="0 0 12 12"><circle cx="6" cy="4" r="2"/><path d="M2 11a4 4 0 018 0"/></svg>
+            <span>Profile</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-bot"><span>1 dòng = 1 hành động</span><span class="loop"><span class="loop-dot"></span>loop</span></div>
+    </div>
+
+    <!-- 2. TWO LINE -->
+    <div class="card">
+      <div class="card-top"><div class="card-dot"></div><span class="card-tag">Two Line</span></div>
+      <div class="card-stage">
+        <div class="tl-list" id="a2">
+          <div class="tl-item">
+            <div class="tl-avatar"></div>
+            <div class="tl-body"><div class="tl-name">Sophia Lee</div><div class="tl-sub">Product Designer</div></div>
+            <div class="tl-time">10:30</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-avatar"></div>
+            <div class="tl-body"><div class="tl-name">Minh Tran</div><div class="tl-sub">Frontend Developer</div></div>
+            <div class="tl-time">09:15</div>
+          </div>
+          <div class="tl-item">
+            <div class="tl-avatar"></div>
+            <div class="tl-body"><div class="tl-name">Anna Park</div><div class="tl-sub">UX Researcher</div></div>
+            <div class="tl-time">Hôm qua</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-bot"><span>2 dòng = thêm ngữ cảnh</span><span class="loop"><span class="loop-dot"></span>loop</span></div>
+    </div>
+
+    <!-- 3. WITH AVATARS -->
+    <div class="card">
+      <div class="card-top"><div class="card-dot"></div><span class="card-tag">Icons & Avatars</span></div>
+      <div class="card-stage">
+        <div class="av-list" id="a3">
+          <div class="av-item">
+            <div class="av-circle c1">SL<div class="av-status online"></div></div>
+            <div class="av-info"><div class="av-name">Sophia Lee</div><div class="av-role">Designer</div></div>
+            <div class="av-badge on">online</div>
+          </div>
+          <div class="av-item">
+            <div class="av-circle c2">MT<div class="av-status offline"></div></div>
+            <div class="av-info"><div class="av-name">Minh Tran</div><div class="av-role">Developer</div></div>
+            <div class="av-badge">offline</div>
+          </div>
+          <div class="av-item">
+            <div class="av-circle c3">AP<div class="av-status online"></div></div>
+            <div class="av-info"><div class="av-name">Anna Park</div><div class="av-role">Researcher</div></div>
+            <div class="av-badge on">online</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-bot"><span>avatar + status = nhận diện</span><span class="loop"><span class="loop-dot"></span>loop</span></div>
+    </div>
+
+    <!-- 4. WITH SECTION HEADERS -->
+    <div class="card">
+      <div class="card-top"><div class="card-dot"></div><span class="card-tag">Section Headers</span></div>
+      <div class="card-stage">
+        <div class="sh-list" id="a4">
+          <div class="sh-header" id="sh1">Favorites</div>
+          <div class="sh-item" id="si1">
+            <svg class="ic-star" viewBox="0 0 12 12"><path d="M6 1l1.5 3.5H11l-3 2.5 1 3.5L6 8.5 3 10.5l1-3.5L1 4.5h3.5z"/></svg>
+            <span>Starred</span>
+          </div>
+          <div class="sh-item" id="si2">
+            <svg viewBox="0 0 12 12"><path d="M6 2v5M4 5l2 2 2-2"/><path d="M1 9h10"/></svg>
+            <span>Downloads</span>
+          </div>
+          <div class="sh-header" id="sh2">Categories</div>
+          <div class="sh-item" id="si3">
+            <svg viewBox="0 0 12 12"><rect x="1" y="4" width="10" height="6" rx="1"/><path d="M4 4V2.5a.5.5 0 01.5-.5h3a.5.5 0 01.5.5V4"/></svg>
+            <span>Work</span>
+          </div>
+          <div class="sh-item" id="si4">
+            <svg viewBox="0 0 12 12"><circle cx="6" cy="4" r="2"/><path d="M2 11a4 4 0 018 0"/></svg>
+            <span>Personal</span>
+          </div>
+        </div>
+      </div>
+      <div class="card-bot"><span>header = nhóm có thứ bậc</span><span class="loop"><span class="loop-dot"></span>loop</span></div>
+    </div>
+
+  </div>
+
+  <!-- ════════ DIVIDER ════════ -->
+  <div class="sec-div"><span>Thực hành</span></div>
+
+  <!-- ════════ PRACTICE ════════ -->
+  <section class="prac">
+    <p class="prac-goal"><strong>Mục tiêu:</strong> Chọn đúng kiểu list cho từng trường hợp. Mỗi case chỉ có một đáp án đúng.</p>
+
+    <div class="prac-progress" id="pp">
+      <div class="prac-dot" data-i="0"></div>
+      <div class="prac-dot" data-i="1"></div>
+      <div class="prac-dot" data-i="2"></div>
+      <div class="prac-dot" data-i="3"></div>
+    </div>
+
+    <div class="prac-rows" id="pr">
+
+      <div class="prac-row" data-answer="0" data-solved="0">
+        <span class="prac-num">01</span>
+        <span class="prac-desc">Menu sidebar của app chính</span>
+        <div class="prac-opts">
+          <button class="opt" data-v="0">1 dòng</button>
+          <button class="opt" data-v="1">2 dòng</button>
+          <button class="opt" data-v="2">Avatar</button>
+          <button class="opt" data-v="3">Có header</button>
+        </div>
+      </div>
+
+      <div class="prac-row" data-answer="1" data-solved="0">
+        <span class="prac-num">02</span>
+        <span class="prac-desc">Danh sách tin nhắn gần đây</span>
+        <div class="prac-opts">
+          <button class="opt" data-v="0">1 dòng</button>
+          <button class="opt" data-v="1">2 dòng</button>
+          <button class="opt" data-v="2">Avatar</button>
+          <button class="opt" data-v="3">Có header</button>
+        </div>
+      </div>
+
+      <div class="prac-row" data-answer="2" data-solved="0">
+        <span class="prac-num">03</span>
+        <span class="prac-desc">Danh sách thành viên trong group chat</span>
+        <div class="prac-opts">
+          <button class="opt" data-v="0">1 dòng</button>
+          <button class="opt" data-v="1">2 dòng</button>
+          <button class="opt" data-v="2">Avatar</button>
+          <button class="opt" data-v="3">Có header</button>
+        </div>
+      </div>
+
+      <div class="prac-row" data-answer="3" data-solved="0">
+        <span class="prac-num">04</span>
+        <span class="prac-desc">Trang cài đặt với nhiều nhóm chức năng</span>
+        <div class="prac-opts">
+          <button class="opt" data-v="0">1 dòng</button>
+          <button class="opt" data-v="1">2 dòng</button>
+          <button class="opt" data-v="2">Avatar</button>
+          <button class="opt" data-v="3">Có header</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="prac-done" id="pd">
+      <strong>Done.</strong> Mỗi kiểu list phục vụ một loại thông tin khác nhau. Khi prompt hay brief cho dev, cứ mô tả rõ: "danh sách gì, mỗi item mấy dòng, có ảnh không, cần chia nhóm không" — họ sẽ chọn đúng kiểu list ngay.
+    </div>
+
+    <button class="prac-reset" id="prst">Làm lại</button>
+
+    <div class="prac-hint">
+      <em>Hint:</em> Nhìn vào loại thông tin cần hiển thị — 1 dòng hay nhiều dòng, có ảnh không, cần chia nhóm không.
+    </div>
+  </section>
+
+</div>
+
+<script>
+/* ══════════════════════════════════════════
+   ANIM 1 — SINGLE LINE: cycle highlight
+   ══════════════════════════════════════════ */
+(function(){
+  var items=document.querySelectorAll('#a1 .sl-item');
+  var cur=0;
+  function tick(){
+    for(var i=0;i<items.length;i++){
+      items[i].classList.toggle('on',i===cur);
+      items[i].classList.toggle('dim',i!==cur);
+    }
+    cur=(cur+1)%items.length;
+  }
+  tick();
+  setInterval(tick,750);
+})();
+
+/* ══════════════════════════════════════════
+   ANIM 2 — TWO LINE: sequential slide-in
+   ══════════════════════════════════════════ */
+(function(){
+  var items=document.querySelectorAll('#a2 .tl-item');
+  var T=3300;
+  function play(){
+    for(var i=0;i<items.length;i++) items[i].classList.remove('show');
+    setTimeout(function(){items[0].classList.add('show')},120);
+    setTimeout(function(){items[1].classList.add('show')},520);
+    setTimeout(function(){items[2].classList.add('show')},920);
+    setTimeout(function(){
+      for(var i=0;i<items.length;i++) items[i].classList.remove('show');
+    },2700);
+  }
+  play();
+  setInterval(play,T);
+})();
+
+/* ══════════════════════════════════════════
+   ANIM 3 — AVATARS: slide in from left
+   ══════════════════════════════════════════ */
+(function(){
+  var items=document.querySelectorAll('#a3 .av-item');
+  var T=3500;
+  function play(){
+    for(var i=0;i<items.length;i++) items[i].classList.remove('show');
+    setTimeout(function(){items[0].classList.add('show')},100);
+    setTimeout(function(){items[1].classList.add('show')},460);
+    setTimeout(function(){items[2].classList.add('show')},820);
+    setTimeout(function(){
+      for(var i=0;i<items.length;i++) items[i].classList.remove('show');
+    },2900);
+  }
+  play();
+  setInterval(play,T);
+})();
+
+/* ══════════════════════════════════════════
+   ANIM 4 — SECTION HEADERS: build-up
+   ══════════════════════════════════════════ */
+(function(){
+  var all=[
+    document.getElementById('sh1'),
+    document.getElementById('si1'),
+    document.getElementById('si2'),
+    document.getElementById('sh2'),
+    document.getElementById('si3'),
+    document.getElementById('si4')
+  ];
+  var T=4400;
+  function hideAll(){
+    for(var i=0;i<all.length;i++) all[i].classList.remove('show');
+  }
+  function play(){
+    hideAll();
+    /* Section 1: Favorites */
+    setTimeout(function(){all[0].classList.add('show')},100);
+    setTimeout(function(){all[1].classList.add('show')},350);
+    setTimeout(function(){all[2].classList.add('show')},550);
+    /* Section 2: Categories */
+    setTimeout(function(){all[3].classList.add('show')},1200);
+    setTimeout(function(){all[4].classList.add('show')},1450);
+    setTimeout(function(){all[5].classList.add('show')},1650);
+    /* Hold then hide */
+    setTimeout(hideAll,3700);
+  }
+  play();
+  setInterval(play,T);
+})();
+
+/* ══════════════════════════════════════════
+   PRACTICE — matching logic
+   ══════════════════════════════════════════ */
+(function(){
+  var rows=document.querySelectorAll('#pr .prac-row');
+  var dots=document.querySelectorAll('#pp .prac-dot');
+  var doneEl=document.getElementById('pd');
+  var resetBtn=document.getElementById('prst');
+  var solved=0;
+
+  function updateProgress(){
+    for(var i=0;i<dots.length;i++){
+      dots[i].classList.toggle('done',i<solved);
+    }
+    if(solved===4){
+      doneEl.classList.add('show');
+      resetBtn.classList.add('show');
+    }
+  }
+
+  /* Gán click cho mỗi row */
+  for(var r=0;r<rows.length;r++){
+    (function(row){
+      var answer=parseInt(row.getAttribute('data-answer'));
+      var btns=row.querySelectorAll('.opt');
+
+      for(var b=0;b<btns.length;b++){
+        (function(btn){
+          btn.addEventListener('click',function(){
+            if(row.dataset.solved==='1') return;
+            var val=parseInt(btn.getAttribute('data-v'));
+
+            if(val===answer){
+              /* Đúng */
+              btn.classList.add('correct');
+              row.classList.add('solved');
+              row.dataset.solved='1';
+              solved++;
+              updateProgress();
+              /* Disable các nút khác trong row */
+              for(var j=0;j<btns.length;j++){
+                if(btns[j]!==btn) btns[j].disabled=true;
+              }
+            }else{
+              /* Sai — flash đỏ 400ms */
+              btn.classList.add('wrong');
+              setTimeout(function(){btn.classList.remove('wrong')},400);
+            }
+          });
+        })(btns[b]);
+      }
+    })(rows[r]);
+  }
+
+  /* Reset */
+  resetBtn.addEventListener('click',function(){
+    solved=0;
+    updateProgress();
+    doneEl.classList.remove('show');
+    resetBtn.classList.remove('show');
+    for(var r=0;r<rows.length;r++){
+      rows[r].classList.remove('solved');
+      rows[r].dataset.solved='0';
+      var btns=rows[r].querySelectorAll('.opt');
+      for(var b=0;b<btns.length;b++){
+        btns[b].classList.remove('correct','wrong');
+        btns[b].disabled=false;
+      }
+    }
+  });
+})();
+</script>
+</body>
+</html>
