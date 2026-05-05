@@ -143,6 +143,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'shape', name: 'Shape', nameEn: 'Hình khối / Shape', letter: 'S', groups: ['design'], definition: 'Các hình khối cơ bản (Square, Circle, Triangle) dùng để xây dựng giao diện. Shape quyết định cấu trúc, trọng lượng thị giác và cảm xúc của một thiết kế.', example: 'Prompt: "Dùng shape tròn cho avatar và shape vuông cho các card sản phẩm để tạo sự tương phản giữa con người và vật thể."', related: ['radius', 'stroke', 'interface'], demo: { kind: 'interactive', src: 'gif-shape-demo.html', alt: 'Mô phỏng các loại hình khối và personality của chúng' } },
   { id: 'split-buttons', name: 'Split buttons', nameEn: 'Split buttons', letter: 'S', groups: ['design', 'code'], definition: 'Split button kết hợp một hành động chính và một menu các hành động phụ liên quan. Nó gồm hai phần: nút chính bên trái thực hiện hành động mặc định, và nút mũi tên bên phải để mở menu dropdown.', example: 'Nút "Download" chính để tải file PDF, và nút mũi tên bên cạnh để chọn tải dưới dạng CSV hoặc Excel. Dùng split button giúp tiết kiệm diện tích giao diện mà vẫn cung cấp nhiều tùy chọn.', related: ['dropdown', 'menus', 'component'], demo: { kind: 'interactive', src: 'gif-split-button-demo.html', alt: 'Mô phỏng các trạng thái và ứng dụng của Split buttons' } },
   { id: 'segmented-button', name: 'Segmented Button', nameEn: 'Nút phân đoạn', letter: 'S', groups: ['design', 'code'], definition: 'Một loại nút bấm được chia thành nhiều đoạn (segment), mỗi đoạn là một lựa chọn. Segmented Button thường dùng để chuyển đổi giữa các trạng thái, bộ lọc hoặc các view nội dung khác nhau trong cùng một không gian mà không làm thay đổi URL.', example: 'Prompt: "Tạo một segmented button gồm 3 tùy chọn: \'Ngày\', \'Tuần\', \'Tháng\' để lọc biểu đồ doanh thu. Khi người dùng click vào một đoạn, đoạn đó phải sáng lên (active) và các đoạn khác tự động tắt."', related: ['tab-bar', 'toggle', 'radio', 'component'], demo: { kind: 'interactive', src: 'gif-segmented-button-demo.html', alt: 'Mô phỏng 4 loại Segmented Button: Mutually Exclusive, Content Binding, State Lifecycle và Connected vs Separated' } },
+  { id: 'navigation', name: 'Navigation', nameEn: 'Điều hướng / Navigation', letter: 'N', groups: ['design', 'code'], definition: 'Cách thức người dùng di chuyển giữa các trang hoặc các phần trong một ứng dụng. Hệ thống navigation tốt giống như một tấm bản đồ rõ ràng, giúp người dùng không bao giờ bị lạc và luôn tìm thấy thứ mình cần chỉ trong vài lần click.', example: 'Prompt: "Thiết kế hệ thống navigation cho app e-commerce gồm: Navbar ở top cho desktop, Bottom Nav cho mobile, và Sidebar cho các cài đặt nâng cao."', related: ['navbar', 'sidebar', 'breadcrumb', 'tab-bar'], demo: { kind: 'interactive', src: 'gif-navigation-demo.html', alt: 'Mô phỏng 4 kiểu navigation phổ biến: Top, Bottom, Sidebar và Breadcrumb' } },
 ];
 
 export const quickRefItems = [
@@ -253,6 +254,7 @@ const deepDiveTermIds = new Set([
   'shape',
   'split-buttons',
   'segmented-button',
+  'navigation',
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -617,6 +619,12 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Segmented Button là lựa chọn hoàn hảo khi bạn có từ 2 đến 5 lựa chọn cần hiển thị cùng lúc để user so sánh nhanh.',
     'Khác với Tab Bar (dùng cho nội dung lớn toàn trang), Segmented Button thường dùng trong các component nhỏ như card, modal, hoặc thanh công cụ config.',
     'Quy tắc "Mutually Exclusive": Chỉ có duy nhất một đoạn được active tại một thời điểm. Việc chọn đoạn mới sẽ tự động hủy chọn đoạn cũ.',
+  ],
+  'navigation': [
+    'Navigation là "xương sống" của trải nghiệm người dùng. Một hệ thống navigation tệ sẽ khiến user rời bỏ app ngay cả khi nội dung của bạn rất hay.',
+    '4 kiểu kinh điển: Top Nav (toàn trang), Bottom Nav (mobile), Sidebar (tiết kiệm không gian), và Breadcrumb (lộ trình).',
+    'Khi thiết kế, hãy ưu tiên sự nhất quán: menu ở trang A phải nằm đúng vị trí đó ở trang B để user hình thành thói quen sử dụng.',
+    'Đừng quên trạng thái "Active": người dùng luôn cần biết họ đang ở đâu (ví dụ: nút Home đang sáng lên khi ở trang chủ).',
   ],
 };
 

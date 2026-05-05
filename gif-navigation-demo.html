@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Navigation Demo — Vibecode Glossary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+    --bg:#141413;--bg-card:#1c1c1a;--fg:#e8e0d4;--muted:#6e6a63;
+    --accent:#d97706;--accent-dim:rgba(217,119,6,.12);
+    --border:#2e2c28;--border-hi:#3e3b35;--slate:#33312d;--cream:#f5f0e8;
+    --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);min-height:100vh;-webkit-font-smoothing:antialiased;background-image:linear-gradient(rgba(255,255,255,.016) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.016) 1px,transparent 1px);background-size:20px 20px}
+
+
+.g4{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:24px 20px 32px;max-width:920px;margin:0 auto}
+
+.cd{background:var(--bg-card);border:1px solid var(--border);position:relative;overflow:hidden}
+.cd::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 0%,rgba(217,119,6,.04) 0%,transparent 60%);pointer-events:none}
+.cd-n{position:absolute;top:10px;right:12px;font-family:var(--mono);font-size:9px;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:2px 7px;letter-spacing:1.5px;z-index:5}
+.cd-l{font-family:var(--mono);font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:2px;padding:14px 14px 2px;position:relative}
+.cd-t{font-size:15px;font-weight:700;color:var(--cream);padding:2px 14px 10px;position:relative}
+.cd-d{padding:0 14px 8px;height:250px;position:relative}
+.cd-i{font-family:var(--mono);font-size:10px;color:var(--muted);padding:10px 14px 20px;border-top:1px solid var(--border);line-height:1.6;position:relative}
+.cd-i em{color:var(--accent);font-style:normal}
+
+.sl{position:absolute;bottom:12px;left:14px;font-family:var(--mono);font-size:9px;color:var(--accent);background:var(--bg);border:1px solid var(--border);padding:2px 8px;z-index:5;letter-spacing:.5px;transition:opacity .3s}
+
+/* === Fake cursor === */
+.fc{position:absolute;width:14px;height:14px;border:2px solid var(--accent);border-radius:50%;pointer-events:none;z-index:20;opacity:0;transition:left .4s cubic-bezier(.4,0,.2,1),top .4s cubic-bezier(.4,0,.2,1),opacity .2s;box-shadow:0 0 8px rgba(217,119,6,.2)}
+.fc.show{opacity:1}
+.fc::after{content:'';position:absolute;inset:3px;background:var(--accent);border-radius:50%;opacity:0}
+.fc.pop::after{animation:cpop .5s ease-out forwards}
+@keyframes cpop{0%{transform:scale(0);opacity:.6}100%{transform:scale(2.5);opacity:0}}
+
+/* === Card 1: Top Nav === */
+.tn-mock{width:100%;height:100%;background:#0e0e0d;border:1px solid var(--border-hi);display:flex;flex-direction:column;overflow:hidden}
+.tn-bar{display:flex;align-items:center;gap:4px;padding:7px 10px;background:#151514;border-bottom:1px solid var(--border);flex-shrink:0}
+.tn-logo{font-family:var(--mono);font-size:9px;font-weight:700;color:var(--cream);margin-right:12px;letter-spacing:.5px}
+.tn-item{padding:5px 12px;font-size:9px;font-family:var(--mono);color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .25s,border-color .25s;cursor:default;white-space:nowrap}
+.tn-item.on{color:var(--accent);border-bottom-color:var(--accent)}
+.tn-body{flex:1;position:relative;overflow:hidden}
+.tn-page{position:absolute;inset:0;padding:12px;opacity:0;transform:translateY(4px);transition:opacity .3s,transform .3s}
+.tn-page.on{opacity:1;transform:translateY(0)}
+.tn-page-h{font-size:11px;font-weight:700;color:var(--cream);margin-bottom:8px;font-family:var(--mono)}
+.tn-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.tn-cell{height:28px;background:var(--slate);border:1px solid var(--border)}
+.tn-bar-sm{height:5px;background:var(--slate);border-radius:1px;margin-bottom:4px}
+
+/* === Card 2: Bottom Nav === */
+.bn-mock{width:130px;height:220px;background:#0e0e0d;border:2px solid var(--border-hi);margin:auto;display:flex;flex-direction:column;overflow:hidden}
+.bn-notch{width:44px;height:9px;background:var(--border-hi);margin:0 auto;border-radius:0 0 3px 3px}
+.bn-body{flex:1;position:relative;overflow:hidden}
+.bn-page{position:absolute;inset:0;padding:10px;opacity:0;transition:opacity .3s}
+.bn-page.on{opacity:1}
+.bn-page-h{font-size:9px;font-weight:700;color:var(--cream);margin-bottom:6px}
+.bn-card{height:32px;background:var(--slate);border:1px solid var(--border);margin-bottom:5px}
+.bn-sm{height:4px;background:var(--slate);border-radius:1px;margin-bottom:3px}
+.bn-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.bn-grid div{height:34px;background:var(--slate);border-radius:1px}
+.bn-tabs{display:flex;border-top:1px solid var(--border-hi);background:#111110;flex-shrink:0}
+.bn-tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0 8px;font-size:6px;font-family:var(--mono);color:var(--muted);transition:color .25s;position:relative}
+.bn-tab i{font-size:11px;transition:transform .2s}
+.bn-tab.on{color:var(--accent)}
+.bn-tab.on i{transform:scale(1.15)}
+.bn-tab.on::before{content:'';position:absolute;top:-1px;left:20%;right:20%;height:2px;background:var(--accent)}
+
+/* === Card 3: Sidebar/Drawer === */
+.sd-mock{width:100%;height:100%;background:#0e0e0d;border:1px solid var(--border-hi);position:relative;overflow:hidden}
+.sd-overlay{position:absolute;inset:0;background:rgba(0,0,0,.5);z-index:5;opacity:0;transition:opacity .35s}
+.sd-overlay.vis{opacity:1}
+.sd-panel{position:absolute;top:0;left:0;bottom:0;width:55%;background:#161615;border-right:1px solid var(--border-hi);z-index:10;transform:translateX(-100%);transition:transform .4s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column}
+.sd-panel.vis{transform:translateX(0)}
+.sd-head{padding:10px 12px 8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.sd-avatar{width:24px;height:24px;border-radius:50%;background:var(--slate);border:1px solid var(--border)}
+.sd-name{font-family:var(--mono);font-size:9px;font-weight:600;color:var(--cream)}
+.sd-menu{padding:6px 0;flex:1}
+.sd-item{display:flex;align-items:center;gap:8px;padding:8px 14px;font-family:var(--mono);font-size:9px;color:var(--muted);transition:background .2s,color .2s}
+.sd-item.on{background:var(--accent-dim);color:var(--accent)}
+.sd-item i{width:14px;text-align:center;font-size:10px}
+.sd-sep{height:1px;background:var(--border);margin:4px 14px}
+.sd-trigger{position:absolute;top:10px;left:10px;z-index:2;width:24px;height:24px;background:var(--slate);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--muted);transition:color .2s}
+.sd-trigger.hl{color:var(--accent);border-color:rgba(217,119,6,.3)}
+.sd-content{padding:10px 12px 10px 44px}
+.sd-c-h{font-size:10px;font-weight:700;color:var(--cream);font-family:var(--mono);margin-bottom:6px}
+.sd-c-row{display:flex;gap:4px;margin-bottom:4px}
+.sd-c-cell{flex:1;height:18px;background:var(--slate);border:1px solid var(--border)}
+
+/* === Card 4: Breadcrumb === */
+.bc-mock{width:100%;height:100%;background:#0e0e0d;border:1px solid var(--border-hi);display:flex;flex-direction:column;overflow:hidden}
+.bc-bar{padding:8px 12px;border-bottom:1px solid var(--border);flex-shrink:0;display:flex;align-items:center;gap:2px;flex-wrap:wrap}
+.bc-seg{font-family:var(--mono);font-size:8px;color:var(--muted);transition:color .25s;cursor:default}
+.bc-seg.on{color:var(--accent)}
+.bc-seg.clickable{cursor:default}
+.bc-sep{font-family:var(--mono);font-size:8px;color:var(--border-hi);margin:0 2px}
+.bc-body{flex:1;position:relative;overflow:hidden}
+.bc-page{position:absolute;inset:0;padding:12px;opacity:0;transform:translateX(8px);transition:opacity .3s,transform .3s}
+.bc-page.on{opacity:1;transform:translateX(0)}
+.bc-p-h{font-size:11px;font-weight:700;color:var(--cream);margin-bottom:6px}
+.bc-p-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-top:8px}
+.bc-p-card{background:var(--slate);border:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.bc-p-img{height:30px;background:var(--border);flex-shrink:0}
+.bc-p-info{padding:5px 6px;font-family:var(--mono);font-size:7px;color:var(--muted)}
+.bc-p-price{color:var(--cream);font-weight:600}
+.bc-sm{height:4px;background:var(--slate);border-radius:1px;margin-bottom:4px}
+
+@media(max-width:620px){
+    .g4{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+::-webkit-scrollbar{display:none}
+html,body{-ms-overflow-style:none;scrollbar-width:none}
+</style>
+</head>
+<body>
+
+
+<main>
+<div class="g4">
+
+    <!-- ===== 1. Top Navigation ===== -->
+    <section class="cd" aria-label="Top Navigation animation">
+        <span class="cd-n">LOOP</span>
+        <div class="cd-l">Kiểu 01</div>
+        <h2 class="cd-t">Top Navigation Bar</h2>
+        <div class="cd-d">
+            <div class="sl" id="sl1">Trang chủ</div>
+            <div class="fc" id="fc1"></div>
+            <div class="tn-mock">
+                <div class="tn-bar">
+                    <span class="tn-logo">ShopEase</span>
+                    <div class="tn-item on" data-i="0">Trang chủ</div>
+                    <div class="tn-item" data-i="1">Sản phẩm</div>
+                    <div class="tn-item" data-i="2">Đơn hàng</div>
+                    <div class="tn-item" data-i="3">Tài khoản</div>
+                </div>
+                <div class="tn-body">
+                    <div class="tn-page on" data-i="0">
+                        <div class="tn-page-h">Chào mừng trở lại!</div>
+                        <div class="tn-bar-sm" style="width:80%"></div>
+                        <div class="tn-bar-sm" style="width:60%"></div>
+                        <div class="tn-grid"><div class="tn-cell"></div><div class="tn-cell"></div><div class="tn-cell"></div><div class="tn-cell"></div></div>
+                    </div>
+                    <div class="tn-page" data-i="1">
+                        <div class="tn-page-h">Sản phẩm</div>
+                        <div class="tn-grid"><div class="tn-cell" style="height:48px"></div><div class="tn-cell" style="height:48px"></div><div class="tn-cell" style="height:48px"></div></div>
+                        <div class="tn-bar-sm" style="width:70%;margin-top:6px"></div>
+                    </div>
+                    <div class="tn-page" data-i="2">
+                        <div class="tn-page-h">Đơn hàng</div>
+                        <div class="tn-cell" style="height:24px;margin-bottom:4px"></div>
+                        <div class="tn-cell" style="height:24px;margin-bottom:4px"></div>
+                        <div class="tn-cell" style="height:24px"></div>
+                    </div>
+                    <div class="tn-page" data-i="3">
+                        <div class="tn-page-h">Tài khoản</div>
+                        <div class="tn-bar-sm" style="width:50%"></div>
+                        <div class="tn-bar-sm" style="width:70%"></div>
+                        <div class="tn-bar-sm" style="width:40%"></div>
+                        <div class="tn-bar-sm" style="width:60%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cd-i">Nav ngang trên top = <em>bản đồ toàn trang</em>. Tất cả trang đều hiển thị, 1 click đến nơi. Phổ biến nhất trên web.</div>
+    </section>
+
+    <!-- ===== 2. Bottom Navigation ===== -->
+    <section class="cd" aria-label="Bottom Navigation animation">
+        <span class="cd-n">LOOP</span>
+        <div class="cd-l">Kiểu 02</div>
+        <h2 class="cd-t">Bottom Navigation Bar</h2>
+        <div class="cd-d">
+            <div class="sl" id="sl2">Trang chủ</div>
+            <div class="fc" id="fc2"></div>
+            <div class="bn-mock">
+                <div class="bn-notch"></div>
+                <div class="bn-body">
+                    <div class="bn-page on" data-i="0">
+                        <div class="bn-page-h">Trang chủ</div>
+                        <div class="bn-card"></div>
+                        <div class="bn-sm" style="width:75%"></div>
+                        <div class="bn-sm" style="width:50%"></div>
+                    </div>
+                    <div class="bn-page" data-i="1">
+                        <div class="bn-page-h">Khám phá</div>
+                        <div class="bn-grid"><div></div><div></div><div></div><div></div></div>
+                    </div>
+                    <div class="bn-page" data-i="2">
+                        <div class="bn-page-h">Yêu thích</div>
+                        <div class="bn-card" style="height:40px"></div>
+                        <div class="bn-card" style="height:40px"></div>
+                    </div>
+                    <div class="bn-page" data-i="3">
+                        <div class="bn-page-h">Cá nhân</div>
+                        <div class="bn-sm" style="width:45%;margin:8px auto 6px"></div>
+                        <div class="bn-sm" style="width:65%;margin:0 auto"></div>
+                        <div class="bn-sm" style="width:55%;margin:8px auto 0"></div>
+                    </div>
+                </div>
+                <nav class="bn-tabs">
+                    <div class="bn-tab on" data-i="0"><i class="fas fa-house"></i>Trang chủ</div>
+                    <div class="bn-tab" data-i="1"><i class="fas fa-compass"></i>Khám phá</div>
+                    <div class="bn-tab" data-i="2"><i class="fas fa-heart"></i>Yêu thích</div>
+                    <div class="bn-tab" data-i="3"><i class="fas fa-user"></i>Cá nhân</div>
+                </nav>
+            </div>
+        </div>
+        <div class="cd-i">Đáy màn hình = <em>vùng chạm dễ nhất</em>. Dùng cho mobile app — 1 tay, không cần đổi tay.</div>
+    </section>
+
+    <!-- ===== 3. Sidebar / Drawer ===== -->
+    <section class="cd" aria-label="Sidebar Drawer animation">
+        <span class="cd-n">LOOP</span>
+        <div class="cd-l">Kiểu 03</div>
+        <h2 class="cd-t">Sidebar / Drawer</h2>
+        <div class="cd-d">
+            <div class="sl" id="sl3">đang đóng</div>
+            <div class="sd-mock">
+                <div class="sd-trigger" id="sdtrig"><i class="fas fa-bars"></i></div>
+                <div class="sd-overlay" id="sdov"></div>
+                <div class="sd-panel" id="sdpan">
+                    <div class="sd-head"><div class="sd-avatar"></div><span class="sd-name">Minh Trần</span></div>
+                    <div class="sd-menu">
+                        <div class="sd-item on"><i class="fas fa-chart-line"></i>Tổng quan</div>
+                        <div class="sd-item"><i class="fas fa-box"></i>Sản phẩm</div>
+                        <div class="sd-item"><i class="fas fa-receipt"></i>Đơn hàng</div>
+                        <div class="sd-sep"></div>
+                        <div class="sd-item"><i class="fas fa-gear"></i>Cài đặt</div>
+                        <div class="sd-item"><i class="fas fa-right-from-bracket"></i>Đăng xuất</div>
+                    </div>
+                </div>
+                <div class="sd-content">
+                    <div class="sd-c-h">Tổng quan</div>
+                    <div class="sd-c-row"><div class="sd-c-cell"></div><div class="sd-c-cell"></div><div class="sd-c-cell"></div></div>
+                    <div class="sd-c-row"><div class="sd-c-cell" style="height:40px"></div><div class="sd-c-cell" style="height:40px"></div></div>
+                </div>
+            </div>
+        </div>
+        <div class="cd-i">Ẩn đi khi không cần = <em>tiết kiệm không gian</em>. Overlay + slide = hiển thị theo yêu cầu, không chiếm diện tích.</div>
+    </section>
+
+    <!-- ===== 4. Breadcrumb ===== -->
+    <section class="cd" aria-label="Breadcrumb Navigation animation">
+        <span class="cd-n">LOOP</span>
+        <div class="cd-l">Kiểu 04</div>
+        <h2 class="cd-t">Breadcrumb Navigation</h2>
+        <div class="cd-d">
+            <div class="sl" id="sl4">Trang chủ</div>
+            <div class="fc" id="fc4"></div>
+            <div class="bc-mock">
+                <div class="bc-bar" id="bcbar">
+                    <span class="bc-seg on" data-i="0">Trang chủ</span>
+                </div>
+                <div class="bc-body">
+                    <div class="bc-page on" data-i="0">
+                        <div class="bc-p-h">Trang chủ</div>
+                        <div class="bc-sm" style="width:80%"></div>
+                        <div class="bc-sm" style="width:60%"></div>
+                        <div class="bc-p-grid">
+                            <div class="bc-p-card"><div class="bc-p-img"></div><div class="bc-p-info"><div class="bc-p-price">$29</div>Điện tử</div></div>
+                            <div class="bc-p-card"><div class="bc-p-img"></div><div class="bc-p-info"><div class="bc-p-price">$49</div>Quần áo</div></div>
+                            <div class="bc-p-card"><div class="bc-p-img"></div><div class="bc-p-info"><div class="bc-p-price">$15</div>Sách</div></div>
+                        </div>
+                    </div>
+                    <div class="bc-page" data-i="1">
+                        <div class="bc-p-h">Danh mục</div>
+                        <div class="bc-p-grid">
+                            <div class="bc-p-card"><div class="bc-p-img"></div><div class="bc-p-info"><div class="bc-p-price">$199</div>Tai nghe</div></div>
+                            <div class="bc-p-card"><div class="bc-p-img"></div><div class="bc-p-info"><div class="bc-p-price">$89</div>Loa</div></div>
+                            <div class="bc-p-card"><div class="bc-p-img"></div><div class="bc-p-info"><div class="bc-p-price">$299</div>Máy ảnh</div></div>
+                        </div>
+                    </div>
+                    <div class="bc-page" data-i="2">
+                        <div class="bc-p-h">Điện tử</div>
+                        <div class="bc-sm" style="width:65%"></div>
+                        <div class="bc-sm" style="width:45%"></div>
+                        <div class="bc-p-grid">
+                            <div class="bc-p-card"><div class="bc-p-img"></div><div class="bc-p-info"><div class="bc-p-price">$79</div>Không dây</div></div>
+                            <div class="bc-p-card"><div class="bc-p-img"></div><div class="bc-p-info"><div class="bc-p-price">$45</div>In-ear</div></div>
+                            <div class="bc-p-card"><div class="bc-p-img"></div><div class="bc-p-info"><div class="bc-p-price">$120</div>Over-ear</div></div>
+                        </div>
+                    </div>
+                    <div class="bc-page" data-i="3">
+                        <div class="bc-p-h">Tai nghe</div>
+                        <div class="bc-sm" style="width:70%"></div>
+                        <div class="bc-sm" style="width:50%"></div>
+                        <div class="bc-sm" style="width:80%"></div>
+                        <div style="margin-top:10px;display:flex;gap:6px">
+                            <div style="flex:1;height:28px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:8px;color:#0e0e0d;font-weight:600">Thêm vào giỏ</div>
+                            <div style="width:28px;height:28px;background:var(--slate);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--muted)"><i class="fas fa-heart"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cd-i">Breadcrumb = <em>bản đồ vị trí</em>. Người dùng luôn biết mình ở đâu trong cấu trúc — click để lùi lại bất kỳ cấp nào.</div>
+    </section>
+
+</div>
+</main>
+
+<script>
+/* ======== Utils ======== */
+function posIn(child,parent){
+    var cr=child.getBoundingClientRect(),pr=parent.getBoundingClientRect();
+    return{x:cr.left-pr.left+cr.width/2-7,y:cr.top-pr.top+cr.height/2-7};
+}
+function moveCur(cur,pos,pop){
+    cur.style.left=pos.x+'px';cur.style.top=pos.y+'px';
+    cur.classList.add('show');cur.classList.remove('pop');
+    if(pop){void cur.offsetWidth;cur.classList.add('pop')}
+}
+function wait(ms){return new Promise(function(r){setTimeout(r,ms)})}
+
+/* ======== CARD 1: Top Nav ======== */
+(async function(){
+    var wrap=document.querySelector('#fc1').parentElement,
+        cur=document.getElementById('fc1'),
+        items=wrap.querySelectorAll('.tn-item'),
+        pages=wrap.querySelectorAll('.tn-page'),
+        sl=document.getElementById('sl1'),
+        i=0;
+    while(true){
+        items[i].classList.remove('on');pages[i].classList.remove('on');
+        i=(i+1)%4;
+        items[i].classList.add('on');pages[i].classList.add('on');
+        moveCur(cur,posIn(items[i],wrap),true);
+        sl.textContent=items[i].textContent;
+        await wait(2200);
+    }
+})();
+
+/* ======== CARD 2: Bottom Nav ======== */
+(async function(){
+    var wrap=document.querySelector('#fc2').parentElement,
+        cur=document.getElementById('fc2'),
+        tabs=wrap.querySelectorAll('.bn-tab'),
+        pages=wrap.querySelectorAll('.bn-page'),
+        sl=document.getElementById('sl2'),
+        i=0;
+    while(true){
+        tabs[i].classList.remove('on');pages[i].classList.remove('on');
+        i=(i+1)%4;
+        tabs[i].classList.add('on');pages[i].classList.add('on');
+        moveCur(cur,posIn(tabs[i],wrap),true);
+        sl.textContent=tabs[i].textContent.trim();
+        await wait(2200);
+    }
+})();
+
+/* ======== CARD 3: Sidebar Drawer ======== */
+(async function(){
+    var panel=document.getElementById('sdpan'),
+        overlay=document.getElementById('sdov'),
+        trigger=document.getElementById('sdtrig'),
+        sl=document.getElementById('sl3'),
+        items=panel.querySelectorAll('.sd-item'),
+        curIdx=0;
+    while(true){
+        /* Open */
+        trigger.classList.add('hl');
+        panel.classList.add('vis');
+        overlay.classList.add('vis');
+        sl.textContent='đang mở — Tổng quan';
+        await wait(2500);
+        /* Click through items */
+        for(var j=0;j<items.length;j++){
+            if(j===curIdx)continue;
+            items[curIdx].classList.remove('on');
+            items[j].classList.add('on');
+            curIdx=j;
+            sl.textContent='đang mở — '+items[j].textContent.trim();
+            await wait(1000);
+        }
+        /* Close */
+        panel.classList.remove('vis');
+        overlay.classList.remove('vis');
+        trigger.classList.remove('hl');
+        sl.textContent='đang đóng';
+        await wait(1800);
+    }
+})();
+
+/* ======== CARD 4: Breadcrumb ======== */
+(async function(){
+    var wrap=document.querySelector('#fc4').parentElement,
+        cur=document.getElementById('fc4'),
+        bar=document.getElementById('bcbar'),
+        pages=wrap.querySelectorAll('.bc-page'),
+        sl=document.getElementById('sl4');
+    var path=['Trang chủ','Danh mục','Điện tử','Tai nghe'];
+    function setBC(depth){
+        bar.innerHTML='';
+        for(var j=0;j<=depth;j++){
+            if(j>0){var sep=document.createElement('span');sep.className='bc-sep';sep.textContent='>';bar.appendChild(sep)}
+            var seg=document.createElement('span');
+            seg.className='bc-seg'+(j===depth?' on':' clickable');
+            seg.textContent=path[j];seg.dataset.i=j;
+            bar.appendChild(seg);
+        }
+        pages.forEach(function(p){p.classList.remove('on')});
+        pages[depth].classList.add('on');
+        sl.textContent=path.slice(0,depth+1).join(' > ');
+    }
+    var depth=0;
+    setBC(0);
+    await wait(1200);
+    while(true){
+        /* Drill down */
+        for(var d=0;d<path.length;d++){
+            setBC(d);
+            if(d>0)moveCur(cur,posIn(bar.querySelector('.bc-seg.on'),wrap),true);
+            await wait(2000);
+        }
+        /* Jump back to Home */
+        setBC(0);
+        await wait(1800);
+    }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Navigation Practice — Vibecode Glossary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+    --bg:#141413;--bg-card:#1c1c1a;--fg:#e8e0d4;--muted:#6e6a63;
+    --accent:#d97706;--accent-dim:rgba(217,119,6,.12);
+    --border:#2e2c28;--border-hi:#3e3b35;--slate:#33312d;--cream:#f5f0e8;
+    --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);min-height:100vh;-webkit-font-smoothing:antialiased;background-image:linear-gradient(rgba(255,255,255,.016) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.016) 1px,transparent 1px);background-size:20px 20px}
+
+
+.dv{display:flex;align-items:center;gap:12px;padding:26px 20px 16px;max-width:920px;margin:0 auto}
+.dv::before,.dv::after{content:'';flex:1;height:1px;background:var(--border)}
+.dv span{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+
+/* === Practice === */
+.pr{padding:24px 20px 32px;max-width:920px;margin:0 auto}
+.pr-h{margin-bottom:16px}
+.pr-g{font-family:var(--mono);font-size:11px;color:var(--accent);margin-bottom:4px}
+.pr-d{font-size:12px;color:var(--muted)}
+.pr-ctrl{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.pr-btn{font-family:var(--mono);font-size:10px;letter-spacing:.5px;padding:8px 16px;background:var(--bg);color:var(--muted);border:1px solid var(--border);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px}
+.pr-btn:hover{border-color:var(--border-hi);color:var(--fg)}
+.pr-btn.on{background:var(--accent);color:#0e0e0d;border-color:var(--accent);font-weight:600}
+.pr-btn i{font-size:11px}
+
+.pr-prev{border:1px solid var(--border);background:#0e0e0d;position:relative;overflow:hidden;height:320px;display:flex;flex-direction:column}
+
+/* Practice top nav */
+.p-tn{display:flex;align-items:center;gap:4px;padding:8px 12px;background:#151514;border-bottom:1px solid var(--border);flex-shrink:0}
+.p-tn-logo{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--cream);margin-right:16px}
+.p-tn-item{padding:6px 14px;font-size:10px;font-family:var(--mono);color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer;transition:all .2s;white-space:nowrap}
+.p-tn-item.on{color:var(--accent);border-bottom-color:var(--accent)}
+.p-tn-item:hover:not(.on){color:var(--fg)}
+
+/* Bottom Nav styles */
+.p-bn-top{display:none;align-items:center;padding:8px 12px;background:#151514;border-bottom:1px solid var(--border);flex-shrink:0}
+.p-bn-logo{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--cream)}
+.p-bn-tabs{display:none;background:#111110;border-top:1px solid var(--border-hi);flex-shrink:0}
+.p-bn-tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0 8px;font-size:7px;font-family:var(--mono);color:var(--muted);cursor:pointer;transition:all .2s;position:relative}
+.p-bn-tab i{font-size:12px}
+.p-bn-tab.on{color:var(--accent)}
+.p-bn-tab.on::before{content:'';position:absolute;top:-1px;left:25%;right:25%;height:2px;background:var(--accent)}
+.p-bn-tab:hover:not(.on){color:var(--fg)}
+
+/* Sidebar trigger styles */
+.p-sd-bar{display:none;padding:8px 12px;background:#151514;border-bottom:1px solid var(--border);flex-shrink:0}
+.p-sd-trigger{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;background:var(--slate);border:1px solid var(--border);font-family:var(--mono);font-size:9px;color:var(--muted);cursor:pointer;transition:all .2s;border-radius:2px}
+.p-sd-trigger:hover{border-color:var(--accent);color:var(--fg)}
+.p-sd-overlay{position:absolute;inset:0;background:rgba(0,0,0,.45);z-index:5;opacity:0;pointer-events:none;transition:opacity .3s}
+.p-sd-overlay.vis{opacity:1;pointer-events:auto}
+.p-sd-panel{position:absolute;top:0;left:0;bottom:0;width:180px;background:#161615;border-right:1px solid var(--border-hi);z-index:10;transform:translateX(-100%);transition:transform .35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column}
+.p-sd-panel.vis{transform:translateX(0)}
+.p-sd-head{padding:12px 14px 10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.p-sd-av{width:28px;height:28px;border-radius:50%;background:var(--slate);border:1px solid var(--border)}
+.p-sd-name{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--cream)}
+.p-sd-menu{padding:6px 0;flex:1}
+.p-sd-item{display:flex;align-items:center;gap:8px;padding:9px 16px;font-family:var(--mono);font-size:10px;color:var(--muted);cursor:pointer;transition:all .2s}
+.p-sd-item:hover{background:rgba(217,119,6,.04);color:var(--fg)}
+.p-sd-item.on{background:var(--accent-dim);color:var(--accent)}
+.p-sd-item i{width:16px;text-align:center;font-size:11px}
+
+/* Practice breadcrumb */
+.p-bc{display:none;padding:8px 12px;border-bottom:1px solid var(--border);flex-shrink:0;align-items:center;gap:2px;flex-wrap:wrap}
+.p-bc-seg{font-family:var(--mono);font-size:9px;color:var(--muted);cursor:pointer;transition:color .2s}
+.p-bc-seg.on{color:var(--accent)}
+.p-bc-seg:hover:not(.on){color:var(--fg)}
+.p-bc-sep{font-family:var(--mono);font-size:9px;color:var(--border-hi);margin:0 3px}
+
+/* Practice content area */
+.p-body{flex:1;position:relative;overflow:auto}
+.p-page{position:absolute;inset:0;padding:16px 16px 32px;opacity:0;transition:opacity .3s,transform .3s;transform:translateY(4px);overflow:auto}
+.p-page.on{opacity:1;transform:translateY(0)}
+.p-page-h{font-size:14px;font-weight:700;color:var(--cream);margin-bottom:4px}
+.p-page-sub{font-size:10px;color:var(--muted);font-family:var(--mono);margin-bottom:12px}
+.p-row{display:flex;gap:6px;margin-bottom:6px}
+.p-cell{flex:1;height:22px;background:var(--slate);border:1px solid var(--border)}
+.p-card{height:38px;background:var(--slate);border:1px solid var(--border);margin-bottom:6px}
+.p-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px}
+.p-g-card{background:var(--slate);border:1px solid var(--border);overflow:hidden}
+.p-g-img{height:36px;background:var(--border)}
+.p-g-info{padding:6px 8px;font-family:var(--mono);font-size:8px;color:var(--muted)}
+.p-g-price{color:var(--cream);font-weight:600;font-size:9px}
+
+.pr-f{font-family:var(--mono);font-size:11px;color:var(--fg);padding:14px 16px 20px;margin-top:14px;background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--accent);line-height:1.7;min-height:44px;transition:border-color .3s}
+.pr-f.dim{border-left-color:var(--border-hi)}
+.pr-f em{color:var(--accent);font-style:normal}
+.pr-hint{font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:10px;padding-left:4px}
+.pr-hint i{color:var(--accent);margin-right:6px}
+
+@media(max-width:620px){
+    .pr-ctrl{gap:4px}
+    .pr-btn{padding:6px 10px;font-size:9px}
+    .pr-btn span.btn-lbl{display:none}
+    .p-sd-panel{width:150px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+.p-body::-webkit-scrollbar,.p-page::-webkit-scrollbar{display:none}
+.p-body,.p-page{-ms-overflow-style:none;scrollbar-width:none}
+</style>
+</head>
+<body>
+
+<main>
+
+
+
+<section class="pr" aria-label="Navigation practice">
+    <div class="pr-h">
+        <div class="pr-g">Mục tiêu: Cùng một nội dung — 4 cách điều hướng khác nhau</div>
+        <p class="pr-d">Chuyển đổi giữa 4 kiểu nav và quan sát: nội dung như nhau, nhưng cách truy cập thay đổi thế nào.</p>
+    </div>
+
+    <div class="pr-ctrl">
+        <button class="pr-btn on" data-nav="top" aria-pressed="true"><i class="fas fa-grip-lines"></i><span class="btn-lbl">Top Nav</span></button>
+        <button class="pr-btn" data-nav="bottom" aria-pressed="false"><i class="fas fa-ellipsis"></i><span class="btn-lbl">Bottom Nav</span></button>
+        <button class="pr-btn" data-nav="sidebar" aria-pressed="false"><i class="fas fa-bars"></i><span class="btn-lbl">Sidebar</span></button>
+        <button class="pr-btn" data-nav="breadcrumb" aria-pressed="false"><i class="fas fa-angles-right"></i><span class="btn-lbl">Breadcrumb</span></button>
+    </div>
+
+    <div class="pr-prev" id="pprev">
+        <!-- Top Nav (Top) -->
+        <div class="p-tn" id="p-tn">
+            <span class="p-tn-logo">ShopEase</span>
+            <div class="p-tn-item on" data-p="home">Trang chủ</div>
+            <div class="p-tn-item" data-p="products">Sản phẩm</div>
+            <div class="p-tn-item" data-p="orders">Đơn hàng</div>
+            <div class="p-tn-item" data-p="account">Tài khoản</div>
+        </div>
+
+        <!-- Bottom Nav Header (Top) -->
+        <div class="p-bn-top" id="p-bn-top">
+            <span class="p-bn-logo">ShopEase</span>
+        </div>
+
+        <!-- Sidebar Bar (Top) -->
+        <div class="p-sd-bar" id="p-sd-bar">
+            <div class="p-sd-trigger" id="p-sdtrig"><i class="fas fa-bars"></i> Menu</div>
+        </div>
+
+        <!-- Breadcrumb Bar (Top) -->
+        <div class="p-bc" id="p-bc">
+            <span class="p-bc-seg on" data-depth="0">Trang chủ</span>
+        </div>
+
+        <!-- Content (Middle) -->
+        <div class="p-body">
+            <div class="p-page on" data-p="home">
+                <div class="p-page-h">Chào mừng trở lại!</div>
+                <div class="p-page-sub">Đây là tổng quan cửa hàng của bạn</div>
+                <div class="p-row"><div class="p-cell"></div><div class="p-cell"></div><div class="p-cell"></div></div>
+                <div class="p-card"></div>
+                <div class="p-row"><div class="p-cell"></div><div class="p-cell"></div></div>
+            </div>
+            <div class="p-page" data-p="products">
+                <div class="p-page-h">Sản phẩm</div>
+                <div class="p-page-sub">Xem danh mục của bạn</div>
+                <div class="p-grid">
+                    <div class="p-g-card"><div class="p-g-img"></div><div class="p-g-info"><div class="p-g-price">$29</div>Sản phẩm A</div></div>
+                    <div class="p-g-card"><div class="p-g-img"></div><div class="p-g-info"><div class="p-g-price">$49</div>Sản phẩm B</div></div>
+                    <div class="p-g-card"><div class="p-g-img"></div><div class="p-g-info"><div class="p-g-price">$15</div>Sản phẩm C</div></div>
+                </div>
+            </div>
+            <div class="p-page" data-p="orders">
+                <div class="p-page-h">Đơn hàng</div>
+                <div class="p-page-sub">Giao dịch gần đây</div>
+                <div class="p-card"></div>
+                <div class="p-card"></div>
+                <div class="p-card"></div>
+            </div>
+            <div class="p-page" data-p="account">
+                <div class="p-page-h">Tài khoản</div>
+                <div class="p-page-sub">Cài đặt cá nhân của bạn</div>
+                <div class="p-row"><div class="p-cell" style="height:16px"></div><div class="p-cell" style="height:16px"></div></div>
+                <div class="p-row"><div class="p-cell"></div><div class="p-cell"></div></div>
+                <div class="p-row"><div class="p-cell" style="height:16px"></div><div class="p-cell" style="height:16px"></div></div>
+            </div>
+        </div>
+
+        <!-- Bottom Nav Tabs (Bottom) -->
+        <div class="p-bn-tabs" id="p-bn-tabs">
+            <div class="p-bn-tab on" data-p="home"><i class="fas fa-house"></i><span>Trang chủ</span></div>
+            <div class="p-bn-tab" data-p="products"><i class="fas fa-box"></i><span>Sản phẩm</span></div>
+            <div class="p-bn-tab" data-p="orders"><i class="fas fa-receipt"></i><span>Đơn hàng</span></div>
+            <div class="p-bn-tab" data-p="account"><i class="fas fa-user"></i><span>Tài khoản</span></div>
+        </div>
+
+        <!-- Sidebar Components -->
+        <div class="p-sd-overlay" id="p-sdov"></div>
+        <div class="p-sd-panel" id="p-sdpan">
+            <div class="p-sd-head"><div class="p-sd-av"></div><span class="p-sd-name">Minh Trần</span></div>
+            <div class="p-sd-menu">
+                <div class="p-sd-item on" data-p="home"><i class="fas fa-house"></i>Trang chủ</div>
+                <div class="p-sd-item" data-p="products"><i class="fas fa-box"></i>Sản phẩm</div>
+                <div class="p-sd-item" data-p="orders"><i class="fas fa-receipt"></i>Đơn hàng</div>
+                <div class="p-sd-item" data-p="account"><i class="fas fa-user"></i>Tài khoản</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pr-f" id="pf" role="status" aria-live="polite"><em>Top Nav</em> — tất cả trang nằm ngang, click chuyển trang. Phổ biến nhất cho web vì user thấy toàn bộ cấu trúc ngay lập tức.</div>
+    <div class="pr-hint"><i class="fas fa-lightbulb"></i>Chuyển qua Sidebar rồi click "Menu" — để ý cách truy cập nội dung thay đổi hoàn toàn.</div>
+</section>
+
+</main>
+
+<script>
+/* ======== Utils ======== */
+function wait(ms){return new Promise(function(r){setTimeout(r,ms)})}
+
+/* ======== PRACTICE ======== */
+(function(){
+    var btns=document.querySelectorAll('.pr-btn'),
+        pTn=document.getElementById('p-tn'),
+        pBnTop=document.getElementById('p-bn-top'),
+        pBnTabs=document.getElementById('p-bn-tabs'),
+        pSdBar=document.getElementById('p-sd-bar'),
+        pSdTrig=document.getElementById('p-sdtrig'),
+        pSdOv=document.getElementById('p-sdov'),
+        pSdPan=document.getElementById('p-sdpan'),
+        pBc=document.getElementById('p-bc'),
+        pf=document.getElementById('pf');
+
+    var allNavEls=[pTn,pBnTop,pBnTabs,pSdBar,pBc];
+    var allPages=document.querySelectorAll('.p-page');
+    var currentPage='home';
+    var currentNav='top';
+    var bcPath=['Trang chủ'];
+
+    var feedback={
+        top:'<em>Top Nav</em> — tất cả trang nằm ngang, click chuyển trang. Phổ biến nhất cho web vì user thấy toàn bộ cấu trúc ngay lập tức.',
+        bottom:'<em>Bottom Nav</em> — tab ở đáy màn hình, 1 chạm chuyển trang. Chuẩn cho mobile app vì dễ đạt bằng ngón tay.',
+        sidebar:'<em>Sidebar</em> — ẩn đi, click "Menu" để mở. Tiết kiệm không gian, phù hợp khi có nhiều mục và màn hình nhỏ.',
+        breadcrumb:'<em>Breadcrumb</em> — hiện đường dẫn "Trang chủ > Sản phẩm". Click bất kỳ mục để lùi lại. Phù hợp cho site có cấu trúc phân cấp sâu.'
+    };
+
+    function showPage(name){
+        currentPage=name;
+        allPages.forEach(function(p){p.classList.toggle('on',p.dataset.p===name)});
+        updateBC();
+    }
+
+    function updateBC(){
+        if(currentNav!=='breadcrumb')return;
+        pBc.innerHTML='';
+        bcPath.forEach(function(seg,i){
+            if(i>0){var sep=document.createElement('span');sep.className='p-bc-sep';sep.textContent='>';pBc.appendChild(sep)}
+            var el=document.createElement('span');
+            el.className='p-bc-seg'+(i===bcPath.length-1?' on':'');
+            el.textContent=seg;el.dataset.depth=i;
+            el.addEventListener('click',function(){
+                bcPath=bcPath.slice(0,i+1);
+                var map={'Trang chủ':'home','Sản phẩm':'products','Đơn hàng':'orders','Tài khoản':'account'};
+                showPage(map[seg]||'home');
+                updateBC();
+            });
+            pBc.appendChild(el);
+        });
+    }
+
+    function switchNav(type){
+        currentNav=type;
+        btns.forEach(function(b){b.classList.toggle('on',b.dataset.nav===type);b.setAttribute('aria-pressed',String(b.dataset.nav===type))});
+        allNavEls.forEach(function(el){el.style.display='none'});
+        pSdOv.classList.remove('vis');pSdPan.classList.remove('vis');
+
+        if(type==='top'){
+            pTn.style.display='flex';
+            bcPath=['Trang chủ'];updateBC();
+        }else if(type==='bottom'){
+            pBnTop.style.display='flex';
+            pBnTabs.style.display='flex';
+            bcPath=['Trang chủ'];updateBC();
+        }else if(type==='sidebar'){
+            pSdBar.style.display='block';
+            bcPath=['Trang chủ'];updateBC();
+        }else if(type==='breadcrumb'){
+            pBc.style.display='flex';
+            bcPath=['Trang chủ'];updateBC();
+        }
+        pf.innerHTML=feedback[type];
+    }
+
+    /* Top nav clicks */
+    pTn.querySelectorAll('.p-tn-item').forEach(function(item){
+        item.addEventListener('click',function(){
+            pTn.querySelectorAll('.p-tn-item').forEach(function(i){i.classList.remove('on')});
+            item.classList.add('on');
+            bcPath=[item.textContent];updateBC();
+            showPage(item.dataset.p);
+        });
+    });
+
+    /* Bottom nav clicks */
+    pBnTabs.querySelectorAll('.p-bn-tab').forEach(function(tab){
+        tab.addEventListener('click',function(){
+            pBnTabs.querySelectorAll('.p-bn-tab').forEach(function(t){t.classList.remove('on')});
+            tab.classList.add('on');
+            var name=tab.querySelector('span').textContent.trim();
+            bcPath=[name];updateBC();
+            showPage(tab.dataset.p);
+        });
+    });
+
+    /* Sidebar trigger */
+    pSdTrig.addEventListener('click',function(){
+        pSdPan.classList.toggle('vis');
+        pSdOv.classList.toggle('vis');
+    });
+    pSdOv.addEventListener('click',function(){
+        pSdPan.classList.remove('vis');
+        pSdOv.classList.remove('vis');
+    });
+    pSdPan.querySelectorAll('.p-sd-item').forEach(function(item){
+        item.addEventListener('click',function(){
+            pSdPan.querySelectorAll('.p-sd-item').forEach(function(i){i.classList.remove('on')});
+            item.classList.add('on');
+            bcPath=[item.textContent.trim()];updateBC();
+            showPage(item.dataset.p);
+            pSdPan.classList.remove('vis');
+            pSdOv.classList.remove('vis');
+        });
+    });
+
+    /* Nav type buttons */
+    btns.forEach(function(btn){
+        btn.addEventListener('click',function(){switchNav(btn.dataset.nav)});
+    });
+
+    switchNav('top');
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Navigation — Vibecode Glossary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+    --bg:#141413;--bg-card:#1c1c1a;--fg:#e8e0d4;--muted:#6e6a63;
+    --accent:#d97706;--accent-dim:rgba(217,119,6,.12);
+    --border:#2e2c28;--border-hi:#3e3b35;--slate:#33312d;--cream:#f5f0e8;
+    --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);min-height:100vh;-webkit-font-smoothing:antialiased;background-image:linear-gradient(rgba(255,255,255,.016) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.016) 1px,transparent 1px);background-size:20px 20px}
+
+.ph{padding:28px 20px 4px;max-width:920px;margin:0 auto}
+.ph-tag{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);background:var(--accent-dim);border:1px solid rgba(217,119,6,.2);display:inline-block;padding:3px 10px;margin-bottom:10px}
+.ph h1{font-size:clamp(24px,5vw,36px);font-weight:700;color:var(--cream);line-height:1.15;letter-spacing:-.5px}
+.ph p{font-size:13px;color:var(--muted);margin-top:6px;max-width:560px;line-height:1.55}
+
+.g4{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:18px 16px 0;max-width:920px;margin:0 auto}
+
+.cd{background:var(--bg-card);border:1px solid var(--border);position:relative;overflow:hidden}
+.cd::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 0%,rgba(217,119,6,.04) 0%,transparent 60%);pointer-events:none}
+.cd-n{position:absolute;top:10px;right:12px;font-family:var(--mono);font-size:9px;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:2px 7px;letter-spacing:1.5px;z-index:5}
+.cd-l{font-family:var(--mono);font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:2px;padding:14px 14px 2px;position:relative}
+.cd-t{font-size:15px;font-weight:700;color:var(--cream);padding:2px 14px 10px;position:relative}
+.cd-d{padding:0 14px 8px;height:250px;position:relative}
+.cd-i{font-family:var(--mono);font-size:10px;color:var(--muted);padding:10px 14px 13px;border-top:1px solid var(--border);line-height:1.6;position:relative}
+.cd-i em{color:var(--accent);font-style:normal}
+
+.sl{position:absolute;bottom:12px;left:14px;font-family:var(--mono);font-size:9px;color:var(--accent);background:var(--bg);border:1px solid var(--border);padding:2px 8px;z-index:5;letter-spacing:.5px;transition:opacity .3s}
+
+/* === Fake cursor === */
+.fc{position:absolute;width:14px;height:14px;border:2px solid var(--accent);border-radius:50%;pointer-events:none;z-index:20;opacity:0;transition:left .4s cubic-bezier(.4,0,.2,1),top .4s cubic-bezier(.4,0,.2,1),opacity .2s;box-shadow:0 0 8px rgba(217,119,6,.2)}
+.fc.show{opacity:1}
+.fc::after{content:'';position:absolute;inset:3px;background:var(--accent);border-radius:50%;opacity:0}
+.fc.pop::after{animation:cpop .5s ease-out forwards}
+@keyframes cpop{0%{transform:scale(0);opacity:.6}100%{transform:scale(2.5);opacity:0}}
+
+/* === Card 1: Top Nav === */
+.tn-mock{width:100%;height:100%;background:#0e0e0d;border:1px solid var(--border-hi);display:flex;flex-direction:column;overflow:hidden}
+.tn-bar{display:flex;align-items:center;gap:4px;padding:7px 10px;background:#151514;border-bottom:1px solid var(--border);flex-shrink:0}
+.tn-logo{font-family:var(--mono);font-size:9px;font-weight:700;color:var(--cream);margin-right:12px;letter-spacing:.5px}
+.tn-item{padding:5px 12px;font-size:9px;font-family:var(--mono);color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;transition:color .25s,border-color .25s;cursor:default;white-space:nowrap}
+.tn-item.on{color:var(--accent);border-bottom-color:var(--accent)}
+.tn-body{flex:1;position:relative;overflow:hidden}
+.tn-page{position:absolute;inset:0;padding:12px;opacity:0;transform:translateY(4px);transition:opacity .3s,transform .3s}
+.tn-page.on{opacity:1;transform:translateY(0)}
+.tn-page-h{font-size:11px;font-weight:700;color:var(--cream);margin-bottom:8px;font-family:var(--mono)}
+.tn-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.tn-cell{height:28px;background:var(--slate);border:1px solid var(--border)}
+.tn-bar-sm{height:5px;background:var(--slate);border-radius:1px;margin-bottom:4px}
+
+/* === Card 2: Bottom Nav === */
+.bn-mock{width:130px;height:220px;background:#0e0e0d;border:2px solid var(--border-hi);margin:auto;display:flex;flex-direction:column;overflow:hidden}
+.bn-notch{width:44px;height:9px;background:var(--border-hi);margin:0 auto;border-radius:0 0 3px 3px}
+.bn-body{flex:1;position:relative;overflow:hidden}
+.bn-page{position:absolute;inset:0;padding:10px;opacity:0;transition:opacity .3s}
+.bn-page.on{opacity:1}
+.bn-page-h{font-size:9px;font-weight:700;color:var(--cream);margin-bottom:6px}
+.bn-card{height:32px;background:var(--slate);border:1px solid var(--border);margin-bottom:5px}
+.bn-sm{height:4px;background:var(--slate);border-radius:1px;margin-bottom:3px}
+.bn-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.bn-grid div{height:34px;background:var(--slate);border-radius:1px}
+.bn-tabs{display:flex;border-top:1px solid var(--border-hi);background:#111110;flex-shrink:0}
+.bn-tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 0 8px;font-size:6px;font-family:var(--mono);color:var(--muted);transition:color .25s;position:relative}
+.bn-tab i{font-size:11px;transition:transform .2s}
+.bn-tab.on{color:var(--accent)}
+.bn-tab.on i{transform:scale(1.15)}
+.bn-tab.on::before{content:'';position:absolute;top:-1px;left:20%;right:20%;height:2px;background:var(--accent)}
+
+/* === Card 3: Sidebar/Drawer === */
+.sd-mock{width:100%;height:100%;background:#0e0e0d;border:1px solid var(--border-hi);position:relative;overflow:hidden}
+.sd-overlay{position:absolute;inset:0;background:rgba(0,0,0,.5);z-index:5;opacity:0;transition:opacity .35s}
+.sd-overlay.vis{opacity:1}
+.sd-panel{position:absolute;top:0;left:0;bottom:0;width:55%;background:#161615;border-right:1px solid var(--border-hi);z-index:10;transform:translateX(-100%);transition:transform .4s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column}
+.sd-panel.vis{transform:translateX(0)}
+.sd-head{padding:10px 12px 8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.sd-avatar{width:24px;height:24px;border-radius:50%;background:var(--slate);border:1px solid var(--border)}
+.sd-name{font-family:var(--mono);font-size:9px;font-weight:600;color:var(--cream)}
+.sd-menu{padding:6px 0;flex:1}
+.sd-item{display:flex;align-items:center;gap:8px;padding:8px 14px;font-family:var(--mono);font-size:9px;color:var(--muted);transition:background .2s,color .2s}
+.sd-item.on{background:var(--accent-dim);color:var(--accent)}
+.sd-item i{width:14px;text-align:center;font-size:10px}
+.sd-sep{height:1px;background:var(--border);margin:4px 14px}
+.sd-trigger{position:absolute;top:10px;left:10px;z-index:2;width:24px;height:24px;background:var(--slate);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--muted);transition:color .2s}
+.sd-trigger.hl{color:var(--accent);border-color:rgba(217,119,6,.3)}
+.sd-content{padding:10px 12px 10px 44px}
+.sd-c-h{font-size:10px;font-weight:700;color:var(--cream);font-family:var(--mono);margin-bottom:6px}
+.sd-c-row{display:flex;gap:4px;margin-bottom:4px}
+.sd-c-cell{flex:1;height:18px;background:var(--slate);border:1px solid var(--border)}
+
+/* === Card 4: Breadcrumb === */
+.bc-mock{width:100%;height:100%;background:#0e0e0d;border:1px solid var(--border-hi);display:flex;flex-direction:column;overflow:hidden}
+.bc-bar{padding:8px 12px;border-bottom:1px solid var(--border);flex-shrink:0;display:flex;align-items:center;gap:2px;flex-wrap:wrap}
+.bc-seg{font-family:var(--mono);font-size:8px;color:var(--muted);transition:color .25s;cursor:default}
+.bc-seg.on{color:var(--accent)}
+.bc-seg.clickable{cursor:default}
+.bc-sep{font-family:var(--mono);font-size:8px;color:var(--border-hi);margin:0 2px}
+.bc-body{flex:1;position:relative;overflow:hidden}
+.bc-page{position:absolute;inset:0;padding:12px;opacity:0;transform:translateX(8px);transition:opacity .3s,transform .3s}
+.bc-page.on{opacity:1;transform:translateX(0)}
+.bc-p-h{font-size:11px;font-weight:700;color:var(--cream);margin-bottom:6px}
+.bc-p-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-top:8px}
+.bc-p-card{background:var(--slate);border:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
+.bc-p-img{height:30px;background:var(--border);flex-shrink:0}
+.bc-p-info{padding:5px 6px;font-family:var(--mono);font-size:7px;color:var(--muted)}
+.bc-p-price{color:var(--cream);font-weight:600}
+.bc-sm{height:4px;background:var(--slate);border-radius:1px;margin-bottom:4px}
+
+.dv{display:flex;align-items:center;gap:12px;padding:26px 20px 16px;max-width:920px;margin:0 auto}
+.dv::before,.dv::after{content:'';flex:1;height:1px;background:var(--border)}
+.dv span{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+
+/* === Practice === */
+.pr{padding:0 16px 48px;max-width:920px;margin:0 auto}
+.pr-h{margin-bottom:16px}
+.pr-g{font-family:var(--mono);font-size:11px;color:var(--accent);margin-bottom:4px}
+.pr-d{font-size:12px;color:var(--muted)}
+.pr-ctrl{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.pr-btn{font-family:var(--mono);font-size:10px;letter-spacing:.5px;padding:8px 16px;background:var(--bg);color:var(--muted);border:1px solid var(--border);cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:6px}
+.pr-btn:hover{border-color:var(--border-hi);color:var(--fg)}
+.pr-btn.on{background:var(--accent);color:#0e0e0d;border-color:var(--accent);font-weight:600}
+.pr-btn i{font-size:11px}
+
+.pr-prev{border:1px solid var(--border);background:#0e0e0d;position:relative;overflow:hidden;height:300px}
+
+/* Practice top nav */
+.p-tn{display:flex;align-items:center;gap:4px;padding:8px 12px;background:#151514;border-bottom:1px solid var(--border);flex-shrink:0}
+.p-tn-logo{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--cream);margin-right:16px}
+.p-tn-item{padding:6px 14px;font-size:10px;font-family:var(--mono);color:var(--muted);border-bottom:2px solid transparent;margin-bottom:-1px;cursor:pointer;transition:all .2s;white-space:nowrap}
+.p-tn-item.on{color:var(--accent);border-bottom-color:var(--accent)}
+.p-tn-item:hover:not(.on){color:var(--fg)}
+
+/* Practice bottom nav */
+.p-bn{display:none;align-items:center;gap:4px;padding:8px 12px;background:#151514;border-bottom:1px solid var(--border);flex-shrink:0}
+.p-bn-logo{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--cream);margin-right:16px}
+.p-bn-tabs{display:flex;margin-left:auto;gap:2px}
+.p-bn-tab{padding:6px 12px;font-size:10px;font-family:var(--mono);color:var(--muted);cursor:pointer;transition:all .2s;border-bottom:2px solid transparent;margin-bottom:-1px}
+.p-bn-tab.on{color:var(--accent);border-bottom-color:var(--accent)}
+.p-bn-tab:hover:not(.on){color:var(--fg)}
+
+/* Practice sidebar */
+.p-sd-trigger{display:none;padding:8px 12px;background:#151514;border-bottom:1px solid var(--border);flex-shrink:0;font-family:var(--mono);font-size:10px;color:var(--muted);cursor:pointer;transition:color .2s}
+.p-sd-trigger:hover{color:var(--fg)}
+.p-sd-trigger i{margin-right:6px}
+.p-sd-overlay{position:absolute;inset:0;background:rgba(0,0,0,.45);z-index:5;opacity:0;pointer-events:none;transition:opacity .3s}
+.p-sd-overlay.vis{opacity:1;pointer-events:auto}
+.p-sd-panel{position:absolute;top:0;left:0;bottom:0;width:180px;background:#161615;border-right:1px solid var(--border-hi);z-index:10;transform:translateX(-100%);transition:transform .35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column}
+.p-sd-panel.vis{transform:translateX(0)}
+.p-sd-head{padding:12px 14px 10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.p-sd-av{width:28px;height:28px;border-radius:50%;background:var(--slate);border:1px solid var(--border)}
+.p-sd-name{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--cream)}
+.p-sd-menu{padding:6px 0;flex:1}
+.p-sd-item{display:flex;align-items:center;gap:8px;padding:9px 16px;font-family:var(--mono);font-size:10px;color:var(--muted);cursor:pointer;transition:all .2s}
+.p-sd-item:hover{background:rgba(217,119,6,.04);color:var(--fg)}
+.p-sd-item.on{background:var(--accent-dim);color:var(--accent)}
+.p-sd-item i{width:16px;text-align:center;font-size:11px}
+
+/* Practice breadcrumb */
+.p-bc{display:none;padding:8px 12px;border-bottom:1px solid var(--border);flex-shrink:0;align-items:center;gap:2px;flex-wrap:wrap}
+.p-bc-seg{font-family:var(--mono);font-size:9px;color:var(--muted);cursor:pointer;transition:color .2s}
+.p-bc-seg.on{color:var(--accent)}
+.p-bc-seg:hover:not(.on){color:var(--fg)}
+.p-bc-sep{font-family:var(--mono);font-size:9px;color:var(--border-hi);margin:0 3px}
+
+/* Practice content area */
+.p-body{flex:1;position:relative;overflow:auto}
+.p-page{position:absolute;inset:0;padding:16px;opacity:0;transition:opacity .3s,transform .3s;transform:translateY(4px);overflow:auto}
+.p-page.on{opacity:1;transform:translateY(0)}
+.p-page-h{font-size:14px;font-weight:700;color:var(--cream);margin-bottom:4px}
+.p-page-sub{font-size:10px;color:var(--muted);font-family:var(--mono);margin-bottom:12px}
+.p-row{display:flex;gap:6px;margin-bottom:6px}
+.p-cell{flex:1;height:22px;background:var(--slate);border:1px solid var(--border)}
+.p-card{height:38px;background:var(--slate);border:1px solid var(--border);margin-bottom:6px}
+.p-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-top:8px}
+.p-g-card{background:var(--slate);border:1px solid var(--border);overflow:hidden}
+.p-g-img{height:36px;background:var(--border)}
+.p-g-info{padding:6px 8px;font-family:var(--mono);font-size:8px;color:var(--muted)}
+.p-g-price{color:var(--cream);font-weight:600;font-size:9px}
+
+.pr-f{font-family:var(--mono);font-size:11px;color:var(--fg);padding:14px 16px;margin-top:14px;background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--accent);line-height:1.7;min-height:44px;transition:border-color .3s}
+.pr-f.dim{border-left-color:var(--border-hi)}
+.pr-f em{color:var(--accent);font-style:normal}
+.pr-hint{font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:10px;padding-left:4px}
+.pr-hint i{color:var(--accent);margin-right:6px}
+
+@media(max-width:620px){
+    .g4{grid-template-columns:1fr}
+    .pr-ctrl{gap:4px}
+    .pr-btn{padding:6px 10px;font-size:9px}
+    .pr-btn span.btn-lbl{display:none}
+    .p-sd-panel{width:150px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+
+<header class="ph">
+    <div class="ph-tag">design / pattern</div>
+    <h1>Navigation</h1>
+    <p>4 kiểu navigation — mỗi kiểu phục vụ một bối cảnh khác nhau. Xem animation để nắm khi nào dùng cái nào.</p>
+</header>
+
+<main>
+<div class="g4">
+
+    <!-- ===== 1. Top Navigation ===== -->
+    <section class="cd" aria-label="Top Navigation animation">
+        <span class="cd-n">LOOP</span>
+        <div class="cd-l">Kieu 01</div>
+        <h2 class="cd-t">Top Navigation Bar</h2>
+        <div class="cd-d">
+            <div class="sl" id="sl1">Home</div>
+            <div class="fc" id="fc1"></div>
+            <div class="tn-mock">
+                <div class="tn-bar">
+                    <span class="tn-logo">ShopEase</span>
+                    <div class="tn-item on" data-i="0">Home</div>
+                    <div class="tn-item" data-i="1">Products</div>
+                    <div class="tn-item" data-i="2">Orders</div>
+                    <div class="tn-item" data-i="3">Account</div>
+                </div>
+                <div class="tn-body">
+                    <div class="tn-page on" data-i="0">
+                        <div class="tn-page-h">Welcome back!</div>
+                        <div class="tn-bar-sm" style="width:80%"></div>
+                        <div class="tn-bar-sm" style="width:60%"></div>
+                        <div class="tn-grid"><div class="tn-cell"></div><div class="tn-cell"></div><div class="tn-cell"></div><div class="tn-cell"></div></div>
+                    </div>
+                    <div class="tn-page" data-i="1">
+                        <div class="tn-page-h">Products</div>
+                        <div class="tn-grid"><div class="tn-cell" style="height:48px"></div><div class="tn-cell" style="height:48px"></div><div class="tn-cell" style="height:48px"></div></div>
+                        <div class="tn-bar-sm" style="width:70%;margin-top:6px"></div>
+                    </div>
+                    <div class="tn-page" data-i="2">
+                        <div class="tn-page-h">Orders</div>
+                        <div class="tn-cell" style="height:24px;margin-bottom:4px"></div>
+                        <div class="tn-cell" style="height:24px;margin-bottom:4px"></div>
+                        <div class="tn-cell" style="height:24px"></div>
+                    </div>
+                    <div class="tn-page" data-i="3">
+                        <div class="tn-page-h">Account</div>
+                        <div class="tn-bar-sm" style="width:50%"></div>
+                        <div class="tn-bar-sm" style="width:70%"></div>
+                        <div class="tn-bar-sm" style="width:40%"></div>
+                        <div class="tn-bar-sm" style="width:60%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cd-i">Nav ngang on top = <em>map toan trang</em>. Tat ca page deu visible, 1 click den noi. Pho bien nhat tren web.</div>
+    </section>
+
+    <!-- ===== 2. Bottom Navigation ===== -->
+    <section class="cd" aria-label="Bottom Navigation animation">
+        <span class="cd-n">LOOP</span>
+        <div class="cd-l">Kieu 02</div>
+        <h2 class="cd-t">Bottom Navigation Bar</h2>
+        <div class="cd-d">
+            <div class="sl" id="sl2">Home</div>
+            <div class="fc" id="fc2"></div>
+            <div class="bn-mock">
+                <div class="bn-notch"></div>
+                <div class="bn-body">
+                    <div class="bn-page on" data-i="0">
+                        <div class="bn-page-h">Home</div>
+                        <div class="bn-card"></div>
+                        <div class="bn-sm" style="width:75%"></div>
+                        <div class="bn-sm" style="width:50%"></div>
+                    </div>
+                    <div class="bn-page" data-i="1">
+                        <div class="bn-page-h">Explore</div>
+                        <div class="bn-grid"><div></div><div></div><div></div><div></div></div>
+                    </div>
+                    <div class="bn-page" data-i="2">
+                        <div class="bn-page-h">Favorites</div>
+                        <div class="bn-card" style="height:40px"></div>
+                        <div class="bn-card" style="height:40px"></div>
+                    </div>
+                    <div class="bn-page" data-i="3">
+                        <div class="bn-page-h">Profile</div>
+                        <div class="bn-sm" style="width:45%;margin:8px auto 6px"></div>
+                        <div class="bn-sm" style="width:65%;margin:0 auto"></div>
+                        <div class="bn-sm" style="width:55%;margin:8px auto 0"></div>
+                    </div>
+                </div>
+                <nav class="bn-tabs">
+                    <div class="bn-tab on" data-i="0"><i class="fas fa-house"></i>Home</div>
+                    <div class="bn-tab" data-i="1"><i class="fas fa-compass"></i>Explore</div>
+                    <div class="bn-tab" data-i="2"><i class="fas fa-heart"></i>Favs</div>
+                    <div class="bn-tab" data-i="3"><i class="fas fa-user"></i>Profile</div>
+                </nav>
+            </div>
+        </div>
+        <div class="cd-i">Day man hinh = <em>vung cham de nhat</em>. Dung cho mobile app — 1 tay, khong can doi tay.</div>
+    </section>
+
+    <!-- ===== 3. Sidebar / Drawer ===== -->
+    <section class="cd" aria-label="Sidebar Drawer animation">
+        <span class="cd-n">LOOP</span>
+        <div class="cd-l">Kieu 03</div>
+        <h2 class="cd-t">Sidebar / Drawer</h2>
+        <div class="cd-d">
+            <div class="sl" id="sl3">closed</div>
+            <div class="sd-mock">
+                <div class="sd-trigger" id="sdtrig"><i class="fas fa-bars"></i></div>
+                <div class="sd-overlay" id="sdov"></div>
+                <div class="sd-panel" id="sdpan">
+                    <div class="sd-head"><div class="sd-avatar"></div><span class="sd-name">Minh Tran</span></div>
+                    <div class="sd-menu">
+                        <div class="sd-item on"><i class="fas fa-chart-line"></i>Dashboard</div>
+                        <div class="sd-item"><i class="fas fa-box"></i>Products</div>
+                        <div class="sd-item"><i class="fas fa-receipt"></i>Orders</div>
+                        <div class="sd-sep"></div>
+                        <div class="sd-item"><i class="fas fa-gear"></i>Settings</div>
+                        <div class="sd-item"><i class="fas fa-right-from-bracket"></i>Logout</div>
+                    </div>
+                </div>
+                <div class="sd-content">
+                    <div class="sd-c-h">Dashboard</div>
+                    <div class="sd-c-row"><div class="sd-c-cell"></div><div class="sd-c-cell"></div><div class="sd-c-cell"></div></div>
+                    <div class="sd-c-row"><div class="sd-c-cell" style="height:40px"></div><div class="sd-c-cell" style="height:40px"></div></div>
+                </div>
+            </div>
+        </div>
+        <div class="cd-i">An di khi khong can = <em>tiết kiệm không gian</em>. Overlay + slide = hien thi theo yeu cau, khong chiem land.</div>
+    </section>
+
+    <!-- ===== 4. Breadcrumb ===== -->
+    <section class="cd" aria-label="Breadcrumb Navigation animation">
+        <span class="cd-n">LOOP</span>
+        <div class="cd-l">Kieu 04</div>
+        <h2 class="cd-t">Breadcrumb Navigation</h2>
+        <div class="cd-d">
+            <div class="sl" id="sl4">Home</div>
+            <div class="fc" id="fc4"></div>
+            <div class="bc-mock">
+                <div class="bc-bar" id="bcbar">
+                    <span class="bc-seg on" data-i="0">Home</span>
+                </div>
+                <div class="bc-body">
+                    <div class="bc-page on" data-i="0">
+                        <div class="bc-p-h">Home</div>
+                        <div class="bc-sm" style="width:80%"></div>
+                        <div class="bc-sm" style="width:60%"></div>
+                        <div class="bc-p-grid">
+                            <div class="bc-p-card"><div class="bc-p-img"></div><div class="bc-p-info"><div class="bc-p-price">$29</div>Electronics</div></div>
+                            <div class="bc-p-card"><div class="bc-p-img"></div><div class="bc-p-info"><div class="bc-p-price">$49</div>Clothing</div></div>
+                            <div class="bc-p-card"><div class="bc-p-img"></div><div class="bc-p-info"><div class="bc-p-price">$15</div>Books</div></div>
+                        </div>
+                    </div>
+                    <div class="bc-page" data-i="1">
+                        <div class="bc-p-h">Categories</div>
+                        <div class="bc-p-grid">
+                            <div class="bc-p-card"><div class="bc-p-img"></div><div class="bc-p-info"><div class="bc-p-price">$199</div>Headphones</div></div>
+                            <div class="bc-p-card"><div class="bc-p-img"></div><div class="bc-p-info"><div class="bc-p-price">$89</div>Speakers</div></div>
+                            <div class="bc-p-card"><div class="bc-p-img"></div><div class="bc-p-info"><div class="bc-p-price">$299</div>Cameras</div></div>
+                        </div>
+                    </div>
+                    <div class="bc-page" data-i="2">
+                        <div class="bc-p-h">Electronics</div>
+                        <div class="bc-sm" style="width:65%"></div>
+                        <div class="bc-sm" style="width:45%"></div>
+                        <div class="bc-p-grid">
+                            <div class="bc-p-card"><div class="bc-p-img"></div><div class="bc-p-info"><div class="bc-p-price">$79</div>Wireless</div></div>
+                            <div class="bc-p-card"><div class="bc-p-img"></div><div class="bc-p-info"><div class="bc-p-price">$45</div>In-ear</div></div>
+                            <div class="bc-p-card"><div class="bc-p-img"></div><div class="bc-p-info"><div class="bc-p-price">$120</div>Over-ear</div></div>
+                        </div>
+                    </div>
+                    <div class="bc-page" data-i="3">
+                        <div class="bc-p-h">Headphones</div>
+                        <div class="bc-sm" style="width:70%"></div>
+                        <div class="bc-sm" style="width:50%"></div>
+                        <div class="bc-sm" style="width:80%"></div>
+                        <div style="margin-top:10px;display:flex;gap:6px">
+                            <div style="flex:1;height:28px;background:var(--accent);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:8px;color:#0e0e0d;font-weight:600">Add to Cart</div>
+                            <div style="width:28px;height:28px;background:var(--slate);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:10px;color:var(--muted)"><i class="fas fa-heart"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cd-i">Breadcrumb = <em>ban do vi tri</em>. User luon biet minh o dau trong cau truc — click de lui lai bat ky cap nao.</div>
+    </section>
+
+</div>
+
+<div class="dv"><span>Thuc hanh</span></div>
+
+<section class="pr" aria-label="Navigation practice">
+    <div class="pr-h">
+        <div class="pr-g">Muc tieu: Cung mot noi dung — 4 cach dieu huong khac nhau</div>
+        <p class="pr-d">Chuyen doi giua 4 kieu nav va quan sat: noi dung nhu nhau, nhung cach truy cap thay doi the nao.</p>
+    </div>
+
+    <div class="pr-ctrl">
+        <button class="pr-btn on" data-nav="top" aria-pressed="true"><i class="fas fa-grip-lines"></i><span class="btn-lbl">Top Nav</span></button>
+        <button class="pr-btn" data-nav="bottom" aria-pressed="false"><i class="fas fa-ellipsis"></i><span class="btn-lbl">Bottom Nav</span></button>
+        <button class="pr-btn" data-nav="sidebar" aria-pressed="false"><i class="fas fa-bars"></i><span class="btn-lbl">Sidebar</span></button>
+        <button class="pr-btn" data-nav="breadcrumb" aria-pressed="false"><i class="fas fa-angles-right"></i><span class="btn-lbl">Breadcrumb</span></button>
+    </div>
+
+    <div class="pr-prev" id="pprev">
+        <!-- Top Nav -->
+        <div class="p-tn" id="p-tn">
+            <span class="p-tn-logo">ShopEase</span>
+            <div class="p-tn-item on" data-p="home">Home</div>
+            <div class="p-tn-item" data-p="products">Products</div>
+            <div class="p-tn-item" data-p="orders">Orders</div>
+            <div class="p-tn-item" data-p="account">Account</div>
+        </div>
+
+        <!-- Bottom Nav -->
+        <div class="p-bn" id="p-bn">
+            <span class="p-bn-logo">ShopEase</span>
+            <div class="p-bn-tabs">
+                <div class="p-bn-tab on" data-p="home"><i class="fas fa-house"></i> Home</div>
+                <div class="p-bn-tab" data-p="products"><i class="fas fa-box"></i> Products</div>
+                <div class="p-bn-tab" data-p="orders"><i class="fas fa-receipt"></i> Orders</div>
+                <div class="p-bn-tab" data-p="account"><i class="fas fa-user"></i> Account</div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="p-sd-trigger" id="p-sdtrig"><i class="fas fa-bars"></i> Menu</div>
+        <div class="p-sd-overlay" id="p-sdov"></div>
+        <div class="p-sd-panel" id="p-sdpan">
+            <div class="p-sd-head"><div class="p-sd-av"></div><span class="p-sd-name">Minh Tran</span></div>
+            <div class="p-sd-menu">
+                <div class="p-sd-item on" data-p="home"><i class="fas fa-house"></i>Home</div>
+                <div class="p-sd-item" data-p="products"><i class="fas fa-box"></i>Products</div>
+                <div class="p-sd-item" data-p="orders"><i class="fas fa-receipt"></i>Orders</div>
+                <div class="p-sd-item" data-p="account"><i class="fas fa-user"></i>Account</div>
+            </div>
+        </div>
+
+        <!-- Breadcrumb -->
+        <div class="p-bc" id="p-bc">
+            <span class="p-bc-seg on" data-depth="0">Home</span>
+        </div>
+
+        <!-- Content -->
+        <div class="p-body">
+            <div class="p-page on" data-p="home">
+                <div class="p-page-h">Welcome back!</div>
+                <div class="p-page-sub">Here is your store overview</div>
+                <div class="p-row"><div class="p-cell"></div><div class="p-cell"></div><div class="p-cell"></div></div>
+                <div class="p-card"></div>
+                <div class="p-row"><div class="p-cell"></div><div class="p-cell"></div></div>
+            </div>
+            <div class="p-page" data-p="products">
+                <div class="p-page-h">Products</div>
+                <div class="p-page-sub">Browse your catalog</div>
+                <div class="p-grid">
+                    <div class="p-g-card"><div class="p-g-img"></div><div class="p-g-info"><div class="p-g-price">$29</div>Widget A</div></div>
+                    <div class="p-g-card"><div class="p-g-img"></div><div class="p-g-info"><div class="p-g-price">$49</div>Widget B</div></div>
+                    <div class="p-g-card"><div class="p-g-img"></div><div class="p-g-info"><div class="p-g-price">$15</div>Widget C</div></div>
+                </div>
+            </div>
+            <div class="p-page" data-p="orders">
+                <div class="p-page-h">Orders</div>
+                <div class="p-page-sub">Recent transactions</div>
+                <div class="p-card"></div>
+                <div class="p-card"></div>
+                <div class="p-card"></div>
+            </div>
+            <div class="p-page" data-p="account">
+                <div class="p-page-h">Account</div>
+                <div class="p-page-sub">Your profile settings</div>
+                <div class="p-row"><div class="p-cell" style="height:16px"></div><div class="p-cell" style="height:16px"></div></div>
+                <div class="p-row"><div class="p-cell"></div><div class="p-cell"></div></div>
+                <div class="p-row"><div class="p-cell" style="height:16px"></div><div class="p-cell" style="height:16px"></div></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pr-f" id="pf" role="status" aria-live="polite"><em>Top Nav</em> — tat ca page nam ngang, click chuyen page. Pho bien nhat cho web vi user thay toan bo cau truc ngay lap tuc.</div>
+    <div class="pr-hint"><i class="fas fa-lightbulb"></i>Chuyen qua Sidebar roi click "Menu" — de y cach truy cap noi dung thay doi hoan toan.</div>
+</section>
+
+</main>
+
+<script>
+/* ======== Utils ======== */
+function posIn(child,parent){
+    var cr=child.getBoundingClientRect(),pr=parent.getBoundingClientRect();
+    return{x:cr.left-pr.left+cr.width/2-7,y:cr.top-pr.top+cr.height/2-7};
+}
+function moveCur(cur,pos,pop){
+    cur.style.left=pos.x+'px';cur.style.top=pos.y+'px';
+    cur.classList.add('show');cur.classList.remove('pop');
+    if(pop){void cur.offsetWidth;cur.classList.add('pop')}
+}
+function wait(ms){return new Promise(function(r){setTimeout(r,ms)})}
+
+/* ======== CARD 1: Top Nav ======== */
+(async function(){
+    var wrap=document.querySelector('#fc1').parentElement,
+        cur=document.getElementById('fc1'),
+        items=wrap.querySelectorAll('.tn-item'),
+        pages=wrap.querySelectorAll('.tn-page'),
+        sl=document.getElementById('sl1'),
+        i=0;
+    while(true){
+        items[i].classList.remove('on');pages[i].classList.remove('on');
+        i=(i+1)%4;
+        items[i].classList.add('on');pages[i].classList.add('on');
+        moveCur(cur,posIn(items[i],wrap),true);
+        sl.textContent=items[i].textContent;
+        await wait(2200);
+    }
+})();
+
+/* ======== CARD 2: Bottom Nav ======== */
+(async function(){
+    var wrap=document.querySelector('#fc2').parentElement,
+        cur=document.getElementById('fc2'),
+        tabs=wrap.querySelectorAll('.bn-tab'),
+        pages=wrap.querySelectorAll('.bn-page'),
+        sl=document.getElementById('sl2'),
+        i=0;
+    while(true){
+        tabs[i].classList.remove('on');pages[i].classList.remove('on');
+        i=(i+1)%4;
+        tabs[i].classList.add('on');pages[i].classList.add('on');
+        moveCur(cur,posIn(tabs[i],wrap),true);
+        sl.textContent=tabs[i].textContent.trim();
+        await wait(2200);
+    }
+})();
+
+/* ======== CARD 3: Sidebar Drawer ======== */
+(async function(){
+    var panel=document.getElementById('sdpan'),
+        overlay=document.getElementById('sdov'),
+        trigger=document.getElementById('sdtrig'),
+        sl=document.getElementById('sl3'),
+        items=panel.querySelectorAll('.sd-item'),
+        curIdx=0;
+    while(true){
+        /* Open */
+        trigger.classList.add('hl');
+        panel.classList.add('vis');
+        overlay.classList.add('vis');
+        sl.textContent='open — Dashboard';
+        await wait(2500);
+        /* Click through items */
+        for(var j=0;j<items.length;j++){
+            if(j===curIdx)continue;
+            items[curIdx].classList.remove('on');
+            items[j].classList.add('on');
+            curIdx=j;
+            sl.textContent='open — '+items[j].textContent.trim();
+            await wait(1000);
+        }
+        /* Close */
+        panel.classList.remove('vis');
+        overlay.classList.remove('vis');
+        trigger.classList.remove('hl');
+        sl.textContent='closed';
+        await wait(1800);
+    }
+})();
+
+/* ======== CARD 4: Breadcrumb ======== */
+(async function(){
+    var wrap=document.querySelector('#fc4').parentElement,
+        cur=document.getElementById('fc4'),
+        bar=document.getElementById('bcbar'),
+        pages=wrap.querySelectorAll('.bc-page'),
+        sl=document.getElementById('sl4');
+    var path=['Home','Categories','Electronics','Headphones'];
+    function setBC(depth){
+        bar.innerHTML='';
+        for(var j=0;j<=depth;j++){
+            if(j>0){var sep=document.createElement('span');sep.className='bc-sep';sep.textContent='>';bar.appendChild(sep)}
+            var seg=document.createElement('span');
+            seg.className='bc-seg'+(j===depth?' on':' clickable');
+            seg.textContent=path[j];seg.dataset.i=j;
+            bar.appendChild(seg);
+        }
+        pages.forEach(function(p){p.classList.remove('on')});
+        pages[depth].classList.add('on');
+        sl.textContent=path.slice(0,depth+1).join(' > ');
+    }
+    var depth=0;
+    setBC(0);
+    await wait(1200);
+    while(true){
+        /* Drill down */
+        for(var d=0;d<path.length;d++){
+            setBC(d);
+            if(d>0)moveCur(cur,posIn(bar.querySelector('.bc-seg.on'),wrap),true);
+            await wait(2000);
+        }
+        /* Jump back to Home */
+        setBC(0);
+        await wait(1800);
+    }
+})();
+
+
+/* ======== PRACTICE ======== */
+(function(){
+    var btns=document.querySelectorAll('.pr-btn'),
+        pTn=document.getElementById('p-tn'),
+        pBn=document.getElementById('p-bn'),
+        pSdTrig=document.getElementById('p-sdtrig'),
+        pSdOv=document.getElementById('p-sdov'),
+        pSdPan=document.getElementById('p-sdpan'),
+        pBc=document.getElementById('p-bc'),
+        pf=document.getElementById('pf');
+
+    var allNavEls=[pTn,pBn,pSdTrig,pBc];
+    var allPages=document.querySelectorAll('.p-page');
+    var currentPage='home';
+    var currentNav='top';
+    var bcPath=['Home'];
+
+    var feedback={
+        top:'<em>Top Nav</em> — tat ca page nam ngang, click chuyen page. Pho bien nhat cho web vi user thay toan bo cau truc ngay lap tuc.',
+        bottom:'<em>Bottom Nav</em> — tab o day man hinh, 1 cham chuyen page. Chuan cho mobile app vi de dat bang ngon tay.',
+        sidebar:'<em>Sidebar</em> — an di, click "Menu" de mo. Tiet kiem khong gian, phu hop khi co nhieu muc va man hinh nho.',
+        breadcrumb:'<em>Breadcrumb</em> — hien duong dan "Home > Products". Click bat ky muc de lui lai. Phu hop cho site co cau truc phan cap sau.'
+    };
+
+    function showPage(name){
+        currentPage=name;
+        allPages.forEach(function(p){p.classList.toggle('on',p.dataset.p===name)});
+        updateBC();
+    }
+
+    function updateBC(){
+        if(currentNav!=='breadcrumb')return;
+        pBc.innerHTML='';
+        bcPath.forEach(function(seg,i){
+            if(i>0){var sep=document.createElement('span');sep.className='p-bc-sep';sep.textContent='>';pBc.appendChild(sep)}
+            var el=document.createElement('span');
+            el.className='p-bc-seg'+(i===bcPath.length-1?' on':'');
+            el.textContent=seg;el.dataset.depth=i;
+            el.addEventListener('click',function(){
+                bcPath=bcPath.slice(0,i+1);
+                var map={'Home':'home','Products':'products','Orders':'orders','Account':'account'};
+                showPage(map[seg]||'home');
+                updateBC();
+            });
+            pBc.appendChild(el);
+        });
+    }
+
+    function switchNav(type){
+        currentNav=type;
+        btns.forEach(function(b){b.classList.toggle('on',b.dataset.nav===type);b.setAttribute('aria-pressed',String(b.dataset.nav===type))});
+        allNavEls.forEach(function(el){el.style.display='none'});
+        pSdOv.classList.remove('vis');pSdPan.classList.remove('vis');
+
+        if(type==='top'){
+            pTn.style.display='flex';
+            bcPath=['Home'];updateBC();
+        }else if(type==='bottom'){
+            pBn.style.display='flex';
+            bcPath=['Home'];updateBC();
+        }else if(type==='sidebar'){
+            pSdTrig.style.display='block';
+            bcPath=['Home'];updateBC();
+        }else if(type==='breadcrumb'){
+            pBc.style.display='flex';
+            bcPath=['Home'];updateBC();
+        }
+        pf.innerHTML=feedback[type];
+    }
+
+    /* Top nav clicks */
+    pTn.querySelectorAll('.p-tn-item').forEach(function(item){
+        item.addEventListener('click',function(){
+            pTn.querySelectorAll('.p-tn-item').forEach(function(i){i.classList.remove('on')});
+            item.classList.add('on');
+            bcPath=[item.textContent];updateBC();
+            showPage(item.dataset.p);
+        });
+    });
+
+    /* Bottom nav clicks */
+    pBn.querySelectorAll('.p-bn-tab').forEach(function(tab){
+        tab.addEventListener('click',function(){
+            pBn.querySelectorAll('.p-bn-tab').forEach(function(t){t.classList.remove('on')});
+            tab.classList.add('on');
+            var name=tab.textContent.trim();
+            bcPath=[name];updateBC();
+            showPage(tab.dataset.p);
+        });
+    });
+
+    /* Sidebar trigger */
+    pSdTrig.addEventListener('click',function(){
+        pSdPan.classList.toggle('vis');
+        pSdOv.classList.toggle('vis');
+    });
+    pSdOv.addEventListener('click',function(){
+        pSdPan.classList.remove('vis');
+        pSdOv.classList.remove('vis');
+    });
+    pSdPan.querySelectorAll('.p-sd-item').forEach(function(item){
+        item.addEventListener('click',function(){
+            pSdPan.querySelectorAll('.p-sd-item').forEach(function(i){i.classList.remove('on')});
+            item.classList.add('on');
+            bcPath=[item.textContent.trim()];updateBC();
+            showPage(item.dataset.p);
+            pSdPan.classList.remove('vis');
+            pSdOv.classList.remove('vis');
+        });
+    });
+
+    /* Nav type buttons */
+    btns.forEach(function(btn){
+        btn.addEventListener('click',function(){switchNav(btn.dataset.nav)});
+    });
+
+    switchNav('top');
+})();
+</script>
+</body>
+</html>
