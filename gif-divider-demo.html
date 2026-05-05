@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Divider Demo — Vibecode Glossary</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f0f12;
+      --bg-card: #16161b;
+      --fg: #e8e4dc;
+      --muted: #6e6e7a;
+      --accent: #e88c2e;
+      --accent-soft: rgba(232, 140, 46, 0.12);
+      --accent-border: rgba(232, 140, 46, 0.3);
+      --border: #282830;
+      --surface: #1c1c23;
+      --label: #a89d90;
+      --mono: 'JetBrains Mono', monospace;
+      --sans: 'Space Grotesk', sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: auto;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .entry {
+      max-width: 940px;
+      margin: 0 auto;
+      padding: 16px;
+    }
+
+    .sec-lbl {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sec-lbl::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border)
+    }
+
+    /* ═══════ GRID ═══════ */
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    @media(max-width:600px) {
+      .grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    /* ═══════ CARD SHELL ═══════ */
+    .card {
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-top {
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .card-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      flex-shrink: 0
+    }
+
+    .card-tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-weight: 600
+    }
+
+    .card-stage {
+      padding: 16px 14px;
+      min-height: 140px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      flex: 1;
+    }
+
+    .card-bot {
+      padding: 8px 14px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.1);
+    }
+
+    .card-bot span {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: .4px
+    }
+
+    .loop {
+      display: flex;
+      align-items: center;
+      gap: 5px
+    }
+
+    .loop-dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--accent);
+      animation: blink 2s ease-in-out infinite
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: .2 }
+      50% { opacity: 1 }
+    }
+
+    /* ═══════ ANIM 1 — HORIZONTAL ═══════ */
+    .h-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      width: 100%
+    }
+
+    .h-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      position: relative;
+      padding-left: 8px;
+      transition: opacity .32s, transform .32s
+    }
+
+    .h-row.dim {
+      opacity: .2;
+      transform: scale(.97)
+    }
+
+    .h-row.on {
+      opacity: 1;
+      transform: scale(1)
+    }
+
+    .h-row.on::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 2px;
+      bottom: 2px;
+      width: 2px;
+      background: var(--accent)
+    }
+
+    .h-lbl {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      min-width: 50px;
+      text-align: right;
+      transition: color .25s
+    }
+
+    .h-row.on .h-lbl {
+      color: var(--accent)
+    }
+
+    .h-ln {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+      transition: background .3s
+    }
+
+    .h-row.on .h-ln {
+      background: var(--label)
+    }
+
+    .h-ln.inset {
+      margin: 0 20px
+    }
+
+    .h-ln.thick {
+      height: 3px
+    }
+
+    .h-row.on .h-ln.thick {
+      background: var(--accent)
+    }
+
+    .h-ln.dotted {
+      border-top: 2px dotted var(--border);
+      height: 0;
+      background: none
+    }
+
+    .h-row.on .h-ln.dotted {
+      border-color: var(--label)
+    }
+
+    .h-ln.dashed {
+      border-top: 2px dashed var(--border);
+      height: 0;
+      background: none
+    }
+
+    .h-row.on .h-ln.dashed {
+      border-color: var(--label)
+    }
+
+    /* ═══════ ANIM 2 — VERTICAL ═══════ */
+    .v-box {
+      display: flex;
+      width: 100%;
+      border: 1px solid var(--border);
+      height: 120px;
+      position: relative;
+      overflow: hidden;
+      background: var(--surface);
+    }
+
+    .v-col {
+      flex: 1;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      transition: opacity .45s, transform .45s
+    }
+
+    .v-col.L {
+      opacity: 0;
+      transform: translateX(-12px)
+    }
+
+    .v-col.R {
+      opacity: 0;
+      transform: translateX(12px)
+    }
+
+    .v-col.show {
+      opacity: 1;
+      transform: translateX(0)
+    }
+
+    .v-col-tag {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 6px
+    }
+
+    .v-col-txt {
+      font-size: 10px;
+      color: var(--label);
+      line-height: 1.45
+    }
+
+    .v-line {
+      width: 1px;
+      position: absolute;
+      left: 50%;
+      top: 0;
+      height: 0;
+      background: var(--border);
+      transition: height .55s ease, background .3s, box-shadow .3s
+    }
+
+    .v-line.grow {
+      height: 100%
+    }
+
+    .v-line.glow {
+      background: var(--accent);
+      box-shadow: 0 0 10px var(--accent-soft)
+    }
+
+    /* ═══════ ANIM 3 — WITH TEXT ═══════ */
+    .t-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      width: 100%;
+      align-items: center
+    }
+
+    .t-row {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      opacity: 0;
+      transition: opacity .35s
+    }
+
+    .t-row.show {
+      opacity: 1
+    }
+
+    .t-ln {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+      transform: scaleX(0);
+      transition: transform .38s ease
+    }
+
+    .t-row.show .t-ln:first-child {
+      transform: scaleX(1);
+      transform-origin: right;
+      transition-delay: .08s
+    }
+
+    .t-row.show .t-ln:last-child {
+      transform: scaleX(1);
+      transform-origin: left;
+      transition-delay: .08s
+    }
+
+    .t-txt {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent);
+      padding: 0 16px;
+      white-space: nowrap;
+      font-weight: 600;
+      letter-spacing: 1px;
+      opacity: 0;
+      transition: opacity .18s
+    }
+
+    .t-row.show .t-txt {
+      opacity: 1
+    }
+
+    .t-ctx {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      text-align: center;
+      opacity: 0;
+      transition: opacity .25s;
+      margin-top: -6px
+    }
+
+    .t-ctx.show {
+      opacity: 1
+    }
+
+    /* ═══════ ANIM 4 — IN LIST ═══════ */
+    .l-state {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      text-align: center;
+      padding: 6px 0;
+      transition: color .3s;
+      color: var(--muted);
+      width: 100%;
+      background: rgba(0, 0, 0, 0.2);
+    }
+
+    .l-state.on {
+      color: var(--accent)
+    }
+
+    .l-box {
+      width: 100%;
+      border: 1px solid var(--border);
+      border-top: none;
+      border-bottom: none;
+      background: var(--surface);
+    }
+
+    .l-item {
+      display: flex;
+      align-items: center;
+      padding: 12px 16px;
+      gap: 12px
+    }
+
+    .l-ico {
+      width: 24px;
+      height: 24px;
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      background: var(--bg);
+    }
+
+    .l-ico svg {
+      width: 14px;
+      height: 14px;
+      stroke: var(--muted);
+      fill: none;
+      stroke-width: 1.5;
+      stroke-linecap: round
+    }
+
+    .l-txt {
+      font-size: 10px;
+      color: var(--label)
+    }
+
+    .l-div {
+      height: 1px;
+      margin: 0 16px;
+      transform: scaleX(0);
+      opacity: 0;
+      transition: transform .38s ease, opacity .3s;
+      background: var(--border);
+      transform-origin: left
+    }
+
+    .l-div.show {
+      opacity: 1;
+      transform: scaleX(1)
+    }
+
+    .l-div.glow {
+      background: var(--accent)
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+      *, *::before, *::after {
+        animation: none !important;
+        transition-duration: 0s !important
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="entry" id="app-root">
+    <div class="grid">
+      <!-- 1 · HORIZONTAL -->
+      <div class="card">
+        <div class="card-top">
+          <div class="card-dot"></div><span class="card-tag">Horizontal</span>
+        </div>
+        <div class="card-stage">
+          <div class="h-rows" id="a1">
+            <div class="h-row on"><span class="h-lbl">default</span>
+              <div class="h-ln"></div>
+            </div>
+            <div class="h-row dim"><span class="h-lbl">inset</span>
+              <div class="h-ln inset"></div>
+            </div>
+            <div class="h-row dim"><span class="h-lbl">thick</span>
+              <div class="h-ln thick"></div>
+            </div>
+            <div class="h-row dim"><span class="h-lbl">dotted</span>
+              <div class="h-ln dotted"></div>
+            </div>
+            <div class="h-row dim"><span class="h-lbl">dashed</span>
+              <div class="h-ln dashed"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-bot"><span>5 biến thể style</span><span class="loop"><span class="loop-dot"></span>loop</span></div>
+      </div>
+
+      <!-- 2 · VERTICAL -->
+      <div class="card">
+        <div class="card-top">
+          <div class="card-dot"></div><span class="card-tag">Vertical</span>
+        </div>
+        <div class="card-stage">
+          <div class="v-box" id="a2">
+            <div class="v-col L">
+              <div class="v-col-tag">Profile</div>
+              <div class="v-col-txt">Avatar, tên,<br>short bio</div>
+            </div>
+            <div class="v-line" id="vl"></div>
+            <div class="v-col R">
+              <div class="v-col-tag">Settings</div>
+              <div class="v-col-txt">Theme,<br>ngôn ngữ, notify</div>
+            </div>
+          </div>
+        </div>
+        <div class="card-bot"><span>tách cột ngang</span><span class="loop"><span class="loop-dot"></span>loop</span></div>
+      </div>
+
+      <!-- 3 · WITH TEXT -->
+      <div class="card">
+        <div class="card-top">
+          <div class="card-dot"></div><span class="card-tag">With Text</span>
+        </div>
+        <div class="card-stage">
+          <div class="t-wrap" id="a3">
+            <div class="t-row">
+              <div class="t-ln"></div><span class="t-txt">OR</span>
+              <div class="t-ln"></div>
+            </div>
+            <div class="t-ctx">login / social login</div>
+            <div class="t-row">
+              <div class="t-ln"></div><span class="t-txt">CONTINUE WITH</span>
+              <div class="t-ln"></div>
+            </div>
+            <div class="t-ctx">form / oauth buttons</div>
+            <div class="t-row">
+              <div class="t-ln"></div><span class="t-txt">RELATED</span>
+              <div class="t-ln"></div>
+            </div>
+            <div class="t-ctx">nối content sections</div>
+          </div>
+        </div>
+        <div class="card-bot"><span>text trên đường phân</span><span class="loop"><span class="loop-dot"></span>loop</span></div>
+      </div>
+
+      <!-- 4 · IN LIST -->
+      <div class="card">
+        <div class="card-top">
+          <div class="card-dot"></div><span class="card-tag">In List</span>
+        </div>
+        <div class="card-stage" style="padding:0;justify-content:stretch">
+          <div class="l-state on" id="ls">không divider</div>
+          <div class="l-box" id="a4">
+            <div class="l-item">
+              <div class="l-ico"><svg viewBox="0 0 24 24">
+                  <path d="M12 5v14M5 12h14" />
+                </svg></div><span class="l-txt">Thêm sản phẩm mới</span>
+            </div>
+            <div class="l-div"></div>
+            <div class="l-item">
+              <div class="l-ico"><svg viewBox="0 0 24 24">
+                  <path d="M4 6h16M4 12h16M4 18h16" />
+                </svg></div><span class="l-txt">Quản lý danh mục</span>
+            </div>
+            <div class="l-div"></div>
+            <div class="l-item">
+              <div class="l-ico"><svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="12" r="9" />
+                  <path d="M12 8v4l3 3" />
+                </svg></div><span class="l-txt">Lịch sử đơn hàng</span>
+            </div>
+            <div class="l-div"></div>
+            <div class="l-item">
+              <div class="l-ico"><svg viewBox="0 0 24 24">
+                  <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
+                  <circle cx="12" cy="7" r="4" />
+                </svg></div><span class="l-txt">Thông tin tài khoản</span>
+            </div>
+          </div>
+          <div class="l-state" id="ls2">có divider</div>
+        </div>
+        <div class="card-bot"><span>trước → sau</span><span class="loop"><span class="loop-dot"></span>loop</span></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    /* Anim 1: Cycle horizontal styles */
+    (function () {
+      const rows = document.querySelectorAll('#a1 .h-row');
+      let cur = 0;
+      function tick() {
+        rows.forEach((r, i) => { r.classList.toggle('on', i === cur); r.classList.toggle('dim', i !== cur) });
+        cur = (cur + 1) % rows.length;
+      }
+      tick(); setInterval(tick, 780);
+    })();
+
+    /* Anim 2: Vertical draw */
+    (function () {
+      const L = document.querySelector('#a2 .v-col.L');
+      const R = document.querySelector('#a2 .v-col.R');
+      const vl = document.getElementById('vl');
+      const T = 4200;
+      function play() {
+        L.classList.remove('show'); R.classList.remove('show'); vl.classList.remove('grow', 'glow');
+        setTimeout(() => L.classList.add('show'), 180);
+        setTimeout(() => vl.classList.add('grow'), 480);
+        setTimeout(() => R.classList.add('show'), 850);
+        setTimeout(() => vl.classList.add('glow'), 1150);
+        setTimeout(() => { L.classList.remove('show'); R.classList.remove('show'); vl.classList.remove('glow') }, 3200);
+        setTimeout(() => vl.classList.remove('grow'), 3700);
+      }
+      play(); setInterval(play, T);
+    })();
+
+    /* Anim 3: Cycle text dividers */
+    (function () {
+      const rows = document.querySelectorAll('#a3 .t-row');
+      const ctxs = document.querySelectorAll('#a3 .t-ctx');
+      let cur = 0;
+      function tick() {
+        rows.forEach((r, i) => r.classList.toggle('show', i === cur));
+        ctxs.forEach((c, i) => c.classList.toggle('show', i === cur));
+        cur = (cur + 1) % rows.length;
+      }
+      tick(); setInterval(tick, 1500);
+    })();
+
+    /* Anim 4: Before/after list dividers */
+    (function () {
+      const divs = document.querySelectorAll('#a4 .l-div');
+      const ls = document.getElementById('ls');
+      const ls2 = document.getElementById('ls2');
+      const T = 4200;
+      function play() {
+        divs.forEach(d => { d.classList.remove('show', 'glow') });
+        ls.classList.add('on'); ls2.classList.remove('on');
+        setTimeout(() => { divs[0].classList.add('show', 'glow'); ls.classList.remove('on') }, 1100);
+        setTimeout(() => divs[1].classList.add('show', 'glow'), 1500);
+        setTimeout(() => { divs[2].classList.add('show', 'glow'); ls2.classList.add('on') }, 1900);
+        setTimeout(() => divs.forEach(d => d.classList.remove('glow')), 3100);
+        setTimeout(() => { divs.forEach(d => d.classList.remove('show')); ls2.classList.remove('on'); ls.classList.add('on') }, 3600);
+      }
+      play(); setInterval(play, T);
+    })();
+  </script>
+</body>
+
+</html>

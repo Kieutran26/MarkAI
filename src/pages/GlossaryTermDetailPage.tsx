@@ -124,6 +124,8 @@ import checkboxDemoHtml from '../../gif-checkbox-demo.html?raw';
 import checkboxPracticeHtml from '../../gif-checkbox-practice.html?raw';
 import badgeDemoHtml from '../../gif-badge-demo.html?raw';
 import badgePracticeHtml from '../../gif-badge-practice.html?raw';
+import dividerDemoHtml from '../../gif-divider-demo.html?raw';
+import dividerPracticeHtml from '../../gif-divider-practice.html?raw';
 
 
 // Final sync for viewport practice update
@@ -205,6 +207,7 @@ export default function GlossaryTermDetailPage() {
       case 'chips': return chipsDemoHtml;
       case 'checkbox': return checkboxDemoHtml;
       case 'badge': return badgeDemoHtml;
+      case 'divider': return dividerDemoHtml;
       default: return null;
     }
   };
@@ -270,6 +273,7 @@ export default function GlossaryTermDetailPage() {
       case 'chips': return chipsPracticeHtml;
       case 'checkbox': return checkboxPracticeHtml;
       case 'badge': return badgePracticeHtml;
+      case 'divider': return dividerPracticeHtml;
       default: return null;
     }
   };

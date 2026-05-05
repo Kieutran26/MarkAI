@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Divider Practice — Vibecode Glossary</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0f0f12;
+      --bg-card: #16161b;
+      --fg: #e8e4dc;
+      --muted: #6e6e7a;
+      --accent: #e88c2e;
+      --accent-soft: rgba(232, 140, 46, 0.12);
+      --border: #282830;
+      --surface: #1c1c23;
+      --label: #a89d90;
+      --mono: 'JetBrains Mono', monospace;
+      --sans: 'Space Grotesk', sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: auto;
+      padding: 24px 24px 48px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .entry {
+      max-width: 940px;
+      margin: 0 auto;
+    }
+
+    .sec-lbl {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sec-lbl::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border)
+    }
+
+    .card {
+      /* Removed outer frame */
+      position: relative;
+    }
+
+    .card-title {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .card-subtitle {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 24px;
+    }
+
+    /* ═══════ PRACTICE ═══════ */
+    .practice-wrap {
+      background: #111111;
+      border: 1px solid var(--border);
+      padding: 24px 24px 32px;
+      border-radius: 4px;
+    }
+
+    .settings-header {
+      margin-bottom: 24px;
+    }
+
+    .settings-h1 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--fg);
+      margin-bottom: 4px;
+    }
+
+    .settings-desc {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .list-container {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .list-item {
+      display: flex;
+      align-items: center;
+      padding: 16px 0;
+      gap: 16px;
+    }
+
+    .icon-box {
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--muted);
+      opacity: 0.5;
+    }
+
+    .item-content {
+      flex: 1;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .item-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--label);
+    }
+
+    .item-value {
+      font-size: 12px;
+      color: var(--muted);
+      font-family: var(--mono);
+    }
+
+    .item-action {
+      font-size: 11px;
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    /* ═══════ CLICKABLE DIVIDER ZONE ═══════ */
+    .divider-zone {
+      height: 20px;
+      margin: -10px 0;
+      position: relative;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .divider-line {
+      width: 100%;
+      height: 1px;
+      background: transparent;
+      transition: all 0.2s;
+    }
+
+    .divider-zone:hover .divider-line {
+      background: rgba(232, 140, 46, 0.3);
+      height: 2px;
+    }
+
+    .divider-zone.active .divider-line {
+      background: var(--border);
+      height: 1px;
+    }
+
+    .divider-zone.active:hover .divider-line {
+      background: var(--accent);
+      height: 2px;
+    }
+
+    .check-btn {
+      margin-top: 24px;
+      width: 100%;
+      background: var(--accent);
+      color: #000;
+      border: none;
+      padding: 12px;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .check-btn:hover {
+      background: #f19d45;
+      transform: translateY(-1px);
+    }
+
+    .check-btn:active {
+      transform: translateY(0);
+    }
+
+    .tip {
+      margin-top: 16px;
+      font-size: 10px;
+      color: var(--muted);
+      font-style: italic;
+      line-height: 1.5;
+    }
+
+    .feedback {
+      margin-top: 20px;
+      padding: 12px;
+      font-family: var(--mono);
+      font-size: 12px;
+      text-align: center;
+      border-radius: 2px;
+      display: none;
+    }
+
+    .feedback.success {
+      display: block;
+      background: rgba(74, 222, 128, 0.1);
+      color: #4ade80;
+      border: 1px solid rgba(74, 222, 128, 0.2);
+    }
+
+    .feedback.error {
+      display: block;
+      background: rgba(248, 113, 113, 0.1);
+      color: #f87171;
+      border: 1px solid rgba(248, 113, 113, 0.2);
+    }
+
+    /* Icons */
+    svg {
+      width: 18px;
+      height: 18px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="entry" id="app-root">
+    <div class="card">
+      <div class="card-title">Cài đặt tài khoản</div>
+      <div class="card-subtitle">Click vào khoảng trống giữa các hàng để thêm/bỏ divider. Đặt đúng chỗ.</div>
+
+      <div class="practice-wrap">
+        <div class="settings-header">
+          <div class="settings-h1">Cài đặt tài khoản</div>
+          <div class="settings-desc">Quản lý thông tin cá nhân của bạn</div>
+        </div>
+
+        <div class="list-container">
+          <!-- Zone 0 (Top - usually wrong) -->
+          <div class="divider-zone" data-id="0" onclick="toggleDivider(this)">
+            <div class="divider-line"></div>
+          </div>
+
+          <!-- Item 1 -->
+          <div class="list-item">
+            <div class="icon-box">
+              <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <div class="item-content">
+              <span class="item-label">Ảnh đại diện</span>
+              <span class="item-action">Thay đổi &rsaquo;</span>
+            </div>
+          </div>
+
+          <!-- Zone 1 -->
+          <div class="divider-zone" data-id="1" onclick="toggleDivider(this)">
+            <div class="divider-line"></div>
+          </div>
+
+          <!-- Item 2 -->
+          <div class="list-item">
+            <div class="icon-box">
+              <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </div>
+            <div class="item-content">
+              <span class="item-label">Tên hiển thị</span>
+              <span class="item-value">Nguyễn Văn A</span>
+            </div>
+          </div>
+
+          <!-- Zone 2 -->
+          <div class="divider-zone" data-id="2" onclick="toggleDivider(this)">
+            <div class="divider-line"></div>
+          </div>
+
+          <!-- Item 3 -->
+          <div class="list-item">
+            <div class="icon-box">
+              <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><path d="M22 6l-10 7L2 6"/></svg>
+            </div>
+            <div class="item-content">
+              <span class="item-label">Email</span>
+              <span class="item-value">user@mail.com</span>
+            </div>
+          </div>
+
+          <!-- Zone 3 -->
+          <div class="divider-zone" data-id="3" onclick="toggleDivider(this)">
+            <div class="divider-line"></div>
+          </div>
+
+          <!-- Item 4 -->
+          <div class="list-item">
+            <div class="icon-box">
+              <svg viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+            </div>
+            <div class="item-content">
+              <span class="item-label">Mật khẩu</span>
+              <span class="item-value">••••••••</span>
+            </div>
+          </div>
+
+          <!-- Zone 4 (Bottom) -->
+          <div class="divider-zone" data-id="4" onclick="toggleDivider(this)">
+            <div class="divider-line"></div>
+          </div>
+        </div>
+
+        <button class="check-btn" onclick="checkAnswer()">KIỂM TRA</button>
+        
+        <div id="feedback" class="feedback"></div>
+
+        <div class="tip">
+          Mẹo: Divider tách nội dung cùng cấp. Không chia cắt heading khỏi nội dung nó mô tả, hay content khỏi action button trực tiếp.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleDivider(el) {
+      el.classList.toggle('active');
+      document.getElementById('feedback').style.display = 'none';
+    }
+
+    function checkAnswer() {
+      const zones = document.querySelectorAll('.divider-zone');
+      const activeStates = Array.from(zones).map(z => z.classList.contains('active'));
+      
+      const feedback = document.getElementById('feedback');
+      
+      // Correct logic: Dividers should be BETWEEN items (Zone 1, 2, 3) 
+      // Zone 0 and 4 are usually not needed if it's a simple list card.
+      // But the image shows the user can click ANY gap.
+      // In the image provided, there are lines between items.
+      
+      const isCorrect = activeStates[1] && activeStates[2] && activeStates[3] && !activeStates[0] && !activeStates[4];
+      
+      if (isCorrect) {
+        feedback.textContent = "Chính xác! Divider giúp phân tách các mục cùng cấp một cách ngăn nắp.";
+        feedback.className = "feedback success";
+      } else {
+        feedback.textContent = "Chưa đúng. Hãy thử đặt divider để phân tách rõ ràng các mục thông tin cá nhân.";
+        feedback.className = "feedback error";
+      }
+    }
+  </script>
+</body>
+
+</html>

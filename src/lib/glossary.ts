@@ -132,6 +132,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'tab-bar', name: 'Tab bar', nameEn: 'Thanh tab / Tab Bar', letter: 'T', groups: ['design', 'code'], definition: 'Thành phần điều hướng cho phép người dùng chuyển đổi giữa các vùng nội dung khác nhau trong cùng một màn hình mà không cần chuyển sang trang mới. Chỉ có một tab được kích hoạt (active) tại một thời điểm, và nội dung tương ứng sẽ được hiển thị.', example: 'Prompt: "Thêm một tab bar với 3 tab: Overview, Analytics và Settings. Khi click mỗi tab thì hiện nội dung tương ứng bên dưới."', related: ['navbar', 'interface', 'element', 'component'], demo: { kind: 'interactive', src: 'gif-tabbar-demo.html', alt: 'Mô phỏng các loại tab bar: Bottom, Top, Scrollable và Segmented' } },
   { id: 'chips', name: 'Chips', nameEn: 'Chips / Tags', letter: 'C', groups: ['design', 'code'], definition: 'Các khối nhỏ chứa text (và đôi khi là icon), dùng để biểu diễn các thuộc tính, lựa chọn hoặc hành động một cách gọn gàng. Chip giúp phân loại thông tin và tương tác nhanh mà không chiếm nhiều diện tích như button hay checkbox truyền thống.', example: 'Prompt: "Thêm các chip tag cho bài blog, mỗi chip có nút X để xóa, khi click vào chip thì lọc bài viết theo tag đó."', related: ['component', 'interface', 'element', 'card'], demo: { kind: 'interactive', src: 'gif-chips-demo.html', alt: 'Mô phỏng 4 kiểu chip phổ biến: Input, Filter, Choice và Action' } },
   { id: 'badge', name: 'Badge', nameEn: 'Huy hiệu / Badge', letter: 'B', groups: ['design', 'code'], definition: 'Một khối nhỏ chứa text, con số hoặc chỉ là một chấm màu, dùng để chỉ thị trạng thái, thông báo hoặc phân loại thông tin. Badge giúp thu hút sự chú ý vào các điểm quan trọng mà không làm vỡ bố cục tổng thể.', example: 'Prompt: "Thêm một badge màu đỏ hiện số lượng tin nhắn chưa đọc vào icon tin nhắn, và một badge \'New\' màu xanh lá cho bài viết mới."', related: ['chips', 'status', 'notification', 'ui'], demo: { kind: 'interactive', src: 'gif-badge-demo.html', alt: 'Mô phỏng 4 loại badge: Notification, Status, Count và Avatar' } },
+  { id: 'divider', name: 'Divider', nameEn: 'Đường phân bản / Divider', letter: 'D', groups: ['design', 'code'], definition: 'Thành phần giao diện dùng để phân tách các khối nội dung, tạo ra cấu trúc và nhịp điệu cho trang web. Divider giúp người dùng dễ dàng quét (scan) thông tin mà không bị choáng ngợp bởi một khối nội dung liên tục.', example: 'Prompt: "Thêm một đường kẻ ngang mờ để tách biệt phần Header và Nội dung chính, hoặc dùng divider có chữ \'HOẶC\' ở giữa để phân chia các phương thức đăng nhập."', related: ['spacing', 'border', 'layout', 'margin'], demo: { kind: 'interactive', src: 'gif-divider-demo.html', alt: 'Mô phỏng 4 loại divider phổ biến: Ngang, Dọc, Có chữ và Trong danh sách' } },
 ];
 
 export const quickRefItems = [
@@ -229,6 +230,7 @@ const deepDiveTermIds = new Set([
   'tab-bar',
   'chips',
   'badge',
+  'divider',
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -523,6 +525,11 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Badge là "lớp thông tin thứ hai" chồng lên element chính. Nó không thay thế nội dung mà chỉ bổ sung ngữ cảnh (context).',
     '4 loại kinh điển: Notification (kéo sự chú ý), Status (báo trạng thái realtime), Count (báo số lượng), và Avatar Badge (gom nhóm user).',
     'Quy tắc vàng: Badge phải nhỏ hơn element chính nhưng phải đủ độ tương phản để nổi bật. Nếu dùng badge số, hãy giới hạn độ dài (ví dụ: dùng "99+" thay vì "1234") để tránh làm biến dạng hình dáng badge.',
+  ],
+  'divider': [
+    'Divider không chỉ là một đường kẻ. Nó có thể là một khoảng trống (whitespace), một sự thay đổi màu nền, hoặc một đường kẻ có các biến thể (dotted, dashed, thick).',
+    'Quy tắc vàng: Đừng lạm dụng divider. Nếu khoảng trắng đã đủ để phân tách nội dung, hãy ưu tiên dùng khoảng trắng để giao diện trông sạch sẽ và hiện đại hơn.',
+    'Có 4 kiểu divider phổ biến: Ngang (Horizontal) để tách section, Dọc (Vertical) để tách cột, Có chữ (With Text) cho các form login/social, và Trong danh sách (In List) để tách các item.',
   ],
 };
 
