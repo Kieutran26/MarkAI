@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Snackbar Demo</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#1a1a1a;--bg-card:#222;--accent:#d97706;--accent-dim:#92400e;
+  --accent-glow:rgba(217,119,6,.12);--fg:#e8e4df;--fg-muted:#8a8580;
+  --fg-dim:#5a5550;--border:#3a3a3a;--border-accent:#d97706;
+  --success:#22c55e;--success-bg:rgba(34,197,94,.15);
+  --error:#ef4444;--error-bg:rgba(239,68,68,.15);
+  --info:#64748b;--info-bg:rgba(100,116,139,.2);
+  --warning:#d97706;--warning-bg:rgba(217,119,6,.15);
+  --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;--radius:2px;
+}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);line-height:1.5;padding:10px;
+  background-image:linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);
+  background-size:24px 24px}
+.grid-4{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:640px){.grid-4{grid-template-columns:1fr}}
+.card{background:transparent;border:none;border-radius:var(--radius);padding:12px;position:relative;overflow:hidden;transition:border-color .3s}
+.card:hover{border-color:#4a4a4a}
+.card-label{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.card-label::before{content:'';width:6px;height:6px;background:var(--accent);border-radius:1px}
+.card-title{font-size:15px;font-weight:700;color:var(--fg);margin-bottom:2px}
+.card-desc{font-size:11px;color:var(--fg-muted);margin-bottom:10px;line-height:1.4}
+.demo-area{background:#141414;border:1px solid var(--border);border-radius:var(--radius);min-height:140px;position:relative;overflow:hidden}
+.style-badge{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--accent);background:var(--accent-glow);border:1px solid rgba(217,119,6,.3);padding:2px 8px;border-radius:var(--radius);position:absolute;top:12px;right:12px;opacity:0;transition:opacity .4s;z-index:6}
+.style-badge.visible{opacity:1}
+.insight-bar{margin-top:8px;padding:6px 10px;background:var(--accent-glow);border:1px solid rgba(217,119,6,.2);border-radius:var(--radius);font-size:10px;color:var(--accent);font-family:var(--mono);line-height:1.4;opacity:0;transform:translateY(4px);transition:all .4s}
+.insight-bar.visible{opacity:1;transform:translateY(0)}
+.auto-progress{height:2px;background:var(--border);margin-top:12px;border-radius:1px;overflow:hidden}
+.auto-progress-fill{height:100%;background:var(--accent);width:0%;transition:width .1s linear;border-radius:1px}
+
+/* ===== MINI APP SCREEN ===== */
+.mini-screen{width:100%;height:100%;min-height:140px;padding:12px;position:relative}
+.mini-nav{height:10px;display:flex;gap:4px;margin-bottom:6px}
+.mini-nav-dot{width:5px;height:5px;border-radius:50%;background:var(--fg-dim)}
+.mini-heading{height:10px;width:55%;background:var(--fg-dim);border-radius:1px;margin-bottom:8px}
+.mini-text{height:5px;background:var(--border);border-radius:1px;margin-bottom:4px}
+.mini-block{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:var(--radius);padding:10px;margin-bottom:6px}
+.mini-btn{height:24px;border-radius:var(--radius);background:var(--fg-dim);opacity:.4;width:70px}
+
+/* ===== SNACKBAR ===== */
+.snackbar{
+  position:absolute;bottom:14px;left:14px;right:14px;
+  display:flex;align-items:center;gap:10px;
+  padding:12px 16px;border-radius:var(--radius);
+  font-size:12px;font-family:var(--sans);color:#fff;
+  transform:translateY(calc(100% + 20px));opacity:0;
+  transition:transform .4s cubic-bezier(.4,0,.2,1),opacity .4s;
+  z-index:5;overflow:hidden;
+}
+.snackbar.visible{transform:translateY(0);opacity:1}
+.snackbar-icon{width:20px;height:20px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.snackbar-icon svg{width:16px;height:16px}
+.snackbar-body{flex:1;min-width:0}
+.snackbar-title{font-weight:600;font-size:11px;font-family:var(--mono);letter-spacing:.5px;text-transform:uppercase;margin-bottom:1px}
+.snackbar-msg{font-size:11px;opacity:.85;line-height:1.3}
+.snackbar-action{
+  font-family:var(--mono);font-size:10px;font-weight:700;
+  letter-spacing:1px;text-transform:uppercase;
+  background:rgba(255,255,255,.15);border:none;color:#fff;
+  padding:4px 10px;border-radius:var(--radius);cursor:default;flex-shrink:0;
+  transition:background .2s;
+}
+.snackbar-progress{
+  position:absolute;bottom:0;left:0;height:2px;
+  background:rgba(255,255,255,.35);border-radius:0 0 var(--radius) var(--radius);
+  width:0%;transition:width linear;
+}
+.sb-success{background:#166534}
+.sb-error{background:#991b1b}
+.sb-info{background:#334155}
+.sb-warning{background:#78350f}
+
+/* ===== Lifecycle timeline ===== */
+.lifecycle{display:flex;align-items:center;gap:0;margin-top:10px;padding:0 4px}
+.lifecycle-step{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1}
+.lifecycle-dot{width:10px;height:10px;border-radius:50%;border:2px solid var(--fg-dim);background:transparent;transition:all .4s}
+.lifecycle-dot.active{border-color:var(--accent);background:var(--accent)}
+.lifecycle-dot.done{border-color:var(--accent);background:var(--accent);opacity:.4}
+.lifecycle-label{font-family:var(--mono);font-size:8px;color:var(--fg-dim);letter-spacing:.5px;text-transform:uppercase;transition:color .3s}
+.lifecycle-label.active{color:var(--accent)}
+.lifecycle-line{width:100%;height:2px;background:var(--border);margin:0 -2px;margin-bottom:16px;position:relative;top:-12px;flex-shrink:0}
+.lifecycle-line-fill{height:100%;background:var(--accent);width:0%;transition:width .4s}
+</style>
+</head>
+<body>
+
+<div class="grid-4">
+  <!-- 1. SUCCESS -->
+  <div class="card">
+    <div class="card-label">01</div>
+    <div class="card-title">Success Snackbar</div>
+    <div class="card-desc">Xác nhận action hoàn thành — kèm UNDO để quay lại nếu lỡ tay.</div>
+    <div class="demo-area">
+      <span class="style-badge" id="b1">IDLE</span>
+      <div class="mini-screen">
+        <div class="mini-nav"><div class="mini-nav-dot"></div><div class="mini-nav-dot"></div><div class="mini-nav-dot"></div></div>
+        <div class="mini-heading"></div>
+        <div class="mini-text" style="width:80%"></div>
+        <div class="mini-text" style="width:60%"></div>
+        <div class="mini-block">
+          <div class="mini-text" style="width:40%"></div>
+          <div class="mini-text" style="width:70%;margin-top:4px"></div>
+        </div>
+        <div class="mini-btn"></div>
+        <div class="snackbar sb-success" id="sb1">
+          <div class="snackbar-icon"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#4ade80" stroke-width="1.5"/><path d="M5 8l2 2 4-4" stroke="#4ade80" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div class="snackbar-body">
+            <div class="snackbar-title">Success</div>
+            <div class="snackbar-msg">Profile updated successfully.</div>
+          </div>
+          <div class="snackbar-action">Undo</div>
+          <div class="snackbar-progress" id="sp1"></div>
+        </div>
+      </div>
+      <div class="auto-progress"><div class="auto-progress-fill" id="p1"></div></div>
+    </div>
+    <div class="insight-bar visible">Snackbar = "làm xong rồi báo nhẹ" — không block, không cần đóng thủ công.</div>
+  </div>
+
+  <!-- 2. ERROR -->
+  <div class="card">
+    <div class="card-label">02</div>
+    <div class="card-title">Error Snackbar</div>
+    <div class="card-desc">Báo lỗi không critical — kèm RETRY để user thử lại ngay.</div>
+    <div class="demo-area">
+      <span class="style-badge" id="b2">IDLE</span>
+      <div class="mini-screen">
+        <div class="mini-nav"><div class="mini-nav-dot"></div><div class="mini-nav-dot"></div><div class="mini-nav-dot"></div></div>
+        <div class="mini-heading"></div>
+        <div style="display:flex;flex-direction:column;gap:4px;margin-top:6px">
+          <div class="mini-block" style="opacity:.6"><div class="mini-text" style="width:50%"></div></div>
+          <div class="mini-block"><div class="mini-text" style="width:50%"></div></div>
+          <div class="mini-block" style="opacity:.6"><div class="mini-text" style="width:50%"></div></div>
+        </div>
+        <div class="snackbar sb-error" id="sb2">
+          <div class="snackbar-icon"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#f87171" stroke-width="1.5"/><path d="M6 6l4 4M10 6l-4 4" stroke="#f87171" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+          <div class="snackbar-body">
+            <div class="snackbar-title">Error</div>
+            <div class="snackbar-msg">Failed to delete item.</div>
+          </div>
+          <div class="snackbar-action">Retry</div>
+          <div class="snackbar-progress" id="sp2"></div>
+        </div>
+      </div>
+      <div class="auto-progress"><div class="auto-progress-fill" id="p2"></div></div>
+    </div>
+    <div class="insight-bar visible">Error snackbar ≠ error modal. Lỗi nhẹ thì snackbar, lỗi nặng bắt buộc xử lý thì modal.</div>
+  </div>
+
+  <!-- 3. INFO -->
+  <div class="card">
+    <div class="card-label">03</div>
+    <div class="card-title">Info Snackbar</div>
+    <div class="card-desc">Cho user biết thông tin mới — kèm action để tìm hiểu thêm nếu quan tâm.</div>
+    <div class="demo-area">
+      <span class="style-badge" id="b3">IDLE</span>
+      <div class="mini-screen">
+        <div class="mini-nav"><div class="mini-nav-dot"></div><div class="mini-nav-dot"></div><div class="mini-nav-dot"></div></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+          <div class="mini-heading" style="width:30%;margin:0"></div>
+          <div class="mini-btn" style="width:50px;height:18px"></div>
+        </div>
+        <div class="mini-text" style="width:90%"></div>
+        <div class="mini-text" style="width:70%"></div>
+        <div class="mini-block" style="margin-top:8px"><div class="mini-text" style="width:55%"></div></div>
+        <div class="snackbar sb-info" id="sb3">
+          <div class="snackbar-icon"><svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="7" stroke="#94a3b8" stroke-width="1.5"/><path d="M8 7v4M8 5v.5" stroke="#94a3b8" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+          <div class="snackbar-body">
+            <div class="snackbar-title">Info</div>
+            <div class="snackbar-msg">New version available.</div>
+          </div>
+          <div class="snackbar-action">Learn more</div>
+          <div class="snackbar-progress" id="sp3"></div>
+        </div>
+      </div>
+      <div class="auto-progress"><div class="auto-progress-fill" id="p3"></div></div>
+    </div>
+    <div class="insight-bar visible">Info = "có chuyện này, biết cũng được". User có thể ignore — đó là điểm khác với modal.</div>
+  </div>
+
+  <!-- 4. WARNING + LIFECYCLE -->
+  <div class="card">
+    <div class="card-label">04</div>
+    <div class="card-title">Warning + Lifecycle</div>
+    <div class="card-desc">Cảnh báo không chặn — và timeline: appear → visible → auto-dismiss.</div>
+    <div class="demo-area">
+      <span class="style-badge" id="b4">IDLE</span>
+      <div class="mini-screen">
+        <div class="mini-nav"><div class="mini-nav-dot"></div><div class="mini-nav-dot"></div><div class="mini-nav-dot"></div></div>
+        <div style="display:flex;gap:6px;margin-bottom:10px">
+          <div class="mini-btn" style="width:40px;opacity:.7"></div>
+          <div class="mini-btn" style="width:50px;opacity:.7"></div>
+        </div>
+        <div class="mini-block"><div class="mini-text" style="width:60%"></div><div class="mini-text" style="width:80%;margin-top:4px"></div></div>
+        <div class="mini-block"><div class="mini-text" style="width:45%"></div></div>
+        <div class="snackbar sb-warning" id="sb4">
+          <div class="snackbar-icon"><svg viewBox="0 0 16 16" fill="none"><path d="M8 1L1 14h14L8 1z" stroke="#fbbf24" stroke-width="1.5" stroke-linejoin="round"/><path d="M8 6v3M8 11.5v.5" stroke="#fbbf24" stroke-width="1.5" stroke-linecap="round"/></svg></div>
+          <div class="snackbar-body">
+            <div class="snackbar-title">Warning</div>
+            <div class="snackbar-msg">Connection unstable.</div>
+          </div>
+          <div class="snackbar-action">Dismiss</div>
+          <div class="snackbar-progress" id="sp4"></div>
+        </div>
+      </div>
+      <div class="lifecycle" id="lc">
+        <div class="lifecycle-step">
+          <div class="lifecycle-dot" id="lc-d1"></div>
+          <div class="lifecycle-label" id="lc-l1">Appear</div>
+        </div>
+        <div class="lifecycle-line"><div class="lifecycle-line-fill" id="lc-f1"></div></div>
+        <div class="lifecycle-step">
+          <div class="lifecycle-dot" id="lc-d2"></div>
+          <div class="lifecycle-label" id="lc-l2">Visible</div>
+        </div>
+        <div class="lifecycle-line"><div class="lifecycle-line-fill" id="lc-f2"></div></div>
+        <div class="lifecycle-step">
+          <div class="lifecycle-dot" id="lc-d3"></div>
+          <div class="lifecycle-label" id="lc-l3">Dismiss</div>
+        </div>
+      </div>
+      <div class="auto-progress"><div class="auto-progress-fill" id="p4"></div></div>
+    </div>
+    <div class="insight-bar visible">Snackbar có vòng đời: slide up → hiện progress → tự slide down. Không cần user đóng.</div>
+  </div>
+</div>
+
+<div class="card" style="margin-top:10px;padding:16px">
+  <div class="card-label">VS</div>
+  <div class="card-title">Snackbar vs Toast</div>
+  <div style="display:grid;grid-template-columns:1fr 1.2fr 1.2fr;gap:1px;background:var(--border);margin-top:10px;border:1px solid var(--border);border-radius:var(--radius)">
+    <div style="background:#1a1a1a;padding:8px;font-family:var(--mono);font-size:9px;color:var(--fg-dim);text-transform:uppercase">Tiêu chí</div>
+    <div style="background:#1a1a1a;padding:8px;font-family:var(--mono);font-size:9px;color:var(--accent);text-transform:uppercase">Snackbar</div>
+    <div style="background:#1a1a1a;padding:8px;font-family:var(--mono);font-size:9px;color:var(--fg-muted);text-transform:uppercase">Toast</div>
+    
+    <div style="background:#141414;padding:8px;font-size:10px;color:var(--fg-muted)">Vị trí</div>
+    <div style="background:#141414;padding:8px;font-size:10px;color:var(--fg)">Dưới (Bottom)</div>
+    <div style="background:#141414;padding:8px;font-size:10px;color:var(--fg)">Trên / Góc (Top)</div>
+    
+    <div style="background:#141414;padding:8px;font-size:10px;color:var(--fg-muted)">Action</div>
+    <div style="background:#141414;padding:8px;font-size:10px;color:var(--fg)">Có (Undo, Retry)</div>
+    <div style="background:#141414;padding:8px;font-size:10px;color:var(--fg)">Không (Chỉ đọc)</div>
+    
+    <div style="background:#141414;padding:8px;font-size:10px;color:var(--fg-muted)">Stacking</div>
+    <div style="background:#141414;padding:8px;font-size:10px;color:var(--fg)">1 cái duy nhất</div>
+    <div style="background:#141414;padding:8px;font-size:10px;color:var(--fg)">Có thể chồng lớp</div>
+  </div>
+</div>
+
+<script>
+function snackbarCycle(sbId, progressId, badgeId, duration, pauseTime) {
+  const sb = document.getElementById(sbId);
+  const prog = document.getElementById(progressId);
+  const badge = document.getElementById(badgeId);
+  const appearTime = 400;
+  const dismissTime = 400;
+  const visibleTime = duration - appearTime - dismissTime;
+  const totalCycle = duration + pauseTime;
+  let start = Date.now();
+
+  function tick() {
+    const elapsed = Date.now() - start;
+    const cycleTime = elapsed % totalCycle;
+
+    if (cycleTime < appearTime) {
+      sb.classList.add('visible');
+      prog.style.width = '0%';
+      badge.textContent = 'APPEAR';
+      badge.classList.add('visible');
+    } else if (cycleTime < appearTime + visibleTime) {
+      sb.classList.add('visible');
+      const progressElapsed = cycleTime - appearTime;
+      const pct = (progressElapsed / visibleTime) * 100;
+      prog.style.width = pct + '%';
+      badge.textContent = 'VISIBLE';
+    } else if (cycleTime < duration) {
+      sb.classList.remove('visible');
+      prog.style.width = '100%';
+      badge.textContent = 'DISMISS';
+    } else {
+      sb.classList.remove('visible');
+      prog.style.width = '0%';
+      badge.textContent = 'IDLE';
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+function lifecycleController(duration, pauseTime) {
+  const d1 = document.getElementById('lc-d1');
+  const d2 = document.getElementById('lc-d2');
+  const d3 = document.getElementById('lc-d3');
+  const l1 = document.getElementById('lc-l1');
+  const l2 = document.getElementById('lc-l2');
+  const l3 = document.getElementById('lc-l3');
+  const f1 = document.getElementById('lc-f1');
+  const f2 = document.getElementById('lc-f2');
+  const appearTime = 400;
+  const dismissTime = 400;
+  const visibleTime = duration - appearTime - dismissTime;
+  const totalCycle = duration + pauseTime;
+  let start = Date.now();
+
+  function resetDots() {
+    [d1,d2,d3].forEach(d => { d.className = 'lifecycle-dot'; });
+    [l1,l2,l3].forEach(l => { l.className = 'lifecycle-label'; });
+    f1.style.width = '0%';
+    f2.style.width = '0%';
+  }
+
+  function tick() {
+    const elapsed = Date.now() - start;
+    const cycleTime = elapsed % totalCycle;
+    resetDots();
+    if (cycleTime < appearTime) {
+      d1.classList.add('active');
+      l1.classList.add('active');
+    } else if (cycleTime < appearTime + visibleTime) {
+      d1.classList.add('done');
+      d2.classList.add('active');
+      l2.classList.add('active');
+      f1.style.width = '100%';
+      const pct = ((cycleTime - appearTime) / visibleTime) * 100;
+      f2.style.width = pct + '%';
+    } else if (cycleTime < duration) {
+      d1.classList.add('done');
+      d2.classList.add('done');
+      d3.classList.add('active');
+      l3.classList.add('active');
+      f1.style.width = '100%';
+      f2.style.width = '100%';
+    }
+    requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+
+function autoProgress(id, interval) {
+  const el = document.getElementById(id);
+  let s = Date.now();
+  (function tick() {
+    el.style.width = ((Date.now() - s) % interval / interval * 100) + '%';
+    requestAnimationFrame(tick);
+  })();
+}
+
+snackbarCycle('sb1', 'sp1', 'b1', 3500, 1500);
+snackbarCycle('sb2', 'sp2', 'b2', 3500, 1500);
+snackbarCycle('sb3', 'sp3', 'b3', 3500, 1500);
+snackbarCycle('sb4', 'sp4', 'b4', 3500, 1500);
+lifecycleController(3500, 1500);
+autoProgress('p1', 5000);
+autoProgress('p2', 5000);
+autoProgress('p3', 5000);
+autoProgress('p4', 5000);
+</script>
+</body>
+</html>
