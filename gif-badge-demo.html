@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Badge Demo — Vibecode Glossary</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --bg:#141413;--bg-card:#1c1c1a;--fg:#e8e0d4;--muted:#6e6a63;
+            --accent:#d97706;--accent-dim:rgba(217,119,6,.12);
+            --accent-glow:rgba(217,119,6,.25);--border:#2e2c28;--border-hi:#3e3b35;
+            --slate:#33312d;--cream:#f5f0e8;--green:#22c55e;
+            --amber-lt:#f59e0b;--red:#ef4444;
+            --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+        }
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        body{
+            background:var(--bg);color:var(--fg);font-family:var(--sans);
+            min-height:100vh;-webkit-font-smoothing:antialiased;
+            background-image:
+                linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+                linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+            background-size:20px 20px;
+        }
+
+
+
+        /* === Grid === */
+        .g4{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:18px 16px 24px;max-width:920px;margin:0 auto}
+
+        /* === Card === */
+        .cd{
+            background:var(--bg-card);border:1px solid var(--border);
+            position:relative;overflow:hidden;
+        }
+        .cd::before{
+            content:'';position:absolute;inset:0;
+            background:radial-gradient(ellipse at 30% 0%,rgba(217,119,6,.04) 0%,transparent 60%);
+            pointer-events:none;
+        }
+        .cd-n{
+            position:absolute;top:10px;right:12px;font-family:var(--mono);
+            font-size:9px;color:var(--muted);background:var(--bg);
+            border:1px solid var(--border);padding:2px 7px;letter-spacing:1.5px;z-index:5;
+        }
+        .cd-l{font-family:var(--mono);font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:2px;padding:14px 14px 2px;position:relative}
+        .cd-t{font-size:15px;font-weight:700;color:var(--cream);padding:2px 14px 10px;position:relative}
+        .cd-d{padding:0 14px 8px;height:250px;position:relative;display:flex;align-items:center;justify-content:center}
+        .cd-i{font-family:var(--mono);font-size:10px;color:var(--muted);padding:10px 14px 13px;border-top:1px solid var(--border);line-height:1.6;position:relative}
+        .cd-i em{color:var(--accent);font-style:normal}
+
+        /* === Card 1: Notification === */
+        .nr{display:flex;gap:28px;align-items:flex-start}
+        .ni{position:relative;font-size:24px;color:var(--muted);transition:color .3s}
+        .ni.hb{color:var(--fg)}
+        .nn{
+            position:absolute;top:-6px;right:-8px;min-width:16px;height:16px;
+            background:var(--accent);color:#0e0e0d;font-family:var(--mono);
+            font-size:8px;font-weight:700;display:flex;align-items:center;
+            justify-content:center;padding:0 3px;transform:scale(0);
+            transition:transform .35s cubic-bezier(.175,.885,.32,1.275),box-shadow .3s;
+        }
+        .nn.s{transform:scale(1)}
+        .nn.em{box-shadow:0 0 0 3px var(--accent-glow),0 0 12px rgba(217,119,6,.15)}
+        .nn.ov{font-size:7px;min-width:22px}
+
+        /* === Card 2: Status === */
+        .sl{display:flex;flex-direction:column;gap:10px;width:190px}
+        .sr{display:flex;align-items:center;gap:10px}
+        .sa{
+            width:30px;height:30px;border-radius:50%;background:var(--slate);
+            border:1px solid var(--border);display:flex;align-items:center;
+            justify-content:center;font-size:11px;color:var(--muted);flex-shrink:0;
+        }
+        .sf{flex:1}
+        .sn{font-size:11px;font-weight:600;color:var(--cream);font-family:var(--mono)}
+        .sln{display:flex;align-items:center;gap:5px;margin-top:2px}
+        .sd{
+            width:7px;height:7px;border-radius:50%;background:var(--muted);
+            transition:background .4s,box-shadow .4s;
+        }
+        .sd.on{background:var(--green);box-shadow:0 0 6px rgba(34,197,94,.4)}
+        .sd.aw{background:var(--amber-lt);box-shadow:0 0 6px rgba(245,158,11,.3)}
+        .sd.of{background:var(--muted);box-shadow:none}
+        .sd.dn{background:var(--red);box-shadow:0 0 6px rgba(239,68,68,.4)}
+        .stl{font-size:9px;font-family:var(--mono);color:var(--muted);transition:color .3s}
+        .stl.on{color:var(--green)}.stl.aw{color:var(--amber-lt)}.stl.dn{color:var(--red)}
+
+        /* === Card 3: Count/Label === */
+        .ll{display:flex;flex-direction:column;gap:6px;width:200px}
+        .lr{display:flex;align-items:center;justify-content:space-between;padding:7px 10px;background:var(--bg);border:1px solid var(--border)}
+        .ln{font-size:10px;font-family:var(--mono);color:var(--muted)}
+        .lb{
+            font-family:var(--mono);font-size:9px;font-weight:600;padding:2px 8px;
+            transform:translateX(8px);opacity:0;transition:transform .3s ease,opacity .3s ease;
+        }
+        .lb.s{transform:translateX(0);opacity:1}
+        .lb.ct{background:var(--accent);color:#0e0e0d}
+        .lb.tx{background:var(--accent-dim);color:var(--accent);border:1px solid rgba(217,119,6,.2)}
+
+        /* === Card 4: Avatar === */
+        .ag{display:flex;align-items:center}
+        .ac{
+            width:40px;height:40px;border-radius:50%;background:var(--slate);
+            border:2px solid var(--bg-card);margin-left:-12px;display:flex;
+            align-items:center;justify-content:center;font-size:13px;color:var(--muted);
+            transform:translateX(-20px);opacity:0;
+            transition:transform .4s cubic-bezier(.4,0,.2,1),opacity .3s;
+        }
+        .ac:first-child{margin-left:0}
+        .ac.s{transform:translateX(0);opacity:1}
+        .am{
+            width:40px;height:40px;border-radius:50%;background:var(--accent);
+            border:2px solid var(--bg-card);margin-left:-12px;display:flex;
+            align-items:center;justify-content:center;font-family:var(--mono);
+            font-size:10px;font-weight:700;color:#0e0e0d;transform:scale(0);
+            transition:transform .35s cubic-bezier(.175,.885,.32,1.275);
+        }
+        .am.s{transform:scale(1)}
+
+        /* === Responsive === */
+        @media(max-width:620px){
+            .g4{grid-template-columns:1fr}
+            .nr{gap:22px}
+            .ni{font-size:20px}
+        }
+        @media(prefers-reduced-motion:reduce){
+            *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+        }
+    </style>
+</head>
+<body>
+
+<div id="app-root">
+
+
+    <main>
+        <div class="g4">
+            <!-- 1. Notification Badge -->
+            <section class="cd" aria-label="Notification Badge animation">
+                <span class="cd-n">LOOP</span>
+                <div class="cd-l">Loại 01</div>
+                <h2 class="cd-t">Notification Badge</h2>
+                <div class="cd-d">
+                    <div class="nr">
+                        <div class="ni" id="ni-home"><i class="fas fa-house"></i><div class="nn" id="nn-home"></div></div>
+                        <div class="ni" id="ni-search"><i class="fas fa-magnifying-glass"></i><div class="nn" id="nn-search"></div></div>
+                        <div class="ni" id="ni-msg"><i class="fas fa-envelope"></i><div class="nn" id="nn-msg"></div></div>
+                        <div class="ni" id="ni-bell"><i class="fas fa-bell"></i><div class="nn" id="nn-bell"></div></div>
+                    </div>
+                </div>
+                <div class="cd-i">Con số nhỏ trên icon = <em>attention hook</em>. Nó kéo mắt user vào item cần hành động ngay.</div>
+            </section>
+
+            <!-- 2. Status Badge -->
+            <section class="cd" aria-label="Status Badge animation">
+                <span class="cd-n">LOOP</span>
+                <div class="cd-l">Loại 02</div>
+                <h2 class="cd-t">Status Badge</h2>
+                <div class="cd-d">
+                    <div class="sl">
+                        <div class="sr">
+                            <div class="sa"><i class="fas fa-user"></i></div>
+                            <div class="sf">
+                                <div class="sn">Linh Nguyen</div>
+                                <div class="sln"><div class="sd on" id="sd0"></div><span class="stl on" id="st0">Online</span></div>
+                            </div>
+                        </div>
+                        <div class="sr">
+                            <div class="sa"><i class="fas fa-user"></i></div>
+                            <div class="sf">
+                                <div class="sn">Minh Tran</div>
+                                <div class="sln"><div class="sd on" id="sd1"></div><span class="stl on" id="st1">Online</span></div>
+                            </div>
+                        </div>
+                        <div class="sr">
+                            <div class="sa"><i class="fas fa-user"></i></div>
+                            <div class="sf">
+                                <div class="sn">Hanh Pham</div>
+                                <div class="sln"><div class="sd on" id="sd2"></div><span class="stl on" id="st2">Online</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cd-i">Chấm nhỏ + label = <em>real-time state</em>. User biết ngay ai sẵn sàng, ai bận — không cần hỏi.</div>
+            </section>
+
+            <!-- 3. Count/Label Badge -->
+            <section class="cd" aria-label="Count/Label Badge animation">
+                <span class="cd-n">LOOP</span>
+                <div class="cd-l">Loại 03</div>
+                <h2 class="cd-t">Count / Label Badge</h2>
+                <div class="cd-d">
+                    <div class="ll">
+                        <div class="lr"><span class="ln">Design System</span><div class="lb tx" id="lb0">New</div></div>
+                        <div class="lr"><span class="ln">Reports</span><div class="lb ct" id="lb1">8</div></div>
+                        <div class="lr"><span class="ln">Campaigns</span><div class="lb tx" id="lb2">Updated</div></div>
+                        <div class="lr"><span class="ln">Assets</span><div class="lb ct" id="lb3">12</div></div>
+                    </div>
+                </div>
+                <div class="cd-i">Số = <em>quantity context</em>. Nhãn = <em>quality context</em>. Thêm thông tin mà không chiếm thêm dòng.</div>
+            </section>
+
+            <!-- 4. Avatar Badge -->
+            <section class="cd" aria-label="Avatar Badge animation">
+                <span class="cd-n">LOOP</span>
+                <div class="cd-l">Loại 04</div>
+                <h2 class="cd-t">Avatar Badge</h2>
+                <div class="cd-d">
+                    <div class="ag">
+                        <div class="ac" id="av0"><i class="fas fa-user"></i></div>
+                        <div class="ac" id="av1"><i class="fas fa-user"></i></div>
+                        <div class="ac" id="av2"><i class="fas fa-user"></i></div>
+                        <div class="am" id="avm">+12</div>
+                    </div>
+                </div>
+                <div class="cd-i">Stack avatars + <em>"+N" pill</em> = "còn nhiều người nữa". Tiết kiệm không gian khi team lớn.</div>
+            </section>
+        </div>
+    </main>
+</div>
+
+<script>
+(function(){
+    var bMsg=document.getElementById('nn-msg'),
+        bBell=document.getElementById('nn-bell'),
+        iMsg=document.getElementById('ni-msg'),
+        iBell=document.getElementById('ni-bell');
+    var step=0,total=5;
+
+    function clear(){
+        if(!bMsg || !bBell) return;
+        [bMsg,bBell].forEach(function(b){b.className='nn';b.textContent=''});
+        [iMsg,iBell].forEach(function(i){i.classList.remove('hb')});
+    }
+
+    function run(){
+        clear();
+        if(step===0){
+            setTimeout(function(){bMsg.textContent='3';bMsg.classList.add('s');iMsg.classList.add('hb')},300);
+        }else if(step===1){
+            setTimeout(function(){bMsg.textContent='3';bMsg.classList.add('s');iMsg.classList.add('hb')},80);
+            setTimeout(function(){bBell.textContent='12';bBell.classList.add('s');iBell.classList.add('hb')},450);
+        }else if(step===2){
+            setTimeout(function(){bMsg.textContent='3';bMsg.classList.add('s');iMsg.classList.add('hb')},80);
+            setTimeout(function(){bBell.textContent='99+';bBell.classList.add('s','ov','em');iBell.classList.add('hb')},450);
+        }else if(step===3){
+            setTimeout(function(){bMsg.textContent='3';bMsg.classList.add('s');iMsg.classList.add('hb')},80);
+            setTimeout(function(){bBell.textContent='99+';bBell.classList.add('s','ov','em');iBell.classList.add('hb')},300);
+        }
+        step=(step+1)%total;
+    }
+    clear();
+    setTimeout(function(){step=0;run()},700);
+    setInterval(run,2200);
+})();
+
+(function(){
+    var dots=[document.getElementById('sd0'),document.getElementById('sd1'),document.getElementById('sd2')],
+        labels=[document.getElementById('st0'),document.getElementById('st1'),document.getElementById('st2')],
+        step=0,total=6;
+
+    function set(i,cls,txt){
+        if(!dots[i] || !labels[i]) return;
+        dots[i].className='sd '+cls;
+        labels[i].className='stl '+(cls==='of'?'':cls);
+        labels[i].textContent=txt;
+    }
+    function allOnline(){
+        for(var i=0;i<3;i++) set(i,'on','Online');
+    }
+
+    function run(){
+        if(step===0) allOnline();
+        else if(step===1) set(1,'aw','Away');
+        else if(step===2) set(2,'of','Offline');
+        else if(step===3) set(0,'dn','Do Not Disturb');
+        else if(step===4){/* pause */}
+        else if(step===5) allOnline();
+        step=(step+1)%total;
+    }
+    allOnline();
+    setInterval(run,1800);
+})();
+
+(function(){
+    var badges=[document.getElementById('lb0'),document.getElementById('lb1'),document.getElementById('lb2'),document.getElementById('lb3')],
+        step=0,total=6;
+
+    badges.forEach(function(b){ if(b) b.classList.remove('s')});
+
+    function run(){
+        if(step<4) { if(badges[step]) badges[step].classList.add('s'); }
+        else if(step===4){/* pause */}
+        else badges.forEach(function(b){ if(b) b.classList.remove('s')});
+        step=(step+1)%total;
+    }
+    setTimeout(function(){step=0;run()},500);
+    setInterval(run,1500);
+})();
+
+(function(){
+    var avs=[document.getElementById('av0'),document.getElementById('av1'),document.getElementById('av2')],
+        more=document.getElementById('avm'),
+        step=0,total=6;
+
+    function hideAll(){
+        avs.forEach(function(a){ if(a) a.classList.remove('s')});
+        if(more) more.classList.remove('s');
+    }
+
+    function run(){
+        if(step===0){
+            hideAll();
+            if(avs[0]) avs[0].classList.add('s');
+            setTimeout(function(){ if(avs[1]) avs[1].classList.add('s')},200);
+            setTimeout(function(){ if(avs[2]) avs[2].classList.add('s')},400);
+        }else if(step===1){
+            if(more) { more.textContent='+12';more.classList.add('s'); }
+        }else if(step===2){
+            if(more) more.textContent='+48';
+        }else if(step===3){
+            if(more) more.textContent='+5';
+        }else if(step===4){
+            /* pause */
+        }else{
+            hideAll();
+        }
+        step=(step+1)%total;
+    }
+    hideAll();
+    setTimeout(function(){step=0;run()},500);
+    setInterval(run,2000);
+})();
+</script>
+</body>
+</html>

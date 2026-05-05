@@ -131,6 +131,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'overflow', name: 'Overflow', nameEn: 'Tràn nội dung', letter: 'O', groups: ['design', 'code'], definition: 'Quy định gì xảy ra khi nội dung lớn hơn container — tràn, cắt, hay cuộn. Overflow là thuộc tính quan trọng để kiểm soát tính thẩm mỹ và công năng của giao diện, tránh tình trạng text hay ảnh lọt ra ngoài khung hình làm hỏng layout.', example: 'Prompt: "Card này bị tràn text ra ngoài, hãy set overflow: hidden để cắt phần thừa, hoặc dùng overflow: auto để hiện thanh cuộn khi cần."', related: ['container', 'layout', 'css', 'card'], demo: { kind: 'interactive', src: 'gif-overflow-demo.html', alt: 'Mô phỏng 4 trạng thái overflow: Visible, Hidden, Scroll và Auto' } },
   { id: 'tab-bar', name: 'Tab bar', nameEn: 'Thanh tab / Tab Bar', letter: 'T', groups: ['design', 'code'], definition: 'Thành phần điều hướng cho phép người dùng chuyển đổi giữa các vùng nội dung khác nhau trong cùng một màn hình mà không cần chuyển sang trang mới. Chỉ có một tab được kích hoạt (active) tại một thời điểm, và nội dung tương ứng sẽ được hiển thị.', example: 'Prompt: "Thêm một tab bar với 3 tab: Overview, Analytics và Settings. Khi click mỗi tab thì hiện nội dung tương ứng bên dưới."', related: ['navbar', 'interface', 'element', 'component'], demo: { kind: 'interactive', src: 'gif-tabbar-demo.html', alt: 'Mô phỏng các loại tab bar: Bottom, Top, Scrollable và Segmented' } },
   { id: 'chips', name: 'Chips', nameEn: 'Chips / Tags', letter: 'C', groups: ['design', 'code'], definition: 'Các khối nhỏ chứa text (và đôi khi là icon), dùng để biểu diễn các thuộc tính, lựa chọn hoặc hành động một cách gọn gàng. Chip giúp phân loại thông tin và tương tác nhanh mà không chiếm nhiều diện tích như button hay checkbox truyền thống.', example: 'Prompt: "Thêm các chip tag cho bài blog, mỗi chip có nút X để xóa, khi click vào chip thì lọc bài viết theo tag đó."', related: ['component', 'interface', 'element', 'card'], demo: { kind: 'interactive', src: 'gif-chips-demo.html', alt: 'Mô phỏng 4 kiểu chip phổ biến: Input, Filter, Choice và Action' } },
+  { id: 'badge', name: 'Badge', nameEn: 'Huy hiệu / Badge', letter: 'B', groups: ['design', 'code'], definition: 'Một khối nhỏ chứa text, con số hoặc chỉ là một chấm màu, dùng để chỉ thị trạng thái, thông báo hoặc phân loại thông tin. Badge giúp thu hút sự chú ý vào các điểm quan trọng mà không làm vỡ bố cục tổng thể.', example: 'Prompt: "Thêm một badge màu đỏ hiện số lượng tin nhắn chưa đọc vào icon tin nhắn, và một badge \'New\' màu xanh lá cho bài viết mới."', related: ['chips', 'status', 'notification', 'ui'], demo: { kind: 'interactive', src: 'gif-badge-demo.html', alt: 'Mô phỏng 4 loại badge: Notification, Status, Count và Avatar' } },
 ];
 
 export const quickRefItems = [
@@ -227,6 +228,7 @@ const deepDiveTermIds = new Set([
   'overflow',
   'tab-bar',
   'chips',
+  'badge',
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -516,6 +518,11 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     '4 kiểu chip phổ biến: Input (nhập tag), Filter (lọc dữ liệu), Choice (chọn 1 hoặc nhiều), và Action (shortcut thực hiện lệnh nhanh).',
     'Khi làm việc với AI, hãy phân biệt rõ: nếu bạn muốn người dùng chọn rồi "Lưu", hãy dùng Filter/Choice chip. Nếu bạn muốn bấm vào là chạy lệnh ngay (như Download, Share), hãy dùng Action chip.',
     'Về thiết kế, chip thường có bo góc (radius) lớn hơn button một chút để tạo sự khác biệt, và thường đi kèm icon nhỏ ở bên trái để tăng tính trực quan.',
+  ],
+  'badge': [
+    'Badge là "lớp thông tin thứ hai" chồng lên element chính. Nó không thay thế nội dung mà chỉ bổ sung ngữ cảnh (context).',
+    '4 loại kinh điển: Notification (kéo sự chú ý), Status (báo trạng thái realtime), Count (báo số lượng), và Avatar Badge (gom nhóm user).',
+    'Quy tắc vàng: Badge phải nhỏ hơn element chính nhưng phải đủ độ tương phản để nổi bật. Nếu dùng badge số, hãy giới hạn độ dài (ví dụ: dùng "99+" thay vì "1234") để tránh làm biến dạng hình dáng badge.',
   ],
 };
 

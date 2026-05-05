@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Badge Practice — Vibecode Glossary</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --bg:#141413;--bg-card:#1c1c1a;--fg:#e8e0d4;--muted:#6e6a63;
+            --accent:#d97706;--accent-dim:rgba(217,119,6,.12);
+            --accent-glow:rgba(217,119,6,.25);--border:#2e2c28;--border-hi:#3e3b35;
+            --slate:#33312d;--cream:#f5f0e8;--green:#22c55e;
+            --amber-lt:#f59e0b;--red:#ef4444;
+            --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+        }
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        body{
+            background:var(--bg);color:var(--fg);font-family:var(--sans);
+            min-height:100vh;-webkit-font-smoothing:antialiased;
+            background-image:
+                linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+                linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+            background-size:20px 20px;
+        }
+
+
+
+        /* === Practice === */
+        .pr{padding:0 16px 48px;max-width:920px;margin:18px auto 0}
+        .pr-h{margin-bottom:16px}
+        .pr-g{font-family:var(--mono);font-size:11px;color:var(--accent);margin-bottom:4px}
+        .pr-d{font-size:12px;color:var(--muted)}
+        .pr-b{display:flex;gap:14px}
+        .pr-c{flex-shrink:0;display:flex;flex-direction:column;gap:8px}
+        .tb{
+            font-family:var(--mono);font-size:10px;letter-spacing:.5px;
+            padding:10px 16px;background:var(--bg);color:var(--muted);
+            border:1px solid var(--border);cursor:pointer;transition:all .2s;
+            text-align:left;white-space:nowrap;min-width:155px;
+        }
+        .tb:hover{border-color:var(--border-hi);color:var(--fg)}
+        .tb.on{background:var(--accent);color:#0e0e0d;border-color:var(--accent);font-weight:600}
+        .tb .bh{display:block;font-size:8px;opacity:.6;margin-top:2px}
+
+        /* Mock sidebar */
+        .ms{flex:1;background:var(--bg);border:1px solid var(--border);padding:10px 0;font-family:var(--mono);min-height:290px}
+        .ms-label{font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:8px 14px 4px}
+        .ms-item{
+            display:flex;align-items:center;gap:10px;padding:8px 14px;font-size:11px;
+            color:var(--muted);position:relative;transition:background .25s,border-color .25s;
+            border-left:2px solid transparent;
+        }
+        .ms-item.hl{background:rgba(217,119,6,.03);border-left-color:var(--accent)}
+        .ms-item i{width:16px;text-align:center;font-size:13px}
+        .ms-item span{flex:1}
+        .ms-sep{height:1px;background:var(--border);margin:6px 14px}
+        .ms-sub{
+            display:flex;align-items:center;gap:8px;padding:6px 14px 6px 40px;
+            font-size:10px;color:var(--muted);position:relative;transition:background .25s,border-color .25s;
+            border-left:2px solid transparent;
+        }
+        .ms-sub.hl{background:rgba(217,119,6,.03);border-left-color:var(--accent)}
+        .ms-sub span{flex:1}
+
+        /* Badges trong sidebar */
+        .mb{font-family:var(--mono);font-weight:700;transform:scale(0);transition:transform .3s cubic-bezier(.175,.885,.32,1.275)}
+        .mb.s{transform:scale(1)}
+        .mb-n{background:var(--accent);color:#0e0e0d;font-size:8px;padding:1px 5px;min-width:16px;text-align:center}
+        .mb-t{background:var(--accent-dim);color:var(--accent);font-size:8px;padding:1px 7px;border:1px solid rgba(217,119,6,.2)}
+        .msd{
+            width:6px;height:6px;border-radius:50%;background:var(--muted);
+            transition:background .3s,box-shadow .3s;transform:scale(0);flex-shrink:0;
+        }
+        .msd.s{transform:scale(1)}
+        .msd.on{background:var(--green);box-shadow:0 0 4px rgba(34,197,94,.4)}
+        .msd.aw{background:var(--amber-lt);box-shadow:0 0 4px rgba(245,158,11,.3)}
+        .msd.of{background:#4a4744;box-shadow:none}
+        .msl{font-size:8px;opacity:.5;transition:opacity .2s}
+
+        /* Feedback */
+        .pr-f{
+            font-family:var(--mono);font-size:11px;color:var(--fg);padding:14px 16px;
+            margin-top:14px;background:var(--bg-card);border:1px solid var(--border);
+            border-left:3px solid var(--accent);line-height:1.6;min-height:44px;
+            transition:border-color .3s;
+        }
+        .pr-f.dim{border-left-color:var(--border-hi)}
+        .pr-f em{color:var(--accent);font-style:normal}
+        .pr-hint{font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:10px;padding-left:4px}
+        .pr-hint i{color:var(--accent);margin-right:6px}
+
+        /* === Responsive === */
+        @media(max-width:620px){
+            .pr-b{flex-direction:column}
+            .pr-c{flex-direction:row;flex-wrap:wrap}
+            .tb{flex:1;min-width:0;text-align:center}
+            .tb .bh{display:none}
+        }
+        @media(prefers-reduced-motion:reduce){
+            *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+        }
+    </style>
+</head>
+<body>
+
+<div id="app-root">
+
+
+    <main>
+        <section class="pr" aria-label="Badge practice">
+            <div class="pr-h">
+                <div class="pr-g">Mục tiêu: Badge thay đổi hành vi đọc như thế nào</div>
+                <p class="pr-d">Bật/tắt từng loại badge trên sidebar bên phải và quan sát — mắt bạn tự nhìn vào đâu trước.</p>
+            </div>
+
+            <div class="pr-b">
+                <div class="pr-c">
+                    <button class="tb" data-type="notif" aria-pressed="false">
+                        Số thông báo<span class="bh">số trên icon</span>
+                    </button>
+                    <button class="tb" data-type="status" aria-pressed="false">
+                        Trạng thái<span class="bh">chấm online / away</span>
+                    </button>
+                    <button class="tb" data-type="label" aria-pressed="false">
+                        Nhãn<span class="bh">New, Updated...</span>
+                    </button>
+                </div>
+
+                <div class="ms" aria-label="Sidebar preview">
+                    <div class="ms-item" id="mi-home"><i class="fas fa-house"></i><span>Home</span></div>
+                    <div class="ms-item" id="mi-ana"><i class="fas fa-chart-simple"></i><span>Analytics</span></div>
+                    <div class="ms-item" id="mi-msg"><i class="fas fa-envelope"></i><span>Messages</span><div class="mb mb-n" id="mb-msg">5</div></div>
+                    <div class="ms-item" id="mi-bell"><i class="fas fa-bell"></i><span>Notifications</span><div class="mb mb-n" id="mb-bell" style="font-size:7px;min-width:20px">99+</div></div>
+                    <div class="ms-sep"></div>
+                    <div class="ms-label">Team</div>
+                    <div class="ms-sub" id="mi-u1"><div class="msd on" id="md0"></div><span>Linh Nguyen</span><span class="msl" id="ml0">Online</span></div>
+                    <div class="ms-sub" id="mi-u2"><div class="msd aw" id="md1"></div><span>Minh Tran</span><span class="msl" id="ml1">Away</span></div>
+                    <div class="ms-sub" id="mi-u3"><div class="msd of" id="md2"></div><span>Hanh Pham</span><span class="msl" id="ml2">Offline</span></div>
+                    <div class="ms-sep"></div>
+                    <div class="ms-label">Projects</div>
+                    <div class="ms-sub" id="mi-ds"><span>Design System</span><div class="mb mb-t" id="mb-ds">New</div></div>
+                    <div class="ms-sub" id="mi-rp"><span>Reports</span><div class="mb mb-n" id="mb-rp">8</div></div>
+                    <div class="ms-sub" id="mi-cp"><span>Campaigns</span></div>
+                </div>
+            </div>
+
+            <div class="pr-f dim" id="pf" role="status" aria-live="polite">
+                Mọi item bằng nhau — <em>không có điểm neo thị giác</em>. Sidebar trông phẳng, không có thứ tự ưu tiên.
+            </div>
+
+            <div class="pr-hint">
+                <i class="fas fa-lightbulb"></i>
+                Thử bật riêng từng loại, rồi bật tất cả cùng lúc — để ý mắt bạn tự nhìn vào đâu.
+            </div>
+        </section>
+    </main>
+</div>
+
+<script>
+(function(){
+    var state={notif:false,status:false,label:false},
+        btns=document.querySelectorAll('.tb'),
+        fb=document.getElementById('pf');
+
+    var msgs={
+        '000':'Mọi item bằng nhau — <em>không có điểm neo thị giác</em>. Sidebar trông phẳng, không có thứ tự ưu tiên.',
+        '100':'Số thông báo đang <em>kéo mắt</em> bạn vào Bell và Messages. Hai item này đột nhiên "nặng" hơn phần còn lại.',
+        '010':'Chấm trạng thái cho biết <em>ai sẵn sàng liên lạc</em>. Bạn sẽ chọn Linh (Online) thay vì Hanh (Offline) một cách tự nhiên.',
+        '001':'Nhãn "New" làm Design System <em>nổi bật hơn</em> Campaigns — dù cả hai cùng cấp trong sidebar.',
+        '110':'Badge số + badge trạng thái đang <em>cạnh tranh sự chú ý</em>. Mắt bạn lướt qua lại giữa "99+" và chấm xanh.',
+        '101':'Badge số + nhãn tạo <em>hierarchy kép</em>. Notifications vừa có số lớn, Design System vừa có nhãn — hai item này "thắng".',
+        '011':'Badge trạng thái + nhãn cho <em>2 lớp thông tin khác nhau</em>: trạng thái realtime (sống) + metadata tĩnh (đóng).',
+        '111':'Badge tạo <em>thứ bậc chú ý rõ ràng</em>. Item có badge thắng item không có — đây là cách UI "đọc" thay bạn.'
+    };
+
+    function key(){return(state.notif?'1':'0')+(state.status?'1':'0')+(state.label?'1':'0')}
+
+    function update(){
+        if(!fb) return;
+        var k=key();
+
+        /* Notification badges */
+        var mbMsg=document.getElementById('mb-msg'),
+            mbBell=document.getElementById('mb-bell'),
+            miMsg=document.getElementById('mi-msg'),
+            miBell=document.getElementById('mi-bell');
+        if(mbMsg) mbMsg.classList.toggle('s',state.notif);
+        if(mbBell) mbBell.classList.toggle('s',state.notif);
+        if(miMsg) miMsg.classList.toggle('hl',state.notif);
+        if(miBell) miBell.classList.toggle('hl',state.notif);
+
+        /* Status badges */
+        var dots=[document.getElementById('md0'),document.getElementById('md1'),document.getElementById('md2')],
+            sLabels=[document.getElementById('ml0'),document.getElementById('ml1'),document.getElementById('ml2')],
+            subs=[document.getElementById('mi-u1'),document.getElementById('mi-u2'),document.getElementById('mi-u3')];
+        dots.forEach(function(d){if(d) d.classList.toggle('s',state.status)});
+        sLabels.forEach(function(l){if(l) l.style.opacity=state.status?'':'0'});
+        subs.forEach(function(s){if(s) s.classList.toggle('hl',state.status)});
+
+        /* Label badges */
+        var mbDs=document.getElementById('mb-ds'),
+            mbRp=document.getElementById('mb-rp'),
+            miDs=document.getElementById('mi-ds'),
+            miRp=document.getElementById('mi-rp');
+        if(mbDs) mbDs.classList.toggle('s',state.label);
+        if(mbRp) mbRp.classList.toggle('s',state.label);
+        if(miDs) miDs.classList.toggle('hl',state.label);
+        if(miRp) miRp.classList.toggle('hl',state.label);
+
+        fb.innerHTML=msgs[k];
+        fb.classList.toggle('dim',k==='000');
+    }
+
+    btns.forEach(function(btn){
+        btn.addEventListener('click',function(){
+            var t=btn.dataset.type;
+            state[t]=!state[t];
+            btn.classList.toggle('on',state[t]);
+            btn.setAttribute('aria-pressed',String(state[t]));
+            update();
+        });
+    });
+
+    update();
+})();
+</script>
+</body>
+</html>
