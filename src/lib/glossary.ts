@@ -21,7 +21,7 @@ export type TermViewMode = 'modal' | 'page';
 
 export const terms: GlossaryTerm[] = [
   { id: 'api', name: 'API', nameEn: 'API / API Key', letter: 'A', groups: ['infra', 'code'], definition: 'Với marketer mới học AI, API thường được hiểu thực tế là API key: một mã bí mật lấy từ nền tảng AI để app của bạn được phép gọi model. Nếu lộ key, người khác có thể dùng ké quota và làm bạn mất tiền.', example: 'Mình muốn dùng model AI trong app chat nội bộ. Cần vào platform lấy API key, lưu vào file .env, rồi mới gọi AI được. API key không nên dán thẳng lên giao diện hay đưa lên GitHub.', related: ['endpoint', 'webhook', 'request'], demo: { kind: 'interactive', src: 'gif-api-demo.html', alt: 'Mô phỏng cách lấy API key từ nền tảng AI rồi copy về app' } },
-  { id: 'array', name: 'Array', nameEn: 'Mảng / Danh sách', letter: 'A', groups: ['code'], definition: 'Danh sách các item được xếp theo thứ tự. Giống như một cột Excel — mỗi ô là một item. Array trong code thường trông như này: ["Hà Nội", "TP.HCM", "Đà Nẵng"].', example: 'AI trả về "danh sách categories" — đó thường là một array mà code của bạn sẽ loop qua để hiển thị từng cái.', related: ['loop', 'database'] },
+  { id: 'array', name: 'Array', nameEn: 'Mảng / Danh sách', letter: 'A', groups: ['code'], definition: 'Danh sách các item được xếp theo thứ tự. Giống như một cột Excel — mỗi ô là một item. Array trong code thường trông như này: ["Hà Nội", "TP.HCM", "Đà Nẵng"].', example: 'AI trả về "danh sách categories" — đó thường là một array mà code của bạn sẽ loop qua để hiển thị từng cái.', related: ['loop', 'database'], demo: { kind: 'interactive', src: 'gif-array-demo.html', alt: 'Mô phỏng 4 khía cạnh của Array: Basics, Accessing, Operations và Matrix' } },
   { id: 'asset', name: 'Asset', nameEn: 'Tài nguyên thiết kế', letter: 'A', groups: ['design'], definition: 'Tất cả file hình ảnh, icon, font, video dùng trong sản phẩm. Khi vibecode, AI thường hỏi "Asset đâu?" — tức là nó cần file ảnh/icon để gắn vào code.', example: 'Folder /assets/images/ chứa toàn bộ ảnh của campaign. Prompt cho AI: "dùng ảnh từ /assets/images/hero.jpg cho phần hero section".' },
   { id: 'auth', name: 'Auth', nameEn: 'Authentication / Đăng nhập', letter: 'A', groups: ['infra'], definition: 'Auth là lớp kiểm tra danh tính người dùng trước khi cho vào hệ thống. Hiểu đơn giản: web cần biết bạn là ai, đăng nhập bằng cách nào, và có được phép vào khu vực đó không. Với marketer làm tool nội bộ, auth thường đi kèm Google login, email admin, session đăng nhập, và rule như “chỉ email công ty mới được vào”.', example: 'Prompt: "Thêm đăng nhập bằng Google cho tool này, chỉ email @company.com mới vào được dashboard, nếu đã có session cũ thì cho vào nhanh hơn." Đây là cách dùng auth rất thực tế.', related: ['session', 'token'], demo: { kind: 'interactive', src: 'gif-auth-demo.html', alt: 'Mô phỏng auth theo 4 trạng thái: chưa login, đúng team, sai domain, còn session' } },
   { id: 'async', name: 'Async / Await', nameEn: 'Bất đồng bộ', letter: 'A', groups: ['code'], definition: 'Cách xử lý tác vụ mất thời gian mà không làm đơ cả trang. Giống như đặt cà phê mang đi — bạn không đứng chờ, bạn làm việc khác, cà phê xong thì nhận.', example: 'Khi form submit, trang không bị đơ mà hiện loading spinner — đó là async đang chạy ngầm để gửi data lên server.' },
@@ -168,6 +168,7 @@ export const totalGroupCounts = (['code', 'design', 'infra', 'data', 'ai', 'work
 
 const deepDiveTermIds = new Set([
   'api',
+  'array',
   'auth',
   'accordion',
   'async',
@@ -249,6 +250,11 @@ const deepDiveTermIds = new Set([
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
+  array: [
+    'Array (Mảng) là cấu trúc dữ liệu quan trọng nhất để quản lý danh sách. Trong marketing, bạn sẽ gặp nó khi xử lý danh sách user, danh sách sản phẩm, hoặc các tag chiến dịch.',
+    'JS Array rất linh hoạt: có thể chứa cả số, chữ, và thậm chí là các Array khác (mảng đa chiều).',
+    'Lưu ý quan trọng nhất: Index luôn bắt đầu từ 0. Nếu mảng có 4 phần tử, index cuối cùng là 3, không phải 4. Đây là "cái bẫy" kinh điển cho người mới.',
+  ],
   gradient: [
     'Gradient là một trong những công cụ mạnh nhất để tạo ra chiều sâu (depth) mà không làm tăng dung lượng trang web như khi dùng ảnh.',
     'Khi làm việc với AI, hãy nhớ hai loại chính: Linear (chuyển theo hướng) và Radial (chuyển từ tâm). Linear thường dùng cho nền hoặc button, Radial thường dùng để giả lập ánh sáng hoặc hiệu ứng "glow".',
