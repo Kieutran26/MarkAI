@@ -137,7 +137,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'divider', name: 'Divider', nameEn: 'Đường phân bản / Divider', letter: 'D', groups: ['design', 'code'], definition: 'Thành phần giao diện dùng để phân tách các khối nội dung, tạo ra cấu trúc và nhịp điệu cho trang web. Divider giúp người dùng dễ dàng quét (scan) thông tin mà không bị choáng ngợp bởi một khối nội dung liên tục.', example: 'Prompt: "Thêm một đường kẻ ngang mờ để tách biệt phần Header và Nội dung chính, hoặc dùng divider có chữ \'HOẶC\' ở giữa để phân chia các phương thức đăng nhập."', related: ['spacing', 'border', 'layout', 'margin'], demo: { kind: 'interactive', src: 'gif-divider-demo.html', alt: 'Mô phỏng 4 loại divider phổ biến: Ngang, Dọc, Có chữ và Trong danh sách' } },
   { id: 'list', name: 'List', nameEn: 'Danh sách / List View', letter: 'L', groups: ['design', 'code'], definition: 'Thành phần giao diện hiển thị nhiều item theo chiều dọc, mỗi item chia sẻ cùng cấu trúc. Có 4 biến thể chính: Single Line (1 dòng cho menu/action), Two Line (2 dòng cho email/tin nhắn), With Avatars (có ảnh đại diện cho danh sách người), và Section Headers (có tiêu đề nhóm cho cài đặt). Chọn đúng kiểu list giúp người dùng quét thông tin nhanh hơn.', example: 'Prompt: "Danh sách thành viên nhóm hiển thị avatar, tên, vai trò và badge trạng thái online/offline theo kiểu list với avatar — đừng dùng card vì tốn diện tích."', related: ['component', 'sidebar', 'navbar', 'accordion'], demo: { kind: 'interactive', src: 'gif-list-demo.html', alt: 'Mô phỏng 4 kiểu list: Single Line, Two Line, Icons & Avatars và Section Headers' } },
   { id: 'toast-notification', name: 'Toast Notification', nameEn: 'Thông báo Toast / Snackbar', letter: 'T', groups: ['design', 'code'], definition: 'Một thông báo nhỏ, tạm thời xuất hiện trên màn hình để cung cấp phản hồi về một hành động của người dùng (như "Đã lưu", "Đã gửi"). Nó thường xuất hiện ở góc màn hình và tự động biến mất sau vài giây mà không làm gián đoạn dòng công việc hiện tại.', example: 'Khi bạn nhấn "Lưu", một toast hiện ra ở góc trên bên phải báo "Đã cập nhật thành công" rồi mờ dần sau 3 giây. Prompt: "Thêm một toast notification màu xanh lá hiện lên khi form submit thành công".', related: ['notification', 'popup', 'state', 'interface'], demo: { kind: 'interactive', src: 'gif-toast-demo.html', alt: 'Mô phỏng 4 loại toast notification: Success, Error, Warning và Info' } },
-  { id: 'whitespace', name: 'Whitespace', nameEn: 'Whitespace / Negative Space', letter: 'W', groups: ['design'], definition: 'Whitespace (hay Negative Space) không phải là "khoảng trống vô nghĩa" hay "chỗ còn thừa". Nó là một yếu tố thiết kế chủ động, đóng vai trò là "khoảng thở" giúp mắt người dùng nghỉ ngơi, phân biệt các khối thông tin và tập trung vào nội dung quan trọng nhất. Whitespace tốt giúp giao diện trông sang trọng, chuyên nghiệp và dễ đọc hơn mà không cần thay đổi bất kỳ thành phần nội dung nào.', example: 'Khi feedback cho designer hoặc ra lệnh cho AI: "Cho trang này nhiều breathing room hơn" — tức là bạn đang yêu cầu tăng whitespace (thông qua margin, padding, line-height hoặc gap) để bố cục bớt ngột ngạt.', related: ['spacing', 'hierarchy', 'margin', 'padding', 'line-height'], demo: { kind: 'interactive', src: 'gif-whitespace-demo.html', alt: 'Mô phỏng 4 khía cạnh của Whitespace: Crowded, Good Use, Negative Space và Readability' } },
+  { id: 'text-fields', name: 'Text Fields', nameEn: 'Ô nhập liệu văn bản', letter: 'T', groups: ['design', 'code'], definition: 'Thành phần cơ bản nhưng cực kỳ quan trọng trong UI — nơi người dùng nhập dữ liệu văn bản. Một text field chuẩn cần thể hiện rõ ít nhất 4 trạng thái: mặc định, đang nhập (focus), đã nhập (filled) và lỗi (invalid). Xử lý tốt text field giúp giảm friction và tăng tỷ lệ chuyển đổi cho các form đăng ký.', example: 'Prompt: "Tạo một form liên hệ có 3 text field: Họ tên, Email, và Nội dung. Field Email phải có validation kiểm tra định dạng @, nếu sai hiện viền đỏ và câu báo lỗi bên dưới."', related: ['input', 'form', 'state', 'validation'], demo: { kind: 'interactive', src: 'gif-textfield-demo.html', alt: 'Mô phỏng các trạng thái và biến thể của Text Fields' } },
 ];
 
 export const quickRefItems = [
@@ -241,6 +241,7 @@ const deepDiveTermIds = new Set([
   'list',
   'toast-notification',
   'whitespace',
+  'text-fields',
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -436,7 +437,7 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Hover là "phần thưởng" cho sự khám phá của người dùng. Một giao diện không có hover state sẽ cho cảm giác "chết", không phản hồi.',
     '4 loại hover effect phổ biến nhất: Background color (đổi màu nền), Box Shadow (nổi khối), Lift (nâng lên bằng transform), và Scale (phóng to/thu nhỏ).',
     'Quy tắc vàng: Luôn đi kèm với Transition (thời gian chuyển đổi). Nếu không có transition, hover sẽ bị giật và gây cảm giác khó chịu. Thường 0.2s - 0.3s là khoảng thời gian lý tưởng.',
-    'Lưu ý quan quan trọng: Hover chỉ tồn tại trên thiết bị có chuột (Desktop). Trên Mobile/Tablet, hiệu ứng này thường được thay thế bằng trạng thái "Active" (khi chạm vào) hoặc bỏ hoàn toàn để tránh gây hiểu lầm.',
+    'Lưu ý quan trọng: Hover chỉ tồn tại trên thiết bị có chuột (Desktop). Trên Mobile/Tablet, hiệu ứng này thường được thay thế bằng trạng thái "Active" (khi chạm vào) hoặc bỏ hoàn toàn để tránh gây hiểu lầm.',
   ],
   sticky: [
     'Sticky không phải là "Fixed" (cố định vĩnh viễn ở một chỗ). Sticky chỉ bắt đầu "dính" khi người dùng cuộn đến vị trí của nó, và nó sẽ bị cuộn đi nếu phần nội dung cha (parent) của nó đã cuộn hết.',
@@ -569,6 +570,10 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Có 2 loại chính: Macro Whitespace (khoảng cách lớn giữa các section, container) và Micro Whitespace (khoảng cách nhỏ giữa các dòng, chữ, icon).',
     'Tỷ lệ vàng: Không có con số cố định, nhưng một quy tắc UX phổ biến là: nội dung càng quan trọng hoặc càng cao cấp thì càng cần nhiều whitespace quanh đó để tạo sự tôn nghiêm và tập trung.',
     'Sức mạnh của Negative Space: Trong nghệ thuật và logo (như mũi tên ẩn trong logo FedEx), negative space còn được dùng để tạo ra các hình khối ẩn ý, giúp thiết kế trở nên thông minh và đáng nhớ hơn.',
+  ],
+  'text-fields': [
+    'Text field không chỉ là cái hộp. Nó là một thực thể có trạng thái (state). Người dùng cần biết mình đang ở đâu, đã làm đúng chưa, và nếu sai thì sai ở đâu.',
+    'Validation nên diễn ra ở trạng thái "Blur" (khi người dùng chuyển sang field khác) để tránh làm phiền khi họ đang gõ, nhưng vẫn cung cấp phản hồi kịp thời.',
   ],
 };
 

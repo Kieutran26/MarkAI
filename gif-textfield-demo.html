@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Text Fields Demo — Vibecode Glossary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+    --bg:#141413;--bg-card:#1c1c1a;--fg:#e8e0d4;--muted:#6e6a63;
+    --accent:#d97706;--accent-dim:rgba(217,119,6,.12);
+    --border:#2e2c28;--border-hi:#3e3b35;--slate:#33312d;--cream:#f5f0e8;
+    --green:#22c55e;--red:#ef4444;--fi-bg:#0e0e0d;
+    --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);min-height:100vh;-webkit-font-smoothing:antialiased;background-image:linear-gradient(rgba(255,255,255,.016) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.016) 1px,transparent 1px);background-size:20px 20px}
+
+.g4{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:18px 16px 20px;max-width:920px;margin:0 auto}
+
+.cd{background:var(--bg-card);border:1px solid var(--border);position:relative;overflow:hidden}
+.cd::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 0%,rgba(217,119,6,.04) 0%,transparent 60%);pointer-events:none}
+.cd-n{position:absolute;top:10px;right:12px;font-family:var(--mono);font-size:9px;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:2px 7px;letter-spacing:1.5px;z-index:5}
+.cd-l{font-family:var(--mono);font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:2px;padding:14px 14px 2px;position:relative}
+.cd-t{font-size:15px;font-weight:700;color:var(--cream);padding:2px 14px 10px;position:relative}
+.cd-d{padding:0 14px 8px;height:250px;position:relative}
+.cd-i{font-family:var(--mono);font-size:10px;color:var(--muted);padding:10px 14px 13px;border-top:1px solid var(--border);line-height:1.6;position:relative}
+.cd-i em{color:var(--accent);font-style:normal}
+
+.sl{position:absolute;bottom:12px;left:14px;font-family:var(--mono);font-size:9px;color:var(--accent);background:var(--bg);border:1px solid var(--border);padding:2px 8px;z-index:5;letter-spacing:.5px;transition:opacity .3s}
+
+/* === Fake Input === */
+.fi-demo{width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:0 8px;gap:10px}
+.fi{width:100%;max-width:260px;position:relative;border:1px solid var(--border);padding:10px 12px;background:var(--fi-bg);font-family:var(--mono);font-size:10px;color:var(--fg);display:flex;align-items:center;gap:8px;transition:border-color .3s,opacity .4s}
+.fi.focused{border-color:var(--accent)}
+.fi.filled{border-color:var(--accent)}
+.fi.disabled{opacity:.4;pointer-events:none}
+.fi.valid{border-color:var(--green)}
+.fi.invalid{border-color:var(--red)}
+
+.fi-label{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:10px;color:var(--muted);transition:all .25s ease;pointer-events:none;padding:0 4px;background:transparent;z-index:2}
+.fi.has-icon .fi-label{left:36px}
+.fi.focused .fi-label,.fi.filled .fi-label,.fi.valid .fi-label,.fi.invalid .fi-label{top:-1px;transform:translateY(-50%);font-size:8px;background:var(--fi-bg);padding:0 4px}
+.fi.focused .fi-label,.fi.filled .fi-label{color:var(--accent)}
+.fi.valid .fi-label{color:var(--green)}
+.fi.invalid .fi-label{color:var(--red)}
+
+.fi-icon{font-size:12px;color:var(--muted);flex-shrink:0;transition:color .3s}
+.fi.focused .fi-icon{color:var(--accent)}
+.fi.valid .fi-icon{color:var(--green)}
+.fi.invalid .fi-icon{color:var(--red)}
+
+.fi-text{flex:1;white-space:nowrap;overflow:hidden;min-width:0}
+.fi-cursor{display:none;width:1px;height:12px;background:var(--accent);flex-shrink:0;animation:curBlink 1s step-end infinite}
+.fi.focused .fi-cursor{display:block}
+@keyframes curBlink{0%,100%{opacity:1}50%{opacity:0}}
+
+.fi-check,.fi-error{display:none;font-size:11px;flex-shrink:0}
+.fi.valid .fi-check{display:block;color:var(--green)}
+.fi.invalid .fi-error{display:block;color:var(--red)}
+
+.fi-helper{font-family:var(--mono);font-size:8px;min-height:14px;padding:4px 2px 0;transition:color .3s;color:var(--muted)}
+.fi-helper.error{color:var(--red)}
+.fi-helper.success{color:var(--green)}
+
+/* Textarea variant */
+.fi.ta{min-height:80px;align-items:flex-start;padding:18px 12px 10px;transition:border-color .3s,opacity .4s,min-height .4s ease}
+.fi.ta .fi-label{top:18px;transform:translateY(0)}
+.fi.ta.focused .fi-label,.fi.ta.filled .fi-label,.fi.ta.valid .fi-label,.fi.ta.invalid .fi-label{top:-1px;transform:translateY(-50%)}
+.fi.ta .fi-cursor{height:10px;margin-top:2px}
+.fi.ta .fi-text{white-space:pre-wrap;line-height:1.5}
+
+@media(max-width:620px){
+    .g4{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+
+<main id="app-root">
+<div class="g4">
+
+    <!-- ===== 1. Default States ===== -->
+    <section class="cd" aria-label="Default States animation">
+        <span class="cd-n">LOOP</span>
+        <div class="cd-l">Biến đổi 01</div>
+        <h2 class="cd-t">Default States</h2>
+        <div class="cd-d">
+            <div class="sl" id="sl1">default</div>
+            <div class="fi-demo">
+                <div class="fi" id="fi1">
+                    <span class="fi-label">Email Address</span>
+                    <span class="fi-text" id="ft1"></span>
+                    <span class="fi-cursor"></span>
+                </div>
+                <div class="fi-helper" id="fh1"></div>
+            </div>
+        </div>
+        <div class="cd-i">Cùng 1 element, nhiều state. <em>Border, label, cursor</em> là 3 tín hiệu chính — không cần đọc text.</div>
+    </section>
+
+    <!-- ===== 2. With Icons ===== -->
+    <section class="cd" aria-label="With Icons animation">
+        <span class="cd-n">LOOP</span>
+        <div class="cd-l">Biến đổi 02</div>
+        <h2 class="cd-t">With Icons</h2>
+        <div class="cd-d">
+            <div class="sl" id="sl2">idle</div>
+            <div class="fi-demo">
+                <div class="fi has-icon" id="fi2a">
+                    <span class="fi-icon"><i class="fas fa-user"></i></span>
+                    <span class="fi-label">Username</span>
+                    <span class="fi-text" id="ft2a"></span>
+                    <span class="fi-cursor"></span>
+                </div>
+                <div class="fi has-icon" id="fi2b">
+                    <span class="fi-icon"><i class="fas fa-envelope"></i></span>
+                    <span class="fi-label">Email</span>
+                    <span class="fi-text" id="ft2b"></span>
+                    <span class="fi-cursor"></span>
+                </div>
+            </div>
+        </div>
+        <div class="cd-i">Icon = <em>visual shortcut</em>. User biết trường gì trước khi đọc label — giảm nặng load nhận trí.</div>
+    </section>
+
+    <!-- ===== 3. Validation States ===== -->
+    <section class="cd" aria-label="Validation States animation">
+        <span class="cd-n">LOOP</span>
+        <div class="cd-l">Biến đổi 03</div>
+        <h2 class="cd-t">Validation States</h2>
+        <div class="cd-d">
+            <div class="sl" id="sl3">idle</div>
+            <div class="fi-demo">
+                <div class="fi" id="fi3">
+                    <span class="fi-label">Email Address</span>
+                    <span class="fi-text" id="ft3"></span>
+                    <span class="fi-cursor"></span>
+                    <span class="fi-check"><i class="fas fa-check"></i></span>
+                    <span class="fi-error"><i class="fas fa-xmark"></i></span>
+                </div>
+                <div class="fi-helper" id="fh3"></div>
+            </div>
+        </div>
+        <div class="cd-i">Validation = <em>phản hồi lúc</em>, không đợi submit. Border + icon + helper text cùng lúc = rõ ràng nhất.</div>
+    </section>
+
+    <!-- ===== 4. Textareas ===== -->
+    <section class="cd" aria-label="Textarea animation">
+        <span class="cd-n">LOOP</span>
+        <div class="cd-l">Biến đổi 04</div>
+        <h2 class="cd-t">Textareas</h2>
+        <div class="cd-d">
+            <div class="sl" id="sl4">default</div>
+            <div class="fi-demo">
+                <div class="fi ta" id="fi4">
+                    <span class="fi-label">Description</span>
+                    <span class="fi-text" id="ft4"></span>
+                    <span class="fi-cursor"></span>
+                </div>
+                <div class="fi-helper" id="fh4"></div>
+            </div>
+        </div>
+        <div class="cd-i">Textarea = nhiều dòng nhưng <em>cùng logic state</em>. Focus, filled, disabled — y chang text field.</div>
+    </section>
+
+</div>
+</main>
+
+<script>
+/* ======== Utilities ======== */
+function wait(ms){return new Promise(function(r){setTimeout(r,ms)})}
+function typeInto(el,text,speed){
+    return new Promise(function(resolve){
+        if(!text){resolve();return}
+        var i=0;el.textContent='';
+        var timer=setInterval(function(){
+            el.textContent+=text[i];
+            if(++i>=text.length){clearInterval(timer);resolve()}
+        },speed);
+    });
+}
+
+/* ======== CARD 1 — Default States ======== */
+(function(){
+    var fi=document.getElementById('fi1'),
+        ft=document.getElementById('ft1'),
+        fh=document.getElementById('fh1'),
+        sl=document.getElementById('sl1');
+
+    function resetFi(){fi.className='fi';ft.textContent='';fh.textContent='';fh.className='fi-helper'}
+
+    (async function loop(){
+        while(true){
+            /* Default */
+            resetFi();sl.textContent='default';
+            await wait(1600);
+
+            /* Focused */
+            fi.classList.add('focused');sl.textContent='focused';
+            await wait(1200);
+
+            /* Typing */
+            await typeInto(ft,'minh@company.com',65);
+            fi.classList.remove('focused');fi.classList.add('filled');
+            sl.textContent='filled';
+            await wait(1600);
+
+            /* Disabled */
+            fi.className='fi disabled filled';sl.textContent='disabled';
+            await wait(1600);
+
+            /* Reset */
+            ft.textContent='';fi.className='fi';sl.textContent='default';
+            await wait(1200);
+        }
+    })();
+})();
+
+/* ======== CARD 2 — With Icons ======== */
+(function(){
+    var fiA=document.getElementById('fi2a'),ftA=document.getElementById('ft2a');
+    var fiB=document.getElementById('fi2b'),ftB=document.getElementById('ft2b');
+    var sl=document.getElementById('sl2');
+
+    function resetBoth(){fiA.className='fi has-icon';ftA.textContent='';fiB.className='fi has-icon';ftB.textContent=''}
+
+    (async function loop(){
+        while(true){
+            resetBoth();sl.textContent='idle';
+            await wait(1200);
+
+            /* Focus field A */
+            fiA.classList.add('focused');sl.textContent='username: focused';
+            await wait(800);
+            await typeInto(ftA,'minhtran',60);
+            fiA.classList.remove('focused');fiA.classList.add('filled');
+            sl.textContent='username: filled';
+            await wait(1000);
+
+            /* Focus field B */
+            fiB.classList.add('focused');sl.textContent='email: focused';
+            await wait(800);
+            await typeInto(ftB,'minh@co.com',55);
+            fiB.classList.remove('focused');fiB.classList.add('filled');
+            sl.textContent='email: filled';
+            await wait(1400);
+
+            /* Reset */
+            resetBoth();sl.textContent='idle';
+            await wait(1200);
+        }
+    })();
+})();
+
+/* ======== CARD 3 — Validation States ======== */
+(function(){
+    var fi=document.getElementById('fi3'),
+        ft=document.getElementById('ft3'),
+        fh=document.getElementById('fh3'),
+        sl=document.getElementById('sl3');
+
+    function resetFi(){fi.className='fi';ft.textContent='';fh.textContent='';fh.className='fi-helper'}
+
+    (async function loop(){
+        while(true){
+            resetFi();sl.textContent='idle';
+            await wait(1000);
+
+            /* Type valid email */
+            fi.classList.add('focused');sl.textContent='typing...';
+            await wait(600);
+            await typeInto(ft,'minh@company.com',55);
+            fi.classList.remove('focused');
+
+            /* Valid state */
+            fi.className='fi valid';fh.textContent='Looks good!';fh.className='fi-helper success';
+            sl.textContent='valid';
+            await wait(2000);
+
+            /* Clear */
+            ft.textContent='';fi.className='fi';fh.textContent='';fh.className='fi-helper';
+            sl.textContent='idle';
+            await wait(800);
+
+            /* Type invalid email */
+            fi.classList.add('focused');sl.textContent='typing...';
+            await wait(600);
+            await typeInto(ft,'minhcompanycom',55);
+            fi.classList.remove('focused');
+
+            /* Invalid state */
+            fi.className='fi invalid';fh.textContent='Please enter a valid email address';fh.className='fi-helper error';
+            sl.textContent='invalid';
+            await wait(2200);
+
+            /* Reset */
+            resetFi();sl.textContent='idle';
+            await wait(1000);
+        }
+    })();
+})();
+
+/* ======== CARD 4 — Textarea ======== */
+(function(){
+    var fi=document.getElementById('fi4'),
+        ft=document.getElementById('ft4'),
+        fh=document.getElementById('fh4'),
+        sl=document.getElementById('sl4');
+
+    function resetFi(){fi.className='fi ta';fi.style.minHeight='80px';ft.textContent='';fh.textContent='';fh.className='fi-helper'}
+
+    (async function loop(){
+        while(true){
+            resetFi();sl.textContent='default';
+            await wait(1400);
+
+            /* Focused */
+            fi.classList.add('focused');sl.textContent='focused';
+            await wait(1000);
+
+            /* Typing multi-line */
+            sl.textContent='typing...';
+            await typeInto(ft,'Chao ban,\nToi muon hop tac\nve chien dich quang cao.',50);
+            fi.classList.remove('focused');fi.classList.add('filled');
+            fi.style.minHeight='110px';
+            sl.textContent='filled';
+            await wait(1800);
+
+            /* Disabled */
+            fi.className='fi ta disabled filled';fi.style.minHeight='110px';
+            sl.textContent='disabled';
+            await wait(1600);
+
+            /* Reset */
+            resetFi();sl.textContent='default';
+            await wait(1200);
+        }
+    })();
+})();
+</script>
+</body>
+</html>

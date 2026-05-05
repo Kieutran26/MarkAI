@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Text Fields Practice — Vibecode Glossary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+    --bg:#141413;--bg-card:#1c1c1a;--fg:#e8e0d4;--muted:#6e6a63;
+    --accent:#d97706;--accent-dim:rgba(217,119,6,.12);
+    --border:#2e2c28;--border-hi:#3e3b35;--slate:#33312d;--cream:#f5f0e8;
+    --green:#22c55e;--red:#ef4444;--fi-bg:#0e0e0d;
+    --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);min-height:100vh;-webkit-font-smoothing:antialiased;background-image:linear-gradient(rgba(255,255,255,.016) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.016) 1px,transparent 1px);background-size:20px 20px}
+
+/* === Practice === */
+.pr{padding:18px 16px 48px;max-width:920px;margin:0 auto}
+.pr-h{margin-bottom:16px}
+.pr-g{font-family:var(--mono);font-size:11px;color:var(--accent);margin-bottom:4px}
+.pr-d{font-size:12px;color:var(--muted)}
+.pr-form{flex:1;min-width:0;display:flex;flex-direction:column;gap:18px}
+
+.pf{position:relative;border:1px solid var(--border);background:var(--fi-bg);display:flex;align-items:center;transition:border-color .3s}
+.pf.focused{border-color:var(--accent)}
+.pf.valid{border-color:var(--green)}
+.pf.invalid{border-color:var(--red)}
+.pf-icon{padding:0 10px;font-size:12px;color:var(--muted);transition:color .3s;flex-shrink:0}
+.pf.focused .pf-icon{color:var(--accent)}
+.pf.valid .pf-icon{color:var(--green)}
+.pf.invalid .pf-icon{color:var(--red)}
+.pf-wrap{flex:1;position:relative;padding:12px 0}
+.pf-input{width:100%;background:transparent;border:none;outline:none;font-family:var(--mono);font-size:11px;color:var(--fg);padding:0 10px}
+.pf-input::placeholder{color:transparent}
+.pf-label{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:11px;font-family:var(--mono);color:var(--muted);transition:all .25s ease;pointer-events:none}
+.pf.focused .pf-label,.pf.filled .pf-label,.pf.valid .pf-label,.pf.invalid .pf-label{top:-1px;transform:translateY(-50%);font-size:8px;background:var(--fi-bg);padding:0 4px}
+.pf.focused .pf-label{color:var(--accent)}
+.pf.filled .pf-label{color:var(--accent)}
+.pf.valid .pf-label{color:var(--green)}
+.pf.invalid .pf-label{color:var(--red)}
+.pf-check,.pf-err{display:none;padding:0 10px;font-size:11px;flex-shrink:0}
+.pf.valid .pf-check{display:block;color:var(--green)}
+.pf.invalid .pf-err{display:block;color:var(--red)}
+.pf-state{font-family:var(--mono);font-size:8px;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:1px 6px;position:absolute;top:-8px;right:8px;z-index:3;transition:color .3s,border-color .3s}
+.pf.focused .pf-state{color:var(--accent);border-color:rgba(217,119,6,.2)}
+.pf.valid .pf-state{color:var(--green);border-color:rgba(34,197,94,.2)}
+.pf.invalid .pf-state{color:var(--red);border-color:rgba(239,68,68,.2)}
+.pf-helper{font-family:var(--mono);font-size:8px;padding:4px 10px 0;min-height:16px;color:var(--muted);transition:color .3s}
+.pf.invalid .pf-helper{color:var(--red)}
+.pf.valid .pf-helper{color:var(--green)}
+
+/* Textarea practice */
+.pf-ta{align-items:flex-start}
+.pf-ta .pf-wrap{padding:18px 0}
+.pf-ta .pf-label{top:18px;transform:translateY(0)}
+.pf-ta.focused .pf-label,.pf-ta.filled .pf-label,.pf-ta.valid .pf-label,.pf-ta.invalid .pf-label{top:-1px;transform:translateY(-50%)}
+.pf-ta .pf-input{resize:none;line-height:1.5}
+
+.pr-f{font-family:var(--mono);font-size:11px;color:var(--fg);padding:14px 16px;margin-top:14px;background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--accent);line-height:1.7;min-height:44px;transition:border-color .3s}
+.pr-f.dim{border-left-color:var(--border-hi)}
+.pr-f em{color:var(--accent);font-style:normal}
+.pr-hint{font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:10px;padding-left:4px}
+.pr-hint i{color:var(--accent);margin-right:6px}
+
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+
+<main id="app-root">
+<section class="pr" aria-label="Text Fields practice">
+    <div class="pr-h">
+        <div class="pr-g">Mục tiêu: Cảm nhận đầy đủ lifecycle của một text field</div>
+        <p class="pr-d">Click vào, nhập liệu, rồi click ra ngoài — quan sát mỗi trạng thái chuyển đổi.</p>
+    </div>
+
+    <div class="pr-form">
+        <!-- Name -->
+        <div class="pf" id="pf-name">
+            <span class="pf-state" id="ps-name">default</span>
+            <span class="pf-icon"><i class="fas fa-user"></i></span>
+            <div class="pf-wrap">
+                <input type="text" id="pi-name" class="pf-input" autocomplete="off" aria-describedby="pph-name">
+                <label class="pf-label" for="pi-name">Full Name</label>
+            </div>
+            <span class="pf-check"><i class="fas fa-check"></i></span>
+            <span class="pf-err"><i class="fas fa-xmark"></i></span>
+            <div class="pf-helper" id="pph-name">Required</div>
+        </div>
+        <!-- Email -->
+        <div class="pf" id="pf-email">
+            <span class="pf-state" id="ps-email">default</span>
+            <span class="pf-icon"><i class="fas fa-envelope"></i></span>
+            <div class="pf-wrap">
+                <input type="email" id="pi-email" class="pf-input" autocomplete="off" aria-describedby="pph-email">
+                <label class="pf-label" for="pi-email">Email Address</label>
+            </div>
+            <span class="pf-check"><i class="fas fa-check"></i></span>
+            <span class="pf-err"><i class="fas fa-xmark"></i></span>
+            <div class="pf-helper" id="pph-email">Required</div>
+        </div>
+        <!-- Message -->
+        <div class="pf pf-ta" id="pf-msg">
+            <span class="pf-state" id="ps-msg">default</span>
+            <div class="pf-wrap">
+                <textarea id="pi-msg" class="pf-input" rows="3" aria-describedby="pph-msg"></textarea>
+                <label class="pf-label" for="pi-msg">Message</label>
+            </div>
+            <div class="pf-helper" id="pph-msg">Optional</div>
+        </div>
+    </div>
+
+    <div class="pr-f dim" id="pf" role="status" aria-live="polite">Click vào bất kỳ field để bắt đầu. <em>Để ý label, border, và icon thay đổi thế nào.</em></div>
+    <div class="pr-hint"><i class="fas fa-lightbulb"></i>Thử: nhập email không có "@" rồi click ra ngoài — để ý cách validation phản hồi.</div>
+</section>
+</main>
+
+<script>
+/* ======== PRACTICE ======== */
+(function(){
+    var fields={
+        name:{wrap:document.getElementById('pf-name'),input:document.getElementById('pi-name'),state:document.getElementById('ps-name'),helper:document.getElementById('pph-name'),required:true},
+        email:{wrap:document.getElementById('pf-email'),input:document.getElementById('pi-email'),state:document.getElementById('ps-email'),helper:document.getElementById('pph-email'),required:true},
+        msg:{wrap:document.getElementById('pf-msg'),input:document.getElementById('pi-msg'),state:document.getElementById('ps-msg'),helper:document.getElementById('pph-msg'),required:false}
+    };
+    var fb=document.getElementById('pf');
+    var defaultFb='Click vào bất kỳ field để bắt đầu. <em>Để ý label, border, và icon thay đổi thế nào.</em>';
+
+    function setState(key,cls){
+        var f=fields[key],w=f.wrap;
+        w.classList.remove('focused','filled','valid','invalid');
+        if(cls)w.classList.add(cls);
+        f.state.textContent=cls||'default';
+    }
+
+    function validate(key){
+        var f=fields[key],val=f.input.value.trim();
+        if(key==='name'){
+            if(!val&&f.required){setState(key,'invalid');f.helper.textContent='Name is required';return 'invalid'}
+            if(val){setState(key,'valid');f.helper.textContent='Looks good';return 'valid'}
+            setState(key,'');f.helper.textContent='Required';return 'default';
+        }
+        if(key==='email'){
+            if(!val&&f.required){setState(key,'invalid');f.helper.textContent='Email is required';return 'invalid'}
+            if(val&&!val.includes('@')){setState(key,'invalid');f.helper.textContent='Please include "@" in email';return 'invalid'}
+            if(val){setState(key,'valid');f.helper.textContent='Looks good';return 'valid'}
+            setState(key,'');f.helper.textContent='Required';return 'default';
+        }
+        if(key==='msg'){
+            if(val){setState(key,'filled');f.helper.textContent='Optional';return 'filled'}
+            setState(key,'');f.helper.textContent='Optional';return 'default';
+        }
+    }
+
+    function updateFeedback(key,event,result){
+        var msgs={
+            'focus-name':   'Border đổi sang accent = <em>focus state</em>. Label "bay lên" — đây là "floating label", thay thế placeholder.',
+            'focus-email':  'Icon <i class="fas fa-envelope" style="color:var(--accent)"></i> đổi màu = <em>visual hint</em>. User biết ngay đây là trường email.',
+            'focus-msg':    'Textarea = text field nhiều dòng. Cùng <em>cùng logic state</em> (focus, filled) nhưng tỷ lệ chiều rộng:cao khác.',
+            'input-name':   'Có nội dung = <em>filled state</em>. Label giữ nguyên trên, không bị text che.',
+            'input-email':  'Đang nhập... validation sẽ chạy khi bạn <em>blur</em> (click ra ngoài field).',
+            'input-msg':    'Đang nhập nội dung. Textarea có thể <em>tự tăng chiều cao</em> khi nhiều dòng.',
+            'blur-name-valid':   'Blur = mất focus. Validation: có nội dung = <em>valid</em>. Border xanh + checkmark xác nhận.',
+            'blur-name-invalid': 'Blur mà trống = <em>invalid</em>. Error message xuất hiện dưới field — giúp user biết cần sửa gì.',
+            'blur-email-valid':  'Email đúng format (có "@") = <em>valid</em>. Checkmark là tín hiệu visual nhanh nhất.',
+            'blur-email-invalid':'Email thiếu "@" = <em>invalid</em>. Error message nói rõ lỗi — không chỉ là "lỗi".',
+            'blur-msg-filled':   'Textarea có nội dung = filled. Không lỗi vì trường này <em>optional</em> — không validation.',
+            'blur-msg-empty':    'Textarea trống — nhưng không báo lỗi vì trường này <em>không bắt buộc</em>.'
+        };
+        var k=key+'-'+event;
+        if(result)k+='-'+result;
+        var msg=msgs[k]||defaultFb;
+        fb.innerHTML=msg;
+        fb.classList.toggle('dim',k===Object.keys(msgs)[0]||false);
+    }
+
+    /* Bind events */
+    Object.keys(fields).forEach(function(key){
+        var f=fields[key];
+
+        f.input.addEventListener('focus',function(){
+            setState(key,'focused');
+            updateFeedback(key,'focus');
+        });
+
+        f.input.addEventListener('input',function(){
+            if(f.input.value.length>0&&!f.wrap.classList.contains('focused')){
+                setState(key,'filled');
+            }else if(f.input.value.length>0){
+                /* focused + has value — keep focused state, but mark as filled too */
+                f.wrap.classList.add('filled');
+            }
+            updateFeedback(key,'input');
+        });
+
+        f.input.addEventListener('blur',function(){
+            var result=validate(key);
+            updateFeedback(key,'blur',result);
+        });
+    });
+
+    /* Reset feedback when clicking outside all fields */
+    document.addEventListener('click',function(e){
+        var inField=false;
+        Object.keys(fields).forEach(function(k){if(fields[k].wrap.contains(e.target))inField=true});
+        if(!inField){
+            var allDefault=true;
+            Object.keys(fields).forEach(function(k){
+                if(fields[k].wrap.classList.contains('valid')||fields[k].wrap.classList.contains('invalid'))allDefault=false;
+            });
+            if(allDefault){fb.innerHTML=defaultFb;fb.classList.add('dim')}
+        }
+    });
+})();
+</script>
+</body>
+</html>

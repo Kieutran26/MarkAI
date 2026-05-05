@@ -136,6 +136,8 @@ import whitespaceDemoHtml from '../../gif-whitespace-demo.html?raw';
 import whitespacePracticeHtml from '../../gif-whitespace-practice.html?raw';
 import snackbarDemoHtml from '../../gif-snackbar-demo.html?raw';
 import snackbarPracticeHtml from '../../gif-snackbar-practice.html?raw';
+import textfieldDemoHtml from '../../gif-textfield-demo.html?raw';
+import textfieldPracticeHtml from '../../gif-textfield-practice.html?raw';
 
 
 // Final sync for viewport practice update
@@ -223,6 +225,7 @@ export default function GlossaryTermDetailPage() {
       case 'dark-mode': return darkmodeDemoHtml;
       case 'whitespace': return whitespaceDemoHtml;
       case 'snackbar': return snackbarDemoHtml;
+      case 'text-fields': return textfieldDemoHtml;
       default: return null;
     }
   };
@@ -294,6 +297,7 @@ export default function GlossaryTermDetailPage() {
       case 'dark-mode': return darkmodePracticeHtml;
       case 'whitespace': return whitespacePracticeHtml;
       case 'snackbar': return snackbarPracticeHtml;
+      case 'text-fields': return textfieldPracticeHtml;
       default: return null;
     }
   };
