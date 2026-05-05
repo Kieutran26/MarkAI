@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flat Design</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#1a1a1a;--bg-card:#222;--accent:#d97706;--accent-dim:#92400e;
+  --accent-glow:rgba(217,119,6,.12);--fg:#e8e4df;--fg-muted:#8a8580;
+  --fg-dim:#5a5550;--border:#3a3a3a;--border-accent:#d97706;
+  --success:#22c55e;--success-bg:rgba(34,197,94,.1);
+  --error:#ef4444;--error-bg:rgba(239,68,68,.1);
+  --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;--radius:2px;
+}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);line-height:1.5;min-height:100vh;
+  background-image:linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);
+  background-size:24px 24px}
+.page-wrapper{max-width:960px;margin:0 auto;padding:32px 20px 80px}
+.page-title{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+.page-heading{font-size:clamp(28px,5vw,42px);font-weight:700;color:var(--fg);line-height:1.1;margin-bottom:6px}
+.page-sub{font-size:14px;color:var(--fg-muted);margin-bottom:40px;max-width:540px}
+.section-header{display:flex;align-items:center;gap:12px;margin-bottom:20px;margin-top:56px;padding-top:32px;border-top:1px solid var(--border)}
+.section-header:first-of-type{margin-top:0;padding-top:0;border-top:none}
+.section-num{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--bg);background:var(--accent);width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:var(--radius);flex-shrink:0}
+.section-title{font-size:18px;font-weight:700;color:var(--fg)}
+.section-hint{font-family:var(--mono);font-size:10px;color:var(--fg-dim);margin-left:auto;letter-spacing:.5px}
+.grid-4{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:640px){.grid-4{grid-template-columns:1fr}.section-hint{display:none}}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;position:relative;overflow:hidden;transition:border-color .3s}
+.card:hover{border-color:#4a4a4a}
+.card-label{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.card-label::before{content:'';width:6px;height:6px;background:var(--accent);border-radius:1px}
+.card-title{font-size:16px;font-weight:700;color:var(--fg);margin-bottom:4px}
+.card-desc{font-size:12px;color:var(--fg-muted);margin-bottom:20px;line-height:1.6}
+.demo-area{background:#141414;border:1px solid var(--border);border-radius:var(--radius);padding:16px;min-height:210px;position:relative;overflow:hidden}
+.style-badge{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--accent);background:var(--accent-glow);border:1px solid rgba(217,119,6,.3);padding:2px 8px;border-radius:var(--radius);position:absolute;top:12px;right:12px;opacity:0;transition:opacity .4s;z-index:4}
+.style-badge.visible{opacity:1}
+.insight-bar{margin-top:14px;padding:8px 12px;background:var(--accent-glow);border:1px solid rgba(217,119,6,.2);border-radius:var(--radius);font-size:11px;color:var(--accent);font-family:var(--mono);line-height:1.5;opacity:0;transform:translateY(4px);transition:all .4s}
+.insight-bar.visible{opacity:1;transform:translateY(0)}
+.auto-progress{height:2px;background:var(--border);margin-top:12px;border-radius:1px;overflow:hidden}
+.auto-progress-fill{height:100%;background:var(--accent);width:0%;transition:width .1s linear;border-radius:1px}
+
+/* ===== MINI UI COMPONENTS ===== */
+.mu{transition:all .6s cubic-bezier(.4,0,.2,1);position:relative}
+
+/* Hero mini */
+.mu-hero{padding:20px;border-radius:4px;text-align:center}
+.mu-hero-h{font-size:14px;font-weight:700;margin-bottom:6px;transition:all .5s}
+.mu-hero-p{font-size:9px;opacity:.7;margin-bottom:12px;transition:all .5s}
+.mu-hero-btn{display:inline-block;padding:6px 16px;font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;border:none;transition:all .5s}
+
+/* Pricing card mini */
+.mu-price{padding:12px;border-radius:4px;text-align:center}
+.mu-price-name{font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;opacity:.6;margin-bottom:4px;transition:all .5s}
+.mu-price-val{font-size:20px;font-weight:700;margin-bottom:2px;transition:all .5s}
+.mu-price-feat{font-size:8px;opacity:.5;margin-top:6px;transition:all .5s}
+
+/* Dashboard mini */
+.mu-dash{padding:12px;border-radius:4px}
+.mu-dash-row{display:flex;gap:8px;margin-bottom:8px}
+.mu-dash-stat{flex:1;padding:8px;border-radius:3px;text-align:center;transition:all .5s}
+.mu-dash-stat-val{font-size:14px;font-weight:700;transition:all .5s}
+.mu-dash-stat-label{font-family:var(--mono);font-size:7px;letter-spacing:1px;text-transform:uppercase;opacity:.5;margin-top:2px;transition:all .5s}
+.mu-dash-item{display:flex;align-items:center;gap:6px;padding:6px 0;font-size:9px;opacity:.6;transition:all .5s}
+.mu-dash-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;transition:all .5s}
+
+/* App mini */
+.mu-app{padding:12px;border-radius:4px}
+.mu-app-bar{display:flex;align-items:center;gap:8px;padding-bottom:8px;margin-bottom:8px;transition:all .5s}
+.mu-app-avatar{width:24px;height:24px;border-radius:50%;flex-shrink:0;transition:all .5s}
+.mu-app-name{font-size:10px;font-weight:600;transition:all .5s}
+.mu-app-time{font-family:var(--mono);font-size:7px;opacity:.4;margin-left:auto;transition:all .5s}
+.mu-app-bubble{padding:8px 12px;border-radius:8px;font-size:9px;max-width:70%;margin-bottom:6px;transition:all .5s}
+
+/* Crossed-out overlay for "removed" elements */
+.mu-cross{position:relative}
+.mu-cross::after{content:'';position:absolute;inset:-2px;border:2px solid var(--error);border-radius:inherit;opacity:0;transition:opacity .5s;pointer-events:none}
+.mu-cross.show::after{opacity:.6}
+
+/* ===== PRACTICE ===== */
+.practice-card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:28px;margin-bottom:20px}
+.practice-goal{font-family:var(--mono);font-size:11px;color:var(--fg-muted);margin-bottom:20px;line-height:1.6;padding-left:12px;border-left:2px solid var(--accent-dim)}
+.practice-goal strong{color:var(--fg);font-weight:600}
+.scenario-item{background:#1a1a1a;border:1px solid var(--border);border-radius:var(--radius);padding:20px;margin-bottom:16px;transition:border-color .3s,box-shadow .3s}
+.scenario-item.answered-correct{border-color:var(--success);box-shadow:0 0 0 1px rgba(34,197,94,.1)}
+.scenario-item.answered-wrong{border-color:var(--error);box-shadow:0 0 0 1px rgba(239,68,68,.1)}
+.scenario-question{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--accent);margin-bottom:12px}
+.answer-options{display:flex;gap:8px;flex-wrap:wrap}
+.answer-btn{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.5px;color:var(--fg-muted);background:transparent;border:1px solid var(--border);padding:7px 14px;border-radius:var(--radius);cursor:pointer;transition:all .25s}
+.answer-btn:hover:not(.disabled){border-color:var(--fg-dim);color:var(--fg);background:rgba(255,255,255,.03)}
+.answer-btn.correct{border-color:var(--success);color:var(--success);background:var(--success-bg)}
+.answer-btn.wrong{border-color:var(--error);color:var(--error);background:var(--error-bg)}
+.answer-btn.disabled{cursor:default;opacity:.5}
+.answer-btn.correct.disabled,.answer-btn.wrong.disabled{opacity:1}
+.scenario-feedback{margin-top:12px;padding:8px 12px;border-radius:var(--radius);font-size:11px;font-family:var(--mono);line-height:1.5;opacity:0;transform:translateY(4px);transition:all .3s}
+.scenario-feedback.visible{opacity:1;transform:translateY(0)}
+.scenario-feedback.correct-fb{background:var(--success-bg);border:1px solid rgba(34,197,94,.2);color:var(--success)}
+.scenario-feedback.wrong-fb{background:var(--error-bg);border:1px solid rgba(239,68,68,.2);color:var(--error)}
+.score-bar{display:flex;align-items:center;gap:16px;padding:14px 18px;background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);margin-top:8px;flex-wrap:wrap}
+.score-label{font-family:var(--mono);font-size:10px;letter-spacing:1px;text-transform:uppercase;color:var(--fg-dim)}
+.score-value{font-family:var(--mono);font-size:18px;font-weight:700;color:var(--accent)}
+.score-dots{display:flex;gap:6px;margin-left:auto}
+.score-dot{width:10px;height:10px;border-radius:50%;border:1px solid var(--border);background:transparent;transition:all .3s}
+.score-dot.filled{background:var(--success);border-color:var(--success)}
+.score-dot.failed{background:var(--error);border-color:var(--error)}
+.score-message{font-family:var(--mono);font-size:10px;color:var(--fg-dim);transition:color .3s;width:100%;margin-top:4px}
+.score-message.all-correct{color:var(--success)}
+.reset-btn{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--fg-dim);background:transparent;border:1px solid var(--border);padding:6px 14px;border-radius:var(--radius);cursor:pointer;transition:all .25s}
+.reset-btn:hover{border-color:var(--fg-dim);color:var(--fg-muted)}
+.hint-bar{margin-top:12px;padding:6px 12px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:var(--radius);font-family:var(--mono);font-size:9px;color:var(--fg-dim);letter-spacing:.3px;display:flex;align-items:center;gap:6px}
+.hint-bar::before{content:'?';display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;background:var(--border);color:var(--fg-muted);font-size:9px;font-weight:700;border-radius:var(--radius);flex-shrink:0}
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-4px)}40%{transform:translateX(4px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+.shake{animation:shake .4s ease}
+
+/* ===== PRACTICE B: FLATNESS SLIDER ===== */
+.ws-workspace{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:700px){.ws-workspace{grid-template-columns:1fr}}
+.ws-panel{background:#141414;border:1px solid var(--border);border-radius:var(--radius);padding:20px}
+.ws-panel-title{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--fg-dim);margin-bottom:16px}
+.range-slider{-webkit-appearance:none;appearance:none;width:100%;height:4px;background:var(--border);border-radius:1px;outline:none}
+.range-slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;background:var(--accent);border-radius:var(--radius);cursor:pointer;border:2px solid var(--bg)}
+.range-slider::-moz-range-thumb{width:20px;height:20px;background:var(--accent);border-radius:var(--radius);cursor:pointer;border:2px solid var(--bg)}
+.control-group{margin-bottom:16px}
+.control-group label{display:block;font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--fg-dim);margin-bottom:8px}
+.value-display{float:right;color:var(--accent)}
+.prop-row{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:10px;font-family:var(--mono)}
+.prop-name{width:80px;color:var(--fg-dim);flex-shrink:0}
+.prop-arrow{color:var(--fg-dim);opacity:.3;transition:opacity .3s}
+.prop-val{color:var(--accent);font-weight:600;transition:color .3s}
+.prop-swatch{width:12px;height:12px;border-radius:var(--radius);border:1px solid var(--border);flex-shrink:0;transition:all .4s}
+.code-output{margin-top:12px;padding:10px 12px;background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:var(--radius);font-family:var(--mono);font-size:10px;color:var(--fg-dim);line-height:1.7;white-space:pre;overflow-x:auto}
+.code-output .tag{color:var(--error)}.code-output .attr{color:var(--accent)}.code-output .val{color:var(--success)}
+.flatness-meter{display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:var(--radius);margin-top:12px}
+.flatness-meter-label{font-family:var(--mono);font-size:9px;color:var(--fg-dim);letter-spacing:1px;text-transform:uppercase;width:50px;flex-shrink:0}
+.flatness-meter-bar{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.flatness-meter-fill{height:100%;border-radius:3px;transition:width .3s ease,background .3s ease}
+.flatness-meter-val{font-family:var(--mono);font-size:12px;font-weight:700;width:36px;text-align:right;flex-shrink:0;transition:color .3s}
+.removed-tag{display:inline-block;font-family:var(--mono);font-size:8px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:1px 5px;border-radius:1px;background:var(--error-bg);color:var(--error);margin-left:4px;opacity:0;transition:opacity .4s}
+.removed-tag.visible{opacity:1}
+</style>
+</head>
+<body>
+
+<div class="page-wrapper">
+  <div class="page-title">Thuật ngữ Design</div>
+  <h1 class="page-heading">Flat Design</h1>
+  <p class="page-sub">Bỏ mọi hiệu ứng 3D — shadow, gradient, bevel — chỉ giữ lại màu sắc, hình khối và nội dung.</p>
+
+  <!-- ==================== MÔ PHỎNG ==================== -->
+  <div class="section-header">
+    <div class="section-num">1</div>
+    <div class="section-title">Cho xem bản chất</div>
+    <div class="section-hint">auto-play</div>
+  </div>
+
+  <div class="grid-4">
+
+    <!-- 1. NO SHADOWS -->
+    <div class="card">
+      <div class="card-label">01</div>
+      <div class="card-title">No Shadows</div>
+      <div class="card-desc">Shadow tạo cảm giác "nổi". Flat bỏ shadow — mọi thứ nằm cùng 1 mặt phẳng.</div>
+      <div class="demo-area">
+        <span class="style-badge" id="b1">SKEUOMORPHIC</span>
+        <div class="mu mu-hero" id="hero1" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8);box-shadow:0 8px 24px rgba(0,0,0,.4);color:#fff">
+          <div class="mu-hero-h">Build better experiences</div>
+          <div class="mu-hero-p">The modern platform for teams</div>
+          <div class="mu-hero-btn" id="hero-btn1" style="background:#fff;color:#1d4ed8;box-shadow:0 4px 12px rgba(0,0,0,.3)">Get Started</div>
+        </div>
+        <div class="auto-progress"><div class="auto-progress-fill" id="p1"></div></div>
+      </div>
+      <div class="insight-bar visible">Shadow = depth = "nổi lên". Bỏ shadow = mọi thứ flat — user tập trung vào content, không bị phân tâm bởi hiệu ứng.</div>
+    </div>
+
+    <!-- 2. SOLID COLORS -->
+    <div class="card">
+      <div class="card-label">02</div>
+      <div class="card-title">Solid Colors</div>
+      <div class="card-desc">Không gradient — 1 màu solid cho mỗi vùng. Màu nói lên chức năng, không phải trang trí.</div>
+      <div class="demo-area">
+        <span class="style-badge" id="b2">GRADIENT</span>
+        <div style="display:flex;gap:8px" id="price-row">
+          <div class="mu mu-price" id="pr1" style="flex:1;background:linear-gradient(180deg,#f8fafc,#e2e8f0);color:#334155;box-shadow:0 4px 12px rgba(0,0,0,.15);border:1px solid #e2e8f0">
+            <div class="mu-price-name">Basic</div>
+            <div class="mu-price-val">$0</div>
+            <div class="mu-price-feat">3 projects</div>
+          </div>
+          <div class="mu mu-price" id="pr2" style="flex:1;background:linear-gradient(180deg,#3b82f6,#1d4ed8);color:#fff;box-shadow:0 6px 20px rgba(59,130,246,.4);border:1px solid transparent">
+            <div class="mu-price-name">Pro</div>
+            <div class="mu-price-val">$9</div>
+            <div class="mu-price-feat">Unlimited</div>
+          </div>
+          <div class="mu mu-price" id="pr3" style="flex:1;background:linear-gradient(180deg,#f8fafc,#e2e8f0);color:#334155;box-shadow:0 4px 12px rgba(0,0,0,.15);border:1px solid #e2e8f0">
+            <div class="mu-price-name">Team</div>
+            <div class="mu-price-val">$29</div>
+            <div class="mu-price-feat">Everything</div>
+          </div>
+        </div>
+        <div class="auto-progress"><div class="auto-progress-fill" id="p2"></div></div>
+      </div>
+      <div class="insight-bar visible">Gradient = "đẹp mắt" nhưng phân tâm. Solid color = rõ ràng — màu này = chức năng này, không nhầm.</div>
+    </div>
+
+    <!-- 3. SIMPLE ICONS -->
+    <div class="card">
+      <div class="card-label">03</div>
+      <div class="card-title">Simple Iconography</div>
+      <div class="card-desc">Không icon chi tiết, không 3D — icon = biểu tượng tối giản, 1 màu, dễ nhận diện.</div>
+      <div class="demo-area">
+        <span class="style-badge" id="b3">DETAILED</span>
+        <div class="mu mu-dash" id="dash1" style="background:#f8fafc;color:#334155;border:1px solid #e2e8f0;box-shadow:0 4px 12px rgba(0,0,0,.12)">
+          <div style="font-size:11px;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:6px">
+            <span id="dash-icon" style="font-size:16px;transition:all .5s">&#128100;</span>
+            Welcome, Alex
+          </div>
+          <div class="mu-dash-row">
+            <div class="mu-dash-stat" id="ds1" style="background:#eff6ff;border:1px solid #bfdbfe">
+              <div class="mu-dash-stat-val">1,240</div>
+              <div class="mu-dash-stat-label">Users</div>
+            </div>
+            <div class="mu-dash-stat" id="ds2" style="background:#fef3c7;border:1px solid #fde68a">
+              <div class="mu-dash-stat-val">$8.4K</div>
+              <div class="mu-dash-stat-label">Revenue</div>
+            </div>
+          </div>
+          <div class="mu-dash-item"><div class="mu-dash-dot" style="background:#22c55e"></div>New signup from Google</div>
+          <div class="mu-dash-item"><div class="mu-dash-dot" style="background:#3b82f6"></div>Invoice #1024 paid</div>
+          <div class="mu-dash-item"><div class="mu-dash-dot" style="background:#f59e0b"></div>Server alert resolved</div>
+        </div>
+        <div class="auto-progress"><div class="auto-progress-fill" id="p3"></div></div>
+      </div>
+      <div class="insight-bar visible">Icon phức tạp = noise. Icon flat 1 màu = tín hiệu rõ — não xử lý trong 50ms thay vì 200ms.</div>
+    </div>
+
+    <!-- 4. CLEAN LAYOUT -->
+    <div class="card">
+      <div class="card-label">04</div>
+      <div class="card-title">Clean Layout</div>
+      <div class="card-desc">Bỏ border thừa, decoration thừa — spacing + typography tạo structure thay vì đường kẻ.</div>
+      <div class="demo-area">
+        <span class="style-badge" id="b4">DECORATED</span>
+        <div class="mu mu-app" id="app1" style="background:#f8fafc;color:#334155;border:1px solid #e2e8f0;box-shadow:0 4px 12px rgba(0,0,0,.12)">
+          <div class="mu-app-bar" id="app-bar" style="border-bottom:2px solid #e2e8f0">
+            <div class="mu-app-avatar" id="app-avatar" style="background:linear-gradient(135deg,#3b82f6,#8b5cf6);box-shadow:0 2px 8px rgba(59,130,246,.3)"></div>
+            <div>
+              <div class="mu-app-name">Sarah Chen</div>
+              <div style="font-size:7px;opacity:.4">Online</div>
+            </div>
+            <div class="mu-app-time">2:30 PM</div>
+          </div>
+          <div class="mu-app-bubble" id="app-b1" style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px 12px 12px 2px">Hey! Can you review the new design?</div>
+          <div class="mu-app-bubble" id="app-b2" style="background:#3b82f6;color:#fff;border-radius:12px 12px 2px 12px;margin-left:auto">Sure, sending now!</div>
+        </div>
+        <div class="auto-progress"><div class="auto-progress-fill" id="p4"></div></div>
+      </div>
+      <div class="insight-bar visible">Border = crutch cho layout yếu. Flat dùng spacing + typography tạo structure — sạch hơn, linh hoạt hơn.</div>
+    </div>
+
+  </div>
+
+  <!-- ==================== THỰC HÀNH ==================== -->
+  <div class="section-header">
+    <div class="section-num">2</div>
+    <div class="section-title">Cho chạm vào khái niệm</div>
+    <div class="section-hint">interactive</div>
+  </div>
+
+  <!-- PRACTICE A: TRUE/FALSE -->
+  <div class="practice-card">
+    <div class="practice-goal">
+      <strong>Mục tiêu:</strong> Phân biệt được flat design vs không flat — prompt "dùng flat design" mà dev hiểu đúng.
+    </div>
+    <div id="tf-container"></div>
+    <div class="score-bar">
+      <div>
+        <div class="score-label">Kết quả</div>
+        <div class="score-value" id="tf-val">0/4</div>
+      </div>
+      <div class="score-dots" id="tf-dots">
+        <div class="score-dot" data-i="0"></div>
+        <div class="score-dot" data-i="1"></div>
+        <div class="score-dot" data-i="2"></div>
+        <div class="score-dot" data-i="3"></div>
+      </div>
+      <div class="score-message" id="tf-msg"></div>
+      <button class="reset-btn" id="tf-reset" style="display:none">Làm lại</button>
+    </div>
+    <div class="hint-bar">Mẹo: Flat design không phải "thiếu" — nó là "có chủ đích bỏ đi". Hỏi: cái này có phục vụ content không?</div>
+  </div>
+
+  <!-- PRACTICE B: FLATNESS SLIDER -->
+  <div class="practice-card">
+    <div class="practice-goal">
+      <strong>Mục tiêu:</strong> Kéo slider từ 0% → 100% flat — thấy chính xác shadow, gradient, border, radius thay đổi thế nào.
+    </div>
+    <div class="ws-workspace">
+      <div class="ws-panel">
+        <div class="ws-panel-title">Flatness Control</div>
+        <div class="control-group">
+          <label>Flatness <span class="value-display" id="flat-val">0%</span></label>
+          <input type="range" class="range-slider" min="0" max="100" step="5" value="0" id="flat-slider">
+        </div>
+        <div style="font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--fg-dim);margin-bottom:8px">Properties changing</div>
+        <div class="prop-row" id="prop-shadow"><div class="prop-swatch" id="sw-shadow"></div><span class="prop-name">box-shadow</span><span class="prop-arrow">&rarr;</span><span class="prop-val" id="pv-shadow">0 8px 24px</span><span class="removed-tag" id="rt-shadow">removed</span></div>
+        <div class="prop-row" id="prop-gradient"><div class="prop-swatch" id="sw-gradient"></div><span class="prop-name">gradient</span><span class="prop-arrow">&rarr;</span><span class="prop-val" id="pv-gradient">135deg 2-stop</span><span class="removed-tag" id="rt-gradient">removed</span></div>
+        <div class="prop-row" id="prop-border"><div class="prop-swatch" id="sw-border"></div><span class="prop-name">border</span><span class="prop-arrow">&rarr;</span><span class="prop-val" id="pv-border">1px solid #e2e8f0</span><span class="removed-tag" id="rt-border">removed</span></div>
+        <div class="prop-row" id="prop-radius"><div class="prop-swatch" id="sw-radius"></div><span class="prop-name">radius</span><span class="prop-arrow">&rarr;</span><span class="prop-val" id="pv-radius">12px</span><span class="removed-tag" id="rt-radius">reduced</span></div>
+        <div class="flatness-meter">
+          <span class="flatness-meter-label">Score</span>
+          <div class="flatness-meter-bar"><div class="flatness-meter-fill" id="flat-meter" style="width:0%;background:var(--error)"></div></div>
+          <span class="flatness-meter-val" id="flat-meter-val" style="color:var(--error)">0</span>
+        </div>
+      </div>
+      <div>
+        <div class="ws-panel" style="margin-bottom:12px">
+          <div class="ws-panel-title">Live Preview</div>
+          <div style="padding:16px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:var(--radius)">
+            <div class="mu mu-hero" id="preview-hero" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8);box-shadow:0 8px 24px rgba(0,0,0,.4);border-radius:12px;color:#fff;text-align:center">
+              <div class="mu-hero-h">Build better experiences</div>
+              <div class="mu-hero-p">The modern platform for teams</div>
+              <div class="mu-hero-btn" id="preview-btn" style="background:#fff;color:#1d4ed8;box-shadow:0 4px 12px rgba(0,0,0,.3);border-radius:8px">Get Started</div>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:12px">
+              <div class="mu mu-price" id="preview-pr1" style="flex:1;background:linear-gradient(180deg,#f8fafc,#e2e8f0);color:#334155;box-shadow:0 4px 12px rgba(0,0,0,.15);border:1px solid #e2e8f0;border-radius:8px;text-align:center;padding:10px">
+                <div class="mu-price-name">Basic</div>
+                <div class="mu-price-val" style="font-size:16px">$0</div>
+              </div>
+              <div class="mu mu-price" id="preview-pr2" style="flex:1;background:linear-gradient(180deg,#3b82f6,#1d4ed8);color:#fff;box-shadow:0 6px 20px rgba(59,130,246,.4);border-radius:8px;text-align:center;padding:10px">
+                <div class="mu-price-name">Pro</div>
+                <div class="mu-price-val" style="font-size:16px">$9</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="code-output" id="preview-code"></div>
+      </div>
+    </div>
+    <div class="hint-bar">Kéo từ 0% sang 100% — quan sát từng property biến mất. 100% flat = chỉ còn màu solid + nội dung.</div>
+  </div>
+
+</div>
+
+<script>
+// =============================================
+// Helper
+// =============================================
+function autoProgress(id, interval) {
+  const el = document.getElementById(id);
+  let s = Date.now();
+  (function tick() { el.style.width = ((Date.now() - s) % interval / interval * 100) + '%'; requestAnimationFrame(tick); })();
+}
+
+// =============================================
+// SIM 1: Hero — shadow on/off
+// =============================================
+(function(){
+  const hero = document.getElementById('hero1');
+  const btn = document.getElementById('hero-btn1');
+  const badge = document.getElementById('b1');
+  let flat = false;
+  const interval = 2200;
+  let start = Date.now();
+
+  function flip() {
+    flat = !flat;
+    if (flat) {
+      hero.style.background = '#2563eb';
+      hero.style.boxShadow = 'none';
+      btn.style.boxShadow = 'none';
+      badge.textContent = 'FLAT';
+    } else {
+      hero.style.background = 'linear-gradient(135deg,#3b82f6,#1d4ed8)';
+      hero.style.boxShadow = '0 8px 24px rgba(0,0,0,.4)';
+      btn.style.boxShadow = '0 4px 12px rgba(0,0,0,.3)';
+      badge.textContent = 'SKEUOMORPHIC';
+    }
+    badge.classList.add('visible');
+  }
+  (function tick() { if (Date.now() - start >= interval) { start = Date.now(); flip(); } requestAnimationFrame(tick); })();
+  autoProgress('p1', 4400);
+})();
+
+// =============================================
+// SIM 2: Pricing — gradient → solid
+// =============================================
+(function(){
+  const pr1 = document.getElementById('pr1');
+  const pr2 = document.getElementById('pr2');
+  const pr3 = document.getElementById('pr3');
+  const badge = document.getElementById('b2');
+  let flat = false;
+  const interval = 2400;
+  let start = Date.now();
+
+  function flip() {
+    flat = !flat;
+    if (flat) {
+      pr1.style.background = '#f1f5f9'; pr1.style.boxShadow = 'none'; pr1.style.border = 'none';
+      pr2.style.background = '#2563eb'; pr2.style.boxShadow = 'none';
+      pr3.style.background = '#f1f5f9'; pr3.style.boxShadow = 'none'; pr3.style.border = 'none';
+      badge.textContent = 'FLAT';
+    } else {
+      pr1.style.background = 'linear-gradient(180deg,#f8fafc,#e2e8f0)'; pr1.style.boxShadow = '0 4px 12px rgba(0,0,0,.15)'; pr1.style.border = '1px solid #e2e8f0';
+      pr2.style.background = 'linear-gradient(180deg,#3b82f6,#1d4ed8)'; pr2.style.boxShadow = '0 6px 20px rgba(59,130,246,.4)';
+      pr3.style.background = 'linear-gradient(180deg,#f8fafc,#e2e8f0)'; pr3.style.boxShadow = '0 4px 12px rgba(0,0,0,.15)'; pr3.style.border = '1px solid #e2e8f0';
+      badge.textContent = 'GRADIENT';
+    }
+    badge.classList.add('visible');
+  }
+  (function tick() { if (Date.now() - start >= interval) { start = Date.now(); flip(); } requestAnimationFrame(tick); })();
+  autoProgress('p2', 4800);
+})();
+
+// =============================================
+// SIM 3: Dashboard — detailed → simple
+// =============================================
+(function(){
+  const dash = document.getElementById('dash1');
+  const icon = document.getElementById('dash-icon');
+  const ds1 = document.getElementById('ds1');
+  const ds2 = document.getElementById('ds2');
+  const badge = document.getElementById('b3');
+  let flat = false;
+  const interval = 2200;
+  let start = Date.now();
+
+  function flip() {
+    flat = !flat;
+    if (flat) {
+      dash.style.background = '#1e293b'; dash.style.color = '#e2e8f0'; dash.style.border = 'none'; dash.style.boxShadow = 'none';
+      icon.innerHTML = '&#9679;'; icon.style.fontSize = '10px'; icon.style.color = '#3b82f6';
+      ds1.style.background = 'rgba(59,130,246,.15)'; ds1.style.border = 'none';
+      ds2.style.background = 'rgba(245,158,11,.15)'; ds2.style.border = 'none';
+      badge.textContent = 'FLAT';
+    } else {
+      dash.style.background = '#f8fafc'; dash.style.color = '#334155'; dash.style.border = '1px solid #e2e8f0'; dash.style.boxShadow = '0 4px 12px rgba(0,0,0,.12)';
+      icon.innerHTML = '&#128100;'; icon.style.fontSize = '16px';
+      ds1.style.background = '#eff6ff'; ds1.style.border = '1px solid #bfdbfe';
+      ds2.style.background = '#fef3c7'; ds2.style.border = '1px solid #fde68a';
+      badge.textContent = 'DETAILED';
+    }
+    badge.classList.add('visible');
+  }
+  (function tick() { if (Date.now() - start >= interval) { start = Date.now(); flip(); } requestAnimationFrame(tick); })();
+  autoProgress('p3', 4400);
+})();
+
+// =============================================
+// SIM 4: App — decorated → clean
+// =============================================
+(function(){
+  const app = document.getElementById('app1');
+  const bar = document.getElementById('app-bar');
+  const avatar = document.getElementById('app-avatar');
+  const b1 = document.getElementById('app-b1');
+  const b2 = document.getElementById('app-b2');
+  const badge = document.getElementById('b4');
+  let flat = false;
+  const interval = 2400;
+  let start = Date.now();
+
+  function flip() {
+    flat = !flat;
+    if (flat) {
+      app.style.background = '#1e293b'; app.style.color = '#e2e8f0'; app.style.border = 'none'; app.style.boxShadow = 'none';
+      bar.style.borderBottom = 'none';
+      avatar.style.background = '#3b82f6'; avatar.style.boxShadow = 'none';
+      b1.style.background = 'rgba(255,255,255,.06)'; b1.style.border = 'none'; b1.style.borderRadius = '4px';
+      b2.style.background = '#3b82f6'; b2.style.borderRadius = '4px';
+      badge.textContent = 'FLAT';
+    } else {
+      app.style.background = '#f8fafc'; app.style.color = '#334155'; app.style.border = '1px solid #e2e8f0'; app.style.boxShadow = '0 4px 12px rgba(0,0,0,.12)';
+      bar.style.borderBottom = '2px solid #e2e8f0';
+      avatar.style.background = 'linear-gradient(135deg,#3b82f6,#8b5cf6)'; avatar.style.boxShadow = '0 2px 8px rgba(59,130,246,.3)';
+      b1.style.background = '#eff6ff'; b1.style.border = '1px solid #bfdbfe'; b1.style.borderRadius = '12px 12px 12px 2px';
+      b2.style.borderRadius = '12px 12px 2px 12px';
+      badge.textContent = 'DECORATED';
+    }
+    badge.classList.add('visible');
+  }
+  (function tick() { if (Date.now() - start >= interval) { start = Date.now(); flip(); } requestAnimationFrame(tick); })();
+  autoProgress('p4', 4800);
+})();
+
+
+// =============================================
+// PRACTICE A: TRUE/FALSE
+// =============================================
+(function(){
+  const items = [
+    {
+      ctx: '<code>"Flat design nghĩa là thiết kế trông đơn điệu, nhàm chán, không có gì nổi bật."</code>',
+      answer: false,
+      feedback: 'Sai. Flat = chủ đích bỏ hiệu ứng 3D để tập trung vào content và typography. "Đơn điệu" là kết quả của làm flat sai cách, không phải bản chất flat.'
+    },
+    {
+      ctx: '<code>"Nút bấm trong flat design không dùng drop shadow — chỉ dùng màu sắc để phân biệt với background."</code>',
+      answer: true,
+      feedback: 'Đúng. Flat button phân biệt bằng contrast màu (ví dụ: nền trắng, nút xanh) thay vì shadow tạo depth. Đó là cốt lõi của flat.'
+    },
+    {
+      ctx: '<code>"Gradient background không được phép dùng trong flat design."</code>',
+      answer: false,
+      feedback: 'Sai. Flat design nguyên bản (2013) cấm gradient, nhưng "flat 2.0" hiện đại cho phép gradient tinh tế. Quan trọng là không dùng gradient tạo ảo giác 3D.'
+    },
+    {
+      ctx: '<code>"Border-radius lớn (bo góc nhiều) đi ngược lại nguyên tắc flat design."</code>',
+      answer: false,
+      feedback: 'Sai. Border-radius là về shape, không phải về depth. Flat dùng cả góc nhọn lẫn góc bo — miễn là không tạo hiệu ứng "nổi". Neumorphism mới dựa vào radius + shadow.'
+    }
+  ];
+
+  const container = document.getElementById('tf-container');
+  let score = 0, answered = 0;
+
+  function render() {
+    container.innerHTML = '';
+    score = 0; answered = 0;
+    document.getElementById('tf-val').textContent = '0/4';
+    const msg = document.getElementById('tf-msg');
+    msg.textContent = ''; msg.className = 'score-message';
+    document.getElementById('tf-reset').style.display = 'none';
+    document.querySelectorAll('#tf-dots .score-dot').forEach(d => d.className = 'score-dot');
+
+    items.forEach((s, si) => {
+      const el = document.createElement('div');
+      el.className = 'scenario-item'; el.id = 'tf-' + si;
+      el.innerHTML = `
+        <div class="scenario-question">Câu ${si + 1}</div>
+        <div style="font-size:12px;color:var(--fg-muted);line-height:1.6;margin-bottom:12px">${s.ctx}</div>
+        <div class="answer-options">
+          <button class="answer-btn" data-s="${si}" data-a="true">Đúng</button>
+          <button class="answer-btn" data-s="${si}" data-a="false">Sai</button>
+        </div>
+        <div class="scenario-feedback" id="tf-fb-${si}"></div>
+      `;
+      container.appendChild(el);
+    });
+
+    container.querySelectorAll('.answer-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const si = parseInt(this.dataset.s);
+        const userAns = this.dataset.a === 'true';
+        const correct = items[si].answer;
+        const el = document.getElementById('tf-' + si);
+        const fb = document.getElementById('tf-fb-' + si);
+        if (el.classList.contains('answered-correct') || el.classList.contains('answered-wrong')) return;
+        el.querySelectorAll('.answer-btn').forEach(b => b.classList.add('disabled'));
+        answered++;
+        if (userAns === correct) {
+          score++; this.classList.add('correct'); el.classList.add('answered-correct');
+          fb.className = 'scenario-feedback correct-fb visible'; fb.innerHTML = '&#10003; ' + items[si].feedback;
+          document.querySelectorAll('#tf-dots .score-dot')[si].classList.add('filled');
+        } else {
+          this.classList.add('wrong'); el.classList.add('answered-wrong', 'shake');
+          el.querySelectorAll('.answer-btn').forEach(b => { if (b.dataset.a === String(correct)) b.classList.add('correct'); });
+          fb.className = 'scenario-feedback wrong-fb visible'; fb.innerHTML = '&#10007; ' + items[si].feedback;
+          document.querySelectorAll('#tf-dots .score-dot')[si].classList.add('failed');
+          setTimeout(() => el.classList.remove('shake'), 400);
+        }
+        document.getElementById('tf-val').textContent = score + '/4';
+        if (answered === 4) {
+          document.getElementById('tf-reset').style.display = 'inline-block';
+          const msg = document.getElementById('tf-msg');
+          if (score === 4) { msg.textContent = 'Hoàn hảo — hiểu flat design sâu hơn "bỏ shadow đi". Prompt dev chính xác được.'; msg.className = 'score-message all-correct'; }
+          else if (score >= 2) { msg.textContent = 'Khá — nhớ: flat ≠ thiếu, flat = chủ đích. Gradient tinh tế vẫn OK.'; }
+          else { msg.textContent = 'Xem lại 4 mô phỏng — để ý từng property bị bỏ đi khi chuyển sang flat.'; }
+        }
+      });
+    });
+  }
+  render();
+  document.getElementById('tf-reset').addEventListener('click', render);
+})();
+
+
+// =============================================
+// PRACTICE B: FLATNESS SLIDER
+// =============================================
+(function(){
+  const slider = document.getElementById('flat-slider');
+  const valDisplay = document.getElementById('flat-val');
+  const hero = document.getElementById('preview-hero');
+  const btn = document.getElementById('preview-btn');
+  const pr1 = document.getElementById('preview-pr1');
+  const pr2 = document.getElementById('preview-pr2');
+  const codeEl = document.getElementById('preview-code');
+  const meter = document.getElementById('flat-meter');
+  const meterVal = document.getElementById('flat-meter-val');
+
+  // Property displays
+  const pvShadow = document.getElementById('pv-shadow');
+  const pvGradient = document.getElementById('pv-gradient');
+  const pvBorder = document.getElementById('pv-border');
+  const pvRadius = document.getElementById('pv-radius');
+  const swShadow = document.getElementById('sw-shadow');
+  const swGradient = document.getElementById('sw-gradient');
+  const swBorder = document.getElementById('sw-border');
+  const swRadius = document.getElementById('sw-radius');
+  const rtShadow = document.getElementById('rt-shadow');
+  const rtGradient = document.getElementById('rt-gradient');
+  const rtBorder = document.getElementById('rt-border');
+  const rtRadius = document.getElementById('rt-radius');
+
+  function apply(v) {
+    valDisplay.textContent = v + '%';
+
+    // Shadow: 0→100
+    const shadowOpacity = Math.max(0, 1 - v / 100);
+    const shadowSize = Math.round(24 * shadowOpacity);
+    const shadowBlur = Math.round(8 * shadowOpacity);
+    const shadow = shadowOpacity > 0.05 ? `0 ${shadowBlur}px ${shadowSize}px rgba(0,0,0,${(shadowOpacity * 0.4).toFixed(2)})` : 'none';
+    hero.style.boxShadow = shadow;
+    btn.style.boxShadow = shadowOpacity > 0.05 ? `0 ${Math.round(4 * shadowOpacity)}px ${Math.round(12 * shadowOpacity)}px rgba(0,0,0,${(shadowOpacity * 0.3).toFixed(2)})` : 'none';
+    pr1.style.boxShadow = shadowOpacity > 0.05 ? `0 ${Math.round(4 * shadowOpacity)}px ${Math.round(12 * shadowOpacity)}px rgba(0,0,0,${(shadowOpacity * 0.15).toFixed(2)})` : 'none';
+    pr2.style.boxShadow = shadowOpacity > 0.05 ? `0 ${Math.round(6 * shadowOpacity)}px ${Math.round(20 * shadowOpacity)}px rgba(59,130,246,${(shadowOpacity * 0.4).toFixed(2)})` : 'none';
+
+    pvShadow.textContent = shadow === 'none' ? 'none' : `0 ${shadowBlur}px ${shadowSize}px`;
+    pvShadow.style.color = shadow === 'none' ? 'var(--error)' : 'var(--accent)';
+    swShadow.style.background = shadow === 'none' ? 'var(--border)' : `rgba(0,0,0,${shadowOpacity * 0.3})`;
+    rtShadow.classList.toggle('visible', shadow === 'none');
+
+    // Gradient: 0→100
+    const gradientStop = v >= 100 ? 0 : 1 - v / 100;
+    if (gradientStop < 0.05) {
+      hero.style.background = '#2563eb';
+      pr2.style.background = '#2563eb';
+      pvGradient.textContent = 'none';
+      pvGradient.style.color = 'var(--error)';
+      swGradient.style.background = '#2563eb';
+      rtGradient.classList.add('visible');
+    } else {
+      const c1r = Math.round(59 + (37 - 59) * gradientStop);
+      const c1g = Math.round(130 + (99 - 130) * gradientStop);
+      const c1b = Math.round(246 + (235 - 246) * gradientStop);
+      hero.style.background = `linear-gradient(135deg, rgb(${c1r},${c1g},${c1b}), #1d4ed8)`;
+      pr2.style.background = `linear-gradient(180deg, rgb(${c1r},${c1g},${c1b}), #1d4ed8)`;
+      pvGradient.textContent = `135deg, ${Math.round(gradientStop * 100)}% mix`;
+      pvGradient.style.color = 'var(--accent)';
+      swGradient.style.background = `linear-gradient(135deg, rgb(${c1r},${c1g},${c1b}), #1d4ed8)`;
+      rtGradient.classList.remove('visible');
+    }
+
+    // Border: disappears at 50%+
+    const borderOpacity = Math.max(0, 1 - v / 50);
+    if (borderOpacity < 0.05) {
+      pr1.style.border = 'none';
+      pvBorder.textContent = 'none';
+      pvBorder.style.color = 'var(--error)';
+      swBorder.style.background = 'transparent';
+      rtBorder.classList.add('visible');
+    } else {
+      const r = Math.round(226 * borderOpacity + 34 * (1 - borderOpacity));
+      const g = Math.round(232 * borderOpacity + 34 * (1 - borderOpacity));
+      const b = Math.round(240 * borderOpacity + 34 * (1 - borderOpacity));
+      pr1.style.border = `1px solid rgb(${r},${g},${b})`;
+      pvBorder.textContent = `1px solid rgb(${r},${g},${b})`;
+      pvBorder.style.color = 'var(--accent)';
+      swBorder.style.background = `rgb(${r},${g},${b})`;
+      rtBorder.classList.remove('visible');
+    }
+
+    // Radius: 12px → 2px
+    const radius = Math.round(12 - 10 * (v / 100));
+    hero.style.borderRadius = radius + 'px';
+    btn.style.borderRadius = Math.round(8 - 6 * (v / 100)) + 'px';
+    pr1.style.borderRadius = radius + 'px';
+    pr2.style.borderRadius = radius + 'px';
+    pvRadius.textContent = radius + 'px';
+    pvRadius.style.color = radius <= 2 ? 'var(--error)' : 'var(--accent)';
+    swRadius.style.width = (radius + 4) + 'px';
+    swRadius.style.height = (radius + 4) + 'px';
+    rtRadius.classList.toggle('visible', radius <= 2);
+
+    // Meter
+    meter.style.width = v + '%';
+    if (v < 40) { meter.style.background = 'var(--error)'; meterVal.style.color = 'var(--error)'; }
+    else if (v < 80) { meter.style.background = 'var(--accent)'; meterVal.style.color = 'var(--accent)'; }
+    else { meter.style.background = 'var(--success)'; meterVal.style.color = 'var(--success)'; }
+    meterVal.textContent = v;
+
+    // Code
+    const shadowCode = shadow === 'none' ? '' : `\n  <span class="attr">shadow</span>=<span class="val">"${shadow}"</span>`;
+    const gradientCode = gradientStop < 0.05 ? '' : '';
+    const borderCode = borderOpacity < 0.05 ? '' : `\n  <span class="attr">border</span>=<span class="val">"1px solid"</span>`;
+    const radiusCode = radius <= 2 ? '' : `\n  <span class="attr">radius</span>=<span class="val">"${radius}px"</span>`;
+
+    codeEl.innerHTML = `<span class="tag">&lt;Card</span>
+  <span class="attr">bg</span>=<span class="val">"${gradientStop < 0.05 ? '#2563eb' : 'gradient'}"</span>${shadowCode}${borderCode}${radiusCode}
+<span class="tag">/&gt;</span>
+<span class="tag">&lt;Button</span>
+  <span class="attr">flat</span>=<span class="val">${v >= 80 ? 'true' : 'false'}</span>
+<span class="tag">/&gt;</span>`;
+  }
+
+  slider.addEventListener('input', function() { apply(parseInt(this.value)); });
+  apply(0);
+})();
+</script>
+
+</body>
+</html>

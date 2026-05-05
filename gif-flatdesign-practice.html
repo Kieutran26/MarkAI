@@ -3,153 +3,159 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Flat Design — Interactive Practice</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<title>Flat Design — Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-    --bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;--accent-dim:rgba(212,113,42,.15);
-    --card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a;
+  --bg:#1a1a1a;--bg-card:#222;--accent:#d97706;--accent-dim:#92400e;
+  --accent-glow:rgba(217,119,6,.12);--fg:#e8e4df;--fg-muted:#8a8580;
+  --fg-dim:#5a5550;--border:#3a3a3a;--border-accent:#d97706;
+  --success:#22c55e;--success-bg:rgba(34,197,94,.1);
+  --error:#ef4444;--error-bg:rgba(239,68,68,.1);
+  --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;--radius:2px;
 }
-*{margin:0;padding:0;box-sizing:border-box}
-body{
-    background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);
-    background-size:100% 100%,16px 16px;display:flex;flex-direction:column;align-items:center;
-    font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:0;overflow:hidden;
-}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);line-height:1.5;padding:20px 20px 40px 20px;
+  background-image:linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);
+  background-size:24px 24px;overflow-x:hidden}
+#app-root{padding-bottom:40px}
 
-.aw{width:100%}
-.ab-wrap{width:100%;background:var(--card);border:2px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
-.hd{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
-.hd-t{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:2.5px;text-transform:uppercase}
-.hd-f{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
+.practice-card{padding:0;margin-bottom:20px}
+.practice-goal{font-family:var(--mono);font-size:11px;color:var(--fg-muted);margin-bottom:20px;line-height:1.6;padding-left:12px;border-left:2px solid var(--accent-dim)}
+.practice-goal strong{color:var(--fg);font-weight:600}
 
-.la-wrap{width:100%;position:relative;overflow:hidden;background:#111}
-.ab{width:800px;height:420px;transform-origin:top left;padding:30px 40px;position:relative;background:linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);background-size:30px 30px}
 
-/* Practice Content */
-.practice-header{margin-bottom:24px}
-.practice-title{font-size:22px;font-weight:800;color:#fff;margin-bottom:6px;line-height:1.2}
-.practice-sub{font-size:12px;color:var(--muted);line-height:1.5}
 
-.practice-content{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:stretch}
+.ws-workspace{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:700px){.ws-workspace{grid-template-columns:1fr}}
+.ws-panel{background:#141414;border:1px solid var(--border);border-radius:var(--radius);padding:28px}
+.ws-panel-title{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--fg-dim);margin-bottom:16px}
+.range-slider{-webkit-appearance:none;appearance:none;width:100%;height:4px;background:var(--border);border-radius:1px;outline:none;touch-action:none}
+.range-slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;background:var(--accent);border-radius:var(--radius);cursor:pointer;border:2px solid var(--bg)}
+.control-group{margin-bottom:24px}
+.control-group label{display:block;font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--fg-dim);margin-bottom:8px}
+.value-display{float:right;color:var(--accent)}
+.prop-row{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:10px;font-family:var(--mono)}
+.prop-name{width:80px;color:var(--fg-dim);flex-shrink:0}
+.prop-val{color:var(--accent);font-weight:600;transition:color .3s}
+.prop-swatch{width:12px;height:12px;border-radius:var(--radius);border:1px solid var(--border);flex-shrink:0;transition:all .4s}
+.code-output{margin-top:12px;padding:10px 12px;background:rgba(0,0,0,.3);border:1px solid var(--border);border-radius:var(--radius);font-family:var(--mono);font-size:10px;color:var(--fg-dim);line-height:1.7;white-space:pre;overflow-x:auto}
+.code-output .tag{color:var(--error)}.code-output .attr{color:var(--accent)}.code-output .val{color:var(--success)}
+.flatness-meter{display:flex;align-items:center;gap:10px;padding:10px 14px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:var(--radius);margin-top:12px}
+.flatness-meter-label{font-family:var(--mono);font-size:9px;color:var(--fg-dim);letter-spacing:1px;text-transform:uppercase;width:50px;flex-shrink:0}
+.flatness-meter-bar{flex:1;height:6px;background:var(--border);border-radius:3px;overflow:hidden}
+.flatness-meter-fill{height:100%;border-radius:3px;transition:width .3s ease,background .3s ease}
+.flatness-meter-val{font-family:var(--mono);font-size:12px;font-weight:700;width:36px;text-align:right;flex-shrink:0;transition:color .3s}
+.removed-tag{display:inline-block;font-family:var(--mono);font-size:8px;font-weight:600;letter-spacing:1px;text-transform:uppercase;padding:1px 5px;border-radius:1px;background:var(--error-bg);color:var(--error);margin-left:4px;opacity:0;transition:opacity .4s}
+.removed-tag.visible{opacity:1}
 
-/* Left Panel: Toggles */
-.control-panel{
-    border:1px solid var(--border);background:rgba(255,255,255,0.02);
-    padding:30px;border-radius:4px;display:flex;flex-direction:column;
-}
-.toggle-group{display:flex;flex-direction:column;gap:18px;margin-top:24px}
-.toggle-item{display:flex;justify-content:space-between;align-items:center}
-.toggle-info{display:flex;flex-direction:column;gap:1px}
-.toggle-name{font-size:14px;font-weight:700;color:#ede8df}
-.toggle-desc{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted)}
-
-.sw{position:relative;display:inline-block;width:40px;height:22px}
-.sw input{opacity:0;width:0;height:0}
-.sw-sl{position:absolute;cursor:pointer;inset:0;background-color:#333;transition:.3s;border-radius:22px}
-.sw-sl:before{position:absolute;content:"";height:16px;width:16px;left:3px;bottom:3px;background-color:#fff;transition:.3s;border-radius:50%}
-input:checked + .sw-sl{background-color:var(--accent)}
-input:checked + .sw-sl:before{transform:translateX(18px)}
-
-.preview-area{display:flex;flex-direction:column;align-items:center}
-.preview-label{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--muted);letter-spacing:0.1em;margin-bottom:16px;align-self:flex-start}
-
-.target-card{width:320px;background:#1a1a1a;border:1px solid #2e2e2e;transition:all 0.4s cubic-bezier(0.4, 0, 0.2, 1);overflow:hidden}
-.target-card.has-shadow{box-shadow:0 20px 50px rgba(0,0,0,0.5)}
-.target-card.has-radius{border-radius:16px}
-
-.card-hdr{padding:20px;background:#3b82f6;position:relative;min-height:90px;display:flex;align-items:flex-end}
-.card-hdr.has-gradient::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0.2),transparent,rgba(0,0,0,0.3))}
-.card-hdr-txt{font-size:16px;font-weight:800;color:#fff;position:relative;z-index:2}
-
-.card-body{padding:20px;display:flex;flex-direction:column;gap:16px}
-.card-desc{font-size:11px;color:#aaa;line-height:1.5}
-.card-btn{padding:10px 20px;background:#2563eb;color:#fff;font-weight:700;font-size:11px;border:none;align-self:flex-start;transition:all 0.3s ease}
-.card-btn.has-shadow{box-shadow:0 8px 20px rgba(37,99,235,0.4)}
-.card-btn.has-radius{border-radius:6px}
-
-.inf{padding:11px 14px;border-top:1px solid var(--border);background:var(--card);display:flex;justify-content:space-between;align-items:center}
-.prog-wrap{flex:1;margin-right:30px}
-.prog-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:6px;text-transform:uppercase}
-.prog-bar{height:2px;background:#222;overflow:hidden}
-.prog-fill{height:100%;background:var(--accent);width:0%;transition:width 0.4s ease}
-.prog-val{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:800;color:var(--accent)}
-.status-txt{font-size:10px;color:var(--muted);margin-left:15px}
-
+.mu-hero{padding:20px;border-radius:4px;text-align:center}
+.mu-hero-h{font-size:14px;font-weight:700;margin-bottom:6px;transition:all .5s}
+.mu-hero-p{font-size:9px;opacity:.7;margin-bottom:12px;transition:all .5s}
+.mu-hero-btn{display:inline-block;padding:6px 16px;font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;border:none;transition:all .5s}
+.mu-price{padding:12px;border-radius:4px;text-align:center}
+.mu-price-name{font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;opacity:.6;margin-bottom:4px;transition:all .5s}
+.mu-price-val{font-size:20px;font-weight:700;margin-bottom:2px;transition:all .5s}
 </style>
 </head>
 <body>
 
-<div class="aw">
-<div class="ab-wrap">
-  <div class="hd"><span class="hd-t">FLAT DESIGN PRACTICE</span><span class="hd-f">INTERACTIVE</span></div>
-  <div class="la-wrap" id="la-wrap">
-    <div class="ab" id="ab">
-      
-      <div class="practice-content">
-        <div class="control-panel">
-            <div class="practice-header">
-                <h2 class="practice-title">Tắt hiệu ứng để tạo Flat Design</h2>
-                <p class="practice-sub">Mỗi toggle = một hiệu ứng loại bỏ. Tắt hết để thấy bản chất.</p>
-            </div>
-            <div class="toggle-group">
-                <div class="toggle-item">
-                    <div class="toggle-info"><span class="toggle-name">Bóng đổ</span><span class="toggle-desc">box-shadow trên card & button</span></div>
-                    <label class="sw"><input type="checkbox" id="sw-shadow" checked><span class="sw-sl"></span></label>
-                </div>
-                <div class="toggle-item">
-                    <div class="toggle-info"><span class="toggle-name">Gradient</span><span class="toggle-desc">background gradient → solid color</span></div>
-                    <label class="sw"><input type="checkbox" id="sw-gradient" checked><span class="sw-sl"></span></label>
-                </div>
-                <div class="toggle-item">
-                    <div class="toggle-info"><span class="toggle-name">Độ sâu</span><span class="toggle-desc">border-radius to + cảm giác 3D</span></div>
-                    <label class="sw"><input type="checkbox" id="sw-depth" checked><span class="sw-sl"></span></label>
-                </div>
-            </div>
+<div id="app-root">
+  <!-- PRACTICE B: FLATNESS SLIDER -->
+  <div class="practice-card">
+    <div class="practice-goal">
+      <strong>Mục tiêu:</strong> Kéo slider từ 0% → 100% flat — quan sát sự thay đổi của shadow, gradient và radius.
+    </div>
+    <div class="ws-workspace">
+      <div class="ws-panel">
+        <div class="ws-panel-title">Flatness Control</div>
+        <div class="control-group">
+          <label>Flatness <span class="value-display" id="flat-val">0%</span></label>
+          <input type="range" class="range-slider" min="0" max="100" step="1" value="0" id="flat-slider">
         </div>
-
-        <div class="preview-area">
-            <div class="preview-label">PREVIEW REALTIME</div>
-            <div class="target-card has-shadow has-radius" id="card">
-                <div class="card-hdr has-gradient" id="hdr"><div class="card-hdr-txt">Khám phá gói Pro</div></div>
-                <div class="card-body">
-                    <p class="card-desc">Truy cập API không giới hạn, hỗ trợ ưu tiên, và 50GB storage.</p>
-                    <button class="card-btn has-shadow has-radius" id="btn">Nâng cấp ngay</button>
-                </div>
-            </div>
+        <div class="prop-row" id="prop-shadow"><div class="prop-swatch" id="sw-shadow"></div><span class="prop-name">box-shadow</span><span class="prop-val" id="pv-shadow">0 8px 24px</span><span class="removed-tag" id="rt-shadow">removed</span></div>
+        <div class="prop-row" id="prop-gradient"><div class="prop-swatch" id="sw-gradient"></div><span class="prop-name">gradient</span><span class="prop-val" id="pv-gradient">135deg</span><span class="removed-tag" id="rt-gradient">removed</span></div>
+        <div class="prop-row" id="prop-border"><div class="prop-swatch" id="sw-border"></div><span class="prop-name">border</span><span class="prop-val" id="pv-border">1px solid</span><span class="removed-tag" id="rt-border">removed</span></div>
+        <div class="prop-row" id="prop-radius"><div class="prop-swatch" id="sw-radius"></div><span class="prop-name">radius</span><span class="prop-val" id="pv-radius">12px</span><span class="removed-tag" id="rt-radius">reduced</span></div>
+        <div class="flatness-meter">
+          <span class="flatness-meter-label">Score</span>
+          <div class="flatness-meter-bar"><div class="flatness-meter-fill" id="flat-meter" style="width:0%;background:var(--error)"></div></div>
+          <span class="flatness-meter-val" id="flat-meter-val" style="color:var(--error)">0</span>
         </div>
       </div>
-
+      <div>
+        <div class="ws-panel" style="margin-bottom:12px">
+          <div class="ws-panel-title">Live Preview</div>
+          <div style="padding:16px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:var(--radius)">
+            <div class="mu mu-hero" id="preview-hero" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8);box-shadow:0 8px 24px rgba(0,0,0,.4);border-radius:12px;color:#fff;text-align:center">
+              <div class="mu-hero-h">Build better experiences</div>
+              <div class="mu-hero-p">The modern platform for teams</div>
+              <div class="mu-hero-btn" id="preview-btn" style="background:#fff;color:#1d4ed8;box-shadow:0 4px 12px rgba(0,0,0,.3);border-radius:8px">Get Started</div>
+            </div>
+            <div style="display:flex;gap:8px;margin-top:12px">
+              <div class="mu mu-price" id="preview-pr1" style="flex:1;background:linear-gradient(180deg,#f8fafc,#e2e8f0);color:#334155;box-shadow:0 4px 12px rgba(0,0,0,.15);border:1px solid #e2e8f0;border-radius:8px;text-align:center;padding:10px">
+                <div class="mu-price-name">Basic</div>
+                <div class="mu-price-val" style="font-size:16px">$0</div>
+              </div>
+              <div class="mu mu-price" id="preview-pr2" style="flex:1;background:linear-gradient(180deg,#3b82f6,#1d4ed8);color:#fff;box-shadow:0 6px 20px rgba(59,130,246,.4);border-radius:8px;text-align:center;padding:10px">
+                <div class="mu-price-name">Pro</div>
+                <div class="mu-price-val" style="font-size:16px">$9</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="code-output" id="preview-code"></div>
+      </div>
     </div>
   </div>
-  <div class="inf">
-    <div class="prog-wrap">
-        <div class="prog-lbl">Mức độ Flat</div>
-        <div class="prog-bar"><div class="prog-fill" id="fill"></div></div>
-    </div>
-    <div class="prog-val" id="val">0%</div>
-    <div class="status-txt" id="status">Trạng thái: Có hiệu ứng</div>
-  </div>
-</div>
 </div>
 
 <script>
-const swShadow=document.getElementById('sw-shadow'),swGradient=document.getElementById('sw-gradient'),swDepth=document.getElementById('sw-depth');
-const card=document.getElementById('card'),hdr=document.getElementById('hdr'),btn=document.getElementById('btn');
-const fill=document.getElementById('fill'),val=document.getElementById('val'),statusEl=document.getElementById('status');
+(function(){
+  const slider = document.getElementById('flat-slider');
+  const valDisplay = document.getElementById('flat-val');
+  const hero = document.getElementById('preview-hero'), btn = document.getElementById('preview-btn');
+  const pr1 = document.getElementById('preview-pr1'), pr2 = document.getElementById('preview-pr2');
+  const codeEl = document.getElementById('preview-code');
+  const meter = document.getElementById('flat-meter'), meterVal = document.getElementById('flat-meter-val');
+  const pvShadow = document.getElementById('pv-shadow'), pvGradient = document.getElementById('pv-gradient'), pvBorder = document.getElementById('pv-border'), pvRadius = document.getElementById('pv-radius');
+  const rtShadow = document.getElementById('rt-shadow'), rtGradient = document.getElementById('rt-gradient'), rtBorder = document.getElementById('rt-border'), rtRadius = document.getElementById('rt-radius');
 
-function update(){
-    const s=swShadow.checked,g=swGradient.checked,d=swDepth.checked;
-    card.classList.toggle('has-shadow',s);btn.classList.toggle('has-shadow',s);
-    hdr.classList.toggle('has-gradient',g);
-    card.classList.toggle('has-radius',d);btn.classList.toggle('has-radius',d);
-    let p=Math.round(((3-((s?1:0)+(g?1:0)+(d?1:0)))/3)*100);
-    fill.style.width=p+'%';val.textContent=p+'%';
-    statusEl.textContent=p===100?'Trạng thái: Flat hoàn toàn':p>0?'Trạng thái: Modern Flat':'Trạng thái: Có hiệu ứng';
-}
-swShadow.onchange=swGradient.onchange=swDepth.onchange=update;
-function scale(){const w=document.getElementById('la-wrap'),b=document.getElementById('ab'),s=w.clientWidth/800;b.style.transform='scale('+s+')';w.style.height=Math.ceil(420*s)+'px'}
-window.addEventListener('resize',scale);scale();
+  function apply(v) {
+    valDisplay.textContent = v + '%';
+    const shadowOpacity = Math.max(0, 1 - v / 100);
+    const shadow = shadowOpacity > 0.05 ? `0 ${Math.round(8*shadowOpacity)}px ${Math.round(24*shadowOpacity)}px rgba(0,0,0,0.4)` : 'none';
+    hero.style.boxShadow = shadow; btn.style.boxShadow = shadow === 'none' ? 'none' : `0 4px 12px rgba(0,0,0,0.3)`;
+    pvShadow.textContent = shadow === 'none' ? 'none' : '0 8px 24px';
+    rtShadow.classList.toggle('visible', shadow === 'none');
+
+    const grad = v >= 100 ? 0 : 1 - v / 100;
+    if (grad < 0.05) { hero.style.background = '#2563eb'; pr2.style.background = '#2563eb'; pvGradient.textContent = 'none'; rtGradient.classList.add('visible'); }
+    else { hero.style.background = 'linear-gradient(135deg,#3b82f6,#1d4ed8)'; pr2.style.background = 'linear-gradient(180deg,#3b82f6,#1d4ed8)'; pvGradient.textContent = '135deg'; rtGradient.classList.remove('visible'); }
+
+    const borderOpacity = Math.max(0, 1 - v / 50);
+    if (borderOpacity < 0.05) { pr1.style.border = 'none'; pvBorder.textContent = 'none'; rtBorder.classList.add('visible'); }
+    else { pr1.style.border = '1px solid #e2e8f0'; pvBorder.textContent = '1px solid'; rtBorder.classList.remove('visible'); }
+
+    const radius = Math.round(12 - 10 * (v / 100));
+    hero.style.borderRadius = radius + 'px'; btn.style.borderRadius = Math.round(8 - 6 * (v / 100)) + 'px';
+    pvRadius.textContent = radius + 'px'; rtRadius.classList.toggle('visible', radius <= 2);
+
+    meter.style.width = v + '%'; meterVal.textContent = v;
+    codeEl.innerHTML = `<span class="tag">&lt;Card</span>\n  <span class="attr">bg</span>=<span class="val">"${grad < 0.05 ? '#2563eb' : 'gradient'}"</span>\n<span class="tag">/&gt;</span>`;
+    
+    // Cập nhật thanh chạy của slider
+    slider.style.background = `linear-gradient(to right, var(--accent) ${v}%, var(--border) ${v}%)`;
+  }
+  
+  slider.addEventListener('input', function() { apply(parseInt(this.value)); });
+  // Thêm touch/mouse event handler để đảm bảo luôn kéo được mượt mà
+  slider.addEventListener('mousemove', function(e) {
+    if (e.buttons === 1) apply(parseInt(this.value));
+  });
+  
+  apply(0);
+})();
 </script>
 </body>
 </html>

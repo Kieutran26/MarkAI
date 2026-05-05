@@ -3,215 +3,291 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Flat Design — Animated Demo</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<title>Flat Design — Demo</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-    --bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;--accent-dim:rgba(212,113,42,.15);
-    --card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a;--surface:#1c1c23;
-    --success:#3a9e5c;--remove:#c2410c;--remove-bg:rgba(194,65,12,0.14);
+  --bg:#1a1a1a;--bg-card:#222;--accent:#d97706;--accent-dim:#92400e;
+  --accent-glow:rgba(217,119,6,.12);--fg:#e8e4df;--fg-muted:#8a8580;
+  --fg-dim:#5a5550;--border:#3a3a3a;--border-accent:#d97706;
+  --success:#22c55e;--success-bg:rgba(34,197,94,.1);
+  --error:#ef4444;--error-bg:rgba(239,68,68,.1);
+  --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;--radius:2px;
 }
-*{margin:0;padding:0;box-sizing:border-box}
-body{
-    background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);
-    background-size:100% 100%,16px 16px;display:flex;flex-direction:column;align-items:center;
-    font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:0;overflow:hidden;
-}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);line-height:1.5;padding:20px 20px 40px 20px;
+  background-image:linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);
+  background-size:24px 24px;overflow-x:hidden}
+#app-root{padding-bottom:40px}
 
-.aw{width:100%}
-.ab-wrap{width:100%;background:var(--card);border:2px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
-.hd{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
-.hd-t{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:2.5px;text-transform:uppercase}
-.hd-f{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
+.grid-4{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:640px){.grid-4{grid-template-columns:1fr}}
+.card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;position:relative;overflow:hidden;transition:border-color .3s}
+.card:hover{border-color:#4a4a4a}
+.card-label{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.card-label::before{content:'';width:6px;height:6px;background:var(--accent);border-radius:1px}
+.card-title{font-size:16px;font-weight:700;color:var(--fg);margin-bottom:4px}
+.card-desc{font-size:12px;color:var(--fg-muted);margin-bottom:20px;line-height:1.6}
+.demo-area{background:#141414;border:1px solid var(--border);border-radius:var(--radius);padding:16px;min-height:210px;position:relative;overflow:hidden}
+.style-badge{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--accent);background:var(--accent-glow);border:1px solid rgba(217,119,6,.3);padding:2px 8px;border-radius:var(--radius);position:absolute;top:12px;right:12px;opacity:0;transition:opacity .4s;z-index:4}
+.style-badge.visible{opacity:1}
+.insight-bar{margin-top:14px;padding:8px 12px;background:var(--accent-glow);border:1px solid rgba(217,119,6,.2);border-radius:var(--radius);font-size:11px;color:var(--accent);font-family:var(--mono);line-height:1.5;opacity:1;transform:translateY(0);transition:all .4s}
+.auto-progress{height:2px;background:var(--border);margin-top:12px;border-radius:1px;overflow:hidden}
+.auto-progress-fill{height:100%;background:var(--accent);width:0%;transition:width .1s linear;border-radius:1px}
 
-.la-wrap{width:100%;position:relative;overflow:hidden;background:#111}
-.ab{width:800px;height:520px;transform-origin:top left;padding:20px;position:relative;background:linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);background-size:30px 30px}
-
-/* Grid Layout */
-.sim-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:100%;height:100%}
-
-.sim-panel{background:#1a1a1a;border:1px solid #2e2e2e;border-radius:2px;overflow:hidden;display:flex;flex-direction:column;position:relative}
-.panel-label{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:#5c5752;padding:8px 12px 6px;border-bottom:1px solid #2e2e2e;background:rgba(255,255,255,.01)}
-.panel-body{padding:12px;flex:1;position:relative;display:flex;flex-direction:column;justify-content:center}
-.panel-insight{font-family:'JetBrains Mono',monospace;font-size:9px;color:#5c5752;padding:8px 12px;border-top:1px solid #2e2e2e;background:rgba(255,255,255,.01)}
-.panel-insight em{color:var(--accent);font-style:normal}
-
-.grad-ov{position:absolute;inset:0;pointer-events:none;z-index:1;transition:opacity 0.6s ease;opacity:0}
-.flat-hero{border-radius:6px;overflow:hidden;display:flex;flex-direction:column;transition:all 0.6s ease;box-shadow:0 10px 25px rgba(0,0,0,0.5)}
-.flat-hero-bg{background:linear-gradient(135deg,#93c5fd 0%,#1e40af 100%);padding:24px 14px;position:relative;min-height:80px;display:flex;flex-direction:column;justify-content:flex-end}
-.flat-hero-bg .grad-ov{background:#2563eb}
-.flat-hero-title{font-size:16px;font-weight:800;color:#fff;line-height:1.1;position:relative;z-index:2}
-.flat-hero-sub{font-size:9px;color:rgba(255,255,255,.7);margin-top:4px;position:relative;z-index:2}
-.flat-hero-bar{padding:10px 14px;background:#fff;display:flex;align-items:center;gap:8px}
-.flat-btn{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;padding:6px 12px;background:#2563eb;color:#fff;border-radius:4px;transition:all 0.6s ease;box-shadow:0 4px 10px rgba(37,99,235,0.3)}
-.flat-btn-link{font-size:8px;color:#666;font-weight:600}
-
-.pricing-cards{display:flex;flex-direction:column;gap:6px;width:100%}
-.pricing-card{padding:10px;border:1px solid #2e2e2e;border-radius:4px;background:#222;position:relative;overflow:hidden;transition:all 0.6s ease;box-shadow:0 4px 12px rgba(0,0,0,0.2)}
-.pricing-card.pop{border-color:rgba(217,119,6,.4);background:linear-gradient(135deg,rgba(217,119,6,.35) 0%,rgba(217,119,6,.02) 100%)}
-.pricing-card.pop .grad-ov{background:#222}
-.pricing-hdr{display:flex;justify-content:space-between;align-items:center;position:relative;z-index:2}
-.pricing-tier{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;text-transform:uppercase;color:#5c5752}
-.pricing-price{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:#ede8df}
-.pricing-pop-tag{font-size:7px;background:var(--accent);color:#000;padding:1px 4px;border-radius:2px;font-weight:800}
-
-.dash-top{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
-.dash-card{padding:10px;border:1px solid #2e2e2e;border-radius:4px;background:#222;transition:all 0.6s ease;box-shadow:0 4px 12px rgba(0,0,0,0.2)}
-.dash-lbl{font-size:9px;color:#5c5752}
-.dash-val{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:800;color:#ede8df}
-.dash-chg{font-size:8px;color:var(--success)}
-.dash-chart{padding:10px;border:1px solid #2e2e2e;border-radius:4px;background:#222;height:60px;display:flex;align-items:flex-end;gap:4px;transition:all 0.6s ease}
-.dash-bar{flex:1;background:var(--accent);min-height:4px}
-
-.chat-area{display:flex;flex-direction:column;gap:6px}
-.chat-bub{max-width:85%;padding:8px 12px;border-radius:12px;font-size:10px;line-height:1.4;position:relative;overflow:hidden;transition:all 0.6s ease;box-shadow:0 4px 10px rgba(0,0,0,0.2)}
-.chat-bub.sent{align-self:flex-end;background:linear-gradient(135deg,#60a5fa 0%,#1e3a8a 100%);color:#fff}
-.chat-bub.sent .grad-ov{background:#2563eb}
-.chat-bub.recv{align-self:flex-start;background:#222;border:1px solid #2e2e2e;color:#ede8df}
-
-.rm-label{position:absolute;font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;color:var(--remove);background:var(--remove-bg);padding:2px 6px;border-radius:2px;border:1px solid rgba(194,65,12,.25);z-index:10;opacity:0;transition:opacity 0.3s ease}
-.flat-tag{position:absolute;font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:800;color:var(--accent);background:rgba(212,113,42,0.15);border:1px solid rgba(212,113,42,0.3);padding:2px 6px;border-radius:2px;z-index:10;opacity:0;transition:opacity 0.3s ease}
-
-.is-flat .grad-ov{opacity:1}
-.is-flat .flat-hero, .is-flat .pricing-card, .is-flat .dash-card, .is-flat .dash-chart, .is-flat .chat-bub{box-shadow:none;border-radius:2px}
-.is-flat .flat-btn{box-shadow:none;border-radius:2px}
-.is-flat .rm-label, .is-flat .flat-tag{opacity:1}
-
-.inf{padding:11px 14px;border-top:1px solid var(--border);background:var(--card);min-height:86px}
-.dn{font-size:15px;font-weight:800;line-height:1.15}
-.ds{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);margin-top:2px}
-.dd{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.4}
-.pt{height:2px;background:var(--border)}.pff{height:100%;background:var(--accent);width:0%}
-
-.ctr{display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 0;background:transparent}
-.ctr-b{padding:6px 12px;background:var(--card-alt);border:1px solid var(--border);color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:1px}
-.ctr-b:hover{border-color:var(--border-hi);color:var(--fg)}
-.ctr-b.act{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
-.pp-b{width:32px;height:32px;border-radius:50%;background:var(--accent);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-left:4px;transition:transform .2s;flex-shrink:0}
-.pp-i{width:12px;height:12px;fill:#000}
-
-@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+/* ===== MINI UI COMPONENTS ===== */
+.mu{transition:all .6s cubic-bezier(.4,0,.2,1);position:relative}
+.mu-hero{padding:20px;border-radius:4px;text-align:center}
+.mu-hero-h{font-size:14px;font-weight:700;margin-bottom:6px;transition:all .5s}
+.mu-hero-p{font-size:9px;opacity:.7;margin-bottom:12px;transition:all .5s}
+.mu-hero-btn{display:inline-block;padding:6px 16px;font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:1px;text-transform:uppercase;border:none;transition:all .5s}
+.mu-price{padding:12px;border-radius:4px;text-align:center}
+.mu-price-name{font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;opacity:.6;margin-bottom:4px;transition:all .5s}
+.mu-price-val{font-size:20px;font-weight:700;margin-bottom:2px;transition:all .5s}
+.mu-price-feat{font-size:8px;opacity:.5;margin-top:6px;transition:all .5s}
+.mu-dash{padding:12px;border-radius:4px}
+.mu-dash-row{display:flex;gap:8px;margin-bottom:8px}
+.mu-dash-stat{flex:1;padding:8px;border-radius:3px;text-align:center;transition:all .5s}
+.mu-dash-stat-val{font-size:14px;font-weight:700;transition:all .5s}
+.mu-dash-stat-label{font-family:var(--mono);font-size:7px;letter-spacing:1px;text-transform:uppercase;opacity:.5;margin-top:2px;transition:all .5s}
+.mu-dash-item{display:flex;align-items:center;gap:6px;padding:6px 0;font-size:9px;opacity:.6;transition:all .5s}
+.mu-dash-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;transition:all .5s}
+.mu-app{padding:12px;border-radius:4px}
+.mu-app-bar{display:flex;align-items:center;gap:8px;padding-bottom:8px;margin-bottom:8px;transition:all .5s}
+.mu-app-avatar{width:24px;height:24px;border-radius:50%;flex-shrink:0;transition:all .5s}
+.mu-app-name{font-size:10px;font-weight:600;transition:all .5s}
+.mu-app-time{font-family:var(--mono);font-size:7px;opacity:.4;margin-left:auto;transition:all .5s}
+.mu-app-bubble{padding:8px 12px;border-radius:8px;font-size:9px;max-width:70%;margin-bottom:6px;transition:all .5s}
 </style>
 </head>
 <body>
 
-<div class="aw">
-<div class="ab-wrap">
-  <div class="hd"><span class="hd-t">FLAT DESIGN SIMULATION</span><span class="hd-f" id="hf">01 / 02</span></div>
-  <div class="la-wrap" id="la-wrap">
-    <div class="ab" id="ab">
-      <div class="sim-grid" id="sim-grid">
-        <div class="sim-panel" id="p1">
-            <div class="panel-label">01 — WEBSITE HERO</div>
-            <div class="panel-body">
-                <div class="flat-hero">
-                    <div class="flat-hero-bg">
-                        <div class="flat-tag" style="top:4px; right:4px">FLAT</div>
-                        <div class="grad-ov"></div>
-                        <div class="flat-hero-title">Build better experiences</div>
-                        <div class="flat-hero-sub">Simple, clean, no decoration</div>
-                    </div>
-                    <div class="flat-hero-bar">
-                        <span class="flat-btn" style="position:relative; overflow:hidden">
-                            <div class="grad-ov" style="background:#2563eb; opacity:inherit"></div>
-                            <span style="position:relative;z-index:2">Get Started</span>
-                        </span>
-                        <span class="flat-btn-link">Learn more →</span>
-                    </div>
-                </div>
-            </div>
-            <div class="panel-insight">Cùng nội dung — <em>không bóng, không gradient</em></div>
+<div id="app-root">
+  <div class="grid-4">
+    <!-- 1. NO SHADOWS -->
+    <div class="card">
+      <div class="card-label">01</div>
+      <div class="card-title">No Shadows</div>
+      <div class="card-desc">Shadow tạo cảm giác "nổi". Flat bỏ shadow — mọi thứ nằm cùng 1 mặt phẳng.</div>
+      <div class="demo-area">
+        <span class="style-badge" id="b1">SKEUOMORPHIC</span>
+        <div class="mu mu-hero" id="hero1" style="background:linear-gradient(135deg,#3b82f6,#1d4ed8);box-shadow:0 8px 24px rgba(0,0,0,.4);color:#fff">
+          <div class="mu-hero-h">Build better experiences</div>
+          <div class="mu-hero-p">The modern platform for teams</div>
+          <div class="mu-hero-btn" id="hero-btn1" style="background:#fff;color:#1d4ed8;box-shadow:0 4px 12px rgba(0,0,0,.3)">Get Started</div>
         </div>
-        <div class="sim-panel" id="p2">
-            <div class="panel-label">02 — PRICING TABLE</div>
-            <div class="panel-body">
-                <div class="rm-label" style="top:4px; right:4px">−shadow</div>
-                <div class="pricing-cards">
-                    <div class="pricing-card">
-                        <div class="pricing-hdr"><span class="pricing-tier">Basic</span><span class="pricing-price">$0/mo</span></div>
-                    </div>
-                    <div class="rm-label" style="position:relative; top:0; left:50%; transform:translateX(-50%); width:fit-content; margin-bottom:4px">−gradient</div>
-                    <div class="pricing-card pop">
-                        <div class="grad-ov" style="opacity:inherit"></div>
-                        <div class="pricing-hdr"><span class="pricing-tier">Pro</span><div style="display:flex;align-items:center;gap:4px"><span class="pricing-price">$9/mo</span><span class="pricing-pop-tag">POPULAR</span></div></div>
-                    </div>
-                    <div class="pricing-card"><div class="pricing-hdr"><span class="pricing-tier">Team</span><span class="pricing-price">$29/mo</span></div></div>
-                </div>
-            </div>
-            <div class="panel-insight">Gói nổi bật dùng <em>màu accent</em>, không cần đổ bóng</div>
-        </div>
-        <div class="sim-panel" id="p3">
-            <div class="panel-label">03 — DASHBOARD</div>
-            <div class="panel-body">
-                <div class="dash-top">
-                    <div class="dash-card"><div class="dash-lbl">Users</div><div class="dash-val">1,245</div><div class="dash-chg">+12.3% ↑</div></div>
-                    <div class="dash-card"><div class="dash-lbl">Revenue</div><div class="dash-val">$12,430</div><div class="dash-chg">+8.7% ↑</div></div>
-                </div>
-                <div class="dash-chart">
-                    <div class="dash-bar" style="height:35%"></div><div class="dash-bar" style="height:55%"></div><div class="dash-bar" style="height:42%"></div><div class="dash-bar" style="height:70%"></div><div class="dash-bar" style="height:88%"></div><div class="dash-bar" style="height:60%"></div><div class="dash-bar" style="height:100%"></div>
-                </div>
-            </div>
-            <div class="panel-insight">Số lớn = <em>chiếm spotlight</em>, không cần hiệu ứng 3D</div>
-        </div>
-        <div class="sim-panel" id="p4">
-            <div class="panel-label">04 — APP INTERFACE</div>
-            <div class="panel-body">
-                <div class="flat-tag" style="top:4px; right:4px">FLAT</div>
-                <div class="chat-area">
-                    <div style="display:flex; align-items:center; gap:8px"><div class="chat-bub recv">Xin chào! Bạn cần hỗ trợ gì?</div><div class="rm-label" style="position:static; opacity: inherit">−gradient</div></div>
-                    <div class="chat-bub sent">
-                        <div class="grad-ov" style="opacity: inherit"></div>
-                        <span style="position:relative;z-index:2">Mình muốn nâng cấp lên gói Pro</span>
-                    </div>
-                    <div class="chat-bub recv">Được chứ! Gói Pro có API access...</div>
-                </div>
-            </div>
-            <div class="panel-insight">Tin nhắn gửi = <em>màu khác</em>, không cần bóng để phân biệt</div>
-        </div>
+        <div class="auto-progress"><div class="auto-progress-fill" id="p1"></div></div>
       </div>
+      <div class="insight-bar">Shadow = depth = "nổi lên". Bỏ shadow = mọi thứ flat — user tập trung vào content.</div>
+    </div>
+
+    <!-- 2. SOLID COLORS -->
+    <div class="card">
+      <div class="card-label">02</div>
+      <div class="card-title">Solid Colors</div>
+      <div class="card-desc">Không gradient — 1 màu solid cho mỗi vùng. Màu nói lên chức năng, không phải trang trí.</div>
+      <div class="demo-area">
+        <span class="style-badge" id="b2">GRADIENT</span>
+        <div style="display:flex;gap:8px" id="price-row">
+          <div class="mu mu-price" id="pr1" style="flex:1;background:linear-gradient(180deg,#f8fafc,#e2e8f0);color:#334155;box-shadow:0 4px 12px rgba(0,0,0,.15);border:1px solid #e2e8f0">
+            <div class="mu-price-name">Basic</div>
+            <div class="mu-price-val">$0</div>
+            <div class="mu-price-feat">3 projects</div>
+          </div>
+          <div class="mu mu-price" id="pr2" style="flex:1;background:linear-gradient(180deg,#3b82f6,#1d4ed8);color:#fff;box-shadow:0 6px 20px rgba(59,130,246,.4);border:1px solid transparent">
+            <div class="mu-price-name">Pro</div>
+            <div class="mu-price-val">$9</div>
+            <div class="mu-price-feat">Unlimited</div>
+          </div>
+          <div class="mu mu-price" id="pr3" style="flex:1;background:linear-gradient(180deg,#f8fafc,#e2e8f0);color:#334155;box-shadow:0 4px 12px rgba(0,0,0,.15);border:1px solid #e2e8f0">
+            <div class="mu-price-name">Team</div>
+            <div class="mu-price-val">$29</div>
+            <div class="mu-price-feat">Everything</div>
+          </div>
+        </div>
+        <div class="auto-progress"><div class="auto-progress-fill" id="p2"></div></div>
+      </div>
+      <div class="insight-bar">Gradient = "đẹp mắt" nhưng phân tâm. Solid color = rõ ràng — màu này = chức năng này.</div>
+    </div>
+
+    <!-- 3. SIMPLE ICONS -->
+    <div class="card">
+      <div class="card-label">03</div>
+      <div class="card-title">Simple Iconography</div>
+      <div class="card-desc">Không icon chi tiết, không 3D — icon = biểu tượng tối giản, 1 màu, dễ nhận diện.</div>
+      <div class="demo-area">
+        <span class="style-badge" id="b3">DETAILED</span>
+        <div class="mu mu-dash" id="dash1" style="background:#f8fafc;color:#334155;border:1px solid #e2e8f0;box-shadow:0 4px 12px rgba(0,0,0,.12)">
+          <div style="font-size:11px;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:6px">
+            <span id="dash-icon" style="font-size:16px;transition:all .5s">&#128100;</span>
+            Welcome, Alex
+          </div>
+          <div class="mu-dash-row">
+            <div class="mu-dash-stat" id="ds1" style="background:#eff6ff;border:1px solid #bfdbfe">
+              <div class="mu-dash-stat-val">1,240</div>
+              <div class="mu-dash-stat-label">Users</div>
+            </div>
+            <div class="mu-dash-stat" id="ds2" style="background:#fef3c7;border:1px solid #fde68a">
+              <div class="mu-dash-stat-val">$8.4K</div>
+              <div class="mu-dash-stat-label">Revenue</div>
+            </div>
+          </div>
+          <div class="mu-dash-item"><div class="mu-dash-dot" style="background:#22c55e"></div>New signup from Google</div>
+          <div class="mu-dash-item"><div class="mu-dash-dot" style="background:#3b82f6"></div>Invoice #1024 paid</div>
+        </div>
+        <div class="auto-progress"><div class="auto-progress-fill" id="p3"></div></div>
+      </div>
+      <div class="insight-bar">Icon phức tạp = noise. Icon flat 1 màu = tín hiệu rõ — não xử lý nhanh hơn.</div>
+    </div>
+
+    <!-- 4. CLEAN LAYOUT -->
+    <div class="card">
+      <div class="card-label">04</div>
+      <div class="card-title">Clean Layout</div>
+      <div class="card-desc">Bỏ border thừa, decoration thừa — spacing + typography tạo structure thay vì đường kẻ.</div>
+      <div class="demo-area">
+        <span class="style-badge" id="b4">DECORATED</span>
+        <div class="mu mu-app" id="app1" style="background:#f8fafc;color:#334155;border:1px solid #e2e8f0;box-shadow:0 4px 12px rgba(0,0,0,.12)">
+          <div class="mu-app-bar" id="app-bar" style="border-bottom:2px solid #e2e8f0">
+            <div class="mu-app-avatar" id="app-avatar" style="background:linear-gradient(135deg,#3b82f6,#8b5cf6);box-shadow:0 2px 8px rgba(59,130,246,.3)"></div>
+            <div>
+              <div class="mu-app-name">Sarah Chen</div>
+              <div style="font-size:7px;opacity:.4">Online</div>
+            </div>
+            <div class="mu-app-time">2:30 PM</div>
+          </div>
+          <div class="mu-app-bubble" id="app-b1" style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px 12px 12px 2px">Hey! Can you review the new design?</div>
+          <div class="mu-app-bubble" id="app-b2" style="background:#3b82f6;color:#fff;border-radius:12px 12px 2px 12px;margin-left:auto">Sure!</div>
+        </div>
+        <div class="auto-progress"><div class="auto-progress-fill" id="p4"></div></div>
+      </div>
+      <div class="insight-bar">Flat dùng spacing + typography tạo structure — sạch hơn, linh hoạt hơn.</div>
     </div>
   </div>
-  <div class="inf">
-    <div class="dn" id="dn">Skeuomorphic State</div>
-    <div class="ds" id="ds">HIỆU ỨNG ĐỔ BÓNG & GRADIENT</div>
-    <div class="dd" id="dd">Giao diện truyền thống sử dụng bóng đổ (shadow) và dải màu (gradient) để tạo cảm giác về độ sâu và chất liệu thực tế.</div>
-  </div>
-  <div class="pt"><div class="pff" id="pff"></div></div>
-</div>
-
-<div class="ctr">
-    <button class="ctr-b act" data-i="0">SKEUO</button>
-    <button class="ctr-b" data-i="1">FLAT</button>
-    <button class="pp-b" id="pp" title="Play/Pause">
-        <svg class="pp-i" id="pp-i" viewBox="0 0 24 24"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>
-    </button>
-</div>
 </div>
 
 <script>
-const INFO=[
-  {nm:'Skeuomorphic State',sz:'HIỆU ỨNG ĐỔ BÓNG & GRADIENT',dc:'Giao diện truyền thống sử dụng bóng đổ (shadow) và dải màu (gradient) để tạo cảm giác về độ sâu và chất liệu thực tế (giả lập 3D).'},
-  {nm:'Flat Design State',sz:'LOẠI BỎ ĐỘ SÂU GIẢ',dc:'Bỏ bóng đổ, bỏ gradient, bỏ 3D — chỉ giữ màu sắc, hình khối, chữ. Giúp giao diện sạch sẽ, hiện đại và tối ưu tốc độ load.'}
-];
-const el={dn:document.getElementById('dn'),ds:document.getElementById('ds'),dd:document.getElementById('dd'),hf:document.getElementById('hf'),pff:document.getElementById('pff')};
-const grid=document.getElementById('sim-grid'),ctrBs=document.querySelectorAll('.ctr-b'),ppB=document.getElementById('pp'),ppI=document.getElementById('pp-i');
-let cur=0,pa=null,t0=0,isPaused=false;
-const DUR=4000;
-function apply(i){
-  cur=i;const s=INFO[i];el.dn.textContent=s.nm;el.ds.textContent=s.sz;el.dd.textContent=s.dc;el.hf.textContent='0'+(i+1)+' / 02';
-  ctrBs.forEach((b,j)=>b.classList.toggle('act',j===i));
-  grid.classList.toggle('is-flat', i===1);
+function autoProgress(id, interval) {
+  const el = document.getElementById(id);
+  let s = Date.now();
+  (function tick() { el.style.width = ((Date.now() - s) % interval / interval * 100) + '%'; requestAnimationFrame(tick); })();
 }
-function tk(n){if(isPaused)return;const p=Math.min(100,(n-t0)/DUR*100);el.pff.style.width=p+'%';if(p<100)pa=requestAnimationFrame(tk);else next()}
-function startProg(){t0=performance.now();el.pff.style.transition='none';el.pff.style.width='0%';pa=requestAnimationFrame(tk)}
-function next(){if(isPaused)return;cur=(cur+1)%2;apply(cur);startProg()}
-function togglePP(){isPaused=!isPaused;ppI.innerHTML=isPaused?'<path d="M8 5v14l11-7z"/>':'<path d="M6 4h4v16H6zm8 0h4v16h-4z"/>';if(!isPaused){t0=performance.now()-(parseFloat(el.pff.style.width||0)/100*DUR);pa=requestAnimationFrame(tk)}}
-ctrBs.forEach(b=>{b.onclick=()=>{isPaused=true;ppI.innerHTML='<path d="M8 5v14l11-7z"/>';apply(parseInt(b.dataset.i));el.pff.style.width='0%'}});
-ppB.onclick=togglePP;
-function scale(){const w=document.getElementById('la-wrap'),b=document.getElementById('ab'),s=w.clientWidth/800;b.style.transform='scale('+s+')';w.style.height=Math.ceil(520*s)+'px'}
-window.addEventListener('resize',scale);requestAnimationFrame(()=>requestAnimationFrame(scale));
-apply(0);startProg();
+
+(function(){
+  const hero = document.getElementById('hero1');
+  const btn = document.getElementById('hero-btn1');
+  const badge = document.getElementById('b1');
+  let flat = false;
+  const interval = 2200;
+  let start = Date.now();
+  function flip() {
+    flat = !flat;
+    if (flat) {
+      hero.style.background = '#2563eb';
+      hero.style.boxShadow = 'none';
+      btn.style.boxShadow = 'none';
+      badge.textContent = 'FLAT';
+    } else {
+      hero.style.background = 'linear-gradient(135deg,#3b82f6,#1d4ed8)';
+      hero.style.boxShadow = '0 8px 24px rgba(0,0,0,.4)';
+      btn.style.boxShadow = '0 4px 12px rgba(0,0,0,.3)';
+      badge.textContent = 'SKEUOMORPHIC';
+    }
+    badge.classList.add('visible');
+  }
+  (function tick() { if (Date.now() - start >= interval) { start = Date.now(); flip(); } requestAnimationFrame(tick); })();
+  autoProgress('p1', 4400);
+})();
+
+(function(){
+  const pr1 = document.getElementById('pr1');
+  const pr2 = document.getElementById('pr2');
+  const pr3 = document.getElementById('pr3');
+  const badge = document.getElementById('b2');
+  let flat = false;
+  const interval = 2400;
+  let start = Date.now();
+  function flip() {
+    flat = !flat;
+    if (flat) {
+      pr1.style.background = '#f1f5f9'; pr1.style.boxShadow = 'none'; pr1.style.border = 'none';
+      pr2.style.background = '#2563eb'; pr2.style.boxShadow = 'none';
+      pr3.style.background = '#f1f5f9'; pr3.style.boxShadow = 'none'; pr3.style.border = 'none';
+      badge.textContent = 'FLAT';
+    } else {
+      pr1.style.background = 'linear-gradient(180deg,#f8fafc,#e2e8f0)'; pr1.style.boxShadow = '0 4px 12px rgba(0,0,0,.15)'; pr1.style.border = '1px solid #e2e8f0';
+      pr2.style.background = 'linear-gradient(180deg,#3b82f6,#1d4ed8)'; pr2.style.boxShadow = '0 6px 20px rgba(59,130,246,.4)';
+      pr3.style.background = 'linear-gradient(180deg,#f8fafc,#e2e8f0)'; pr3.style.boxShadow = '0 4px 12px rgba(0,0,0,.15)'; pr3.style.border = '1px solid #e2e8f0';
+      badge.textContent = 'GRADIENT';
+    }
+    badge.classList.add('visible');
+  }
+  (function tick() { if (Date.now() - start >= interval) { start = Date.now(); flip(); } requestAnimationFrame(tick); })();
+  autoProgress('p2', 4800);
+})();
+
+(function(){
+  const dash = document.getElementById('dash1');
+  const icon = document.getElementById('dash-icon');
+  const ds1 = document.getElementById('ds1');
+  const ds2 = document.getElementById('ds2');
+  const badge = document.getElementById('b3');
+  let flat = false;
+  const interval = 2200;
+  let start = Date.now();
+  function flip() {
+    flat = !flat;
+    if (flat) {
+      dash.style.background = '#1e293b'; dash.style.color = '#e2e8f0'; dash.style.border = 'none'; dash.style.boxShadow = 'none';
+      icon.innerHTML = '&#9679;'; icon.style.fontSize = '10px'; icon.style.color = '#3b82f6';
+      ds1.style.background = 'rgba(59,130,246,.15)'; ds1.style.border = 'none';
+      ds2.style.background = 'rgba(245,158,11,.15)'; ds2.style.border = 'none';
+      badge.textContent = 'FLAT';
+    } else {
+      dash.style.background = '#f8fafc'; dash.style.color = '#334155'; dash.style.border = '1px solid #e2e8f0'; dash.style.boxShadow = '0 4px 12px rgba(0,0,0,.12)';
+      icon.innerHTML = '&#128100;'; icon.style.fontSize = '16px';
+      ds1.style.background = '#eff6ff'; ds1.style.border = '1px solid #bfdbfe';
+      ds2.style.background = '#fef3c7'; ds2.style.border = '1px solid #fde68a';
+      badge.textContent = 'DETAILED';
+    }
+    badge.classList.add('visible');
+  }
+  (function tick() { if (Date.now() - start >= interval) { start = Date.now(); flip(); } requestAnimationFrame(tick); })();
+  autoProgress('p3', 4400);
+})();
+
+(function(){
+  const app = document.getElementById('app1');
+  const bar = document.getElementById('app-bar');
+  const avatar = document.getElementById('app-avatar');
+  const b1 = document.getElementById('app-b1');
+  const b2 = document.getElementById('app-b2');
+  const badge = document.getElementById('b4');
+  let flat = false;
+  const interval = 2400;
+  let start = Date.now();
+  function flip() {
+    flat = !flat;
+    if (flat) {
+      app.style.background = '#1e293b'; app.style.color = '#e2e8f0'; app.style.border = 'none'; app.style.boxShadow = 'none';
+      bar.style.borderBottom = 'none';
+      avatar.style.background = '#3b82f6'; avatar.style.boxShadow = 'none';
+      b1.style.background = 'rgba(255,255,255,.06)'; b1.style.border = 'none'; b1.style.borderRadius = '4px';
+      b2.style.background = '#3b82f6'; b2.style.borderRadius = '4px';
+      badge.textContent = 'FLAT';
+    } else {
+      app.style.background = '#f8fafc'; app.style.color = '#334155'; app.style.border = '1px solid #e2e8f0'; app.style.boxShadow = '0 4px 12px rgba(0,0,0,.12)';
+      bar.style.borderBottom = '2px solid #e2e8f0';
+      avatar.style.background = 'linear-gradient(135deg,#3b82f6,#8b5cf6)'; avatar.style.boxShadow = '0 2px 8px rgba(59,130,246,.3)';
+      b1.style.background = '#eff6ff'; b1.style.border = '1px solid #bfdbfe'; b1.style.borderRadius = '12px 12px 12px 2px';
+      b2.style.borderRadius = '12px 12px 2px 12px';
+      badge.textContent = 'DECORATED';
+    }
+    badge.classList.add('visible');
+  }
+  (function tick() { if (Date.now() - start >= interval) { start = Date.now(); flip(); } requestAnimationFrame(tick); })();
+  autoProgress('p4', 4800);
+})();
 </script>
 </body>
 </html>
