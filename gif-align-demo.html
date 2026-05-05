@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Align Demo — Vibecode Glossary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+    --bg:#141413;--bg-card:#1c1c1a;--fg:#e8e0d4;--muted:#6e6a63;
+    --accent:#d97706;--accent-dim:rgba(217,119,6,.12);
+    --border:#2e2c28;--border-hi:#3e3b35;--slate:#33312d;--cream:#f5f0e8;
+    --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);min-height:100vh;-webkit-font-smoothing:antialiased;background-image:linear-gradient(rgba(255,255,255,.016) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.016) 1px,transparent 1px);background-size:20px 20px}
+
+.g4{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:24px 20px 32px;max-width:920px;margin:0 auto}
+
+.cd{background:var(--bg-card);border:1px solid var(--border);position:relative;overflow:hidden}
+.cd::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 0%,rgba(217,119,6,.04) 0%,transparent 60%);pointer-events:none}
+.cd-n{position:absolute;top:10px;right:12px;font-family:var(--mono);font-size:9px;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:2px 7px;letter-spacing:1.5px;z-index:5}
+.cd-l{font-family:var(--mono);font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:2px;padding:14px 14px 2px;position:relative}
+.cd-t{font-size:15px;font-weight:700;color:var(--cream);padding:2px 14px 10px;position:relative}
+.cd-d{padding:0 14px 8px;height:250px;position:relative;display:flex;flex-direction:column;justify-content:center;align-items:center}
+.cd-i{font-family:var(--mono);font-size:10px;color:var(--muted);padding:10px 14px 20px;border-top:1px solid var(--border);line-height:1.6;position:relative}
+.cd-i em{color:var(--accent);font-style:normal}
+
+.sl{position:absolute;bottom:12px;left:14px;font-family:var(--mono);font-size:9px;color:var(--accent);background:var(--bg);border:1px solid var(--border);padding:2px 8px;z-index:5;letter-spacing:.5px;transition:opacity .3s}
+
+/* === Fake cursor === */
+.fc{position:absolute;width:14px;height:14px;border:2px solid var(--accent);border-radius:50%;pointer-events:none;z-index:20;opacity:0;transition:left .4s cubic-bezier(.4,0,.2,1),top .4s cubic-bezier(.4,0,.2,1),opacity .2s;box-shadow:0 0 8px rgba(217,119,6,.2)}
+.fc.show{opacity:1}
+.fc::after{content:'';position:absolute;inset:3px;background:var(--accent);border-radius:50%;opacity:0}
+.fc.pop::after{animation:cpop .5s ease-out forwards}
+@keyframes cpop{0%{transform:scale(0);opacity:.6}100%{transform:scale(2.5);opacity:0}}
+
+/* === Section 1: Horizontal Align === */
+.ha-box{width:100%;background:#0e0e0d;border:1px solid var(--border-hi);padding:12px;display:flex;flex-direction:column;gap:8px}
+.ha-line{height:4px;background:var(--slate);border-radius:2px;transition:all .4s cubic-bezier(.4,0,.2,1)}
+.ha-line.w1{width:80%}
+.ha-line.w2{width:60%}
+.ha-line.w3{width:90%}
+.ha-line.w4{width:70%}
+
+.ha-wrap{display:flex;flex-direction:column;gap:6px;width:100%}
+.ha-wrap.left .ha-line{align-self:flex-start}
+.ha-wrap.center .ha-line{align-self:center}
+.ha-wrap.right .ha-line{align-self:flex-end}
+.ha-wrap.justify .ha-line{width:100%}
+
+/* === Section 2: Vertical Align === */
+.va-cont{width:140px;height:180px;background:#0e0e0d;border:1px solid var(--border-hi);position:relative;display:flex;padding:12px}
+.va-cont::before{content:'';position:absolute;inset:12px;border:1px dashed var(--border);pointer-events:none}
+.va-box{width:40px;height:40px;background:var(--accent-dim);border:1px solid var(--accent);transition:all .5s cubic-bezier(.4,0,.2,1);position:relative;z-index:2}
+
+/* === Section 3: Flex Distribution === */
+.fd-box{width:100%;height:60px;background:#0e0e0d;border:1px solid var(--border-hi);display:flex;align-items:center;padding:0 8px;gap:8px;transition:all .5s cubic-bezier(.4,0,.2,1)}
+.fd-item{width:20px;height:20px;background:var(--slate);border:1px solid var(--border-hi);flex-shrink:0;transition:all .4s}
+
+/* === Section 4: Layout Alignment === */
+.la-mock{width:160px;background:#0e0e0d;border:1px solid var(--border-hi);padding:12px;display:flex;flex-direction:column;gap:8px;transition:all .5s cubic-bezier(.4,0,.2,1)}
+.la-avatar{width:32px;height:32px;border-radius:50%;background:var(--slate);border:1px solid var(--border);transition:all .4s}
+.la-title{height:8px;width:60px;background:var(--cream);border-radius:1px;transition:all .4s}
+.la-img{width:100%;height:50px;background:var(--slate);border:1px solid var(--border);border-radius:2px}
+.la-text{height:4px;width:100%;background:var(--muted);border-radius:1px;transition:all .4s}
+
+@media(max-width:620px){
+    .g4{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<main>
+<div class="g4">
+
+    <!-- ===== 1. Horizontal Align ===== -->
+    <section class="cd" aria-label="Horizontal Align animation">
+        <span class="cd-n">LOOP</span>
+        <div class="cd-l">Văn bản</div>
+        <h2 class="cd-t">Horizontal Align</h2>
+        <div class="cd-d">
+            <div class="sl" id="sl1">Align Left</div>
+            <div class="ha-box">
+                <div class="ha-wrap left" id="ha-wrap">
+                    <div class="ha-line w1"></div>
+                    <div class="ha-line w2"></div>
+                    <div class="ha-line w3"></div>
+                    <div class="ha-line w4"></div>
+                    <div class="ha-line w1"></div>
+                </div>
+            </div>
+        </div>
+        <div class="cd-i">Căn lề ngang (<em>text-align</em>) xác định vị trí văn bản trong dòng. Giúp tạo nhịp điệu đọc tự nhiên.</div>
+    </section>
+
+    <!-- ===== 2. Vertical Align ===== -->
+    <section class="cd" aria-label="Vertical Align animation">
+        <span class="cd-n">LOOP</span>
+        <div class="cd-l">Container</div>
+        <h2 class="cd-t">Vertical Align</h2>
+        <div class="cd-d">
+            <div class="sl" id="sl2">Align Top</div>
+            <div class="va-cont" id="va-cont" style="align-items: flex-start;">
+                <div class="va-box" id="va-box"></div>
+            </div>
+        </div>
+        <div class="cd-i">Căn lề dọc (<em>vertical-align</em>) điều chỉnh vị trí phần tử theo chiều cao của container chứa nó.</div>
+    </section>
+
+    <!-- ===== 3. Flex Distribution ===== -->
+    <section class="cd" aria-label="Flex Distribution animation">
+        <span class="cd-n">LOOP</span>
+        <div class="cd-l">Phân phối</div>
+        <h2 class="cd-t">Align Items (Flex)</h2>
+        <div class="cd-d">
+            <div class="sl" id="sl3">flex-start</div>
+            <div class="fd-box" id="fd-box" style="justify-content: flex-start;">
+                <div class="fd-item"></div>
+                <div class="fd-item"></div>
+                <div class="fd-item"></div>
+            </div>
+            <div class="fd-box" style="justify-content: flex-start; margin-top: 8px; opacity: 0.4;">
+                <div class="fd-item"></div>
+                <div class="fd-item"></div>
+                <div class="fd-item"></div>
+            </div>
+        </div>
+        <div class="cd-i">Trong Flexbox, căn lề giúp <em>phân bổ khoảng cách</em> giữa các phần tử một cách thông minh và linh hoạt.</div>
+    </section>
+
+    <!-- ===== 4. Layout Alignment ===== -->
+    <section class="cd" aria-label="Layout Alignment animation">
+        <span class="cd-n">LOOP</span>
+        <div class="cd-l">Bố cục</div>
+        <h2 class="cd-t">Layout Alignment</h2>
+        <div class="cd-d">
+            <div class="sl" id="sl4">Left Aligned</div>
+            <div class="la-mock" id="la-mock" style="align-items: flex-start; text-align: left;">
+                <div class="la-avatar"></div>
+                <div class="la-title"></div>
+                <div class="la-img"></div>
+                <div class="la-text" style="width: 80%"></div>
+                <div class="la-text" style="width: 60%"></div>
+            </div>
+        </div>
+        <div class="cd-i">Căn lề toàn bộ khối (<em>composition</em>) tạo nên sự nhất quán về thị giác và phân cấp thông tin rõ ràng.</div>
+    </section>
+
+</div>
+</main>
+
+<script>
+function wait(ms){return new Promise(function(r){setTimeout(r,ms)})}
+
+/* ======== Section 1: Horizontal Align ======== */
+(async function(){
+    var wrap=document.getElementById('ha-wrap'),
+        sl=document.getElementById('sl1'),
+        modes=['left','center','right','justify'],
+        labels=['Align Left','Align Center','Align Right','Justify'],
+        i=0;
+    while(true){
+        wrap.className='ha-wrap '+modes[i];
+        sl.textContent=labels[i];
+        await wait(2000);
+        i=(i+1)%modes.length;
+    }
+})();
+
+/* ======== Section 2: Vertical Align ======== */
+(async function(){
+    var cont=document.getElementById('va-cont'),
+        box=document.getElementById('va-box'),
+        sl=document.getElementById('sl2'),
+        modes=['flex-start','center','flex-end','stretch'],
+        labels=['Align Top','Align Middle','Align Bottom','Stretch'],
+        i=0;
+    while(true){
+        cont.style.alignItems=modes[i];
+        if(modes[i]==='stretch'){
+            box.style.height='100%';
+        } else {
+            box.style.height='40px';
+        }
+        sl.textContent=labels[i];
+        await wait(2000);
+        i=(i+1)%modes.length;
+    }
+})();
+
+/* ======== Section 3: Flex Distribution ======== */
+(async function(){
+    var box=document.getElementById('fd-box'),
+        sl=document.getElementById('sl3'),
+        modes=['flex-start','center','flex-end','space-between','space-around','space-evenly'],
+        i=0;
+    while(true){
+        box.style.justifyContent=modes[i];
+        sl.textContent=modes[i];
+        await wait(2000);
+        i=(i+1)%modes.length;
+    }
+})();
+
+/* ======== Section 4: Layout Alignment ======== */
+(async function(){
+    var mock=document.getElementById('la-mock'),
+        sl=document.getElementById('sl4'),
+        modes=['flex-start','center','flex-end'],
+        labels=['Left Aligned','Center Aligned','Right Aligned'],
+        i=0;
+    while(true){
+        mock.style.alignItems=modes[i];
+        mock.style.textAlign=(modes[i]==='flex-start'?'left':(modes[i]==='center'?'center':'right'));
+        sl.textContent=labels[i];
+        await wait(2000);
+        i=(i+1)%modes.length;
+    }
+})();
+</script>
+</body>
+</html>

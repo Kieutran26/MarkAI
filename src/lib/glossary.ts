@@ -20,6 +20,7 @@ export type GlossaryTerm = {
 export type TermViewMode = 'modal' | 'page';
 
 export const terms: GlossaryTerm[] = [
+  { id: 'align', name: 'Align', nameEn: 'Căn lề / Alignment', letter: 'A', groups: ['design', 'code'], definition: 'Cách sắp xếp vị trí của các phần tử (text, hình khối, component) theo các trục ngang hoặc dọc. Căn lề tốt giúp tạo ra sự trật tự, cân bằng và dẫn dắt mắt người dùng một cách hiệu quả.', example: 'Prompt: "Căn giữa tiêu đề và đoạn văn, nút bấm căn lề phải. Trên mobile thì tất cả đều căn lề trái để dễ đọc hơn."', related: ['flexbox', 'grid', 'spacing', 'hierarchy'], demo: { kind: 'interactive', src: 'gif-align-demo.html', alt: 'Mô phỏng các kiểu căn lề: Horizontal, Vertical, Flex Distribution và Layout Alignment' } },
   { id: 'api', name: 'API', nameEn: 'API / API Key', letter: 'A', groups: ['infra', 'code'], definition: 'Với marketer mới học AI, API thường được hiểu thực tế là API key: một mã bí mật lấy từ nền tảng AI để app của bạn được phép gọi model. Nếu lộ key, người khác có thể dùng ké quota và làm bạn mất tiền.', example: 'Mình muốn dùng model AI trong app chat nội bộ. Cần vào platform lấy API key, lưu vào file .env, rồi mới gọi AI được. API key không nên dán thẳng lên giao diện hay đưa lên GitHub.', related: ['endpoint', 'webhook', 'request'], demo: { kind: 'interactive', src: 'gif-api-demo.html', alt: 'Mô phỏng cách lấy API key từ nền tảng AI rồi copy về app' } },
   { id: 'array', name: 'Array', nameEn: 'Mảng / Danh sách', letter: 'A', groups: ['code'], definition: 'Danh sách các item được xếp theo thứ tự. Giống như một cột Excel — mỗi ô là một item. Array trong code thường trông như này: ["Hà Nội", "TP.HCM", "Đà Nẵng"].', example: 'AI trả về "danh sách categories" — đó thường là một array mà code của bạn sẽ loop qua để hiển thị từng cái.', related: ['loop', 'database'], demo: { kind: 'interactive', src: 'gif-array-demo.html', alt: 'Mô phỏng 4 khía cạnh của Array: Basics, Accessing, Operations và Matrix' } },
   { id: 'asset', name: 'Asset', nameEn: 'Tài nguyên thiết kế', letter: 'A', groups: ['design'], definition: 'Tất cả file hình ảnh, icon, font, video dùng trong sản phẩm. Khi vibecode, AI thường hỏi "Asset đâu?" — tức là nó cần file ảnh/icon để gắn vào code.', example: 'Folder /assets/images/ chứa toàn bộ ảnh của campaign. Prompt cho AI: "dùng ảnh từ /assets/images/hero.jpg cho phần hero section".' },
@@ -171,6 +172,7 @@ export const letters = Object.keys(termsByLetter).sort();
 export const totalGroupCounts = (['code', 'design', 'infra', 'data', 'ai', 'workflow'] as TermGroup[]).reduce((acc, group) => ((acc[group] = terms.filter((term) => term.groups.includes(group)).length), acc), { all: terms.length } as Record<TermGroup | 'all', number>);
 
 const deepDiveTermIds = new Set([
+  'align',
   'api',
   'array',
   'auth',
@@ -258,6 +260,11 @@ const deepDiveTermIds = new Set([
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
+  align: [
+    'Alignment (Căn lề) là "xương sống" của thiết kế chuyên nghiệp. Một trang web trông "không ổn" thường do các phần tử bị lệch hàng, lệch cột dù chỉ 1-2 pixel.',
+    'Có 2 trục chính trong CSS: Main Axis (ngang mặc định) và Cross Axis (dọc mặc định). Hiểu về justify-content và align-items giúp bạn kiểm soát hoàn toàn không gian.',
+    'Quy tắc vàng: Đừng bao giờ căn lề "bằng mắt". Hãy dùng hệ thống Grid hoặc Flexbox để AI tự động tính toán khoảng cách chính xác tuyệt đối.',
+  ],
   array: [
     'Array (Mảng) là cấu trúc dữ liệu quan trọng nhất để quản lý danh sách. Trong marketing, bạn sẽ gặp nó khi xử lý danh sách user, danh sách sản phẩm, hoặc các tag chiến dịch.',
     'JS Array rất linh hoạt: có thể chứa cả số, chữ, và thậm chí là các Array khác (mảng đa chiều).',
