@@ -1,0 +1,396 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toast Notification — Vibecode Glossary</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root{
+            --bg:#141413;--bg-card:#1c1c1a;--fg:#e8e0d4;--muted:#6e6a63;
+            --accent:#d97706;--accent-dim:rgba(217,119,6,.12);
+            --accent-glow:rgba(217,119,6,.25);--border:#2e2c28;--border-hi:#3e3b35;
+            --slate:#33312d;--cream:#f5f0e8;--green:#22c55e;--red:#ef4444;
+            --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+        }
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        body{
+            background:var(--bg);color:var(--fg);font-family:var(--sans);
+            min-height:auto;-webkit-font-smoothing:antialiased;
+            background-image:
+                linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+                linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+            background-size:20px 20px;
+        }
+        .ph{padding:28px 20px 4px;max-width:920px;margin:0 auto}
+        .ph-tag{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--accent);background:var(--accent-dim);border:1px solid rgba(217,119,6,.2);display:inline-block;padding:3px 10px;margin-bottom:10px}
+        .ph h1{font-size:clamp(24px,5vw,36px);font-weight:700;color:var(--cream);line-height:1.15;letter-spacing:-.5px}
+        .ph p{font-size:13px;color:var(--muted);margin-top:6px;max-width:540px;line-height:1.55}
+
+        .g4{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:18px 16px 24px;max-width:920px;margin:0 auto}
+
+        /* Card */
+        .cd{background:var(--bg-card);border:1px solid var(--border);position:relative;overflow:hidden}
+        .cd::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 0%,rgba(217,119,6,.04) 0%,transparent 60%);pointer-events:none}
+        .cd-n{position:absolute;top:10px;right:12px;font-family:var(--mono);font-size:9px;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:2px 7px;letter-spacing:1.5px;z-index:5}
+        .cd-l{font-family:var(--mono);font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:2px;padding:14px 14px 2px;position:relative}
+        .cd-t{font-size:15px;font-weight:700;color:var(--cream);padding:2px 14px 10px;position:relative}
+        .cd-d{padding:0 14px 8px;height:260px;position:relative}
+        .cd-i{font-family:var(--mono);font-size:10px;color:var(--muted);padding:10px 14px 13px;border-top:1px solid var(--border);line-height:1.6;position:relative}
+        .cd-i em{color:var(--accent);font-style:normal}
+
+        /* Mock app */
+        .mk{width:100%;height:100%;background:#0e0e0d;border:2px solid var(--border-hi);display:flex;flex-direction:column;position:relative;overflow:hidden}
+        .mk-bar{display:flex;gap:5px;padding:7px 10px;background:#151514;border-bottom:1px solid var(--border);flex-shrink:0}
+        .mk-dot{width:7px;height:7px;border-radius:50%;background:var(--slate)}
+        .mk-body{flex:1;display:flex;position:relative;overflow:hidden}
+        .mk-side{width:34px;background:#111110;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:2px;padding:6px 0;flex-shrink:0}
+        .mk-si{width:20px;height:16px;margin:0 auto;background:var(--slate);border-radius:1px;transition:background .2s}
+        .mk-si.on{background:var(--accent-dim);border:1px solid rgba(217,119,6,.15)}
+        .mk-main{flex:1;padding:10px;position:relative;overflow:hidden}
+        .mk-head{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--cream);margin-bottom:8px}
+        .mk-line{height:5px;background:var(--slate);border-radius:1px;margin-bottom:5px}
+        .mk-blk{height:22px;background:var(--slate);border-radius:1px;margin-bottom:6px;border:1px solid var(--border)}
+        .mk-act{display:inline-block;padding:4px 12px;font-family:var(--mono);font-size:8px;font-weight:600;color:var(--muted);background:var(--slate);border:1px solid var(--border);letter-spacing:.5px;transition:background .15s,color .15s,border-color .15s}
+        .mk-act.flash{background:var(--accent);color:#0e0e0d;border-color:var(--accent)}
+
+        /* Toast chung */
+        .toast{
+            position:absolute;top:10px;right:10px;
+            display:flex;align-items:flex-start;gap:8px;
+            padding:10px 28px 12px 12px;
+            border-left:3px solid;
+            font-family:var(--mono);
+            z-index:10;
+            transform:translateX(calc(100% + 14px));opacity:0;
+            transition:transform .35s cubic-bezier(.4,0,.2,1),opacity .3s;
+            overflow:hidden;
+            max-width:185px;
+        }
+        .toast.show{transform:translateX(0);opacity:1}
+        .toast-ico{font-size:14px;margin-top:1px;flex-shrink:0}
+        .toast-b{flex:1;min-width:0}
+        .toast-t{font-size:9px;font-weight:700;margin-bottom:2px}
+        .toast-m{font-size:8px;opacity:.75;line-height:1.4}
+        .toast-bar{position:absolute;bottom:0;left:0;height:2px}
+
+        /* 4 kiểu toast */
+        .toast-success{background:#14532d;border-left-color:#22c55e;color:#bbf7d0}
+        .toast-success .toast-ico{color:#22c55e}
+        .toast-success .toast-bar{background:#22c55e}
+
+        .toast-error{background:#7f1d1d;border-left-color:#ef4444;color:#fecaca}
+        .toast-error .toast-ico{color:#ef4444}
+        .toast-error .toast-bar{background:#ef4444}
+
+        .toast-warning{background:#78350f;border-left-color:#d97706;color:#fde68a}
+        .toast-warning .toast-ico{color:#d97706}
+        .toast-warning .toast-bar{background:#d97706}
+
+        .toast-info{background:#1e293b;border-left-color:#64748b;color:#cbd5e1}
+        .toast-info .toast-ico{color:#94a3b8}
+        .toast-info .toast-bar{background:#64748b}
+
+        /* Divider */
+        .dv{display:flex;align-items:center;gap:12px;padding:26px 20px 16px;max-width:920px;margin:0 auto}
+        .dv::before,.dv::after{content:'';flex:1;height:1px;background:var(--border)}
+        .dv span{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+
+        /* Practice */
+        .pr{padding:0 16px 48px;max-width:920px;margin:0 auto}
+        .pr-h{margin-bottom:16px}
+        .pr-g{font-family:var(--mono);font-size:11px;color:var(--accent);margin-bottom:4px}
+        .pr-d{font-size:12px;color:var(--muted)}
+        .pr-b{display:flex;gap:14px}
+        .pr-ctrl{flex-shrink:0;width:180px;display:flex;flex-direction:column;gap:14px}
+        .pr-row{display:flex;flex-direction:column;gap:6px}
+        .pr-lbl{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:.5px}
+        .pr-val{color:var(--accent);float:right}
+
+        .tb{
+            font-family:var(--mono);font-size:10px;padding:8px 10px;
+            background:var(--bg);color:var(--muted);border:1px solid var(--border);
+            cursor:pointer;transition:all .15s;text-align:left;display:flex;align-items:center;gap:8px;
+            letter-spacing:.3px;
+        }
+        .tb:hover{border-color:var(--border-hi);color:var(--fg)}
+        .tb:active{transform:scale(.97)}
+        .tb i{width:14px;text-align:center;font-size:12px}
+        .tb.t-success i{color:#22c55e}.tb.t-error i{color:#ef4444}
+        .tb.t-warning i{color:#d97706}.tb.t-info i{color:#94a3b8}
+
+        input[type="range"]{-webkit-appearance:none;appearance:none;width:100%;height:3px;background:var(--border);outline:none;cursor:pointer}
+        input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;background:var(--accent);border:none;cursor:pointer}
+        input[type="range"]::-moz-range-thumb{width:14px;height:14px;background:var(--accent);border:none;cursor:pointer;border-radius:0}
+        input[type="range"]:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+
+        /* Practice preview */
+        .pr-prev{flex:1;min-width:0}
+        .pr-mk{background:#0e0e0d;border:2px solid var(--border-hi);height:320px;display:flex;flex-direction:column;position:relative;overflow:hidden}
+        .pr-mk-bar{display:flex;gap:5px;padding:7px 10px;background:#151514;border-bottom:1px solid var(--border);flex-shrink:0;align-items:center}
+        .pr-mk-url{flex:1;margin-left:8px;font-family:var(--mono);font-size:8px;color:var(--muted);background:var(--slate);padding:3px 8px;border-radius:1px}
+        .pr-mk-body{flex:1;display:flex;position:relative;overflow:hidden}
+        .pr-mk-side{width:44px;background:#111110;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:1px;padding:8px 0;flex-shrink:0}
+        .pr-mk-si{height:24px;margin:0 8px;background:var(--slate);border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--muted)}
+        .pr-mk-si.on{background:var(--accent-dim);color:var(--accent)}
+        .pr-mk-main{flex:1;padding:14px 16px;position:relative;overflow:hidden}
+        .pr-mk-head{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--cream);margin-bottom:12px}
+        .pr-mk-sec{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--muted);margin:12px 0 6px;letter-spacing:.5px;text-transform:uppercase}
+        .pr-mk-row{display:flex;justify-content:space-between;padding:5px 0;font-family:var(--mono);font-size:10px}
+        .pr-mk-l{color:var(--muted)}.pr-mk-v{color:var(--fg)}
+        .pr-mk-line{height:5px;background:var(--slate);border-radius:1px;margin-bottom:5px}
+        .pr-mk-blk{height:28px;background:var(--slate);border-radius:2px;border:1px solid var(--border)}
+
+        /* Toast stack trong practice */
+        .toast-stack{position:absolute;top:12px;right:12px;display:flex;flex-direction:column;gap:8px;z-index:10;pointer-events:none}
+        .toast-stack .toast{max-width:220px;padding:10px 30px 13px 12px}
+        .toast-stack .toast-ico{font-size:16px}
+        .toast-stack .toast-t{font-size:10px}
+        .toast-stack .toast-m{font-size:9px}
+        .toast-stack .toast-bar{height:3px}
+
+        /* Feedback */
+        .pr-f{font-family:var(--mono);font-size:11px;color:var(--fg);padding:14px 16px;margin-top:14px;background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--accent);line-height:1.6;min-height:44px;transition:border-color .3s}
+        .pr-f.dim{border-left-color:var(--border-hi)}
+        .pr-f em{color:var(--accent);font-style:normal}
+        .pr-hint{font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:10px;padding-left:4px}
+        .pr-hint i{color:var(--accent);margin-right:6px}
+
+        /* Counter badge */
+        .pr-cnt{font-family:var(--mono);font-size:9px;color:var(--accent);background:var(--accent-dim);border:1px solid rgba(217,119,6,.2);padding:2px 8px;display:inline-block;margin-top:6px;transition:opacity .3s}
+        .pr-cnt.hide{opacity:0}
+
+        @media(max-width:620px){
+            .g4{grid-template-columns:1fr}
+            .pr-b{flex-direction:column}
+            .pr-ctrl{width:100%;flex-direction:row;flex-wrap:wrap;gap:8px}
+            .pr-row{flex:1;min-width:140px}
+            .pr-mk{height:280px}
+            .toast-stack .toast{max-width:180px}
+        }
+        @media(prefers-reduced-motion:reduce){
+            *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
+        }
+    </style>
+</head>
+<body>
+
+<main>
+    <div class="g4">
+
+        <!-- 1. Success Toast -->
+        <section class="cd" aria-label="Success Toast animation">
+            <span class="cd-n">LOOP</span>
+            <div class="cd-l">Loại 01</div>
+            <h2 class="cd-t">Success Toast</h2>
+            <div class="cd-d">
+                <div class="mk">
+                    <div class="mk-bar"><div class="mk-dot"></div><div class="mk-dot"></div><div class="mk-dot"></div></div>
+                    <div class="mk-body">
+                        <div class="mk-side"><div class="mk-si on"></div><div class="mk-si"></div><div class="mk-si"></div><div class="mk-si"></div></div>
+                        <div class="mk-main">
+                            <div class="mk-head">Settings</div>
+                            <div class="mk-line" style="width:75%"></div>
+                            <div class="mk-line" style="width:55%"></div>
+                            <div class="mk-blk"></div>
+                            <div style="margin-top:6px"><div class="mk-act" id="act1">Save Changes</div></div>
+                        </div>
+                    </div>
+                    <div class="toast toast-success" id="t1">
+                        <i class="fas fa-check-circle toast-ico"></i>
+                        <div class="toast-b"><div class="toast-t">Success</div><div class="toast-m">Changes saved.</div></div>
+                        <div class="toast-bar" id="b1"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="cd-i">Xanh = <em>"đã xong"</em>. Action thành công → toast xác nhận → user tiếp tục làm việc không bị gián đoạn.</div>
+        </section>
+
+        <!-- 2. Error Toast -->
+        <section class="cd" aria-label="Error Toast animation">
+            <span class="cd-n">LOOP</span>
+            <div class="cd-l">Loại 02</div>
+            <h2 class="cd-t">Error Toast</h2>
+            <div class="cd-d">
+                <div class="mk">
+                    <div class="mk-bar"><div class="mk-dot"></div><div class="mk-dot"></div><div class="mk-dot"></div></div>
+                    <div class="mk-body">
+                        <div class="mk-side"><div class="mk-si"></div><div class="mk-si on"></div><div class="mk-si"></div><div class="mk-si"></div></div>
+                        <div class="mk-main">
+                            <div class="mk-head">Upload</div>
+                            <div class="mk-blk" style="height:34px;border:1px dashed var(--border-hi)"></div>
+                            <div class="mk-line" style="width:50%"></div>
+                            <div style="margin-top:6px"><div class="mk-act" id="act2">Submit</div></div>
+                        </div>
+                    </div>
+                    <div class="toast toast-error" id="t2">
+                        <i class="fas fa-circle-xmark toast-ico"></i>
+                        <div class="toast-b"><div class="toast-t">Error</div><div class="toast-m">Upload failed.</div></div>
+                        <div class="toast-bar" id="b2"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="cd-i">Đỏ = <em>"có vấn đề"</em>. Không chặn toàn bộ trang — báo lỗi nhẹ, user có thể thử lại ngay.</div>
+        </section>
+
+        <!-- 3. Warning Toast -->
+        <section class="cd" aria-label="Warning Toast animation">
+            <span class="cd-n">LOOP</span>
+            <div class="cd-l">Loại 03</div>
+            <h2 class="cd-t">Warning Toast</h2>
+            <div class="cd-d">
+                <div class="mk">
+                    <div class="mk-bar"><div class="mk-dot"></div><div class="mk-dot"></div><div class="mk-dot"></div></div>
+                    <div class="mk-body">
+                        <div class="mk-side"><div class="mk-si"></div><div class="mk-si"></div><div class="mk-si on"></div><div class="mk-si"></div></div>
+                        <div class="mk-main">
+                            <div class="mk-head">Dashboard</div>
+                            <div class="mk-line" style="width:60%"></div>
+                            <div class="mk-blk"></div>
+                            <div class="mk-line" style="width:40%"></div>
+                        </div>
+                    </div>
+                    <div class="toast toast-warning" id="t3">
+                        <i class="fas fa-triangle-exclamation toast-ico"></i>
+                        <div class="toast-b"><div class="toast-t">Warning</div><div class="toast-m">Session expires in 5 min.</div></div>
+                        <div class="toast-bar" id="b3"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="cd-i">Cam = <em>"chú ý"</em>. Chưa lỗi nhưng sắp — cho user thời gian hành động trước khi quá muộn.</div>
+        </section>
+
+        <!-- 4. Info Toast -->
+        <section class="cd" aria-label="Info Toast animation">
+            <span class="cd-n">LOOP</span>
+            <div class="cd-l">Loại 04</div>
+            <h2 class="cd-t">Info Toast</h2>
+            <div class="cd-d">
+                <div class="mk">
+                    <div class="mk-bar"><div class="mk-dot"></div><div class="mk-dot"></div><div class="mk-dot"></div></div>
+                    <div class="mk-body">
+                        <div class="mk-side"><div class="mk-si"></div><div class="mk-si"></div><div class="mk-si"></div><div class="mk-si on"></div></div>
+                        <div class="mk-main">
+                            <div class="mk-head">Home</div>
+                            <div class="mk-blk"></div>
+                            <div class="mk-blk" style="height:18px"></div>
+                            <div class="mk-line" style="width:65%"></div>
+                        </div>
+                    </div>
+                    <div class="toast toast-info" id="t4">
+                        <i class="fas fa-circle-info toast-ico"></i>
+                        <div class="toast-b"><div class="toast-t">Info</div><div class="toast-m">New features available.</div></div>
+                        <div class="toast-bar" id="b4"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="cd-i">Xám-slate = <em>"có thứ mới"</em>. Không ép user, chỉ thông báo — họ chọn đọc hay bỏ qua.</div>
+        </section>
+    </div>
+</main>
+
+<script>
+/* =============================================
+   Tiện ích: chạy progress bar bằng JS
+   ============================================= */
+function runBar(barEl, ms) {
+    barEl.style.transition = 'none';
+    barEl.style.width = '100%';
+    barEl.offsetHeight; // force reflow
+    barEl.style.transition = 'width ' + ms + 'ms linear';
+    barEl.style.width = '0%';
+}
+
+/* =============================================
+   CARD 1 — Success Toast
+   ============================================= */
+(function(){
+    var t = document.getElementById('t1'),
+        b = document.getElementById('b1'),
+        a = document.getElementById('act1'),
+        SHOW = 2800, CYCLE = 4200;
+
+    function run(){
+        /* Flash action */
+        a.classList.add('flash');
+        setTimeout(function(){ a.classList.remove('flash'); }, 200);
+        /* Show toast */
+        setTimeout(function(){
+            t.classList.add('show');
+            runBar(b, SHOW);
+        }, 300);
+        /* Hide toast */
+        setTimeout(function(){ t.classList.remove('show'); }, 300 + SHOW);
+    }
+    setTimeout(run, 600);
+    setInterval(run, CYCLE);
+})();
+
+
+/* =============================================
+   CARD 2 — Error Toast
+   ============================================= */
+(function(){
+    var t = document.getElementById('t2'),
+        b = document.getElementById('b2'),
+        a = document.getElementById('act2'),
+        SHOW = 2800, CYCLE = 4200;
+
+    function run(){
+        a.classList.add('flash');
+        setTimeout(function(){ a.classList.remove('flash'); }, 200);
+        setTimeout(function(){
+            t.classList.add('show');
+            runBar(b, SHOW);
+        }, 300);
+        setTimeout(function(){ t.classList.remove('show'); }, 300 + SHOW);
+    }
+    setTimeout(run, 1100);
+    setInterval(run, CYCLE);
+})();
+
+
+/* =============================================
+   CARD 3 — Warning Toast
+   ============================================= */
+(function(){
+    var t = document.getElementById('t3'),
+        b = document.getElementById('b3'),
+        SHOW = 2800, CYCLE = 4200;
+
+    function run(){
+        setTimeout(function(){
+            t.classList.add('show');
+            runBar(b, SHOW);
+        }, 0);
+        setTimeout(function(){ t.classList.remove('show'); }, SHOW);
+    }
+    setTimeout(run, 1600);
+    setInterval(run, CYCLE);
+})();
+
+
+/* =============================================
+   CARD 4 — Info Toast
+   ============================================= */
+(function(){
+    var t = document.getElementById('t4'),
+        b = document.getElementById('b4'),
+        SHOW = 2800, CYCLE = 4200;
+
+    function run(){
+        setTimeout(function(){
+            t.classList.add('show');
+            runBar(b, SHOW);
+        }, 0);
+        setTimeout(function(){ t.classList.remove('show'); }, SHOW);
+    }
+    setTimeout(run, 2100);
+    setInterval(run, CYCLE);
+})();
+
+</script>
+</body>
+</html>

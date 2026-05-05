@@ -128,6 +128,8 @@ import dividerDemoHtml from '../../gif-divider-demo.html?raw';
 import dividerPracticeHtml from '../../gif-divider-practice.html?raw';
 import listDemoHtml from '../../gif-list-demo.html?raw';
 import listPracticeHtml from '../../gif-list-practice.html?raw';
+import toastDemoHtml from '../../gif-toast-demo.html?raw';
+import toastPracticeHtml from '../../gif-toast-practice.html?raw';
 
 
 // Final sync for viewport practice update
@@ -211,6 +213,7 @@ export default function GlossaryTermDetailPage() {
       case 'badge': return badgeDemoHtml;
       case 'divider': return dividerDemoHtml;
       case 'list': return listDemoHtml;
+      case 'toast-notification': return toastDemoHtml;
       default: return null;
     }
   };
@@ -278,6 +281,7 @@ export default function GlossaryTermDetailPage() {
       case 'badge': return badgePracticeHtml;
       case 'divider': return dividerPracticeHtml;
       case 'list': return listPracticeHtml;
+      case 'toast-notification': return toastPracticeHtml;
       default: return null;
     }
   };

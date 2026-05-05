@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toast Notification — Vibecode Glossary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#141413;--bg-card:#1c1b19;--fg:#e5ddd0;--muted:#6e675d;
+  --accent:#d4722a;--accent-glow:rgba(212,114,42,.1);
+  --border:#2e2a26;--label:#a89d90;
+  --ok:#5a9e6f;--err:#c45c4a;--warn:#c49a2a;
+  --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);min-height:auto;-webkit-font-smoothing:antialiased;
+  background-image:linear-gradient(rgba(255,255,255,.016) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.016) 1px,transparent 1px);background-size:20px 20px}
+.wrap{max-width:860px;margin:0 auto;padding:28px 14px 24px}
+.hd-label{font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:2.5px;margin-bottom:5px}
+.hd-title{font-size:clamp(22px,5vw,30px);font-weight:700;line-height:1.15}
+.hd-title em{font-style:normal;color:var(--accent)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+
+/* ── Card ── */
+.card{background:var(--bg-card);border:1px solid var(--border);overflow:hidden}
+.card-top{padding:9px 13px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:7px}
+.card-dot{width:5px;height:5px;background:var(--accent);flex-shrink:0}
+.card-tag{font-family:var(--mono);font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;font-weight:600}
+.card-stage{padding:10px}
+.card-bot{padding:6px 13px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.card-bot span{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.3px}
+.loop{display:flex;align-items:center;gap:5px}
+.loop-dot{width:4px;height:4px;border-radius:50%;background:var(--accent);animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:.2}50%{opacity:1}}
+.mm{color:var(--muted)}
+
+/* ── Mini App ── */
+.ma{width:100%;border:1px solid var(--border);overflow:hidden;background:var(--bg)}
+.ma-bar{height:20px;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 8px;gap:6px;background:rgba(255,255,255,.015)}
+.ma-dots{display:flex;gap:4px}
+.ma-dots i{width:5px;height:5px;border-radius:50%;display:block}
+.ma-title{font-family:var(--mono);font-size:7px;color:var(--muted);letter-spacing:.5px}
+.ma-body{position:relative;overflow:hidden}
+.ma-line{height:6px;background:var(--border);border-radius:1px;margin-bottom:5px}
+.ma-cards{display:flex;gap:5px;margin-top:4px}
+.ma-card{flex:1;padding:6px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:1px}
+.ma-card span{font-size:10px;font-weight:600;display:block}
+.ma-card small{font-family:var(--mono);font-size:7px;color:var(--muted);letter-spacing:.3px}
+
+/* ── Toast (simulation) ── */
+.tst{position:absolute;top:8px;right:8px;width:calc(100% - 16px);max-width:210px;
+  background:var(--bg-card);border:1px solid var(--border);border-left:2px solid var(--accent);
+  padding:7px 9px;display:flex;align-items:flex-start;gap:7px;z-index:5;
+  transform:translateX(calc(100% + 20px));opacity:0;transition:transform .35s ease,opacity .35s ease}
+.tst.in{transform:translateX(0);opacity:1}
+.tst.out{transform:translateX(calc(100% + 20px));opacity:0}
+.tst-ico{width:14px;height:14px;flex-shrink:0}
+.tst-ico svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.tst-body{flex:1;min-width:0}
+.tst-type{font-family:var(--mono);font-size:7px;letter-spacing:1px;font-weight:600;display:block;margin-bottom:2px}
+.tst-msg{font-size:10px;color:var(--label);line-height:1.35}
+.tst-bar{height:2px;margin-top:4px;border-radius:1px;opacity:.35}
+
+/* ── Phase (card 1) ── */
+.phase{display:flex;align-items:center;gap:4px;margin-top:8px;justify-content:center}
+.ph{font-family:var(--mono);font-size:8px;color:var(--muted);letter-spacing:.8px;transition:color .25s}
+.ph.on{color:var(--accent)}
+.ph-arr{font-family:var(--mono);font-size:8px;color:var(--border)}
+
+/* ── Counter (card 3) ── */
+.ctr{position:absolute;bottom:8px;left:8px;display:flex;align-items:center;gap:5px}
+.ctr-pulse{width:5px;height:5px;border-radius:50%;background:var(--ok);animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.25;transform:scale(.6)}}
+.ctr-val{font-family:var(--mono);font-size:11px;font-weight:600}
+
+/* ── Section Divider ── */
+.sec-div{display:flex;align-items:center;gap:14px;margin:34px 0 22px}
+.sec-div::before,.sec-div::after{content:'';flex:1;height:1px;background:var(--border)}
+.sec-div span{font-family:var(--mono);font-size:10px;color:var(--accent);text-transform:uppercase;letter-spacing:2px;white-space:nowrap}
+
+/* ════════════════════════════════════
+   PRACTICE
+   ════════════════════════════════════ */
+.prac-goal{font-size:13px;color:var(--label);line-height:1.55;margin-bottom:16px;max-width:620px}
+.prac-goal strong{color:var(--fg);font-weight:600}
+
+.prac-frame{border:1px solid var(--border);overflow:hidden;background:var(--bg-card);margin-bottom:14px}
+.prac-chrome{padding:8px 12px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+.prac-dots{display:flex;gap:5px}
+.prac-dots i{width:7px;height:7px;border-radius:50%;display:block}
+.prac-body{position:relative;overflow:hidden;min-height:170px}
+.prac-content{padding:14px 14px 70px}
+.prac-cl{height:5px;background:var(--border);border-radius:1px;margin-bottom:4px}
+.prac-stats{display:flex;gap:6px;margin-top:6px}
+.prac-stat{flex:1;padding:6px 8px;border:1px solid var(--border);background:rgba(255,255,255,.015)}
+.prac-stat-v{font-size:12px;font-weight:600}
+.prac-stat-l{font-family:var(--mono);font-size:7px;color:var(--muted);letter-spacing:.5px;margin-top:1px}
+
+/* Toast container */
+.p-toast-wrap{position:absolute;top:10px;right:10px;display:flex;flex-direction:column;gap:6px;width:calc(100% - 20px);max-width:240px;z-index:10;pointer-events:none}
+.p-toast{background:var(--bg-card);border:1px solid var(--border);padding:8px 10px;display:flex;align-items:flex-start;gap:8px;
+  transform:translateX(calc(100% + 24px));opacity:0;transition:transform .35s ease,opacity .35s ease;flex-shrink:0}
+.p-toast-in{transform:translateX(0);opacity:1}
+.p-toast-out{transform:translateX(calc(100% + 24px));opacity:0}
+.p-toast-ico{width:14px;height:14px;flex-shrink:0}
+.p-toast-ico svg{width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+.p-toast-body{flex:1;min-width:0}
+.p-toast-type{font-family:var(--mono);font-size:7px;letter-spacing:1px;font-weight:600;display:block;margin-bottom:1px}
+.p-toast-msg{font-size:10px;color:var(--label);line-height:1.35}
+.p-toast-bar{height:2px;margin-top:4px;border-radius:1px;opacity:.3;width:100%;animation:pbar 3.5s linear forwards}
+@keyframes pbar{from{width:100%}to{width:0%}}
+
+/* Action buttons */
+.prac-btns{display:flex;gap:6px;padding:10px 14px;border-top:1px solid var(--border);background:rgba(255,255,255,.01);flex-wrap:wrap}
+.prac-btn{font-family:var(--mono);font-size:9px;letter-spacing:.4px;padding:6px 10px;
+  background:transparent;border:1px solid var(--border);color:var(--label);cursor:pointer;
+  display:flex;align-items:center;gap:5px;transition:border-color .2s,color .2s,transform .1s;touch-action:manipulation;user-select:none;flex:1;min-width:100px;justify-content:center}
+.prac-btn:hover{border-color:var(--accent);color:var(--fg)}
+.prac-btn:active{transform:scale(.96)}
+.prac-btn svg{width:11px;height:11px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0}
+
+/* Tracker */
+.prac-track{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
+.prac-track-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);transition:color .3s}
+.prac-track-item.done{color:var(--label)}
+.prac-track-box{width:14px;height:14px;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;transition:background .25s,border-color .25s;flex-shrink:0}
+.prac-track-item.done .prac-track-box{background:var(--ok);border-color:var(--ok)}
+.prac-track-box svg{width:9px;height:9px;fill:none;stroke:#fff;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;opacity:0;transition:opacity .2s}
+.prac-track-item.done .prac-track-box svg{opacity:1}
+
+/* Insight */
+.prac-ins{margin-top:14px;padding:0 16px;border:1px solid var(--border);background:rgba(212,114,42,.02);
+  font-size:12px;color:var(--label);line-height:1.65;max-height:0;overflow:hidden;opacity:0;transform:translateY(6px);
+  transition:opacity .4s,transform .4s,max-height .5s,padding .4s}
+.prac-ins.show{opacity:1;transform:translateY(0);max-height:120px;padding:14px 16px}
+.prac-ins strong{color:var(--accent)}
+
+.prac-hint{font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:14px;padding:9px 12px;border:1px solid var(--border);background:rgba(212,114,42,.02);line-height:1.5}
+.prac-hint em{font-style:normal;color:var(--accent)}
+
+@media(max-width:520px){
+  .prac-btns{flex-direction:column}
+  .prac-btn{min-width:0}
+  .p-toast-wrap{max-width:200px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition-duration:0s!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <section>
+    <p class="prac-goal"><strong>Mục tiêu:</strong> Click từng nút bên dưới. Quan sát toast xuất hiện, vị trí, thời gian tự biến mất, và cách chúng xếp chồng khi nhiều cái xuất hiện cùng lúc.</p>
+
+    <div class="prac-frame">
+      <div class="prac-chrome">
+        <span style="font-family:var(--mono);font-size:9px;color:var(--muted)">preview — click nút bên dưới</span>
+        <div class="prac-dots"><i style="background:var(--err)"></i><i style="background:var(--warn)"></i><i style="background:var(--ok)"></i></div>
+      </div>
+      <div class="prac-body">
+        <div class="prac-content">
+          <div class="prac-cl" style="width:45%"></div>
+          <div class="prac-cl" style="width:65%"></div>
+          <div class="prac-cl" style="width:35%"></div>
+          <div class="prac-stats">
+            <div class="prac-stat"><div class="prac-stat-v">1,248</div><div class="prac-stat-l">users</div></div>
+            <div class="prac-stat"><div class="prac-stat-v">$42.5k</div><div class="prac-stat-l">revenue</div></div>
+            <div class="prac-stat"><div class="prac-stat-v">386</div><div class="prac-stat-l">orders</div></div>
+          </div>
+        </div>
+        <div class="p-toast-wrap" id="pWrap"></div>
+      </div>
+      <div class="prac-btns">
+        <button class="prac-btn" data-type="ok" aria-label="Save changes">
+          <svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M5.5 8l2 2 3-3"/></svg>
+          Save changes
+        </button>
+        <button class="prac-btn" data-type="err" aria-label="Delete item">
+          <svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M6 6l4 4M10 6l-4 4"/></svg>
+          Delete item
+        </button>
+        <button class="prac-btn" data-type="warn" aria-label="Check session">
+          <svg viewBox="0 0 16 16"><path d="M8 2L1.5 13h13L8 2z"/><path d="M8 7v3M8 12"/></svg>
+          Check session
+        </button>
+        <button class="prac-btn" data-type="info" aria-label="View update">
+          <svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M8 7v5M8 4.5"/></svg>
+          View update
+        </button>
+      </div>
+    </div>
+
+    <div class="prac-track">
+      <div class="prac-track-item" data-t="ok">
+        <div class="prac-track-box"><svg viewBox="0 0 12 12"><path d="M2.5 6l2.5 2.5 4.5-5"/></svg></div>
+        <span>Success</span>
+      </div>
+      <div class="prac-track-item" data-t="err">
+        <div class="prac-track-box"><svg viewBox="0 0 12 12"><path d="M2.5 6l2.5 2.5 4.5-5"/></svg></div>
+        <span>Error</span>
+      </div>
+      <div class="prac-track-item" data-t="warn">
+        <div class="prac-track-box"><svg viewBox="0 0 12 12"><path d="M2.5 6l2.5 2.5 4.5-5"/></svg></div>
+        <span>Warning</span>
+      </div>
+      <div class="prac-track-item" data-t="info">
+        <div class="prac-track-box"><svg viewBox="0 0 12 12"><path d="M2.5 6l2.5 2.5 4.5-5"/></svg></div>
+        <span>Info</span>
+      </div>
+    </div>
+
+    <div class="prac-ins" id="pracIns">
+      <strong>Bản chất:</strong> Toast = feedback tạm thời, không chặn thao tác, tự biến mất sau vài giây. Khi brief cho dev: nói rõ "hiển thị toast khi save thành công" thay vì "hiển thị popup" — hai thứ này hoàn toàn khác nhau về UX.
+    </div>
+
+    <div class="prac-hint">
+      <em>Hint:</em> Thử click nhanh nhiều nút liên tiếp — để ý cách toast xếp chồng và tự dismiss từng cái. So sánh với modal/popup: toast không bao giờ bắt bạn phải bấm "Đóng".
+    </div>
+  </section>
+
+</div>
+
+<script>
+/* ══════════════════════════════════════════
+   ICONS (shared templates)
+   ══════════════════════════════════════════ */
+var ICO = {
+  ok:   '<svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M5.5 8l2 2 3-3"/></svg>',
+  err:  '<svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M6 6l4 4M10 6l-4 4"/></svg>',
+  warn: '<svg viewBox="0 0 16 16"><path d="M8 2L1.5 13h13L8 2z"/><path d="M8 7v3M8 12"/></svg>',
+  info: '<svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="6"/><path d="M8 7v5M8 4.5"/></svg>'
+};
+
+
+/* ══════════════════════════════════════════
+   PRACTICE — trigger toasts
+   ══════════════════════════════════════════ */
+(function(){
+  var wrap = document.getElementById('pWrap');
+  var trackItems = document.querySelectorAll('.prac-track-item');
+  var ins = document.getElementById('pracIns');
+  var triggered = {ok:false,err:false,warn:false,info:false};
+  var allDone = false;
+
+  var data = {
+    ok:   {color:'#5a9e6f',label:'SUCCESS',msg:'Changes saved successfully'},
+    err:  {color:'#c45c4a',label:'ERROR',   msg:'Failed to delete item'},
+    warn: {color:'#c49a2a',label:'WARNING', msg:'Session expires in 5 minutes'},
+    info: {color:'#d4722a',label:'INFO',    msg:'3 new features available'}
+  };
+
+  function showToast(type){
+    var d = data[type];
+    var el = document.createElement('div');
+    el.className = 'p-toast';
+    el.style.borderLeft = '2px solid ' + d.color;
+    el.innerHTML =
+      '<div class="p-toast-ico" style="color:'+d.color+'">'+ICO[type]+'</div>'+
+      '<div class="p-toast-body">'+
+        '<span class="p-toast-type" style="color:'+d.color+'">'+d.label+'</span>'+
+        '<div class="p-toast-msg">'+d.msg+'</div>'+
+        '<div class="p-toast-bar" style="background:'+d.color+'"></div>'+
+      '</div>';
+    wrap.prepend(el);
+
+    /* Enter */
+    requestAnimationFrame(function(){
+      requestAnimationFrame(function(){ el.classList.add('p-toast-in'); });
+    });
+
+    /* Track */
+    if(!triggered[type]){
+      triggered[type] = true;
+      for(var i=0;i<trackItems.length;i++){
+        if(trackItems[i].getAttribute('data-t')===type){
+          trackItems[i].classList.add('done');
+          break;
+        }
+      }
+      if(!allDone){
+        var all=true;
+        for(var k in triggered){ if(!triggered[k]) all=false; }
+        if(all){
+          allDone=true;
+          setTimeout(function(){ ins.classList.add('show'); },600);
+        }
+      }
+    }
+
+    /* Auto dismiss */
+    setTimeout(function(){
+      el.classList.remove('p-toast-in');
+      el.classList.add('p-toast-out');
+      setTimeout(function(){ if(el.parentNode) el.remove(); },360);
+    },3500);
+  }
+
+  /* Bind buttons */
+  var btns = document.querySelectorAll('.prac-btn');
+  for(var i=0;i<btns.length;i++){
+    btns[i].addEventListener('click',function(){
+      showToast(this.getAttribute('data-type'));
+    });
+  }
+})();
+</script>
+</body>
+</html>

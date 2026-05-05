@@ -134,6 +134,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'badge', name: 'Badge', nameEn: 'Huy hiệu / Badge', letter: 'B', groups: ['design', 'code'], definition: 'Một khối nhỏ chứa text, con số hoặc chỉ là một chấm màu, dùng để chỉ thị trạng thái, thông báo hoặc phân loại thông tin. Badge giúp thu hút sự chú ý vào các điểm quan trọng mà không làm vỡ bố cục tổng thể.', example: 'Prompt: "Thêm một badge màu đỏ hiện số lượng tin nhắn chưa đọc vào icon tin nhắn, và một badge \'New\' màu xanh lá cho bài viết mới."', related: ['chips', 'status', 'notification', 'ui'], demo: { kind: 'interactive', src: 'gif-badge-demo.html', alt: 'Mô phỏng 4 loại badge: Notification, Status, Count và Avatar' } },
   { id: 'divider', name: 'Divider', nameEn: 'Đường phân bản / Divider', letter: 'D', groups: ['design', 'code'], definition: 'Thành phần giao diện dùng để phân tách các khối nội dung, tạo ra cấu trúc và nhịp điệu cho trang web. Divider giúp người dùng dễ dàng quét (scan) thông tin mà không bị choáng ngợp bởi một khối nội dung liên tục.', example: 'Prompt: "Thêm một đường kẻ ngang mờ để tách biệt phần Header và Nội dung chính, hoặc dùng divider có chữ \'HOẶC\' ở giữa để phân chia các phương thức đăng nhập."', related: ['spacing', 'border', 'layout', 'margin'], demo: { kind: 'interactive', src: 'gif-divider-demo.html', alt: 'Mô phỏng 4 loại divider phổ biến: Ngang, Dọc, Có chữ và Trong danh sách' } },
   { id: 'list', name: 'List', nameEn: 'Danh sách / List View', letter: 'L', groups: ['design', 'code'], definition: 'Thành phần giao diện hiển thị nhiều item theo chiều dọc, mỗi item chia sẻ cùng cấu trúc. Có 4 biến thể chính: Single Line (1 dòng cho menu/action), Two Line (2 dòng cho email/tin nhắn), With Avatars (có ảnh đại diện cho danh sách người), và Section Headers (có tiêu đề nhóm cho cài đặt). Chọn đúng kiểu list giúp người dùng quét thông tin nhanh hơn.', example: 'Prompt: "Danh sách thành viên nhóm hiển thị avatar, tên, vai trò và badge trạng thái online/offline theo kiểu list với avatar — đừng dùng card vì tốn diện tích."', related: ['component', 'sidebar', 'navbar', 'accordion'], demo: { kind: 'interactive', src: 'gif-list-demo.html', alt: 'Mô phỏng 4 kiểu list: Single Line, Two Line, Icons & Avatars và Section Headers' } },
+  { id: 'toast-notification', name: 'Toast Notification', nameEn: 'Thông báo Toast / Snackbar', letter: 'T', groups: ['design', 'code'], definition: 'Một thông báo nhỏ, tạm thời xuất hiện trên màn hình để cung cấp phản hồi về một hành động của người dùng (như "Đã lưu", "Đã gửi"). Nó thường xuất hiện ở góc màn hình và tự động biến mất sau vài giây mà không làm gián đoạn dòng công việc hiện tại.', example: 'Khi bạn nhấn "Lưu", một toast hiện ra ở góc trên bên phải báo "Đã cập nhật thành công" rồi mờ dần sau 3 giây. Prompt: "Thêm một toast notification màu xanh lá hiện lên khi form submit thành công".', related: ['notification', 'popup', 'state', 'interface'], demo: { kind: 'interactive', src: 'gif-toast-demo.html', alt: 'Mô phỏng 4 loại toast notification: Success, Error, Warning và Info' } },
 ];
 
 export const quickRefItems = [
@@ -233,6 +234,7 @@ const deepDiveTermIds = new Set([
   'badge',
   'divider',
   'list',
+  'toast-notification',
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -536,6 +538,12 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
   'list': [
     'Chọn sai kiểu list làm người dùng mất thời gian scan. Single Line cho menu (người dùng chỉ cần tên). Two Line cho email/chat (cần thêm preview). Avatar List cho danh sách người (cần nhận diện nhanh).',
     'Khi prompt AI, mô tả rõ: "danh sách gì, mỗi item mấy dòng, có ảnh không, cần chia nhóm không" thay vì chỉ nói "thêm list". AI sẽ chọn đúng kiểu list ngay từ đầu.',
+  ],
+  'toast-notification': [
+    'Toast Notification (hay Snackbar) là "phản hồi nhẹ nhàng" nhất. Nó không bắt user phải click nút để đóng như Popup, giúp trải nghiệm trơn tru hơn.',
+    '4 loại Toast kinh điển: Success (xong việc), Error (lỗi gấp), Warning (cảnh báo), và Info (thông tin thêm). Mỗi loại cần màu sắc và icon tương ứng để user nhận diện nhanh qua thị giác.',
+    'Quy tắc vàng: Đừng để Toast che mất nội dung quan trọng hoặc nút bấm quan trọng. Vị trí phổ biến là Top-Right (desktop) hoặc Bottom-Center (mobile).',
+    'Thời gian hiển thị lý tưởng là 3-5 giây. Nếu chứa thông tin cực kỳ quan trọng, hãy cân nhắc dùng Popup thay vì Toast.',
   ],
 };
 
