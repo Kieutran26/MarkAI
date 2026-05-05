@@ -141,6 +141,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'menus', name: 'Menus', nameEn: 'Menu điều hướng / Navigation Menu', letter: 'M', groups: ['design', 'code'], definition: 'Thành phần giao diện hiển thị danh sách các lựa chọn hoặc hành động. Menus giúp gom nhóm các tính năng liên quan vào một không gian nhỏ, giúp giao diện gọn gàng và điều hướng hiệu quả hơn.', example: 'Dropdown menu cho tài khoản, Context menu (chuột phải) cho file, Mega menu cho trang e-commerce lớn. Chia nhóm (grouping) và đường kẻ phân bản (divider) giúp menu dài trở nên dễ quét hơn.', related: ['navbar', 'dropdown', 'sidebar', 'component', 'divider'], demo: { kind: 'interactive', src: 'gif-menus-demo.html', alt: 'Mô phỏng 4 loại menu phổ biến: Dropdown, Context, Mega và Grouped' } },
   { id: 'shape', name: 'Shape', nameEn: 'Hình khối / Shape', letter: 'S', groups: ['design'], definition: 'Các hình khối cơ bản (Square, Circle, Triangle) dùng để xây dựng giao diện. Shape quyết định cấu trúc, trọng lượng thị giác và cảm xúc của một thiết kế.', example: 'Prompt: "Dùng shape tròn cho avatar và shape vuông cho các card sản phẩm để tạo sự tương phản giữa con người và vật thể."', related: ['radius', 'stroke', 'interface'], demo: { kind: 'interactive', src: 'gif-shape-demo.html', alt: 'Mô phỏng các loại hình khối và personality của chúng' } },
   { id: 'split-buttons', name: 'Split buttons', nameEn: 'Split buttons', letter: 'S', groups: ['design', 'code'], definition: 'Split button kết hợp một hành động chính và một menu các hành động phụ liên quan. Nó gồm hai phần: nút chính bên trái thực hiện hành động mặc định, và nút mũi tên bên phải để mở menu dropdown.', example: 'Nút "Download" chính để tải file PDF, và nút mũi tên bên cạnh để chọn tải dưới dạng CSV hoặc Excel. Dùng split button giúp tiết kiệm diện tích giao diện mà vẫn cung cấp nhiều tùy chọn.', related: ['dropdown', 'menus', 'component'], demo: { kind: 'interactive', src: 'gif-split-button-demo.html', alt: 'Mô phỏng các trạng thái và ứng dụng của Split buttons' } },
+  { id: 'segmented-button', name: 'Segmented Button', nameEn: 'Nút phân đoạn', letter: 'S', groups: ['design', 'code'], definition: 'Một loại nút bấm được chia thành nhiều đoạn (segment), mỗi đoạn là một lựa chọn. Segmented Button thường dùng để chuyển đổi giữa các trạng thái, bộ lọc hoặc các view nội dung khác nhau trong cùng một không gian mà không làm thay đổi URL.', example: 'Prompt: "Tạo một segmented button gồm 3 tùy chọn: \'Ngày\', \'Tuần\', \'Tháng\' để lọc biểu đồ doanh thu. Khi người dùng click vào một đoạn, đoạn đó phải sáng lên (active) và các đoạn khác tự động tắt."', related: ['tab-bar', 'toggle', 'radio', 'component'], demo: { kind: 'interactive', src: 'gif-segmented-button-demo.html', alt: 'Mô phỏng 4 loại Segmented Button: Mutually Exclusive, Content Binding, State Lifecycle và Connected vs Separated' } },
 ];
 
 export const quickRefItems = [
@@ -249,6 +250,7 @@ const deepDiveTermIds = new Set([
   'menus',
   'shape',
   'split-buttons',
+  'segmented-button',
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -601,6 +603,11 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Split button là giải pháp hoàn hảo khi bạn có một hành động chiếm 80% nhu cầu người dùng, nhưng vẫn muốn cung cấp các lựa chọn thay thế mà không làm rối UI.',
     'Cấu trúc của nó gồm 2 phần độc lập về mặt tương tác: Main Button (hành động ngay) và Dropdown Trigger (mở menu). Đừng nhầm lẫn với một Menu Button đơn thuần (click vào đâu cũng mở menu).',
     'Quy tắc UX: Hành động chính nên là hành động được sử dụng nhiều nhất. Các hành động trong menu nên có liên quan mật thiết đến hành động chính (ví dụ: Save vs Save As, Export vs Export as PDF).',
+  ],
+  'segmented-button': [
+    'Segmented Button là lựa chọn hoàn hảo khi bạn có từ 2 đến 5 lựa chọn cần hiển thị cùng lúc để user so sánh nhanh.',
+    'Khác với Tab Bar (dùng cho nội dung lớn toàn trang), Segmented Button thường dùng trong các component nhỏ như card, modal, hoặc thanh công cụ config.',
+    'Quy tắc "Mutually Exclusive": Chỉ có duy nhất một đoạn được active tại một thời điểm. Việc chọn đoạn mới sẽ tự động hủy chọn đoạn cũ.',
   ],
 };
 
