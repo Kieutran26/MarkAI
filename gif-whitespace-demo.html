@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Whitespace Demo — Vibecode Glossary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#141413;--bg-card:#1c1b19;--fg:#e5ddd0;--muted:#6e675d;
+  --accent:#d4722a;--accent-glow:rgba(212,114,42,.1);
+  --border:#2e2a26;--label:#a89d90;
+  --ok:#5a9e6f;--err:#c45c4a;
+  --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+  --mu-bg:#f0ebe4;--mu-fg:#2a2520;--mu-card:#fff;--mu-bdr:#ddd5cb;--mu-mut:#8a8078;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--bg);color:var(--fg);font-family:var(--sans);
+  min-height:100vh;-webkit-font-smoothing:antialiased;
+  padding: 0; margin: 0;
+}
+.wrap{max-width:860px;margin:0 auto;padding:10px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:0}
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+
+/* ── Card ── */
+.card{background:var(--bg-card);border:1px solid var(--border);overflow:hidden}
+.card-top{padding:9px 13px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:7px}
+.card-dot{width:5px;height:5px;background:var(--accent);flex-shrink:0}
+.card-tag{font-family:var(--mono);font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;font-weight:600}
+.card-stage{padding:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden;min-height:190px}
+.card-bot{padding:6px 13px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.card-bot span{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.3px}
+.loop{display:flex;align-items:center;gap:5px}
+.loop-dot{width:4px;height:4px;border-radius:50%;background:var(--accent);animation:blink 2s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:.2}50%{opacity:1}}
+
+/* ── State badge ── */
+.st-badge{
+  font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;
+  padding:2px 7px;position:absolute;top:6px;right:6px;z-index:2;
+  border:1px solid var(--border);color:var(--muted);
+  transition:all .4s;
+}
+.st-badge.bad{border-color:var(--err);color:var(--err)}
+.st-badge.good{border-color:var(--ok);color:var(--ok)}
+
+/* ══════════════════════════════════════════
+   MINI PAGE MOCKUP (Card 1 & 2)
+   ══════════════════════════════════════════ */
+.mp{
+  width:100%;background:var(--mu-bg);color:var(--mu-fg);
+  border:1px solid var(--mu-bdr);overflow:hidden;
+  transition:border-color .5s;
+}
+.mp-nav{
+  display:flex;align-items:center;
+  padding:6px 8px;gap:8px;
+  border-bottom:1px solid var(--mu-bdr);
+  transition:padding .5s,gap .5s;
+}
+.mp-logo{font-family:var(--mono);font-size:8px;font-weight:700}
+.mp-link{font-size:7px;color:var(--mu-mut);transition:font-size .5s}
+.mp-hero{
+  display:flex;flex-direction:column;
+  padding:8px;gap:5px;
+  transition:padding .5s,gap .5s;
+}
+.mp-h1{font-size:11px;font-weight:700;line-height:1.2;transition:font-size .5s}
+.mp-p{font-size:7px;line-height:1.4;color:var(--mu-mut);transition:font-size .5s,line-height .5s}
+.mp-btn{
+  display:inline-block;width:fit-content;
+  font-family:var(--mono);font-size:7px;letter-spacing:.5px;text-transform:uppercase;
+  padding:3px 8px;background:var(--accent);color:#fff;
+  transition:padding .5s,font-size .5s;
+}
+.mp-cards{
+  display:flex;gap:6px;padding:0 8px 6px;
+  transition:gap .5s,padding .5s;
+}
+.mp-card{
+  flex:1;padding:5px;
+  border:1px solid var(--mu-bdr);background:var(--mu-card);
+  transition:padding .5s;
+}
+.mp-card-t{font-size:7px;font-weight:600;transition:font-size .5s}
+.mp-card-p{font-size:6px;color:var(--mu-mut);margin-top:2px;transition:font-size .5s}
+
+/* Gap indicator (visible only in spacious state) */
+.mp-gap{height:0;overflow:hidden;transition:height .4s}
+.mp-gap-inner{height:1px;background:var(--accent);opacity:.3;margin:0 8px}
+
+/* Squished */
+.mp.sq{border-color:var(--err)}
+.mp.sq .mp-nav{padding:2px 3px;gap:2px}
+.mp.sq .mp-hero{padding:3px;gap:1px}
+.mp.sq .mp-h1{font-size:9px}
+.mp.sq .mp-p{font-size:6px;line-height:1.15}
+.mp.sq .mp-btn{padding:2px 5px;font-size:6px}
+.mp.sq .mp-cards{gap:2px;padding:0 3px 2px}
+.mp.sq .mp-card{padding:2px}
+.mp.sq .mp-card-t{font-size:6px}
+.mp.sq .mp-card-p{font-size:5px}
+
+/* Spacious */
+.mp.sp{border-color:var(--ok)}
+.mp.sp .mp-nav{padding:10px 14px;gap:14px}
+.mp.sp .mp-hero{padding:16px 14px;gap:8px}
+.mp.sp .mp-h1{font-size:13px}
+.mp.sp .mp-p{font-size:8px;line-height:1.6}
+.mp.sp .mp-btn{padding:5px 12px;font-size:8px}
+.mp.sp .mp-cards{gap:10px;padding:0 14px 10px}
+.mp.sp .mp-card{padding:10px}
+.mp.sp .mp-card-t{font-size:8px}
+.mp.sp .mp-card-p{font-size:7px}
+.mp.sp .mp-gap{height:10px}
+
+/* ══════════════════════════════════════════
+   NEGATIVE SPACE COMPOSITION (Card 3)
+   ══════════════════════════════════════════ */
+.ns-comp{
+  width:100%;aspect-ratio:16/9;
+  background:var(--mu-bg);border:1px solid var(--mu-bdr);
+  display:grid;
+  grid-template-columns:1fr auto 1fr;
+  grid-template-rows:auto 1fr auto;
+  transition:border-color .4s;overflow:hidden;
+}
+.ns-zone{
+  border:1px dashed transparent;
+  display:flex;align-items:center;justify-content:center;
+  transition:border-color .4s,background .4s;
+}
+.ns-zone.vis{border-color:var(--accent);background:rgba(212,114,42,.04)}
+.ns-zt{grid-column:1/-1}
+.ns-zl{grid-column:1;grid-row:2}
+.ns-focal{grid-column:2;grid-row:2;display:flex;align-items:center;justify-content:center;padding:8px}
+.ns-zr{grid-column:3;grid-row:2}
+.ns-zb{grid-column:1/-1}
+.ns-btn{
+  font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;
+  padding:6px 14px;background:var(--accent);color:#fff;white-space:nowrap;
+}
+.ns-zl-label{
+  font-family:var(--mono);font-size:7px;letter-spacing:1.2px;text-transform:uppercase;
+  color:var(--accent);opacity:0;transform:translateY(4px);
+  transition:opacity .35s,transform .35s;
+}
+.ns-zone.vis .ns-zl-label{opacity:1;transform:translateY(0)}
+.ns-zl-label.v{writing-mode:vertical-rl}
+
+/* ══════════════════════════════════════════
+   READABILITY COMPARISON (Card 4)
+   ══════════════════════════════════════════ */
+.rd-wrap{display:flex;gap:6px;width:100%}
+.rd-col{
+  flex:1;padding:8px;
+  border:1px solid var(--mu-bdr);background:var(--mu-bg);color:var(--mu-fg);
+  transition:border-color .4s,opacity .4s;opacity:.3;
+}
+.rd-col.active{opacity:1;border-color:var(--accent)}
+.rd-lbl{font-family:var(--mono);font-size:7px;letter-spacing:1px;text-transform:uppercase;color:var(--mu-mut);margin-bottom:4px}
+.rd-txt{font-size:8px;line-height:1.2;transition:line-height .5s}
+.rd-col.loose .rd-txt{line-height:1.8}
+.rd-tag{
+  font-family:var(--mono);font-size:7px;letter-spacing:.5px;text-transform:uppercase;
+  margin-top:5px;padding:2px 5px;display:inline-block;
+  border:1px solid var(--mu-bdr);color:var(--mu-mut);transition:all .4s;
+}
+.rd-col.active .rd-tag{border-color:var(--accent);color:var(--accent)}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition-duration:0s!important}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="grid">
+    <!-- 1 · Crowded -->
+    <div class="card">
+      <div class="card-top"><div class="card-dot"></div><span class="card-tag">Crowded</span></div>
+      <div class="card-stage">
+        <span class="st-badge" id="sb1">normal</span>
+        <div class="mp" id="mp1">
+          <div class="mp-nav">
+            <span class="mp-logo">Brand</span>
+            <span class="mp-link">Home</span>
+            <span class="mp-link">About</span>
+          </div>
+          <div class="mp-hero">
+            <div class="mp-h1">Build faster with our toolkit</div>
+            <div class="mp-p">Ship products that users actually love. Modern tools for modern teams.</div>
+            <div class="mp-btn">Get Started</div>
+          </div>
+          <div class="mp-cards">
+            <div class="mp-card"><div class="mp-card-t">Feature A</div><div class="mp-card-p">Fast and reliable</div></div>
+            <div class="mp-card"><div class="mp-card-t">Feature B</div><div class="mp-card-p">Easy to integrate</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-bot"><span>thiếu whitespace = khó đọc</span><span class="loop"><span class="loop-dot"></span>loop</span></div>
+    </div>
+
+    <!-- 2 · Good Use -->
+    <div class="card">
+      <div class="card-top"><div class="card-dot"></div><span class="card-tag">Good Use</span></div>
+      <div class="card-stage">
+        <span class="st-badge bad" id="sb2">cramped</span>
+        <div class="mp sq" id="mp2">
+          <div class="mp-nav">
+            <span class="mp-logo">Brand</span>
+            <span class="mp-link">Home</span>
+            <span class="mp-link">About</span>
+          </div>
+          <div class="mp-gap"><div class="mp-gap-inner"></div></div>
+          <div class="mp-hero">
+            <div class="mp-h1">Build faster with our toolkit</div>
+            <div class="mp-p">Ship products that users actually love. Modern tools for modern teams.</div>
+            <div class="mp-btn">Get Started</div>
+          </div>
+          <div class="mp-gap"><div class="mp-gap-inner"></div></div>
+          <div class="mp-cards">
+            <div class="mp-card"><div class="mp-card-t">Feature A</div><div class="mp-card-p">Fast and reliable</div></div>
+            <div class="mp-card"><div class="mp-card-t">Feature B</div><div class="mp-card-p">Easy to integrate</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="card-bot"><span>whitespace = breathing room</span><span class="loop"><span class="loop-dot"></span>loop</span></div>
+    </div>
+
+    <!-- 3 · Negative Space -->
+    <div class="card">
+      <div class="card-top"><div class="card-dot"></div><span class="card-tag">Negative Space</span></div>
+      <div class="card-stage">
+        <span class="st-badge" id="sb3">hidden</span>
+        <div class="ns-comp" id="nsComp">
+          <div class="ns-zone ns-zt"><span class="ns-zl-label">direction</span></div>
+          <div class="ns-zone ns-zl"><span class="ns-zl-label v">rest</span></div>
+          <div class="ns-focal"><div class="ns-btn">Get Started</div></div>
+          <div class="ns-zone ns-zr"><span class="ns-zl-label v">focus</span></div>
+          <div class="ns-zone ns-zb"><span class="ns-zl-label">breathing</span></div>
+        </div>
+      </div>
+      <div class="card-bot"><span>khoảng trống điều hướng mắt</span><span class="loop"><span class="loop-dot"></span>loop</span></div>
+    </div>
+
+    <!-- 4 · Readability -->
+    <div class="card">
+      <div class="card-top"><div class="card-dot"></div><span class="card-tag">Readability</span></div>
+      <div class="card-stage">
+        <div class="rd-wrap">
+          <div class="rd-col active" id="rdL">
+            <div class="rd-lbl">line-height: 1.2</div>
+            <div class="rd-txt">Whitespace không phải khoảng trống vô nghĩa. Nó là phần thiết kế chủ động giúp điều hướng người đọc.</div>
+            <div class="rd-tag">hard to read</div>
+          </div>
+          <div class="rd-col loose" id="rdR">
+            <div class="rd-lbl">line-height: 1.8</div>
+            <div class="rd-txt">Whitespace không phải khoảng trống vô nghĩa. Nó là phần thiết kế chủ động giúp điều hướng người đọc.</div>
+            <div class="rd-tag">easy to scan</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-bot"><span>cùng text, khác whitespace</span><span class="loop"><span class="loop-dot"></span>loop</span></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══ Card 1: normal → cramped → normal ═══ */
+(function(){
+  var mp=document.getElementById('mp1');
+  var sb=document.getElementById('sb1');
+  var sq=false;
+  (function run(){setTimeout(function(){
+    sq=!sq;
+    mp.classList.toggle('sq',sq);
+    sb.textContent=sq?'crowded':'normal';
+    sb.classList.toggle('bad',sq);
+    run();
+  },2200)})();
+})();
+
+/* ═══ Card 2: cramped → spacious → cramped ═══ */
+(function(){
+  var mp=document.getElementById('mp2');
+  var sb=document.getElementById('sb2');
+  var sp=false;
+  setTimeout(function run(){setTimeout(function(){
+    sp=!sp;
+    mp.classList.toggle('sq',!sp);
+    mp.classList.toggle('sp',sp);
+    sb.textContent=sp?'breathing':'cramped';
+    sb.classList.toggle('good',sp);
+    sb.classList.toggle('bad',!sp);
+    run();
+  },2200)},800);
+})();
+
+/* ═══ Card 3: zones hidden → visible → hidden ═══ */
+(function(){
+  var zones=document.querySelectorAll('#nsComp .ns-zone');
+  var sb=document.getElementById('sb3');
+  var vis=false;
+  setTimeout(function run(){setTimeout(function(){
+    vis=!vis;
+    for(var i=0;i<zones.length;i++) zones[i].classList.toggle('vis',vis);
+    sb.textContent=vis?'visible':'hidden';
+    sb.classList.toggle('good',vis);
+    run();
+  },2500)},1600);
+})();
+
+/* ═══ Card 4: alternate left/right highlight ═══ */
+(function(){
+  var l=document.getElementById('rdL');
+  var r=document.getElementById('rdR');
+  var left=true;
+  setTimeout(function run(){setTimeout(function(){
+    left=!left;
+    l.classList.toggle('active',left);
+    r.classList.toggle('active',!left);
+    run();
+  },2500)},2400);
+})();
+</script>
+</body>
+</html>

@@ -132,6 +132,8 @@ import toastDemoHtml from '../../gif-toast-demo.html?raw';
 import toastPracticeHtml from '../../gif-toast-practice.html?raw';
 import darkmodeDemoHtml from '../../gif-darkmode-demo.html?raw';
 import darkmodePracticeHtml from '../../gif-darkmode-practice.html?raw';
+import whitespaceDemoHtml from '../../gif-whitespace-demo.html?raw';
+import whitespacePracticeHtml from '../../gif-whitespace-practice.html?raw';
 
 
 // Final sync for viewport practice update
@@ -217,6 +219,7 @@ export default function GlossaryTermDetailPage() {
       case 'list': return listDemoHtml;
       case 'toast-notification': return toastDemoHtml;
       case 'dark-mode': return darkmodeDemoHtml;
+      case 'whitespace': return whitespaceDemoHtml;
       default: return null;
     }
   };
@@ -286,6 +289,7 @@ export default function GlossaryTermDetailPage() {
       case 'list': return listPracticeHtml;
       case 'toast-notification': return toastPracticeHtml;
       case 'dark-mode': return darkmodePracticeHtml;
+      case 'whitespace': return whitespacePracticeHtml;
       default: return null;
     }
   };

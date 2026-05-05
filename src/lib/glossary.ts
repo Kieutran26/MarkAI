@@ -136,6 +136,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'divider', name: 'Divider', nameEn: 'Đường phân bản / Divider', letter: 'D', groups: ['design', 'code'], definition: 'Thành phần giao diện dùng để phân tách các khối nội dung, tạo ra cấu trúc và nhịp điệu cho trang web. Divider giúp người dùng dễ dàng quét (scan) thông tin mà không bị choáng ngợp bởi một khối nội dung liên tục.', example: 'Prompt: "Thêm một đường kẻ ngang mờ để tách biệt phần Header và Nội dung chính, hoặc dùng divider có chữ \'HOẶC\' ở giữa để phân chia các phương thức đăng nhập."', related: ['spacing', 'border', 'layout', 'margin'], demo: { kind: 'interactive', src: 'gif-divider-demo.html', alt: 'Mô phỏng 4 loại divider phổ biến: Ngang, Dọc, Có chữ và Trong danh sách' } },
   { id: 'list', name: 'List', nameEn: 'Danh sách / List View', letter: 'L', groups: ['design', 'code'], definition: 'Thành phần giao diện hiển thị nhiều item theo chiều dọc, mỗi item chia sẻ cùng cấu trúc. Có 4 biến thể chính: Single Line (1 dòng cho menu/action), Two Line (2 dòng cho email/tin nhắn), With Avatars (có ảnh đại diện cho danh sách người), và Section Headers (có tiêu đề nhóm cho cài đặt). Chọn đúng kiểu list giúp người dùng quét thông tin nhanh hơn.', example: 'Prompt: "Danh sách thành viên nhóm hiển thị avatar, tên, vai trò và badge trạng thái online/offline theo kiểu list với avatar — đừng dùng card vì tốn diện tích."', related: ['component', 'sidebar', 'navbar', 'accordion'], demo: { kind: 'interactive', src: 'gif-list-demo.html', alt: 'Mô phỏng 4 kiểu list: Single Line, Two Line, Icons & Avatars và Section Headers' } },
   { id: 'toast-notification', name: 'Toast Notification', nameEn: 'Thông báo Toast / Snackbar', letter: 'T', groups: ['design', 'code'], definition: 'Một thông báo nhỏ, tạm thời xuất hiện trên màn hình để cung cấp phản hồi về một hành động của người dùng (như "Đã lưu", "Đã gửi"). Nó thường xuất hiện ở góc màn hình và tự động biến mất sau vài giây mà không làm gián đoạn dòng công việc hiện tại.', example: 'Khi bạn nhấn "Lưu", một toast hiện ra ở góc trên bên phải báo "Đã cập nhật thành công" rồi mờ dần sau 3 giây. Prompt: "Thêm một toast notification màu xanh lá hiện lên khi form submit thành công".', related: ['notification', 'popup', 'state', 'interface'], demo: { kind: 'interactive', src: 'gif-toast-demo.html', alt: 'Mô phỏng 4 loại toast notification: Success, Error, Warning và Info' } },
+  { id: 'whitespace', name: 'Whitespace', nameEn: 'Whitespace / Negative Space', letter: 'W', groups: ['design'], definition: 'Whitespace (hay Negative Space) không phải là "khoảng trống vô nghĩa" hay "chỗ còn thừa". Nó là một yếu tố thiết kế chủ động, đóng vai trò là "khoảng thở" giúp mắt người dùng nghỉ ngơi, phân biệt các khối thông tin và tập trung vào nội dung quan trọng nhất. Whitespace tốt giúp giao diện trông sang trọng, chuyên nghiệp và dễ đọc hơn mà không cần thay đổi bất kỳ thành phần nội dung nào.', example: 'Khi feedback cho designer hoặc ra lệnh cho AI: "Cho trang này nhiều breathing room hơn" — tức là bạn đang yêu cầu tăng whitespace (thông qua margin, padding, line-height hoặc gap) để bố cục bớt ngột ngạt.', related: ['spacing', 'hierarchy', 'margin', 'padding', 'line-height'], demo: { kind: 'interactive', src: 'gif-whitespace-demo.html', alt: 'Mô phỏng 4 khía cạnh của Whitespace: Crowded, Good Use, Negative Space và Readability' } },
 ];
 
 export const quickRefItems = [
@@ -237,6 +238,7 @@ const deepDiveTermIds = new Set([
   'divider',
   'list',
   'toast-notification',
+  'whitespace',
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -552,6 +554,12 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Ví dụ: biến color-bg ở Light mode là trắng, thì ở Dark mode nó là đen xám. Code của bạn chỉ gọi color-bg, hệ thống sẽ tự chọn giá trị đúng dựa trên theme.',
     'Quy tắc tương phản: Trong dark mode, đừng dùng màu đen tuyệt đối (#000) làm nền vì nó gây hiện tượng "halo" (chữ trắng bị nhòe trên nền đen). Hãy dùng xám cực đậm để mắt dễ chịu hơn.',
     'Giữ màu thương hiệu: Các màu accent (cam, xanh, đỏ) thường được giữ nguyên hoặc chỉ điều chỉnh nhẹ độ sáng để vẫn nổi bật trên cả hai nền.',
+  ],
+  'whitespace': [
+    'Đừng nhầm lẫn: Whitespace không nhất thiết phải là màu trắng. Nó là bất kỳ không gian trống nào (kể cả màu nền, ảnh mờ) giữa các phần tử thiết kế.',
+    'Có 2 loại chính: Macro Whitespace (khoảng cách lớn giữa các section, container) và Micro Whitespace (khoảng cách nhỏ giữa các dòng, chữ, icon).',
+    'Tỷ lệ vàng: Không có con số cố định, nhưng một quy tắc UX phổ biến là: nội dung càng quan trọng hoặc càng cao cấp thì càng cần nhiều whitespace quanh đó để tạo sự tôn nghiêm và tập trung.',
+    'Sức mạnh của Negative Space: Trong nghệ thuật và logo (như mũi tên ẩn trong logo FedEx), negative space còn được dùng để tạo ra các hình khối ẩn ý, giúp thiết kế trở nên thông minh và đáng nhớ hơn.',
   ],
 };
 
