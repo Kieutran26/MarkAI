@@ -148,6 +148,8 @@ import arrayDemoHtml from '../../gif-array-demo.html?raw';
 import arrayPracticeHtml from '../../gif-array-practice.html?raw';
 import segmentedButtonDemoHtml from '../../gif-segmented-button-demo.html?raw';
 import segmentedButtonPracticeHtml from '../../gif-segmented-button-practice.html?raw';
+import iconButtonDemoHtml from '../../gif-icon-button-demo.html?raw';
+import iconButtonPracticeHtml from '../../gif-icon-button-practice.html?raw';
 
 
 // Final sync for viewport practice update
@@ -241,6 +243,7 @@ export default function GlossaryTermDetailPage() {
       case 'split-buttons': return splitButtonDemoHtml;
       case 'array': return arrayDemoHtml;
       case 'segmented-button': return segmentedButtonDemoHtml;
+      case 'icon-button': return iconButtonDemoHtml;
       default: return null;
     }
   };
@@ -318,6 +321,7 @@ export default function GlossaryTermDetailPage() {
       case 'split-buttons': return splitButtonPracticeHtml;
       case 'array': return arrayPracticeHtml;
       case 'segmented-button': return segmentedButtonPracticeHtml;
+      case 'icon-button': return iconButtonPracticeHtml;
       default: return null;
     }
   };

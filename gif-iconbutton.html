@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Icon Button — Animated Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#101010;--bg-card:#181818;--bg-inner:#131313;
+    --border:#272727;--border-hi:#d97706;
+    --text:#e0e0e0;--text-m:#707070;--text-d:#3a3a3a;
+    --accent:#d97706;--accent-l:#f59e0b;
+    --accent-bg:rgba(217,119,6,.1);--accent-bg2:rgba(217,119,6,.2);
+    --red:#ef4444;--green:#22c55e;
+  }
+  *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family:'Space Grotesk',sans-serif;
+    background-color:var(--bg);
+    background-image:
+      linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),
+      linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+    background-size:20px 20px;
+    color:var(--text);min-height:100vh;padding:20px 16px 40px;
+  }
+
+  /* ── HEADER ── */
+  .page-hd{max-width:880px;margin:0 auto 28px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;}
+  .page-hd h1{font-size:32px;font-weight:700;letter-spacing:-1px;line-height:1;}
+  .page-hd .tag{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);border:1px solid var(--accent);padding:2px 8px;border-radius:2px;letter-spacing:.5px;}
+  .page-hd .sub{width:100%;font-size:13px;color:var(--text-m);margin-top:4px;}
+
+  /* ── GRID ── */
+  .grid{max-width:880px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media(max-width:640px){.grid{grid-template-columns:1fr;}.page-hd h1{font-size:24px;}}
+
+  /* ── CARD BASE ── */
+  .card{background:var(--bg-card);border:1px solid var(--border);border-radius:3px;padding:18px;position:relative;overflow:hidden;}
+  .card::after{content:'';position:absolute;top:14px;right:14px;width:5px;height:5px;background:var(--accent);border-radius:50%;animation:dot-p 2.4s ease-in-out infinite;}
+  @keyframes dot-p{0%,100%{opacity:.3}50%{opacity:1}}
+  .card-hd{display:flex;align-items:center;gap:10px;margin-bottom:16px;}
+  .card-hd .num{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--accent);background:var(--accent-bg);border:1px solid rgba(217,119,6,.2);padding:1px 6px;border-radius:2px;}
+  .card-hd h2{font-size:14px;font-weight:600;letter-spacing:-.3px;}
+
+  /* ── STAGE ── */
+  .stage{background:var(--bg-inner);border:1px solid var(--border);border-radius:3px;padding:28px 20px;display:flex;flex-direction:column;align-items:center;position:relative;min-height:140px;}
+  .insight{margin-top:14px;font-size:11.5px;color:var(--text-m);line-height:1.55;padding-left:12px;border-left:2px solid var(--border);}
+  .insight strong{color:var(--accent-l);font-weight:600;}
+
+  /* ═══ 01 VARIANTS ═══ */
+  .var-row{display:flex;gap:16px;align-items:flex-start;}
+  .var-col{display:flex;flex-direction:column;align-items:center;gap:10px;}
+  .var-btn{width:48px;height:48px;display:flex;align-items:center;justify-content:center;border-radius:4px;opacity:.35;position:relative;transition:transform .3s,opacity .3s,box-shadow .3s;}
+  .var-btn svg{width:22px;height:22px;}
+  .var-btn.v-filled{background:var(--accent);color:#fff;}
+  .var-btn.v-tonal{background:var(--accent-bg2);color:var(--accent);}
+  .var-btn.v-outlined{background:transparent;border:1.5px solid var(--accent);color:var(--accent);}
+  .var-btn.v-text{background:transparent;color:var(--accent);}
+  .var-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-m);position:absolute;bottom:-22px;white-space:nowrap;opacity:0;}
+  @keyframes v-pop{0%{opacity:.35;transform:scale(1);box-shadow:none}3%{opacity:1;transform:scale(1.08);box-shadow:0 0 18px rgba(217,119,6,.25)}21%{opacity:1;transform:scale(1.08);box-shadow:0 0 18px rgba(217,119,6,.25)}24%{opacity:.35;transform:scale(1);box-shadow:none}100%{opacity:.35;transform:scale(1);box-shadow:none}}
+  @keyframes v-lbl{0%{opacity:0;transform:translateY(3px)}3%{opacity:1;transform:translateY(0)}21%{opacity:1;transform:translateY(0)}24%{opacity:0;transform:translateY(3px)}100%{opacity:0;transform:translateY(3px)}}
+  .var-col:nth-child(1) .var-btn{animation:v-pop 8s ease infinite 0s}
+  .var-col:nth-child(2) .var-btn{animation:v-pop 8s ease infinite 2s}
+  .var-col:nth-child(3) .var-btn{animation:v-pop 8s ease infinite 4s}
+  .var-col:nth-child(4) .var-btn{animation:v-pop 8s ease infinite 6s}
+  .var-col:nth-child(1) .var-label{animation:v-lbl 8s ease infinite 0s}
+  .var-col:nth-child(2) .var-label{animation:v-lbl 8s ease infinite 2s}
+  .var-col:nth-child(3) .var-label{animation:v-lbl 8s ease infinite 4s}
+  .var-col:nth-child(4) .var-label{animation:v-lbl 8s ease infinite 6s}
+  .weight-bar{display:flex;margin-top:32px;width:100%;max-width:240px;height:4px;border-radius:1px;overflow:hidden;}
+  .weight-seg{flex:1;background:var(--border);}
+  @keyframes w-fill{0%{background:var(--border)}3%{background:var(--accent)}21%{background:var(--accent)}24%{background:var(--border)}100%{background:var(--border)}}
+  .weight-seg:nth-child(1){animation:w-fill 8s ease infinite 0s}
+  .weight-seg:nth-child(2){animation:w-fill 8s ease infinite 2s}
+  .weight-seg:nth-child(3){animation:w-fill 8s ease infinite 4s}
+  .weight-seg:nth-child(4){animation:w-fill 8s ease infinite 6s}
+
+  /* ═══ 02 SIZES ═══ */
+  .size-row{display:flex;align-items:flex-end;gap:20px;height:80px;}
+  .size-col{display:flex;flex-direction:column;align-items:center;gap:8px;position:relative;}
+  .size-btn{display:flex;align-items:center;justify-content:center;border-radius:4px;background:var(--accent-bg);border:1px solid rgba(217,119,6,.15);color:var(--accent);opacity:.35;}
+  .size-btn svg{width:50%;height:50%;}
+  .size-s{width:32px;height:32px}.size-m{width:40px;height:40px}.size-l{width:52px;height:52px}.size-xl{width:64px;height:64px}
+  .size-info{position:absolute;bottom:-28px;text-align:center;opacity:0;}
+  .size-info .sname{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent-l);font-weight:700;}
+  .size-info .spx{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-m);}
+  @keyframes sz-pop{0%{opacity:.35;transform:scale(1);box-shadow:none;background:var(--accent-bg)}3%{opacity:1;transform:scale(1.06);box-shadow:0 0 20px rgba(217,119,6,.2);background:var(--accent-bg2)}21%{opacity:1;transform:scale(1.06);box-shadow:0 0 20px rgba(217,119,6,.2);background:var(--accent-bg2)}24%{opacity:.35;transform:scale(1);box-shadow:none;background:var(--accent-bg)}100%{opacity:.35;transform:scale(1);box-shadow:none;background:var(--accent-bg)}}
+  @keyframes sz-lbl{0%{opacity:0}3%{opacity:1}21%{opacity:1}24%{opacity:0}100%{opacity:0}}
+  .size-col:nth-child(1) .size-btn{animation:sz-pop 8s ease infinite 0s}
+  .size-col:nth-child(2) .size-btn{animation:sz-pop 8s ease infinite 2s}
+  .size-col:nth-child(3) .size-btn{animation:sz-pop 8s ease infinite 4s}
+  .size-col:nth-child(4) .size-btn{animation:sz-pop 8s ease infinite 6s}
+  .size-col:nth-child(1) .size-info{animation:sz-lbl 8s ease infinite 0s}
+  .size-col:nth-child(2) .size-info{animation:sz-lbl 8s ease infinite 2s}
+  .size-col:nth-child(3) .size-info{animation:sz-lbl 8s ease infinite 4s}
+  .size-col:nth-child(4) .size-info{animation:sz-lbl 8s ease infinite 6s}
+  .ruler{width:100%;max-width:240px;height:1px;background:var(--border);margin-top:36px;position:relative;}
+  .ruler::before,.ruler::after{content:'';position:absolute;top:-3px;width:1px;height:7px;background:var(--text-d);}
+  .ruler::before{left:0}.ruler::after{right:0}
+
+  /* ═══ 03 STATES ═══ */
+  .state-demo{display:flex;flex-direction:column;align-items:center;gap:14px;}
+  .heart-wrap{width:72px;height:72px;display:flex;align-items:center;justify-content:center;position:relative;}
+  .heart-wrap svg{width:44px;height:44px;position:absolute;}
+  .heart-outline{stroke:#888;fill:none;stroke-width:2;}
+  .heart-filled{stroke:var(--red);fill:var(--red);stroke-width:1.5;opacity:0;}
+  @keyframes heart-anim{0%,17%{stroke:#888;fill:none;opacity:1}20%,37%{stroke:var(--accent);fill:none;opacity:1}40%,57%{stroke:#92400e;fill:rgba(217,119,6,.15);opacity:1}60%,77%{stroke:var(--red);fill:var(--red);opacity:1}80%,97%{stroke:#555;fill:none;opacity:.4}100%{stroke:#555;fill:none;opacity:.4}}
+  @keyframes heart-fill-a{0%,57%{opacity:0}62%,77%{opacity:1}82%,100%{opacity:0}}
+  @keyframes hw-scale{0%,17%{transform:scale(1)}20%,37%{transform:scale(1.12)}40%,57%{transform:scale(.94)}60%,100%{transform:scale(1)}}
+  .heart-wrap{animation:hw-scale 10s ease infinite}
+  .heart-outline{animation:heart-anim 10s ease infinite}
+  .heart-filled{animation:heart-fill-a 10s ease infinite}
+  .state-labels{position:relative;height:18px;width:110px;text-align:center;}
+  .sl{position:absolute;left:0;right:0;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;opacity:0;}
+  .sl-1{color:var(--text-m)}.sl-2{color:var(--accent)}.sl-3{color:#92400e}.sl-4{color:var(--red)}.sl-5{color:var(--text-d)}
+  @keyframes sl-show{0%{opacity:0}2%{opacity:1}18%{opacity:1}20%{opacity:0}100%{opacity:0}}
+  .sl-1{animation:sl-show 10s ease infinite 0s}.sl-2{animation:sl-show 10s ease infinite 2s}.sl-3{animation:sl-show 10s ease infinite 4s}.sl-4{animation:sl-show 10s ease infinite 6s}.sl-5{animation:sl-show 10s ease infinite 8s}
+  .state-dots{display:flex;gap:6px;margin-top:4px;}
+  .sdot{width:6px;height:6px;border-radius:1px;background:var(--border);}
+  @keyframes sdot-on{0%{background:var(--border)}2%{background:var(--accent)}18%{background:var(--accent)}20%{background:var(--border)}100%{background:var(--border)}}
+  .sdot:nth-child(1){animation:sdot-on 10s ease infinite 0s}.sdot:nth-child(2){animation:sdot-on 10s ease infinite 2s}.sdot:nth-child(3){animation:sdot-on 10s ease infinite 4s}.sdot:nth-child(4){animation:sdot-on 10s ease infinite 6s}.sdot:nth-child(5){animation:sdot-on 10s ease infinite 8s}
+
+  /* ═══ 04 CONTEXT ═══ */
+  .inbox{width:100%;max-width:280px;border:1px solid var(--border);border-radius:3px;overflow:hidden;}
+  .inbox-hd{display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:rgba(255,255,255,.03);border-bottom:1px solid var(--border);}
+  .inbox-hd span{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-m);letter-spacing:.5px;text-transform:uppercase;}
+  .inbox-hd .hd-icon{width:24px;height:24px;display:flex;align-items:center;justify-content:center;color:var(--text-m);border-radius:3px;position:relative;opacity:.35;}
+  .inbox-hd .hd-icon svg{width:14px;height:14px;}
+  @keyframes ctx-hd{0%{opacity:.35;color:var(--text-m);box-shadow:none}3%{opacity:1;color:var(--accent);box-shadow:0 0 12px rgba(217,119,6,.3)}21%{opacity:1;color:var(--accent);box-shadow:0 0 12px rgba(217,119,6,.3)}24%{opacity:.35;color:var(--text-m);box-shadow:none}100%{opacity:.35;color:var(--text-m);box-shadow:none}}
+  .inbox-hd .hd-icon{animation:ctx-hd 12s ease infinite 0s}
+  .inbox-row{display:flex;align-items:center;padding:8px 10px;gap:8px;border-bottom:1px solid var(--border);position:relative;}
+  .inbox-row:last-child{border-bottom:none}
+  .inbox-avatar{width:24px;height:24px;border-radius:3px;flex-shrink:0;}
+  .inbox-body{flex:1;min-width:0;}
+  .inbox-subj{font-size:11px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3;}
+  .inbox-time{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-d);margin-top:1px;}
+  .inbox-actions{display:flex;gap:2px;flex-shrink:0;}
+  .ia{width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:3px;color:var(--text-d);opacity:.4;position:relative;}
+  .ia svg{width:13px;height:13px;}
+  @keyframes ctx-btn{0%{opacity:.4;color:var(--text-d);background:transparent}3%{opacity:1;color:var(--accent);background:var(--accent-bg)}21%{opacity:1;color:var(--accent);background:var(--accent-bg)}24%{opacity:.4;color:var(--text-d);background:transparent}100%{opacity:.4;color:var(--text-d);background:transparent}}
+  @keyframes ctx-btn-r{0%{opacity:.4;color:var(--text-d);background:transparent}3%{opacity:1;color:var(--red);background:rgba(239,68,68,.1)}21%{opacity:1;color:var(--red);background:rgba(239,68,68,.1)}24%{opacity:.4;color:var(--text-d);background:transparent}100%{opacity:.4;color:var(--text-d);background:transparent}}
+  .row1 .ia:nth-child(1){animation:ctx-btn 12s ease infinite 0s}.row1 .ia:nth-child(2){animation:ctx-btn 12s ease infinite 3s}
+  .row2 .ia:nth-child(1){animation:ctx-btn 12s ease infinite 6s}
+  .row3 .ia:nth-child(3){animation:ctx-btn-r 12s ease infinite 9s}
+  .ctx-tip{position:absolute;top:-26px;left:50%;transform:translateX(-50%);font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--bg);background:var(--accent);padding:2px 6px;border-radius:2px;white-space:nowrap;opacity:0;pointer-events:none;}
+  .ctx-tip::after{content:'';position:absolute;bottom:-3px;left:50%;transform:translateX(-50%);border-left:3px solid transparent;border-right:3px solid transparent;border-top:3px solid var(--accent);}
+  .ctx-tip.red{background:var(--red)}.ctx-tip.red::after{border-top-color:var(--red)}
+  @keyframes tip-show{0%{opacity:0;transform:translateX(-50%) translateY(3px)}3%{opacity:1;transform:translateX(-50%) translateY(0)}21%{opacity:1;transform:translateX(-50%) translateY(0)}24%{opacity:0;transform:translateX(-50%) translateY(3px)}100%{opacity:0;transform:translateX(-50%) translateY(3px)}}
+  .row1 .ia:nth-child(1) .ctx-tip{animation:tip-show 12s ease infinite 0s}.row1 .ia:nth-child(2) .ctx-tip{animation:tip-show 12s ease infinite 3s}
+  .row2 .ia:nth-child(1) .ctx-tip{animation:tip-show 12s ease infinite 6s}.row3 .ia:nth-child(3) .ctx-tip{animation:tip-show 12s ease infinite 9s}
+
+  /* ═══════════════════════════════════
+     PRACTICE SECTION
+     ═══════════════════════════════════ */
+  .practice-card{max-width:880px;margin:24px auto 0;background:var(--bg-card);border:1px solid var(--border);border-radius:3px;padding:18px;position:relative;overflow:hidden;}
+  .practice-card::after{content:'LIVE';position:absolute;top:14px;right:14px;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--accent);background:var(--accent-bg);border:1px solid rgba(217,119,6,.2);padding:1px 6px;border-radius:2px;letter-spacing:1px;animation:live-b 2s ease-in-out infinite;}
+  @keyframes live-b{0%,100%{opacity:.4}50%{opacity:1}}
+
+  .practice-hd{display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap;}
+  .practice-hd .ptag{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--accent);background:var(--accent-bg);border:1px solid rgba(217,119,6,.25);padding:2px 8px;border-radius:2px;letter-spacing:.5px;}
+  .practice-hd h2{font-size:16px;font-weight:700;letter-spacing:-.5px;}
+  .practice-goal{font-size:12px;color:var(--text-m);margin-bottom:18px;line-height:1.5;}
+
+  .practice-body{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start;}
+  @media(max-width:640px){.practice-body{grid-template-columns:1fr;}}
+
+  /* ── Controls ── */
+  .ctrl-group{margin-bottom:16px;}
+  .ctrl-group:last-child{margin-bottom:0;}
+  .ctrl-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-d);text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px;display:block;}
+  .ctrl-opts{display:flex;flex-wrap:wrap;gap:6px;}
+  .opt{
+    font-family:'JetBrains Mono',monospace;font-size:11px;
+    padding:5px 10px;border:1px solid var(--border);border-radius:2px;
+    background:transparent;color:var(--text-m);cursor:pointer;
+    transition:all .15s ease;white-space:nowrap;user-select:none;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .opt:hover{border-color:var(--text-m);color:var(--text);}
+  .opt:active{transform:scale(.96);}
+  .opt.active{border-color:var(--accent);color:var(--accent);background:var(--accent-bg);}
+
+  /* ── Preview ── */
+  .preview-box{background:var(--bg-inner);border:1px solid var(--border);border-radius:3px;padding:20px 16px;}
+  .compare{display:flex;align-items:center;justify-content:center;gap:24px;margin-bottom:16px;}
+  @media(max-width:380px){.compare{gap:14px;}}
+
+  .cmp-col{display:flex;flex-direction:column;align-items:center;gap:10px;min-width:80px;}
+  .cmp-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--text-d);text-transform:uppercase;letter-spacing:.8px;}
+  .cmp-label.is-target{color:var(--accent);}
+  .cmp-desc{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-m);text-align:center;line-height:1.4;min-height:28px;}
+
+  .cmp-vs{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-d);font-weight:700;flex-shrink:0;}
+
+  /* ── Match indicators ── */
+  .match-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-bottom:14px;}
+  .ind{display:inline-flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-d);transition:color .25s;}
+  .ind::before{content:'';width:6px;height:6px;border-radius:1px;background:var(--border);transition:background .25s;}
+  .ind.ok{color:var(--accent-l);}
+  .ind.ok::before{background:var(--accent);}
+
+  /* ── Feedback ── */
+  .fb{text-align:center;font-size:12px;color:var(--text-m);padding:10px;border:1px solid var(--border);border-radius:2px;background:var(--bg);min-height:40px;display:flex;align-items:center;justify-content:center;line-height:1.5;transition:border-color .25s;}
+  .fb.win{border-color:var(--accent);color:var(--accent-l);background:var(--accent-bg);}
+  .fb strong{color:var(--text);font-weight:600;}
+
+  /* ── Streak + new btn ── */
+  .practice-foot{display:flex;align-items:center;justify-content:space-between;margin-top:12px;gap:10px;flex-wrap:wrap;}
+  .streak{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-d);}
+  .streak b{color:var(--accent);font-weight:700;}
+  .new-btn{
+    font-family:'JetBrains Mono',monospace;font-size:11px;
+    padding:7px 14px;border:1px solid var(--border);border-radius:2px;
+    background:transparent;color:var(--text-m);cursor:pointer;
+    transition:all .15s ease;
+  }
+  .new-btn:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-bg);}
+  .new-btn:active{transform:scale(.97);}
+
+  /* ── SUMMARY ── */
+  .summary{max-width:880px;margin:24px auto 0;padding:16px 18px;border:1px solid var(--border);border-radius:3px;background:var(--bg-card);font-size:12.5px;color:var(--text-m);line-height:1.6;}
+  .summary strong{color:var(--accent-l);font-weight:600;}
+
+  /* ── REDUCED MOTION ── */
+  @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;}}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="page-hd">
+  <h1>ICON BUTTON</h1>
+  <span class="tag">design</span>
+  <p class="sub">Nút chỉ chứa icon, không text — 4 khía cạnh marketer cần nhận biết</p>
+</header>
+
+<!-- GRID 2×2 -->
+<div class="grid">
+
+  <!-- 01 VARIANTS -->
+  <section class="card">
+    <div class="card-hd"><span class="num">01</span><h2>Biến thể</h2></div>
+    <div class="stage">
+      <div class="var-row">
+        <div class="var-col"><div class="var-btn v-filled"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><span class="var-label">Filled</span></div></div>
+        <div class="var-col"><div class="var-btn v-tonal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><span class="var-label">Tonal</span></div></div>
+        <div class="var-col"><div class="var-btn v-outlined"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><span class="var-label">Outlined</span></div></div>
+        <div class="var-col"><div class="var-btn v-text"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><span class="var-label">Text</span></div></div>
+      </div>
+      <div class="weight-bar"><div class="weight-seg"></div><div class="weight-seg"></div><div class="weight-seg"></div><div class="weight-seg"></div></div>
+    </div>
+    <p class="insight"><strong>Mức độ nổi bật</strong> tăng từ Text → Filled. Chọn theo tầm quan trọng của hành động.</p>
+  </section>
+
+  <!-- 02 SIZES -->
+  <section class="card">
+    <div class="card-hd"><span class="num">02</span><h2>Kích thước</h2></div>
+    <div class="stage">
+      <div class="size-row">
+        <div class="size-col"><div class="size-btn size-s"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="size-info"><div class="sname">S</div><div class="spx">24px</div></div></div>
+        <div class="size-col"><div class="size-btn size-m"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="size-info"><div class="sname">M</div><div class="spx">32px</div></div></div>
+        <div class="size-col"><div class="size-btn size-l"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="size-info"><div class="sname">L</div><div class="spx">40px</div></div></div>
+        <div class="size-col"><div class="size-btn size-xl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div><div class="size-info"><div class="sname">XL</div><div class="spx">56px</div></div></div>
+      </div>
+      <div class="ruler"></div>
+    </div>
+    <p class="insight"><strong>Hierarchy bằng kích thước</strong> — hành động chính to hơn, phụ nhỏ hơn. Cùng icon, khác size = khác ưu tiên.</p>
+  </section>
+
+  <!-- 03 STATES -->
+  <section class="card">
+    <div class="card-hd"><span class="num">03</span><h2>Trạng thái (Favorite)</h2></div>
+    <div class="stage">
+      <div class="state-demo">
+        <div class="heart-wrap">
+          <svg class="heart-outline" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+          <svg class="heart-filled" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        </div>
+        <div class="state-labels">
+          <span class="sl sl-1">Mặc định</span><span class="sl sl-2">Rê chuột</span><span class="sl sl-3">Nhấn xuống</span><span class="sl sl-4">Đã chọn</span><span class="sl sl-5">Vô hiệu</span>
+        </div>
+        <div class="state-dots"><div class="sdot"></div><div class="sdot"></div><div class="sdot"></div><div class="sdot"></div><div class="sdot"></div></div>
+      </div>
+    </div>
+    <p class="insight">Cùng một nút, <strong>5 trạng thái</strong> — user biết ngay hành động đã ghi nhận chưa, đang bấm hay bị chặn.</p>
+  </section>
+
+  <!-- 04 CONTEXT -->
+  <section class="card">
+    <div class="card-hd"><span class="num">04</span><h2>Bối cảnh sử dụng</h2></div>
+    <div class="stage" style="align-items:stretch;">
+      <div class="inbox">
+        <div class="inbox-hd"><span>Hộp thư</span><div class="hd-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg><span class="ctx-tip">Tìm kiếm</span></div></div>
+        <div class="inbox-row row1">
+          <div class="inbox-avatar" style="background:#d97706;"></div>
+          <div class="inbox-body"><div class="inbox-subj">Đăng ký hội thảo AI Marketing</div><div class="inbox-time">09:41</div></div>
+          <div class="inbox-actions">
+            <div class="ia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg><span class="ctx-tip">Ghim</span></div>
+            <div class="ia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8v13H3V8"/><path d="M1 3h22v5H1z"/><path d="M10 12h4"/></svg><span class="ctx-tip">Lưu trữ</span></div>
+            <div class="ia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg></div>
+          </div>
+        </div>
+        <div class="inbox-row row2">
+          <div class="inbox-avatar" style="background:#16a34a;"></div>
+          <div class="inbox-body"><div class="inbox-subj">Báo cáo hiệu suất Q4</div><div class="inbox-time">08:15</div></div>
+          <div class="inbox-actions">
+            <div class="ia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg></div>
+            <div class="ia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8v13H3V8"/><path d="M1 3h22v5H1z"/><path d="M10 12h4"/></svg></div>
+            <div class="ia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="12" cy="5" r="1"/><circle cx="12" cy="19" r="1"/></svg></div>
+          </div>
+        </div>
+        <div class="inbox-row row3">
+          <div class="inbox-avatar" style="background:#6366f1;"></div>
+          <div class="inbox-body"><div class="inbox-subj">Phản hồi khách hàng #1287</div><div class="inbox-time">Hôm qua</div></div>
+          <div class="inbox-actions">
+            <div class="ia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/></svg></div>
+            <div class="ia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8v13H3V8"/><path d="M1 3h22v5H1z"/><path d="M10 12h4"/></svg></div>
+            <div class="ia"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg><span class="ctx-tip red">Xóa</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="insight">Icon button sinh ra cho <strong>toolbar & action compact</strong> — nơi không gian hạn chế mà hành động đã quen thuộc.</p>
+  </section>
+
+</div>
+
+<!-- ═══════════════════════════════════
+     PRACTICE SECTION
+     ═══════════════════════════════════ -->
+<section class="practice-card">
+  <div class="practice-hd">
+    <span class="ptag">PRACTICE</span>
+    <h2>Nhận diện Icon Button</h2>
+  </div>
+  <p class="practice-goal">Chọn đúng biến thể, kích thước và trạng thái để nút của bạn khớp với yêu cầu thiết kế.</p>
+
+  <div class="practice-body">
+    <!-- Controls -->
+    <div class="ctrl-panel">
+      <div class="ctrl-group">
+        <span class="ctrl-label">Biến thể</span>
+        <div class="ctrl-opts" data-group="variant">
+          <button class="opt active" data-val="filled">Filled</button>
+          <button class="opt" data-val="tonal">Tonal</button>
+          <button class="opt" data-val="outlined">Outlined</button>
+          <button class="opt" data-val="text">Text</button>
+        </div>
+      </div>
+      <div class="ctrl-group">
+        <span class="ctrl-label">Kích thước</span>
+        <div class="ctrl-opts" data-group="size">
+          <button class="opt" data-val="s">S · 24px</button>
+          <button class="opt active" data-val="m">M · 32px</button>
+          <button class="opt" data-val="l">L · 40px</button>
+          <button class="opt" data-val="xl">XL · 56px</button>
+        </div>
+      </div>
+      <div class="ctrl-group">
+        <span class="ctrl-label">Trạng thái</span>
+        <div class="ctrl-opts" data-group="state">
+          <button class="opt active" data-val="default">Default</button>
+          <button class="opt" data-val="hover">Hover</button>
+          <button class="opt" data-val="pressed">Pressed</button>
+          <button class="opt" data-val="selected">Selected</button>
+          <button class="opt" data-val="disabled">Disabled</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Preview -->
+    <div class="preview-panel">
+      <div class="preview-box">
+        <div class="compare">
+          <div class="cmp-col">
+            <span class="cmp-label is-target">Yêu cầu</span>
+            <div id="targetBtn"></div>
+            <span class="cmp-desc" id="targetDesc"></span>
+          </div>
+          <span class="cmp-vs">VS</span>
+          <div class="cmp-col">
+            <span class="cmp-label">Của bạn</span>
+            <div id="resultBtn"></div>
+            <span class="cmp-desc" id="resultDesc"></span>
+          </div>
+        </div>
+
+        <!-- Match indicators -->
+        <div class="match-row">
+          <span class="ind" id="ind-v">Biến thể</span>
+          <span class="ind" id="ind-s">Kích thước</span>
+          <span class="ind" id="ind-st">Trạng thái</span>
+        </div>
+
+        <!-- Feedback -->
+        <div class="fb" id="feedback">
+          Chọn đúng 3 thuộc tính để khớp với yêu cầu.
+        </div>
+      </div>
+
+      <div class="practice-foot">
+        <span class="streak">Hoàn thành: <b id="streakCount">0</b></span>
+        <button class="new-btn" id="newBtn">Yêu cầu khác</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SUMMARY -->
+<div class="summary">
+  <strong>Icon button</strong> = nút chỉ có icon, không có text label. Khi prompt AI hoặc đọc lỗi UI, gọi đúng tên biến thể (filled / outlined / text), kích thước (S / M / L / XL), và trạng thái (default / hover / pressed / selected / disabled) giúp dev hiểu chính xác bạn muốn gì — thay vì nói chung chung "làm cái nút to lên một chút".
+</div>
+
+<script>
+  /* ── Dữ liệu thử thách ── */
+  const CHALLENGES = [
+    { variant:'filled',   size:'m',  state:'default',  desc:'Nút primary cỡ vừa, trạng thái mặc định' },
+    { variant:'tonal',    size:'l',  state:'hover',    desc:'Nút secondary lớn, đang rê chuột' },
+    { variant:'outlined', size:'s',  state:'default',  desc:'Nút viền nhỏ, bình thường' },
+    { variant:'text',     size:'m',  state:'hover',    desc:'Nút chữ cỡ vừa, đang hover' },
+    { variant:'filled',   size:'xl', state:'selected', desc:'Nút primary lớn, đang được chọn' },
+    { variant:'tonal',    size:'s',  state:'disabled', desc:'Nút secondary nhỏ, bị vô hiệu hóa' },
+    { variant:'outlined', size:'l',  state:'pressed',  desc:'Nút viền lớn, đang nhấn xuống' },
+    { variant:'text',     size:'xl', state:'disabled', desc:'Nút chữ lớn, bị vô hiệu' },
+    { variant:'filled',   size:'s',  state:'pressed',  desc:'Nút primary nhỏ, đang nhấn' },
+    { variant:'tonal',    size:'xl', state:'selected', desc:'Nút secondary lớn, đang chọn' },
+    { variant:'outlined', size:'m',  state:'hover',    desc:'Nút viền vừa, đang hover' },
+    { variant:'text',     size:'l',  state:'default',  desc:'Nút chữ lớn, trạng thái bình thường' },
+    { variant:'filled',   size:'l',  state:'disabled', desc:'Nút primary lớn, bị vô hiệu' },
+    { variant:'tonal',    size:'m',  state:'pressed',  desc:'Nút secondary vừa, đang nhấn' },
+    { variant:'outlined', size:'xl', state:'selected', desc:'Nút viền lớn, đang chọn' },
+    { variant:'text',     size:'s',  state:'pressed',  desc:'Nút chữ nhỏ, đang nhấn' },
+  ];
+
+  /* ── State ── */
+  let current = null;
+  let user = { variant:'filled', size:'m', state:'default' };
+  let streak = 0;
+  let lastIndex = -1;
+
+  /* ── Ánh xạ tên hiển thị ── */
+  const VN = {
+    variant:{ filled:'Filled', tonal:'Tonal', outlined:'Outlined', text:'Text' },
+    size:{ s:'S', m:'M', l:'L', xl:'XL' },
+    state:{ default:'Default', hover:'Hover', pressed:'Pressed', selected:'Selected', disabled:'Disabled' }
+  };
+
+  /* ── Render một icon button theo config ── */
+  function renderBtn(c) {
+    const sizeMap  = { s:32, m:40, l:48, xl:56 };
+    const iconMap  = { s:16, m:20, l:24, xl:28 };
+    const cs = sizeMap[c.size], is = iconMap[c.size];
+
+    let bg='transparent', brd='none', sc='#d97706', fc='none', op=1, sc2=1, sh='none';
+
+    /* Biến thể cơ bản */
+    switch(c.variant) {
+      case 'filled':   bg='#d97706'; brd='none'; sc='#fff'; break;
+      case 'tonal':    bg='rgba(217,119,6,.18)'; brd='none'; sc='#d97706'; break;
+      case 'outlined': bg='transparent'; brd='1.5px solid #d97706'; sc='#d97706'; break;
+      case 'text':     bg='transparent'; brd='none'; sc='#d97706'; break;
+    }
+
+    /* Trạng thái ghi đè */
+    switch(c.state) {
+      case 'hover':
+        sc2=1.05; sh='0 0 14px rgba(217,119,6,.25)';
+        if(c.variant==='filled') bg='#f59e0b';
+        else if(c.variant==='tonal') bg='rgba(217,119,6,.3)';
+        else if(c.variant==='outlined') brd='1.5px solid #f59e0b';
+        break;
+      case 'pressed':
+        sc2=0.94;
+        if(c.variant==='filled') bg='#b45309';
+        else if(c.variant==='tonal') bg='rgba(217,119,6,.08)';
+        break;
+      case 'selected':
+        fc = c.variant==='filled' ? '#fff' : '#d97706';
+        sc = c.variant==='filled' ? '#fff' : '#d97706';
+        if(c.variant==='tonal') bg='rgba(217,119,6,.28)';
+        if(c.variant==='outlined') { brd='1.5px solid #d97706'; bg='rgba(217,119,6,.08)'; }
+        if(c.variant==='text') bg='rgba(217,119,6,.08)';
+        break;
+      case 'disabled':
+        op=0.3; break;
+    }
+
+    return '<div style="width:'+cs+'px;height:'+cs+'px;display:flex;align-items:center;justify-content:center;background:'+bg+';border:'+brd+';border-radius:4px;opacity:'+op+';transform:scale('+sc2+');box-shadow:'+sh+';transition:all .2s ease;">' +
+      '<svg width="'+is+'" height="'+is+'" viewBox="0 0 24 24" fill="'+fc+'" stroke="'+sc+'" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+      '<polygon points="12,2 15.09,8.26 22,9.27 17,14.14 18.18,21.02 12,17.77 5.82,21.02 7,14.14 2,9.27 8.91,8.26"/>' +
+      '</svg></div>';
+  }
+
+  /* ── Cập nhật preview của user ── */
+  function updateResult() {
+    document.getElementById('resultBtn').innerHTML = renderBtn(user);
+    document.getElementById('resultDesc').textContent =
+      VN.variant[user.variant]+' · '+VN.size[user.size]+' · '+VN.state[user.state];
+  }
+
+  /* ── Kiểm tra khớp ── */
+  function check() {
+    const v  = user.variant === current.variant;
+    const s  = user.size    === current.size;
+    const st = user.state   === current.state;
+
+    document.getElementById('ind-v').className  = 'ind' + (v  ? ' ok' : '');
+    document.getElementById('ind-s').className  = 'ind' + (s  ? ' ok' : '');
+    document.getElementById('ind-st').className = 'ind' + (st ? ' ok' : '');
+
+    const fb = document.getElementById('feedback');
+    if (v && s && st) {
+      streak++;
+      document.getElementById('streakCount').textContent = streak;
+      fb.className = 'fb win';
+      fb.textContent = 'Khớp hoàn toàn! Bạn đã nhận diện đúng 3 thuộc tính.';
+    } else {
+      fb.className = 'fb';
+      const wrong = [];
+      if (!v)  wrong.push('biến thể');
+      if (!s)  wrong.push('kích thước');
+      if (!st) wrong.push('trạng thái');
+      fb.innerHTML = 'Chưa khớp — kiểm tra lại: <strong>' + wrong.join(', ') + '</strong>';
+    }
+  }
+
+  /* ── Tạo thử thách mới ── */
+  function newChallenge() {
+    let idx;
+    do { idx = Math.floor(Math.random() * CHALLENGES.length); } while (idx === lastIndex && CHALLENGES.length > 1);
+    lastIndex = idx;
+    current = CHALLENGES[idx];
+
+    document.getElementById('targetBtn').innerHTML = renderBtn(current);
+    document.getElementById('targetDesc').textContent = current.desc;
+
+    /* Reset user về mặc định */
+    user = { variant:'filled', size:'m', state:'default' };
+    resetOpts();
+    updateResult();
+    check();
+    /* Reset feedback text */
+    document.getElementById('feedback').className = 'fb';
+    document.getElementById('feedback').textContent = 'Chọn đúng 3 thuộc tính để khớp với yêu cầu.';
+  }
+
+  /* ── Reset highlight trên chip ── */
+  function resetOpts() {
+    document.querySelectorAll('.ctrl-opts').forEach(g => {
+      const grp = g.dataset.group;
+      g.querySelectorAll('.opt').forEach(b => {
+        b.classList.toggle('active', b.dataset.val === user[grp]);
+      });
+    });
+  }
+
+  /* ── Gán sự kiện ── */
+  document.querySelectorAll('.ctrl-opts').forEach(group => {
+    const grp = group.dataset.group;
+    group.querySelectorAll('.opt').forEach(btn => {
+      btn.addEventListener('click', () => {
+        group.querySelectorAll('.opt').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        user[grp] = btn.dataset.val;
+        updateResult();
+        check();
+      });
+    });
+  });
+
+  document.getElementById('newBtn').addEventListener('click', newChallenge);
+
+  /* ── Khởi tạo ── */
+  newChallenge();
+</script>
+</body>
+</html>
