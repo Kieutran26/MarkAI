@@ -42,6 +42,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'css', name: 'CSS', nameEn: 'Cascading Style Sheets', letter: 'C', groups: ['design', 'code'], definition: 'Ngôn ngữ kiểm soát giao diện — màu sắc, kích thước, khoảng cách, font, layout. Nếu HTML là khung xương thì CSS là da thịt và quần áo.', example: 'Prompt: "Đổi màu nền hero section sang màu kem #f5f0e8, chữ heading to hơn, thêm padding trên dưới." → AI sẽ chỉnh CSS.', related: ['tailwind', 'flexbox'] },
   { id: 'deploy', name: 'Deploy', nameEn: 'Triển khai / Đưa lên server', letter: 'D', groups: ['infra', 'workflow'], definition: 'Quá trình đưa code từ môi trường bạn đang vibecode (như Cursor/Claude Code) lên server thực tế để mọi người truy cập. Quy trình này thường diễn ra tự động qua GitHub và Vercel: mỗi khi bạn "push" code mới, hệ thống sẽ tự động Build, Test và cập nhật bản Live. Nếu bản mới bị lỗi, bạn có thể dễ dàng Rollback về bản cũ trong tích tắc.', example: 'Sau khi bảo AI sửa xong giao diện, bạn gõ lệnh push. Vercel tự động nhận diện và chạy pipeline deploy. 5 phút sau, bạn thấy thay đổi xuất hiện trên link web chính thức của dự án.', related: ['build', 'vercel', 'git'], demo: { kind: 'interactive', src: 'gif-deploy-demo.html', alt: 'Mô phỏng quy trình deploy từ khi push code đến khi thành công hoặc rollback' } },
   { id: 'database', name: 'Database', nameEn: 'Cơ sở dữ liệu', letter: 'D', groups: ['data'], definition: 'Nơi lưu trữ dữ liệu có cấu trúc. Giống như file Excel khổng lồ nhưng nhanh hơn, an toàn hơn. Supabase, PostgreSQL là ví dụ phổ biến.', example: '"Mỗi khi khách submit form, thông tin được lưu vào Supabase database" — một bảng, mỗi hàng là một submission.', demo: { kind: 'interactive', src: 'gif-database-demo.html', alt: 'Mô phỏng 4 tầng Database: Table, Relations, SQL, Architecture' } },
+  { id: 'dark-mode', name: 'Dark mode / Light mode', nameEn: 'Theme Switching', letter: 'D', groups: ['design', 'code'], definition: 'Chế độ giao diện tối (Dark) và sáng (Light). Đây không chỉ là việc đổi màu nền, mà là việc thay đổi toàn bộ hệ thống bảng màu (color tokens) để tối ưu hiển thị theo môi trường ánh sáng, giúp giảm mỏi mắt và tiết kiệm pin.', example: 'Prompt: "Thiết kế web có hỗ trợ dark mode, khi người dùng đổi theme thì toàn bộ màu nền, màu chữ và viền phải thay đổi tương ứng, riêng màu thương hiệu thì giữ nguyên."', related: ['color-palette', 'design-system', 'contrast'], demo: { kind: 'interactive', src: 'gif-darkmode-demo.html', alt: 'Mô phỏng 4 kịch bản chuyển đổi theme: Toggle, Dashboard, Settings và Readability' } },
   { id: 'dependency', name: 'Dependency', nameEn: 'Thư viện phụ thuộc', letter: 'D', groups: ['code'], definition: 'Code của người khác mà project bạn dùng. Giống như nguyên liệu đầu vào — bạn không tự làm bơ, bạn mua từ ngoài. npm install là lệnh cài dependency.', example: '"module not found" error = project đang cần một dependency chưa được cài. Paste lỗi cho AI, nó sẽ chạy lệnh cài giúp.' },
   { id: 'dom', name: 'DOM', nameEn: 'Document Object Model', letter: 'D', groups: ['code', 'design'], definition: 'Cách trình duyệt "nhìn" trang web — một cây cấu trúc của tất cả elements. JavaScript tương tác với DOM để thay đổi trang mà không cần reload.', example: 'Khi bạn click nút và counter tăng lên mà trang không reload — JavaScript đang update DOM trực tiếp.' },
   { id: 'dynamic', name: 'Dynamic', nameEn: 'Nội dung động', letter: 'D', groups: ['code'], definition: 'Nội dung thay đổi theo người dùng, thời gian, hoặc dữ liệu — không cố định. Trang profile mỗi user khác nhau = dynamic. Trang giới thiệu công ty = static.', example: '"Hiển thị số lượt view theo thời gian thực" = dynamic content. Mỗi lần load là fetch data mới từ database.', related: ['static'] },
@@ -176,6 +177,7 @@ const deepDiveTermIds = new Set([
   'carousel',
   'component',
   'corner',
+  'dark-mode',
   'database',
   'deploy',
   'dropdown',
@@ -544,6 +546,12 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     '4 loại Toast kinh điển: Success (xong việc), Error (lỗi gấp), Warning (cảnh báo), và Info (thông tin thêm). Mỗi loại cần màu sắc và icon tương ứng để user nhận diện nhanh qua thị giác.',
     'Quy tắc vàng: Đừng để Toast che mất nội dung quan trọng hoặc nút bấm quan trọng. Vị trí phổ biến là Top-Right (desktop) hoặc Bottom-Center (mobile).',
     'Thời gian hiển thị lý tưởng là 3-5 giây. Nếu chứa thông tin cực kỳ quan trọng, hãy cân nhắc dùng Popup thay vì Toast.',
+  ],
+  'dark-mode': [
+    'Dark mode không phải là "đảo ngược màu" (invert). Đảo ngược màu sẽ làm ảnh và icon trông rất kinh dị. Dark mode là việc định nghĩa một bộ màu mới cho cùng một tên biến.',
+    'Ví dụ: biến color-bg ở Light mode là trắng, thì ở Dark mode nó là đen xám. Code của bạn chỉ gọi color-bg, hệ thống sẽ tự chọn giá trị đúng dựa trên theme.',
+    'Quy tắc tương phản: Trong dark mode, đừng dùng màu đen tuyệt đối (#000) làm nền vì nó gây hiện tượng "halo" (chữ trắng bị nhòe trên nền đen). Hãy dùng xám cực đậm để mắt dễ chịu hơn.',
+    'Giữ màu thương hiệu: Các màu accent (cam, xanh, đỏ) thường được giữ nguyên hoặc chỉ điều chỉnh nhẹ độ sáng để vẫn nổi bật trên cả hai nền.',
   ],
 };
 
