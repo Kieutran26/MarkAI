@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menus Demo — Vibecode Glossary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+    --bg:#141413;--bg-card:#1c1c1a;--fg:#e8e0d4;--muted:#6e6a63;
+    --accent:#d97706;--accent-dim:rgba(217,119,6,.12);
+    --border:#2e2c28;--border-hi:#3e3b35;--slate:#33312d;--cream:#f5f0e8;
+    --fi-bg:#0e0e0d;
+    --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);min-height:100vh;-webkit-font-smoothing:antialiased;background-image:linear-gradient(rgba(255,255,255,.016) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.016) 1px,transparent 1px);background-size:20px 20px}
+
+
+.g4{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:18px 16px 0;max-width:920px;margin:0 auto}
+
+.cd{background:var(--bg-card);border:1px solid var(--border);position:relative;overflow:hidden}
+.cd::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 0%,rgba(217,119,6,.04) 0%,transparent 60%);pointer-events:none}
+.cd-n{position:absolute;top:10px;right:12px;font-family:var(--mono);font-size:9px;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:2px 7px;letter-spacing:1.5px;z-index:5}
+.cd-l{font-family:var(--mono);font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:2px;padding:14px 14px 2px;position:relative}
+.cd-t{font-size:15px;font-weight:700;color:var(--cream);padding:2px 14px 10px;position:relative}
+.cd-d{padding:0 14px 8px;height:260px;position:relative}
+.cd-i{font-family:var(--mono);font-size:10px;color:var(--muted);padding:10px 14px 13px;border-top:1px solid var(--border);line-height:1.6;position:relative}
+.cd-i em{color:var(--accent);font-style:normal}
+
+.sl{position:absolute;bottom:12px;left:14px;font-family:var(--mono);font-size:9px;color:var(--accent);background:var(--bg);border:1px solid var(--border);padding:2px 8px;z-index:5;letter-spacing:.5px;transition:opacity .3s}
+
+/* === Mock Screen === */
+.ms{width:100%;height:100%;background:var(--fi-bg);border:1px solid var(--border-hi);position:relative;overflow:hidden}
+.ms-nav{display:flex;align-items:center;gap:6px;padding:5px 8px;background:#151514;border-bottom:1px solid var(--border);flex-shrink:0}
+.ms-dot{width:5px;height:5px;border-radius:50%;background:var(--slate)}
+.ms-body{padding:10px;position:relative;height:calc(100% - 22px);overflow:hidden}
+
+/* === Fake Cursor === */
+.fc{position:absolute;width:12px;height:12px;border:1.5px solid var(--accent);border-radius:50%;pointer-events:none;z-index:30;opacity:0;transition:left .4s cubic-bezier(.4,0,.2,1),top .4s cubic-bezier(.4,0,.2,1),opacity .2s;box-shadow:0 0 8px rgba(217,119,6,.2)}
+.fc.show{opacity:1}
+.fc::after{content:'';position:absolute;inset:2px;background:var(--accent);border-radius:50%;animation:cpulse .5s ease-out forwards;opacity:0}
+@keyframes cpulse{0%{transform:scale(0);opacity:.5}100%{transform:scale(2);opacity:0}}
+
+/* === Dropdown Menu === */
+.dd-trigger{display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border:1px solid var(--border);background:var(--slate);font-family:var(--mono);font-size:9px;color:var(--fg);cursor:default;position:relative;z-index:12;transition:border-color .2s}
+.dd-trigger.active{border-color:var(--accent)}
+.dd-trigger i.fa-chevron-down{font-size:7px;transition:transform .25s}
+.dd-trigger.active i.fa-chevron-down{transform:rotate(180deg)}
+
+.dd-menu{position:absolute;top:calc(100% + 4px);left:0;min-width:140px;background:#1a1a18;border:1px solid var(--border-hi);z-index:20;opacity:0;transform:translateY(-6px);transition:opacity .25s,transform .25s;pointer-events:none}
+.dd-menu.vis{opacity:1;transform:translateY(0);pointer-events:auto}
+.dd-item{display:flex;align-items:center;gap:8px;padding:8px 12px;font-family:var(--mono);font-size:9px;color:var(--muted);transition:background .15s,color .15s;border-left:2px solid transparent}
+.dd-item:hover{background:rgba(217,119,6,.06);color:var(--fg);border-left-color:var(--accent)}
+.dd-item i{width:14px;text-align:center;font-size:10px}
+.dd-item.hl{background:rgba(217,119,6,.06);color:var(--fg);border-left-color:var(--accent)}
+.dd-sep{height:1px;background:var(--border);margin:2px 0}
+
+/* === Context Menu === */
+.ctx-menu{position:absolute;min-width:150px;background:#1a1a18;border:1px solid var(--border-hi);z-index:20;opacity:0;transform:scale(.95);transform-origin:top left;transition:opacity .2s,transform .2s;pointer-events:none}
+.ctx-menu.vis{opacity:1;transform:scale(1);pointer-events:auto}
+.ctx-item{display:flex;align-items:center;gap:8px;padding:7px 12px;font-family:var(--mono);font-size:9px;color:var(--muted);transition:background .15s,color .15s}
+.ctx-item:hover{background:rgba(217,119,6,.06);color:var(--fg)}
+.ctx-item i{width:14px;text-align:center;font-size:10px}
+.ctx-item.hl{background:rgba(217,119,6,.06);color:var(--fg)}
+.ctx-item.danger{color:var(--muted)}
+.ctx-item.danger:hover{color:#ef4444;background:rgba(239,68,68,.06)}
+.ctx-item.danger.hl{color:#ef4444;background:rgba(239,68,68,.06)}
+.ctx-sep{height:1px;background:var(--border);margin:2px 0}
+.ctx-shortcut{margin-left:auto;font-size:8px;opacity:.4}
+
+/* === Mega Menu === */
+.mega-nav{display:flex;gap:0;border-bottom:1px solid var(--border);background:#151514;flex-shrink:0}
+.mega-nav-item{padding:7px 14px;font-family:var(--mono);font-size:9px;color:var(--muted);border-bottom:2px solid transparent;transition:color .2s,border-color .2s;cursor:default;position:relative}
+.mega-nav-item.active{color:var(--accent);border-bottom-color:var(--accent)}
+.mega-panel{position:absolute;top:100%;left:0;right:0;background:#1a1a18;border:1px solid var(--border-hi);border-top:none;display:grid;grid-template-columns:1fr 1fr;gap:0;opacity:0;transform:translateY(-4px);transition:opacity .25s,transform .25s;pointer-events:none;z-index:20}
+.mega-panel.vis{opacity:1;transform:translateY(0);pointer-events:auto}
+.mega-col{padding:10px}
+.mega-col-h{font-family:var(--mono);font-size:9px;font-weight:700;color:var(--accent);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px}
+.mega-item{display:flex;align-items:center;gap:6px;padding:5px 0;font-family:var(--mono);font-size:8px;color:var(--muted);transition:color .15s}
+.mega-item.hl{color:var(--fg)}
+.mega-item i{font-size:9px;width:14px;text-align:center}
+
+/* === Grouped Menu === */
+.grp-menu{position:absolute;min-width:160px;background:#1a1a18;border:1px solid var(--border-hi);z-index:20;opacity:0;transform:translateY(-4px);transition:opacity .25s,transform .25s;pointer-events:none}
+.grp-menu.vis{opacity:1;transform:translateY(0);pointer-events:auto}
+.grp-head{font-family:var(--mono);font-size:8px;font-weight:600;color:var(--muted);padding:8px 12px 4px;text-transform:uppercase;letter-spacing:1px}
+.grp-item{display:flex;align-items:center;gap:8px;padding:6px 12px;font-family:var(--mono);font-size:9px;color:var(--muted);transition:background .15s,color .15s}
+.grp-item.hl{background:rgba(217,119,6,.06);color:var(--fg)}
+.grp-item i{width:14px;text-align:center;font-size:10px}
+.grp-sep{height:1px;background:var(--border);margin:4px 12px}
+
+/* === Divider === */
+.dv{display:flex;align-items:center;gap:12px;padding:26px 20px 16px;max-width:920px;margin:0 auto}
+.dv::before,.dv::after{content:'';flex:1;height:1px;background:var(--border)}
+.dv span{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+
+/* Context target area */
+.ctx-target{display:inline-flex;align-items:center;gap:6px;padding:4px 10px;border:1px solid var(--border);font-family:var(--mono);font-size:9px;color:var(--muted);margin:8px 0;transition:border-color .2s}
+.ctx-target.hl{border-color:var(--accent)}
+
+.pr-row{display:flex;gap:4px;margin-bottom:4px}
+.pr-cell{height:18px;background:var(--slate);border:1px solid var(--border)}
+
+@media(max-width:620px){
+    .g4{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+
+
+<main>
+<div class="g4">
+
+    <!-- ===== 1. Dropdown Menu ===== -->
+    <section class="cd" aria-label="Dropdown Menu animation">
+        <span class="cd-n">VÒNG LẶP</span>
+        <div class="cd-l">Kiểu 01</div>
+        <h2 class="cd-t">Menu Thả xuống</h2>
+        <div class="cd-d">
+            <div class="sl" id="sl1">đang đóng</div>
+            <div class="ms">
+                <div class="ms-nav"><div class="ms-dot"></div><div class="ms-dot"></div><div class="ms-dot"></div><span class="ms-nt">Ứng dụng</span></div>
+                <div class="ms-body">
+                    <div class="fc" id="fc1"></div>
+                    <div class="dd-trigger" id="ddTrig" style="margin-top:12px">
+                        <i class="fas fa-user" style="font-size:10px"></i> Tài khoản <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="dd-menu" id="ddMenu">
+                        <div class="dd-item" id="dd0"><i class="fas fa-user"></i> Hồ sơ</div>
+                        <div class="dd-item" id="dd1"><i class="fas fa-gear"></i> Cài đặt</div>
+                        <div class="dd-sep"></div>
+                        <div class="dd-item" id="dd2"><i class="fas fa-circle-question"></i> Trợ giúp</div>
+                        <div class="dd-item" id="dd3"><i class="fas fa-right-from-bracket"></i> Đăng xuất</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cd-i">Click vào nút kích hoạt → danh sách hiện xuống. <em>Một nút = một menu</em> — luôn gắn liền với phần tử sinh ra nó.</div>
+    </section>
+
+    <!-- ===== 2. Context Menu ===== -->
+    <section class="cd" aria-label="Context Menu animation">
+        <span class="cd-n">VÒNG LẶP</span>
+        <div class="cd-l">Kiểu 02</div>
+        <h2 class="cd-t">Menu Ngữ cảnh</h2>
+        <div class="cd-d">
+            <div class="sl" id="sl2">chờ</div>
+            <div class="ms">
+                <div class="ms-nav"><div class="ms-dot"></div><div class="ms-dot"></div><div class="ms-dot"></div><span class="ms-nt">Tập tin</span></div>
+                <div class="ms-body">
+                    <div class="fc" id="fc2"></div>
+                    <div class="ctx-target" id="ctxTgt" style="margin-top:10px">
+                        <i class="fas fa-file" style="font-size:10px"></i> báo-cáo-q4.pdf
+                    </div>
+                    <div class="pr-row" style="margin-top:12px"><div class="pr-cell" style="flex:1"></div></div>
+                    <div class="pr-row"><div class="pr-cell" style="width:60%"></div></div>
+                    <div class="ctx-menu" id="ctxMenu">
+                        <div class="ctx-item" id="cx0"><i class="fas fa-pen"></i> Đổi tên <span class="ctx-shortcut">F2</span></div>
+                        <div class="ctx-item" id="cx1"><i class="fas fa-copy"></i> Nhân bản <span class="ctx-shortcut">Ctrl+D</span></div>
+                        <div class="ctx-item" id="cx2"><i class="fas fa-arrow-up-from-bracket"></i> Di chuyển... <span class="ctx-shortcut"></span></div>
+                        <div class="ctx-sep"></div>
+                        <div class="ctx-item" id="cx3"><i class="fas fa-share-nodes"></i> Chia sẻ <span class="ctx-shortcut"></span></div>
+                        <div class="ctx-sep"></div>
+                        <div class="ctx-item danger" id="cx4"><i class="fas fa-trash-can"></i> Xóa <span class="ctx-shortcut">Del</span></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cd-i">Chuột phải tại vị trí hiện tại → menu <em>xuất hiện ngay tại đó</em>. Chứa các hành động liên quan đến mục đang chọn.</div>
+    </section>
+
+    <!-- ===== 3. Mega Menu ===== -->
+    <section class="cd" aria-label="Mega Menu animation">
+        <span class="cd-n">VÒNG LẶP</span>
+        <div class="cd-l">Kiểu 03</div>
+        <h2 class="cd-t">Menu Lớn (Mega)</h2>
+        <div class="cd-d">
+            <div class="sl" id="sl3">chờ</div>
+            <div class="ms" style="display:flex;flex-direction:column">
+                <div style="position:relative">
+                    <div class="mega-nav" id="megaNav">
+                        <div class="mega-nav-item" id="mn0">Trang chủ</div>
+                        <div class="mega-nav-item" id="mn1">Sản phẩm</div>
+                        <div class="mega-nav-item" id="mn2">Giải pháp</div>
+                        <div class="mega-nav-item" id="mn3">Công ty</div>
+                    </div>
+                    <div class="mega-panel" id="megaPanel">
+                        <div class="mega-col">
+                            <div class="mega-col-h">Phân tích</div>
+                            <div class="mega-item" id="mi0"><i class="fas fa-chart-simple"></i> Bảng điều khiển</div>
+                            <div class="mega-item" id="mi1"><i class="fas fa-magnifying-glass-chart"></i> Báo cáo</div>
+                            <div class="mega-item" id="mi2"><i class="fas fa-database"></i> Dữ liệu</div>
+                        </div>
+                        <div class="mega-col">
+                            <div class="mega-col-h">Tự động hóa</div>
+                            <div class="mega-item" id="mi3"><i class="fas fa-robot"></i> Quy trình</div>
+                            <div class="mega-item" id="mi4"><i class="fas fa-bolt"></i> Kích hoạt</div>
+                            <div class="mega-item" id="mi5"><i class="fas fa-clock-rotate-left"></i> Lập lịch</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="ms-body" style="height:auto;flex:1;padding:10px">
+                    <div class="fc" id="fc3"></div>
+                    <div class="pr-row"><div class="pr-cell" style="flex:1"></div><div class="pr-cell" style="flex:1"></div></div>
+                    <div class="pr-row"><div class="pr-cell" style="width:40%"></div></div>
+                </div>
+            </div>
+        </div>
+        <div class="cd-i">Rê chuột vào thanh điều hướng → bảng <em>nhiều cột</em> hiện xuống. Dùng khi menu có nhiều danh mục cấp 2.</div>
+    </section>
+
+    <!-- ===== 4. Menu With Groups & Dividers ===== -->
+    <section class="cd" aria-label="Grouped Menu animation">
+        <span class="cd-n">VÒNG LẶP</span>
+        <div class="cd-l">Kiểu 04</div>
+        <h2 class="cd-t">Nhóm & Đường kẻ</h2>
+        <div class="cd-d">
+            <div class="sl" id="sl4">đang đóng</div>
+            <div class="ms">
+                <div class="ms-nav"><div class="ms-dot"></div><div class="ms-dot"></div><div class="ms-dot"></div><span class="ms-nt">Cài đặt</span></div>
+                <div class="ms-body">
+                    <div class="fc" id="fc4"></div>
+                    <div class="dd-trigger" id="grpTrig" style="margin-top:10px">
+                        <i class="fas fa-gear" style="font-size:10px"></i> Tùy chọn <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="grp-menu" id="grpMenu">
+                        <div class="grp-head">Chung</div>
+                        <div class="grp-item" id="gr0"><i class="fas fa-globe"></i> Ngôn ngữ</div>
+                        <div class="grp-item" id="gr1"><i class="fas fa-moon"></i> Giao diện</div>
+                        <div class="grp-item" id="gr2"><i class="fas fa-bell"></i> Thông báo</div>
+                        <div class="grp-sep"></div>
+                        <div class="grp-head">Riêng tư</div>
+                        <div class="grp-item" id="gr3"><i class="fas fa-eye"></i> Hiển thị</div>
+                        <div class="grp-item" id="gr4"><i class="fas fa-lock"></i> Quyền hạn</div>
+                        <div class="grp-sep"></div>
+                        <div class="grp-head">Dữ liệu</div>
+                        <div class="grp-item" id="gr5"><i class="fas fa-download"></i> Xuất file</div>
+                        <div class="grp-item" id="gr6"><i class="fas fa-trash-can"></i> Xóa dữ liệu</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="cd-i">Đường kẻ + tiêu đề nhóm = <em>phân loại logic</em>. Khi menu nhiều mục, phân nhóm giúp tìm kiếm nhanh hơn.</div>
+    </section>
+
+</div>
+</main>
+
+<script>
+/* ======== Utilities ======== */
+function posIn(child,parent){
+    var cr=child.getBoundingClientRect(),pr=parent.getBoundingClientRect();
+    return{x:cr.left-pr.left+cr.width/2-6,y:cr.top-pr.top+cr.height/2-6};
+}
+function moveCur(c,pos){
+    c.style.left=pos.x+'px';c.style.top=pos.y+'px';
+    c.classList.remove('show');void c.offsetWidth;c.classList.add('show');
+}
+function wait(ms){return new Promise(function(r){setTimeout(r,ms)})}
+
+/* ======== CARD 1 — Dropdown Menu ======== */
+(function(){
+    var trig=document.getElementById('ddTrig'),menu=document.getElementById('ddMenu'),
+        sl=document.getElementById('sl1'),fc=document.getElementById('fc1'),
+        items=[document.getElementById('dd0'),document.getElementById('dd1'),document.getElementById('dd2'),document.getElementById('dd3')];
+    (async function loop(){
+        while(true){
+            trig.classList.remove('active');menu.classList.remove('vis');
+            items.forEach(function(i){i.classList.remove('hl')});
+            sl.textContent='đang đóng';fc.classList.remove('show');
+            await wait(1200);
+            /* Cursor → trigger */
+            moveCur(fc,posIn(trig,trig.parentElement));await wait(300);
+            /* Open */
+            trig.classList.add('active');menu.classList.add('vis');
+            sl.textContent='đang mở';await wait(600);
+            /* Hover items */
+            for(var i=0;i<items.length;i++){
+                items[i].classList.add('hl');
+                moveCur(fc,posIn(items[i],trig.parentElement));
+                await wait(500);
+                if(i<items.length-1) items[i].classList.remove('hl');
+            }
+            await wait(400);
+            items[items.length-1].classList.remove('hl');
+            /* Close */
+            trig.classList.remove('active');menu.classList.remove('vis');
+            sl.textContent='đang đóng';await wait(800);
+        }
+    })();
+})();
+
+/* ======== CARD 2 — Context Menu ======== */
+(function(){
+    var tgt=document.getElementById('ctxTgt'),menu=document.getElementById('ctxMenu'),
+        sl=document.getElementById('sl2'),fc=document.getElementById('fc2'),
+        items=[document.getElementById('cx0'),document.getElementById('cx1'),document.getElementById('cx2'),document.getElementById('cx3'),document.getElementById('cx4')];
+    (async function loop(){
+        while(true){
+            tgt.classList.remove('hl');menu.classList.remove('vis');
+            items.forEach(function(i){i.classList.remove('hl')});
+            sl.textContent='chờ';fc.classList.remove('show');
+            await wait(1000);
+            /* Cursor → target */
+            moveCur(fc,posIn(tgt,tgt.parentElement));await wait(400);
+            tgt.classList.add('hl');await wait(300);
+            /* Right-click → context menu */
+            menu.classList.add('vis');
+            sl.textContent='đã mở ngữ cảnh';await wait(500);
+            /* Hover items */
+            for(var i=0;i<items.length;i++){
+                items[i].classList.add('hl');
+                await wait(400);
+                if(i<items.length-1) items[i].classList.remove('hl');
+            }
+            await wait(400);
+            items[items.length-1].classList.remove('hl');
+            /* Close */
+            menu.classList.remove('vis');tgt.classList.remove('hl');
+            sl.textContent='chờ';await wait(800);
+        }
+    })();
+})();
+
+/* ======== CARD 3 — Mega Menu ======== */
+(function(){
+    var navItems=[document.getElementById('mn0'),document.getElementById('mn1'),document.getElementById('mn2'),document.getElementById('mn3')],
+        panel=document.getElementById('megaPanel'),
+        mItems=[document.getElementById('mi0'),document.getElementById('mi1'),document.getElementById('mi2'),document.getElementById('mi3'),document.getElementById('mi4'),document.getElementById('mi5')],
+        sl=document.getElementById('sl3'),fc=document.getElementById('fc3');
+    (async function loop(){
+        while(true){
+            navItems.forEach(function(n){n.classList.remove('active')});
+            panel.classList.remove('vis');mItems.forEach(function(m){m.classList.remove('hl')});
+            sl.textContent='chờ';fc.classList.remove('show');
+            await wait(1000);
+            /* Cursor → "Products" */
+            moveCur(fc,posIn(navItems[1],navItems[1].closest('.ms')));await wait(300);
+            navItems[1].classList.add('active');panel.classList.add('vis');
+            sl.textContent='Sản phẩm — đang mở';await wait(500);
+            /* Hover mega items */
+            for(var i=0;i<mItems.length;i++){
+                mItems[i].classList.add('hl');await wait(350);
+                if(i<mItems.length-1) mItems[i].classList.remove('hl');
+            }
+            await wait(400);
+            mItems[mItems.length-1].classList.remove('hl');
+            /* Switch to "Solutions" */
+            navItems[1].classList.remove('active');navItems[2].classList.add('active');
+            sl.textContent='Giải pháp — đang mở';await wait(800);
+            /* Close */
+            navItems[2].classList.remove('active');panel.classList.remove('vis');
+            sl.textContent='chờ';await wait(800);
+        }
+    })();
+})();
+
+/* ======== CARD 4 — Grouped Menu ======== */
+(function(){
+    var trig=document.getElementById('grpTrig'),menu=document.getElementById('grpMenu'),
+        sl=document.getElementById('sl4'),fc=document.getElementById('fc4'),
+        items=[document.getElementById('gr0'),document.getElementById('gr1'),document.getElementById('gr2'),document.getElementById('gr3'),document.getElementById('gr4'),document.getElementById('gr5'),document.getElementById('gr6')];
+    (async function loop(){
+        while(true){
+            trig.classList.remove('active');menu.classList.remove('vis');
+            items.forEach(function(i){i.classList.remove('hl')});
+            sl.textContent='đang đóng';fc.classList.remove('show');
+            await wait(1000);
+            /* Cursor → trigger */
+            moveCur(fc,posIn(trig,trig.parentElement));await wait(300);
+            /* Open */
+            trig.classList.add('active');menu.classList.add('vis');
+            sl.textContent='mở — phân nhóm';await wait(500);
+            /* Hover items — nhấn mạnh việc cross dividers */
+            for(var i=0;i<items.length;i++){
+                items[i].classList.add('hl');await wait(350);
+                if(i<items.length-1) items[i].classList.remove('hl');
+            }
+            await wait(400);
+            items[items.length-1].classList.remove('hl');
+            /* Close */
+            trig.classList.remove('active');menu.classList.remove('vis');
+            sl.textContent='đang đóng';await wait(800);
+        }
+    })();
+})();
+</script>
+</body>
+</html>

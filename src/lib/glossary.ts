@@ -138,6 +138,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'list', name: 'List', nameEn: 'Danh sách / List View', letter: 'L', groups: ['design', 'code'], definition: 'Thành phần giao diện hiển thị nhiều item theo chiều dọc, mỗi item chia sẻ cùng cấu trúc. Có 4 biến thể chính: Single Line (1 dòng cho menu/action), Two Line (2 dòng cho email/tin nhắn), With Avatars (có ảnh đại diện cho danh sách người), và Section Headers (có tiêu đề nhóm cho cài đặt). Chọn đúng kiểu list giúp người dùng quét thông tin nhanh hơn.', example: 'Prompt: "Danh sách thành viên nhóm hiển thị avatar, tên, vai trò và badge trạng thái online/offline theo kiểu list với avatar — đừng dùng card vì tốn diện tích."', related: ['component', 'sidebar', 'navbar', 'accordion'], demo: { kind: 'interactive', src: 'gif-list-demo.html', alt: 'Mô phỏng 4 kiểu list: Single Line, Two Line, Icons & Avatars và Section Headers' } },
   { id: 'toast-notification', name: 'Toast Notification', nameEn: 'Thông báo Toast / Snackbar', letter: 'T', groups: ['design', 'code'], definition: 'Một thông báo nhỏ, tạm thời xuất hiện trên màn hình để cung cấp phản hồi về một hành động của người dùng (như "Đã lưu", "Đã gửi"). Nó thường xuất hiện ở góc màn hình và tự động biến mất sau vài giây mà không làm gián đoạn dòng công việc hiện tại.', example: 'Khi bạn nhấn "Lưu", một toast hiện ra ở góc trên bên phải báo "Đã cập nhật thành công" rồi mờ dần sau 3 giây. Prompt: "Thêm một toast notification màu xanh lá hiện lên khi form submit thành công".', related: ['notification', 'popup', 'state', 'interface'], demo: { kind: 'interactive', src: 'gif-toast-demo.html', alt: 'Mô phỏng 4 loại toast notification: Success, Error, Warning và Info' } },
   { id: 'text-fields', name: 'Text Fields', nameEn: 'Ô nhập liệu văn bản', letter: 'T', groups: ['design', 'code'], definition: 'Thành phần cơ bản nhưng cực kỳ quan trọng trong UI — nơi người dùng nhập dữ liệu văn bản. Một text field chuẩn cần thể hiện rõ ít nhất 4 trạng thái: mặc định, đang nhập (focus), đã nhập (filled) và lỗi (invalid). Xử lý tốt text field giúp giảm friction và tăng tỷ lệ chuyển đổi cho các form đăng ký.', example: 'Prompt: "Tạo một form liên hệ có 3 text field: Họ tên, Email, và Nội dung. Field Email phải có validation kiểm tra định dạng @, nếu sai hiện viền đỏ và câu báo lỗi bên dưới."', related: ['input', 'form', 'state', 'validation'], demo: { kind: 'interactive', src: 'gif-textfield-demo.html', alt: 'Mô phỏng các trạng thái và biến thể của Text Fields' } },
+  { id: 'menus', name: 'Menus', nameEn: 'Menu điều hướng / Navigation Menu', letter: 'M', groups: ['design', 'code'], definition: 'Thành phần giao diện hiển thị danh sách các lựa chọn hoặc hành động. Menus giúp gom nhóm các tính năng liên quan vào một không gian nhỏ, giúp giao diện gọn gàng và điều hướng hiệu quả hơn.', example: 'Dropdown menu cho tài khoản, Context menu (chuột phải) cho file, Mega menu cho trang e-commerce lớn. Chia nhóm (grouping) và đường kẻ phân bản (divider) giúp menu dài trở nên dễ quét hơn.', related: ['navbar', 'dropdown', 'sidebar', 'component', 'divider'], demo: { kind: 'interactive', src: 'gif-menus-demo.html', alt: 'Mô phỏng 4 loại menu phổ biến: Dropdown, Context, Mega và Grouped' } },
 ];
 
 export const quickRefItems = [
@@ -242,6 +243,7 @@ const deepDiveTermIds = new Set([
   'toast-notification',
   'whitespace',
   'text-fields',
+  'menus',
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -574,6 +576,11 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
   'text-fields': [
     'Text field không chỉ là cái hộp. Nó là một thực thể có trạng thái (state). Người dùng cần biết mình đang ở đâu, đã làm đúng chưa, và nếu sai thì sai ở đâu.',
     'Validation nên diễn ra ở trạng thái "Blur" (khi người dùng chuyển sang field khác) để tránh làm phiền khi họ đang gõ, nhưng vẫn cung cấp phản hồi kịp thời.',
+  ],
+  'menus': [
+    'Menu là "bản đồ" của giao diện. Chọn sai kiểu menu sẽ làm user bị lạc hoặc tốn nhiều click hơn cần thiết.',
+    '4 kiểu menu phổ biến: Dropdown (tiết kiệm chỗ), Context (tiện lợi tại chỗ), Mega (cho website khổng lồ), và Grouped (cho sự ngăn nắp).',
+    'Quy tắc vàng: Đừng để menu quá dài mà không có sự phân cấp. Dùng Divider và Group Header để giúp mắt người dùng "nghỉ ngơi" và scan thông tin nhanh hơn.',
   ],
 };
 
