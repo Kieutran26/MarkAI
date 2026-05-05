@@ -140,6 +140,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'text-fields', name: 'Text Fields', nameEn: 'Ô nhập liệu văn bản', letter: 'T', groups: ['design', 'code'], definition: 'Thành phần cơ bản nhưng cực kỳ quan trọng trong UI — nơi người dùng nhập dữ liệu văn bản. Một text field chuẩn cần thể hiện rõ ít nhất 4 trạng thái: mặc định, đang nhập (focus), đã nhập (filled) và lỗi (invalid). Xử lý tốt text field giúp giảm friction và tăng tỷ lệ chuyển đổi cho các form đăng ký.', example: 'Prompt: "Tạo một form liên hệ có 3 text field: Họ tên, Email, và Nội dung. Field Email phải có validation kiểm tra định dạng @, nếu sai hiện viền đỏ và câu báo lỗi bên dưới."', related: ['input', 'form', 'state', 'validation'], demo: { kind: 'interactive', src: 'gif-textfield-demo.html', alt: 'Mô phỏng các trạng thái và biến thể của Text Fields' } },
   { id: 'menus', name: 'Menus', nameEn: 'Menu điều hướng / Navigation Menu', letter: 'M', groups: ['design', 'code'], definition: 'Thành phần giao diện hiển thị danh sách các lựa chọn hoặc hành động. Menus giúp gom nhóm các tính năng liên quan vào một không gian nhỏ, giúp giao diện gọn gàng và điều hướng hiệu quả hơn.', example: 'Dropdown menu cho tài khoản, Context menu (chuột phải) cho file, Mega menu cho trang e-commerce lớn. Chia nhóm (grouping) và đường kẻ phân bản (divider) giúp menu dài trở nên dễ quét hơn.', related: ['navbar', 'dropdown', 'sidebar', 'component', 'divider'], demo: { kind: 'interactive', src: 'gif-menus-demo.html', alt: 'Mô phỏng 4 loại menu phổ biến: Dropdown, Context, Mega và Grouped' } },
   { id: 'shape', name: 'Shape', nameEn: 'Hình khối / Shape', letter: 'S', groups: ['design'], definition: 'Các hình khối cơ bản (Square, Circle, Triangle) dùng để xây dựng giao diện. Shape quyết định cấu trúc, trọng lượng thị giác và cảm xúc của một thiết kế.', example: 'Prompt: "Dùng shape tròn cho avatar và shape vuông cho các card sản phẩm để tạo sự tương phản giữa con người và vật thể."', related: ['radius', 'stroke', 'interface'], demo: { kind: 'interactive', src: 'gif-shape-demo.html', alt: 'Mô phỏng các loại hình khối và personality của chúng' } },
+  { id: 'split-buttons', name: 'Split buttons', nameEn: 'Split buttons', letter: 'S', groups: ['design', 'code'], definition: 'Split button kết hợp một hành động chính và một menu các hành động phụ liên quan. Nó gồm hai phần: nút chính bên trái thực hiện hành động mặc định, và nút mũi tên bên phải để mở menu dropdown.', example: 'Nút "Download" chính để tải file PDF, và nút mũi tên bên cạnh để chọn tải dưới dạng CSV hoặc Excel. Dùng split button giúp tiết kiệm diện tích giao diện mà vẫn cung cấp nhiều tùy chọn.', related: ['dropdown', 'menus', 'component'], demo: { kind: 'interactive', src: 'gif-split-button-demo.html', alt: 'Mô phỏng các trạng thái và ứng dụng của Split buttons' } },
 ];
 
 export const quickRefItems = [
@@ -247,6 +248,7 @@ const deepDiveTermIds = new Set([
   'text-fields',
   'menus',
   'shape',
+  'split-buttons',
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -594,6 +596,11 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Shape là ngôn ngữ đầu tiên của não bộ trước khi đọc chữ. Một khối đặc (Solid) luôn thu hút sự chú ý hơn một khối viền (Stroke).',
     'Sử dụng hình khối nhất quán giúp người dùng nhận diện nhanh chức năng: ví dụ hình tròn luôn là Profile, hình tam giác luôn là Play hoặc Warning.',
     'Sự kết hợp giữa Shape và Corner Radius tạo ra "Personality" cho giao diện: Góc nhọn (Sharp) cho cảm giác kỹ thuật, Góc tròn (Rounded) cho cảm giác thân thiện.',
+  ],
+  'split-buttons': [
+    'Split button là giải pháp hoàn hảo khi bạn có một hành động chiếm 80% nhu cầu người dùng, nhưng vẫn muốn cung cấp các lựa chọn thay thế mà không làm rối UI.',
+    'Cấu trúc của nó gồm 2 phần độc lập về mặt tương tác: Main Button (hành động ngay) và Dropdown Trigger (mở menu). Đừng nhầm lẫn với một Menu Button đơn thuần (click vào đâu cũng mở menu).',
+    'Quy tắc UX: Hành động chính nên là hành động được sử dụng nhiều nhất. Các hành động trong menu nên có liên quan mật thiết đến hành động chính (ví dụ: Save vs Save As, Export vs Export as PDF).',
   ],
 };
 

@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Split Button Demo — markAI</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+    --bg:#131110;--fg:#e8e0d4;--muted:#706b64;
+    --accent:#d97706;--accent-dim:#92400e;--accent-glow:rgba(217,119,6,0.15);
+    --card:#1c1a18;--card-alt:#242120;
+    --border:#302c28;--border-hi:#44403a;
+    --success:#22c55e;--error:#ef4444;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+    background:var(--bg);
+    background-image:
+        radial-gradient(ellipse at 25% 15%,rgba(217,119,6,0.05) 0%,transparent 55%),
+        radial-gradient(rgba(255,255,255,0.015) 1px,transparent 1px);
+    background-size:100% 100%,20px 20px;
+    display:flex;flex-direction:column;align-items:center;
+    min-height:100vh;font-family:'Space Grotesk',sans-serif;
+    color:var(--fg);padding:40px 20px;overflow-x:hidden;
+}
+
+#app-root{width:100%;max-width:960px}
+
+/* ===== GRID LAYOUT ===== */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    width: 100%;
+}
+
+@media (max-width: 768px) {
+    .grid-container { grid-template-columns: 1fr; }
+}
+
+.demo-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    height: 340px;
+    position: relative;
+    transition: all 0.3s;
+}
+.demo-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+
+.hd {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    background: rgba(255, 255, 255, 0.02);
+}
+.hd-t {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--accent);
+    letter-spacing: 1px;
+}
+.hd-f {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    color: var(--muted);
+}
+
+.la {
+    flex: 1;
+    position: relative;
+    background: linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),
+                linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);
+    background-size: 20px 20px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+/* Split Button Components */
+.split-btn {
+    display: flex;
+    border-radius: 4px;
+    overflow: hidden;
+    height: 36px;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+.main-btn {
+    background: var(--accent);
+    color: #000;
+    border: none;
+    padding: 0 16px;
+    font-size: 13px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: default;
+    transition: all 0.2s;
+}
+.dropdown-btn {
+    background: var(--accent);
+    color: #000;
+    border: none;
+    border-left: 1px solid rgba(0,0,0,0.1);
+    width: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    cursor: default;
+    transition: all 0.2s;
+}
+
+/* States */
+.split-btn.hover-main .main-btn { background: #f59e0b; }
+.split-btn.hover-dropdown .dropdown-btn { background: #f59e0b; }
+.split-btn.pressed .main-btn, .split-btn.pressed .dropdown-btn { background: var(--accent-dim); color: #fff; }
+.split-btn.disabled .main-btn, .split-btn.disabled .dropdown-btn { background: #333; color: #666; }
+
+/* Menu */
+.menu-box {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    background: #222;
+    border-radius: 4px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    border: 1px solid var(--border);
+    width: 140px;
+    padding: 4px;
+    display: none;
+    z-index: 10;
+    transform-origin: top left;
+}
+.menu-box.show { display: block; animation: menuIn 0.2s cubic-bezier(0.16, 1, 0.3, 1); }
+@keyframes menuIn { from { opacity:0; transform: translateY(-10px) scale(0.95); } to { opacity:1; transform: translateY(0) scale(1); } }
+
+.menu-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 10px;
+    font-size: 11px;
+    color: #ccc;
+    border-radius: 2px;
+}
+.menu-item:hover, .menu-item.active { background: var(--accent); color: #000; }
+.menu-item svg { width: 14px; height: 14px; opacity: 0.7; }
+.menu-item.danger { color: var(--error); }
+
+/* Visual layout */
+.state-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    width: 100%;
+    margin-bottom: 12px;
+}
+.state-label {
+    width: 80px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+}
+
+/* Info Area */
+.inf {
+    padding: 14px 16px;
+    border-top: 1px solid var(--border);
+    background: rgba(0,0,0,0.2);
+}
+.dn { font-size: 15px; font-weight: 700; color: var(--fg); margin-bottom: 4px; }
+.dd { font-size: 11px; color: var(--muted); line-height: 1.5; }
+
+/* Status bar */
+.status-bar {
+    width: 100%;
+    margin-top: 40px;
+    padding: 12px 20px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.status-item {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    color: var(--muted);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.status-dot {
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--accent);
+    animation: blink 1s infinite alternate;
+}
+@keyframes blink { from { opacity: 0.3; } to { opacity: 1; } }
+
+</style>
+</head>
+<body>
+
+<div id="app-root">
+    <div class="grid-container">
+        <!-- 01: Interactive States -->
+        <div class="demo-card">
+            <div class="hd"><span class="hd-t">01. INTERACTIVE STATES</span><span class="hd-f">Visual Feedback</span></div>
+            <div class="la" id="la0"></div>
+            <div class="inf">
+                <div class="dn">Phản hồi tương tác</div>
+                <div class="dd">Cả hai phần của nút cần có các trạng thái Hover/Active riêng biệt để người dùng hiểu được vùng bấm.</div>
+            </div>
+        </div>
+
+        <!-- 02: Dropdown Logic -->
+        <div class="demo-card">
+            <div class="hd"><span class="hd-t">02. DROPDOWN LOGIC</span><span class="hd-f">Related Actions</span></div>
+            <div class="la">
+                <div style="position:relative; display:inline-block;" id="menu-container-1">
+                    <div class="split-btn" id="btn1">
+                        <button class="main-btn">Publish</button>
+                        <button class="dropdown-btn">▾</button>
+                    </div>
+                    <div class="menu-box" id="menu1">
+                        <div class="menu-item" id="mi1">Save as draft</div>
+                        <div class="menu-item" id="mi2">Schedule...</div>
+                        <div class="menu-item" id="mi3">Publish privately</div>
+                        <div style="height:1px; background:var(--border); margin:4px 0;"></div>
+                        <div class="menu-item danger">Delete post</div>
+                    </div>
+                </div>
+            </div>
+            <div class="inf">
+                <div class="dn">Luồng hoạt động</div>
+                <div class="dd">Bấm nút chính để thực hiện hành động mặc định. Bấm nút mũi tên để xem các tùy chọn liên quan.</div>
+            </div>
+        </div>
+
+        <!-- 03: Visual Variations -->
+        <div class="demo-card">
+            <div class="hd"><span class="hd-t">03. VISUAL VARIATIONS</span><span class="hd-f">Icons & Sizes</span></div>
+            <div class="la">
+                <div class="state-row">
+                    <span class="state-label">With Icon</span>
+                    <div class="split-btn">
+                        <button class="main-btn">
+                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                            Export
+                        </button>
+                        <button class="dropdown-btn">▾</button>
+                    </div>
+                </div>
+                <div class="state-row">
+                    <span class="state-label">Ghost UI</span>
+                    <div class="split-btn" style="background:transparent; border:1px solid var(--border); box-shadow:none;">
+                        <button class="main-btn" style="background:transparent; color:var(--fg); font-weight:500;">Options</button>
+                        <button class="dropdown-btn" style="background:transparent; color:var(--muted); border-left-color:var(--border);">▾</button>
+                    </div>
+                </div>
+                <div class="state-row">
+                    <span class="state-label">Danger</span>
+                    <div class="split-btn">
+                        <button class="main-btn" style="background:var(--error); color:#fff;">Terminate</button>
+                        <button class="dropdown-btn" style="background:var(--error); color:#fff;">▾</button>
+                    </div>
+                </div>
+            </div>
+            <div class="inf">
+                <div class="dn">Đa dạng hình thức</div>
+                <div class="dd">Split button có thể kết hợp với icon hoặc thay đổi màu sắc tùy theo mức độ quan trọng của hành động.</div>
+            </div>
+        </div>
+
+        <!-- 04: Real World Context -->
+        <div class="demo-card">
+            <div class="hd"><span class="hd-t">04. CONTEXTUAL UI</span><span class="hd-f">Toolbar Apps</span></div>
+            <div class="la">
+                <div style="background:#000; border:1px solid var(--border); padding:12px; border-radius:6px; width:100%;">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; border-bottom:1px solid var(--border); padding-bottom:8px;">
+                        <span style="font-size:10px; font-weight:700; color:var(--muted); font-family:var(--mono);">EDITOR V1.0</span>
+                        <div style="display:flex; gap:6px;">
+                            <div style="width:6px; height:6px; border-radius:50%; background:#333;"></div>
+                            <div style="width:6px; height:6px; border-radius:50%; background:#333;"></div>
+                        </div>
+                    </div>
+                    <div style="display:flex; gap:10px; align-items:center;">
+                        <div style="width:100%; height:8px; background:var(--border); border-radius:4px;"></div>
+                        <div class="split-btn" style="height:28px; border-radius:4px;">
+                            <button class="main-btn" style="font-size:10px; padding:0 10px;">Save</button>
+                            <button class="dropdown-btn" style="width:28px; font-size:8px;">▾</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="inf">
+                <div class="dn">Ứng dụng thực tế</div>
+                <div class="dd">Thường thấy trong các trình soạn thảo hoặc ứng dụng quản lý, nơi cần tiết kiệm không gian mà vẫn đủ chức năng.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="status-bar">
+        <div class="status-item"><div class="status-dot"></div> SIMULATION ACTIVE</div>
+        <div class="status-item">COMPONENT: SPLIT_BUTTON_AMBER_GRID</div>
+        <div class="status-item" id="time-display">00:00:00</div>
+    </div>
+</div>
+
+<script>
+function mkSplit(label, cls){
+    return '<div class="split-btn '+cls+'"><button class="main-btn">'+label+'</button><button class="dropdown-btn">▾</button></div>';
+}
+
+function runStates() {
+    var la = document.getElementById('la0');
+    var states = ['Default', 'Hover Main', 'Hover Drop', 'Pressed'];
+    var classes = ['', 'hover-main', 'hover-dropdown', 'pressed'];
+    var html = '';
+    states.forEach((s, i) => {
+        html += '<div class="state-row"><span class="state-label">'+s+'</span>'+mkSplit('Action', classes[i])+'</div>';
+    });
+    la.innerHTML = html;
+}
+
+function runMenuAnim() {
+    var menu = document.getElementById('menu1');
+    var btn = document.getElementById('btn1');
+    var mi1 = document.getElementById('mi1');
+    var mi2 = document.getElementById('mi2');
+    var mi3 = document.getElementById('mi3');
+    var step = 0;
+    
+    function loop() {
+        step = (step + 1) % 6;
+        
+        // Reset
+        btn.className = 'split-btn';
+        menu.classList.remove('show');
+        mi1.classList.remove('active');
+        mi2.classList.remove('active');
+        mi3.classList.remove('active');
+        
+        if(step === 1) {
+            btn.classList.add('hover-dropdown');
+        } else if(step === 2) {
+            btn.classList.add('pressed');
+            menu.classList.add('show');
+        } else if(step === 3) {
+            menu.classList.add('show');
+            mi1.classList.add('active');
+        } else if(step === 4) {
+            menu.classList.add('show');
+            mi2.classList.add('active');
+        } else if(step === 5) {
+            btn.classList.add('hover-main');
+        }
+        
+        setTimeout(loop, 1200);
+    }
+    loop();
+}
+
+function updateClock() {
+    const now = new Date();
+    document.getElementById('time-display').textContent = now.toTimeString().split(' ')[0];
+    setTimeout(updateClock, 1000);
+}
+
+window.onload = () => {
+    runStates();
+    runMenuAnim();
+    updateClock();
+};
+</script>
+</body>
+</html>

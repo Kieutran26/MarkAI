@@ -142,6 +142,8 @@ import menusDemoHtml from '../../gif-menus-demo.html?raw';
 import menusPracticeHtml from '../../gif-menus-practice.html?raw';
 import shapeDemoHtml from '../../gif-shape-demo.html?raw';
 import shapePracticeHtml from '../../gif-shape-practice.html?raw';
+import splitButtonDemoHtml from '../../gif-split-button-demo.html?raw';
+import splitButtonPracticeHtml from '../../gif-split-button-practice.html?raw';
 import arrayDemoHtml from '../../gif-array-demo.html?raw';
 import arrayPracticeHtml from '../../gif-array-practice.html?raw';
 
@@ -234,6 +236,7 @@ export default function GlossaryTermDetailPage() {
       case 'text-fields': return textfieldDemoHtml;
       case 'menus': return menusDemoHtml;
       case 'shape': return shapeDemoHtml;
+      case 'split-buttons': return splitButtonDemoHtml;
       case 'array': return arrayDemoHtml;
       default: return null;
     }
@@ -309,6 +312,7 @@ export default function GlossaryTermDetailPage() {
       case 'text-fields': return textfieldPracticeHtml;
       case 'menus': return menusPracticeHtml;
       case 'shape': return shapePracticeHtml;
+      case 'split-buttons': return splitButtonPracticeHtml;
       case 'array': return arrayPracticeHtml;
       default: return null;
     }
