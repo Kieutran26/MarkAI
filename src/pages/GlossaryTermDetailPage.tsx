@@ -333,8 +333,8 @@ function InteractiveFrame({ html, title, caption }: InteractiveFrameProps) {
     );
     
     const currentHeight = parseInt(frame.style.height || '0', 10);
-    // Increase threshold to 15px to prevent micro-adjustments causing jitter
-    if (Math.abs(currentHeight - nextHeight) > 15) {
+    // Reduce threshold to 5px for tighter height
+    if (Math.abs(currentHeight - nextHeight) > 5) {
       frame.style.height = `${nextHeight}px`;
     }
   };
