@@ -199,6 +199,8 @@ import pullDemoHtml from '../../gif-pull-demo.html?raw';
 import pullPracticeHtml from '../../gif-pull-practice.html?raw';
 import gitignoreDemoHtml from '../../gif-gitignore-demo.html?raw';
 import gitignorePracticeHtml from '../../gif-gitignore-practice.html?raw';
+import branchDemoHtml from '../../gif-branch-demo.html?raw';
+import branchPracticeHtml from '../../gif-branch-practice.html?raw';
 
 
 
@@ -301,6 +303,7 @@ export default function GlossaryTermDetailPage() {
       case 'navigation': return navigationDemoHtml;
       case 'align': return alignDemoHtml;
       case 'boolean': return booleanDemoHtml;
+      case 'branch': return branchDemoHtml;
       case 'asset': return assetDemoHtml;
       case 'cache': return cacheDemoHtml;
       case 'cli': return cliDemoHtml;
@@ -404,6 +407,7 @@ export default function GlossaryTermDetailPage() {
       case 'navigation': return navigationPracticeHtml;
       case 'align': return alignPracticeHtml;
       case 'boolean': return booleanPracticeHtml;
+      case 'branch': return branchPracticeHtml;
       case 'asset': return assetPracticeHtml;
       case 'cache': return cachePracticeHtml;
       case 'cli': return cliPracticeHtml;

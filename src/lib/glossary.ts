@@ -46,6 +46,26 @@ export const terms: GlossaryTerm[] = [
   { id: 'backend', name: 'Backend', nameEn: 'Phần sau / Server', letter: 'B', groups: ['infra', 'code'], definition: 'Phần người dùng không thấy — nơi data được lưu, xử lý, và bảo mật. Nếu frontend là mặt tiền cửa hàng, backend là kho hàng và văn phòng phía sau.', example: '"Form đăng ký của tôi lưu data ở đâu?" → Supabase là backend.', related: ['frontend', 'database'], demo: { kind: 'interactive', src: 'gif-backend-demo.html', alt: 'Mô phỏng 4 tầng backend: API, DB, Auth, Jobs' } },
   { id: 'build', name: 'Build', nameEn: 'Đóng gói / Compile', letter: 'B', groups: ['infra'], definition: 'Quá trình biến code thô thành file tối ưu để đưa lên internet. Giống như in ấn trước khi phát hành tài liệu.', example: '"Build failed" = quá trình đóng gói bị lỗi trước khi deploy. Thường do code bị lỗi syntax hoặc thiếu package.', related: ['deploy', 'environment'] },
   { id: 'boolean', name: 'Boolean', nameEn: 'True / False', letter: 'B', groups: ['code'], definition: 'Kiểu dữ liệu chỉ có 2 giá trị: đúng hoặc sai (true/false). Dùng để kiểm soát logic — ví dụ: "isLoggedIn: true" nghĩa là người dùng đã đăng nhập.', example: 'Prompt: "Thêm tính năng toggle — khi bật thì hiện banner, khi tắt thì ẩn." AI sẽ dùng boolean showBanner: true/false.', related: ['state', 'toggle', 'checkbox'], demo: { kind: 'interactive', src: 'gif-boolean-demo.html', alt: 'Mô phỏng 4 khía cạnh của Boolean: Bật/Tắt, UI Toggles, Logic AND/OR và Interface Impact' } },
+  {
+    id: 'branch',
+    name: 'Branch',
+    nameEn: 'Nhánh code / Luồng làm việc song song',
+    letter: 'B',
+    groups: ['workflow'],
+    definition: 'Một đường phát triển code độc lập tách ra từ luồng chính (main). Branch cho phép nhiều người làm việc cùng lúc trên các tính năng khác nhau mà không sợ làm hỏng code của nhau hay ảnh hưởng đến trang web đang chạy.',
+    example: 'Bạn đang làm landing page cho event tháng 5. Bạn tạo branch "event-may" để code. Code chính (main) vẫn chạy bình thường. Khi làm xong, bạn merge "event-may" vào "main" để cập nhật trang web.',
+    related: ['git', 'commit', 'pull-request', 'merge', 'repository'],
+    demo: {
+      kind: 'interactive',
+      src: 'gif-branch-demo.html',
+      alt: 'Mô phỏng Branch: Luồng song song, an toàn thử sai và quy trình merge'
+    },
+    practice: {
+      kind: 'interactive',
+      src: 'gif-branch-practice.html',
+      alt: 'Thực hành Branch: Chuyển đổi giữa các nhánh và quan sát sự thay đổi của file hệ thống'
+    }
+  },
   { id: 'button', name: 'Button', nameEn: 'Nút bấm / Button', letter: 'B', groups: ['design', 'code'], definition: 'Thành phần giao diện cơ bản nhất để kích hoạt một hành động. Một nút bấm tốt cần thể hiện rõ mức độ quan trọng (variant), kích thước phù hợp (size), và phản hồi trạng thái (state) ngay lập tức khi người dùng tương tác.', example: 'Prompt: "Làm một nút Primary màu cam cho việc Đăng ký, và một nút Ghost cho việc Hủy bỏ để giảm sự chú ý."', related: ['variant', 'state', 'hover', 'primary-color'], demo: { kind: 'interactive', src: 'gif-button-demo.html', alt: 'Mô phỏng 4 khía cạnh của Button: Variants, Sizes, Icons và States' } },
   { id: 'button-group', name: 'Button Group', nameEn: 'Nhóm nút bấm', letter: 'B', groups: ['design', 'code'], definition: 'Một nhóm các nút bấm có liên quan được đặt cạnh nhau thành một khối duy nhất. Button group giúp gom nhóm các hành động tương đồng, tiết kiệm diện tích và tạo ra sự phân cấp rõ ràng giữa các lựa chọn.', example: 'Prompt: "Tạo một button group gồm 3 nút: Ngày, Tuần, Tháng để lọc báo cáo, mặc định chọn Ngày."', related: ['button', 'segmented-button', 'split-buttons', 'variant'], demo: { kind: 'interactive', src: 'gif-buttongroup-demo.html', alt: 'Mô phỏng 4 loại button group: Segmented, Toggle, Icon và Mixed Action' } },
   { id: 'breadcrumb', name: 'Breadcrumb', nameEn: 'Đường dẫn liên kết', letter: 'B', groups: ['design', 'code'], definition: 'Một dãy các liên kết giúp người dùng xác định vị trí hiện tại của mình trong cấu trúc website và dễ dàng quay lại các cấp cao hơn. Giúp công cụ tìm kiếm hiểu cấu trúc website và hiển thị kết quả tìm kiếm thân thiện hơn. Giảm tỷ lệ thoát khuyến khích người dùng khám phá thêm các danh mục khác', example: 'Trang "MacBook Pro 14" có breadcrumb: Home > Laptops > MacBook Pro 14. Marketer dùng breadcrumb để tăng UX và giúp Google hiểu cấu trúc trang tốt hơn (SEO).', related: ['url', 'hierarchy', 'navigation'], demo: { kind: 'interactive', src: 'gif-breadcrumb-demo.html', alt: 'Mô phỏng các loại breadcrumb: Hierarchy, Location, Multi-level và Collapsed' } },
@@ -340,6 +360,7 @@ const deepDiveTermIds = new Set([
   'breakpoint',
   'build',
   'boolean',
+  'branch',
   'card',
   'button',
   'button-group',
@@ -438,6 +459,13 @@ const deepDiveTermIds = new Set([
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
+  branch: [
+    'Branch là "vùng an toàn" (Sandbox). Mọi lỗi lầm bạn gây ra trên một branch đều không ảnh hưởng đến bất kỳ ai khác cho đến khi bạn quyết định Merge.',
+    'Luôn tạo branch mới cho từng nhiệm vụ nhỏ (feature-x, fix-y). Đừng bao giờ làm quá nhiều thứ trên cùng một branch, nó sẽ khiến việc review và merge trở thành thảm họa.',
+    'Main branch (hoặc Master) là "thánh địa". Trong các dự án chuyên nghiệp, branch này thường được khóa lại, không ai được phép sửa trực tiếp mà phải qua quy trình Pull Request.',
+    'Conflict (xung đột) thường xảy ra lúc Merge. Điều này có nghĩa là Git thấy hai người cùng sửa một dòng code và không biết chọn bản nào. Đây là lúc cần con người can thiệp.',
+    'Sau khi merge thành công, hãy xóa branch đó đi. Việc giữ quá nhiều branch cũ đã hoàn thành nhiệm vụ sẽ làm rối mắt và khó quản lý kho code.'
+  ],
   port: [
     'Port giống như số căn hộ trong một tòa nhà chung cư (IP address). IP đưa bạn đến đúng tòa nhà, nhưng Port mới giúp bạn gõ đúng cửa phòng của app bạn cần gặp.',
     'Có 65,535 cổng trên mỗi máy tính. Các cổng từ 0-1023 thường được dành riêng cho các dịch vụ hệ thống quan trọng (như 80 cho web, 443 cho web bảo mật).',
