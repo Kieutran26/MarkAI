@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Local Host Demo — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#1a1a18;--bgc:#222220;--bge:#2a2a27;--bgt:#161614;--fg:#e8e4dd;--fm:#8a877e;--ac:#E88C2E;--acd:#a84e22;--am:#c9922a;--gn:#6b8f5e;--rd:#b54a4a;--bl:#5e7a8f;--bd:#3a3a36;--bdl:#4a4a45;--mn:'JetBrains Mono',monospace;--sn:'Space Grotesk',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--fg);font-family:var(--sn);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(255,255,255,.018)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018)1px,transparent 1px);background-size:24px 24px;}
+.pw{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:16px 16px 40px;}
+.ss{border:1px solid var(--bd);background:var(--bgc);margin-bottom:28px;overflow:hidden;}
+.ss .sh{border-bottom:1px solid var(--bd);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;}
+.ss .sh h2{font-family:var(--mn);font-size:13px;font-weight:600;color:var(--ac);text-transform:uppercase;letter-spacing:1.5px;}
+.ss .sh .nm{font-family:var(--mn);font-size:11px;color:var(--fm);}
+.sb{padding:28px 20px;}
+.ins{background:var(--bge);border-left:3px solid var(--ac);padding:12px 16px;margin-top:20px;font-size:13px;color:var(--fm);line-height:1.6;}
+.ins strong{color:var(--fg);}.ins code{font-family:var(--mn);font-size:11px;color:var(--am);background:rgba(201,146,42,.1);padding:1px 5px;}
+.to{color:var(--fm);}.tg{color:var(--gn);}.tr{color:var(--rd);}.ta{color:var(--ac);}.tb{color:var(--bl);}.tv{color:var(--am);}
+.fl{opacity:0;animation:fi .3s ease forwards;}
+@keyframes fi{to{opacity:1;}}
+.spl{display:flex;flex-wrap:wrap;gap:0;border:1px solid var(--bd);background:var(--bg);}
+@media(max-width:600px){.spl{flex-direction:column;}}
+.sp{flex:1;min-width:200px;padding:18px 16px;display:flex;flex-direction:column;gap:10px;}
+.sp:first-child{border-right:1px solid var(--bd);}
+@media(max-width:600px){.sp:first-child{border-right:none;border-bottom:1px solid var(--bd);}}
+.sl{font-family:var(--mn);font-size:10px;color:var(--fm);text-transform:uppercase;letter-spacing:1px;}
+.sc-row:hover{background:var(--bge);}
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+@media (max-width: 900px) {
+  .demo-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="pw">
+<div class="demo-grid">
+<!-- S1 -->
+<section class="ss" aria-label="Local Host là gì">
+<div class="sh"><h2>Local Host là gì</h2><span class="nm">01 / 04</span></div>
+<div class="sb">
+<div class="spl">
+<div class="sp">
+<div class="sl">Máy của bạn</div>
+<div style="border:1px solid var(--bdl);background:var(--bge);padding:14px;display:flex;flex-direction:column;align-items:center;gap:6px;">
+<div style="width:60px;height:40px;border:1.5px solid var(--bdl);background:var(--bgt);display:flex;align-items:center;justify-content:center;"><span style="font-family:var(--mn);font-size:9px;color:var(--fm);">💻</span></div>
+<div style="font-family:var(--mn);font-size:10px;color:var(--bdl);text-align:center;">localhost</div>
+</div>
+<div style="font-size:12px;color:var(--fm);line-height:1.6;margin-top:8px;">Code chạy ở đây.<br><span style="color:var(--fg);font-weight:500;">Chỉ bạn truy cập được.</span></div>
+</div>
+<div class="sp">
+<div class="sl">Máy chủ (Server)</div>
+<div style="border:1px solid var(--bdl);background:var(--bge);padding:14px;display:flex;flex-direction:column;align-items:center;gap:6px;">
+<div style="width:60px;height:40px;border:1.5px solid var(--bdl);background:var(--bgt);display:flex;align-items:center;justify-content:center;"><span style="font-family:var(--mn);font-size:9px;color:var(--fm);">☁</span></div>
+<div style="font-family:var(--mn);font-size:10px;color:var(--bl);text-align:center;">mywebsite.com</div>
+</div>
+<div style="font-size:12px;color:var(--fm);line-height:1.6;margin-top:8px;">Code chạy ở đây.<br><span style="color:var(--fg);font-weight:500;">Ai trên internet cũng truy cập được.</span></div>
+</div>
+</div>
+<div style="margin-top:12px;border:1px solid var(--bd);background:var(--bg);padding:14px 16px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+<div style="display:flex;align-items:center;gap:6px;"><div style="width:10px;height:10px;border-radius:50%;background:var(--ac);opacity:.6;"></div><span style="font-size:12px;color:var(--fg);font-weight:500;">localhost</span><span style="font-size:12px;color:var(--fm);">= máy bạn, chỉ bạn</span></div>
+<div style="display:flex;align-items:center;gap:6px;"><div style="width:10px;height:10px;border-radius:50%;background:var(--bl);opacity:.6;"></div><span style="font-size:12px;color:var(--fg);font-weight:500;">mywebsite.com</span><span style="font-size:12px;color:var(--fm);">= server, mọi người truy cập</span></div>
+</div>
+<div class="ins"><strong>Local host = địa chỉ IP của chính máy bạn (127.0.0.1).</strong> Khi AI nói "xem trên local" → mở trình duyệt, nhập localhost:3000 → thấy project chạy trên máy AI. Không ai khác trên internet thấy được.</div>
+</div>
+</section>
+
+<!-- S2 -->
+<section class="ss" aria-label="Local vs Hosting">
+<div class="sh"><h2>Local vs Hosting</h2><span class="nm">02 / 04</span></div>
+<div class="sb">
+<div class="spl">
+<div class="sp">
+<div class="sl" style="color:var(--ac);">LOCAL HOST</div>
+<div style="border:1.5px solid var(--ac);background:rgba(212,98,43,.04);padding:16px;display:flex;flex-direction:column;gap:6px;">
+<div style="font-family:var(--mn);font-size:14px;font-weight:600;color:var(--fg);word-break:break-all;">http://localhost:3000</div>
+<div style="font-family:var(--mn);font-size:10px;color:var(--fm);line-height:1.6;">Địa chỉ: <span style="color:var(--ac);">127.0.0.1</span><br>Truy cập: <span style="color:var(--gn);">chỉ bạn</span><br>Mục đích: <span style="color:var(--fg);">AI, test</span><br>Chi phí: <span style="color:var(--gn);">miễn phí</span><br>URL: <span class="tr">không chia sẻ được</span></div>
+</div>
+<div style="font-size:11px;color:var(--fm);margin-top:8px;font-family:var(--mn);line-height:1.6;"><span style="color:var(--gn);">$ </span>npm run dev<br><span style="color:var(--to);">→ Server chạy tại localhost:3000</span><br><span style="color:var(--fg);">→ Mở trình duyệt → gõ localhost:3000</span></div>
+</div>
+<div class="sp">
+<div class="sl" style="color:var(--bl);">HOSTING (REMOTE)</div>
+<div style="border:1.5px solid var(--bl);background:rgba(94,122,143,.04);padding:16px;display:flex;flex-direction:column;gap:6px;">
+<div style="font-family:var(--mn);font-size:14px;font-weight:600;color:var(--fg);word-break:break-all;">https://mywebsite.com</div>
+<div style="font-family:var(--mn);font-size:10px;color:var(--fm);line-height:1.6;">Địa chỉ: <span style="color:var(--bl);">tên miền công khai</span><br>Truy cập: <span style="color:var(--fg);">mọi người</span><br>Mục đích: <span style="color:var(--fg);">production</span><br>Chi phí: <span style="color:var(--rd);">trả tiền hàng tháng</span><br>URL: <span style="color:var(--gn);">chia sẻ được</span></div>
+</div>
+<div style="font-size:11px;color:var(--fm);margin-top:8px;font-family:var(--mn);line-height:1.6;"><span style="color:var(--bl);">$ </span>git push → deploy → build<br><span style="color:var(--to);">→ Server chạy tại mywebsite.com</span><br><span style="color:var(--fg);">→ Ai gõ URL → thấy trang web</span></div>
+</div>
+</div>
+<div class="ins"><strong>Local = nơi test nhanh, miễn phí, riêng tư. Hosting = nơi chạy thật, có chi phí, công khai.</strong> Khi AI bảo "trên local nó hoạt động" → đúng, nhưng chưa ai khác thấy. "Đã deploy lên hosting" → lúc đó mới có người ngoài thấy được.</div>
+</div>
+</section>
+
+<!-- S3 -->
+<section class="ss" aria-label="Local trong flow DevOps">
+<div class="sh"><h2>Local trong flow DevOps</h2><span class="nm">03 / 04</span></div>
+<div class="sb">
+<div style="display:flex;align-items:stretch;border:1px solid var(--bd);background:var(--bg);overflow:hidden;">
+<div style="width:140px;flex-shrink:0;display:flex;flex-direction:column;gap:0;background:var(--bge);">
+<div style="padding:12px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:6px;transition:background .4s;" class="flow-node" id="fn0"><div style="width:8px;height:8px;border-radius:50%;background:var(--ac);box-shadow:0 0 6px rgba(212,98,43,.4);"></div><span style="font-family:var(--mn);font-size:11px;color:var(--fg);">Viết code</span></div>
+<div style="padding:12px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:6px;background:rgba(212,98,43,.04);border-left:2px solid var(--ac);" class="flow-node" id="fn1"><div style="width:8px;height:8px;border-radius:50%;background:var(--ac);box-shadow:0 0 6px rgba(212,98,43,.4);"></div><span style="font-family:var(--mn);font-size:11px;color:var(--ac);font-weight:500;">Local host</span></div>
+<div style="padding:12px;display:flex;align-items:center;gap:6px;" class="flow-node" id="fn2"><div style="width:8px;height:8px;border-radius:50%;background:var(--bd);"></div><span style="font-family:var(--mn);font-size:11px;color:var(--fm);">Test</span></div>
+<div style="padding:12px;display:flex;align-items:center;gap:6px;" class="flow-node" id="fn3"><div style="width:8px;height:8px;border-radius:50%;background:var(--bd);"></div><span style="font-family:var(--mn);font-size:11px;color:var(--fm);">Commit</span></div>
+<div style="padding:12px;display:flex;align-items:center;gap:6px;" class="flow-node" id="fn4"><div style="width:8px;height:8px;border-radius:50%;background:var(--bd);"></div><span style="font-family:var(--mn);font-size:11px;color:var(--fm);">Push</span></div>
+<div style="padding:12px;display:flex;align-items:center;gap:6px;background:rgba(94,122,143,.04);border-left:2px solid var(--bl);" class="flow-node" id="fn5"><div style="width:8px;height:8px;border-radius:50%;background:var(--bl);box-shadow:0 0 6px rgba(94,122,143,.3);"></div><span style="font-family:var(--mn);font-size:11px;color:var(--bl);font-weight:500;">Hosting</span></div>
+</div>
+<div style="flex:1;padding:16px;display:flex;flex-direction:column;gap:12px;justify-content:center;">
+<div style="font-size:12px;color:var(--fg);line-height:1.6;">Local host nằm ở <strong style="color:var(--ac);">bước 2</strong> trong flow AI.<br><br>1. Viết code trên máy →<br>2. <strong style="color:var(--ac);">Chạy trên local host</strong> để test →<br>3. Commit → push →<br>4. Deploy lên <strong style="color:var(--bl);">hosting</strong> →<br>5. Mọi người truy cập được</div>
+</div>
+</div>
+<div class="ins"><strong>Local host là "bản nháp" trước khi đưa lên sân khán giả.</strong> Chạy trên local → sai cũng không ảnh hưởng ai. Deploy lên hosting → mới là "lên sân". marketer cần biết: "trên local OK" ≠ "trên production OK". Hai việc hoàn toàn khác nhau.</div>
+</div>
+</section>
+
+<!-- S4 -->
+<section class="ss" aria-label="Tại sao quan trọng">
+<div class="sh"><h2>Tại sao marketer cần biết</h2><span class="nm">04 / 04</span></div>
+<div class="sb">
+<div style="display:flex;flex-direction:column;gap:0;border:1px solid var(--bd);background:var(--bg);overflow:hidden;">
+<div style="display:flex;align-items:stretch;border-bottom:1px solid var(--bd);transition:background .2s;cursor:default;" class="sc-row">
+<div style="width:44px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border-right:1px solid var(--bd);background:var(--bge);font-size:14px;">1</div>
+<div style="flex:1;padding:14px 16px;display:flex;flex-direction:column;gap:3px;">
+<div style="font-size:13px;font-weight:500;color:var(--fg);">AI bảo "lỗi local thôi, không phải lỗi thật"</div>
+<div style="font-size:11px;color:var(--fm);line-height:1.5;">Hiểu local ≠ production → không hoảng khi AI nói "trên local nó chạy". Nhìn vào localhost thấy lỗi là <strong style="color:var(--fg);">bình thường</strong>, không phải "web bị hỏng".</div>
+</div>
+</div>
+<div style="display:flex;align-items:stretch;border-bottom:1px solid var(--bd);transition:background .2s;cursor:default;" class="sc-row">
+<div style="width:44px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border-right:1px solid var(--bd);background:var(--bge);font-size:14px;">2</div>
+<div style="flex:1;padding:14px 16px;display:flex;flex-direction:column;gap:3px;">
+<div style="font-size:13px;font-weight:500;color:var(--fg);">"Lên production đã deploy chưa?"</div>
+<div style="font-size:11px;color:var(--fm);line-height:1.5;">Local chỉ là bước test. Deploy lên hosting mới là đưa code lên server thật. <code style="font-family:var(--mn);font-size:10px;color:var(--am);background:rgba(201,146,42,.1);padding:1px 5px;">localhost:3000</code> không phải <code style="font-family:var(--mn);font-size:10px;color:var(--am);background:rgba(201,146,42,.1);padding:1px 5px;">mywebsite.com</code>.</div>
+</div>
+</div>
+<div style="display:flex;align-items:stretch;transition:background .2s;cursor:default;" class="sc-row">
+<div style="width:44px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border-right:1px solid var(--bd);background:var(--bge);font-size:14px;">3</div>
+<div style="flex:1;padding:14px 16px;display:flex;flex-direction:column;gap:3px;">
+<div style="font-size:13px;font-weight:500;color:var(--fg);">"Cho tôi link xem trên local"</div>
+<div style="font-size:11px;color:var(--fm);line-height:1.5;">Không thể — local chỉ truy cập được trên máy AI. marketer không cần link local. Muốn xem → cần deploy lên staging/hosting.</div>
+</div>
+</div>
+</div>
+<div class="ins"><strong>Biết phân biệt local vs production để phản ứng đúng.</strong> Local lỗi → "OK, fix xong rồi, chưa deploy". Production lỗi → "người dùng đang bị ảnh hưởng, cần ưu tiên". Hai tình huống, hai mức độ ưu tiên hoàn toàn khác nhau.</div>
+</div>
+</section>
+</div>
+</div>
+</body>
+</html>

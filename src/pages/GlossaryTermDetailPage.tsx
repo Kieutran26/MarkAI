@@ -184,6 +184,9 @@ import hostingDemoHtml from '../../gif-hosting-demo.html?raw';
 import hostingPracticeHtml from '../../gif-hosting-practice.html?raw';
 import interfaceDemoHtml from '../../gif-interface-demo.html?raw';
 import interfacePracticeHtml from '../../gif-interface-practice.html?raw';
+import localhostDemoHtml from '../../gif-localhost-demo.html?raw';
+import localhostPracticeHtml from '../../gif-localhost-practice.html?raw';
+
 
 
 // Final sync for viewport practice update
@@ -295,6 +298,7 @@ export default function GlossaryTermDetailPage() {
       case 'ssl': return sslDemoHtml;
       case 'hosting': return hostingDemoHtml;
       case 'interface': return interfaceDemoHtml;
+      case 'localhost': return localhostDemoHtml;
       default: return null;
     }
   };
@@ -390,6 +394,7 @@ export default function GlossaryTermDetailPage() {
       case 'ssl': return sslPracticeHtml;
       case 'hosting': return hostingPracticeHtml;
       case 'interface': return interfacePracticeHtml;
+      case 'localhost': return localhostPracticeHtml;
       default: return null;
     }
   };
