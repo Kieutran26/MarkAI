@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>.gitignore — Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#101010;--bgc:#181818;--bgi:#131313;
+  --bd:#272727;--tx:#e0e0e0;--txm:#707070;--txd:#3a3a3a;
+  --ac:#d97706;--acl:#f59e0b;
+  --abg:rgba(217,119,6,.08);--abg2:rgba(217,119,6,.18);
+  --rd:#ef4444;--gn:#22c55e;--gnb:rgba(34,197,94,.12);
+  --rdb:rgba(239,68,68,.1);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Space Grotesk',sans-serif;
+  background-color:var(--bg);
+  background-image:
+    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:20px 20px;
+  color:var(--tx);min-height:100vh;padding:20px 16px 48px;
+}
+.ch{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.ch .n{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--ac);background:var(--abg);border:1px solid rgba(217,119,6,.2);padding:1px 6px;border-radius:2px}
+.ch h2{font-size:14px;font-weight:600;letter-spacing:-.3px}
+
+/* ═══ PRACTICE ═══ */
+.pra{max-width:900px;margin:0 auto;background:var(--bgc);border:1px solid var(--bd);border-radius:3px;padding:22px}
+.pra .ch{margin-bottom:6px}
+.pra-goal{font-size:12.5px;color:var(--txm);margin-bottom:18px;line-height:1.5}
+.pra-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:660px){.pra-grid{grid-template-columns:1fr}}
+.cfg-g{display:flex;flex-direction:column;gap:6px}
+.cfg-l{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txm);text-transform:uppercase;letter-spacing:.5px}
+.cfg-ta{background:var(--bgi);border:1px solid var(--bd);border-radius:2px;padding:10px;font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--acl);outline:none;resize:vertical;min-height:100px;line-height:1.6;transition:border-color .2s}
+.cfg-ta:focus{border-color:var(--ac)}
+.cfg-ta::placeholder{color:var(--txd)}
+.presets{display:flex;gap:4px;flex-wrap:wrap}
+.pre-b{padding:4px 7px;font-family:'JetBrains Mono',monospace;font-size:9px;background:var(--bgi);border:1px solid var(--bd);color:var(--txm);cursor:pointer;border-radius:2px;transition:all .15s}
+.pre-b:hover{background:var(--abg2);border-color:var(--ac);color:var(--acl)}
+.hint{font-size:11px;color:var(--txd);line-height:1.4;padding:8px 10px;background:var(--bgi);border-radius:2px;border-left:2px solid var(--bd);margin-top:6px}
+/* preview */
+.pv-stage{background:var(--bgi);border:1px solid var(--bd);border-radius:3px;padding:14px;min-height:200px}
+.pv-files{display:flex;flex-direction:column;gap:3px}
+.pv-f{display:flex;align-items:center;gap:6px;padding:4px 8px;border-radius:2px;font-family:'JetBrains Mono',monospace;font-size:10.5px;transition:all .2s;border:1px solid transparent}
+.pv-f .fid{width:8px;height:8px;border-radius:1px;flex-shrink:0;transition:background .2s}
+.pv-f .fn{transition:color .2s,text-decoration .2s}
+.pv-f.ignored{opacity:.35;border-color:rgba(239,68,68,.1);background:var(--rdb)}
+.pv-f.ignored .fn{text-decoration:line-through;color:var(--txd)}
+.pv-f.ignored .fid{background:var(--rd)!important}
+.pv-f.safe{border-color:rgba(34,197,94,.1);background:var(--gnb)}
+.pv-stats{display:flex;gap:12px;margin-top:10px;padding-top:8px;border-top:1px solid var(--bd)}
+.pv-stat{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txd)}
+.pv-stat .sv{font-weight:700}
+.pv-stat .sv.g{color:var(--gn)}
+.pv-stat .sv.r{color:var(--rd)}
+.pr-box{background:var(--bgi);border:1px solid var(--bd);border-radius:3px;padding:12px 14px;margin-top:14px}
+.pr-box .cl{display:block;margin-bottom:8px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txd);text-transform:uppercase;letter-spacing:.5px}
+.pr-txt{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--acl);line-height:1.55;word-break:break-word}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+</style>
+</head>
+<body>
+
+<section class="pra" aria-label="Thực hành">
+  <div class="ch"><span class="n">PRACTICE</span><h2>Ghim file .gitignore</h2></div>
+  <p class="pra-goal">Viết pattern vào .gitignore — thấy ngay file nào bị chặn, file nào đi qua.</p>
+  <div class="pra-grid">
+    <div>
+      <div class="cfg-g">
+        <label class="cfg-l" for="giInput">Nội dung .gitignore</label>
+        <textarea class="cfg-ta" id="giInput" placeholder="Gõ pattern, mỗi dòng một cái&#10;VD: .env&#10;*.log&#10;dist/">.env
+node_modules/
+*.log
+.DS_Store</textarea>
+      </div>
+      <div class="cfg-g">
+        <span class="cfg-l">Thêm nhanh</span>
+        <div class="presets">
+          <button class="pre-b" data-p=".env">.env</button>
+          <button class="pre-b" data-p="node_modules/">node_modules/</button>
+          <button class="pre-b" data-p="*.log">*.log</button>
+          <button class="pre-b" data-p="dist/">dist/</button>
+          <button class="pre-b" data-p=".DS_Store">.DS_Store</button>
+          <button class="pre-b" data-p="*.tmp">*.tmp</button>
+          <button class="pre-b" data-p=".env.local">.env.local</button>
+        </div>
+      </div>
+      <div class="hint">Gõ pattern hoặc click preset. Quan sát bên phải — file khớp pattern sẽ bị gạch ngang (bị ignore). Thử xóa hết để thấy tất cả file đều pass.</div>
+    </div>
+    <div>
+      <div class="pv-stage">
+        <div class="cfg-g" style="margin-bottom:8px">
+          <span class="cfg-l">Project files — preview</span>
+        </div>
+        <div class="pv-files" id="pvFiles"></div>
+        <div class="pv-stats" id="pvStats"></div>
+      </div>
+      <div class="pr-box">
+        <span class="cl">Prompt cho AI / dev</span>
+        <div class="pr-txt" id="prTxt"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  /* ── FILE DATA ── */
+  var files=[
+    {name:'index.html',dot:'#f59e0b'},
+    {name:'style.css',dot:'#22c55e'},
+    {name:'app.js',dot:'#6366f1'},
+    {name:'.env',dot:'#ef4444'},
+    {name:'.env.local',dot:'#ef4444'},
+    {name:'.env.production',dot:'#ef4444'},
+    {name:'node_modules/',dot:'#6366f1'},
+    {name:'dist/',dot:'#b45309'},
+    {name:'error.log',dot:'#ef4444'},
+    {name:'debug.log',dot:'#ef4444'},
+    {name:'.DS_Store',dot:'#9ca3af'},
+    {name:'README.md',dot:'#22c55e'},
+    {name:'package.json',dot:'#f59e0b'},
+    {name:'cache.tmp',dot:'#9ca3af'}
+  ];
+
+  var $input=document.getElementById('giInput');
+  var $pvFiles=document.getElementById('pvFiles');
+  var $pvStats=document.getElementById('pvStats');
+  var $prTxt=document.getElementById('prTxt');
+  var $presets=document.querySelectorAll('.pre-b');
+
+  /* ── PATTERN MATCHER (educational, not full git spec) ── */
+  function matchesPattern(fileName,pattern){
+    var p=pattern.trim();
+    if(!p)return false;
+    /* directory pattern: ends with / */
+    if(p.endsWith('/')){
+      var dir=p.slice(0,-1);
+      return fileName===dir||fileName.startsWith(dir+'/');
+    }
+    /* negation: starts with ! */
+    if(p.startsWith('!')){
+      return false; /* simplified: skip negation for now */
+    }
+    /* wildcard: contains * */
+    if(p.indexOf('*')!==-1){
+      var regex=new RegExp('^'+p.replace(/\./g,'\\.').replace(/\*/g,'.*')+'$');
+      return regex.test(fileName);
+    }
+    /* exact match */
+    return fileName===p;
+  }
+
+  function isIgnored(fileName,patterns){
+    for(var i=0;i<patterns.length;i++){
+      if(matchesPattern(fileName,patterns[i]))return true;
+    }
+    return false;
+  }
+
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+
+  /* ── RENDER ── */
+  function render(){
+    var text=$input.value;
+    var lines=text.split('\n').map(function(l){return l.trim()}).filter(function(l){return l&&!l.startsWith('#')});
+    var safeCount=0,ignoreCount=0;
+    var html='';
+    for(var i=0;i<files.length;i++){
+      var f=files[i];
+      var ignored=isIgnored(f.name,lines);
+      var cls=ignored?'ignored':'safe';
+      if(ignored)ignoreCount++;else safeCount++;
+      html+='<div class="pv-f '+cls+'">'
+        +'<span class="fid" style="background:'+f.dot+'"></span>'
+        +'<span class="fn">'+esc(f.name)+'</span>'
+        +'</div>';
+    }
+    $pvFiles.innerHTML=html;
+    $pvStats.innerHTML='<span class="pv-stat">Pass: <span class="sv g">'+safeCount+'</span></span>'
+      +'<span class="pv-stat">Ignored: <span class="sv r">'+ignoreCount+'</span></span>'
+      +'<span class="pv-stat">Total: <span class="sv">'+files.length+'</span></span>';
+
+    /* prompt output */
+    if(lines.length===0){
+      $prTxt.textContent='Chưa có pattern nào — tất cả file đều sẽ được commit.';
+    }else{
+      var patternStr=lines.map(function(l){return '"'+l+'"'}).join(', ');
+      $prTxt.textContent='Thêm vào .gitignore: '+patternStr+'. Các file khớp sẽ không được commit lên GitHub.';
+    }
+  }
+
+  /* ── EVENTS ── */
+  $input.addEventListener('input',render);
+
+  $presets.forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var p=this.getAttribute('data-p');
+      var cur=$input.value;
+      /* check if already exists */
+      var lines=cur.split('\n').map(function(l){return l.trim()});
+      if(lines.indexOf(p)===-1){
+        $input.value=cur.trim()?cur.trim()+'\n'+p:p;
+      }
+      render();
+    });
+  });
+
+  /* init */
+  render();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>.gitignore — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#131313;--card:#1c1c1c;--border:#2e2e2e;--fg:#e8ddd0;--muted:#6b6358;
+--accent:#e8652a;--amber:#d4930d;--green:#6b9e78;--red:#c44;
+--mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);overflow-x:hidden}
+.grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
+.diag{position:fixed;inset:0;pointer-events:none;z-index:0;background:repeating-linear-gradient(45deg,transparent,transparent 96px,rgba(255,255,255,.012) 96px,rgba(255,255,255,.012) 97px)}
+.wrap{position:relative;z-index:1;max-width:820px;margin:0 auto;padding:20px 16px 40px}
+header{border-bottom:2px solid var(--border);padding-bottom:14px;margin-bottom:20px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.badge{font-family:var(--mono);font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent);padding:2px 10px;flex-shrink:0}
+header h1{font-size:clamp(26px,6vw,40px);font-weight:700;letter-spacing:-1px;line-height:1}
+.nav{display:flex;gap:6px;margin-bottom:16px}
+.dot{flex:1;height:3px;background:var(--border);position:relative;overflow:hidden}
+.dot .fill{position:absolute;inset:0;width:0;background:var(--accent)}
+.dot.done .fill{width:100%}
+
+.stage{position:relative;width:100%;aspect-ratio:16/9;background:var(--card);border:2px solid var(--border);overflow:hidden}
+.sc{position:absolute;inset:0;display:flex;flex-direction:column;padding:clamp(14px,3vw,28px);opacity:0;pointer-events:none;transition:opacity .35s}
+.sc.on{opacity:1;pointer-events:auto}
+.sc-label{font-family:var(--mono);font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.sc-title{font-size:clamp(14px,3.2vw,21px);font-weight:700;line-height:1.2;margin-bottom:12px}
+.sc-body{flex:1;display:flex;align-items:center;justify-content:center;position:relative;min-height:0}
+.sc-insight{font-family:var(--mono);font-size:10px;color:var(--accent);border-top:1px solid var(--border);padding-top:10px;margin-top:auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:0;transition:opacity .5s}
+.sc-insight.show{opacity:1}
+
+/* ── Scene 1: File filter list ── */
+.s1-wrap{width:100%;max-width:460px}
+.s1-header{display:flex;justify-content:space-between;padding-bottom:8px;border-bottom:1px solid var(--border);margin-bottom:4px}
+.s1-col{font-family:var(--mono);font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+.s1-row{display:flex;justify-content:space-between;align-items:center;padding:7px 10px;border-left:3px solid transparent;transition:border-color .3s,background .3s}
+.s1-row.ok{border-left-color:var(--green);background:rgba(107,158,120,.05)}
+.s1-row.no{border-left-color:var(--red);background:rgba(204,68,68,.05)}
+.s1-name{font-family:var(--mono);font-size:clamp(11px,1.6vw,13px)}
+.s1-st{font-family:var(--mono);font-size:clamp(9px,1.3vw,10px);letter-spacing:1px;min-width:85px;text-align:right;opacity:0;transition:opacity .3s}
+.s1-st.vis{opacity:1}
+.s1-st.ok{color:var(--green)}.s1-st.no{color:var(--red)}
+
+/* ── Scene 2: Leak comparison ── */
+.s2-wrap{display:flex;gap:14px;width:100%;align-items:stretch;max-width:560px}
+.s2-panel{flex:1;border:1.5px solid var(--border);background:rgba(0,0,0,.3);overflow:hidden;opacity:0;transition:opacity .4s,border-color .4s}
+.s2-panel.vis{opacity:1}
+.s2-panel.danger{border-color:var(--red)}.s2-panel.safe{border-color:var(--green)}
+.s2-ph{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:7px 10px;border-bottom:1px solid var(--border)}
+.s2-panel.danger .s2-ph{color:var(--red);background:rgba(204,68,68,.06)}
+.s2-panel.safe .s2-ph{color:var(--green);background:rgba(107,158,120,.06)}
+.s2-f{display:flex;align-items:center;padding:6px 10px;font-family:var(--mono);font-size:clamp(10px,1.4vw,11px);border-bottom:1px solid var(--border);gap:6px;transition:opacity .3s}
+.s2-f:last-of-type{border-bottom:none}
+.s2-f .fi{font-size:10px;color:var(--muted);flex-shrink:0}
+.s2-f.env-red{color:var(--red);background:rgba(204,68,68,.06)}
+.s2-f.env-off{opacity:.2;text-decoration:line-through}
+.s2-fb{font-family:var(--mono);font-size:9px;color:var(--red);padding:7px 10px;background:rgba(204,68,68,.08);line-height:1.3;opacity:0;transition:opacity .4s}
+.s2-fb.show{opacity:1}
+.s2-sb{font-family:var(--mono);font-size:9px;color:var(--green);padding:7px 10px;background:rgba(107,158,120,.08);opacity:0;transition:opacity .4s}
+.s2-sb.show{opacity:1}
+.s2-arr{display:flex;align-items:center;color:var(--muted);font-size:16px;flex-shrink:0;opacity:0;transition:opacity .4s}
+.s2-arr.vis{opacity:1}
+
+/* ── Scene 3: Rule cards ── */
+.s3-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%;max-width:500px}
+.s3-card{border:1px solid var(--border);background:rgba(0,0,0,.3);padding:10px 12px;opacity:0;transform:translateY(10px);transition:opacity .35s,transform .35s}
+.s3-card.vis{opacity:1;transform:none}
+.s3-card.full{grid-column:1/-1}
+.s3-pat{font-family:var(--mono);font-size:clamp(12px,2vw,15px);font-weight:700;margin-bottom:3px}
+.s3-why{font-size:clamp(10px,1.4vw,11px);color:var(--muted);line-height:1.3}
+.s3-card:nth-child(1) .s3-pat{color:var(--red)}
+.s3-card:nth-child(2) .s3-pat{color:var(--amber)}
+.s3-card:nth-child(3) .s3-pat{color:var(--muted)}
+.s3-card:nth-child(4) .s3-pat{color:var(--muted)}
+.s3-card:nth-child(5) .s3-pat{color:var(--red)}
+
+/* ── Scene 4: Pattern matching ── */
+.s4-wrap{display:flex;flex-direction:column;gap:10px;width:100%;max-width:500px}
+.s4-ex{display:flex;align-items:center;gap:12px;opacity:0;transition:opacity .35s}
+.s4-ex.vis{opacity:1}
+.s4-pat{font-family:var(--mono);font-size:clamp(12px,2vw,14px);font-weight:700;color:var(--accent);min-width:110px;text-align:right;flex-shrink:0}
+.s4-arr{color:var(--muted);font-size:14px;flex-shrink:0}
+.s4-ms{display:flex;gap:6px;flex-wrap:wrap}
+.s4-m{font-family:var(--mono);font-size:clamp(10px,1.4vw,12px);padding:4px 8px;border:1px solid var(--border);background:rgba(0,0,0,.3);transition:border-color .3s,color .3s,background .3s}
+.s4-m.hi{border-color:var(--accent);color:var(--accent);background:rgba(232,101,42,.08)}
+.s4-m.ex{border-color:var(--green);color:var(--green);background:rgba(107,158,120,.08)}
+.s4-note{font-family:var(--mono);font-size:9px;color:var(--green);margin-left:6px;opacity:0;transition:opacity .3s;white-space:nowrap}
+.s4-note.show{opacity:1}
+
+/* ── Divider ── */
+.divider{display:flex;align-items:center;gap:12px;margin:28px 0 22px}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.divider-label{font-family:var(--mono);font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent)}
+
+/* ── Practice ── */
+.practice{border:2px solid var(--border);background:var(--card);padding:clamp(16px,3vw,24px)}
+.pr-hdr{margin-bottom:16px}
+.pr-hdr h2{font-size:clamp(18px,3.5vw,24px);font-weight:700;margin-top:6px;line-height:1.2}
+.pr-goal{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.4}
+.pr-layout{display:flex;gap:16px}
+.pr-files{flex:1;display:flex;flex-direction:column;gap:4px;min-width:0}
+.pr-row{display:flex;align-items:center;padding:8px 10px;border:1px solid var(--border);background:rgba(0,0,0,.2);gap:10px;transition:border-color .25s}
+.pr-row.rw{border-color:rgba(204,68,68,.5)}.pr-row.yw{border-color:rgba(212,147,13,.5)}
+.pr-fn{font-family:var(--mono);font-size:clamp(10px,1.5vw,12px);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pr-tog{width:76px;height:26px;border:1.5px solid var(--border);background:rgba(0,0,0,.3);cursor:pointer;position:relative;flex-shrink:0;transition:border-color .2s,background .2s;-webkit-user-select:none;user-select:none}
+.pr-tog .knob{position:absolute;top:2px;left:2px;width:calc(50% - 3px);height:calc(100% - 4px);background:var(--muted);transition:left .2s,background .2s}
+.pr-tog.on{border-color:var(--accent);background:rgba(232,101,42,.1)}
+.pr-tog.on .knob{left:calc(50% + 1px);background:var(--accent)}
+.pr-tl{font-family:var(--mono);font-size:8px;letter-spacing:1px;position:absolute;top:50%;transform:translateY(-50%);pointer-events:none;transition:opacity .15s}
+.pr-tl.l{left:7px;color:var(--muted)}.pr-tl.r{right:7px;color:var(--accent);opacity:0}
+.pr-tog.on .pr-tl.l{opacity:0}.pr-tog.on .pr-tl.r{opacity:1}
+.pr-prev{flex:1;border:1.5px solid var(--border);background:rgba(0,0,0,.25);display:flex;flex-direction:column;min-width:0;transition:border-color .3s}
+.pr-prev.crit{border-color:var(--red)}.pr-prev.wrn{border-color:var(--amber)}.pr-prev.ok{border-color:var(--green)}
+.pr-prev-h{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:8px 10px;border-bottom:1px solid var(--border);color:var(--muted)}
+.pr-prev-b{flex:1;padding:8px 10px;display:flex;flex-direction:column;gap:5px;overflow-y:auto}
+.pr-w{font-family:var(--mono);font-size:10px;padding:6px 8px;border:1px solid;line-height:1.3}
+.pr-w.d{border-color:var(--red);color:var(--red);background:rgba(204,68,68,.06)}
+.pr-w.b{border-color:var(--amber);color:var(--amber);background:rgba(212,147,13,.06)}
+.pr-ul{font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--muted);text-transform:uppercase;margin-top:2px}
+.pr-uf{font-family:var(--mono);font-size:10px;color:var(--green);padding:2px 0}
+.pr-st{font-family:var(--mono);font-size:11px;font-weight:600;padding:8px 10px;border-top:1px solid var(--border);text-align:center;letter-spacing:1px;transition:color .3s,background .3s}
+.pr-st.crit{color:var(--red);background:rgba(204,68,68,.06)}
+.pr-st.wrn{color:var(--amber);background:rgba(212,147,13,.06)}
+.pr-st.clean{color:var(--green);background:rgba(107,158,120,.06)}
+.pr-st.empty{color:var(--muted);background:transparent}
+@keyframes glow{0%,100%{box-shadow:none}50%{box-shadow:0 0 10px rgba(107,158,120,.25)}}
+.pr-st.clean{animation:glow 1.5s ease-in-out 2}
+.pr-hint{margin-top:14px;font-size:12px;color:var(--muted);line-height:1.4;padding-left:12px;border-left:2px solid var(--border)}
+
+@media(max-width:640px){
+  .stage{aspect-ratio:5/6}
+  .s2-wrap{flex-direction:column}.s2-arr{transform:rotate(90deg)}
+  .s3-grid{grid-template-columns:1fr}.s3-card.full{grid-column:auto}
+  .pr-layout{flex-direction:column}
+  .pr-tog{width:80px;height:30px}
+  .s4-ex{flex-direction:column;align-items:flex-start;gap:4px}
+  .s4-pat{text-align:left;min-width:auto}
+  .s4-arr{transform:rotate(90deg)}
+  .sc-insight{white-space:normal;text-overflow:initial}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="diag"></div>
+<div class="wrap">
+  <header>
+    <span class="badge">WORKFLOW · VIBECODE</span>
+    <h1>.gitignore</h1>
+  </header>
+  <div class="nav" id="nav">
+    <div class="dot"><div class="fill"></div></div>
+    <div class="dot"><div class="fill"></div></div>
+    <div class="dot"><div class="fill"></div></div>
+    <div class="dot"><div class="fill"></div></div>
+  </div>
+
+  <div class="stage" id="stage">
+    <!-- SCENE 1: Bộ lọc file -->
+    <div class="sc" id="sc0">
+      <div class="sc-label">01 / 04</div>
+      <div class="sc-title">.gitignore = bộ lọc file cho Git</div>
+      <div class="sc-body"><div class="s1-wrap">
+        <div class="s1-header"><span class="s1-col">File trong project</span><span class="s1-col">Quyết định</span></div>
+        <div class="s1-row" id="f0"><span class="s1-name">.env</span><span class="s1-st" id="s0"></span></div>
+        <div class="s1-row" id="f1"><span class="s1-name">index.ts</span><span class="s1-st" id="s1"></span></div>
+        <div class="s1-row" id="f2"><span class="s1-name">node_modules/</span><span class="s1-st" id="s2"></span></div>
+        <div class="s1-row" id="f3"><span class="s1-name">package.json</span><span class="s1-st" id="s3"></span></div>
+        <div class="s1-row" id="f4"><span class="s1-name">credentials.json</span><span class="s1-st" id="s4"></span></div>
+        <div class="s1-row" id="f5"><span class="s1-name">README.md</span><span class="s1-st" id="s5"></span></div>
+      </div></div>
+      <div class="sc-insight" id="ins0">→ .gitignore = danh sách đen. File trong đây Git không bao giờ đụng tới.</div>
+    </div>
+
+    <!-- SCENE 2: Không ignore = lộ bí mật -->
+    <div class="sc" id="sc1">
+      <div class="sc-label">02 / 04</div>
+      <div class="sc-title">Không ignore .env = lộ API key cho cả thế giới</div>
+      <div class="sc-body"><div class="s2-wrap">
+        <div class="s2-panel danger" id="p2l">
+          <div class="s2-ph">Without .gitignore</div>
+          <div class="s2-f env-red"><span class="fi">◆</span>.env</div>
+          <div class="s2-f"><span class="fi">◆</span>index.ts</div>
+          <div class="s2-f"><span class="fi">◆</span>package.json</div>
+          <div class="s2-f"><span class="fi">◆</span>README.md</div>
+          <div class="s2-fb" id="fb1">API_KEY=sk-proj-abc123... ← public trên GitHub</div>
+        </div>
+        <div class="s2-arr" id="a2m">→</div>
+        <div class="s2-panel safe" id="p2r">
+          <div class="s2-ph">With .gitignore</div>
+          <div class="s2-f env-off"><span class="fi">◆</span>.env</div>
+          <div class="s2-f"><span class="fi">◆</span>index.ts</div>
+          <div class="s2-f"><span class="fi">◆</span>package.json</div>
+          <div class="s2-f"><span class="fi">◆</span>README.md</div>
+          <div class="s2-sb" id="sb2">.env bị chặn — push an toàn</div>
+        </div>
+      </div></div>
+      <div class="sc-insight" id="ins1">→ Bỏ quên .gitignore = tự public API key. Ai cũng lấy được, bạn mất tiền.</div>
+    </div>
+
+    <!-- SCENE 3: 5 rule phải có -->
+    <div class="sc" id="sc2">
+      <div class="sc-label">03 / 04</div>
+      <div class="sc-title">5 rule phải có trong mọi project</div>
+      <div class="sc-body"><div class="s3-grid">
+        <div class="s3-card" id="c30"><div class="s3-pat">.env</div><div class="s3-why">API key, database URL, mật khẩu</div></div>
+        <div class="s3-card" id="c31"><div class="s3-pat">node_modules/</div><div class="s3-why">24,000+ file — cài lại từ package.json là có</div></div>
+        <div class="s3-card" id="c32"><div class="s3-pat">.DS_Store</div><div class="s3-why">File ẩn hệ thống Mac, vô nghĩa trên server</div></div>
+        <div class="s3-card" id="c33"><div class="s3-pat">*.log</div><div class="s3-why">Log lỗi runtime, không ai cần đọc trên repo</div></div>
+        <div class="s3-card full" id="c34"><div class="s3-pat">credentials.json</div><div class="s3-why">File chứa mật khẩu, token xác thực — tuyệt đối không up</div></div>
+      </div></div>
+      <div class="sc-insight" id="ins2">→ Copy 5 dòng này vào .gitignore đầu tiên → tránh 90% rủi ro lộ secret.</div>
+    </div>
+
+    <!-- SCENE 4: Cách viết rule -->
+    <div class="sc" id="sc3">
+      <div class="sc-label">04 / 04</div>
+      <div class="sc-title">2 ký tự quan trọng: * và !</div>
+      <div class="sc-body"><div class="s4-wrap">
+        <div class="s4-ex" id="e40">
+          <span class="s4-pat">*.env</span>
+          <span class="s4-arr">→</span>
+          <div class="s4-ms">
+            <span class="s4-m" id="m40">.env</span>
+            <span class="s4-m" id="m41">.env.local</span>
+            <span class="s4-m" id="m42">.env.production</span>
+          </div>
+        </div>
+        <div class="s4-ex" id="e41">
+          <span class="s4-pat">node_modules/</span>
+          <span class="s4-arr">→</span>
+          <div class="s4-ms">
+            <span class="s4-m" id="m43">toàn bộ thư mục</span>
+          </div>
+        </div>
+        <div class="s4-ex" id="e42">
+          <span class="s4-pat">!.env.example</span>
+          <span class="s4-arr">→</span>
+          <div class="s4-ms">
+            <span class="s4-m" id="m44">.env.example</span>
+          </div>
+          <span class="s4-note" id="n4">! = ngoại lệ → file này ĐƯỢC up</span>
+        </div>
+      </div></div>
+      <div class="sc-insight" id="ins3">→ * = match tất cả, / = thư mục, ! = bỏ qua rule. Prompt AI viết .gitignore dùng 3 ký tự này.</div>
+    </div>
+  </div>
+
+  <!-- ═══ PRACTICE ═══ -->
+  <div class="divider"><span class="divider-label">Thực hành</span></div>
+  <section class="practice">
+    <div class="pr-hdr">
+      <h2>Bật ignore cho đúng file — đạt Clean Push</h2>
+      <p class="pr-goal">Toggle từng file. PUSH = đưa lên Git. IGNORE = chặn lại. Đạt trạng thái "Clean" để hoàn thành.</p>
+    </div>
+    <div class="pr-layout">
+      <div class="pr-files" id="prFiles"></div>
+      <div class="pr-prev" id="prPrev">
+        <div class="pr-prev-h">Git Push Preview</div>
+        <div class="pr-prev-b" id="prBody"></div>
+        <div class="pr-st empty" id="prSt">—</div>
+      </div>
+    </div>
+    <div class="pr-hint">Không chắc file nào nên ignore? Thử để .env ở PUSH và xem chuyện gì xảy ra.</div>
+  </section>
+</div>
+
+<script>
+/* ══════════════════════════════════════════
+   Animation Engine
+   ══════════════════════════════════════════ */
+const DUR=[5000,5500,4500,5500];
+const scenes=[document.getElementById('sc0'),document.getElementById('sc1'),document.getElementById('sc2'),document.getElementById('sc3')];
+const dots=document.querySelectorAll('.dot');
+const fills=document.querySelectorAll('.dot .fill');
+const insights=[document.getElementById('ins0'),document.getElementById('ins1'),document.getElementById('ins2'),document.getElementById('ins3')];
+let cur=-1,timers=[],rafId=null,ss=0;
+
+function later(fn,ms){const id=setTimeout(fn,ms);timers.push(id);return id}
+function clearT(){timers.forEach(clearTimeout);timers=[];if(rafId)cancelAnimationFrame(rafId)}
+function tickP(){if(cur<0)return;const p=Math.min((Date.now()-ss)/DUR[cur],1);fills[cur].style.width=(p*100)+'%';if(p<1)rafId=requestAnimationFrame(tickP)}
+function go(i){clearT();insights.forEach(x=>x.classList.remove('show'));
+  if(cur>=0){fills[cur].style.width='100%';dots[cur].classList.add('done')}
+  scenes.forEach(s=>s.classList.remove('on'));cur=i;
+  later(()=>{scenes[i].classList.add('on');ss=Date.now();tickP();animators[i]();
+    later(()=>insights[i].classList.add('show'),DUR[i]*.6);
+    later(()=>go((i+1)%4),DUR[i])},cur>=0?350:50)}
+
+/* ═══ Scene 1: File filter ═══ */
+function a0(){
+  const data=[
+    {id:'f0',sid:'s0',ok:false,txt:'BLOCKED'},
+    {id:'f1',sid:'s1',ok:true,txt:'→ GIT'},
+    {id:'f2',sid:'s2',ok:false,txt:'BLOCKED'},
+    {id:'f3',sid:'s3',ok:true,txt:'→ GIT'},
+    {id:'f4',sid:'s4',ok:false,txt:'BLOCKED'},
+    {id:'f5',sid:'s5',ok:true,txt:'→ GIT'}
+  ];
+  data.forEach(d=>{const r=document.getElementById(d.id);const s=document.getElementById(d.sid);
+    r.classList.remove('ok','no');s.classList.remove('vis','ok','no');s.textContent=''});
+  data.forEach((d,i)=>{
+    later(()=>{const r=document.getElementById(d.id);const s=document.getElementById(d.sid);
+      r.classList.add(d.ok?'ok':'no');s.textContent=d.txt;s.classList.add('vis',d.ok?'ok':'no')},250+i*650)
+  })
+}
+
+/* ═══ Scene 2: Leak comparison ═══ */
+function a1(){
+  const pl=document.getElementById('p2l'),fb=document.getElementById('fb1'),
+    ar=document.getElementById('a2m'),pr=document.getElementById('p2r'),sb=document.getElementById('sb2');
+  [pl,ar,pr].forEach(e=>e.classList.remove('vis'));fb.classList.remove('show');sb.classList.remove('show');
+  later(()=>pl.classList.add('vis'),100);
+  later(()=>fb.classList.add('show'),900);
+  later(()=>ar.classList.add('vis'),2000);
+  later(()=>pr.classList.add('vis'),2300);
+  later(()=>sb.classList.add('show'),3200);
+}
+
+/* ═══ Scene 3: Rule cards ═══ */
+function a2(){
+  ['c30','c31','c32','c33','c34'].forEach((id,i)=>{
+    const c=document.getElementById(id);c.classList.remove('vis');c.style.opacity='0';c.style.transform='translateY(10px)';
+    later(()=>c.classList.add('vis'),150+i*550)
+  })
+}
+
+/* ═══ Scene 4: Pattern matching ═══ */
+function a3(){
+  const exs=['e40','e41','e42'];const ms=['m40','m41','m42','m43','m44'];const note=document.getElementById('n4');
+  exs.forEach(e=>document.getElementById(e).classList.remove('vis'));
+  ms.forEach(m=>{const el=document.getElementById(m);el.classList.remove('hi','ex')});
+  note.classList.remove('show');
+  // Example 1: *.env matches 3 files
+  later(()=>{document.getElementById('e40').classList.add('vis')},200);
+  later(()=>{['m40','m41','m42'].forEach((m,i)=>later(()=>document.getElementById(m).classList.add('hi'),i*120))},600);
+  // Example 2: node_modules/
+  later(()=>{document.getElementById('e41').classList.add('vis');document.getElementById('m43').classList.add('hi')},1800);
+  // Example 3: !.env.example exception
+  later(()=>{document.getElementById('e42').classList.add('vis');document.getElementById('m44').classList.add('ex');note.classList.add('show')},3200);
+}
+
+const animators=[a0,a1,a2,a3];
+
+/* ══════════════════════════════════════════
+   Practice Logic
+   ══════════════════════════════════════════ */
+const FILES=[
+  {name:'.env',sens:'secret'},{name:'index.ts',sens:null},
+  {name:'node_modules/',sens:'bloat'},{name:'package.json',sens:null},
+  {name:'credentials.json',sens:'secret'},{name:'.DS_Store',sens:'junk'},
+  {name:'README.md',sens:null}
+];
+// state: false = will push (not ignored), true = ignored
+const ignored=FILES.map(()=>false);
+const prFiles=document.getElementById('prFiles');
+const prBody=document.getElementById('prBody');
+const prSt=document.getElementById('prSt');
+const prPrev=document.getElementById('prPrev');
+
+// Build file rows
+FILES.forEach((f,i)=>{
+  const row=document.createElement('div');
+  row.className='pr-row';row.id='pr'+i;
+  row.innerHTML=`<span class="pr-fn">${f.name}</span>
+    <div class="pr-tog" id="tog${i}" role="switch" aria-checked="false" aria-label="Toggle ignore for ${f.name}" tabindex="0">
+      <span class="pr-tl l">PUSH</span><span class="pr-tl r">IGNORE</span><div class="knob"></div>
+    </div>`;
+  prFiles.appendChild(row);
+  const tog=document.getElementById('tog'+i);
+  const handleToggle=()=>{ignored[i]=!ignored[i];tog.classList.toggle('on',ignored[i]);
+    tog.setAttribute('aria-checked',ignored[i]);updatePreview()};
+  tog.addEventListener('click',handleToggle);
+  tog.addEventListener('keydown',e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();handleToggle()}});
+});
+
+function updatePreview(){
+  const toPush=FILES.map((f,i)=>({f,i})).filter(x=>!ignored[x.i]);
+  const secrets=toPush.filter(x=>x.f.sens==='secret');
+  const bloat=toPush.filter(x=>x.f.sens==='bloat');
+  const sourceFiles=toPush.filter(x=>!x.f.sens);
+
+  // Update row borders
+  FILES.forEach((f,i)=>{
+    const row=document.getElementById('pr'+i);
+    row.classList.remove('rw','yw');
+    if(!ignored[i]){
+      if(f.sens==='secret')row.classList.add('rw');
+      else if(f.sens==='bloat')row.classList.add('yw');
+    }
+  });
+
+  // Build preview content
+  prBody.innerHTML='';
+
+  // Warnings
+  secrets.forEach(x=>{
+    const w=document.createElement('div');w.className='pr-w d';
+    w.textContent=x.f.name==='credentials.json'
+      ?'PASSWORD EXPOSED: credentials.json public trên repo'
+      :'SECRET LEAK: .env chứa API key, database URL';
+    prBody.appendChild(w);
+  });
+  if(bloat.length){
+    const w=document.createElement('div');w.className='pr-w b';
+    w.textContent='BLOAT: 24,000+ files không cần thiết sẽ lên repo';prBody.appendChild(w);
+  }
+
+  // Uploaded files list
+  if(sourceFiles.length){
+    const ul=document.createElement('div');ul.className='pr-ul';ul.textContent='Files sẽ upload:';prBody.appendChild(ul);
+    sourceFiles.forEach(x=>{const uf=document.createElement('div');uf.className='pr-uf';uf.textContent='→ '+x.f.name;prBody.appendChild(uf)});
+  }
+
+  // Status
+  prSt.classList.remove('crit','wrn','clean','empty');
+  prPrev.classList.remove('crit','wrn','ok');
+
+  if(secrets.length){
+    prSt.textContent='DANGER — Secret bị public';prSt.classList.add('crit');prPrev.classList.add('crit');
+  }else if(bloat.length){
+    prSt.textContent='WARNING — Repo bị phình to';prSt.classList.add('wrn');prPrev.classList.add('wrn');
+  }else if(sourceFiles.length===0){
+    prSt.textContent='EMPTY — Không có file nào để push';prSt.classList.add('empty');
+  }else{
+    prSt.textContent='CLEAN — Push an toàn';prSt.classList.add('clean');prPrev.classList.add('ok');
+  }
+}
+updatePreview();
+
+/* ═══ start ═══ */
+go(0);
+</script>
+</body>
+</html>

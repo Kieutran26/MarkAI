@@ -288,6 +288,18 @@ export const terms: GlossaryTerm[] = [
   { id: 'segmented-button', name: 'Segmented Button', nameEn: 'Nút phân đoạn', letter: 'S', groups: ['design', 'code'], definition: 'Một loại nút bấm được chia thành nhiều đoạn (segment), mỗi đoạn là một lựa chọn. Segmented Button thường dùng để chuyển đổi giữa các trạng thái, bộ lọc hoặc các view nội dung khác nhau trong cùng một không gian mà không làm thay đổi URL.', example: 'Prompt: "Tạo một segmented button gồm 3 tùy chọn: \'Ngày\', \'Tuần\', \'Tháng\' để lọc biểu đồ doanh thu. Khi người dùng click vào một đoạn, đoạn đó phải sáng lên (active) và các đoạn khác tự động tắt."', related: ['tab-bar', 'toggle', 'radio', 'component'], demo: { kind: 'interactive', src: 'gif-segmented-button-demo.html', alt: 'Mô phỏng 4 loại Segmented Button: Mutually Exclusive, Content Binding, State Lifecycle và Connected vs Separated' } },
   { id: 'navigation', name: 'Navigation', nameEn: 'Điều hướng / Navigation', letter: 'N', groups: ['design', 'code'], definition: 'Cách thức người dùng di chuyển giữa các trang hoặc các phần trong một ứng dụng. Hệ thống navigation tốt giống như một tấm bản đồ rõ ràng, giúp người dùng không bao giờ bị lạc và luôn tìm thấy thứ mình cần chỉ trong vài lần click.', example: 'Prompt: "Thiết kế hệ thống navigation cho app e-commerce gồm: Navbar ở top cho desktop, Bottom Nav cho mobile, và Sidebar cho các cài đặt nâng cao."', related: ['navbar', 'sidebar', 'breadcrumb', 'tab-bar'], demo: { kind: 'interactive', src: 'gif-navigation-demo.html', alt: 'Mô phỏng 4 kiểu navigation phổ biến: Top, Bottom, Sidebar và Breadcrumb' } },
   { id: 'ssl', name: 'SSL Certificate', nameEn: 'Chứng chỉ bảo mật SSL', letter: 'S', groups: ['infra'], definition: 'Chứng chỉ số giúp thiết lập kết nối an toàn (mã hóa) giữa trình duyệt của người dùng và máy chủ website. SSL giúp bảo vệ thông tin nhạy cảm như mật khẩu, thông tin thẻ tín dụng và xác thực danh tính của website.', example: 'Khi vào website thấy biểu tượng ổ khóa xanh và giao thức https://. Prompt: "Cài đặt chứng chỉ SSL cho trang web này và cấu hình tự động chuyển hướng từ http sang https."', related: ['secure', 'https', 'encryption'], demo: { kind: 'interactive', src: 'gif-ssl-demo.html', alt: 'Mô phỏng sự khác biệt giữa HTTP (không an toàn) và HTTPS (có SSL)' } },
+  {
+    id: 'gitignore',
+    name: '.gitignore',
+    nameEn: 'Git Ignore File',
+    letter: 'G',
+    groups: ['workflow'],
+    definition: 'File cấu hình dùng để chỉ định cho Git biết những file hoặc thư mục nào cần được bỏ qua (không theo dõi/commit). Đây là "lá chắn" quan trọng nhất để bảo vệ các thông tin nhạy cảm (API key, mật khẩu) và ngăn việc đưa các file rác, file thư viện nặng nề lên kho code.',
+    example: 'Bạn có file .env chứa mật khẩu database. Nếu không thêm ".env" vào .gitignore, khi bạn push code lên GitHub, cả thế giới sẽ thấy mật khẩu của bạn. Prompt: "Kiểm tra file .gitignore xem đã chặn các file .env và thư mục node_modules chưa để đảm bảo an toàn."',
+    related: ['git', 'commit', 'repository', 'env'],
+    demo: { kind: 'interactive', src: 'gif-gitignore-demo.html', alt: 'Mô phỏng 4 khía cạnh của .gitignore: Bộ lọc, Cái gì nên ignore, Trước/Sau và Pattern syntax' },
+    practice: { kind: 'interactive', src: 'gif-gitignore-practice.html', alt: 'Thực hành cấu hình .gitignore: gõ pattern và quan sát kết quả filter realtime' }
+  },
 ];
 
 export const quickRefItems = [
@@ -421,7 +433,8 @@ const deepDiveTermIds = new Set([
   'port',
   'fork',
   'pull',
-  'push'
+  'push',
+  'gitignore'
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -481,6 +494,13 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Conflict xảy ra khi cả bạn và đồng nghiệp cùng sửa trên một dòng code. Lúc này Git sẽ "đầu hàng" và yêu cầu bạn phải chọn thủ công xem giữ lại đoạn code nào.',
     'Trước khi Pull, hãy đảm bảo bạn đã Commit hoặc Stash (tạm cất) những code đang làm dở. Nếu không, Git có thể từ chối Pull để bảo vệ dữ liệu chưa được lưu của bạn.',
     'Trong môi trường AI-first (vibecode), việc Pull giúp AI "hiểu" được bối cảnh mới nhất của dự án mà các thành viên khác vừa đóng góp, từ đó đưa ra gợi ý chính xác hơn.'
+  ],
+  gitignore: [
+    '.gitignore hoạt động như một "bộ lọc" ở cửa ngõ repository. Nó giúp bạn chủ động chọn lọc những gì thực sự thuộc về source code để đưa lên GitHub.',
+    'Bảo mật là ưu tiên số 1 của .gitignore. Các file chứa thông tin nhạy cảm như .env (API key, password) tuyệt đối không được để lọt ra ngoài vì kẻ xấu có thể quét GitHub để tìm những file này trong vài giây.',
+    'Việc ignore node_modules/ giúp repo nhẹ hơn hàng chục lần. Bạn không cần lưu thư viện code của người khác vào kho của mình, chỉ cần lưu file "danh sách" (package.json) là đủ để người khác cài lại được.',
+    'Pattern syntax trong .gitignore rất linh hoạt: dùng * để đại diện cho mọi thứ (wildcard), dùng / ở cuối để chỉ định cả thư mục, và dùng ! để tạo ngoại lệ (ví dụ: ignore toàn bộ .env nhưng giữ lại .env.example).',
+    'Nếu bạn lỡ commit một file nhạy cảm trước khi thêm nó vào .gitignore, việc thêm vào sau này sẽ không tự động xóa file đó khỏi lịch sử Git. Bạn sẽ cần các lệnh nâng cao hơn để "tẩy sạch" hoàn toàn dấu vết cũ.'
   ],
   button: [
     'Button không chỉ là "cái nút để click". Nó là ngôn ngữ của hành động (Action Language). Mỗi variant truyền tải một thông điệp: Primary = "Làm ngay", Secondary = "Làm sau", Ghost = "Có thể làm".',

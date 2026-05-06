@@ -194,10 +194,11 @@ import portDemoHtml from '../../gif-port-demo.html?raw';
 import portPracticeHtml from '../../gif-port-practice.html?raw';
 import forkDemoHtml from '../../gif-fork-demo.html?raw';
 import forkPracticeHtml from '../../gif-fork-practice.html?raw';
-import pushDemoHtml from '../../gif-push-demo.html?raw';
 import pushPracticeHtml from '../../gif-push-practice.html?raw';
 import pullDemoHtml from '../../gif-pull-demo.html?raw';
 import pullPracticeHtml from '../../gif-pull-practice.html?raw';
+import gitignoreDemoHtml from '../../gif-gitignore-demo.html?raw';
+import gitignorePracticeHtml from '../../gif-gitignore-practice.html?raw';
 
 
 
@@ -317,6 +318,7 @@ export default function GlossaryTermDetailPage() {
       case 'fork': return forkDemoHtml;
       case 'pull': return pullDemoHtml;
       case 'push': return pushDemoHtml;
+      case 'gitignore': return gitignoreDemoHtml;
       default: return null;
     }
   };
@@ -419,6 +421,7 @@ export default function GlossaryTermDetailPage() {
       case 'fork': return forkPracticeHtml;
       case 'pull': return pullPracticeHtml;
       case 'push': return pushPracticeHtml;
+      case 'gitignore': return gitignorePracticeHtml;
       default: return null;
     }
   };
