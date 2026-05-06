@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCP Practice — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#101010;--bgc:#181818;--bgi:#131313;
+  --bd:#272727;--tx:#e0e0e0;--txm:#707070;--txd:#3a3a3a;
+  --ac:#E88C2E;--acl:#ffb05c;
+  --abg:rgba(232,140,46,.08);--abg2:rgba(232,140,46,.18);
+  --gn:#22c55e;--gnb:rgba(34,197,94,.12);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Space Grotesk',sans-serif;
+  background-color:var(--bg);
+  background-image:
+    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:20px 20px;
+  color:var(--tx);min-height:100vh;padding:20px 0;
+}
+.app{
+  width:100%;max-width:900px;margin:0 auto;
+  background:var(--bgc);
+  border:1px solid var(--bd);
+  border-radius:4px;
+  overflow:hidden;
+  display:flex;flex-direction:column;
+}
+.header{
+  padding:12px 16px;
+  background:rgba(255,255,255,.03);
+  border-bottom:1px solid var(--bd);
+  display:flex;justify-content:space-between;align-items:center;
+}
+.header h1{font-size:14px;font-weight:700;letter-spacing:-0.2px}
+.status{font-family:'JetBrains Mono',monospace;font-size:10px;display:flex;align-items:center;gap:6px}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--txm)}
+.dot.active{background:var(--gn);box-shadow:0 0 8px var(--gn)}
+
+.main{display:grid;grid-template-columns:1fr 1fr;min-height:300px}
+@media(max-width:500px){.main{grid-template-columns:1fr}}
+
+/* SERVERS LIST */
+.sidebar{padding:16px;border-right:1px solid var(--bd)}
+.sidebar h2{font-size:11px;color:var(--txm);text-transform:uppercase;margin-bottom:12px;letter-spacing:1px}
+.srv-item{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:10px;border:1px solid var(--bd);border-radius:4px;
+  margin-bottom:8px;background:var(--bgi);cursor:pointer;
+  transition:all 0.2s;
+}
+.srv-item:hover{border-color:var(--ac)}
+.srv-item.active{border-color:var(--ac);background:var(--abg)}
+.srv-info{display:flex;align-items:center;gap:10px}
+.srv-icon{font-size:16px}
+.srv-name{font-size:12px;font-weight:500}
+.toggle{
+  width:28px;height:14px;background:var(--bd);border-radius:7px;
+  position:relative;transition:0.3s;
+}
+.toggle::after{
+  content:'';position:absolute;width:10px;height:10px;
+  background:var(--txm);border-radius:50%;top:2px;left:2px;transition:0.3s;
+}
+.active .toggle{background:var(--ac)}
+.active .toggle::after{left:16px;background:#fff}
+
+/* PREVIEW AREA */
+.preview{padding:16px;display:flex;flex-direction:column;gap:16px;background:rgba(0,0,0,0.2)}
+.card{
+  background:var(--bgi);border:1px solid var(--bd);border-radius:4px;padding:12px;
+}
+.card h3{font-size:11px;color:var(--txm);margin-bottom:8px}
+.tools-list{display:flex;flex-wrap:wrap;gap:6px}
+.tool-tag{
+  font-family:'JetBrains Mono',monospace;font-size:9px;
+  padding:2px 6px;background:rgba(255,255,255,0.05);
+  border:1px solid var(--bd);border-radius:2px;
+}
+
+.chat-box{flex:1;display:flex;flex-direction:column;gap:8px}
+.bubble{
+  font-size:11px;line-height:1.4;padding:8px;border-radius:4px;
+}
+.ai-msg{background:var(--abg2);color:var(--acl);border-left:2px solid var(--ac)}
+.empty-msg{color:var(--txd);text-align:center;font-style:italic;margin-top:20px}
+
+.hint{padding:12px 16px;font-size:11px;color:var(--txm);border-top:1px solid var(--bd);background:rgba(0,0,0,0.1)}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="header">
+    <h1>MCP CONNECTION CENTER</h1>
+    <div class="status">
+      <div id="statusDot" class="dot"></div>
+      <span id="statusTxt">OFFLINE</span>
+    </div>
+  </div>
+
+  <div class="main">
+    <div class="sidebar">
+      <h2>Available Servers</h2>
+      <div class="srv-item" onclick="toggleServer('notion')">
+        <div class="srv-info">
+          <span class="srv-icon">📓</span>
+          <span class="srv-name">Notion</span>
+        </div>
+        <div class="toggle"></div>
+      </div>
+      <div class="srv-item" onclick="toggleServer('sheets')">
+        <div class="srv-info">
+          <span class="srv-icon">📊</span>
+          <span class="srv-name">Google Sheets</span>
+        </div>
+        <div class="toggle"></div>
+      </div>
+      <div class="srv-item" onclick="toggleServer('github')">
+        <div class="srv-info">
+          <span class="srv-icon">🐙</span>
+          <span class="srv-name">GitHub</span>
+        </div>
+        <div class="toggle"></div>
+      </div>
+    </div>
+
+    <div class="preview">
+      <div class="card">
+        <h3>ACTIVE TOOLS</h3>
+        <div id="toolsList" class="tools-list">
+          <span style="color:var(--txd);font-size:9px">No tools connected</span>
+        </div>
+      </div>
+
+      <div class="chat-box">
+        <h3>AI CAPABILITY</h3>
+        <div id="chatArea">
+          <p class="empty-msg">Connect a server to see what AI can do...</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="hint">
+    <strong>Thực hành:</strong> Hãy thử bật các "MCP Server" bên trái. Khi kết nối, AI sẽ có thêm các công cụ (tools) mới để tương tác với dữ liệu thật của bạn.
+  </div>
+</div>
+
+<script>
+const servers = {
+  notion: {
+    active: false,
+    tools: ['read_page', 'search_notion', 'append_block'],
+    msg: "Tôi có thể đọc tài liệu marketing và ghi chú chiến dịch từ Notion của bạn."
+  },
+  sheets: {
+    active: false,
+    tools: ['get_spreadsheet', 'update_cell', 'read_range'],
+    msg: "Tôi có thể phân tích dữ liệu ngân sách và báo cáo từ Google Sheets."
+  },
+  github: {
+    active: false,
+    tools: ['search_code', 'create_issue', 'get_repo_files'],
+    msg: "Tôi có thể tra cứu code và quản lý các task dự án trên GitHub."
+  }
+};
+
+function toggleServer(id) {
+  servers[id].active = !servers[id].active;
+  updateUI();
+}
+
+function updateUI() {
+  const items = document.querySelectorAll('.srv-item');
+  const srvKeys = Object.keys(servers);
+  
+  let anyActive = false;
+  let allTools = [];
+  let lastMsg = '';
+
+  srvKeys.forEach((key, index) => {
+    if (servers[key].active) {
+      items[index].classList.add('active');
+      anyActive = true;
+      allTools = [...allTools, ...servers[key].tools];
+      lastMsg = servers[key].msg;
+    } else {
+      items[index].classList.remove('active');
+    }
+  });
+
+  // Update Status
+  const dot = document.getElementById('statusDot');
+  const txt = document.getElementById('statusTxt');
+  if (anyActive) {
+    dot.classList.add('active');
+    txt.innerText = 'CONNECTED';
+    txt.style.color = 'var(--gn)';
+  } else {
+    dot.classList.remove('active');
+    txt.innerText = 'OFFLINE';
+    txt.style.color = 'var(--txm)';
+  }
+
+  // Update Tools
+  const toolsList = document.getElementById('toolsList');
+  if (allTools.length > 0) {
+    toolsList.innerHTML = allTools.map(t => `<span class="tool-tag">${t}</span>`).join('');
+  } else {
+    toolsList.innerHTML = `<span style="color:var(--txd);font-size:9px">No tools connected</span>`;
+  }
+
+  // Update Chat
+  const chatArea = document.getElementById('chatArea');
+  if (anyActive) {
+    chatArea.innerHTML = `<div class="bubble ai-msg">${lastMsg}</div>`;
+  } else {
+    chatArea.innerHTML = `<p class="empty-msg">Connect a server to see what AI can do...</p>`;
+  }
+}
+</script>
+
+</body>
+</html>

@@ -242,7 +242,26 @@ const rawTerms: GlossaryTerm[] = [
   { id: 'line-height', name: 'Line Height', nameEn: 'Chiều cao dòng', letter: 'L', groups: ['design', 'code'], definition: 'Line Height là khoảng cách từ đáy một dòng text đến đáy dòng tiếp theo. Nó không phải là pixel mà là hệ số nhân với font size. Chỉnh line height phù hợp giúp khối văn bản dễ đọc, không bị dính vào nhau hoặc quá rời rạc.', example: 'Với đoạn văn bản dài, line height thường để mức 1.5 - 1.6 để mắt dễ theo dõi. Với tiêu đề, có thể để mức 1.1 - 1.2. Prompt: "Chỉnh line-height của đoạn văn này lên 1.6."', related: ['letter-spacing', 'line-spacing', 'typography'], demo: { kind: 'interactive', src: 'gif-lineheight-demo.html', alt: 'Mô phỏng các mức line-height từ chật đến thoáng' } },
   { id: 'margin', name: 'Margin', nameEn: 'Khoảng cách ngoài element', letter: 'M', groups: ['design'], definition: 'Margin là khoảng trống nằm bên ngoài một element, dùng để tách nó ra khỏi các khối xung quanh. Nếu Padding là khoảng thở bên trong khung, thì Margin là khoảng cách giữa khung đó với phần còn lại của layout.', example: '"Landing page đang bị dính giữa hero, social proof và CTA." Prompt: "Tăng margin-bottom giữa các section lên 48px, riêng khối CTA cuối để 64px để tách rõ điểm hành động."', related: ['padding', 'spacing', 'flexbox', 'grid'], demo: { kind: 'interactive', src: 'gif-margin-demo.html', alt: 'Mô phỏng 4 mức margin phổ biến từ chặt đến thoáng' } },
   { id: 'model', name: 'Model', nameEn: 'Phiên bản AI', letter: 'M', groups: ['ai'], definition: 'Phiên bản cụ thể của một AI — như "Claude Sonnet 3.7" hay "GPT-4o". Mỗi model khác nhau về tốc độ, chi phí, và khả năng.', example: 'Trong Cursor: chọn model ở góc phải. Claude Sonnet 3.7 = tốt cho code phức tạp. Claude Haiku = nhanh hơn, rẻ hơn cho task đơn giản.', related: ['llm', 'prompt', 'context-window', 'api'], demo: { kind: 'interactive', src: 'gif-model-demo.html', alt: 'Mô phỏng 4 khía cạnh của Model: Black Box, Versions, Task to Model và Chat vs API' } },
-  { id: 'mcp', name: 'MCP', nameEn: 'Model Context Protocol', letter: 'M', groups: ['ai', 'workflow'], definition: 'Giao thức giúp AI kết nối trực tiếp với tool bên ngoài — Supabase, Vercel, Notion, GitHub. Thay vì copy-paste data cho AI, MCP cho phép AI tự đọc và thực hiện action.', example: '"Cursor với Supabase MCP" → AI có thể đọc schema database của bạn và tự viết query đúng cấu trúc.' },
+  {
+    id: 'mcp',
+    name: 'MCP',
+    nameEn: 'Model Context Protocol',
+    letter: 'M',
+    groups: ['ai', 'workflow'],
+    definition: 'Giao thức giúp AI kết nối trực tiếp với các công cụ và dữ liệu bên ngoài (như database, file, Google Search) một cách chuẩn hóa. Hãy tưởng tượng MCP giống như một "cổng USB" vạn năng: thay vì mỗi thiết bị cần một loại dây sạc riêng, tất cả đều dùng chung một chuẩn để kết nối dễ dàng.',
+    example: 'Cursor dùng MCP để đọc file Google Sheets của bạn hoặc tra cứu tài liệu trên Notion mà không cần bạn phải copy-paste từng dòng.',
+    related: ['llm', 'model', 'api', 'workflow'],
+    demo: {
+      kind: 'interactive',
+      src: 'gif-mcp-demo.html',
+      alt: 'Mô phỏng MCP: Cổng kết nối vạn năng giúp AI tương tác với dữ liệu thực tế'
+    },
+    practice: {
+      kind: 'interactive',
+      src: 'gif-mcp-practice.html',
+      alt: 'Thực hành kết nối MCP: Bật các server để mở rộng khả năng của AI'
+    }
+  },
   {
     id: 'merge',
     name: 'Merge',
@@ -675,6 +694,13 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Có 6 loại context cốt lõi: Role (Bạn là ai), Project (Dự án gì), Tech (Dùng gì), Goal (Mục tiêu gì), Constraint (Giới hạn gì), và Format (Kết quả dạng gì).',
     'Marketer giỏi vibecode không phải là người viết prompt dài, mà là người biết chọn đúng loại context cần thiết cho từng yêu cầu.',
     'Khi AI trả lời sai hoặc generic, 80% trường hợp là do thiếu context. Hãy bổ sung thêm bối cảnh thay vì chỉ bảo AI "làm lại đi".',
+  ],
+  mcp: [
+    'MCP giải quyết bài toán "Data Silos" (ốc đảo dữ liệu). Thay vì dữ liệu bị nhốt trong từng app riêng biệt, MCP tạo ra một ngôn ngữ chung để AI có thể "với tới" và sử dụng chúng một cách an toàn.',
+    'Có hai thành phần chính: MCP Client (như Cursor, Claude Desktop) và MCP Server (các bộ kết nối với Notion, Slack, Database...). Client là nơi bạn chat, Server là "người vận chuyển" dữ liệu.',
+    'Bảo mật là ưu tiên hàng đầu. Bạn hoàn toàn kiểm soát việc AI được phép đọc file nào, gọi tool nào. AI không thể tự ý truy cập nếu bạn không cấu hình server đó.',
+    'Tương lai của AI không chỉ là Chat, mà là Action. MCP chính là bước ngoặt biến AI từ một người tư vấn (Consultant) thành một người thực hiện (Agent) có khả năng thao tác trực tiếp trên công cụ của bạn.',
+    'Với marketer, MCP cực kỳ quyền lực: Bạn có thể bảo AI "Hãy đọc báo cáo doanh thu tháng trước trong Sheets, đối chiếu với các campaign trong Notion và tạo một Issue trên GitHub cho team dev fix các link lỗi". Tất cả trong 1 câu lệnh.'
   ],
   ssl: [
     'SSL (Secure Sockets Layer) là tiêu chuẩn bảo mật cho phép truyền dữ liệu mã hóa giữa trình duyệt và máy chủ. Ngày nay, nó thường được hiểu là TLS (Transport Layer Security) - phiên bản kế nhiệm an toàn hơn.',

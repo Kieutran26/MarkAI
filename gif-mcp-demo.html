@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCP Demo — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#101010;--bgc:#181818;--bgi:#131313;
+  --bd:#272727;--tx:#e0e0e0;--txm:#707070;--txd:#3a3a3a;
+  --ac:#E88C2E;--acl:#ffb05c;
+  --abg:rgba(232,140,46,.08);--abg2:rgba(232,140,46,.18);
+  --rd:#ef4444;--gn:#22c55e;--gnb:rgba(34,197,94,.12);
+  --rdb:rgba(239,68,68,.1);--rdb2:rgba(239,68,68,.18);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Space Grotesk',sans-serif;
+  background-color:var(--bg);
+  background-image:
+    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:20px 20px;
+  color:var(--tx);min-height:100vh;padding:20px 16px 48px;
+}
+.g{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:660px){.g{grid-template-columns:1fr}}
+.c{background:var(--bgc);border:1px solid var(--bd);border-radius:3px;padding:18px;position:relative;overflow:hidden}
+.c::after{content:'';position:absolute;top:14px;right:14px;width:5px;height:5px;background:var(--ac);border-radius:50%;animation:dp 2.4s ease-in-out infinite}
+@keyframes dp{0%,100%{opacity:.3}50%{opacity:1}}
+.ch{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.ch .n{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--ac);background:var(--abg);border:1px solid rgba(232,140,46,.2);padding:1px 6px;border-radius:2px}
+.ch h2{font-size:14px;font-weight:600;letter-spacing:-.3px}
+.st{background:var(--bgi);border:1px solid var(--bd);border-radius:3px;padding:24px 18px;display:flex;flex-direction:column;align-items:center;min-height:180px;position:relative;justify-content:center}
+.ins{margin-top:14px;font-size:11.5px;color:var(--txm);line-height:1.55;padding-left:12px;border-left:2px solid var(--bd)}
+.ins strong{color:var(--acl);font-weight:600}
+
+/* 01 - USB ANALOGY */
+.hub{width:60px;height:60px;background:var(--ac);border-radius:8px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px rgba(232,140,46,.3);z-index:2;position:relative}
+.hub svg{width:32px;height:32px;fill:#fff}
+.plug{position:absolute;width:40px;height:20px;background:var(--bd);border:1px solid var(--txm);border-radius:2px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--txm)}
+.p1{top:50%;left:calc(50% - 85px);transform:translateY(-50%);animation:plugIn1 4s infinite}
+.p2{top:50%;right:calc(50% - 85px);transform:translateY(-50%);animation:plugIn2 4s infinite}
+@keyframes plugIn1{0%{left:calc(50% - 100px);opacity:0}20%{left:calc(50% - 72px);opacity:1}80%{left:calc(50% - 72px);opacity:1}100%{left:calc(50% - 100px);opacity:0}}
+@keyframes plugIn2{0%{right:calc(50% - 100px);opacity:0}30%{right:calc(50% - 72px);opacity:1}90%{right:calc(50% - 72px);opacity:1}100%{right:calc(50% - 100px);opacity:0}}
+.plug::after{content:'';position:absolute;width:10px;height:2px;background:var(--txm)}
+.p1::after{right:-10px}
+.p2::after{left:-10px}
+
+/* 02 - TOOLS */
+.ai-brain{width:50px;height:50px;border:2px solid var(--ac);border-radius:50%;display:flex;align-items:center;justify-content:center;position:relative;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(232,140,46,.4)}50%{box-shadow:0 0 20px 5px rgba(232,140,46,.2)}}
+.tool-icon{position:absolute;width:24px;height:24px;background:var(--bgc);border:1px solid var(--bd);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:12px;opacity:0}
+.t1{animation:toolOrbit 6s infinite 0s}
+.t2{animation:toolOrbit 6s infinite 2s}
+.t3{animation:toolOrbit 6s infinite 4s}
+@keyframes toolOrbit{
+  0%{transform:rotate(0deg) translate(60px) rotate(0deg);opacity:0}
+  10%{opacity:1}
+  90%{opacity:1}
+  100%{transform:rotate(360deg) translate(60px) rotate(-360deg);opacity:0}
+}
+
+/* 03 - DATA FLOW */
+.flow-box{width:100%;max-width:280px;display:flex;flex-direction:column;gap:8px}
+.flow-row{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.03);padding:8px;border-radius:4px;border:1px solid var(--bd)}
+.flow-label{font-size:10px;color:var(--txm);font-family:'JetBrains Mono',monospace;flex:1}
+.flow-bar{height:4px;background:var(--bd);flex:2;border-radius:2px;overflow:hidden;position:relative}
+.flow-progress{position:absolute;height:100%;width:0;background:var(--ac);animation:loadFlow 3s infinite}
+@keyframes loadFlow{0%{width:0}50%{width:100%}100%{width:100%;opacity:0}}
+
+/* 04 - CAPABILITIES */
+.cap-list{display:grid;grid-template-columns:1fr 1fr;gap:8px;width:100%}
+.cap-item{padding:8px;border:1px solid var(--bd);border-radius:4px;font-size:10px;display:flex;align-items:center;gap:6px}
+.cap-dot{width:6px;height:6px;border-radius:50%;background:var(--gn);box-shadow:0 0 8px var(--gn)}
+</style>
+</head>
+<body>
+
+<div class="g">
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>Cổng kết nối AI</h2></div>
+    <div class="st">
+      <div class="hub">
+        <svg viewBox="0 0 24 24"><path d="M12 2L4.5 20.29l.71.71L12 18l6.79 3 .71-.71z"/></svg>
+      </div>
+      <div class="plug p1">FILES</div>
+      <div class="plug p2">DB</div>
+    </div>
+    <p class="ins">MCP giống như một <strong>cổng USB vạn năng</strong>. Nó giúp AI "cắm" vào các nguồn dữ liệu khác nhau mà không cần viết code riêng cho từng cái.</p>
+  </section>
+
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Kết nối Tool</h2></div>
+    <div class="st">
+      <div class="ai-brain">AI</div>
+      <div class="tool-icon t1">📁</div>
+      <div class="tool-icon t2">🌐</div>
+      <div class="tool-icon t3">📊</div>
+    </div>
+    <p class="ins">Thay vì copy-paste, AI có thể <strong>tự đi lấy dữ liệu</strong> từ Notion, Google Sheets, hay GitHub ngay khi bạn yêu cầu.</p>
+  </section>
+
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Dữ liệu thời gian thực</h2></div>
+    <div class="st">
+      <div class="flow-box">
+        <div class="flow-row"><span class="flow-label">Sync Notion</span><div class="flow-bar"><div class="flow-progress"></div></div></div>
+        <div class="flow-row"><span class="flow-label">Read SQL</span><div class="flow-bar"><div class="flow-progress" style="animation-delay:1s"></div></div></div>
+        <div class="flow-row"><span class="flow-label">Search Web</span><div class="flow-bar"><div class="flow-progress" style="animation-delay:0.5s"></div></div></div>
+      </div>
+    </div>
+    <p class="ins">AI luôn có <strong>thông tin mới nhất</strong>. Không còn tình trạng AI trả lời dựa trên kiến thức cũ từ năm ngoái.</p>
+  </section>
+
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Siêu năng lực mới</h2></div>
+    <div class="st">
+      <div class="cap-list">
+        <div class="cap-item"><div class="cap-dot"></div> Đọc Database</div>
+        <div class="cap-item"><div class="cap-dot"></div> Gửi Email</div>
+        <div class="cap-item"><div class="cap-dot"></div> Phân tích File</div>
+        <div class="cap-item"><div class="cap-dot"></div> Tra cứu Docs</div>
+      </div>
+    </div>
+    <p class="ins">Mỗi MCP Server được thêm vào giống như việc <strong>dạy AI một kỹ năng mới</strong>. Hệ thống của bạn trở nên mạnh mẽ hơn mỗi ngày.</p>
+  </section>
+</div>
+
+</body>
+</html>
