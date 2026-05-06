@@ -3,176 +3,110 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Array Practice — markAI</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>Array Practice — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#131110;--bg-card:#1c1a18;--accent:#E88C2E;--accent-dim:#c1711f;
-  --accent-glow:rgba(232,140,46,.12);--fg:#e8e0d4;--fg-muted:#706b64;
-  --fg-dim:#4a4540;--border:#302c28;--border-accent:#E88C2E;
-  --success:#22c55e;--success-bg:rgba(34,197,94,.1);
-  --error:#ef4444;--error-bg:rgba(239,68,68,.1);
-  --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;--radius:4px;
+  --bg:#101010;--bgc:#181818;--bgi:#131313;
+  --bd:#272727;--tx:#e0e0e0;--txm:#707070;--txd:#3a3a3a;
+  --ac:#E88C2E;--acl:#ffb05c;
+  --abg:rgba(232,140,46,.08);--abg2:rgba(232,140,46,.18);
 }
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 body{
-  background:var(--bg);color:var(--fg);font-family:var(--sans);line-height:1.5;
-  background-image:linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);
-  background-size:24px 24px;padding:12px;overflow:hidden;
+  font-family:'Space Grotesk',sans-serif;
+  background-color:var(--bg);
+  background-image:
+    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:20px 20px;
+  color:var(--tx);min-height:100vh;padding:24px 16px;
 }
+.pr{max-width:900px;margin:0 auto}
+.pr-h{margin-bottom:24px;border-left:2px solid var(--ac);padding-left:16px}
+.pr-g{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ac);font-weight:700;letter-spacing:1px;margin-bottom:4px}
+.pr-d{font-size:13px;color:var(--txm)}
 
-#app-root{width:100%;display:flex;flex-direction:column;align-items:center}
+.pr-card{background:var(--bgc);border:1px solid var(--bd);padding:20px;position:relative;border-radius:3px}
 
-.practice-container{width:100%;max-width:900px}
+.viz-area{background:var(--bgi);border:1px solid var(--bd);border-radius:3px;padding:40px 20px;min-height:160px;display:flex;justify-content:center;align-items:center;gap:12px;margin-bottom:20px;position:relative;overflow-x:auto}
+.array-item{min-width:56px;height:56px;border:1px solid var(--bd);background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;animation:popIn .3s ease;border-radius:2px}
+.array-val{font-size:16px;font-weight:700;color:var(--tx)}
+.array-idx{position:absolute;top:-22px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--txm)}
 
-.practice-card{
-    background:var(--bg-card);border:1px solid var(--border);
-    border-radius:var(--radius);padding:20px;position:relative;
-}
+@keyframes popIn{from{transform:scale(0.8);opacity:0}to{transform:scale(1);opacity:1}}
 
-.card-label{
-    font-family:var(--mono);font-size:10px;font-weight:600;
-    letter-spacing:2px;text-transform:uppercase;color:var(--accent);
-    margin-bottom:8px;display:flex;align-items:center;gap:6px;
-}
-.card-label::before{content:'';width:6px;height:6px;background:var(--accent);border-radius:1px}
+.controls-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:12px;margin-bottom:20px}
+.ctrl-grp{display:flex;flex-direction:column;gap:8px}
+.ctrl-l{font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;color:var(--txm);letter-spacing:1px}
 
-.practice-goal{
-    font-family:var(--mono);font-size:12px;color:var(--fg-muted);
-    margin-bottom:20px;line-height:1.6;padding-left:12px;
-    border-left:2px solid var(--accent-dim);
-}
-.practice-goal strong{color:var(--fg);font-weight:600}
+.btn{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:8px 12px;background:var(--bg);border:1px solid var(--bd);color:var(--tx);cursor:pointer;transition:all .2s;border-radius:2px;text-align:center}
+.btn:hover{border-color:var(--txd);background:var(--bgi)}
+.btn-primary{background:var(--abg2);color:var(--ac);border-color:var(--ac)}
+.btn-primary:hover{background:rgba(232,140,46,.25)}
 
-/* Array Visualizer */
-.viz-area{
-    background:#000;border:1px solid var(--border);
-    border-radius:var(--radius);padding:30px 16px;
-    min-height:140px;display:flex;justify-content:center;
-    align-items:center;gap:12px;margin-bottom:20px;
-    position:relative;overflow-x:auto;
-}
-.array-item{
-    min-width:60px;height:60px;
-    border:2px solid var(--border);background:var(--bg-card);
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    position:relative;animation:popIn .3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-.array-item.highlight{border-color:var(--accent);background:var(--accent-glow)}
-.array-val{font-size:18px;font-weight:700}
-.array-idx{
-    position:absolute;top:-24px;font-family:var(--mono);
-    font-size:10px;color:var(--fg-muted);
-}
+.input-box{font-family:'JetBrains Mono',monospace;font-size:11px;background:#000;border:1px solid var(--bd);color:var(--tx);padding:8px 12px;border-radius:2px;outline:none}
+.input-box:focus{border-color:var(--ac)}
 
-@keyframes popIn{
-    from{transform:scale(0);opacity:0}
-    to{transform:scale(1);opacity:1}
-}
-
-/* Controls */
-.controls-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));gap:10px;margin-bottom:20px}
-.control-group{display:flex;flex-direction:column;gap:6px}
-.control-label{font-family:var(--mono);font-size:9px;text-transform:uppercase;color:var(--fg-dim);letter-spacing:1px}
-
-.btn{
-    font-family:var(--mono);font-size:11px;font-weight:600;
-    padding:8px 10px;background:transparent;border:1px solid var(--border);
-    color:var(--fg);cursor:pointer;transition:all .2s;
-    border-radius:var(--radius);text-align:center;
-}
-.btn:hover{border-color:var(--accent);background:rgba(255,255,255,.03)}
-.btn:active{transform:translateY(1px)}
-.btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}
-.btn-primary:hover{background:var(--accent-dim)}
-
-.input-box{
-    font-family:var(--mono);font-size:12px;background:#000;
-    border:1px solid var(--border);color:var(--fg);
-    padding:8px 12px;border-radius:var(--radius);outline:none;
-}
-.input-box:focus{border-color:var(--accent)}
-
-/* Code Output */
-.code-output{
-    background:#0a0a0a;border:1px solid var(--border);
-    border-radius:var(--radius);padding:12px 16px;
-    font-family:var(--mono);font-size:12px;line-height:1.6;
-}
-.code-line{display:block;margin-bottom:4px}
+.code-output{background:#000;border:1px solid var(--bd);border-radius:3px;padding:12px 16px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.6}
 .c-kw{color:#c678dd}
 .c-var{color:#e06c75}
 .c-num{color:#d19a66}
 .c-str{color:#98c379}
 .c-op{color:#56b6c2}
-.c-comment{color:var(--fg-dim)}
 
-.hint-bar{
-    margin-top:16px;padding:10px 12px;background:rgba(255,255,255,.02);
-    border:1px solid var(--border);border-radius:var(--radius);
-    font-family:var(--mono);font-size:10px;color:var(--fg-muted);
-    display:flex;align-items:center;gap:10px;
-}
-.hint-icon{
-    width:18px;height:18px;background:var(--border);
-    border-radius:50%;display:flex;align-items:center;
-    justify-content:center;font-weight:700;font-size:10px;
-}
+.ins{margin-top:16px;font-size:11px;color:var(--txm);line-height:1.6;padding-left:12px;border-left:2px solid var(--bd)}
+.ins strong{color:var(--ac);font-weight:600}
 </style>
 </head>
 <body>
 
-<div id="app-root">
-  <div class="practice-container">
-    <div class="practice-card">
-      <div class="card-label">Interactive Practice</div>
-      <div class="practice-goal">
-          <strong>Thử thách:</strong> Sử dụng các phương thức <code>push</code>, <code>pop</code>, <code>shift</code>, <code>unshift</code> để biến đổi mảng theo ý muốn. Quan sát cách index tự động cập nhật.
-      </div>
+<main class="pr">
+  <div class="pr-h">
+    <div class="pr-g">ARRAY LABORATORY</div>
+    <p class="pr-d">Thử nghiệm các phương thức biến đổi mảng và quan sát cách index cập nhật.</p>
+  </div>
 
-      <!-- Visualizer -->
-      <div class="viz-area" id="viz">
-        <!-- Items here -->
-      </div>
+  <div class="pr-card">
+    <!-- Visualizer -->
+    <div class="viz-area" id="viz"></div>
 
-      <!-- Controls -->
-      <div class="controls-grid">
-        <div class="control-group">
-          <span class="control-label">Value to add</span>
-          <input type="text" id="valInput" class="input-box" placeholder="Ví dụ: 50" value="10">
-        </div>
-        <div class="control-group">
-          <span class="control-label">Add to...</span>
-          <div style="display:flex; gap:8px">
-            <button class="btn btn-primary" style="flex:1" onclick="doOp('push')">Push (Cuối)</button>
-            <button class="btn btn-primary" style="flex:1" onclick="doOp('unshift')">Unshift (Đầu)</button>
-          </div>
-        </div>
-        <div class="control-group">
-          <span class="control-label">Remove from...</span>
-          <div style="display:flex; gap:8px">
-            <button class="btn" style="flex:1" onclick="doOp('pop')">Pop (Cuối)</button>
-            <button class="btn" style="flex:1" onclick="doOp('shift')">Shift (Đầu)</button>
-          </div>
-        </div>
-        <div class="control-group">
-          <span class="control-label">Actions</span>
-          <button class="btn" onclick="resetArray()" style="border-color:var(--error); color:var(--error)">Reset</button>
+    <!-- Controls -->
+    <div class="controls-grid">
+      <div class="ctrl-grp">
+        <span class="ctrl-l">Value to add</span>
+        <input type="text" id="valInput" class="input-box" placeholder="Ví dụ: 50" value="10">
+      </div>
+      <div class="ctrl-grp">
+        <span class="ctrl-l">Add to...</span>
+        <div style="display:flex; gap:8px">
+          <button class="btn btn-primary" style="flex:1" onclick="doOp('push')">Push (Cuối)</button>
+          <button class="btn btn-primary" style="flex:1" onclick="doOp('unshift')">Unshift (Đầu)</button>
         </div>
       </div>
-
-      <!-- Code Output -->
-      <div class="code-output" id="code">
-        <span class="code-line"><span class="c-kw">let</span> <span class="c-var">arr</span> <span class="c-op">=</span> [<span id="code-content"></span>];</span>
+      <div class="ctrl-grp">
+        <span class="ctrl-l">Remove from...</span>
+        <div style="display:flex; gap:8px">
+          <button class="btn" style="flex:1" onclick="doOp('pop')">Pop (Cuối)</button>
+          <button class="btn" style="flex:1" onclick="doOp('shift')">Shift (Đầu)</button>
+        </div>
       </div>
-
-      <div class="hint-bar">
-        <div class="hint-icon">?</div>
-        <div><strong>Lưu ý:</strong> <code>push</code> và <code>unshift</code> thêm phần tử, <code>pop</code> và <code>shift</code> xóa phần tử. <code>shift</code> và <code>unshift</code> làm thay đổi index của TOÀN BỘ phần tử còn lại.</div>
+      <div class="ctrl-grp">
+        <span class="ctrl-l">Actions</span>
+        <button class="btn" onclick="resetArray()" style="border-color:#ef4444; color:#ef4444">Reset Array</button>
       </div>
     </div>
+
+    <!-- Code Output -->
+    <div class="code-output" id="code">
+      <span><span class="c-kw">let</span> <span class="c-var">arr</span> <span class="c-op">=</span> [<span id="code-content"></span>];</span>
+    </div>
+
+    <p class="ins">
+      <strong>Lưu ý:</strong> <code>shift</code> và <code>unshift</code> làm thay đổi index của <strong>TOÀN BỘ</strong> phần tử còn lại trong mảng.
+    </p>
   </div>
-</div>
+</main>
 
 <script>
 let arr = [10, 20, 30];
@@ -181,9 +115,8 @@ const codeContent = document.getElementById('code-content');
 const valInput = document.getElementById('valInput');
 
 function update(){
-    // Update Visualizer
     if(arr.length === 0){
-        viz.innerHTML = '<span style="color:var(--fg-dim); font-family:var(--mono); font-size:12px">Mảng đang trống</span>';
+        viz.innerHTML = '<span style="color:var(--txm); font-family:\'JetBrains Mono\'; font-size:11px">Mảng đang trống</span>';
     } else {
         viz.innerHTML = arr.map((v, i) => `
             <div class="array-item">
@@ -192,26 +125,20 @@ function update(){
             </div>
         `).join('');
     }
-
-    // Update Code
     codeContent.innerHTML = arr.map(v => isNaN(v) ? `<span class="c-str">"${v}"</span>` : `<span class="c-num">${v}</span>`).join(', ');
 }
 
 function doOp(type){
     const val = valInput.value;
-    const numVal = isNaN(val) ? val : Number(val);
-
+    const numVal = isNaN(val) || val.trim()==='' ? val : Number(val);
     switch(type){
         case 'push': arr.push(numVal); break;
         case 'pop': arr.pop(); break;
         case 'unshift': arr.unshift(numVal); break;
         case 'shift': arr.shift(); break;
     }
-    
     update();
-    
-    // Auto-increment input value if it's a number
-    if(!isNaN(val)) valInput.value = Number(val) + 10;
+    if(!isNaN(val) && val.trim()!=='') valInput.value = Number(val) + 10;
 }
 
 function resetArray(){
@@ -220,9 +147,7 @@ function resetArray(){
     update();
 }
 
-// Init
 update();
 </script>
-
 </body>
 </html>

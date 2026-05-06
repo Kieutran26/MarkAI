@@ -4,347 +4,180 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>API Practice — Vibecode Glossary</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#0f0f12;--bg-card:#16161b;--fg:#e8e4dc;--muted:#6e6e7a;
-    --accent:#e88c2e;--accent-soft:rgba(232,140,46,.12);
-    --accent-border:rgba(232,140,46,.3);--border:#282830;
-    --surface:#1c1c23;--success:#3a9e5c;--success-soft:rgba(58,158,92,.12);
-    --warning:#c49030;--warning-soft:rgba(196,144,48,.1);
-    --danger:#c44030;--danger-soft:rgba(196,64,48,.1);
-    --danger-border:rgba(196,64,48,.35);--bar-d:#2a2a34;--bar-m:#44444f;
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{background:var(--bg);color:var(--fg);font-family:'Space Grotesk',sans-serif;min-height:100vh;line-height:1.6}
-  body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(rgba(255,255,255,.022) 1px,transparent 1px);background-size:20px 20px;pointer-events:none;z-index:0}
-  body::after{content:'';position:fixed;bottom:-20%;left:-8%;width:550px;height:550px;background:radial-gradient(circle,rgba(232,140,46,.03) 0%,transparent 70%);pointer-events:none;z-index:0}
-  .entry{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:24px 24px 20px}
+:root{
+  --bg:#101010;--bgc:#181818;--bgi:#131313;
+  --bd:#272727;--tx:#e0e0e0;--txm:#707070;--txd:#3a3a3a;
+  --ac:#E88C2E;--acl:#ffb05c;
+  --abg:rgba(232,140,46,.08);--abg2:rgba(232,140,46,.18);
+  --success:#22c55e;--error:#ef4444;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Space Grotesk',sans-serif;
+  background-color:var(--bg);
+  background-image:
+    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:20px 20px;
+  color:var(--tx);min-height:100vh;padding:24px 16px;
+}
+.pr{max-width:900px;margin:0 auto}
+.pr-h{margin-bottom:24px;border-left:2px solid var(--ac);padding-left:16px}
+.pr-g{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ac);font-weight:700;letter-spacing:1px;margin-bottom:4px}
+.pr-d{font-size:13px;color:var(--txm)}
 
-  /* ===== PRACTICE FLOW ===== */
-  .pg{font-size:13px;color:var(--fg);opacity:.8;margin-bottom:22px;line-height:1.6}
-  .pg span{color:var(--accent);font-weight:600}
+.pr-card{background:var(--bgc);border:1px solid var(--bd);padding:24px;position:relative;border-radius:3px}
 
-  .flow-stages{display:flex;gap:0;margin-bottom:28px;overflow-x:auto;padding-bottom:4px}
-  .fs-stage{
-    flex:1;min-width:120px;padding:14px 16px;border:1px solid var(--border);background:var(--bg-card);
-    cursor:pointer;transition:all .3s;position:relative;
-  }
-  .fs-stage:not(:last-child){border-right:none}
-  .fs-stage .fs-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:6px}
-  .fs-stage .fs-name{font-size:12px;font-weight:600;color:var(--fg);margin-bottom:4px}
-  .fs-stage .fs-desc{font-size:11px;color:var(--muted);line-height:1.4}
-  .fs-stage:hover{background:var(--surface)}
-  .fs-stage.active{background:var(--surface);border-color:var(--accent);z-index:1}
-  .fs-stage.active:not(:last-child){border-right:1px solid var(--accent)}
-  .fs-stage.active+.fs-stage{border-left:1px solid var(--accent)}
-  .fs-stage.done{background:var(--success-soft)}
-  .fs-stage.done .fs-num{color:var(--success)}
-  .fs-stage.done:not(:last-child){border-right:1px solid rgba(58,158,92,.3)}
-  .fs-stage.done+.fs-stage{border-left:1px solid var(--border)}
+.stages{display:flex;gap:1px;background:var(--bd);margin-bottom:24px;border:1px solid var(--bd);border-radius:2px;overflow:hidden}
+.stg{flex:1;background:var(--bgc);padding:12px;cursor:pointer;transition:all .2s;text-align:center}
+.stg.on{background:var(--bgi);box-shadow:inset 0 -2px 0 var(--ac)}
+.stg.done{background:rgba(34,197,94,.03)}
+.stg-n{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--txm);display:block;margin-bottom:4px}
+.stg-v{font-size:11px;font-weight:600}
 
-  /* Flow detail panel */
-  .flow-detail{
-    background:var(--bg-card);border:1px solid var(--border);padding:0;
-    min-height:360px;margin-bottom:20px;overflow:hidden;position:relative;
-  }
-  .fd-panel{position:absolute;inset:0;padding:28px;opacity:0;transform:translateY(12px);pointer-events:none;transition:all .35s ease;display:flex;flex-direction:column}
-  .fd-panel.active{opacity:1;transform:translateY(0);pointer-events:auto}
+.panel-w{min-height:280px;background:var(--bgi);border:1px solid var(--bd);border-radius:2px;padding:24px;margin-bottom:24px;position:relative}
+.panel{display:none}
+.panel.on{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
 
-  .fd-title{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:16px}
+.panel-h{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ac);font-weight:700;margin-bottom:16px;text-transform:uppercase;letter-spacing:1px}
 
-  /* Code block style */
-  .code-block{background:var(--surface);border:1px solid var(--border);padding:16px 18px;font-family:'JetBrains Mono',monospace;font-size:11px;line-height:1.8;color:var(--muted);overflow-x:auto;margin-bottom:12px}
-  .code-block .ck{color:var(--accent)}
-  .code-block .cv{color:var(--fg);opacity:.8}
-  .code-block .cs{color:var(--success)}
-  .code-block .cd{color:var(--danger)}
-  .code-block .cm{color:var(--muted);opacity:.4}
+.code{background:#000;border:1px solid var(--bd);padding:16px;border-radius:2px;font-family:'JetBrains Mono',monospace;font-size:11px;line-height:1.7;margin-bottom:16px;overflow-x:auto}
+.c-kw{color:#c678dd}
+.c-v{color:#e06c75}
+.c-s{color:#98c379}
+.c-m{color:var(--txm)}
 
-  .flow-send{
-    font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;
-    padding:14px 32px;border:2px solid var(--accent);background:var(--accent);
-    color:#fff;cursor:pointer;transition:all .25s;display:inline-flex;align-items:center;gap:10px;
-  }
-  .flow-send:hover:not(:disabled){background:transparent;color:var(--accent)}
-  .flow-send:disabled{opacity:.4;cursor:not-allowed}
-  .flow-send.running{border-color:var(--success);background:var(--success);color:#fff}
+.btn{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:12px 24px;background:var(--bg);border:1px solid var(--bd);color:var(--tx);cursor:pointer;transition:all .2s;border-radius:2px;text-transform:uppercase}
+.btn:hover{border-color:var(--ac);color:var(--ac)}
+.btn-primary{background:var(--ac);color:#000;border-color:var(--ac)}
+.btn-primary:hover{background:var(--acl)}
 
-  .flow-reset{
-    font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:500;
-    padding:10px 20px;border:1px solid var(--border);background:transparent;
-    color:var(--muted);cursor:pointer;transition:all .25s;margin-left:12px;
-  }
-  .flow-reset:hover{border-color:var(--accent-border);color:var(--fg)}
+.fb{padding:12px 16px;border:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txm);background:var(--bg);margin-top:16px}
+.fb.ok{border-color:var(--success);color:var(--success)}
 
-  .flow-fb{margin-top:16px}
-  .flow-fb .fb{font-size:12px;padding:7px 14px}
-
-  /* Spinner */
-  .spinner{display:inline-block;width:14px;height:14px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .6s linear infinite}
-  @keyframes spin{to{transform:rotate(360deg)}}
-
-  /* Animated arrow */
-  .anim-arrow{display:flex;align-items:center;gap:6px;color:var(--accent);font-family:'JetBrains Mono',monospace;font-size:12px;margin:10px 0;opacity:0;transform:translateX(-10px);transition:all .4s ease}
-  .anim-arrow.show{opacity:1;transform:translateX(0)}
-  .anim-arrow i{animation:arrowPulse 1s ease infinite}
-  @keyframes arrowPulse{0%,100%{transform:translateX(0)}50%{transform:translateX(4px)}}
-
-  /* Data result */
-  .data-result{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:12px}
-  @media(max-width:500px){.data-result{grid-template-columns:1fr}}
-  .data-item{background:var(--surface);border:1px solid var(--border);padding:14px;opacity:0;transform:translateY(8px);transition:all .4s ease}
-  .data-item.show{opacity:1;transform:translateY(0)}
-  .data-item .di-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
-  .data-item .di-val{font-size:18px;font-weight:700;color:var(--fg)}
-  .data-item .di-change{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--success);margin-top:4px}
-
-
-  .fu{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
-  .fu.in{opacity:1;transform:translateY(0)}
-
-  @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
-  @media(max-width:600px){
-    .entry{padding:28px 14px 60px}
-    .flow-stages{flex-direction:column}
-    .fs-stage:not(:last-child){border-right:1px solid var(--border);border-bottom:none}
-    .fs-stage.active:not(:last-child){border-right:1px solid var(--accent);border-bottom:1px solid var(--accent)}
-  }
+.data-res{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+.data-i{background:var(--bgc);border:1px solid var(--bd);padding:12px;border-radius:2px}
+.di-l{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--txm);text-transform:uppercase;margin-bottom:4px;display:block}
+.di-v{font-size:14px;font-weight:700;color:var(--ac)}
 </style>
 </head>
 <body>
-<div class="entry">
 
-  <!-- ===== 02 — THUC HANH ===== -->
-  <section class="fu" aria-label="Thuc hanh API request flow">
-    <p class="pg">
-      <span>Mục tiêu:</span> Nhấn từng bước để xem một API request thực sự đi ra sao — từ lúc bạn gửi yêu cầu đến khi nhận được dữ liệu.
-    </p>
+<main class="pr">
+  <div class="pr-h">
+    <div class="pr-g">API REQUEST FLOW</div>
+    <p class="pr-d">Chạy mô phỏng để hiểu cách dữ liệu di chuyển từ App đến Server.</p>
+  </div>
 
-    <div class="flow-stages" id="flowStages">
-      <div class="fs-stage active" data-fs="0">
-        <div class="fs-num">STEP 1</div>
-        <div class="fs-name">Prepare</div>
-        <div class="fs-desc">App chuẩn bị yêu cầu</div>
-      </div>
-      <div class="fs-stage" data-fs="1">
-        <div class="fs-num">STEP 2</div>
-        <div class="fs-name">Authenticate</div>
-        <div class="fs-desc">API key đi kèm header</div>
-      </div>
-      <div class="fs-stage" data-fs="2">
-        <div class="fs-num">STEP 3</div>
-        <div class="fs-name">Process</div>
-        <div class="fs-desc">Server xử lý yêu cầu</div>
-      </div>
-      <div class="fs-stage" data-fs="3">
-        <div class="fs-num">STEP 4</div>
-        <div class="fs-name">Respond</div>
-        <div class="fs-desc">Dữ liệu trả về app</div>
-      </div>
+  <div class="pr-card">
+    <div class="stages">
+      <div class="stg on" id="s0"><span class="stg-n">STEP 1</span><span class="stg-v">Prepare</span></div>
+      <div class="stg" id="s1"><span class="stg-n">STEP 2</span><span class="stg-v">Auth</span></div>
+      <div class="stg" id="s2"><span class="stg-n">STEP 3</span><span class="stg-v">Process</span></div>
+      <div class="stg" id="s3"><span class="stg-n">STEP 4</span><span class="stg-v">Respond</span></div>
     </div>
 
-    <div class="flow-detail" id="flowDetail">
-      <!-- Panel 0: Prepare -->
-      <div class="fd-panel active" data-fp="0">
-        <div class="fd-title"><i class="fa-solid fa-file-lines"></i> Your App — Chuẩn bị request</div>
-        <div class="code-block">
-          <span class="cm">// Bạn muốn lấy thông tin user từ API</span><br>
-          <span class="ck">const</span> email = <span class="cv">"lan@company.com"</span>;<br>
-          <span class="ck">const</span> endpoint = <span class="cv">"https://api.example.com/users"</span>;<br>
-          <br>
-          <span class="cm">// Chưa có gì đặc biệt — chỉ là dữ liệu đầu vào</span>
+    <div class="panel-w">
+      <!-- Panel 0 -->
+      <div class="panel on" id="p0">
+        <div class="panel-h">Your App — Chuẩn bị yêu cầu</div>
+        <div class="code">
+          <span class="c-m">// Bước 1: Khai báo endpoint và dữ liệu cần lấy</span><br>
+          <span class="c-kw">const</span> <span class="c-v">endpoint</span> = <span class="c-s">"https://api.example.com/users"</span>;<br>
+          <span class="c-kw">const</span> <span class="c-v">query</span> = <span class="c-s">"lan@company.com"</span>;
         </div>
-        <div class="anim-arrow" id="arrow1"><i class="fa-solid fa-arrow-right"></i> Tiếp theo: API key sẽ được gắn vào header...</div>
+        <p style="font-size:12px;color:var(--txm)">App chuẩn bị các thông tin cần thiết trước khi gửi đi.</p>
       </div>
 
-      <!-- Panel 1: Authenticate -->
-      <div class="fd-panel" data-fp="1">
-        <div class="fd-title"><i class="fa-solid fa-key"></i> Request Header — API key đi kèm</div>
-        <div class="code-block">
-          <span class="ck">GET</span> <span class="cv">/users?email=lan@company.com</span> <span class="cm">HTTP/1.1</span><br>
-          <span class="ck">Host:</span> <span class="cv">api.example.com</span><br>
-          <span class="cd">Authorization: Bearer sk-proj-aB3dE...fG7hI</span> <span class="cm">&larr; KEY Ở ĐÂY</span><br>
-          <span class="ck">Content-Type:</span> <span class="cv">application/json</span>
+      <!-- Panel 1 -->
+      <div class="panel" id="p1">
+        <div class="panel-h">Request Header — Gắn mã bảo mật</div>
+        <div class="code">
+          <span class="c-kw">GET</span> <span class="c-s">/users?email=lan@company.com</span><br>
+          <span class="c-kw">Authorization:</span> <span class="c-v">Bearer sk-proj-aB3dE...</span><br>
+          <span class="c-kw">Content-Type:</span> <span class="c-s">application/json</span>
         </div>
-        <div style="background:var(--danger-soft);border:1px solid var(--danger-border);padding:10px 14px;font-size:12px;color:var(--fg);opacity:.85;display:flex;align-items:center;gap:8px">
-          <i class="fa-solid fa-triangle-exclamation" style="color:var(--danger);flex-shrink:0"></i>
-          Key đi trong mỗi request — nếu bị chặn/gián điệp, người khác có thể gọi API bằng tiền của bạn.
-        </div>
-        <div class="anim-arrow" id="arrow2"><i class="fa-solid fa-arrow-right"></i> Tiếp theo: Server nhận và kiểm tra key...</div>
+        <p style="font-size:12px;color:var(--txm)">API Key được gắn vào <strong>Header</strong> để Server xác thực danh tính của bạn.</p>
       </div>
 
-      <!-- Panel 2: Process -->
-      <div class="fd-panel" data-fp="2">
-        <div class="fd-title"><i class="fa-solid fa-server"></i> Server — Xử lý yêu cầu</div>
-        <div style="display:flex;align-items:center;gap:14px;margin-bottom:14px">
-          <div class="spinner"></div>
-          <span style="font-size:14px;color:var(--fg)">Server đang xử lý...</span>
+      <!-- Panel 2 -->
+      <div class="panel" id="p2">
+        <div class="panel-h">Server — Xử lý nghiệp vụ</div>
+        <div class="code">
+          <span class="c-m">// 1. Xác thực API Key</span><br>
+          <span class="c-m">// 2. Kiểm tra quyền truy cập (Read)</span><br>
+          <span class="c-m">// 3. Truy vấn Database lấy thông tin User</span>
         </div>
-        <div class="code-block">
-          <span class="cm">// Server làm 3 việc trong vài mili-giây:</span><br>
-          <span class="cs">1.</span> Kiểm tra <span class="cd">API key</span> hợp lệ không<br>
-          <span class="cs">2.</span> Kiểm tra <span class="cd">permissions</span> (có quyền read không?)<br>
-          <span class="cs">3.</span> Tìm user trong <span class="ck">database</span> và lấy dữ liệu<br>
-          <br>
-          <span class="cm">// Nếu key sai hoặc hết tiền → 401/403</span>
-        </div>
-        <div class="anim-arrow" id="arrow3"><i class="fa-solid fa-arrow-right"></i> Tiếp theo: Dữ liệu trả về...</div>
+        <p style="font-size:12px;color:var(--txm)">Server kiểm tra "chìa khóa" và tìm kiếm dữ liệu bạn yêu cầu.</p>
       </div>
 
-      <!-- Panel 3: Respond -->
-      <div class="fd-panel" data-fp="3">
-        <div class="fd-title"><i class="fa-solid fa-check-circle"></i> Response — Dữ liệu về tay bạn</div>
-        <div class="code-block">
-          <span class="cm">// Server trả về JSON</span><br>
-          <span class="ck">HTTP</span> <span class="cs">200 OK</span><br>
+      <!-- Panel 3 -->
+      <div class="panel" id="p3">
+        <div class="panel-h">Response — Kết quả trả về</div>
+        <div class="code">
           {<br>
-          &nbsp;&nbsp;<span class="ck">"name"</span>: <span class="cv">"Lan Nguyen"</span>,<br>
-          &nbsp;&nbsp;<span class="ck">"role"</span>: <span class="cv">"marketer"</span>,<br>
-          &nbsp;&nbsp;<span class="ck">"plan"</span>: <span class="cv">"pro"</span><br>
+          &nbsp;&nbsp;<span class="c-v">"name"</span>: <span class="c-s">"Lan Nguyen"</span>,<br>
+          &nbsp;&nbsp;<span class="c-v">"role"</span>: <span class="c-s">"Marketer"</span>,<br>
+          &nbsp;&nbsp;<span class="c-v">"plan"</span>: <span class="c-s">"Pro"</span><br>
           }
         </div>
-        <div class="data-result" id="dataResult">
-          <div class="data-item" data-di="0">
-            <div class="di-label">Name</div>
-            <div class="di-val">Lan Nguyen</div>
-          </div>
-          <div class="data-item" data-di="1">
-            <div class="di-label">Role</div>
-            <div class="di-val">Marketer</div>
-          </div>
-          <div class="data-item" data-di="2">
-            <div class="di-label">Plan</div>
-            <div class="di-val">Pro</div>
-          </div>
+        <div class="data-res">
+          <div class="data-i"><span class="di-l">Name</span><span class="di-v">Lan Nguyen</span></div>
+          <div class="data-i"><span class="di-l">Role</span><span class="di-v">Marketer</span></div>
+          <div class="data-i"><span class="di-l">Plan</span><span class="di-v">Pro</span></div>
         </div>
       </div>
     </div>
 
-    <div style="display:flex;align-items:center;flex-wrap:wrap;gap:0">
-      <button class="flow-send" id="flowSendBtn"><i class="fa-solid fa-play"></i> Chạy API Flow</button>
-      <button class="flow-reset" id="flowResetBtn"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+    <div style="display:flex;gap:12px">
+      <button class="btn btn-primary" id="runBtn" onclick="run()">Chạy Flow</button>
+      <button class="btn" onclick="reset()">Reset</button>
     </div>
-    <div class="flow-fb">
-      <div class="fb" id="flowFb"><i class="fa-solid fa-circle-info"></i><span>Nhấn "Chạy API Flow" để xem toàn bộ quy trình</span></div>
-    </div>
-    <p class="hint" style="font-size:12px;color:var(--muted);opacity:.5;margin-top:10px;display:flex;align-items:center;gap:6px">
-      <i class="fa-solid fa-arrow-up-right" style="font-size:10px;color:var(--accent)"></i>
-      Lưu ý bước 2 — API key đi kèm mỗi request, do đó bảo mật key là ưu tiên số 1
-    </p>
 
-  </section>
-
-</div>
+    <div class="fb" id="fb">Nhấn "Chạy Flow" để xem quy trình.</div>
+  </div>
+</main>
 
 <script>
-  /* ===== PRACTICE: FLOW ===== */
-  const flowStages = document.querySelectorAll('.fs-stage');
-  const fdPanels = document.querySelectorAll('.fd-panel');
-  const flowSendBtn = document.getElementById('flowSendBtn');
-  const flowResetBtn = document.getElementById('flowResetBtn');
-  const flowFb = document.getElementById('flowFb');
+let step = 0;
+let running = false;
 
-  let flowRunning = false;
-  let flowStep = 0;
-
-  flowStages.forEach(s => {
-    s.addEventListener('click', () => {
-      if (flowRunning) return;
-      /* Allow clicking only completed or next step */
-      const idx = +s.dataset.fs;
-      if (idx <= flowStep) {
-        activateFlowStep(idx);
-      }
-    });
-  });
-
-  function activateFlowStep(idx) {
-    flowStep = idx;
-    flowStages.forEach((s, i) => {
-      s.classList.toggle('active', i === idx);
-      s.classList.toggle('done', i < idx);
-    });
-    fdPanels.forEach((p, i) => {
-      p.classList.toggle('active', i === idx);
-    });
-
-    /* Show arrows */
-    document.querySelectorAll('.anim-arrow').forEach(a => a.classList.remove('show'));
-    const arrow = document.getElementById('arrow' + (idx + 1));
-    if (arrow && idx < 3) {
-      setTimeout(() => arrow.classList.add('show'), 600);
+async function run() {
+    if(running) return;
+    running = true;
+    document.getElementById('runBtn').disabled = true;
+    
+    for(let i=0; i<4; i++) {
+        showStep(i);
+        document.getElementById('fb').textContent = `Đang xử lý bước ${i+1}...`;
+        await new Promise(r => setTimeout(r, 1500));
     }
+    
+    document.getElementById('fb').className = 'fb ok';
+    document.getElementById('fb').textContent = 'Hoàn tất! Bạn đã thấy cách API Key bảo vệ dữ liệu.';
+    running = false;
+    document.getElementById('runBtn').disabled = false;
+}
 
-    /* Show data items on last step */
-    if (idx === 3) {
-      document.querySelectorAll('.data-item').forEach((d, i) => {
-        setTimeout(() => d.classList.add('show'), 200 + i * 150);
-      });
+function showStep(idx) {
+    step = idx;
+    for(let i=0; i<4; i++) {
+        document.getElementById('s'+i).className = 'stg' + (i===idx?' on':'') + (i<idx?' done':'');
+        document.getElementById('p'+i).className = 'panel' + (i===idx?' on':'');
     }
-  }
+}
 
-  function runFlow() {
-    if (flowRunning) return;
-    flowRunning = true;
-    flowSendBtn.disabled = true;
-    flowSendBtn.classList.add('running');
-    flowSendBtn.innerHTML = '<div class="spinner"></div> Running...';
-    flowFb.className = 'fb';
-    flowFb.innerHTML = '<i class="fa-solid fa-circle-info"></i><span>Flow đang chạy...</span>';
-
-    /* Reset data items */
-    document.querySelectorAll('.data-item').forEach(d => d.classList.remove('show'));
-
-    let step = 0;
-    const delays = [0, 2000, 4000, 6000];
-
-    function advance() {
-      if (step >= 4) {
-        flowRunning = false;
-        flowSendBtn.disabled = false;
-        flowSendBtn.classList.remove('running');
-        flowSendBtn.innerHTML = '<i class="fa-solid fa-play"></i> Chạy lại';
-        flowFb.className = 'fb ok';
-        flowFb.innerHTML = '<i class="fa-solid fa-check"></i><span>Flow hoàn tất — bạn đã thấy API key đi kèm request và dữ liệu trả về</span>';
-        return;
-      }
-      activateFlowStep(step);
-      step++;
-      setTimeout(advance, step < 4 ? 2000 : 500);
-    }
-
-    advance();
-  }
-
-  function resetFlow() {
-    flowRunning = false;
-    flowStep = 0;
-    flowSendBtn.disabled = false;
-    flowSendBtn.classList.remove('running');
-    flowSendBtn.innerHTML = '<i class="fa-solid fa-play"></i> Chạy API Flow';
-    flowFb.className = 'fb';
-    flowFb.innerHTML = '<i class="fa-solid fa-circle-info"></i><span>Nhấn "Chạy API Flow" để xem toàn bộ quy trình</span>';
-
-    flowStages.forEach((s, i) => {
-      s.classList.toggle('active', i === 0);
-      s.classList.remove('done');
-    });
-    fdPanels.forEach((p, i) => {
-      p.classList.toggle('active', i === 0);
-    });
-    document.querySelectorAll('.anim-arrow').forEach(a => a.classList.remove('show'));
-    document.querySelectorAll('.data-item').forEach(d => d.classList.remove('show'));
-  }
-
-  if (flowSendBtn) flowSendBtn.addEventListener('click', runFlow);
-  if (flowResetBtn) flowResetBtn.addEventListener('click', resetFlow);
-
-  /* ===== FADE IN ===== */
-  document.querySelectorAll('.fu').forEach((el, i) => {
-    setTimeout(() => el.classList.add('in'), 60 + i * 110);
-  });
+function reset() {
+    step = 0;
+    running = false;
+    document.getElementById('runBtn').disabled = false;
+    document.getElementById('fb').className = 'fb';
+    document.getElementById('fb').textContent = 'Nhấn "Chạy Flow" để xem quy trình.';
+    showStep(0);
+}
 </script>
 </body>
 </html>
