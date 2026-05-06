@@ -25,7 +25,7 @@ export type GlossaryTerm = {
 
 export type TermViewMode = 'modal' | 'page';
 
-export const terms: GlossaryTerm[] = [
+const rawTerms: GlossaryTerm[] = [
   { id: 'align', name: 'Align', nameEn: 'Căn lề / Alignment', letter: 'A', groups: ['design', 'code'], definition: 'Cách sắp xếp vị trí của các phần tử (text, hình khối, component) theo các trục ngang hoặc dọc. Căn lề tốt giúp tạo ra sự trật tự, cân bằng và dẫn dắt mắt người dùng một cách hiệu quả.', example: 'Prompt: "Căn giữa tiêu đề và đoạn văn, nút bấm căn lề phải. Trên mobile thì tất cả đều căn lề trái để dễ đọc hơn."', related: ['flexbox', 'grid', 'spacing', 'hierarchy'], demo: { kind: 'interactive', src: 'gif-align-demo.html', alt: 'Mô phỏng các kiểu căn lề: Horizontal, Vertical, Flex Distribution và Layout Alignment' } },
   { id: 'api', name: 'API', nameEn: 'API / API Key', letter: 'A', groups: ['infra', 'code'], definition: 'Với marketer mới học AI, API thường được hiểu thực tế là API key: một mã bí mật lấy từ nền tảng AI để app của bạn được phép gọi model. Nếu lộ key, người khác có thể dùng ké quota và làm bạn mất tiền.', example: 'Mình muốn dùng model AI trong app chat nội bộ. Cần vào platform lấy API key, lưu vào file .env, rồi mới gọi AI được. API key không nên dán thẳng lên giao diện hay đưa lên GitHub.', related: ['endpoint', 'webhook', 'request'], demo: { kind: 'interactive', src: 'gif-api-demo.html', alt: 'Mô phỏng cách lấy API key từ nền tảng AI rồi copy về app' } },
   { id: 'array', name: 'Array', nameEn: 'Mảng / Danh sách', letter: 'A', groups: ['code'], definition: 'Danh sách các item được xếp theo thứ tự. Giống như một cột Excel — mỗi ô là một item. Array trong code thường trông như này: ["Hà Nội", "TP.HCM", "Đà Nẵng"].', example: 'AI trả về "danh sách categories" — đó thường là một array mà code của bạn sẽ loop qua để hiển thị từng cái.', related: ['loop', 'database'], demo: { kind: 'interactive', src: 'gif-array-demo.html', alt: 'Mô phỏng 4 khía cạnh của Array: Basics, Accessing, Operations và Matrix' } },
@@ -374,7 +374,50 @@ export const terms: GlossaryTerm[] = [
   },
 ];
 
-export const quickRefItems = [
+const removedGlossaryTermIds = new Set([
+  'async',
+  'build',
+  'dependency',
+  'dom',
+  'dynamic',
+  'endpoint',
+  'function',
+  'framework',
+  'github',
+  'hook',
+  'import',
+  'inference',
+  'json',
+  'jsx',
+  'loop',
+  'nodejs',
+  'npm',
+  'prompt',
+  'props',
+  'request',
+  'state',
+  'supabase',
+  'tailwind',
+  'typescript',
+  'ui',
+  'url',
+  'vector',
+  'vercel',
+  'webhook',
+  'websocket',
+  'wireframe',
+]);
+
+const removedGlossaryTextPattern = /\b(async|build|framework|github|json|jsx|loop|node\.js|npm|prompt|request|response|state|supabase|tailwind|typescript|ui\/ux|url|vector|vercel|webhook|websocket)\b/i;
+
+export const terms: GlossaryTerm[] = rawTerms
+  .filter((term) => !removedGlossaryTermIds.has(term.id))
+  .map((term) => ({
+    ...term,
+    related: term.related?.filter((relatedId) => !removedGlossaryTermIds.has(relatedId)),
+  }));
+
+const rawQuickRefItems = [
   ['Push lên main', 'Upload code mới nhất lên GitHub nhánh chính → Vercel tự deploy.'],
   ['Cần refactor', 'Viết lại code cho gọn hơn, không thêm tính năng. AI làm được.'],
   ['Build failed', 'Code có lỗi, không deploy được. Paste log lỗi cho AI để fix.'],
@@ -385,6 +428,10 @@ export const quickRefItems = [
   ['CORS error', 'API không cho phép domain của bạn gọi. Cần config whitelist hoặc dùng proxy.'],
 ] as const;
 
+export const quickRefItems = rawQuickRefItems.filter(
+  ([label, description]) => !removedGlossaryTextPattern.test(label) && !removedGlossaryTextPattern.test(description),
+);
+
 export const ctaLessons = [
   { num: '03', title: 'Cài gì vào máy để bắt đầu vibecode?', to: '/vibecode/cai-dat-moi-truong', arrow: '→' },
   { num: '04', title: 'Làm quen VS Code & Cursor', to: '/vibecode/lam-quen-vscode-cursor', arrow: '→' },
@@ -393,7 +440,7 @@ export const ctaLessons = [
 ] as const;
 
 export const groupLabels: Record<TermGroup | 'all', string> = { all: 'Tất cả', code: 'Code', design: 'Design', infra: 'Hạ tầng', data: 'Data', ai: 'AI', workflow: 'Workflow' };
-export const glossaryTickerItems = ['✳ Glossary · 60+ từ điển chuyên ngành cho dân Marketing', '✳ Giải thích bằng ngôn ngữ Marketer', '✳ Code · Design · Infra · Data · AI · Workflow', '✳ Miễn phí 100% · mãi mãi', '✳ Vibecode · Blog · Tips · Prompt Library', '✳ Dành riêng dân Marketing Việt Nam'];
+export const glossaryTickerItems = ['✳ Glossary · 60+ từ điển chuyên ngành cho dân Marketing', '✳ Giải thích bằng ngôn ngữ Marketer', '✳ Code · Design · Infra · Data · AI · Workflow', '✳ Miễn phí 100% · mãi mãi', '✳ Vibecode · Blog · Tips', '✳ Dành riêng dân Marketing Việt Nam'];
 export const termsByLetter = terms.reduce((acc, term) => ((acc[term.letter] ??= []).push(term), acc), {} as Record<string, GlossaryTerm[]>);
 export const letters = Object.keys(termsByLetter).sort();
 export const totalGroupCounts = (['code', 'design', 'infra', 'data', 'ai', 'workflow'] as TermGroup[]).reduce((acc, group) => ((acc[group] = terms.filter((term) => term.groups.includes(group)).length), acc), { all: terms.length } as Record<TermGroup | 'all', number>);
@@ -511,7 +558,7 @@ const deepDiveTermIds = new Set([
   'gitignore',
   'merge',
   'conflict'
-]);
+].filter((termId) => !removedGlossaryTermIds.has(termId)));
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
   branch: [
