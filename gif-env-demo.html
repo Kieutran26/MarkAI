@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>.env Demo — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#1a1a18;--bg-card:#222220;--bg-elev:#2a2a27;--bg-term:#161614;--fg:#e8e4dd;--fg-m:#8a877e;--acc:#e88c2e;--acc-d:#a84e22;--amb:#c9922a;--grn:#6b8f5e;--red:#b54a4a;--blu:#5e7a8f;--bdr:#3a3a36;--bdr-l:#4a4a45;--mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--fg);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:24px 24px;}
+  .pw{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:20px;display:grid;grid-template-columns:repeat(2,1fr);gap:24px;}
+  @media(max-width:850px){.pw{grid-template-columns:1fr;gap:20px;}}
+
+  .ss{border:1px solid var(--bdr);background:var(--bg-card);margin-bottom:0;overflow:hidden;display:flex;flex-direction:column;height:100%;}
+  .ss .sh{border-bottom:1px solid var(--bdr);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;background:var(--bg-elev);}
+  .ss .sh h2{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--acc);text-transform:uppercase;letter-spacing:1px;}
+  .ss .sh .nm{font-family:var(--mono);font-size:10px;color:var(--fg-m);opacity:0.7;}
+  .sb{padding:20px;flex:1;display:flex;flex-direction:column;gap:16px;}
+  .ins{background:var(--bg-elev);border-left:3px solid var(--acc);padding:12px 14px;font-size:12.5px;color:var(--fg-m);line-height:1.6;margin-top:auto;}
+  .ins strong{color:var(--fg);font-weight:600;}
+  .ins code{font-family:var(--mono);font-size:11px;color:var(--amb);background:rgba(201,146,42,.1);padding:1px 4px;}
+
+  .tk{color:var(--blu);}.tv{color:var(--amb);}.tc{color:var(--fg-m);opacity:.5;}
+  
+  .env-file{border:1px solid var(--bdr-l);background:var(--bg-term);padding:10px 12px;font-family:var(--mono);font-size:11px;line-height:1.8;}
+  .efl{opacity:0;animation:fi .3s ease forwards;}
+  .efl:nth-child(1){animation-delay:.1s;}.efl:nth-child(2){animation-delay:.2s;}.efl:nth-child(3){animation-delay:.3s;}.efl:nth-child(4){animation-delay:.4s;}.efl:nth-child(5){animation-delay:.5s;}
+  @keyframes fi{to{opacity:1;}}
+
+  .tgl-row{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--bdr-l);}
+  .tgl-row:last-child{border-bottom:none;}
+  .tgl-v{font-family:var(--mono);font-size:11px;}
+
+  .leak-flash{position:absolute;inset:0;background:rgba(181,74,74,.15);opacity:0;animation:leakFlash 3s ease-in-out infinite;pointer-events:none;z-index:2;}
+  @keyframes leakFlash{0%,70%,100%{opacity:0;}35%{opacity:1;}}
+  
+  .secret-line{display:flex;align-items:center;gap:3px;}
+  .secret-char{width:7px;height:12px;background:var(--acc);border-radius:1px;animation:scPulse 1.5s ease-in-out infinite;}
+  @keyframes scPulse{0%,100%{opacity:.5;}50%{opacity:1;}}
+
+  .status-dot{width:6px;height:6px;border-radius:50%;}
+</style>
+</head>
+<body>
+<div class="pw">
+
+  <!-- S1: Cấu trúc File -->
+  <section class="ss">
+    <div class="sh"><h2>01. Cấu trúc & Cách dùng</h2><span class="nm">.env file</span></div>
+    <div class="sb">
+      <div class="env-file">
+        <div class="efl"><span class="tc"># Cấu hình Database</span></div>
+        <div class="efl"><span class="tk">DB_HOST</span>=<span class="tv">localhost</span></div>
+        <div class="efl"><span class="tk">DB_PASS</span>=<span class="tv">secret_123</span></div>
+        <div class="efl"></div>
+        <div class="efl"><span class="tc"># API Keys</span></div>
+        <div class="efl"><span class="tk">STRIPE_KEY</span>=<span class="tv">sk_live_...</span></div>
+      </div>
+      <div style="font-size:12px;color:var(--fg-m);line-height:1.6;padding:0 4px;">
+        Mỗi dòng là một cặp <code style="color:var(--blu);">KEY</code>=<code style="color:var(--amb);">VALUE</code>. Dùng để lưu thông tin nhạy cảm tách biệt khỏi mã nguồn (code).
+      </div>
+      <div class="ins">
+        <strong>.env = kho lưu bí mật.</strong> Giống như tủ an toàn, code chỉ "mượn" chìa khóa khi cần chạy, không dán mật khẩu trực tiếp lên màn hình.
+      </div>
+    </div>
+  </section>
+
+  <!-- S2: Quy tắc đặt tên -->
+  <section class="ss">
+    <div class="sh"><h2>02. Quy tắc đặt tên</h2><span class="nm">Naming</span></div>
+    <div class="sb">
+      <div style="background:var(--bg-term);border:1px solid var(--bdr);padding:12px;border-radius:2px;">
+        <div class="tgl-row">
+          <span class="tgl-v" style="color:var(--red);">dbHost</span>
+          <span style="color:var(--fg-m);font-size:10px;">→</span>
+          <span class="tgl-v" style="color:var(--grn);">DB_HOST</span>
+        </div>
+        <div class="tgl-row">
+          <span class="tgl-v" style="color:var(--red);">api key</span>
+          <span style="color:var(--fg-m);font-size:10px;">→</span>
+          <span class="tgl-v" style="color:var(--grn);">API_KEY</span>
+        </div>
+        <div class="tgl-row">
+          <span class="tgl-v" style="color:var(--red);">stripe-key</span>
+          <span style="color:var(--fg-m);font-size:10px;">→</span>
+          <span class="tgl-v" style="color:var(--grn);">STRIPE_KEY</span>
+        </div>
+      </div>
+      <div class="ins">
+        <strong>Bắt buộc: VIẾT_HOA + GẠCH_DƯỚI.</strong> Không dùng dấu gạch ngang (dash) hay khoảng trắng. Sai quy tắc sẽ khiến code không thể nhận diện được biến.
+      </div>
+    </div>
+  </section>
+
+  <!-- S3: Môi trường (Local vs Prod) -->
+  <section class="ss">
+    <div class="sh"><h2>03. Đa môi trường</h2><span class="nm">Multi-env</span></div>
+    <div class="sb">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div style="border:1px solid var(--bdr);background:var(--bg-term);overflow:hidden;">
+          <div style="padding:6px 10px;background:var(--bg-elev);font-family:var(--mono);font-size:9px;color:var(--blu);border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:5px;">
+            <div class="status-dot" style="background:var(--blu);"></div>.env.local
+          </div>
+          <div style="padding:10px;font-family:var(--mono);font-size:9px;line-height:1.8;">
+            <span class="tk">DB</span>=<span class="tv">localhost</span><br>
+            <span class="tk">DEBUG</span>=<span class="tv">true</span>
+          </div>
+        </div>
+        <div style="border:1px solid var(--bdr);background:var(--bg-term);overflow:hidden;">
+          <div style="padding:6px 10px;background:var(--bg-elev);font-family:var(--mono);font-size:9px;color:var(--grn);border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:5px;">
+            <div class="status-dot" style="background:var(--grn);"></div>.env.prod
+          </div>
+          <div style="padding:10px;font-family:var(--mono);font-size:9px;line-height:1.8;">
+            <span class="tk">DB</span>=<span class="tv">db.markai.vn</span><br>
+            <span class="tk">DEBUG</span>=<span class="tv">false</span>
+          </div>
+        </div>
+      </div>
+      <div class="ins">
+        <strong>Cùng code, khác giá trị.</strong> File <code>.env</code> giúp ứng dụng tự động thay đổi cấu hình phù hợp với nơi nó đang chạy (máy cá nhân hay server thật).
+      </div>
+    </div>
+  </section>
+
+  <!-- S4: Bảo mật & Git -->
+  <section class="ss">
+    <div class="sh"><h2>04. Bảo mật & Git</h2><span class="nm">Security</span></div>
+    <div class="sb" style="position:relative;">
+      <div class="leak-flash"></div>
+      <div style="border:1px solid var(--red);background:var(--bg-term);padding:14px;border-radius:2px;display:flex;flex-direction:column;gap:8px;">
+        <div style="font-family:var(--mono);font-size:10px;color:var(--red);text-transform:uppercase;letter-spacing:1px;font-weight:700;">Dữ liệu bị rò rỉ!</div>
+        <div style="font-family:var(--mono);font-size:11px;">
+          <span class="tk">PASSWORD</span>=
+          <div class="secret-line" style="margin-top:4px;">
+            <div class="secret-char"></div><div class="secret-char"></div><div class="secret-char"></div><div class="secret-char"></div><div class="secret-char"></div><div class="secret-char"></div><div class="secret-char"></div><div class="secret-char"></div><div class="secret-char"></div>
+          </div>
+        </div>
+        <div style="font-family:var(--mono);font-size:9px;color:var(--fg-m);opacity:0.6;margin-top:4px;">Lộ mật khẩu trên GitHub...</div>
+      </div>
+      <div class="ins">
+        <strong>Đừng bao giờ push .env!</strong> Hãy thêm <code>.env</code> vào file <code>.gitignore</code>. Lộ file này đồng nghĩa với việc dán mật khẩu lên bảng tin công cộng.
+      </div>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

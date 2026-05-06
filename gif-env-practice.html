@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>.env Practice — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#1a1a18;--bg-card:#222220;--bg-elev:#2a2a27;--bg-term:#161614;--fg:#e8e4dd;--fg-m:#8a877e;--acc:#e88c2e;--acc-d:#a84e22;--amb:#c9922a;--grn:#6b8f5e;--red:#b54a4a;--blu:#5e7a8f;--bdr:#3a3a36;--bdr-l:#4a4a45;--mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--fg);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:24px 24px;}
+  .pw{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:20px;}
+
+  .pt{border:none;background:transparent;overflow:visible;}
+  .pb{padding:0;display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;}
+  @media(max-width:850px){.pb{grid-template-columns:1fr;gap:20px;}}
+  
+  .pg{grid-column:1/-1;font-size:12.5px;color:var(--fg-m);margin-bottom:0;line-height:1.6;background:var(--bg-elev);padding:12px 16px;border-left:3px solid var(--acc);border-top:1px solid var(--bdr);border-right:1px solid var(--bdr);border-bottom:1px solid var(--bdr);}
+  .pg strong{color:var(--fg);font-weight:600;}
+
+  .tgl-row{display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid var(--bdr-l);transition:background .2s;}
+  .tgl-row:last-child{border-bottom:none;}
+  .tgl-lb{font-family:var(--mono);font-size:11px;color:var(--fg-m);min-width:100px;flex-shrink:0;}
+  .tgl-sw{width:36px;height:20px;border:1.5px solid var(--bdr);background:var(--bg-term);cursor:pointer;position:relative;transition:border-color .2s,background .2s;flex-shrink:0;}
+  .tgl-sw.on{border-color:var(--grn);background:rgba(107,143,94,.1);}
+  .tgl-sw .tgl-k{position:absolute;top:2px;left:2px;width:13px;height:12px;background:var(--fg-m);transition:left .2s,background .2s;}
+  .tgl-sw.on .tgl-k{left:18px;background:var(--grn);}
+
+  .rst-btn{font-family:var(--mono);font-size:10px;padding:6px 12px;border:1px solid var(--bdr);background:var(--bg-elev);color:var(--fg-m);cursor:pointer;transition:all .2s;text-transform:uppercase;letter-spacing:0.5px;}
+  .rst-btn:hover{border-color:var(--acc);color:var(--fg);background:var(--bg-card);}
+  .hint{grid-column:1/-1;font-size:11.5px;color:var(--fg-m);opacity:.8;margin-top:0;font-style:italic;line-height:1.6;background:rgba(232, 140, 46, 0.03);padding:12px 16px;border:1px solid var(--bdr);}
+  .hint::before{content:'>';font-family:var(--mono);color:var(--acc);margin-right:8px;font-style:normal;}
+
+  .term-out{border:1px solid var(--bdr);background:var(--bg-term);overflow:hidden;transition:border-color .3s;height:100%;display:flex;flex-direction:column;}
+  .term-out.t-ok{border-color:var(--bdr);}.term-out.t-err{border-color:var(--red);}.term-out.t-warn{border-color:var(--amb);}
+  .term-bar{display:flex;align-items:center;gap:6px;padding:10px 12px;background:var(--bg-elev);border-bottom:1px solid var(--bdr);}
+  .term-dot{width:7px;height:7px;border-radius:50%;}.term-dot.r{background:#b54a4a;}.term-dot.y{background:var(--amb);}.term-dot.g{background:var(--grn);}
+  .term-title{font-family:var(--mono);font-size:10px;color:var(--fg-m);margin-left:8px;text-transform:lowercase;}
+  .term-body{padding:16px;font-family:var(--mono);font-size:11px;line-height:1.8;flex:1;min-height:240px;}
+  .tl{opacity:0;animation:fi .2s ease forwards;white-space:pre-wrap;word-break:break-all;}
+  @keyframes fi{to{opacity:1;}}
+
+  .tk{color:var(--blu);}.tv{color:var(--amb);}.tc{color:var(--fg-m);opacity:.5;}.to{color:var(--fg-m);}.te{color:var(--red);}.tg{color:var(--grn);}.ts{color:var(--acc);}
+
+  @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important;}}
+</style>
+</head>
+<body>
+<div class="pw">
+
+  <!-- ===== PRACTICE ===== -->
+  <section class="pt" aria-label="Thực hành">
+    <div class="pb">
+      <div class="pg">
+        <strong>Mục tiêu:</strong> Điền giá trị cho các biến .env → thấy ngay output thay đổi. Thử nhập sai tên biến để thấy lỗi.
+      </div>
+
+      <!-- Left Column: Inputs -->
+      <div style="display:flex;flex-direction:column;gap:16px;">
+        <div style="border:1px solid var(--bdr);background:var(--bg-card);overflow:hidden;" id="envForm">
+          <div style="padding:10px 14px;border-bottom:1px solid var(--bdr);background:var(--bg-elev);display:flex;justify-content:space-between;align-items:center;">
+            <span style="font-family:var(--mono);font-size:10px;color:var(--acc);font-weight:700;text-transform:uppercase;letter-spacing:1px;">.env config</span>
+            <span style="font-family:var(--mono);font-size:9px;color:var(--fg-m);">editor</span>
+          </div>
+          <div class="tgl-row">
+            <span class="tgl-lb"><span class="tk">DB_HOST</span>=</span>
+            <input type="text" class="env-input" data-key="DB_HOST" value="localhost" style="flex:1;padding:6px 10px;font-family:var(--mono);font-size:11px;border:1px solid var(--bdr);background:var(--bg-term);color:var(--tv);outline:none;transition:border-color .2s;" aria-label="DB_HOST"/>
+          </div>
+          <div class="tgl-row">
+            <span class="tgl-lb"><span class="tk">DB_USER</span>=</span>
+            <input type="text" class="env-input" data-key="DB_USER" value="admin" style="flex:1;padding:6px 10px;font-family:var(--mono);font-size:11px;border:1px solid var(--bdr);background:var(--bg-term);color:var(--tv);outline:none;transition:border-color .2s;" aria-label="DB_USER"/>
+          </div>
+          <div class="tgl-row">
+            <span class="tgl-lb"><span class="tk">STRIPE_KEY</span>=</span>
+            <input type="text" class="env-input" data-key="STRIPE_KEY" value="sk_test_abc" style="flex:1;padding:6px 10px;font-family:var(--mono);font-size:11px;border:1px solid var(--bdr);background:var(--bg-term);color:var(--tv);outline:none;transition:border-color .2s;" aria-label="STRIPE_KEY"/>
+          </div>
+          <div class="tgl-row" style="border-bottom:none;">
+            <span class="tgl-lb"><span class="tk">DEBUG</span>=</span>
+            <div style="flex:1;display:flex;align-items:center;gap:10px;">
+              <span style="font-family:var(--mono);font-size:11px;color:var(--fg-m);" id="debugLabel">true</span>
+              <div class="tgl-sw on" id="debugToggle" role="switch" aria-checked="true" tabindex="0"><div class="tgl-k"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div style="font-family:var(--mono);font-size:10px;color:var(--fg-m);text-transform:uppercase;letter-spacing:1px;padding-left:4px;">Presets</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap;">
+            <button class="rst-btn" onclick="fillEnv('dev')">Dev</button>
+            <button class="rst-btn" onclick="fillEnv('prod')">Prod</button>
+            <button class="rst-btn" onclick="fillEnv('wrong')">Wrong Name</button>
+            <button class="rst-btn" id="resetBtn" style="border-color:var(--acc);color:var(--acc);">Reset</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Terminal -->
+      <div class="term-out" id="termOut">
+        <div class="term-bar">
+          <div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div>
+          <span class="term-title">node server.js</span>
+        </div>
+        <div class="term-body" id="termBody"></div>
+      </div>
+
+      <div class="hint">Click "Wrong Name" → hệ thống tự đổi "DB_HOST" thành "db_host" (chữ thường). Terminal sẽ báo lỗi ngay. Đó chính xác là lỗi marketer hay mắc khi sửa .env.</div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function(){
+  var inputs=document.querySelectorAll('.env-input');
+  var debugToggle=document.getElementById('debugToggle');
+  var debugLabel=document.getElementById('debugLabel');
+  var termBody=document.getElementById('termBody');
+  var termOut=document.getElementById('termOut');
+  var resetBtn=document.getElementById('resetBtn');
+
+  var debugOn=true;
+
+  function getVals(){
+    var v={};
+    inputs.forEach(function(inp){v[inp.dataset.key]=inp.value.trim();});
+    v.DEBUG=debugOn;
+    return v;
+  }
+
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+
+  function render(){
+    var v=getVals();
+    var lines=[];
+    lines.push('<span class="to">Server starting...</span>');
+    lines.push('');
+
+    var hasWrong=false;
+
+    // DB connection
+    if(v.DB_HOST){
+      lines.push('<span class="to">Database:</span> <span class="tv">'+esc(v.DB_HOST)+'</span>');
+      lines.push('<span class="to">User:</span> <span class="tv">'+esc(v.DB_USER||'(undefined)')+'</span>');
+      if(v.DB_HOST==='localhost'){
+        lines.push('<span class="tg">  → Connecting to local database</span>');
+      } else {
+        lines.push('<span class="tg">  → Connecting to remote: '+esc(v.DB_HOST)+'</span>');
+      }
+    } else {
+      lines.push('<span class="te">ERROR: DB_HOST is not set!</span>');
+      hasWrong=true;
+    }
+
+    lines.push('');
+
+    // Stripe
+    if(v.STRIPE_KEY){
+      var isTest=v.STRIPE_KEY.indexOf('test')>-1||v.STRIPE_KEY.indexOf('sk_test')>-1;
+      var isLive=v.STRIPE_KEY.indexOf('live')>-1||v.STRIPE_KEY.indexOf('sk_live')>-1;
+      lines.push('<span class="to">Stripe:</span> <span class="tv">'+esc(v.STRIPE_KEY.substring(0,12))+'...</span>');
+      if(isTest){
+        lines.push('<span class="tg">  → Test mode (no real charges)</span>');
+      } else if(isLive){
+        lines.push('<span class="ts">  → LIVE MODE — real transactions!</span>');
+      }
+    } else {
+      lines.push('<span class="te">ERROR: STRIPE_KEY is not set!</span>');
+      hasWrong=true;
+    }
+
+    lines.push('');
+
+    // Debug
+    if(debugOn){
+      lines.push('<span class="tg">Debug: ON</span>');
+      lines.push('<span class="to">  → Logging all queries</span>');
+    } else {
+      lines.push('<span class="to">Debug: OFF</span>');
+    }
+
+    // Check for potential wrong naming
+    inputs.forEach(function(inp){
+      var val=inp.value.trim();
+      if(val.indexOf('=')>-1){
+        var keyPart=val.split('=')[0].trim();
+        if(keyPart!==inp.dataset.key){
+          lines.push('');
+          lines.push('<span class="te">WARNING: Variable "'+esc(keyPart)+'" not found!</span>');
+          lines.push('<span class="te">  Did you mean "'+esc(inp.dataset.key)+'" (UPPER_SNAKE_CASE)?</span>');
+          hasWrong=true;
+        }
+      }
+    });
+
+    termOut.className='term-out'+(hasWrong?' t-err':' t-ok');
+    termBody.innerHTML=lines.map(function(l,i){
+      return '<div class="tl" style="opacity:1;animation-delay:'+(i*0.02)+'s;">'+l+'</div>';
+    }).join('');
+  }
+
+  inputs.forEach(function(inp){
+    inp.addEventListener('input',render);
+  });
+
+  debugToggle.addEventListener('click',function(){
+    debugOn=!debugOn;
+    this.classList.toggle('on',debugOn);
+    this.setAttribute('aria-checked',debugOn);
+    debugLabel.textContent=debugOn?'true':'false';
+    debugLabel.style.color=debugOn?'var(--grn)':'var(--te)';
+    render();
+  });
+
+  window.fillEnv=function(type){
+    if(type==='dev'){
+      setInput('DB_HOST','localhost');
+      setInput('DB_USER','admin');
+      setInput('STRIPE_KEY','sk_test_abc123');
+      if(!debugOn)debugToggle.click();
+    } else if(type==='prod'){
+      setInput('DB_HOST','prod-db.cloudflare.com');
+      setInput('DB_USER','app_user');
+      setInput('STRIPE_KEY','sk_live_xyz789');
+      if(debugOn)debugToggle.click();
+    } else if(type==='wrong'){
+      setInput('DB_HOST','db_host=localhost');
+      setInput('DB_USER','admin');
+      setInput('STRIPE_KEY','stripe_key=sk_test_abc');
+    }
+    render();
+  };
+
+  function setInput(key,val){
+    inputs.forEach(function(inp){
+      if(inp.dataset.key===key)inp.value=val;
+    });
+  }
+
+  resetBtn.addEventListener('click',function(){
+    setInput('DB_HOST','localhost');
+    setInput('DB_USER','admin');
+    setInput('STRIPE_KEY','sk_test_abc');
+    if(!debugOn)debugToggle.click();
+    render();
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

@@ -72,7 +72,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'dynamic', name: 'Dynamic', nameEn: 'Nội dung động', letter: 'D', groups: ['code'], definition: 'Nội dung thay đổi theo người dùng, thời gian, hoặc dữ liệu — không cố định. Trang profile mỗi user khác nhau = dynamic. Trang giới thiệu công ty = static.', example: '"Hiển thị số lượt view theo thời gian thực" = dynamic content. Mỗi lần load là fetch data mới từ database.', related: ['static'] },
   { id: 'endpoint', name: 'Endpoint', nameEn: 'Điểm cuối API', letter: 'E', groups: ['infra'], definition: 'URL cụ thể để gọi một chức năng của API. Giống như số điện thoại của từng phòng ban — muốn đặt đồ ăn thì gọi số này, muốn hỏi hóa đơn thì gọi số kia.', example: '"POST /api/subscribe" là endpoint nhận email đăng ký. "GET /api/posts" là endpoint lấy danh sách bài viết.', related: ['api', 'request'] },
   { id: 'environment', name: 'Environment', nameEn: 'Môi trường chạy', letter: 'E', groups: ['infra'], definition: 'Ngữ cảnh code đang chạy — máy của bạn (local/dev), server test (staging), hoặc bản thật (production). Mỗi environment có config và database riêng.', example: '"localhost:3000" = local environment. "yourapp.vercel.app" = production environment. Test kỹ ở local trước khi deploy.', related: ['env', 'localhost'] },
-  { id: 'env', name: '.env', nameEn: 'Environment Variables', letter: 'E', groups: ['infra'], definition: 'File chứa các biến bí mật — API key, password database, token. Không bao giờ upload file này lên GitHub. Vercel cho phép set env variables trong dashboard.', example: '"NEXT_PUBLIC_SUPABASE_KEY=xxx" trong file .env — đây là API key để connect với Supabase.' },
+  { id: 'env', name: '.env', nameEn: 'Environment Variables', letter: 'E', groups: ['infra'], definition: 'File chứa các biến bí mật — API key, password database, token. Không bao giờ upload file này lên GitHub. Vercel cho phép set env variables trong dashboard.', example: '"NEXT_PUBLIC_SUPABASE_KEY=xxx" trong file .env — đây là API key để connect với Supabase.', related: ['environment', 'api', 'git'], demo: { kind: 'interactive', src: 'gif-env-demo.html', alt: 'Mô phỏng file .env, quy tắc đặt tên, môi trường và bảo mật rò rỉ' } },
   { id: 'frontend', name: 'Frontend', nameEn: 'Phần giao diện người dùng', letter: 'F', groups: ['design', 'code'], definition: 'Tất cả những gì người dùng nhìn thấy và tương tác — buttons, form, layout, màu sắc, animation. HTML + CSS + JavaScript là frontend.', example: '"Tôi muốn thêm một section FAQ với accordion expand/collapse" — đây là frontend task, AI dùng Cursor để viết component này.', related: ['backend', 'component'], demo: { kind: 'interactive', src: 'gif-frontend-demo.html', alt: 'Mô phỏng 4 loại frontend: Static, Dynamic, Components, Responsive' } },
   { id: 'footer', name: 'Footer', nameEn: 'Chân trang', letter: 'F', groups: ['design', 'code'], definition: 'Phần cuối trang web — thường chứa thông tin liên hệ, logo, các liên kết phụ (sitemap), newsletter và bản quyền. Footer là component mang tính hệ thống, giúp người dùng không bao giờ rơi vào "ngõ cụt" khi kéo xuống hết trang.', example: 'Footer của markAI chứa logo, link tới các bài blog, fanpage và thông tin công ty. Chỉ cần sửa component Footer, toàn bộ các trang trên web sẽ được cập nhật phần cuối đồng loạt.', related: ['component', 'navbar', 'interface'], demo: { kind: 'interactive', src: 'gif-footer-demo.html', alt: 'Mô phỏng các loại Footer phổ biến và cấu trúc từng phần' } },
   { id: 'flexbox', name: 'Flexbox', nameEn: 'Hệ thống layout 1 chiều', letter: 'F', groups: ['design', 'code'], definition: 'Cách sắp xếp elements theo hàng ngang hoặc cột dọc. Khi bạn muốn "3 cái card nằm ngang và cách nhau đều" — đó là flexbox.', example: 'Prompt: "Icon và text nằm trên cùng một hàng, icon bên trái, khoảng cách 8px." → AI dùng flexbox.', related: ['grid', 'padding'] },
@@ -219,6 +219,7 @@ const deepDiveTermIds = new Set([
   'dark-mode',
   'database',
   'deploy',
+  'env',
   'drawer',
   'dropdown',
   'element',
@@ -723,6 +724,12 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Mỗi commit đi kèm một mã hash duy nhất để truy vết.',
     'Ghi chú (commit message) giúp đồng nghiệp hiểu bạn đã thay đổi gì.',
     'Chia nhỏ commit giúp việc quay lại bản cũ (rollback) an toàn hơn.',
+  ],
+  env: [
+    '.env = file ẩn chứa "bí mật" của project. Thay vì ghi thẳng mật khẩu vào code, code đọc từ file .env. Giống bạn lưu password trong trình quản lý mật khẩu thay vì dán vào mỗi trang web.',
+    '.env bắt buộc viết CHỮ_HOA + GẠCH_DƯỚI. Sai quy tắc → code không đọc được biến. Khi dev báo "env variable not found" → kiểm tra xem tên biến trong .env có khớp chính xác chữ hoa/thường không.',
+    'Cùng tên biến, khác giá trị → cùng code chạy khác nhau. DB_HOST=localhost trên máy dev, DB_HOST=prod.db.com trên server thật. Code không cần sửa — chỉ cần load file .env đúng.',
+    'Push .env lên GitHub = dán mật khẩu lên bảng công cộng. Có bot tự động scan GitHub tìm API key bị lộ. Khi dev xin bạn "thêm .env vào .gitignore" → họ đang bảo vệ mật khẩu project.',
   ],
 };
 

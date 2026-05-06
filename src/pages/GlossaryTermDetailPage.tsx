@@ -173,6 +173,8 @@ import cssPracticeHtml from '../../gif-css-practice.html?raw';
 import commitPracticeHtml from '../../gif-commit-practice.html?raw';
 import contextDemoHtml from '../../gif-context-demo.html?raw';
 import contextPracticeHtml from '../../gif-context-practice.html?raw';
+import envDemoHtml from '../../gif-env-demo.html?raw';
+import envPracticeHtml from '../../gif-env-practice.html?raw';
 
 
 // Final sync for viewport practice update
@@ -279,6 +281,7 @@ export default function GlossaryTermDetailPage() {
       case 'cli': return cliDemoHtml;
       case 'commit': return commitDemoHtml;
       case 'context': return contextDemoHtml;
+      case 'env': return envDemoHtml;
       default: return null;
     }
   };
@@ -369,6 +372,7 @@ export default function GlossaryTermDetailPage() {
       case 'cli': return cliPracticeHtml;
       case 'commit': return commitPracticeHtml;
       case 'context': return contextPracticeHtml;
+      case 'env': return envPracticeHtml;
       default: return null;
     }
   };

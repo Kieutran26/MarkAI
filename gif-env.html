@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>.env — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#1a1a18;--bg-card:#222220;--bg-elev:#2a2a27;--bg-term:#161614;--fg:#e8e4dd;--fg-m:#8a877e;--acc:#d4622b;--acc-d:#a84e22;--amb:#c9922a;--grn:#6b8f5e;--red:#b54a4a;--blu:#5e7a8f;--bdr:#3a3a36;--bdr-l:#4a4a45;--mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;}
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--fg);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:24px 24px;}
+  .pw{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:32px 20px 64px;}
+
+  .th{border-bottom:2px solid var(--bdr);padding-bottom:24px;margin-bottom:40px;}
+  .th .lb{font-family:var(--mono);font-size:11px;color:var(--acc);text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;}
+  .th h1{font-size:clamp(36px,6vw,56px);font-weight:700;letter-spacing:-2px;line-height:1;}
+  .th .gt{display:inline-block;margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--fg-m);border:1px solid var(--bdr);padding:3px 8px;}
+
+  .ss{border:1px solid var(--bdr);background:var(--bg-card);margin-bottom:28px;overflow:hidden;}
+  .ss .sh{border-bottom:1px solid var(--bdr);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;}
+  .ss .sh h2{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--acc);text-transform:uppercase;letter-spacing:1.5px;}
+  .ss .sh .nm{font-family:var(--mono);font-size:11px;color:var(--fg-m);}
+  .sb{padding:28px 20px;}
+  .ins{background:var(--bg-elev);border-left:3px solid var(--acc);padding:12px 16px;margin-top:20px;font-size:13px;color:var(--fg-m);line-height:1.6;}
+  .ins strong{color:var(--fg);}
+  .ins code{font-family:var(--mono);font-size:11px;color:var(--amb);background:rgba(201,146,42,.1);padding:1px 5px;}
+
+  .tk{color:var(--blu);}.tv{color:var(--amb);}.tc{color:var(--fg-m);opacity:.5;}.to{color:var(--fg-m);}.te{color:var(--red);}.tg{color:var(--grn);}.ts{color:var(--acc);}
+
+  /* Env file styling */
+  .env-file{border:1px solid var(--bdr-l);background:var(--bg-term);padding:10px 12px;font-family:var(--mono);font-size:11px;line-height:2;}
+  .efl{opacity:0;animation:fi .3s ease forwards;}
+  .efl:nth-child(1){animation-delay:.15s;}.efl:nth-child(2){animation-delay:.35s;}.efl:nth-child(3){animation-delay:.55s;}.efl:nth-child(4){animation-delay:.75s;}.efl:nth-child(5){animation-delay:.95s;}.efl:nth-child(6){animation-delay:1.15s;}.efl:nth-child(7){animation-delay:1.35s;}.efl:nth-child(8){animation-delay:1.55s;}
+  @keyframes fi{to{opacity:1;}}
+
+  /* Data flow dot */
+  .df{display:flex;align-items:center;gap:0;margin:10px 0;}
+  .df-box{padding:5px 10px;border:1px solid var(--bdr);background:var(--bg-term);font-family:var(--mono);font-size:10px;color:var(--fg-m);white-space:nowrap;}
+  .df-track{flex:1;height:1.5px;background:var(--bdr);position:relative;min-width:16px;}
+  .df-dot{position:absolute;width:5px;height:5px;background:var(--acc);top:-1.75px;box-shadow:0 0 4px rgba(212,98,43,.4);animation:dm 1.8s ease-in-out infinite;}
+  @keyframes dm{0%{left:-5px;opacity:0;}10%{opacity:1;}90%{opacity:1;}100%{left:calc(100% + 2px);opacity:0;}}
+
+  /* Split layout */
+  .spl{display:flex;gap:0;border:1px solid var(--bdr);background:var(--bg);overflow:hidden;}
+  @media(max-width:600px){.spl{flex-direction:column;}}
+  .spl-pane{flex:1;padding:18px 16px;display:flex;flex-direction:column;gap:10px;}
+  .spl-pane:first-child{border-right:1px solid var(--bdr);}
+  @media(max-width:600px){.spl-pane:first-child{border-right:none;border-bottom:1px solid var(--bdr);}}
+  .spl-lb{font-family:var(--mono);font-size:10px;color:var(--fg-m);text-transform:uppercase;letter-spacing:1px;}
+
+  /* Secret mask animation */
+  .secret-line{display:flex;align-items:center;gap:4px;font-family:var(--mono);font-size:11px;}
+  .secret-char{width:8px;height:14px;background:var(--acc);border-radius:1px;animation:scPulse 1.5s ease-in-out infinite;}
+  .secret-char:nth-child(2){animation-delay:.15s;}.secret-char:nth-child(3){animation-delay:.3s;}.secret-char:nth-child(4){animation-delay:.45s;}.secret-char:nth-child(5){animation-delay:.6s;}.secret-char:nth-child(6){animation-delay:.75s;}.secret-char:nth-child(7){animation-delay:.9s;}.secret-char:nth-child(8){animation-delay:1.05s;}.secret-char:nth-child(9){animation-delay:1.2s;}.secret-char:nth-child(10){animation-delay:1.35s;}.secret-char:nth-child(11){animation-delay:1.5s;}.secret-char:nth-child(12){animation-delay:1.65s;}
+  @keyframes scPulse{0%,100%{opacity:.7;}50%{opacity:1;}}
+
+  /* Leak animation */
+  .leak-flash{position:absolute;inset:0;background:rgba(181,74,74,.1);opacity:0;animation:leakFlash 3s ease-in-out infinite;pointer-events:none;}
+  @keyframes leakFlash{0%,70%,100%{opacity:0;}35%{opacity:1;}}
+
+  /* Toggle */
+  .tgl-row{display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid var(--bdr);transition:background .2s;}
+  .tgl-row:last-child{border-bottom:none;}
+  .tgl-row:hover{background:var(--bg-elev);}
+  .tgl-lb{font-family:var(--mono);font-size:11px;color:var(--fg-m);min-width:120px;flex-shrink:0;}
+  .tgl-sw{width:40px;height:22px;border:1.5px solid var(--bdr);background:var(--bg-term);cursor:pointer;position:relative;transition:border-color .2s,background .2s;flex-shrink:0;}
+  .tgl-sw.on{border-color:var(--grn);background:rgba(107,143,94,.15);}
+  .tgl-sw .tgl-k{position:absolute;top:2px;left:2px;width:16px;height:16px;background:var(--fg-m);transition:left .2s,background .2s;}
+  .tgl-sw.on .tgl-k{left:20px;background:var(--grn);}
+  .tgl-val{font-family:var(--mono);font-size:11px;color:var(--fg-m);flex:1;text-align:right;}
+
+  .pt{border:2px solid var(--acc);background:var(--bg-card);margin-top:40px;overflow:visible;}
+  .pt .sh{border-bottom:2px solid var(--acc);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;background:rgba(212,98,43,.06);}
+  .pt .sh h2{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--acc);text-transform:uppercase;letter-spacing:1.5px;}
+  .pb{padding:24px 20px 32px;}
+  .pg{font-size:13px;color:var(--fg-m);margin-bottom:20px;line-height:1.6;}
+  .pg strong{color:var(--fg);}
+
+  .rst-btn{font-family:var(--mono);font-size:11px;padding:8px 16px;border:1px solid var(--bdr);background:var(--bg);color:var(--fg-m);cursor:pointer;margin-top:12px;transition:border-color .2s,color:.2s;}
+  .rst-btn:hover{border-color:var(--acc);color:var(--acc);}
+  .hint{font-size:11px;color:var(--fg-m);opacity:.7;margin-top:14px;font-style:italic;}
+  .hint::before{content:'>';font-family:var(--mono);color:var(--acc);margin-right:6px;}
+  .divider{height:1px;background:var(--bdr);margin:40px 0;position:relative;}
+  .divider::after{content:'';position:absolute;left:0;top:0;width:60px;height:1px;background:var(--acc);}
+  .term-out{border:1px solid var(--bdr);background:var(--bg-term);overflow:hidden;transition:border-color .3s;}
+  .term-out.t-ok{border-color:var(--grn);}.term-out.t-err{border-color:var(--red);}.term-out.t-warn{border-color:var(--amb);}
+  .term-bar{display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--bg-elev);border-bottom:1px solid var(--bdr);}
+  .term-dot{width:8px;height:8px;border-radius:50%;}.term-dot.r{background:#b54a4a;}.term-dot.y{background:var(--amb);}.term-dot.g{background:var(--grn);}
+  .term-title{font-family:var(--mono);font-size:10px;color:var(--fg-m);margin-left:8px;}
+  .term-body{padding:14px 16px;font-family:var(--mono);font-size:11px;line-height:1.8;min-height:120px;}
+  .tl{opacity:0;animation:fi .25s ease forwards;white-space:pre-wrap;word-break:break-all;}
+  @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important;}}
+</style>
+</head>
+<body>
+<div class="pw">
+
+  <header class="th">
+    <div class="lb">Thuật ngữ / Infra</div>
+    <h1>.env</h1>
+    <span class="gt">infra</span>
+  </header>
+
+  <!-- ===== S1: .env là gì ===== -->
+  <section class="ss" aria-label=".env là gì">
+    <div class="sh"><h2>.env là gì</h2><span class="nm">01 / 04</span></div>
+    <div class="sb">
+      <div class="spl">
+        <div class="spl-pane">
+          <div class="spl-lb">File .env</div>
+          <div class="env-file">
+            <div class="efl"><span class="tc"># Cấu hình database</span></div>
+            <div class="efl"><span class="tk">DB_HOST</span>=<span class="tv">localhost</span></div>
+            <div class="efl"><span class="tk">DB_USER</span>=<span class="tv">admin</span></div>
+            <div class="efl"><span class="tk">DB_PASS</span>=<span class="tv">my_secret_pass</span></div>
+            <div class="efl"></div>
+            <div class="efl"><span class="tc"># API keys</span></div>
+            <div class="efl"><span class="tk">STRIPE_KEY</span>=<span class="tv">sk_live_abc123</span></div>
+            <div class="efl"><span class="tk">GOOGLE_MAPS_KEY</span>=<span class="tv">AIza...xyz</span></div>
+          </div>
+        </div>
+        <div class="spl-pane">
+          <div class="spl-lb">Đọc hiểu</div>
+          <div style="font-size:12px;color:var(--fg-m);line-height:1.7;">
+            File text đơn giản. Mỗi dòng 1 cặp:<br><br>
+            <code style="font-family:var(--mono);font-size:11px;color:var(--blu);">TÊN_BIẾN</code><code style="font-family:var(--mono);font-size:11px;color:var(--fg-m);">=</code><code style="font-family:var(--mono);font-size:11px;color:var(--amb);">giá_trị</code><br><br>
+            Dấu <code style="font-family:var(--mono);font-size:11px;color:var(--fg-m);">#</code> đầu dòng = comment, code bỏ qua.<br><br>
+            Chứa mật khẩu, API key, đường dẫn database — những thứ <strong style="color:var(--fg);">không được viết thẳng vào code</strong>.
+          </div>
+          <div class="df">
+            <div class="df-box">.env file</div>
+            <div class="df-track"><div class="df-dot"></div></div>
+            <div class="df-box">Code đọc biến</div>
+            <div class="df-track"><div class="df-dot" style="animation-delay:.4s;"></div></div>
+            <div class="df-box">Kết quả</div>
+          </div>
+        </div>
+      </div>
+      <div class="ins">
+        <strong>.env = file ẩn chứa "bí mật" của project.</strong> Thay vì ghi thẳng mật khẩu vào code, code đọc từ file .env. Giống bạn lưu password trong trình quản lý mật khẩu thay vì dán vào mỗi trang web.
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== S2: Naming convention ===== -->
+  <section class="ss" aria-label="Quy tắc đặt tên">
+    <div class="sh"><h2>Quy tắc đặt tên</h2><span class="nm">02 / 04</span></div>
+    <div class="sb">
+      <div style="border:1px solid var(--bdr);background:var(--bg);overflow:hidden;">
+        <div style="display:flex;border-bottom:1px solid var(--bdr);">
+          <div style="flex:1;padding:8px 12px;font-family:var(--mono);font-size:10px;color:var(--fg-m);border-right:1px solid var(--bdr);background:var(--bg-elev);">VIẾT SAI</div>
+          <div style="width:24px;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--fg-m);border-right:1px solid var(--bdr);">→</div>
+          <div style="flex:1;padding:8px 12px;font-family:var(--mono);font-size:10px;color:var(--fg-m);background:var(--bg-elev);">VIẾT ĐÚNG</div>
+          <div style="width:24px;"></div>
+          <div style="flex:1;padding:8px 12px;font-family:var(--mono);font-size:10px;color:var(--fg-m);border-left:1px solid var(--bdr);background:var(--bg-elev);">LÝ DO</div>
+        </div>
+        <div class="tgl-row" style="padding:10px 12px;">
+          <span style="font-family:var(--mono);font-size:11px;color:var(--red);flex:1;">dbHost</span>
+          <span style="font-family:var(--mono);font-size:11px;color:var(--fg-m);width:24px;text-align:center;">→</span>
+          <span style="font-family:var(--mono);font-size:11px;color:var(--grn);flex:1;"><span class="tk">DB_HOST</span></span>
+          <span style="width:24px;"></span>
+          <span style="font-family:var(--mono);font-size:10px;color:var(--fg-m);flex:1;padding-left:12px;">Chữ hoa, gạch dưới</span>
+        </div>
+        <div class="tgl-row" style="padding:10px 12px;">
+          <span style="font-family:var(--mono);font-size:11px;color:var(--red);flex:1;">api key</span>
+          <span style="font-family:var(--mono);font-size:11px;color:var(--fg-m);width:24px;text-align:center;">→</span>
+          <span style="font-family:var(--mono);font-size:11px;color:var(--grn);flex:1;"><span class="tk">API_KEY</span></span>
+          <span style="width:24px;"></span>
+          <span style="font-family:var(--mono);font-size:10px;color:var(--fg-m);flex:1;padding-left:12px;">Không khoảng trắng</span>
+        </div>
+        <div class="tgl-row" style="padding:10px 12px;">
+          <span style="font-family:var(--mono);font-size:11px;color:var(--red);flex:1;">stripe-key</span>
+          <span style="font-family:var(--mono);font-size:11px;color:var(--fg-m);width:24px;text-align:center;">→</span>
+          <span style="font-family:var(--mono);font-size:11px;color:var(--grn);flex:1;"><span class="tk">STRIPE_KEY</span></span>
+          <span style="width:24px;"></span>
+          <span style="font-family:var(--mono);font-size:10px;color:var(--fg-m);flex:1;padding-left:12px;">Dùng gạch dưới, không dash</span>
+        </div>
+        <div class="tgl-row" style="padding:10px 12px;border-bottom:none;">
+          <span style="font-family:var(--mono);font-size:11px;color:var(--red);flex:1;">DatabasePassword</span>
+          <span style="font-family:var(--mono);font-size:11px;color:var(--fg-m);width:24px;text-align:center;">→</span>
+          <span style="font-family:var(--mono);font-size:11px;color:var(--grn);flex:1;"><span class="tk">DB_PASSWORD</span></span>
+          <span style="width:24px;"></span>
+          <span style="font-family:var(--mono);font-size:10px;color:var(--fg-m);flex:1;padding-left:12px;">Ngắn gọn, rõ nghĩa</span>
+        </div>
+      </div>
+      <div class="ins">
+        <strong>.env bắt buộc viết CHỮ_HOA + GẠCH_DƯỚI.</strong> Sai quy tắc → code không đọc được biến. Khi dev báo "env variable not found" → kiểm tra xem tên biến trong .env có khớp chính xác chữ hoa/thường không.
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== S3: .env per environment ===== -->
+  <section class="ss" aria-label=".env theo môi trường">
+    <div class="sh"><h2>.env theo môi trường</h2><span class="nm">03 / 04</span></div>
+    <div class="sb">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;" class="env-grid">
+        <!-- Dev -->
+        <div style="border:1px solid var(--bdr);background:var(--bg);overflow:hidden;">
+          <div style="padding:8px 12px;border-bottom:1px solid var(--bdr);background:var(--bg-elev);display:flex;align-items:center;gap:6px;">
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--blu);"></div>
+            <span style="font-family:var(--mono);font-size:10px;color:var(--blu);font-weight:600;">.env.development</span>
+          </div>
+          <div style="padding:8px 10px;font-family:var(--mono);font-size:10px;line-height:2;">
+            <div><span class="tk">DB_HOST</span>=<span class="tv">localhost</span></div>
+            <div><span class="tk">DEBUG</span>=<span class="tg">true</span></div>
+            <div><span class="tk">STRIPE_KEY</span>=<span class="tv">sk_test_xxx</span></div>
+          </div>
+        </div>
+        <!-- Staging -->
+        <div style="border:1px solid var(--bdr);background:var(--bg);overflow:hidden;">
+          <div style="padding:8px 12px;border-bottom:1px solid var(--bdr);background:var(--bg-elev);display:flex;align-items:center;gap:6px;">
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--amb);"></div>
+            <span style="font-family:var(--mono);font-size:10px;color:var(--amb);font-weight:600;">.env.staging</span>
+          </div>
+          <div style="padding:8px 10px;font-family:var(--mono);font-size:10px;line-height:2;">
+            <div><span class="tk">DB_HOST</span>=<span class="tv">staging.db.com</span></div>
+            <div><span class="tk">DEBUG</span>=<span class="te">false</span></div>
+            <div><span class="tk">STRIPE_KEY</span>=<span class="tv">sk_test_xxx</span></div>
+          </div>
+        </div>
+        <!-- Prod -->
+        <div style="border:1px solid var(--bdr);background:var(--bg);overflow:hidden;">
+          <div style="padding:8px 12px;border-bottom:1px solid var(--bdr);background:var(--bg-elev);display:flex;align-items:center;gap:6px;">
+            <div style="width:6px;height:6px;border-radius:50%;background:var(--grn);"></div>
+            <span style="font-family:var(--mono);font-size:10px;color:var(--grn);font-weight:600;">.env.production</span>
+          </div>
+          <div style="padding:8px 10px;font-family:var(--mono);font-size:10px;line-height:2;">
+            <div><span class="tk">DB_HOST</span>=<span class="tv">prod.db.com</span></div>
+            <div><span class="tk">DEBUG</span>=<span class="te">false</span></div>
+            <div><span class="tk">STRIPE_KEY</span>=<span class="tv">sk_live_xxx</span></div>
+          </div>
+        </div>
+      </div>
+      <style>@media(max-width:560px){.env-grid{grid-template-columns:1fr!important;}}</style>
+      <div class="df" style="margin-top:14px;">
+        <div class="df-box">.env.development</div>
+        <div class="df-track"><div class="df-dot"></div></div>
+        <div class="df-box" style="color:var(--blu);">npm run dev</div>
+        <div class="df-track"><div class="df-dot" style="animation-delay:.3s;"></div></div>
+        <div class="df-box">localhost:3000</div>
+      </div>
+      <div class="df">
+        <div class="df-box">.env.production</div>
+        <div class="df-track"><div class="df-dot" style="animation-delay:.6s;"></div></div>
+        <div class="df-box" style="color:var(--grn);">npm run build</div>
+        <div class="df-track"><div class="df-dot" style="animation-delay:.9s;"></div></div>
+        <div class="df-box">mywebsite.com</div>
+      </div>
+      <div class="ins">
+        <strong>Cùng tên biến, khác giá trị → cùng code chạy khác nhau.</strong> <code>DB_HOST=localhost</code> trên máy dev, <code>DB_HOST=prod.db.com</code> trên server thật. Code không cần sửa — chỉ cần load file .env đúng.
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== S4: .env泄露 ===== -->
+  <section class="ss" aria-label="Tại sao không push .env">
+    <div class="sh"><h2>Tại sao không push .env lên Git</h2><span class="nm">04 / 04</span></div>
+    <div class="sb">
+      <div style="display:flex;gap:0;border:1px solid var(--bdr);background:var(--bg);overflow:hidden;" class="leak-compare">
+        <!-- An toàn -->
+        <div style="flex:1;padding:18px 16px;border-right:1px solid var(--bdr);display:flex;flex-direction:column;gap:10px;">
+          <div class="spl-lb" style="color:var(--grn);">An toàn: .env trong .gitignore</div>
+          <div style="border:1px solid var(--bdr);background:var(--bg-term);padding:10px;font-family:var(--mono);font-size:10px;line-height:1.8;">
+            <div><span class="tc"># .gitignore</span></div>
+            <div><span class="ts">.env</span></div>
+            <div><span class="ts">.env.local</span></div>
+            <div><span class="ts">.env.production</span></div>
+          </div>
+          <div style="font-size:11px;color:var(--fg-m);line-height:1.5;">Git bỏ qua file .env → không bao giờ lên GitHub. Mật khẩu chỉ tồn tại trên máy dev và server.</div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--grn);border:1px solid rgba(107,143,94,.3);padding:4px 8px;align-self:flex-start;">Git log: KHÔNG chứa .env</div>
+        </div>
+        <!-- Rò rỉ -->
+        <div style="flex:1;padding:18px 16px;display:flex;flex-direction:column;gap:10px;position:relative;">
+          <div class="leak-flash"></div>
+          <div class="spl-lb" style="color:var(--red);">Rò rỉ: .env bị push</div>
+          <div style="border:1px solid var(--red);background:var(--bg-term);padding:10px;font-family:var(--mono);font-size:10px;line-height:2;position:relative;overflow:hidden;">
+            <div style="position:absolute;top:0;left:0;right:0;bottom:0;background:rgba(181,74,74,.05);pointer-events:none;"></div>
+            <div style="position:relative;"><span class="tk">DB_PASS</span>=</div>
+            <div class="secret-line" style="position:relative;"><div class="secret-char"></div><div class="secret-char"></div><div class="secret-char"></div><div class="secret-char"></div><div class="secret-char"></div><div class="secret-char"></div><div class="secret-char"></div><div class="secret-char"></div><div class="secret-char"></div><div class="secret-char"></div><div class="secret-char"></div><div class="secret-char"></div></div>
+            <div style="position:relative;margin-top:4px;"><span class="tk">STRIPE_KEY</span>=<span class="te">sk_live_abc123...</span></div>
+          </div>
+          <div style="font-size:11px;color:var(--red);line-height:1.5;">Ai cũng xem được trên GitHub. Bot scanner tự động tìm key → báo cho chủ sở hữu hoặc attacker.</div>
+          <div style="font-family:var(--mono);font-size:10px;color:var(--red);border:1px solid rgba(181,74,74,.3);padding:4px 8px;align-self:flex-start;">GitHub: công khai, searchable</div>
+        </div>
+      </div>
+      <style>@media(max-width:600px){.leak-compare{flex-direction:column!important;} .leak-compare>div:first-child{border-right:none!important;border-bottom:1px solid var(--bdr);}}</style>
+      <div class="ins">
+        <strong>Push .env lên GitHub = dán mật khẩu lên bảng công cộng.</strong> Có bot tự động scan GitHub tìm API key bị lộ. Khi dev xin bạn "thêm .env vào .gitignore" → họ đang bảo vệ mật khẩu project. marketer không cần hiểu chi tiết, chỉ cần <strong>không bao giờ gửi file .env</strong>.
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ===== PRACTICE ===== -->
+  <section class="pt" aria-label="Thực hành">
+    <div class="sh"><h2>Thực hành</h2></div>
+    <div class="pb">
+      <div class="pg">
+        <strong>Mục tiêu:</strong> Điền giá trị cho các biến .env → thấy ngay output thay đổi. Thử nhập sai tên biến để thấy lỗi.
+      </div>
+
+      <div style="border:1px solid var(--bdr);background:var(--bg);margin-bottom:16px;overflow:hidden;" id="envForm">
+        <div style="padding:8px 14px;border-bottom:1px solid var(--bdr);background:var(--bg-elev);">
+          <span style="font-family:var(--mono);font-size:10px;color:var(--fg-m);">.env</span>
+        </div>
+        <div class="tgl-row">
+          <span class="tgl-lb"><span class="tk">DB_HOST</span>=</span>
+          <input type="text" class="env-input" data-key="DB_HOST" value="localhost" style="flex:1;padding:6px 10px;font-family:var(--mono);font-size:11px;border:1px solid var(--bdr);background:var(--bg-term);color:var(--tv);outline:none;transition:border-color .2s;" aria-label="DB_HOST"/>
+        </div>
+        <div class="tgl-row">
+          <span class="tgl-lb"><span class="tk">DB_USER</span>=</span>
+          <input type="text" class="env-input" data-key="DB_USER" value="admin" style="flex:1;padding:6px 10px;font-family:var(--mono);font-size:11px;border:1px solid var(--bdr);background:var(--bg-term);color:var(--tv);outline:none;transition:border-color .2s;" aria-label="DB_USER"/>
+        </div>
+        <div class="tgl-row">
+          <span class="tgl-lb"><span class="tk">STRIPE_KEY</span>=</span>
+          <input type="text" class="env-input" data-key="STRIPE_KEY" value="sk_test_abc" style="flex:1;padding:6px 10px;font-family:var(--mono);font-size:11px;border:1px solid var(--bdr);background:var(--bg-term);color:var(--tv);outline:none;transition:border-color .2s;" aria-label="STRIPE_KEY"/>
+        </div>
+        <div class="tgl-row" style="border-bottom:none;">
+          <span class="tgl-lb"><span class="tk">DEBUG</span>=</span>
+          <div style="flex:1;display:flex;align-items:center;gap:10px;">
+            <span style="font-family:var(--mono);font-size:11px;color:var(--fg-m);" id="debugLabel">true</span>
+            <div class="tgl-sw on" id="debugToggle" role="switch" aria-checked="true" tabindex="0"><div class="tgl-k"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;">
+        <span style="font-family:var(--mono);font-size:11px;color:var(--fg-m);">Quick:</span>
+        <button class="rst-btn" style="margin:0;padding:4px 10px;" onclick="fillEnv('dev')">Dev preset</button>
+        <button class="rst-btn" style="margin:0;padding:4px 10px;" onclick="fillEnv('prod')">Prod preset</button>
+        <button class="rst-btn" style="margin:0;padding:4px 10px;" onclick="fillEnv('wrong')">Sai tên biến</button>
+      </div>
+
+      <div class="term-out" id="termOut">
+        <div class="term-bar">
+          <div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div>
+          <span class="term-title">node server.js</span>
+        </div>
+        <div class="term-body" id="termBody"></div>
+      </div>
+
+      <button class="rst-btn" id="resetBtn">Reset</button>
+
+      <div class="hint">Click "Sai tên biến" → hệ thống tự đổi "DB_HOST" thành "db_host" (chữ thường). Terminal sẽ báo lỗi ngay. Đó chính xác là lỗi marketer hay mắc khi sửa .env.</div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+(function(){
+  var inputs=document.querySelectorAll('.env-input');
+  var debugToggle=document.getElementById('debugToggle');
+  var debugLabel=document.getElementById('debugLabel');
+  var termBody=document.getElementById('termBody');
+  var termOut=document.getElementById('termOut');
+  var resetBtn=document.getElementById('resetBtn');
+
+  var debugOn=true;
+
+  function getVals(){
+    var v={};
+    inputs.forEach(function(inp){v[inp.dataset.key]=inp.value.trim();});
+    v.DEBUG=debugOn;
+    return v;
+  }
+
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+
+  function render(){
+    var v=getVals();
+    var lines=[];
+    lines.push('<span class="to">Server starting...</span>');
+    lines.push('');
+
+    // Check for lowercase keys (simulate wrong naming)
+    var hasWrong=false;
+    inputs.forEach(function(inp){
+      if(inp.dataset.key!==inp.value.substring(0,inp.dataset.key.length)&&inp.dataset.key.toLowerCase()===inp.value.substring(0,inp.value.indexOf('=')>-1?inp.value.indexOf('='):inp.value.length).trim().toLowerCase()&&inp.dataset.key!==inp.value.substring(0,inp.dataset.key.length)){
+        // rough check
+      }
+    });
+    // Simpler: check if any input key contains lowercase in actual env context
+    // We'll use a different approach: check if value looks like a wrong key pattern
+
+    // DB connection
+    if(v.DB_HOST){
+      lines.push('<span class="to">Database:</span> <span class="tv">'+esc(v.DB_HOST)+'</span>');
+      lines.push('<span class="to">User:</span> <span class="tv">'+esc(v.DB_USER||'(undefined)')+'</span>');
+      if(v.DB_HOST==='localhost'){
+        lines.push('<span class="tg">  → Connecting to local database</span>');
+      } else {
+        lines.push('<span class="tg">  → Connecting to remote: '+esc(v.DB_HOST)+'</span>');
+      }
+    } else {
+      lines.push('<span class="te">ERROR: DB_HOST is not set!</span>');
+      lines.push('<span class="te">  → Cannot connect to database</span>');
+      hasWrong=true;
+    }
+
+    lines.push('');
+
+    // Stripe
+    if(v.STRIPE_KEY){
+      var isTest=v.STRIPE_KEY.indexOf('test')>-1||v.STRIPE_KEY.indexOf('sk_test')>-1;
+      var isLive=v.STRIPE_KEY.indexOf('live')>-1||v.STRIPE_KEY.indexOf('sk_live')>-1;
+      lines.push('<span class="to">Stripe:</span> <span class="tv">'+esc(v.STRIPE_KEY.substring(0,12))+'...</span>');
+      if(isTest){
+        lines.push('<span class="tg">  → Test mode (no real charges)</span>');
+      } else if(isLive){
+        lines.push('<span class="ts">  → LIVE MODE — real transactions!</span>');
+      } else {
+        lines.push('<span class="to">  → Unknown key format</span>');
+      }
+    } else {
+      lines.push('<span class="te">ERROR: STRIPE_KEY is not set!</span>');
+      lines.push('<span class="te">  → Payment system disabled</span>');
+      hasWrong=true;
+    }
+
+    lines.push('');
+
+    // Debug
+    if(debugOn){
+      lines.push('<span class="tg">Debug: ON</span>');
+      lines.push('<span class="to">  → Logging all queries</span>');
+      lines.push('<span class="to">  → Error stack traces visible</span>');
+    } else {
+      lines.push('<span class="to">Debug: OFF</span>');
+      lines.push('<span class="to">  → Minimal logging</span>');
+    }
+
+    // Check for potential wrong naming
+    inputs.forEach(function(inp){
+      var val=inp.value.trim();
+      // If the input field itself was modified to have lowercase
+      // We check the actual input value's key part (before =)
+      if(val.indexOf('=')>-1){
+        var keyPart=val.split('=')[0].trim();
+        if(keyPart!==inp.dataset.key){
+          lines.push('');
+          lines.push('<span class="te">WARNING: Variable "'+esc(keyPart)+'" not found!</span>');
+          lines.push('<span class="te">  Did you mean "'+esc(inp.dataset.key)+'" (UPPER_SNAKE_CASE)?</span>');
+          hasWrong=true;
+        }
+      }
+    });
+
+    // Set terminal state
+    termOut.className='term-out'+(hasWrong?' t-err':' t-ok');
+
+    termBody.innerHTML=lines.map(function(l,i){
+      return '<div class="tl" style="opacity:1;animation-delay:'+(i*0.02)+'s;">'+l+'</div>';
+    }).join('');
+  }
+
+  // Input listeners
+  inputs.forEach(function(inp){
+    inp.addEventListener('input',render);
+    inp.addEventListener('focus',function(){this.style.borderColor='var(--acc)';});
+    inp.addEventListener('blur',function(){this.style.borderColor='var(--bdr)';});
+  });
+
+  // Debug toggle
+  debugToggle.addEventListener('click',function(){
+    debugOn=!debugOn;
+    this.classList.toggle('on',debugOn);
+    this.setAttribute('aria-checked',debugOn);
+    debugLabel.textContent=debugOn?'true':'false';
+    debugLabel.style.color=debugOn?'var(--grn)':'var(--te)';
+    render();
+  });
+  debugToggle.addEventListener('keydown',function(e){
+    if(e.key==='Enter'||e.key===' '){e.preventDefault();this.click();}
+  });
+
+  // Fill presets
+  window.fillEnv=function(type){
+    if(type==='dev'){
+      setInput('DB_HOST','localhost');
+      setInput('DB_USER','admin');
+      setInput('STRIPE_KEY','sk_test_abc123');
+      if(!debugOn)debugToggle.click();
+    } else if(type==='prod'){
+      setInput('DB_HOST','prod-db.cloudflare.com');
+      setInput('DB_USER','app_user');
+      setInput('STRIPE_KEY','sk_live_xyz789');
+      if(debugOn)debugToggle.click();
+    } else if(type==='wrong'){
+      // Simulate wrong casing
+      setInput('DB_HOST','db_host=localhost');
+      setInput('DB_USER','admin');
+      setInput('STRIPE_KEY','stripe_key=sk_test_abc');
+    }
+    render();
+  };
+
+  function setInput(key,val){
+    inputs.forEach(function(inp){
+      if(inp.dataset.key===key)inp.value=val;
+    });
+  }
+
+  // Reset
+  resetBtn.addEventListener('click',function(){
+    setInput('DB_HOST','localhost');
+    setInput('DB_USER','admin');
+    setInput('STRIPE_KEY','sk_test_abc');
+    debugOn=true;
+    debugToggle.classList.add('on');
+    debugToggle.setAttribute('aria-checked','true');
+    debugLabel.textContent='true';
+    debugLabel.style.color='var(--grn)';
+    render();
+  });
+
+  render();
+})();
+</script>
+
+</body>
+</html>
