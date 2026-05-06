@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Merge Practice — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#1a1a18;--bg-c:#222220;--bg-e:#2a2a27;--bg-t:#161614;--fg:#e8e4dd;--fm:#8a877e;--ac:#e88c2e;--acd:#c97522;--am:#c9922a;--gn:#6b8f5e;--rd:#b54a4a;--bl:#5e7a8f;--bd:#3a3a36;--bdl:#4a4a45;--mn:'JetBrains Mono',monospace;--sn:'Space Grotesk',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--sn);overflow-x:hidden;line-height:1.5;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:24px 24px;}
+.pw{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:12px 20px 64px;}
+
+/* ── Merge Editor ── */
+.editor{border:1px solid var(--bd);background:var(--bg-c);overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 40px rgba(0,0,0,0.3)}
+.ed-hdr{padding:12px 16px;background:rgba(255,255,255,0.02);border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between}
+.ed-title{font-family:var(--mn);font-size:11px;color:var(--fm);display:flex;align-items:center;gap:8px}
+.ed-title span{color:var(--ac);font-weight:700;text-transform:uppercase}
+.ed-stats{font-family:var(--mn);font-size:10px;color:var(--rd);letter-spacing:1px;font-weight:700}
+.ed-stats.clean{color:var(--gn)}
+
+.ed-body{padding:24px;font-family:var(--mn);font-size:13px;line-height:1.6;counter-reset:line;background:var(--bg-t)}
+.line{display:flex;gap:16px;min-height:21px}
+.line::before{counter-increment:line;content:counter(line);color:var(--bdl);min-width:24px;text-align:right;user-select:none}
+.code{color:var(--fg)}
+.kw{color:var(--bl)} .st{color:var(--am)} .co{color:var(--fm)}
+
+/* Conflict Block */
+.cb{margin:8px 0;border:1px solid rgba(181,74,74,0.3);background:rgba(181,74,74,0.03);position:relative;transition:all 0.4s ease}
+.cb.resolved{border-color:var(--gn);background:rgba(107,143,94,0.05);margin:0}
+.cb-hdr{background:rgba(181,74,74,0.1);padding:4px 12px;font-size:10px;color:var(--rd);display:flex;justify-content:space-between;align-items:center;font-family:var(--mn);text-transform:uppercase}
+.cb.resolved .cb-hdr{display:none}
+
+.cb-content{padding:8px 0}
+.cb-part{padding:4px 12px;transition:background 0.2s}
+.cb-sep{border-top:1px solid var(--bd);margin:4px 0}
+
+/* Actions */
+.cb-actions{padding:10px 12px;display:flex;gap:10px;border-top:1px solid var(--bd);background:rgba(0,0,0,0.1)}
+.btn{background:var(--bg-e);border:1px solid var(--bd);color:var(--fm);font-family:var(--mn);font-size:9px;padding:6px 12px;cursor:pointer;text-transform:uppercase;letter-spacing:0.5px;transition:all 0.2s}
+.btn:hover{border-color:var(--ac);color:var(--fg);background:var(--bg-c)}
+.btn.primary{border-color:var(--bl);color:var(--bl)}
+
+/* Result UI */
+.success-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.5s;z-index:10}
+.success-overlay.show{opacity:1;pointer-events:auto}
+.success-card{background:var(--bg-c);border:2px solid var(--gn);padding:40px;text-align:center;max-width:440px;transform:translateY(20px);transition:transform 0.5s;box-shadow:0 0 30px rgba(107,143,94,0.2)}
+.success-overlay.show .success-card{transform:none}
+.success-card h3{font-size:24px;color:var(--gn);margin-bottom:12px;font-family:var(--sn);font-weight:700}
+.success-card p{color:var(--fm);margin-bottom:24px;font-size:14px}
+.push-btn{background:var(--gn);color:var(--bg);border:none;padding:14px 36px;font-family:var(--mn);font-weight:800;text-transform:uppercase;letter-spacing:2px;cursor:pointer;transition:transform 0.2s}
+.push-btn:hover{transform:scale(1.05);background:var(--fg)}
+
+@media(max-width:640px){
+  .cb-actions{flex-direction:column;gap:6px}
+  .btn{width:100%;text-align:center}
+}
+</style>
+</head>
+<body>
+<div class="pw">
+  <div class="editor">
+    <div class="ed-hdr">
+      <div class="ed-title">📄 <span>campaign_config.js</span> — conflict detected</div>
+      <div class="ed-stats" id="stats">3 CONFLICTS REMAINING</div>
+    </div>
+    <div class="ed-body" id="editorBody"></div>
+  </div>
+
+  <div class="success-overlay" id="successOverlay">
+    <div class="success-card">
+      <h3>CLEAN MERGE!</h3>
+      <p>Tuyệt vời! Bạn đã xử lý xong các xung đột nội dung. Bản tin đã sẵn sàng để được cập nhật lên hệ thống.</p>
+      <button class="push-btn" onclick="location.reload()">GIT PUSH & DEPLOY</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const DATA = [
+  {
+    id: 0,
+    line: 5,
+    main: '<span class="kw">const</span> title = <span class="st">"Flash Sale cuối tuần"</span>;',
+    feature: '<span class="kw">const</span> title = <span class="st">"Đặc quyền thành viên"</span>;',
+    both: '<span class="kw">const</span> title = <span class="st">"Flash Sale - Đặc quyền thành viên"</span>;'
+  },
+  {
+    id: 1,
+    line: 12,
+    main: '<span class="kw">const</span> discount = <span class="st">"Giảm 50% toàn bộ"</span>;',
+    feature: '<span class="kw">const</span> discount = <span class="st">"Tặng quà đơn từ 500k"</span>;',
+    both: '<span class="kw">const</span> discount = <span class="st">"Giảm 50% + Quà tặng đơn từ 500k"</span>;'
+  },
+  {
+    id: 2,
+    line: 20,
+    main: '<span class="kw">const</span> cta = <span class="st">"Đặt hàng ngay"</span>;',
+    feature: '<span class="kw">const</span> cta = <span class="st">"Nhận ưu đãi"</span>;',
+    both: '<span class="kw">const</span> cta = <span class="st">"Đặt hàng & Nhận ưu đãi"</span>;'
+  }
+];
+
+const resolved = [false, false, false];
+
+function renderLine(content) {
+  return `<div class="line"><div class="code">${content}</div></div>`;
+}
+
+function buildEditor() {
+  const container = document.getElementById('editorBody');
+  let html = '';
+  
+  html += renderLine('<span class="kw">import</span> { config } <span class="kw">from</span> <span class="st">"./core"</span>;');
+  html += renderLine('<span class="co">// Marketing Campaign Config</span>');
+  html += renderLine('');
+  html += renderLine('<span class="kw">export const</span> campaign = {');
+
+  DATA.forEach((d, i) => {
+    html += `<div class="cb" id="cb${i}">
+      <div class="cb-hdr"><span>CONFLICT AT LINE ${d.line}</span><span>Incoming vs Current</span></div>
+      <div class="cb-content" id="cbc${i}">
+        <div class="cb-part"><div class="line"><div class="code" style="color:var(--bl)">${d.main} <span style="color:var(--fm);font-size:9px;margin-left:8px">(current)</span></div></div></div>
+        <div class="cb-sep"></div>
+        <div class="cb-part"><div class="line"><div class="code" style="color:var(--ac)">${d.feature} <span style="color:var(--fm);font-size:9px;margin-left:8px">(incoming)</span></div></div></div>
+      </div>
+      <div class="cb-actions" id="cba${i}">
+        <button class="btn" onclick="resolve(${i}, 'main')">Accept Current</button>
+        <button class="btn" onclick="resolve(${i}, 'feature')">Accept Incoming</button>
+        <button class="btn" onclick="resolve(${i}, 'both')">Combine Both</button>
+      </div>
+    </div>`;
+    if (i < DATA.length - 1) {
+      html += renderLine('  status: <span class="st">"active"</span>,');
+      html += renderLine('  version: <span class="st">"1.2.0"</span>,');
+    }
+  });
+
+  html += renderLine('};');
+  container.innerHTML = html;
+}
+
+function resolve(id, type) {
+  const block = document.getElementById('cb' + id);
+  const content = document.getElementById('cbc' + id);
+  const actions = document.getElementById('cba' + id);
+  const stats = document.getElementById('stats');
+  
+  let text = '';
+  if (type === 'main') text = DATA[id].main;
+  else if (type === 'feature') text = DATA[id].feature;
+  else text = DATA[id].both;
+
+  block.classList.add('resolved');
+  content.innerHTML = `<div class="line"><div class="code">${text}</div></div>`;
+  actions.style.display = 'none';
+  
+  resolved[id] = true;
+  
+  const remaining = resolved.filter(r => !r).length;
+  if (remaining === 0) {
+    stats.textContent = 'ALL CONFLICTS RESOLVED';
+    stats.classList.add('clean');
+    setTimeout(() => {
+      document.getElementById('successOverlay').classList.add('show');
+    }, 800);
+  } else {
+    stats.textContent = `${remaining} CONFLICTS REMAINING`;
+  }
+}
+
+buildEditor();
+</script>
+</body>
+</html>

@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Merge — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#131313;--card:#1c1c1c;--border:#2e2e2e;--fg:#e8ddd0;--muted:#6b6358;
+--accent:#e8652a;--amber:#d4930d;--green:#6b9e78;--red:#c44;
+--mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);overflow-x:hidden}
+.grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
+.diag{position:fixed;inset:0;pointer-events:none;z-index:0;background:repeating-linear-gradient(45deg,transparent,transparent 96px,rgba(255,255,255,.012) 96px,rgba(255,255,255,.012) 97px)}
+.wrap{position:relative;z-index:1;max-width:820px;margin:0 auto;padding:20px 16px 40px}
+header{border-bottom:2px solid var(--border);padding-bottom:14px;margin-bottom:20px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.badge{font-family:var(--mono);font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent);padding:2px 10px;flex-shrink:0}
+header h1{font-size:clamp(26px,6vw,40px);font-weight:700;letter-spacing:-1px;line-height:1}
+.nav{display:flex;gap:6px;margin-bottom:16px}
+.dot{flex:1;height:3px;background:var(--border);position:relative;overflow:hidden}
+.dot .fill{position:absolute;inset:0;width:0;background:var(--accent)}
+.dot.done .fill{width:100%}
+.stage{position:relative;width:100%;aspect-ratio:16/9;background:var(--card);border:2px solid var(--border);overflow:hidden}
+.sc{position:absolute;inset:0;display:flex;flex-direction:column;padding:clamp(14px,3vw,28px);opacity:0;pointer-events:none;transition:opacity .35s}
+.sc.on{opacity:1;pointer-events:auto}
+.sc-label{font-family:var(--mono);font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
+.sc-title{font-size:clamp(14px,3.2vw,21px);font-weight:700;line-height:1.2;margin-bottom:12px}
+.sc-body{flex:1;display:flex;align-items:center;justify-content:center;position:relative;min-height:0}
+.sc-insight{font-family:var(--mono);font-size:10px;color:var(--accent);border-top:1px solid var(--border);padding-top:10px;margin-top:auto;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:0;transition:opacity .5s}
+.sc-insight.show{opacity:1}
+
+/* ── Scene 1: SVG Branch Graph ── */
+.s1-svg{width:100%;max-width:480px;height:auto}
+.s1-svg line{stroke-width:2;stroke-linecap:round}
+.s1-svg .lm{stroke:var(--border)}
+.s1-svg .lb{stroke:var(--accent);opacity:0;transition:opacity .4s}
+.s1-svg .lb.vis{opacity:1}
+.s1-svg .ld{stroke:var(--accent);stroke-dasharray:5 4;opacity:0;transition:opacity .4s}
+.s1-svg .ld.vis{opacity:1}
+.s1-svg circle{opacity:0;transition:opacity .3s,r .3s}
+.s1-svg circle.vis{opacity:1}
+.s1-svg .dm{fill:var(--muted)}.s1-svg .db{fill:var(--accent)}
+.s1-svg .merge-dot{fill:var(--green);r:7}
+.s1-svg .merge-dot.vis{r:9}
+.s1-svg text{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;fill:var(--muted);opacity:0;transition:opacity .4s}
+.s1-svg text.vis{opacity:1}
+.s1-svg .tm{fill:var(--green)}
+@keyframes mpulse{0%,100%{r:9}50%{r:12}}
+.s1-svg .merge-dot.pulse{animation:mpulse 1.2s ease-in-out 2}
+
+/* ── Scene 2 & 3: Code panels ── */
+.s-flow{display:flex;align-items:stretch;gap:10px;width:100%;max-width:580px}
+.s-panel{flex:1;border:1.5px solid var(--border);background:rgba(0,0,0,.3);overflow:hidden;display:flex;flex-direction:column;opacity:0;transform:translateY(12px);transition:opacity .35s,transform .35s,border-color .35s}
+.s-panel.vis{opacity:1;transform:none}
+.s-panel.ok{border-color:var(--green)}.s-panel.err{border-color:var(--red)}
+.s-ph{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:6px 10px;border-bottom:1px solid var(--border);color:var(--muted);background:rgba(255,255,255,.015)}
+.s-panel.ok .s-ph{color:var(--green)}.s-panel.err .s-ph{color:var(--red)}
+.s-lines{flex:1;padding:6px 0;display:flex;flex-direction:column;gap:2px}
+.sl{display:flex;align-items:center;padding:4px 10px;font-family:var(--mono);font-size:clamp(9px,1.3vw,11px);border-left:3px solid transparent;transition:border-color .3s,background .3s;gap:6px;min-height:26px}
+.sl .sl-l{color:var(--muted);min-width:56px;flex-shrink:0}
+.sl .sl-v{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sl.sa{border-left-color:var(--amber);background:rgba(212,147,13,.06)}
+.sl.sb{border-left-color:var(--green);background:rgba(107,158,120,.06)}
+.sl.sc{border-left-color:var(--red);background:rgba(204,68,68,.06)}
+.sl.sx{border-left-color:var(--green);background:rgba(107,158,120,.06)}
+.cm{font-family:var(--mono);font-size:clamp(8px,1.1vw,9px);padding:2px 10px;color:var(--red);opacity:0;transition:opacity .3s}
+.cm.vis{opacity:1}
+.s-arr{display:flex;align-items:center;color:var(--muted);font-size:18px;flex-shrink:0;opacity:0;transition:opacity .35s}
+.s-arr.vis{opacity:1}
+.s-flash{position:absolute;inset:0;background:rgba(204,68,68,.12);pointer-events:none;opacity:0;transition:opacity .15s}
+.s-flash.show{opacity:1}
+
+/* ── Scene 4: Resolution ── */
+.s4-wrap{display:flex;flex-direction:column;gap:8px;width:100%;max-width:460px}
+.s4-step{display:flex;align-items:center;gap:10px;opacity:0;transition:opacity .35s}
+.s4-step.vis{opacity:1}
+.s4-lbl{font-family:var(--mono);font-size:9px;letter-spacing:1.5px;color:var(--muted);min-width:90px;text-align:right;flex-shrink:0;text-transform:uppercase}
+.s4-box{flex:1;padding:8px 12px;border:1.5px solid var(--border);background:rgba(0,0,0,.3);font-family:var(--mono);font-size:clamp(10px,1.5vw,12px);transition:border-color .3s,color .3s;line-height:1.3}
+.s4-box.err{border-color:var(--red);color:var(--red)}
+.s4-box.ok{border-color:var(--green);color:var(--green)}
+.s4-box.combine{border-color:var(--accent);color:var(--accent)}
+.s4-note{font-family:var(--mono);font-size:9px;color:var(--accent);padding-left:100px;opacity:0;transition:opacity .3s}
+.s4-note.vis{opacity:1}
+
+/* ── Divider ── */
+.divider{display:flex;align-items:center;gap:12px;margin:28px 0 22px}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border)}
+.divider-label{font-family:var(--mono);font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--accent)}
+
+/* ── Practice ── */
+.practice{border:2px solid var(--border);background:var(--card);padding:clamp(16px,3vw,24px)}
+.pr-hdr{margin-bottom:16px}
+.pr-hdr h2{font-size:clamp(18px,3.5vw,24px);font-weight:700;margin-top:6px;line-height:1.2}
+.pr-goal{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.4}
+.pr-grid{display:flex;flex-direction:column;gap:10px}
+.cz{border:1.5px solid var(--border);background:rgba(0,0,0,.2);overflow:hidden;transition:border-color .3s}
+.cz.open{border-color:var(--red)}
+.cz.resolved{border-color:var(--green)}
+.cz-hdr{display:flex;align-items:center;justify-content:space-between;padding:8px 12px;border-bottom:1px solid var(--border);gap:8px}
+.cz-title{font-family:var(--mono);font-size:10px;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase;flex-shrink:0}
+.cz-badge{font-family:var(--mono);font-size:9px;padding:2px 8px;letter-spacing:1px;transition:background .25s,color .25s}
+.cz.open .cz-badge{background:rgba(204,68,68,.12);color:var(--red)}
+.cz.resolved .cz-badge{background:rgba(107,158,120,.12);color:var(--green)}
+.cz-opts{padding:8px 12px;display:flex;flex-direction:column;gap:6px}
+.cz-opt{display:flex;align-items:center;gap:10px;padding:8px 10px;border:1.5px solid var(--border);background:rgba(0,0,0,.2);cursor:pointer;transition:border-color .2s,background .2s,opacity .2s;-webkit-user-select:none;user-select:none}
+.cz-opt:hover{border-color:var(--muted);background:rgba(255,255,255,.03)}
+.cz-opt:active{transform:scale(.98)}
+.cz-opt.dim{opacity:.25;pointer-events:none}
+.cz-opt.picked{border-color:var(--accent);background:rgba(232,101,42,.08)}
+.cz-branch{font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--muted);min-width:62px;flex-shrink:0}
+.cz-opt.picked .cz-branch{color:var(--accent)}
+.cz-text{font-size:clamp(11px,1.6vw,13px);flex:1;min-width:0}
+.cz-check{font-family:var(--mono);font-size:12px;color:var(--accent);opacity:0;transition:opacity .2s;flex-shrink:0}
+.cz-opt.picked .cz-check{opacity:1}
+.pr-result{border:1.5px solid var(--border);background:rgba(0,0,0,.2);overflow:hidden;transition:border-color .4s}
+.pr-result.clean{border-color:var(--green)}
+.pr-rh{font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;padding:8px 12px;border-bottom:1px solid var(--border);color:var(--muted)}
+.pr-rl{padding:8px 12px;display:flex;flex-direction:column;gap:4px}
+.pr-rline{font-family:var(--mono);font-size:clamp(10px,1.5vw,12px);display:flex;gap:8px;transition:opacity .3s}
+.pr-rline .rl-l{color:var(--muted);min-width:56px;flex-shrink:0}
+.pr-rline .rl-v{color:var(--fg);transition:color .3s}
+.pr-rline.unresolved .rl-v{color:var(--red);font-style:italic}
+.pr-rline.resolved .rl-v{color:var(--green)}
+.pr-stbar{font-family:var(--mono);font-size:11px;padding:8px 12px;border-top:1px solid var(--border);text-align:center;letter-spacing:1px;transition:color .3s,background .3s}
+.pr-stbar.pending{color:var(--red);background:rgba(204,68,68,.06)}
+.pr-stbar.done{color:var(--green);background:rgba(107,158,120,.08)}
+@keyframes glow{0%,100%{box-shadow:none}50%{box-shadow:0 0 12px rgba(107,158,120,.2)}}
+.pr-result.clean{animation:glow 1.5s ease-in-out 2}
+.pr-hint{margin-top:14px;font-size:12px;color:var(--muted);line-height:1.4;padding-left:12px;border-left:2px solid var(--border)}
+.pr-redo{margin-top:10px;font-family:var(--mono);font-size:10px;color:var(--accent);border:1px solid var(--accent);padding:4px 12px;cursor:pointer;background:none;letter-spacing:1px;text-transform:uppercase;display:none;transition:background .2s}
+.pr-redo.show{display:inline-block}
+.pr-redo:hover{background:rgba(232,101,42,.1)}
+
+@media(max-width:640px){
+  .stage{aspect-ratio:5/6}
+  .s-flow{flex-direction:column}.s-arr{transform:rotate(90deg)}
+  .s4-lbl{min-width:auto;text-align:left}
+  .s4-note{padding-left:0}
+  .s4-step{flex-direction:column;align-items:stretch;gap:4px}
+  .sc-insight{white-space:normal;text-overflow:initial}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="diag"></div>
+<div class="wrap">
+  <header>
+    <span class="badge">WORKFLOW · VIBECODE</span>
+    <h1>Merge</h1>
+  </header>
+  <div class="nav" id="nav">
+    <div class="dot"><div class="fill"></div></div>
+    <div class="dot"><div class="fill"></div></div>
+    <div class="dot"><div class="fill"></div></div>
+    <div class="dot"><div class="fill"></div></div>
+  </div>
+
+  <div class="stage" id="stage">
+
+    <!-- SCENE 1: Hai nhánh → gộp lại một -->
+    <div class="sc" id="sc0">
+      <div class="sc-label">01 / 04</div>
+      <div class="sc-title">Hai nhánh làm việc riêng → gộp lại một</div>
+      <div class="sc-body">
+        <svg class="s1-svg" viewBox="0 0 440 110" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <!-- main line -->
+          <line class="lm" x1="20" y1="75" x2="420" y2="75"/>
+          <!-- branch up -->
+          <line class="lb" id="bup" x1="90" y1="75" x2="90" y2="30"/>
+          <!-- feature line -->
+          <line class="lb" id="bfl" x1="90" y1="30" x2="280" y2="30"/>
+          <!-- merge down -->
+          <line class="ld" id="bmd" x1="280" y1="30" x2="320" y2="75"/>
+          <!-- main dots -->
+          <circle class="dm" id="dm0" cx="90" cy="75" r="5"/>
+          <circle class="dm" id="dm1" cx="200" cy="75" r="5"/>
+          <circle class="merge-dot" id="dmg" cx="320" cy="75" r="7"/>
+          <circle class="dm" id="dm2" cx="420" cy="75" r="5"/>
+          <!-- feature dots -->
+          <circle class="db" id="db0" cx="140" cy="30" r="5"/>
+          <circle class="db" id="db1" cx="210" cy="30" r="5"/>
+          <circle class="db" id="db2" cx="280" cy="30" r="5"/>
+          <!-- labels -->
+          <text id="lblb" x="150" y="18">feature/caption</text>
+          <text id="lblm" x="220" y="100">main</text>
+          <text class="tm" id="lblg" x="330" y="60">merge</text>
+        </svg>
+      </div>
+      <div class="sc-insight" id="ins0">→ Merge = gộp nhánh. Hai người làm riêng → hợp lại thành một phiên bản.</div>
+    </div>
+
+    <!-- SCENE 2: Merge sạch -->
+    <div class="sc" id="sc1">
+      <div class="sc-label">02 / 04</div>
+      <div class="sc-title">Merge sạch — sửa khác chỗ, không xung đột</div>
+      <div class="sc-body">
+        <div class="s-flow">
+          <div class="s-panel" id="p2a">
+            <div class="s-ph">main</div>
+            <div class="s-lines">
+              <div class="sl"><span class="sl-l">Tiêu đề:</span><span class="sl-v">Khuyến mãi hè</span></div>
+              <div class="sl"><span class="sl-l">Nội dung:</span><span class="sl-v">Giảm giá mùa hè</span></div>
+              <div class="sl sa" id="l2a"><span class="sl-l">Màu nút:</span><span class="sl-v">Cam</span></div>
+            </div>
+          </div>
+          <div class="s-arr" id="a2m">→</div>
+          <div class="s-panel" id="p2b">
+            <div class="s-ph">feature</div>
+            <div class="s-lines">
+              <div class="sl"><span class="sl-l">Tiêu đề:</span><span class="sl-v">Khuyến mãi hè</span></div>
+              <div class="sl"><span class="sl-l">Nội dung:</span><span class="sl-v">Giảm giá mùa hè</span></div>
+              <div class="sl sb" id="l2b"><span class="sl-l">Footer:</span><span class="sl-v">© 2024 Brand</span></div>
+            </div>
+          </div>
+          <div class="s-arr" id="a2r">→</div>
+          <div class="s-panel" id="p2r">
+            <div class="s-ph">merged</div>
+            <div class="s-lines">
+              <div class="sl"><span class="sl-l">Tiêu đề:</span><span class="sl-v">Khuyến mãi hè</span></div>
+              <div class="sl"><span class="sl-l">Nội dung:</span><span class="sl-v">Giảm giá mùa hè</span></div>
+              <div class="sl sx" id="l2m1"><span class="sl-l">Màu nút:</span><span class="sl-v">Cam</span></div>
+              <div class="sl sx" id="l2m2"><span class="sl-l">Footer:</span><span class="sl-v">© 2024 Brand</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sc-insight" id="ins1">→ Sửa khác dòng → Git tự gộp. Không cần ai can thiệp.</div>
+    </div>
+
+    <!-- SCENE 3: Merge conflict -->
+    <div class="sc" id="sc2">
+      <div class="sc-label">03 / 04</div>
+      <div class="sc-title">Merge conflict — cả hai sửa cùng dòng</div>
+      <div class="sc-body" style="position:relative">
+        <div class="s-flash" id="sflash"></div>
+        <div class="s-flow">
+          <div class="s-panel" id="p3a">
+            <div class="s-ph">main</div>
+            <div class="s-lines">
+              <div class="sl"><span class="sl-l">Tiêu đề:</span><span class="sl-v">Khuyến mãi hè</span></div>
+              <div class="sl sa" id="l3a"><span class="sl-l">Nội dung:</span><span class="sl-v">Giảm 30% toàn bộ</span></div>
+              <div class="sl"><span class="sl-l">Nút:</span><span class="sl-v">Mua ngay</span></div>
+            </div>
+          </div>
+          <div class="s-arr" id="a3m">→</div>
+          <div class="s-panel" id="p3b">
+            <div class="s-ph">feature</div>
+            <div class="s-lines">
+              <div class="sl"><span class="sl-l">Tiêu đề:</span><span class="sl-v">Khuyến mãi hè</span></div>
+              <div class="sl sb" id="l3b"><span class="sl-l">Nội dung:</span><span class="sl-v">Miễn phí giao hàng</span></div>
+              <div class="sl"><span class="sl-l">Nút:</span><span class="sl-v">Mua ngay</span></div>
+            </div>
+          </div>
+          <div class="s-arr" id="a3r">→</div>
+          <div class="s-panel" id="p3r">
+            <div class="s-ph">CONFLICT</div>
+            <div class="s-lines">
+              <div class="sl"><span class="sl-l">Tiêu đề:</span><span class="sl-v">Khuyến mãi hè</span></div>
+              <div class="cm" id="cm1">&lt;&lt;&lt;&lt;&lt;&lt;&lt; main</div>
+              <div class="sl sc" id="l3c1"><span class="sl-l">Nội dung:</span><span class="sl-v">Giảm 30% toàn bộ</span></div>
+              <div class="cm" id="cm2">=======</div>
+              <div class="sl sc" id="l3c2"><span class="sl-l">Nội dung:</span><span class="sl-v">Miễn phí giao hàng</span></div>
+              <div class="cm" id="cm3">&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature</div>
+              <div class="sl"><span class="sl-l">Nút:</span><span class="sl-v">Mua ngay</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="sc-insight" id="ins2">→ Cả hai sửa cùng dòng → Git không biết chọn cái nào → conflict. Phải giải thủ công.</div>
+    </div>
+
+    <!-- SCENE 4: Giải conflict -->
+    <div class="sc" id="sc3">
+      <div class="sc-label">04 / 04</div>
+      <div class="sc-title">Giải conflict = chọn hoặc kết hợp</div>
+      <div class="sc-body">
+        <div class="s4-wrap">
+          <div class="s4-step" id="s4s0">
+            <span class="s4-lbl">Trước:</span>
+            <div class="s4-box err" id="s4b0">&lt;&lt;&lt;&lt;&lt;&lt;&lt; main: "Giảm 30% toàn bộ" ======= feature: "Miễn phí giao hàng" &gt;&gt;&gt;&gt;&gt;&gt;&gt;</div>
+          </div>
+          <div class="s4-step" id="s4s1">
+            <span class="s4-lbl">Cách 1:</span>
+            <div class="s4-box" id="s4b1">Chọn 1 trong 2</div>
+          </div>
+          <div class="s4-step" id="s4s2">
+            <span class="s4-lbl">Kết quả:</span>
+            <div class="s4-box" id="s4b2">Nội dung: Miễn phí giao hàng</div>
+          </div>
+          <div class="s4-note" id="s4n1">hoặc</div>
+          <div class="s4-step" id="s4s3">
+            <span class="s4-lbl">Cách 2:</span>
+            <div class="s4-box" id="s4b3">Kết hợp cả hai</div>
+          </div>
+          <div class="s4-step" id="s4s4">
+            <span class="s4-lbl">Kết quả:</span>
+            <div class="s4-box" id="s4b4">Nội dung: Giảm 30% + Miễn phí giao hàng</div>
+          </div>
+        </div>
+      </div>
+      <div class="sc-insight" id="ins3">→ Conflict không phải lỗi — là câu hỏi: "muốn giữ cái nào?" Marketer trả lời được câu này.</div>
+    </div>
+
+  </div>
+
+  <!-- ═══ PRACTICE ═══ -->
+  <div class="divider"><span class="divider-label">Thực hành</span></div>
+  <section class="practice">
+    <div class="pr-hdr">
+      <h2>Giải 3 conflict → đạt Clean Merge</h2>
+      <p class="pr-goal">Mỗi conflict có 2 phiên bản. Click chọn bản phù hợp nhất cho campaign. Kết quả merge cập nhật realtime.</p>
+    </div>
+    <div class="pr-grid" id="prGrid"></div>
+    <div class="pr-result" id="prResult">
+      <div class="pr-rh">Kết quả merge</div>
+      <div class="pr-rl" id="prLines"></div>
+      <div class="pr-stbar pending" id="prSt">3 conflict chưa giải</div>
+    </div>
+    <button class="pr-redo" id="prRedo">Giải lại</button>
+    <div class="pr-hint">Không biết chọn cái nào? Nghĩ như marketer: bản nào fit với mục tiêu campaign hơn?</div>
+  </section>
+</div>
+
+<script>
+/* ══════════════════════════════════════════
+   Animation Engine
+   ══════════════════════════════════════════ */
+const DUR=[5000,5000,5500,5000];
+const scenes=[document.getElementById('sc0'),document.getElementById('sc1'),document.getElementById('sc2'),document.getElementById('sc3')];
+const dots=document.querySelectorAll('.dot');
+const fills=document.querySelectorAll('.dot .fill');
+const insights=[document.getElementById('ins0'),document.getElementById('ins1'),document.getElementById('ins2'),document.getElementById('ins3')];
+let cur=-1,timers=[],rafId=null,ss=0;
+
+function later(fn,ms){const id=setTimeout(fn,ms);timers.push(id);return id}
+function clearT(){timers.forEach(clearTimeout);timers=[];if(rafId)cancelAnimationFrame(rafId)}
+function tickP(){if(cur<0)return;const p=Math.min((Date.now()-ss)/DUR[cur],1);fills[cur].style.width=(p*100)+'%';if(p<1)rafId=requestAnimationFrame(tickP)}
+function go(i){clearT();insights.forEach(x=>x.classList.remove('show'));
+  if(cur>=0){fills[cur].style.width='100%';dots[cur].classList.add('done')}
+  scenes.forEach(s=>s.classList.remove('on'));cur=i;
+  later(()=>{scenes[i].classList.add('on');ss=Date.now();tickP();animators[i]();
+    later(()=>insights[i].classList.add('show'),DUR[i]*.6);
+    later(()=>go((i+1)%4),DUR[i])},cur>=0?350:50)}
+
+/* ═══ Scene 1: Branch graph ═══ */
+function a0(){
+  const els=['bup','bfl','dm0','dm1','db0','db1','db2','bmd','dmg','dm2','lblb','lblm','lblg'];
+  els.forEach(id=>{const el=document.getElementById(id);el.classList.remove('vis','pulse')});
+  const seq=[
+    ['dm0',100],['dm1',400],
+    ['bup',700],['db0',900],['db1',1200],['db2',1500],['lblb',1600],
+    ['bmd',1900],['dmg',2200],['lblm',2200],['lblg',2400],
+    ['dm2',2700],
+    ['dmg',3000] // pulse class added after
+  ];
+  seq.forEach(([id,t])=>{
+    later(()=>{
+      const el=document.getElementById(id);
+      el.classList.add('vis');
+      if(id==='dmg')later(()=>el.classList.add('pulse'),50);
+    },t);
+  });
+}
+
+/* ═══ Scene 2: Clean merge ═══ */
+function a2(){
+  ['p2a','p2b','p2r'].forEach(id=>{const el=document.getElementById(id);el.classList.remove('vis','ok')});
+  ['a2m','a2r'].forEach(id=>document.getElementById(id).classList.remove('vis'));
+  ['l2a','l2b','l2m1','l2m2'].forEach(id=>{const el=document.getElementById(id);el.style.opacity='0';el.style.transition='none'});
+  later(()=>{document.getElementById('p2a').classList.add('vis')},100);
+  later(()=>{
+    document.getElementById('p2b').classList.add('vis');
+    document.getElementById('a2m').classList.add('vis');
+  },500);
+  later(()=>{
+    document.getElementById('p2r').classList.add('vis','ok');
+    document.getElementById('a2r').classList.add('vis');
+    // highlight changed lines
+    ['l2a','l2b'].forEach(id=>{const el=document.getElementById(id);el.style.transition='opacity .4s';el.style.opacity='1'});
+    later(()=>{
+      ['l2m1','l2m2'].forEach(id=>{const el=document.getElementById(id);el.style.transition='opacity .4s';el.style.opacity='1'});
+    },300);
+  },1000);
+}
+
+/* ═══ Scene 3: Conflict ═══ */
+function a3(){
+  const flash=document.getElementById('sflash');
+  ['p3a','p3b','p3r'].forEach(id=>{const el=document.getElementById(id);el.classList.remove('vis','err')});
+  ['a3m','a3r'].forEach(id=>document.getElementById(id).classList.remove('vis'));
+  ['l3a','l3b','l3c1','l3c2'].forEach(id=>{const el=document.getElementById(id);el.style.opacity='0';el.style.transition='none'});
+  ['cm1','cm2','cm3'].forEach(id=>document.getElementById(id).classList.remove('vis'));
+  flash.classList.remove('show');
+
+  later(()=>document.getElementById('p3a').classList.add('vis'),100);
+  later(()=>{
+    document.getElementById('p3b').classList.add('vis');document.getElementById('a3m').classList.add('vis');
+    ['l3a','l3b'].forEach(id=>{const el=document.getElementById(id);el.style.transition='opacity .4s';el.style.opacity='1'});
+  },500);
+  later(()=>{
+    document.getElementById('p3r').classList.add('vis','err');document.getElementById('a3r').classList.add('vis');
+    flash.classList.add('show');later(()=>flash.classList.remove('show'),300);
+  },1000);
+  later(()=>{
+    ['l3c1','l3c2'].forEach(id=>{const el=document.getElementById(id);el.style.transition='opacity .4s';el.style.opacity='1'});
+    ['cm1','cm2','cm3'].forEach((id,i)=>later(()=>document.getElementById(id).classList.add('vis'),i*120));
+  },1400);
+}
+
+/* ═══ Scene 4: Resolution ═══ */
+function a4(){
+  ['s4s0','s4s1','s4s2','s4n1','s4s3','s4s4'].forEach(id=>document.getElementById(id).classList.remove('vis'));
+  ['s4b0','s4b1','s4b2','s4b3','s4b4'].forEach(id=>{const el=document.getElementById(id);el.classList.remove('err','ok','combine')});
+
+  later(()=>{document.getElementById('s4s0').classList.add('vis');document.getElementById('s4b0').classList.add('err')},100);
+  later(()=>{document.getElementById('s4s1').classList.add('vis')},1200);
+  later(()=>{document.getElementById('s4s2').classList.add('vis');document.getElementById('s4b2').classList.add('ok')},1800);
+  later(()=>document.getElementById('s4n1').classList.add('vis'),2400);
+  later(()=>document.getElementById('s4s3').classList.add('vis'),2800);
+  later(()=>{document.getElementById('s4s4').classList.add('vis');document.getElementById('s4b4').classList.add('combine')},3400);
+}
+
+const animators=[a0,a2,a3,a4];
+
+/* ══════════════════════════════════════════
+   Practice Logic
+   ══════════════════════════════════════════ */
+const CONFLICTS=[
+  {
+    label:'Conflict 1 — Tiêu đề',
+    field:'Tiêu đề',
+    opts:[
+      {branch:'main',text:'Flash Sale cuối tuần'},
+      {branch:'feature',text:'Đặc quyền thành viên'}
+    ]
+  },
+  {
+    label:'Conflict 2 — Nội dung',
+    field:'Nội dung',
+    opts:[
+      {branch:'main',text:'Giảm 50% toàn bộ sản phẩm'},
+      {branch:'feature',text:'Tặng quà cho đơn từ 500k'}
+    ]
+  },
+  {
+    label:'Conflict 3 — Nút CTA',
+    field:'Nút CTA',
+    opts:[
+      {branch:'main',text:'Đặt hàng ngay'},
+      {branch:'feature',text:'Nhận ưu đãi'}
+    ]
+  }
+];
+
+// State: -1 = unresolved, 0 = first opt, 1 = second opt
+const choices=[-1,-1,-1];
+
+const prGrid=document.getElementById('prGrid');
+const prLines=document.getElementById('prLines');
+const prSt=document.getElementById('prSt');
+const prResult=document.getElementById('prResult');
+const prRedo=document.getElementById('prRedo');
+
+function buildPractice(){
+  prGrid.innerHTML='';
+  CONFLICTS.forEach((c,ci)=>{
+    const zone=document.createElement('div');
+    zone.className='cz open';zone.id='cz'+ci;
+    zone.innerHTML=`<div class="cz-hdr"><span class="cz-title">${c.label}</span><span class="cz-badge" id="czb${ci}">OPEN</span></div>
+      <div class="cz-opts">${c.opts.map((o,oi)=>`
+        <div class="cz-opt" data-ci="${ci}" data-oi="${oi}" role="button" tabindex="0" aria-label="${o.branch}: ${o.text}">
+          <span class="cz-branch">${o.branch}</span>
+          <span class="cz-text">${o.text}</span>
+          <span class="cz-check">✓</span>
+        </div>`).join('')}</div>`;
+    prGrid.appendChild(zone);
+  });
+
+  // Bind clicks
+  document.querySelectorAll('.cz-opt').forEach(opt=>{
+    const handler=()=>{
+      const ci=parseInt(opt.dataset.ci);
+      const oi=parseInt(opt.dataset.oi);
+      choices[ci]=oi;
+      // Update zone
+      const zone=document.getElementById('cz'+ci);
+      const badge=document.getElementById('czb'+ci);
+      zone.classList.remove('open');zone.classList.add('resolved');
+      badge.textContent='RESOLVED';
+      // Update opts
+      zone.querySelectorAll('.cz-opt').forEach((o,j)=>{
+        o.classList.remove('picked','dim');
+        if(j===oi)o.classList.add('picked');
+        else o.classList.add('dim');
+      });
+      updateResult();
+    };
+    opt.addEventListener('click',handler);
+    opt.addEventListener('keydown',e=>{if(e.key===' '||e.key==='Enter'){e.preventDefault();handler()}});
+  });
+
+  // Build result lines
+  prLines.innerHTML=CONFLICTS.map((c,ci)=>
+    `<div class="pr-rline unresolved" id="prl${ci}"><span class="rl-l">${c.field}:</span><span class="rl-v" id="prv${ci}">???</span></div>`
+  ).join('');
+
+  prResult.classList.remove('clean');
+  prSt.className='pr-stbar pending';
+  prSt.textContent='3 conflict chưa giải';
+  prRedo.classList.remove('show');
+  choices.fill(-1);
+  updateResult();
+}
+
+function updateResult(){
+  let resolved=0;
+  CONFLICTS.forEach((c,ci)=>{
+    const line=document.getElementById('prl'+ci);
+    const val=document.getElementById('prv'+ci);
+    if(choices[ci]>=0){
+      resolved++;
+      line.className='pr-rline resolved';
+      val.textContent=c.opts[choices[ci]].text;
+    }else{
+      line.className='pr-rline unresolved';
+      val.textContent='???';
+    }
+  });
+
+  if(resolved===3){
+    prSt.className='pr-stbar done';
+    prSt.textContent='Clean merge — push được rồi';
+    prResult.classList.add('clean');
+    prRedo.classList.add('show');
+  }else{
+    prSt.className='pr-stbar pending';
+    prSt.textContent=`${3-resolved} conflict chưa giải`;
+    prResult.classList.remove('clean');
+    prRedo.classList.remove('show');
+  }
+}
+
+prRedo.addEventListener('click',buildPractice);
+buildPractice();
+
+/* ═══ start ═══ */
+go(0);
+</script>
+</body>
+</html>

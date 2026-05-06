@@ -203,6 +203,9 @@ import gitignoreDemoHtml from '../../gif-gitignore-demo.html?raw';
 import gitignorePracticeHtml from '../../gif-gitignore-practice.html?raw';
 import branchDemoHtml from '../../gif-branch-demo.html?raw';
 import branchPracticeHtml from '../../gif-branch-practice.html?raw';
+import pushDemoHtml from '../../gif-push-demo.html?raw';
+import mergeDemoHtml from '../../gif-merge-demo.html?raw';
+import mergePracticeHtml from '../../gif-merge-practice.html?raw';
 
 
 
@@ -325,6 +328,7 @@ export default function GlossaryTermDetailPage() {
       case 'pull': return pullDemoHtml;
       case 'push': return pushDemoHtml;
       case 'gitignore': return gitignoreDemoHtml;
+      case 'merge': return mergeDemoHtml;
       default: return null;
     }
   };
@@ -430,6 +434,7 @@ export default function GlossaryTermDetailPage() {
       case 'pull': return pullPracticeHtml;
       case 'push': return pushPracticeHtml;
       case 'gitignore': return gitignorePracticeHtml;
+      case 'merge': return mergePracticeHtml;
       default: return null;
     }
   };

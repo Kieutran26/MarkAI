@@ -223,6 +223,18 @@ export const terms: GlossaryTerm[] = [
   { id: 'margin', name: 'Margin', nameEn: 'Khoảng cách ngoài element', letter: 'M', groups: ['design'], definition: 'Margin là khoảng trống nằm bên ngoài một element, dùng để tách nó ra khỏi các khối xung quanh. Nếu Padding là khoảng thở bên trong khung, thì Margin là khoảng cách giữa khung đó với phần còn lại của layout.', example: '"Landing page đang bị dính giữa hero, social proof và CTA." Prompt: "Tăng margin-bottom giữa các section lên 48px, riêng khối CTA cuối để 64px để tách rõ điểm hành động."', related: ['padding', 'spacing', 'flexbox', 'grid'], demo: { kind: 'interactive', src: 'gif-margin-demo.html', alt: 'Mô phỏng 4 mức margin phổ biến từ chặt đến thoáng' } },
   { id: 'model', name: 'Model', nameEn: 'Phiên bản AI', letter: 'M', groups: ['ai'], definition: 'Phiên bản cụ thể của một AI — như "Claude Sonnet 3.7" hay "GPT-4o". Mỗi model khác nhau về tốc độ, chi phí, và khả năng.', example: 'Trong Cursor: chọn model ở góc phải. Claude Sonnet 3.7 = tốt cho code phức tạp. Claude Haiku = nhanh hơn, rẻ hơn cho task đơn giản.', related: ['llm', 'prompt', 'context-window', 'api'], demo: { kind: 'interactive', src: 'gif-model-demo.html', alt: 'Mô phỏng 4 khía cạnh của Model: Black Box, Versions, Task to Model và Chat vs API' } },
   { id: 'mcp', name: 'MCP', nameEn: 'Model Context Protocol', letter: 'M', groups: ['ai', 'workflow'], definition: 'Giao thức giúp AI kết nối trực tiếp với tool bên ngoài — Supabase, Vercel, Notion, GitHub. Thay vì copy-paste data cho AI, MCP cho phép AI tự đọc và thực hiện action.', example: '"Cursor với Supabase MCP" → AI có thể đọc schema database của bạn và tự viết query đúng cấu trúc.' },
+  {
+    id: 'merge',
+    name: 'Merge',
+    nameEn: 'Gộp code / Hợp nhất phiên bản',
+    letter: 'M',
+    groups: ['workflow'],
+    definition: 'Hành động kết hợp các thay đổi từ một nhánh (branch) này vào một nhánh khác (thường là gộp feature branch vào main). Merge giúp hợp nhất công sức của nhiều người làm việc riêng lẻ thành một sản phẩm hoàn chỉnh duy nhất.',
+    example: 'Bạn đã hoàn thiện giao diện mới trên nhánh "new-design". Bây giờ bạn thực hiện "merge" để đưa toàn bộ giao diện đó vào nhánh "main" để web chính thức cập nhật. Nếu có 2 người cùng sửa một dòng, Git sẽ báo "conflict" để bạn chọn bản tốt nhất.',
+    related: ['git', 'branch', 'commit', 'pull-request', 'pull', 'push'],
+    demo: { kind: 'interactive', src: 'gif-merge-demo.html', alt: 'Mô phỏng 4 khía cạnh của Merge: Gộp nhánh, Merge sạch, Merge Conflict và Cách giải quyết' },
+    practice: { kind: 'interactive', src: 'gif-merge-practice.html', alt: 'Thực hành giải quyết Merge Conflict: chọn phiên bản phù hợp cho campaign' }
+  },
   { id: 'navbar', name: 'Nav bar', nameEn: 'Thanh điều hướng / Navigation Bar', letter: 'N', groups: ['design', 'code'], definition: 'Thanh điều hướng nằm ở đầu (hoặc cạnh) mỗi trang — chứa logo, menu links, và nút hành động. Navbar giúp người dùng biết mình đang ở đâu và có thể đi đâu tiếp theo.', example: 'Prompt: "Thêm mục \'Pricing\' vào navbar, khi scroll xuống thì navbar nên có thêm bóng đổ và đổi màu nền."', related: ['component', 'sticky', 'link'], demo: { kind: 'interactive', src: 'gif-navbar-demo.html', alt: 'Mô phỏng các trạng thái của navbar: mặc định, scrolled, mobile và active' } },
   { id: 'npm', name: 'npm', nameEn: 'Node Package Manager', letter: 'N', groups: ['infra'], definition: 'Công cụ cài và quản lý thư viện code. Giống App Store nhưng cho code — gõ "npm install tên-thư-viện" là cài xong.', example: '"npm install" trong terminal = cài tất cả dependency của project. "npm run dev" = chạy server local. 2 lệnh này dùng hàng ngày khi vibecode.' },
   { id: 'nodejs', name: 'Node.js', nameEn: 'Môi trường chạy JavaScript', letter: 'N', groups: ['infra'], definition: 'Phần mềm cho phép chạy JavaScript ngoài trình duyệt — trên server, terminal. Next.js cần Node.js để chạy. Cài một lần, không cần hiểu sâu.', example: 'Lần đầu setup project: tải và cài Node.js từ nodejs.org → sau đó mọi lệnh npm đều dùng được.' },
@@ -476,7 +488,8 @@ const deepDiveTermIds = new Set([
   'fork',
   'pull',
   'push',
-  'gitignore'
+  'gitignore',
+  'merge'
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -1006,6 +1019,11 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Hosting là "mảnh đất" kỹ thuật nơi website của bạn cư trú. Nếu không có hosting, code của bạn chỉ là những tập tin nằm im trên máy tính cá nhân.',
     'Sự khác biệt giữa Local và Hosting: Local là môi trường riêng tư của bạn, Hosting là môi trường công cộng 24/7.',
     'Downtime (Thời gian chết): Là khi hosting gặp sự cố và người dùng không thể truy cập web. Với marketer, downtime đồng nghĩa với việc lãng phí ngân sách quảng cáo (ads đốt vào trang lỗi).',
+  ],
+  merge: [
+    'Merge là "điểm hội quân". Sau khi mọi người đi đánh lẻ trên các branch riêng, merge là lúc tất cả thành quả được gom lại một chỗ.',
+    'Có 2 loại merge phổ biến: Fast-forward (Git chỉ cần "kéo" mốc thời gian lên vì không có thay đổi nào chéo nhau) và Three-way merge (Git tạo ra một commit mới để gộp hai dòng lịch sử khác biệt).',
+    'Quy tắc an toàn: Trước khi merge nhánh của mình vào main, hãy merge main ngược lại vào nhánh mình trước để giải quyết mọi conflict ở "sân nhà" cho an toàn.',
   ],
 };
 
