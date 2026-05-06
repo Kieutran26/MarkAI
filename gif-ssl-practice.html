@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SSL Practice — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #1a1a18;
+    --bg-card: #222220;
+    --bg-elevated: #2a2a27;
+    --fg: #e8e4dd;
+    --fg-muted: #8a877e;
+    --accent: #e88c2e;
+    --accent-dim: #b97025;
+    --amber: #c9922a;
+    --green: #6b8f5e;
+    --red: #b54a4a;
+    --border: #3a3a36;
+    --border-light: #4a4a45;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Space Grotesk', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--sans);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+    background-size: 24px 24px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 24px 20px;
+  }
+
+  .practice-container {
+    width: 100%;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: relative;
+    transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .browser-mockup {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  }
+
+  .browser-header {
+    background: var(--bg);
+    padding: 10px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .dots { display: flex; gap: 6px; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border-light); }
+
+  .address-bar {
+    flex: 1;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 4px 12px;
+    font-family: var(--mono);
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .status-icon { font-size: 14px; }
+  .protocol-unsafe { color: var(--red); font-weight: 700; }
+  .protocol-safe { color: var(--green); font-weight: 700; display: none; }
+
+  .browser-content {
+    padding: 24px;
+    min-height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 12px;
+  }
+
+  .warning-banner {
+    background: rgba(181, 74, 74, 0.1);
+    border: 1px solid var(--red);
+    color: var(--red);
+    padding: 12px;
+    font-size: 12px;
+    border-radius: 4px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .secure-banner {
+    background: rgba(107, 143, 94, 0.1);
+    border: 1px solid var(--green);
+    color: var(--green);
+    padding: 12px;
+    font-size: 12px;
+    border-radius: 4px;
+    width: 100%;
+    display: none;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .input-field {
+    width: 100%;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 12px;
+    color: var(--fg);
+    font-family: var(--mono);
+    font-size: 14px;
+    outline: none;
+  }
+
+  .controls {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .btn {
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    padding: 12px;
+    font-family: var(--sans);
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 13px;
+  }
+  .btn:hover { background: var(--fg); transform: translateY(-2px); }
+  .btn:active { transform: translateY(0); }
+  .btn:disabled { background: var(--border); cursor: not-allowed; }
+
+  .btn-secondary {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--fg-muted);
+  }
+
+  /* Success State */
+  .is-secure .protocol-unsafe { display: none; }
+  .is-secure .protocol-safe { display: inline; }
+  .is-secure .warning-banner { display: none; }
+  .is-secure .secure-banner { display: flex; }
+  .is-secure .status-icon { color: var(--green); }
+
+  /* Animation for data transmission */
+  .data-log {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-muted);
+    background: var(--bg);
+    padding: 10px;
+    border: 1px solid var(--border);
+    min-height: 40px;
+    height: auto;
+    overflow: visible;
+  }
+
+  .log-entry { margin-bottom: 4px; border-left: 2px solid var(--accent); padding-left: 8px; }
+  .log-entry.secure { border-left-color: var(--green); }
+
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+  <div class="practice-container" id="app">
+    <div style="text-align: center; margin-bottom: 0;">
+      <h1 style="font-size: 18px; color: var(--accent);">Thực hành: Cài đặt SSL</h1>
+      <p style="font-size: 13px; color: var(--fg-muted);">Bảo mật trang web của bạn bằng cách chuyển sang HTTPS</p>
+    </div>
+
+    <div class="browser-mockup" id="browser">
+      <div class="browser-header">
+        <div class="dots">
+          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        </div>
+        <div class="address-bar">
+          <span class="status-icon" id="statusIcon">⚠️</span>
+          <span>
+            <span class="protocol-unsafe">http://</span><span class="protocol-safe">https://</span>shop-demo.com
+          </span>
+        </div>
+      </div>
+      <div class="browser-content">
+        <div class="warning-banner">
+          <span>⚠️</span>
+          <span>Kết nối không an toàn. Thông tin cá nhân có thể bị đánh cắp.</span>
+        </div>
+        <div class="secure-banner">
+          <span>🔒</span>
+          <span>Kết nối an toàn. Dữ liệu của bạn đã được mã hóa.</span>
+        </div>
+        
+        <div style="width: 100%; display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
+          <input type="password" class="input-field" placeholder="Nhập mật khẩu thử nghiệm..." id="passInput">
+          <button class="btn btn-secondary" style="padding: 8px; font-size: 11px;" id="sendBtn">Gửi dữ liệu</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="controls">
+      <button class="btn" id="installBtn">🛡️ Cài đặt Chứng chỉ SSL</button>
+      <div class="data-log" id="log">
+        <div style="color: var(--fg-muted); font-style: italic;">Nhật ký truyền dữ liệu sẽ hiển thị ở đây...</div>
+      </div>
+    </div>
+
+    <p style="font-size: 11px; color: var(--fg-muted); text-align: center; margin-top: 10px;">
+      * Trong thực tế, bạn cần mua SSL từ nhà cung cấp (CA) và cấu hình trên server.
+    </p>
+  </div>
+</div>
+
+<script>
+  const installBtn = document.getElementById('installBtn');
+  const sendBtn = document.getElementById('sendBtn');
+  const app = document.getElementById('app');
+  const browser = document.getElementById('browser');
+  const statusIcon = document.getElementById('statusIcon');
+  const passInput = document.getElementById('passInput');
+  const log = document.getElementById('log');
+
+  let isSecure = false;
+
+  installBtn.addEventListener('click', () => {
+    installBtn.disabled = true;
+    installBtn.innerText = '⌛ Đang xác thực danh tính...';
+    
+    setTimeout(() => {
+      isSecure = true;
+      browser.classList.add('is-secure');
+      statusIcon.innerText = '🔒';
+      installBtn.innerText = '✅ Đã cài đặt SSL thành công';
+      installBtn.style.background = 'var(--green)';
+      
+      const entry = document.createElement('div');
+      entry.className = 'log-entry secure';
+      entry.innerText = '[SYSTEM]: Chứng chỉ SSL đã được kích hoạt cho shop-demo.com';
+      log.prepend(entry);
+    }, 1500);
+  });
+
+  sendBtn.addEventListener('click', () => {
+    const val = passInput.value || 'password123';
+    const entry = document.createElement('div');
+    entry.className = isSecure ? 'log-entry secure' : 'log-entry';
+    
+    if (isSecure) {
+      // Simple scramble for visual effect
+      const encrypted = btoa(val).substring(0, 10) + '...';
+      entry.innerHTML = `[SENDING]: <span style="color:var(--green)">${encrypted}</span> (Dữ liệu đã mã hóa)`;
+    } else {
+      entry.innerHTML = `[SENDING]: <span style="color:var(--red)">${val}</span> (Dữ liệu văn bản thuần!)`;
+    }
+    
+    if (log.firstChild && log.firstChild.style.fontStyle) log.innerHTML = '';
+    log.prepend(entry);
+    passInput.value = '';
+  });
+</script>
+
+</body>
+</html>
