@@ -182,6 +182,8 @@ import sslDemoHtml from '../../gif-ssl-demo.html?raw';
 import sslPracticeHtml from '../../gif-ssl-practice.html?raw';
 import hostingDemoHtml from '../../gif-hosting-demo.html?raw';
 import hostingPracticeHtml from '../../gif-hosting-practice.html?raw';
+import interfaceDemoHtml from '../../gif-interface-demo.html?raw';
+import interfacePracticeHtml from '../../gif-interface-practice.html?raw';
 
 
 // Final sync for viewport practice update
@@ -292,6 +294,7 @@ export default function GlossaryTermDetailPage() {
       case 'env': return envDemoHtml;
       case 'ssl': return sslDemoHtml;
       case 'hosting': return hostingDemoHtml;
+      case 'interface': return interfaceDemoHtml;
       default: return null;
     }
   };
@@ -386,6 +389,7 @@ export default function GlossaryTermDetailPage() {
       case 'env': return envPracticeHtml;
       case 'ssl': return sslPracticeHtml;
       case 'hosting': return hostingPracticeHtml;
+      case 'interface': return interfacePracticeHtml;
       default: return null;
     }
   };

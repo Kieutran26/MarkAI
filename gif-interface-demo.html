@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interface Demo — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#1a1a18;--bgc:#222220;--bge:#2a2a27;--bgt:#161614;--fg:#e8e4dd;--fm:#8a877e;--ac:#E88C2E;--acd:#a84e22;--am:#c9922a;--gn:#6b8f5e;--rd:#b54a4a;--bl:#5e7a8f;--bd:#3a3a36;--bdl:#4a4a45;--mn:'JetBrains Mono',monospace;--sn:'Space Grotesk',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--fg);font-family:var(--sn);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(255,255,255,.018)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018)1px,transparent 1px);background-size:24px 24px;}
+.pw{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:16px 16px 40px;}
+.ss{border:1px solid var(--bd);background:var(--bgc);margin-bottom:28px;overflow:hidden;}
+.ss .sh{border-bottom:1px solid var(--bd);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;}
+.ss .sh h2{font-family:var(--mn);font-size:13px;font-weight:600;color:var(--ac);text-transform:uppercase;letter-spacing:1.5px;}
+.ss .sh .nm{font-family:var(--mn);font-size:11px;color:var(--fm);}
+.sb{padding:28px 20px;}
+.ins{background:var(--bge);border-left:3px solid var(--ac);padding:12px 16px;margin-top:20px;font-size:13px;color:var(--fm);line-height:1.6;}
+.ins strong{color:var(--fg);}.ins code{font-family:var(--mn);font-size:11px;color:var(--am);background:rgba(201,146,42,.1);padding:1px 5px;}
+.to{color:var(--fm);}.tg{color:var(--gn);}.tr{color:var(--rd);}.ta{color:var(--ac);}.tb{color:var(--bl);}.tv{color:var(--am);}
+
+/* S1: Flow diagram */
+.if-flow{display:flex;align-items:center;justify-content:center;gap:0;padding:20px;border:1px solid var(--bd);background:var(--bg);}
+.if-node{padding:14px 20px;border:1.5px solid var(--bdl);background:var(--bge);text-align:center;min-width:100px;transition:border-color .5s,background .5s;}
+.if-node.if-active{border-color:var(--ac);background:rgba(212,98,43,.06);animation:nodeGlow 2.5s ease-in-out infinite;}
+@keyframes nodeGlow{0%,100%{box-shadow:0 0 0 rgba(212,98,43,0);}50%{box-shadow:0 0 12px rgba(212,98,43,.15);}}
+.if-node-label{font-family:var(--mn);font-size:10px;color:var(--fm);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
+.if-node-name{font-size:14px;font-weight:600;}
+.if-arrow{width:40px;display:flex;align-items:center;justify-content:center;position:relative;}
+.if-arrow-track{width:100%;height:2px;background:var(--bd);position:relative;}
+.if-arrow-dot{position:absolute;width:6px;height:6px;background:var(--ac);top:-2px;box-shadow:0 0 5px rgba(212,98,43,.4);animation:arrowMove 2s ease-in-out infinite;}
+@keyframes arrowMove{0%{left:-6px;opacity:0;}10%{opacity:1;}90%{opacity:1;}100%{left:calc(100%);opacity:0;}}
+.if-arrow-dot:nth-child(2){animation-delay:.6s;opacity:.4;}
+.if-sub{font-size:12px;color:var(--fm);text-align:center;margin-top:10px;line-height:1.6;}
+
+/* S2: Types grid */
+.it-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;}
+@media(max-width:540px){.it-grid{grid-template-columns:1fr;}}
+.it-card{border:1px solid var(--bd);background:var(--bg);padding:16px 14px;display:flex;flex-direction:column;gap:8px;transition:border-color .3s;cursor:default;position:relative;overflow:hidden;}
+.it-card:hover{border-color:var(--bdl);}
+.it-card .it-visual{height:48px;display:flex;align-items:center;justify-content:center;gap:8px;border:1px solid var(--bd);background:var(--bgt);transition:border-color .3s;}
+.it-card:hover .it-visual{border-color:var(--bdl);}
+.it-card .it-name{font-family:var(--mn);font-size:12px;font-weight:600;color:var(--ac);}
+.it-card .it-desc{font-size:11px;color:var(--fm);line-height:1.5;}
+.it-card .it-example{font-family:var(--mn);font-size:10px;color:var(--bdl);margin-top:auto;padding-top:6px;border-top:1px solid var(--bd);}
+
+/* GUI mockup mini */
+.gui-mini{display:flex;gap:2px;}
+.gui-mini-w{height:20px;border:1px solid var(--bdl);background:var(--bge);}
+.gui-mini-b{height:8px;border:1px solid var(--bdl);background:var(--bge);}
+/* CLI mini */
+.cli-mini{font-family:var(--mn);font-size:9px;color:var(--gn);line-height:1.4;}
+/* Touch mini */
+.touch-mini{width:28px;height:28px;border:1.5px solid var(--bdl);position:relative;}
+.touch-dot{position:absolute;width:6px;height:6px;border-radius:50%;background:var(--ac);top:50%;left:50%;transform:translate(-50%,-50%);animation:touchTap 2s ease-in-out infinite;}
+@keyframes touchTap{0%,80%,100%{transform:translate(-50%,-50%) scale(1);}85%{transform:translate(-50%,-50%) scale(1.4);}}
+/* Voice mini */
+.voice-mini{display:flex;flex-direction:column;align-items:center;gap:2px;}
+.voice-wave{display:flex;align-items:center;gap:1px;height:16px;}
+.voice-bar{width:3px;background:var(--ac);border-radius:0;animation:vwave 1s ease-in-out infinite;}
+.voice-bar:nth-child(1){height:4px;animation-delay:0s;}.voice-bar:nth-child(2){height:8px;animation-delay:.15s;}.voice-bar:nth-child(3){height:14px;animation-delay:.3s;}.voice-bar:nth-child(4){height:8px;animation-delay:.45s;}.voice-bar:nth-child(5){height:4px;animation-delay:.6s;}
+@keyframes vwave{0%,100%{transform:scaleY(.5);}50%{transform:scaleY(1);}}
+
+/* S3: App mockup */
+.app-mock{border:1px solid var(--bd);background:var(--bg);overflow:hidden;}
+.app-bar{height:20px;background:var(--bge);border-bottom:1px solid var(--bd);display:flex;align-items:center;padding:0 8px;gap:3px;}
+.app-dot{width:5px;height:5px;border-radius:50%;background:var(--bdl);}
+.app-body{padding:10px;display:flex;flex-direction:column;gap:6px;min-height:120px;}
+.app-header{display:flex;align-items:center;gap:6px;}
+.app-avatar{width:24px;height:24px;border:1px solid var(--bdl);background:var(--bge);flex-shrink:0;}
+.app-info{flex:1;}
+.app-info-line{height:4px;background:var(--bdl);border-radius:1px;}
+.app-info-line:first-child{width:50%;background:var(--fg);opacity:.6;}
+.app-card-mock{border:1px solid var(--bd);background:var(--bge);padding:8px;display:flex;flex-direction:column;gap:4px;opacity:0;animation:cardIn .5s ease forwards;}
+.app-card-mock:nth-child(2){animation-delay:.3s;}.app-card-mock:nth-child(3){animation-delay:.6s;}
+@keyframes cardIn{to{opacity:1;}}
+.app-card-line{height:3px;background:var(--bdl);border-radius:1px;}
+.app-card-line.hl{background:var(--ac);}
+.app-btn-mock{height:10px;width:60px;background:var(--ac);border-radius:0;margin-top:4px;opacity:0;animation:fi .3s ease forwards;animation-delay:.9s;}
+.app-highlight{position:absolute;top:20px;left:0;right:0;bottom:0;pointer-events:none;border:2px solid var(--ac);opacity:0;animation:hlPulse 3s ease-in-out infinite 1.5s;}
+@keyframes hlPulse{0%,70%,100%{opacity:0;border-color:var(--ac);}35%{opacity:1;border-color:var(--ac);}40%{opacity:.3;border-color:var(--am);}}
+
+/* S4: Principles */
+.ip-list{display:flex;flex-direction:column;gap:0;border:1px solid var(--bd);background:var(--bg);}
+.ip-row{display:flex;align-items:stretch;border-bottom:1px solid var(--bd);transition:background .2s;cursor:default;overflow:hidden;}
+.ip-row:last-child{border-bottom:none;}
+.ip-row:hover{background:var(--bge);}
+.ip-icon{width:48px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:18px;border-right:1px solid var(--bd);background:var(--bge);}
+.ip-content{flex:1;padding:12px 16px;display:flex;flex-direction:column;gap:3px;}
+.ip-name{font-size:13px;font-weight:600;color:var(--fg);}
+.ip-desc{font-size:11px;color:var(--fm);line-height:1.5;}
+.ip-example{font-family:var(--mn);font-size:10px;color:var(--bdl);margin-top:4px;}
+.ip-badge{width:64px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:var(--mn);font-size:9px;color:var(--fm);border-left:1px solid var(--bd);writing-mode:vertical-lr;text-orientation:mixed;letter-spacing:1px;}
+
+.demo-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+@media (max-width: 768px) {
+  .demo-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div class="pw">
+  <div class="demo-grid">
+    <!-- S1 -->
+    <section class="ss" aria-label="Interface là gì">
+    <div class="sh"><h2>Interface là gì</h2><span class="nm">01 / 04</span></div>
+    <div class="sb">
+    <div class="if-flow">
+    <div class="if-node"><div class="if-node-label">User</div><div class="if-node-name">👤</div></div>
+    <div class="if-arrow"><div class="if-arrow-track"><div class="if-arrow-dot"></div><div class="if-arrow-dot"></div></div></div>
+    <div class="if-node if-active"><div class="if-node-label">Interface</div><div class="if-node-name">Giao diện</div></div>
+    <div class="if-arrow"><div class="if-arrow-track"><div class="if-arrow-dot" style="animation-delay:.4s;"></div><div class="if-arrow-dot" style="animation-delay:1s;"></div></div></div>
+    <div class="if-node"><div class="if-node-label">System</div><div class="if-node-name">⚙ Hệ thống</div></div>
+    </div>
+    <div class="if-sub"><span style="color:var(--fg);font-weight:500;">Interface = điểm tiếp xúc</span> giữa người dùng và hệ thống. Nó không phải "giao diện đẹp" — nó là <strong style="color:var(--fg);">cách bạn tương tác</strong> với một sản phẩm: click, gõ, nói, chạm, nhìn.</div>
+    <div class="ins"><strong> marketer nghĩ "interface" = thiết kế. Dev nghĩ "interface" = contract.</strong> Khi dev nói "xây interface" → họ đang tạo cách để frontend giao tiếp với backend (API). Khi designer nói "interface" → họ đang thiết kế cách user giao tiếp với app. Cùng từ, hai nghĩa.</div>
+    </div>
+    </section>
+
+    <!-- S2 -->
+    <section class="ss" aria-label="Các loại Interface">
+    <div class="sh"><h2>Các loại Interface</h2><span class="nm">02 / 04</span></div>
+    <div class="sb">
+    <div class="it-grid">
+    <div class="it-card">
+    <div class="it-visual"><div class="gui-mini"><div class="gui-mini-w" style="width:16px;"></div><div class="gui-mini-w" style="width:24px;"></div><div class="gui-mini-w" style="width:20px;"></div></div><div style="display:flex;flex-direction:column;gap:2px;"><div class="gui-mini-b"></div><div class="gui-mini-b" style="width:60%;"></div></div></div>
+    <div class="it-name">GUI — Graphical</div>
+    <div class="it-desc">Giao diện đồ họa: nút, form, menu. Click và nhìn để thao tác.</div>
+    <div class="it-example">Website, app mobile, dashboard</div>
+    </div>
+    <div class="it-card">
+    <div class="it-visual"><div class="cli-mini">$ git commit<br>-m "fix"</div></div>
+    <div class="it-name">CLI — Command Line</div>
+    <div class="it-desc">Gõ lệnh text trong terminal. Nhanh nhưng cần nhớ cú pháp.</div>
+    <div class="it-example">Terminal, Git bash, npm</div>
+    </div>
+    <div class="it-card">
+    <div class="it-visual"><div class="touch-mini"><div class="touch-dot"></div></div></div>
+    <div class="it-name">Touch Interface</div>
+    <div class="it-desc">Vuốt, pinch, chạm trực tiếp trên màn hình. Intuitive nhưng giới hạn thao tác phức tạp.</div>
+    <div class="it-example">Mobile app, tablet, POS</div>
+    </div>
+    <div class="it-card">
+    <div class="it-visual"><div class="voice-mini"><div class="voice-wave"><div class="voice-bar"></div><div class="voice-bar"></div><div class="voice-bar"></div><div class="voice-bar"></div><div class="voice-bar"></div></div></div></div>
+    <div class="it-name">Voice Interface</div>
+    <div class="it-desc">Nói để điều khiển. Không cần tay, nhưng hạn chế ngữ cảnh phức tạp.</div>
+    <div class="it-example">Siri, Alexa, Google Assistant</div>
+    </div>
+    </div>
+    <div class="ins"><strong>Marketer chủ yếu làm việc với GUI.</strong> Nhưng khi dev nói "API interface" → họ đang nói về CLI-type interface giữa các hệ thống. Biết 4 loại này → hiểu dev đang nói interface nào mà không hỏi lại.</div>
+    </div>
+    </section>
+
+    <!-- S3 -->
+    <section class="ss" aria-label="Interface trong thực tế">
+    <div class="sh"><h2>Interface trong thực tế</h2><span class="nm">03 / 04</span></div>
+    <div class="sb">
+    <div style="display:flex;gap:16px;align-items:stretch;" class="app-compare">
+    <div style="flex:0 0 160px;">
+    <div class="app-mock" style="position:relative;">
+    <div class="app-highlight"></div>
+    <div class="app-bar"><div class="app-dot"></div><div class="app-dot"></div><div class="app-dot"></div></div>
+    <div class="app-body">
+    <div class="app-header"><div class="app-avatar"></div><div class="app-info"><div class="app-info-line"></div><div class="app-info-line" style="width:30%;"></div></div></div>
+    <div class="app-card-mock"><div class="app-card-line hl" style="width:40%;"></div><div class="app-card-line" style="width:70%;"></div><div class="app-card-line" style="width:55%;"></div></div>
+    <div class="app-card-mock"><div class="app-card-line" style="width:60%;"></div><div class="app-card-line" style="width:85%;"></div></div>
+    <div class="app-card-mock"><div class="app-card-line hl" style="width:35%;"></div><div class="app-card-line" style="width:65%;"></div></div>
+    <div class="app-btn-mock"></div>
+    </div>
+    </div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;gap:8px;">
+    <div style="font-size:12px;color:var(--fm);line-height:1.6;">
+    <span style="color:var(--fg);font-weight:500;">Mỗi element bạn thấy = 1 interface element.</span><br><br>
+    <span style="color:var(--ac);">Avatar</span> — interface nhận diện người dùng<br>
+    <span style="color:var(--ac);">Card</span> — interface hiển thị thông tin sản phẩm<br>
+    <span style="color:var(--ac);">Button</span> — interface kích hoạt hành động<br>
+    <span style="color:var(--ac);">Input</span> — interface nhập dữ liệu
+    </div>
+    <div style="margin-top:auto;padding:8px 10px;border:1px solid var(--bd);background:var(--bge);font-size:11px;color:var(--fm);line-height:1.5;">
+    <span style="color:var(--am);">Border highlight cam</span> pulse → chỉ vào vùng "interface" giữa user và data.
+    </div>
+    </div>
+    </div>
+    <div class="ins"><strong>Interface không chỉ là "nhìn đẹp" — là mỗi điểm user tương tác.</strong> Button, form, avatar, card — tất cả đều là interface.</div>
+    </div>
+    </section>
+
+    <!-- S4 -->
+    <section class="ss" aria-label="Nguyên tắc Interface tốt">
+    <div class="sh"><h2>Nguyên tắc Interface tốt</h2><span class="nm">04 / 04</span></div>
+    <div class="sb">
+    <div class="ip-list">
+    <div class="ip-row">
+    <div class="ip-icon" style="color:var(--am);">👁</div>
+    <div class="ip-content"><div class="ip-name">Clarity — Rõ ràng</div><div class="ip-desc">User nhìn vào biết ngay phải làm gì. Không cần đoán, không cần tìm.</div><div class="ip-example">Nút "Đăng ký" rõ ràng > nút "Tiếp" mơ hồ</div></div>
+    <div class="ip-badge">PHÂN TÍCH</div>
+    </div>
+    <div class="ip-row">
+    <div class="ip-icon" style="color:var(--bl);">🔗</div>
+    <div class="ip-content"><div class="ip-name">Consistency — Nhất quán</div><div class="ip-desc">Cùng một kiểu tương tác xuất hiện ở mọi nơi. Không nút trái phải khác nhau.</div><div class="ip-example">Nút primary luôn cam ở mọi trang > trang này xanh trang kia đỏ</div></div>
+    <div class="ip-badge">KIỂM TRA</div>
+    </div>
+    <div class="ip-row">
+    <div class="ip-icon" style="color:var(--gn);">⚡</div>
+    <div class="ip-content"><div class="ip-name">Efficiency — Hiệu quả</div><div class="ip-desc">Ít bước nhất để hoàn thành việc. Không bắt đi vòng.</div><div class="ip-example">Checkout 1 bước > checkout 5 trang riêng biệt</div></div>
+    <div class="ip-badge">ĐO LƯỜNG</div>
+    </div>
+    <div class="ip-row">
+    <div class="ip-icon" style="color:var(--rd);">♿</div>
+    <div class="ip-content"><div class="ip-name">Accessibility — Tiếp cận</div><div class="ip-desc">Người khiếm khuyết vẫn dùng được. Không chỉ phục vụ người "bình thường".</div><div class="ip-example">Có alt text cho ảnh > ảnh vỡ không biết là gì</div></div>
+    <div class="ip-badge">QUY ĐỊNH</div>
+    </div>
+    </div>
+    <div class="ins"><strong>4 nguyên tắc này = checklist đánh giá interface.</strong></div>
+    </div>
+    </section>
+  </div>
+</div>
+</body>
+</html>

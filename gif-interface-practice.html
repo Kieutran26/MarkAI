@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interface Practice — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#1a1a18;--bgc:#222220;--bge:#2a2a27;--bgt:#161614;--fg:#e8e4dd;--fm:#8a877e;--ac:#E88C2E;--acd:#a84e22;--am:#c9922a;--gn:#6b8f5e;--rd:#b54a4a;--bl:#5e7a8f;--bd:#3a3a36;--bdl:#4a4a45;--mn:'JetBrains Mono',monospace;--sn:'Space Grotesk',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--fg);font-family:var(--sn);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+.pw{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:16px 16px 40px;}
+.ss{border:1px solid var(--bd);background:var(--bgc);margin-bottom:28px;overflow:hidden;}
+.ss .sh{border-bottom:1px solid var(--bd);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;}
+.ss .sh h2{font-family:var(--mn);font-size:13px;font-weight:600;color:var(--ac);text-transform:uppercase;letter-spacing:1.5px;}
+.sb{padding:28px 20px;}
+.ins{background:var(--bge);border-left:3px solid var(--ac);padding:12px 16px;margin-top:20px;font-size:13px;color:var(--fm);line-height:1.6;}
+
+/* Practice styles */
+.pt{border:1.5px dashed var(--bdl);background:rgba(212,98,43,.03);padding:24px;display:flex;flex-direction:column;gap:16px;}
+.pt-title{font-size:14px;font-weight:600;color:var(--fg);}
+.pt-area{display:flex;flex-direction:column;gap:12px;padding:20px;background:var(--bg);border:1px solid var(--bd);}
+.pt-row{display:flex;align-items:center;gap:12px;margin-bottom:8px;}
+.pt-label{font-family:var(--mn);font-size:11px;color:var(--fm);min-width:120px;}
+.pt-select{flex:1;height:32px;background:var(--bge);border:1px solid var(--bd);color:var(--fg);font-family:var(--sn);font-size:12px;padding:0 8px;outline:none;}
+.pt-select:focus{border-color:var(--ac);}
+.pt-preview{display:flex;gap:12px;margin-top:10px;min-height:120px;}
+.pt-prev-box{flex:1;border:1px solid var(--bd);background:var(--bge);padding:12px;display:flex;flex-direction:column;gap:8px;}
+.pt-prev-box.bad{border-color:rgba(181,74,74,.3);}
+.pt-prev-box.good{border-color:rgba(107,143,94,.3);}
+.pt-prev-label{font-family:var(--mn);font-size:10px;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
+.pt-prev-label.bad{color:var(--rd);}.pt-prev-label.good{color:var(--gn);}
+.pt-mock-btn{height:28px;background:var(--bdl);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--bg);font-weight:600;}
+.pt-feed{font-size:11px;color:var(--fm);line-height:1.4;margin-top:auto;}
+.pt-reset{margin-top:16px;align-self:flex-end;padding:8px 16px;background:var(--bg);border:1px solid var(--bd);color:var(--fm);font-family:var(--mn);font-size:10px;cursor:pointer;transition:all .2s;}
+.pt-reset:hover{color:var(--ac);border-color:var(--ac);}
+</style>
+</head>
+<body>
+<div class="pw">
+  <section class="ss pt-section">
+    <div class="sh"><h2>Thực hành: Tư duy Interface</h2></div>
+    <div class="sb">
+      <div class="pt">
+        <div class="pt-title">Tình huống: Thiết kế nút hành động chính</div>
+        <div class="pt-area">
+          <div class="pt-row">
+            <div class="pt-label">Element:</div>
+            <select class="pt-select" id="elemSelect">
+              <option value="btn">Button (Nút bấm)</option>
+              <option value="link">Link (Liên kết)</option>
+              <option value="icon">Icon (Biểu tượng)</option>
+            </select>
+          </div>
+          <div class="pt-row">
+            <div class="pt-label">Principle:</div>
+            <select class="pt-select" id="princSelect">
+              <option value="clarity">Clarity (Rõ ràng)</option>
+              <option value="consistency">Consistency (Nhất quán)</option>
+            </select>
+          </div>
+          <div class="pt-preview">
+            <div class="pt-prev-box bad">
+              <div class="pt-prev-label bad">Bad Interface</div>
+              <div id="prevBad"></div>
+              <div class="pt-feed" id="feedBad"></div>
+            </div>
+            <div class="pt-prev-box good">
+              <div class="pt-prev-label good">Good Interface</div>
+              <div id="prevGood"></div>
+              <div class="pt-feed" id="feedGood"></div>
+            </div>
+          </div>
+          <button class="pt-reset" id="resetBtn">RESET SIMULATION</button>
+        </div>
+        <div class="ins"><strong>Thử thay đổi Option để thấy sự khác biệt giữa Bad vs Good Interface.</strong> Interface tốt không chỉ là hình ảnh, mà là cách nó truyền đạt mục đích.</div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<script>
+const data = {
+  btn: {
+    clarity: {
+      bad: { label: 'Click', style: 'background:#3a3a36;color:#8a877e;', feed: 'Nút ghi "Click" rất mơ hồ. User không biết click xong chuyện gì xảy ra (Mua hàng? Xóa? Đóng?).' },
+      good: { label: 'Mua ngay', style: 'background:#E88C2E;color:#fff;', feed: 'Nút ghi rõ hành động (Mua ngay) + màu sắc nổi bật. User hiểu ngay kết quả khi bấm.' }
+    },
+    consistency: {
+      bad: { label: 'Submit', style: 'background:#5e7a8f;color:#fff;border-radius:20px;', feed: 'Nếu mọi nút khác trong app là hình vuông màu cam, nút này màu xanh bo góc sẽ làm user bối rối.' },
+      good: { label: 'Gửi tin', style: 'background:#E88C2E;color:#fff;border-radius:0;', feed: 'Giữ nguyên style chung (màu cam, góc vuông). Tạo thói quen nhận diện hành động cho user.' }
+    }
+  },
+  link: {
+    clarity: {
+      bad: { label: 'Tại đây', style: 'color:#8a877e;text-decoration:none;', feed: 'Link "Tại đây" bắt user phải đọc cả đoạn văn mới biết nó dẫn đi đâu. Không tối ưu cho việc quét nội dung.' },
+      good: { label: 'Xem bảng giá', style: 'color:#E88C2E;text-decoration:underline;', feed: 'Nội dung link tự thân nó đã giải thích điểm đến. Gạch chân giúp nhận diện đây là link.' }
+    },
+    consistency: {
+      bad: { label: 'Profile', style: 'color:#fff;background:#3a3a36;padding:2px 4px;', feed: 'Link trông giống Label hoặc Button nhỏ. User không biết đây là thứ có thể click được.' },
+      good: { label: 'Trang cá nhân', style: 'color:#E88C2E;', feed: 'Sử dụng màu Brand cho link xuyên suốt các trang giúp user tin tưởng vào tương tác.' }
+    }
+  },
+  icon: {
+    clarity: {
+      bad: { label: '⚙', style: 'font-size:20px;opacity:.4;', feed: 'Icon quá mờ hoặc đặt ở vị trí khó tìm khiến user không nhận ra đây là khu vực cài đặt.' },
+      good: { label: '⚙ Cài đặt', style: 'font-size:16px;color:#E88C2E;', feed: 'Icon đi kèm text nhãn là cách an toàn nhất để đảm bảo tính Rõ ràng cho Interface.' }
+    },
+    consistency: {
+      bad: { label: '☰', style: 'font-size:20px;', feed: 'Dùng icon menu khác lạ (ví dụ dấu chấm) thay vì Hamburger icon phổ biến sẽ làm tăng gánh nặng nhận thức.' },
+      good: { label: '☰ Menu', style: 'font-size:16px;', feed: 'Sử dụng các biểu tượng đã trở thành tiêu chuẩn ngành giúp interface dễ học, dễ dùng.' }
+    }
+  }
+};
+
+const elemSelect = document.getElementById('elemSelect');
+const princSelect = document.getElementById('princSelect');
+const prevBad = document.getElementById('prevBad');
+const prevGood = document.getElementById('prevGood');
+const feedBad = document.getElementById('feedBad');
+const feedGood = document.getElementById('feedGood');
+const resetBtn = document.getElementById('resetBtn');
+
+function update() {
+  const e = elemSelect.value;
+  const p = princSelect.value;
+  const item = data[e][p];
+
+  prevBad.innerHTML = `<div class="pt-mock-btn" style="${item.bad.style}">${item.bad.label}</div>`;
+  prevGood.innerHTML = `<div class="pt-mock-btn" style="${item.good.style}">${item.good.label}</div>`;
+  
+  feedBad.textContent = item.bad.feed;
+  feedGood.textContent = item.good.good || item.good.feed; // Fix fallback
+}
+
+elemSelect.onchange = update;
+princSelect.onchange = update;
+resetBtn.onclick = () => {
+  elemSelect.value = 'btn';
+  princSelect.value = 'clarity';
+  update();
+};
+
+update();
+</script>
+</body>
+</html>

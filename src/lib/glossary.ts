@@ -96,7 +96,26 @@ export const terms: GlossaryTerm[] = [
     demo: { kind: 'interactive', src: 'gif-hosting-demo.html', alt: 'Mô phỏng Hosting và quy trình vận hành' }
   },
   { id: 'inference', name: 'Inference', nameEn: 'AI xử lý và trả kết quả', letter: 'I', groups: ['ai'], definition: 'Quá trình AI nhận input (prompt của bạn) và tạo ra output (text, code, ảnh). Mỗi lần bạn hỏi AI và AI trả lời = một lần inference chạy trên server.', example: '"Inference cost" = chi phí mỗi lần gọi AI API. Khi dùng Claude API trong app, mỗi user message = một lần inference = một khoản phí nhỏ.' },
-  { id: 'interface', name: 'Interface (UI)', nameEn: 'Giao diện người dùng', letter: 'I', groups: ['design'], definition: 'Tất cả những gì người dùng nhìn và chạm vào — không phải logic phía sau. UI tốt là UI mà người dùng không cần đọc hướng dẫn cũng dùng được.', example: '"Tôi muốn redesign UI của tool nội bộ" → Prompt: mô tả layout mới bạn muốn, AI viết component React với giao diện đó.' },
+  { 
+    id: 'interface', 
+    name: 'Interface (UI)', 
+    nameEn: 'Giao diện người dùng', 
+    letter: 'I', 
+    groups: ['design'], 
+    definition: 'Interface (Giao diện) là điểm tiếp xúc giữa người dùng và hệ thống. Nó không chỉ là "vẻ ngoài đẹp" mà là cách bạn tương tác với sản phẩm qua việc click, chạm, gõ, nói hoặc nhìn. Một interface tốt giúp xóa nhòa ranh giới giữa ý định của người dùng và khả năng của máy móc.', 
+    example: 'Khi dev nói "xây interface" thường là API cho hệ thống giao tiếp. Khi designer nói "interface" là cách user giao tiếp với app. Ví dụ: "Nút Đăng ký rõ ràng > nút Tiếp mơ hồ" là cải thiện interface về tính Clarity (Rõ ràng).',
+    related: ['gui', 'cli', 'ux', 'accessibility'],
+    demo: {
+      kind: 'interactive',
+      src: 'gif-interface-demo.html',
+      alt: 'Simulation of Interface concepts'
+    },
+    practice: {
+      kind: 'interactive',
+      src: 'gif-interface-practice.html',
+      alt: 'Practice Interface design principles'
+    }
+  },
   { id: 'import', name: 'Import / Export', nameEn: 'Chia sẻ code giữa file', letter: 'I', groups: ['code'], definition: 'Cách một file dùng code từ file khác. Import = lấy vào. Export = chia sẻ ra. Khi AI tạo component, nó thường có "export default" để các trang khác import vào.', example: '"import Button from \'./Button\'" = trang này đang dùng component Button từ file Button.tsx. Nếu thiếu dòng này, component sẽ không hoạt động.' },
   { id: 'json', name: 'JSON', nameEn: 'Định dạng dữ liệu phổ biến', letter: 'J', groups: ['data', 'code'], definition: 'Định dạng text để trao đổi dữ liệu giữa hệ thống. Trông như: {"name": "Lan", "email": "lan@co.com"}. API thường trả về JSON.', example: 'Khi Airtable API trả dữ liệu, nó là JSON. Cursor/Claude sẽ parse JSON đó và hiển thị thành giao diện đẹp trên web.', related: ['api', 'request'] },
   { id: 'jsx', name: 'JSX', nameEn: 'JavaScript + HTML hợp nhất', letter: 'J', groups: ['code'], definition: 'Cú pháp viết HTML trong file JavaScript/TypeScript. React dùng JSX. Nhìn trông giống HTML nhưng có thêm logic. File .tsx là TypeScript + JSX.', example: 'Khi Cursor tạo component, nó tạo file .tsx với JSX. Chỉ cần biết đây là "HTML nâng cấp" mà AI viết cho bạn.' },
@@ -304,10 +323,17 @@ const deepDiveTermIds = new Set([
   'commit',
   'context',
   'ssl',
-  'hosting'
+  'hosting',
+  'interface'
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
+  interface: [
+    'Interface (Giao diện) không chỉ là thứ bạn nhìn thấy, mà là thứ bạn CẢM THẤY khi tương tác. Một giao diện tốt là giao diện "tàng hình" — nó giúp bạn đạt được mục tiêu mà không cần phải suy nghĩ về công cụ.',
+    'Sự rõ ràng (Clarity) quan trọng hơn sự bắt mắt. Một cái nút đẹp nhưng user không biết nó làm gì là một thất bại về interface.',
+    'Tính nhất quán (Consistency) giúp user giảm bớt gánh nặng nhận thức. Khi họ đã biết cách dùng một phần của app, họ sẽ biết cách dùng toàn bộ app.',
+    'Trong kỷ nguyên AI, interface đang chuyển dịch từ GUI (đồ họa) sang LUI (Language User Interface) — nơi bạn giao tiếp với phần mềm bằng ngôn ngữ tự nhiên.'
+  ],
   cli: [
     'CLI không phải là thứ gì đó "cổ đại". Ngược lại, nó là công cụ mạnh mẽ nhất của một developer hiện đại. Mọi AI tool như Claude Code hay Cursor đều có thể được điều khiển qua CLI.',
     'Sức mạnh thực sự của CLI nằm ở tính tự động hóa. Nếu bạn cần tạo 100 thư mục, GUI mất 10 phút click, CLI mất đúng 1 dòng lệnh.',
