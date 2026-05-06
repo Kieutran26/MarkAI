@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Context Demo — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#1a1a18;--bgc:#222220;--bge:#2a2a27;--bgt:#161614;--fg:#e8e4dd;--fm:#8a877e;--ac:#e88c2e;--acd:#c97522;--am:#c9922a;--gn:#6b8f5e;--rd:#b54a4a;--bl:#5e7a8f;--bd:#3a3a36;--bdl:#4a4a45;--mn:'JetBrains Mono',monospace;--sn:'Space Grotesk',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--fg);font-family:var(--sn);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(255,255,255,.018)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018)1px,transparent 1px);background-size:24px 24px;}
+.pw{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:24px;}
+
+.demo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 850px) {
+  .demo-grid { grid-template-columns: 1fr; }
+}
+
+.ss{border:1px solid var(--bd);background:var(--bgc);margin-bottom:0;overflow:hidden;display: flex;flex-direction: column;height: 100%;}
+.ss.full-width { grid-column: 1 / -1; }
+.ss .sh{border-bottom:1px solid var(--bd);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;background: rgba(255,255,255,0.02);}
+.ss .sh h2{font-family:var(--mn);font-size:11px;font-weight:700;color:var(--ac);text-transform:uppercase;letter-spacing:1px;}
+.ss .sh .nm{font-family:var(--mn);font-size:10px;color:var(--fm);}
+.sb{padding:20px;flex: 1;display: flex;flex-direction: column;}
+.ins{background:var(--bge);border-left:2px solid var(--ac);padding:12px 14px;margin-top:auto;font-size:12px;color:var(--fm);line-height:1.6;margin-top: 20px;}
+.ins strong{color:var(--fg);}
+.to{color:var(--fm);}.tg{color:var(--gn);}.tr{color:var(--rd);}.ta{color:var(--ac);}.tb{color:var(--bl);}.tv{color:var(--am);}
+
+/* S1: Bubble */
+.ctx-bubble{border:1px solid var(--bd);background:var(--bg);padding:20px;display:flex;flex-direction:column;align-items:center;gap:16px;flex: 1;justify-content: center;}
+.bubble-outer{width:220px;height:150px;border:2px dashed var(--bdl);display:flex;align-items:center;justify-content:center;position:relative;animation:breathe 3s ease-in-out infinite;}
+@keyframes breathe{0%,100%{border-color:var(--bdl);}50%{border-color:var(--acd);}}
+.bubble-label{position:absolute;top:-10px;left:50%;transform:translateX(-50%);font-family:var(--mn);font-size:10px;color:var(--fm);background:var(--bg);padding:0 12px;white-space:nowrap;z-index:10;}
+.bubble-inner{display:flex;flex-direction:column;gap:6px;align-items:center;}
+.bubble-item{font-family:var(--mn);font-size:11px;color:var(--fm);padding:3px 8px;border:1px solid var(--bd);background:var(--bgt);white-space:nowrap;display:flex;align-items:center;gap:6px;opacity:0;animation:bItemIn .4s ease forwards;}
+.bubble-item:nth-child(1){animation-delay:.3s;}.bubble-item:nth-child(2){animation-delay:.6s;}.bubble-item:nth-child(3){animation-delay:.9s;}.bubble-item:nth-child(4){animation-delay:1.2s;}.bubble-item:nth-child(5){animation-delay:1.5s;}
+@keyframes bItemIn{to{opacity:1;}}
+.bubble-item .bi-dot{width:5px;height:5px;flex-shrink:0;}
+
+/* S2: Prompt comparison */
+.prompt-compare{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--bd);background:var(--bg);overflow:hidden;flex: 1;}
+@media(max-width:500px){.prompt-compare{grid-template-columns:1fr;}}
+.pc-pane{padding:12px;display:flex;flex-direction:column;gap:8px;}
+.pc-pane:first-child{border-right:1px solid var(--bd);}
+@media(max-width:500px){.pc-pane:first-child{border-right:none;border-bottom:1px solid var(--bd);}}
+.pc-label{font-family:var(--mn);font-size:9px;text-transform:uppercase;letter-spacing:1px;}
+.pc-prompt{border:1px solid var(--bdl);background:var(--bgt);padding:8px;font-family:var(--mn);font-size:10px;line-height:1.6;color:var(--fm);flex:1;}
+.pc-result{font-size:11px;color:var(--fm);line-height:1.4;padding:6px 8px;border:1px solid var(--bd);background:var(--bge);}
+.pc-result.good{border-color:var(--gn);background:rgba(107,143,94,.04);}
+.pc-result.bad{border-color:var(--rd);background:rgba(181,74,74,.04);}
+
+/* S3: Context types */
+.ctx-types{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;flex: 1;}
+@media(max-width:600px){.ctx-types{grid-template-columns:repeat(2, 1fr);}}
+@media(max-width:450px){.ctx-types{grid-template-columns:1fr;}}
+.ct-card{border:1px solid var(--bd);background:var(--bg);padding:14px;display:flex;flex-direction:column;gap:6px;transition:border-color .3s;cursor:default;}
+.ct-card:hover{border-color:var(--bdl);}
+.ct-icon{width:28px;height:28px;border:1.5px solid var(--bdl);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;transition:border-color .3s;}
+.ct-card:hover .ct-icon{border-color:var(--acd);}
+.ct-name{font-family:var(--mn);font-size:11px;font-weight:600;color:var(--ac);}
+.ct-desc{font-size:10px;color:var(--fm);line-height:1.4;}
+.ct-example{font-family:var(--mn);font-size:10px;color:var(--bdl);border-top:1px solid var(--bd);padding-top:6px;margin-top:auto;white-space:pre-wrap;}
+
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
+</style>
+</head>
+<body>
+<div class="pw" id="app-root">
+  <div class="demo-grid">
+    <!-- S1: Định nghĩa -->
+    <section class="ss" aria-label="Bản chất Context">
+      <div class="sh"><h2>Bản chất Context</h2><span class="nm">CONCEPT</span></div>
+      <div class="sb">
+        <div class="ctx-bubble">
+          <div class="bubble-outer">
+            <div class="bubble-label">THÔNG TIN NỀN TẢNG</div>
+            <div class="bubble-inner">
+              <div class="bubble-item"><div class="bi-dot" style="background:var(--bl);"></div>Bạn là ai</div>
+              <div class="bubble-item"><div class="bi-dot" style="background:var(--am);"></div>Dự án gì</div>
+              <div class="bubble-item"><div class="bi-dot" style="background:var(--gn);"></div>Công nghệ gì</div>
+              <div class="bubble-item"><div class="bi-dot" style="background:var(--ac);"></div>Mục tiêu</div>
+            </div>
+          </div>
+          <div style="font-size:12px;color:var(--fm);line-height:1.6;text-align:center;">
+            <span style="color:var(--fg);font-weight:500;">Context = bối cảnh nền</span> để AI không phải "đoán mò".
+          </div>
+        </div>
+        <div class="ins"><strong>Context ≠ Prompt dài.</strong> Là prompt có đủ dữ liệu để AI hiểu ý đồ của bạn.</div>
+      </div>
+    </section>
+
+    <!-- S2: So sánh -->
+    <section class="ss" aria-label="So sánh hiệu quả">
+      <div class="sh"><h2>So sánh hiệu quả</h2><span class="nm">PROOF</span></div>
+      <div class="sb">
+        <div class="prompt-compare">
+          <div class="pc-pane">
+            <div class="pc-label" style="color:var(--rd);">Thiếu context</div>
+            <div class="pc-prompt">Viết landing page cho tôi</div>
+            <div class="pc-result bad">Generic, sai tone, không đúng brand.</div>
+          </div>
+          <div class="pc-pane">
+            <div class="pc-label" style="color:var(--gn);">Đủ context</div>
+            <div class="pc-prompt"><span class="to">[role]</span> Marketer SaaS<br><span class="to">[goal]</span> Tải app<br><span style="color:var(--fg);">Viết landing page</span></div>
+            <div class="pc-result good">Đúng brand, tone trẻ, dùng được ngay.</div>
+          </div>
+        </div>
+        <div class="ins">Cùng yêu cầu, kết quả khác biệt nhờ <strong>bối cảnh cụ thể</strong>.</div>
+      </div>
+    </section>
+
+    <!-- S3: 6 Loại Context -->
+    <section class="ss full-width" aria-label="6 Loại Context Cốt Lõi">
+      <div class="sh"><h2>6 Loại Context Cốt Lõi</h2><span class="nm">CHECKLIST</span></div>
+      <div class="sb">
+        <div class="ctx-types">
+          <div class="ct-card">
+            <div class="ct-icon" style="color:var(--bl);">👤</div>
+            <div class="ct-name">Role</div>
+            <div class="ct-desc">Bạn là ai?</div>
+            <div class="ct-example">"Tôi là marketer SaaS B2B"</div>
+          </div>
+          <div class="ct-card">
+            <div class="ct-icon" style="color:var(--am);">📦</div>
+            <div class="ct-name">Project</div>
+            <div class="ct-desc">Dự án gì?</div>
+            <div class="ct-example">"Target 20-30 tuổi"</div>
+          </div>
+          <div class="ct-card">
+            <div class="ct-icon" style="color:var(--gn);">🛠</div>
+            <div class="ct-name">Tech</div>
+            <div class="ct-desc">Công nghệ gì?</div>
+            <div class="ct-example">"React + Tailwind"</div>
+          </div>
+          <div class="ct-card">
+            <div class="ct-icon" style="color:var(--ac);">🎯</div>
+            <div class="ct-name">Goal</div>
+            <div class="ct-desc">Mục tiêu?</div>
+            <div class="ct-example">"Tăng CTA click rate"</div>
+          </div>
+          <div class="ct-card">
+            <div class="ct-icon" style="color:var(--rd);">⛔</div>
+            <div class="ct-name">Constraint</div>
+            <div class="ct-desc">Giới hạn?</div>
+            <div class="ct-example">"Tiếng Việt, không emoji"</div>
+          </div>
+          <div class="ct-card">
+            <div class="ct-icon" style="color:var(--fm);">📐</div>
+            <div class="ct-name">Format</div>
+            <div class="ct-desc">Định dạng?</div>
+            <div class="ct-example">"JSON, max 10 items"</div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+</body>
+</html>

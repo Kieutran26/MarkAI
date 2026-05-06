@@ -60,6 +60,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'commit', name: 'Commit', nameEn: 'Lưu checkpoint code', letter: 'C', groups: ['workflow', 'code'], definition: 'Hành động lưu lại một điểm trong lịch sử code. Giống như Save game — bạn có thể quay lại đây bất cứ lúc nào nếu AI làm vỡ project.', example: 'Sau khi hero section chạy ổn: "git commit -m \'hero section done\'". Dù AI có làm hỏng phần sau, bạn vẫn rollback về được.', related: ['git', 'repository'], demo: { kind: 'interactive', src: 'gif-commit-demo.html', alt: 'Mô phỏng quy trình commit và lịch sử git', caption: 'Commit giúp đóng băng trạng thái code và lưu vào lịch sử.' } },
   { id: 'component', name: 'Component', nameEn: 'Khối giao diện tái dùng', letter: 'C', groups: ['code', 'design'], definition: 'Một khối giao diện độc lập, có thể dùng lại nhiều lần. Button, card sản phẩm, navbar, form — đều là component. Thiết kế một lần, dùng ở khắp nơi trong web.', example: '"Tôi có 12 trang web nhưng muốn cùng 1 footer." Đây là lúc dùng Footer component — sửa một chỗ, cập nhật khắp nơi.', related: ['props', 'state'], demo: { kind: 'interactive', src: 'gif-component-demo.html', alt: 'Mô phỏng 4 loại component phổ biến và code minh họa' } },
   { id: 'contrast', name: 'Contrast', nameEn: 'Độ tương phản', letter: 'C', groups: ['design', 'code'], definition: 'Sự khác biệt về độ sáng (luminance) giữa chữ và nền. Độ tương phản cao giúp nội dung dễ đọc, đặc biệt quan trọng cho khả năng tiếp cận (accessibility). Chuẩn WCAG quy định các mức ratio như 4.5:1 cho chữ thường và 3:1 cho chữ lớn.', example: 'Prompt: "Kiểm tra độ tương phản của nút CTA này, nếu chưa đạt chuẩn AA (4.5:1) thì hãy chỉnh màu nền đậm hơn hoặc chữ sáng hơn."', related: ['accessibility', 'ui', 'color-palette', 'fontweight'], demo: { kind: 'interactive', src: 'gif-contrast-demo.html', alt: 'Mô phỏng các mức độ tương phản và chuẩn WCAG' } },
+  { id: 'context', name: 'Context', nameEn: 'Ngữ cảnh / Bối cảnh', letter: 'C', groups: ['ai'], definition: 'Toàn bộ thông tin nền tảng mà AI cần biết để đưa ra câu trả lời đúng. Context bao gồm role, project, tech, goal, constraint và format. Thiếu context là nguyên nhân chính khiến AI "đoán mò" và trả về kết quả generic.', example: 'Prompt: "Tôi là marketer SaaS, đang làm landing page cho app F&B bằng React + Tailwind. Mục tiêu là tăng tỷ lệ đăng ký. Hãy viết Hero headline." Trong đó, các thông tin bổ sung chính là context.', related: ['prompt', 'llm', 'context-window'], demo: { kind: 'interactive', src: 'gif-context-demo.html', alt: 'Mô phỏng 4 khía cạnh của Context: Definition, Comparison, Types và Process' } },
   { id: 'context-window', name: 'Context Window', nameEn: 'Bộ nhớ làm việc của AI', letter: 'C', groups: ['ai'], definition: 'Lượng text tối đa AI có thể "đọc" và xử lý trong một lần. Khi conversation quá dài, AI bắt đầu quên phần đầu.', example: '"Mình đã prompt rất nhiều nhưng AI bắt đầu sai lung tung" → Context window đầy rồi. Mở conversation mới và tóm tắt lại yêu cầu.', related: ['prompt', 'model'] },
   { id: 'css', name: 'CSS', nameEn: 'Cascading Style Sheets', letter: 'C', groups: ['design', 'code'], definition: 'Ngôn ngữ kiểm soát giao diện — màu sắc, kích thước, khoảng cách, font, layout. Nếu HTML là khung xương thì CSS là da thịt và quần áo.', example: 'Prompt: "Đổi màu nền hero section sang màu kem #f5f0e8, chữ heading to hơn, thêm padding trên dưới." → AI sẽ chỉnh CSS.', related: ['tailwind', 'flexbox'] },
   { id: 'deploy', name: 'Deploy', nameEn: 'Triển khai / Đưa lên server', letter: 'D', groups: ['infra', 'workflow'], definition: 'Quá trình đưa code từ môi trường bạn đang vibecode (như Cursor/Claude Code) lên server thực tế để mọi người truy cập. Quy trình này thường diễn ra tự động qua GitHub và Vercel: mỗi khi bạn "push" code mới, hệ thống sẽ tự động Build, Test và cập nhật bản Live. Nếu bản mới bị lỗi, bạn có thể dễ dàng Rollback về bản cũ trong tích tắc.', example: 'Sau khi bảo AI sửa xong giao diện, bạn gõ lệnh push. Vercel tự động nhận diện và chạy pipeline deploy. 5 phút sau, bạn thấy thay đổi xuất hiện trên link web chính thức của dự án.', related: ['build', 'vercel', 'git'], demo: { kind: 'interactive', src: 'gif-deploy-demo.html', alt: 'Mô phỏng quy trình deploy từ khi push code đến khi thành công hoặc rollback' } },
@@ -286,7 +287,8 @@ const deepDiveTermIds = new Set([
   'navigation',
   'cache',
   'cli',
-  'commit'
+  'commit',
+  'context'
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -320,6 +322,12 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
   api: [
     'Nghĩ theo kiểu marketer: API là chiếc ống nối giữa tool A và tool B, để dữ liệu tự chảy thay vì bạn copy tay.',
     'Chỉ cần nhớ 3 mảnh chính: endpoint để gọi đúng chỗ, request là dữ liệu mình gửi đi, response là thứ hệ thống trả về.',
+  ],
+  context: [
+    'Context là "la bàn" giúp AI không bị lạc đường. Một prompt không có context giống như việc bạn bảo thợ xây "xây cho tôi cái nhà" mà không đưa bản vẽ hay yêu cầu gì thêm.',
+    'Có 6 loại context cốt lõi: Role (Bạn là ai), Project (Dự án gì), Tech (Dùng gì), Goal (Mục tiêu gì), Constraint (Giới hạn gì), và Format (Kết quả dạng gì).',
+    'Marketer giỏi vibecode không phải là người viết prompt dài, mà là người biết chọn đúng loại context cần thiết cho từng yêu cầu.',
+    'Khi AI trả lời sai hoặc generic, 80% trường hợp là do thiếu context. Hãy bổ sung thêm bối cảnh thay vì chỉ bảo AI "làm lại đi".',
   ],
   cache: [
     'Cache là "vũ khí bí mật" của hiệu năng. Một website load nhanh không phải vì server nó mạnh, mà vì nó biết cách không gọi server quá nhiều.',
