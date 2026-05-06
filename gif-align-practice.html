@@ -4,125 +4,124 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Align Practice — Vibecode Glossary</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-    --bg:#141413;--bg-card:#1c1c1a;--fg:#e8e0d4;--muted:#6e6a63;
-    --accent:#d97706;--accent-dim:rgba(217,119,6,.12);
-    --border:#2e2c28;--border-hi:#3e3b35;--slate:#33312d;--cream:#f5f0e8;
-    --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+  --bg:#101010;--bgc:#181818;--bgi:#131313;
+  --bd:#272727;--tx:#e0e0e0;--txm:#707070;--txd:#3a3a3a;
+  --ac:#E88C2E;--acl:#ffb05c;
+  --abg:rgba(232,140,46,.08);--abg2:rgba(232,140,46,.18);
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--fg);font-family:var(--sans);min-height:100vh;-webkit-font-smoothing:antialiased;background-image:linear-gradient(rgba(255,255,255,.016) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.016) 1px,transparent 1px);background-size:20px 20px}
+body{
+  font-family:'Space Grotesk',sans-serif;
+  background-color:var(--bg);
+  background-image:
+    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:20px 20px;
+  color:var(--tx);min-height:100vh;padding:24px 16px;
+}
+.pr{max-width:900px;margin:0 auto}
+.pr-h{margin-bottom:24px;border-left:2px solid var(--ac);padding-left:16px}
+.pr-g{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ac);font-weight:700;letter-spacing:1px;margin-bottom:4px}
+.pr-d{font-size:13px;color:var(--txm)}
 
-.pr{padding:24px 20px 32px;max-width:920px;margin:0 auto}
-.pr-h{margin-bottom:16px}
-.pr-g{font-family:var(--mono);font-size:11px;color:var(--accent);margin-bottom:4px}
-.pr-d{font-size:12px;color:var(--muted)}
-
-.pr-layout{display:grid;grid-template-columns:300px 1fr;gap:20px}
+.pr-layout{display:grid;grid-template-columns:280px 1fr;gap:20px}
+@media(max-width:800px){.pr-layout{grid-template-columns:1fr}}
 
 .pr-ctrls{display:flex;flex-direction:column;gap:16px}
-.ctrl-grp{display:flex;flex-direction:column;gap:8px}
-.ctrl-l{font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
-.btn-grid{display:grid;grid-template-columns:1fr 1fr;gap:4px}
+.ctrl-grp{background:var(--bgc);border:1px solid var(--bd);padding:14px;border-radius:3px}
+.ctrl-l{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--txm);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;display:block}
+.btn-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .btn-grid.tr{grid-template-columns:1fr 1fr 1fr}
 
-.pr-btn{font-family:var(--mono);font-size:10px;padding:8px;background:var(--bg);color:var(--muted);border:1px solid var(--border);cursor:pointer;transition:all .2s;text-align:center}
-.pr-btn:hover{border-color:var(--border-hi);color:var(--fg)}
-.pr-btn.on{background:var(--accent);color:#0e0e0d;border-color:var(--accent);font-weight:600}
+.pr-btn{font-family:'JetBrains Mono',monospace;font-size:10px;padding:8px;background:var(--bg);color:var(--txm);border:1px solid var(--bd);cursor:pointer;transition:all .2s;text-align:center;border-radius:2px}
+.pr-btn:hover{border-color:var(--txd);color:var(--tx)}
+.pr-btn.on{background:var(--abg2);color:var(--ac);border-color:var(--ac);font-weight:700}
 
-.pr-prev{background:#0e0e0d;border:1px solid var(--border);position:relative;height:400px;display:flex;flex-direction:column;overflow:hidden}
-.prev-cont{flex:1;display:flex;padding:20px;gap:12px;transition:all .4s cubic-bezier(.4,0,.2,1);position:relative}
-.prev-cont::before{content:'';position:absolute;inset:20px;border:1px dashed rgba(255,255,255,0.05);pointer-events:none}
+.pr-prev{background:var(--bgc);border:1px solid var(--bd);position:relative;height:380px;display:flex;flex-direction:column;overflow:hidden;border-radius:3px}
+.prev-cont{flex:1;display:flex;padding:20px;gap:12px;transition:all .4s ease;position:relative}
+.prev-cont::before{content:'';position:absolute;inset:20px;border:1px dashed var(--txd);pointer-events:none}
 
-.p-card{width:80px;height:100px;background:var(--slate);border:1px solid var(--border-hi);display:flex;flex-direction:column;padding:8px;gap:6px;transition:all .4s}
-.p-av{width:20px;height:20px;border-radius:50%;background:var(--border);transition:all .4s}
-.p-t{height:6px;width:100%;background:var(--muted);border-radius:1px;transition:all .4s}
-.p-b{height:12px;width:100%;background:var(--accent-dim);border:1px solid var(--accent);margin-top:auto}
+.p-card{width:80px;height:100px;background:var(--bgi);border:1px solid var(--bd);display:flex;flex-direction:column;padding:8px;gap:6px;transition:all .4s;border-radius:2px}
+.p-av{width:22px;height:22px;border-radius:50%;background:var(--txd)}
+.p-t{height:6px;width:100%;background:var(--txd);border-radius:1px}
+.p-b{height:12px;width:100%;background:var(--abg);border:1px solid rgba(232,140,46,.2);margin-top:auto}
 
-.pr-f{font-family:var(--mono);font-size:11px;color:var(--fg);padding:14px 16px;margin-top:20px;background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--accent);line-height:1.6}
-.pr-f em{color:var(--accent);font-style:normal}
-
-@media(max-width:800px){
-    .pr-layout{grid-template-columns:1fr}
-    .pr-prev{height:300px}
-}
+.pr-f{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--tx);padding:14px 16px;margin-top:20px;background:var(--bgc);border:1px solid var(--bd);border-left:3px solid var(--ac);line-height:1.6}
+.pr-f em{color:var(--acl);font-style:normal;font-weight:700}
 </style>
 </head>
 <body>
 
-<main>
-<section class="pr">
-    <div class="pr-h">
-        <div class="pr-g">Align Laboratory</div>
-        <p class="pr-d">Thử nghiệm các thuộc tính căn lề và phân bổ không gian trong Flexbox.</p>
-    </div>
+<main class="pr">
+  <div class="pr-h">
+    <div class="pr-g">ALIGN LABORATORY</div>
+    <p class="pr-d">Thử nghiệm các thuộc tính căn lề và phân bổ không gian trong Flexbox.</p>
+  </div>
 
-    <div class="pr-layout">
-        <div class="pr-ctrls">
-            <div class="ctrl-grp">
-                <div class="ctrl-l">Justify Content (Phân bổ ngang)</div>
-                <div class="btn-grid tr">
-                    <button class="pr-btn on" data-prop="jc" data-val="flex-start">start</button>
-                    <button class="pr-btn" data-prop="jc" data-val="center">center</button>
-                    <button class="pr-btn" data-prop="jc" data-val="flex-end">end</button>
-                    <button class="pr-btn" data-prop="jc" data-val="space-between">between</button>
-                    <button class="pr-btn" data-prop="jc" data-val="space-around">around</button>
-                    <button class="pr-btn" data-prop="jc" data-val="space-evenly">evenly</button>
-                </div>
-            </div>
-
-            <div class="ctrl-grp">
-                <div class="ctrl-l">Align Items (Căn lề dọc)</div>
-                <div class="btn-grid">
-                    <button class="pr-btn on" data-prop="ai" data-val="flex-start">top</button>
-                    <button class="pr-btn" data-prop="ai" data-val="center">middle</button>
-                    <button class="pr-btn" data-prop="ai" data-val="flex-end">bottom</button>
-                    <button class="pr-btn" data-prop="ai" data-val="stretch">stretch</button>
-                </div>
-            </div>
-
-            <div class="ctrl-grp">
-                <div class="ctrl-l">Card Content Align</div>
-                <div class="btn-grid tr">
-                    <button class="pr-btn on" data-prop="ta" data-val="flex-start">left</button>
-                    <button class="pr-btn" data-prop="ta" data-val="center">center</button>
-                    <button class="pr-btn" data-prop="ta" data-val="flex-end">right</button>
-                </div>
-            </div>
+  <div class="pr-layout">
+    <div class="pr-ctrls">
+      <div class="ctrl-grp">
+        <span class="ctrl-l">Justify Content (Ngang)</span>
+        <div class="btn-grid tr">
+          <button class="pr-btn on" data-prop="jc" data-val="flex-start">start</button>
+          <button class="pr-btn" data-prop="jc" data-val="center">center</button>
+          <button class="pr-btn" data-prop="jc" data-val="flex-end">end</button>
+          <button class="pr-btn" data-prop="jc" data-val="space-between">between</button>
+          <button class="pr-btn" data-prop="jc" data-val="space-around">around</button>
+          <button class="pr-btn" data-prop="jc" data-val="space-evenly">evenly</button>
         </div>
+      </div>
 
-        <div class="pr-prev">
-            <div class="prev-cont" id="pcont" style="justify-content: flex-start; align-items: flex-start;">
-                <div class="p-card" style="align-items: flex-start;">
-                    <div class="p-av"></div>
-                    <div class="p-t" style="width: 80%"></div>
-                    <div class="p-t" style="width: 50%"></div>
-                    <div class="p-b"></div>
-                </div>
-                <div class="p-card" style="height: 120px; align-items: flex-start;">
-                    <div class="p-av"></div>
-                    <div class="p-t" style="width: 90%"></div>
-                    <div class="p-t" style="width: 60%"></div>
-                    <div class="p-b"></div>
-                </div>
-                <div class="p-card" style="align-items: flex-start;">
-                    <div class="p-av"></div>
-                    <div class="p-t" style="width: 70%"></div>
-                    <div class="p-t" style="width: 40%"></div>
-                    <div class="p-b"></div>
-                </div>
-            </div>
+      <div class="ctrl-grp">
+        <span class="ctrl-l">Align Items (Dọc)</span>
+        <div class="btn-grid">
+          <button class="pr-btn on" data-prop="ai" data-val="flex-start">top</button>
+          <button class="pr-btn" data-prop="ai" data-val="center">middle</button>
+          <button class="pr-btn" data-prop="ai" data-val="flex-end">bottom</button>
+          <button class="pr-btn" data-prop="ai" data-val="stretch">stretch</button>
         </div>
+      </div>
+
+      <div class="ctrl-grp">
+        <span class="ctrl-l">Card Content Align</span>
+        <div class="btn-grid tr">
+          <button class="pr-btn on" data-prop="ta" data-val="flex-start">left</button>
+          <button class="pr-btn" data-prop="ta" data-val="center">center</button>
+          <button class="pr-btn" data-prop="ta" data-val="flex-end">right</button>
+        </div>
+      </div>
     </div>
 
-    <div class="pr-f" id="pf">
-        Sử dụng <em>justify-content: flex-start</em> để xếp các phần tử từ đầu hàng.
+    <div class="pr-prev">
+      <div class="prev-cont" id="pcont" style="justify-content: flex-start; align-items: flex-start;">
+        <div class="p-card" style="align-items: flex-start;">
+          <div class="p-av"></div>
+          <div class="p-t" style="width: 80%"></div>
+          <div class="p-t" style="width: 50%"></div>
+          <div class="p-b"></div>
+        </div>
+        <div class="p-card" style="height: 120px; align-items: flex-start;">
+          <div class="p-av"></div>
+          <div class="p-t" style="width: 90%"></div>
+          <div class="p-t" style="width: 60%"></div>
+          <div class="p-b"></div>
+        </div>
+        <div class="p-card" style="align-items: flex-start;">
+          <div class="p-av"></div>
+          <div class="p-t" style="width: 70%"></div>
+          <div class="p-t" style="width: 40%"></div>
+          <div class="p-b"></div>
+        </div>
+      </div>
     </div>
-</section>
+  </div>
+
+  <div class="pr-f" id="pf">
+    CSS: <em>mặc định (flex-start)</em>
+  </div>
 </main>
 
 <script>
@@ -142,41 +141,30 @@ body{background:var(--bg);color:var(--fg);font-family:var(--sans);min-height:100
         pcont.style.justifyContent = state.jc;
         pcont.style.alignItems = state.ai;
         
-        cards.forEach(function(card){
+        cards.forEach(function(card, idx){
             card.style.alignItems = state.ta;
+            // Restore original heights if not stretch
             if(state.ai === 'stretch') {
                 card.style.height = '100%';
             } else {
-                // Restore original heights if not stretch
-                if(card.textContent === '') { // Just a trick to identify them or use index
-                   // card.style.height = '100px'; 
-                }
+                card.style.height = (idx === 1) ? '120px' : '100px';
             }
         });
 
-        // Specific fix for stretch vs fixed heights in demo
-        cards[0].style.height = state.ai === 'stretch' ? '100%' : '100px';
-        cards[1].style.height = state.ai === 'stretch' ? '100%' : '120px';
-        cards[2].style.height = state.ai === 'stretch' ? '100%' : '100px';
-
         var msg = "";
-        if(state.jc !== 'flex-start') msg = "justify-content: " + state.jc + "; ";
+        if(state.jc !== 'flex-start') msg += "justify-content: " + state.jc + "; ";
         if(state.ai !== 'flex-start') msg += "align-items: " + state.ai + "; ";
         if(state.ta !== 'flex-start') msg += "content-align: " + state.ta + ";";
 
-        if(!msg) msg = "Mọi thứ đang ở trạng thái mặc định (flex-start).";
-        pf.innerHTML = "CSS: <em>" + (msg || "mặc định") + "</em>";
+        pf.innerHTML = "CSS: <em>" + (msg || "mặc định (flex-start)") + "</em>";
     }
 
     btns.forEach(function(btn){
         btn.addEventListener('click', function(){
             var prop = btn.dataset.prop;
             var val = btn.dataset.val;
-
-            // Update state
             state[prop] = val;
 
-            // Update buttons
             document.querySelectorAll('.pr-btn[data-prop="'+prop+'"]').forEach(function(b){
                 b.classList.remove('on');
             });
