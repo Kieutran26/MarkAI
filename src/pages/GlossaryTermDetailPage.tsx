@@ -168,6 +168,8 @@ import cacheDemoHtml from '../../gif-cache-demo.html?raw';
 import cachePracticeHtml from '../../gif-cache-practice.html?raw';
 import cliDemoHtml from '../../gif-cli-demo.html?raw';
 import cliPracticeHtml from '../../gif-cli-practice.html?raw';
+import cssDemoHtml from '../../gif-css-demo.html?raw';
+import cssPracticeHtml from '../../gif-css-practice.html?raw';
 import commitPracticeHtml from '../../gif-commit-practice.html?raw';
 import contextDemoHtml from '../../gif-context-demo.html?raw';
 import contextPracticeHtml from '../../gif-context-practice.html?raw';
@@ -204,6 +206,7 @@ export default function GlossaryTermDetailPage() {
       case 'button-group': return buttongroupDemoHtml;
       case 'radius': return radiusDemoHtml;
       case 'corner': return cornerDemoHtml;
+      case 'css': return cssDemoHtml;
       case 'card': return cardDemoHtml;
       case 'frontend': return frontendDemoHtml;
       case 'backend': return backendDemoHtml;
@@ -289,6 +292,7 @@ export default function GlossaryTermDetailPage() {
       case 'line-spacing': return lineSpacingPracticeHtml;
       case 'line-height': return lineheightPracticeHtml;
       case 'border': return borderPracticeHtml;
+      case 'css': return cssPracticeHtml;
       case 'button': return buttonPracticeHtml;
       case 'button-group': return buttongroupPracticeHtml;
       case 'radius': return radiusPracticeHtml;

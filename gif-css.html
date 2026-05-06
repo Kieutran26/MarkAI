@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CSS — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#1a1a18;--bg-card:#222220;--bg-elevated:#2a2a27;--bg-term:#161614;
+    --fg:#e8e4dd;--fg-muted:#8a877e;
+    --accent:#d4622b;--accent-dim:#a84e22;--amber:#c9922a;
+    --green:#6b8f5e;--red:#b54a4a;--blue:#5e7a8f;
+    --border:#3a3a36;--border-light:#4a4a45;
+    --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--fg);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+  body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:24px 24px;}
+  .pw{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:32px 20px 64px;}
+
+  .term-header{border-bottom:2px solid var(--border);padding-bottom:24px;margin-bottom:40px;}
+  .term-header .label{font-family:var(--mono);font-size:11px;color:var(--accent);text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;}
+  .term-header h1{font-size:clamp(36px,6vw,56px);font-weight:700;letter-spacing:-2px;line-height:1;}
+  .term-header .group-tag{display:inline-block;margin-top:12px;font-family:var(--mono);font-size:11px;color:var(--fg-muted);border:1px solid var(--border);padding:3px 8px;}
+
+  .ss{border:1px solid var(--border);background:var(--bg-card);margin-bottom:28px;overflow:hidden;}
+  .ss .sh{border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;}
+  .ss .sh h2{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;}
+  .ss .sh .num{font-family:var(--mono);font-size:11px;color:var(--fg-muted);}
+  .sb{padding:28px 20px;}
+  .insight{background:var(--bg-elevated);border-left:3px solid var(--accent);padding:12px 16px;margin-top:20px;font-size:13px;color:var(--fg-muted);line-height:1.6;}
+  .insight strong{color:var(--fg);}
+  .insight code{font-family:var(--mono);font-size:11px;color:var(--amber);background:rgba(201,146,42,.1);padding:1px 5px;}
+
+  /* ===== Code syntax ===== */
+  .syn-sel{color:var(--green);}.syn-prop{color:var(--blue);}.syn-val{color:var(--amber);}.syn-str{color:var(--accent);}.syn-cmt{color:var(--fg-muted);opacity:.5;}.syn-brace{color:var(--fg-muted);}
+  .syn-tag{color:var(--red);}.syn-attr{color:var(--amber);}.syn-eq{color:var(--fg-muted);}
+
+  /* ===== S1: What is CSS ===== */
+  .css-flow{display:flex;gap:0;border:1px solid var(--border);background:var(--bg);overflow:hidden;}
+  @media(max-width:600px){.css-flow{flex-direction:column;}}
+  .cf-pane{flex:1;padding:18px 14px;display:flex;flex-direction:column;gap:8px;min-height:160px;}
+  .cf-pane:first-child{border-right:1px solid var(--border);}
+  @media(max-width:600px){.cf-pane:first-child{border-right:none;border-bottom:1px solid var(--border);}}
+  .cf-label{font-family:var(--mono);font-size:10px;color:var(--fg-muted);text-transform:uppercase;letter-spacing:1px;}
+
+  .cf-file{border:1px solid var(--border-light);background:var(--bg-term);padding:8px 10px;font-family:var(--mono);font-size:10px;line-height:1.7;flex:1;}
+  .cf-file .fl{opacity:0;animation:flIn .3s ease forwards;}
+  .cf-file .fl:nth-child(1){animation-delay:.2s;}.cf-file .fl:nth-child(2){animation-delay:.5s;}.cf-file .fl:nth-child(3){animation-delay:.8s;}.cf-file .fl:nth-child(4){animation-delay:1.1s;}.cf-file .fl:nth-child(5){animation-delay:1.4s;}.cf-file .fl:nth-child(6){animation-delay:1.7s;}
+  @keyframes flIn{to{opacity:1;}}
+
+  .cf-browser{border:1px solid var(--border-light);background:var(--bg-elevated);flex:1;position:relative;overflow:hidden;display:flex;flex-direction:column;}
+  .cf-browser-bar{height:18px;background:var(--bg-card);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 8px;gap:4px;}
+  .cf-browser-dot{width:6px;height:6px;border-radius:50%;background:var(--border-light);}
+  .cf-browser-body{flex:1;padding:12px;display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:center;}
+  .cf-browser h3{font-size:18px;font-weight:700;opacity:0;animation:txtIn .5s ease forwards;animation-delay:1.8s;}
+  .cf-browser p{font-size:11px;color:var(--fg-muted);opacity:0;animation:txtIn .5s ease forwards;animation-delay:2.2s;}
+  .cf-browser .cf-btn{padding:6px 16px;font-size:11px;font-weight:600;border:none;opacity:0;animation:txtIn .5s ease forwards;animation-delay:2.6s;}
+  @keyframes txtIn{to{opacity:1;}}
+
+  .cf-connector{display:flex;align-items:center;justify-content:center;width:36px;flex-shrink:0;position:relative;}
+  @media(max-width:600px){.cf-connector{width:100%;height:36px;}.cf-connector .conn-v{display:flex;flex-direction:column;align-items:center;}}
+  .conn-track{width:100%;height:1.5px;background:var(--border);}
+  .conn-dot{position:absolute;width:5px;height:5px;background:var(--accent);top:-1.75px;box-shadow:0 0 4px rgba(212,98,43,.4);animation:connMove 1.8s ease-in-out infinite;}
+  @keyframes connMove{0%{left:-5px;opacity:0;}10%{opacity:1;}90%{opacity:1;}100%{left:calc(100% + 2px);opacity:0;}}
+
+  /* ===== S2: Selector + Declaration ===== */
+  .sd-demo{display:flex;gap:0;border:1px solid var(--border);background:var(--bg);overflow:hidden;}
+  @media(max-width:600px){.sd-demo{flex-direction:column;}}
+  .sd-code{flex:1;padding:16px;border-right:1px solid var(--border);font-family:var(--mono);font-size:12px;line-height:2;background:var(--bg-term);}
+  @media(max-width:600px){.sd-code{border-right:none;border-bottom:1px solid var(--border);}}
+  .sd-code .sdl{opacity:0;animation:flIn .3s ease forwards;position:relative;cursor:default;transition:background .2s;padding:0 4px;margin:0 -4px;}
+  .sd-code .sdl:hover{background:rgba(255,255,255,.04);}
+  .sd-code .sdl:nth-child(1){animation-delay:.2s;}.sd-code .sdl:nth-child(2){animation-delay:.6s;}.sd-code .sdl:nth-child(3){animation-delay:1s;}.sd-code .sdl:nth-child(4){animation-delay:1.4s;}.sd-code .sdl:nth-child(5){animation-delay:1.8s;}
+  .sd-code .sdl.active-line{background:rgba(212,98,43,.08);border-left:2px solid var(--accent);padding-left:2px;}
+  .sd-anno{flex:1;padding:16px;display:flex;flex-direction:column;gap:10px;justify-content:center;}
+  .sd-anno-item{padding:10px 12px;border:1px solid var(--border);background:var(--bg);font-size:12px;color:var(--fg-muted);line-height:1.5;opacity:0;animation:annoIn .4s ease forwards;}
+  .sd-anno-item:nth-child(1){animation-delay:.4s;}.sd-anno-item:nth-child(2){animation-delay:.9s;}.sd-anno-item:nth-child(3){animation-delay:1.5s;}
+  @keyframes annoIn{to{opacity:1;}}
+  .sd-anno-item .ai-label{font-family:var(--mono);font-size:10px;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
+
+  /* ===== S3: Box Model ===== */
+  .bm-visual{display:flex;align-items:center;justify-content:center;padding:20px;border:1px solid var(--border);background:var(--bg);position:relative;}
+  .bm-margin{border:2px dashed var(--border-light);padding:16px;position:relative;animation:bmPulse 3s ease-in-out infinite;}
+  @keyframes bmPulse{0%,100%{border-color:var(--border-light);}50%{border-color:var(--fg-muted);}}
+  .bm-margin-label{position:absolute;top:-10px;left:12px;font-family:var(--mono);font-size:9px;color:var(--fg-muted);background:var(--bg);padding:0 4px;letter-spacing:1px;}
+  .bm-border{border:3px solid var(--amber);padding:14px;position:relative;}
+  .bm-border-label{position:absolute;top:-10px;left:12px;font-family:var(--mono);font-size:9px;color:var(--amber);background:var(--bg);padding:0 4px;letter-spacing:1px;}
+  .bm-padding{border:2px dashed var(--green);padding:14px;position:relative;animation:bmPulse2 3s ease-in-out infinite .5s;}
+  @keyframes bmPulse2{0%,100%{border-color:rgba(107,143,94,.4);}50%{border-color:var(--green);}}
+  .bm-padding-label{position:absolute;top:-10px;left:12px;font-family:var(--mono);font-size:9px;color:var(--green);background:var(--bg);padding:0 4px;letter-spacing:1px;}
+  .bm-content{background:var(--accent);padding:14px 20px;min-width:100px;text-align:center;font-family:var(--mono);font-size:11px;color:#fff;font-weight:600;}
+  .bm-content-label{position:absolute;bottom:-10px;left:50%;transform:translateX(-50%);font-family:var(--mono);font-size:9px;color:var(--accent);background:var(--bg);padding:0 4px;letter-spacing:1px;white-space:nowrap;}
+
+  /* Dimension lines */
+  .bm-dim-row{display:flex;gap:16px;margin-top:16px;flex-wrap:wrap;}
+  .bm-dim{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:11px;}
+  .bm-dim-swatch{width:16px;height:4px;flex-shrink:0;}
+  .bm-dim-name{color:var(--fg-muted);min-width:60px;}
+  .bm-dim-val{color:var(--fg);font-weight:600;}
+
+  /* ===== S4: Responsive ===== */
+  .resp-showcase{display:flex;gap:12px;border:1px solid var(--border);background:var(--bg);padding:20px;align-items:flex-end;overflow-x:auto;-webkit-overflow-scrolling:touch;}
+  .resp-device{display:flex;flex-direction:column;gap:6px;flex-shrink:0;opacity:0;animation:devIn .5s ease forwards;}
+  .resp-device:nth-child(1){animation-delay:.2s;}.resp-device:nth-child(2){animation-delay:.5s;}.resp-device:nth-child(3){animation-delay:.8s;}
+  @keyframes devIn{to{opacity:1;}}
+  .resp-device-label{font-family:var(--mono);font-size:10px;color:var(--fg-muted);text-align:center;}
+  .resp-device-frame{border:1.5px solid var(--border-light);background:var(--bg-elevated);overflow:hidden;transition:border-color .4s;}
+  .resp-device-frame.rf-active{border-color:var(--accent);}
+  .resp-device-topbar{height:6px;background:var(--bg-card);border-bottom:1px solid var(--border);}
+  .resp-device-body{padding:6px;display:flex;flex-direction:column;gap:3px;}
+  .resp-bar{height:3px;background:var(--border-light);border-radius:1px;transition:width .4s,background .4s;}
+  .resp-bar.heading{background:var(--accent);}
+  .resp-bar.text{background:var(--border-light);}
+  .resp-bar.grid-item{background:var(--border-light);}
+  .resp-btn-mock{height:8px;background:var(--accent);width:40px;margin-top:2px;transition:width .4s;}
+
+  .resp-code{border:1px solid var(--border);background:var(--bg-term);padding:14px 16px;font-family:var(--mono);font-size:11px;line-height:1.8;margin-top:14px;}
+  .resp-code .rl{opacity:0;animation:flIn .3s ease forwards;}
+  .resp-code .rl:nth-child(1){animation-delay:1s;}.resp-code .rl:nth-child(2){animation-delay:1.3s;}.resp-code .rl:nth-child(3){animation-delay:1.6s;}.resp-code .rl:nth-child(4){animation-delay:1.9s;}.resp-code .rl:nth-child(5){animation-delay:2.2s;}
+
+  /* ===== PRACTICE ===== */
+  .practice-section{border:2px solid var(--accent);background:var(--bg-card);margin-top:40px;overflow:visible;}
+  .practice-section .section-head{border-bottom:2px solid var(--accent);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;background:rgba(212,98,43,.06);}
+  .practice-section .section-head h2{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;}
+  .practice-body{padding:24px 20px 32px;}
+  .practice-goal{font-size:13px;color:var(--fg-muted);margin-bottom:20px;line-height:1.6;}
+  .practice-goal strong{color:var(--fg);}
+
+  .slider-group{margin-bottom:14px;}
+  .slider-group label{display:flex;justify-content:space-between;align-items:center;font-family:var(--mono);font-size:11px;color:var(--fg-muted);margin-bottom:6px;}
+  .slider-group label .sv{color:var(--accent);font-weight:600;min-width:44px;text-align:right;}
+  input[type="range"]{-webkit-appearance:none;appearance:none;width:100%;height:4px;background:var(--border);outline:none;}
+  input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;background:var(--accent);cursor:pointer;border:2px solid var(--bg);border-radius:0;}
+  input[type="range"]::-moz-range-thumb{width:16px;height:16px;background:var(--accent);cursor:pointer;border:2px solid var(--bg);border-radius:0;}
+
+  .preview-area{border:1px solid var(--border);background:var(--bg);padding:24px;display:flex;align-items:center;justify-content:center;min-height:180px;margin-bottom:14px;position:relative;}
+  .box-preview{border:3px solid var(--amber);padding:14px;background:var(--bg-elevated);transition:all .15s ease;position:relative;}
+  .box-content{background:var(--accent);padding:10px 20px;font-family:var(--mono);font-size:12px;color:#fff;font-weight:600;text-align:center;transition:all .15s ease;min-width:80px;}
+
+  .code-output{border:1px solid var(--border);background:var(--bg-term);padding:14px 16px;font-family:var(--mono);font-size:11px;line-height:1.8;overflow-x:auto;}
+  .reset-btn{font-family:var(--mono);font-size:11px;padding:8px 16px;border:1px solid var(--border);background:var(--bg);color:var(--fg-muted);cursor:pointer;margin-top:12px;transition:border-color .2s,color:.2s;}
+  .reset-btn:hover{border-color:var(--accent);color:var(--accent);}
+  .hint{font-size:11px;color:var(--fg-muted);opacity:.7;margin-top:14px;font-style:italic;}
+  .hint::before{content:'>';font-family:var(--mono);color:var(--accent);margin-right:6px;}
+  .divider{height:1px;background:var(--border);margin:40px 0;position:relative;}
+  .divider::after{content:'';position:absolute;left:0;top:0;width:60px;height:1px;background:var(--accent);}
+  @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important;}}
+</style>
+</head>
+<body>
+<div class="pw">
+
+  <header class="term-header">
+    <div class="label">Thuật ngữ / Design</div>
+    <h1>CSS</h1>
+    <span class="group-tag">design</span>
+  </header>
+
+  <!-- ===== S1: What is CSS ===== -->
+  <section class="ss" aria-label="CSS là gì">
+    <div class="sh"><h2>CSS là gì</h2><span class="num">01 / 04</span></div>
+    <div class="sb">
+      <div class="css-flow">
+        <div class="cf-pane">
+          <div class="cf-label">index.html</div>
+          <div class="cf-file">
+            <div class="fl"><span class="syn-tag">&lt;h1&gt;</span>Hello<span class="syn-tag">&lt;/h1&gt;</div>
+            <div class="fl"><span class="syn-tag">&lt;p&gt;</span>Mô tả<span class="syn-tag">&lt;/p&gt;</div>
+            <div class="fl"><span class="syn-tag">&lt;button&gt;</span>Click<span class="syn-tag">&lt;/button&gt;</div>
+          </div>
+        </div>
+        <div class="cf-connector">
+          <div class="conn-track"><div class="conn-dot"></div></div>
+        </div>
+        <div class="cf-pane">
+          <div class="cf-label">style.css</div>
+          <div class="cf-file">
+            <div class="fl"><span class="syn-sel">h1</span><span class="syn-brace">{</span></div>
+            <div class="fl">  <span class="syn-prop">color</span>: <span class="syn-val">#d4622b</span>;</div>
+            <div class="fl">  <span class="syn-prop">font-size</span>: <span class="syn-val">48px</span>;</div>
+            <div class="fl"><span class="syn-brace">}</span></div>
+            <div class="fl"><span class="syn-sel">button</span><span class="syn-brace">{</span></div>
+            <div class="fl">  <span class="syn-prop">background</span>: <span class="syn-val">#d4622b</span>;</div>
+          </div>
+        </div>
+        <div class="cf-connector">
+          <div class="conn-track"><div class="conn-dot" style="animation-delay:.4s;"></div></div>
+        </div>
+        <div class="cf-pane">
+          <div class="cf-label">Trình duyệt</div>
+          <div class="cf-browser">
+            <div class="cf-browser-bar"><div class="cf-browser-dot"></div><div class="cf-browser-dot"></div><div class="cf-browser-dot"></div></div>
+            <div class="cf-browser-body">
+              <h3 style="color:var(--accent);font-size:22px;">Hello</h3>
+              <p>Mô tả</p>
+              <button class="cf-btn" style="background:var(--accent);color:#fff;">Click</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="insight">
+        <strong>CSS = lớp "áo" cho HTML.</strong> HTML là xương (cấu trúc), CSS là da thịt (màu sắc, kích thước, vị trí). Browser đọc cả hai file → render ra trang web bạn thấy. Khi nói "sai CSS" → nghĩa là trang đúng nội dung nhưng sai hình dạng.
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== S2: Selector + Declaration ===== -->
+  <section class="ss" aria-label="Selector & Declaration">
+    <div class="sh"><h2>Selector + Declaration</h2><span class="num">02 / 04</span></div>
+    <div class="sb">
+      <div class="sd-demo">
+        <div class="sd-code">
+          <div class="sdl"><span class="syn-sel">h1</span> <span class="syn-brace">{</span></div>
+          <div class="sdl active-line">  <span class="syn-prop">color</span>: <span class="syn-val">#d4622b</span><span class="syn-brace">;</span></div>
+          <div class="sdl active-line">  <span class="syn-prop">font-size</span>: <span class="syn-val">48px</span><span class="syn-brace">;</span></div>
+          <div class="sdl"><span class="syn-brace">}</span></div>
+          <div class="sdl" style="margin-top:8px;"><span class="syn-cmt">/* = selector { declaration } */</span></div>
+        </div>
+        <div class="sd-anno">
+          <div class="sd-anno-item">
+            <div class="ai-label">Selector</div>
+            <code style="font-family:var(--mono);font-size:12px;color:var(--green);">h1</code> — "tìm thẻ h1 trên trang". Có thể là tag, class (.btn), hoặc ID (#header).
+          </div>
+          <div class="sd-anno-item">
+            <div class="ai-label">Property</div>
+            <code style="font-family:var(--mono);font-size:12px;color:var(--blue);">color</code> — "đổi gì". Có hàng trăm: background, margin, padding, font-size...
+          </div>
+          <div class="sd-anno-item">
+            <div class="ai-label">Value</div>
+            <code style="font-family:var(--mono);font-size:12px;color:var(--amber);">#d4622b</code> — "đổi thành bao nhiêu". Mỗi property chấp nhận kiểu value khác nhau.
+          </div>
+        </div>
+      </div>
+      <div class="insight">
+        <strong>Có 3 phần trong mỗi dòng CSS: chọn gì → đổi thuộc tính nào → giá trị bao nhiêu.</strong> Khi prompt AI "đổi màu nút", AI tạo ra selector (tìm nút) + declaration (color: giá trị). marketer hiểu 3 phần này → prompt chính xác hơn "đổi cái đó thành màu kia".
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== S3: Box Model ===== -->
+  <section class="ss" aria-label="Box Model">
+    <div class="sh"><h2>Box Model</h2><span class="num">03 / 04</span></div>
+    <div class="sb">
+      <div class="bm-visual">
+        <div class="bm-margin">
+          <span class="bm-margin-label">MARGIN</span>
+          <div class="bm-border">
+            <span class="bm-border-label">BORDER</span>
+            <div class="bm-padding">
+              <span class="bm-padding-label">PADDING</span>
+              <div class="bm-content" style="position:relative;">
+                Content
+                <span class="bm-content-label">CONTENT</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="bm-dim-row">
+        <div class="bm-dim">
+          <div class="bm-dim-swatch" style="border:2px dashed var(--border-light);"></div>
+          <span class="bm-dim-name">Margin</span>
+          <span class="bm-dim-val">16px</span>
+        </div>
+        <div class="bm-dim">
+          <div class="bm-dim-swatch" style="background:var(--amber);"></div>
+          <span class="bm-dim-name">Border</span>
+          <span class="bm-dim-val">3px</span>
+        </div>
+        <div class="bm-dim">
+          <div class="bm-dim-swatch" style="border:2px dashed var(--green);"></div>
+          <span class="bm-dim-name">Padding</span>
+          <span class="bm-dim-val">14px</span>
+        </div>
+        <div class="bm-dim">
+          <div class="bm-dim-swatch" style="background:var(--accent);"></div>
+          <span class="bm-dim-name">Content</span>
+          <span class="bm-dim-val">100px</span>
+        </div>
+        <div class="bm-dim" style="margin-left:auto;">
+          <span class="bm-dim-name" style="color:var(--accent);">Tổng kích thước</span>
+          <span class="bm-dim-val" style="color:var(--accent);">166px</span>
+        </div>
+      </div>
+      <div class="insight">
+        <strong>Mọi element trên web đều là một hình chữ nhật gồm 4 lớp lồng nhau.</strong> Content là nội dung thật. Padding = khoảng cách từ content đến border. Margin = khoảng cách từ border đến element bên cạnh. Tổng kích thước = 4 lớp cộng lại — marketer nói "nút to quá" thường là margin hoặc padding bị dư.
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== S4: Responsive ===== -->
+  <section class="ss" aria-label="Responsive Design">
+    <div class="sh"><h2>Responsive Design</h2><span class="num">04 / 04</span></div>
+    <div class="sb">
+      <div class="resp-showcase" id="respShowcase">
+        <div class="resp-device">
+          <div class="resp-device-label">Desktop</div>
+          <div class="resp-device-frame rf-active" style="width:200px;">
+            <div class="resp-device-topbar"></div>
+            <div class="resp-device-body">
+              <div class="resp-bar heading" style="width:70%;"></div>
+              <div class="resp-bar text" style="width:90%;"></div>
+              <div class="resp-bar text" style="width:85%;"></div>
+              <div style="display:flex;gap:4px;margin-top:4px;">
+                <div class="resp-bar grid-item" style="width:30%;height:24px;"></div>
+                <div class="resp-bar grid-item" style="width:30%;height:24px;"></div>
+                <div class="resp-bar grid-item" style="width:30%;height:24px;"></div>
+              </div>
+              <div class="resp-btn-mock"></div>
+            </div>
+          </div>
+        </div>
+        <div class="resp-device">
+          <div class="resp-device-label">Tablet</div>
+          <div class="resp-device-frame" style="width:150px;">
+            <div class="resp-device-topbar"></div>
+            <div class="resp-device-body">
+              <div class="resp-bar heading" style="width:80%;"></div>
+              <div class="resp-bar text" style="width:95%;"></div>
+              <div class="resp-bar text" style="width:88%;"></div>
+              <div style="display:flex;gap:4px;margin-top:4px;">
+                <div class="resp-bar grid-item" style="width:46%;height:20px;"></div>
+                <div class="resp-bar grid-item" style="width:46%;height:20px;"></div>
+              </div>
+              <div class="resp-btn-mock" style="width:50px;"></div>
+            </div>
+          </div>
+        </div>
+        <div class="resp-device">
+          <div class="resp-device-label">Mobile</div>
+          <div class="resp-device-frame" style="width:90px;">
+            <div class="resp-device-topbar"></div>
+            <div class="resp-device-body">
+              <div class="resp-bar heading" style="width:90%;"></div>
+              <div class="resp-bar text" style="width:100%;"></div>
+              <div class="resp-bar text" style="width:92%;"></div>
+              <div class="resp-bar grid-item" style="width:100%;height:16px;margin-top:4px;"></div>
+              <div class="resp-btn-mock" style="width:100%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="resp-code">
+        <div class="rl"><span class="syn-cmt">/* CSS tự động đổi layout theo kích thước màn hình */</span></div>
+        <div class="rl"><span class="syn-sel">@media</span> (<span class="syn-prop">max-width</span>: <span class="syn-val">768px</span>) <span class="syn-brace">{</span></div>
+        <div class="rl">  <span class="syn-sel">.grid</span> <span class="syn-brace">{</span> <span class="syn-prop">grid-template-columns</span>: <span class="syn-val">1fr 1fr</span><span class="syn-brace">;</span> <span class="syn-brace">}</span></div>
+        <div class="rl"><span class="syn-brace">}</span></div>
+        <div class="rl"><span class="syn-sel">@media</span> (<span class="syn-prop">max-width</span>: <span class="syn-val">480px</span>) <span class="syn-brace">{</span> <span class="syn-sel">.grid</span> <span class="syn-brace">{</span> <span class="syn-prop">grid-template-columns</span>: <span class="syn-val">1fr</span><span class="syn-brace">;</span> <span class="syn-brace">}</span> <span class="syn-brace">}</span></div>
+      </div>
+      <div class="insight">
+        <strong>Responsive = cùng HTML, CSS tự điều chỉnh layout theo màn hình.</strong> 3 cột trên desktop → 2 cột trên tablet → 1 cột trên mobile. Không phải tạo 3 trang riêng. Khi marketer báo "mobile bị vỡ" → dev cần sửa CSS media query, không phải viết lại trang.
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ===== PRACTICE: Box Model Sliders ===== -->
+  <section class="practice-section" aria-label="Thực hành">
+    <div class="section-head"><h2>Thực hành</h2></div>
+    <div class="practice-body">
+      <div class="practice-goal">
+        <strong>Mục tiêu:</strong> Kéo 4 slider để thay đổi margin, border, padding, content → thấy ngay cách box model ảnh hưởng đến kích thước thật của element.
+      </div>
+
+      <div class="slider-group">
+        <label><span>Margin</span><span class="sv" id="svMargin">16px</span></label>
+        <input type="range" id="slMargin" min="0" max="40" value="16" aria-label="Margin"/>
+      </div>
+      <div class="slider-group">
+        <label><span>Border</span><span class="sv" id="svBorder">3px</span></label>
+        <input type="range" id="slBorder" min="0" max="12" value="3" aria-label="Border"/>
+      </div>
+      <div class="slider-group">
+        <label><span>Padding</span><span class="sv" id="svPadding">14px</span></label>
+        <input type="range" id="slPadding" min="0" max="40" value="14" aria-label="Padding"/>
+      </div>
+      <div class="slider-group">
+        <label><span>Content width</span><span class="sv" id="svContent">100px</span></label>
+        <input type="range" id="slContent" min="40" max="200" value="100" aria-label="Content width"/>
+      </div>
+
+      <div class="preview-area">
+        <div class="box-preview" id="boxPreview">
+          <div class="box-content" id="boxContent">Content</div>
+        </div>
+      </div>
+
+      <div class="code-output" id="codeOutput">
+        <span class="syn-sel">.box</span> <span class="syn-brace">{</span><br>
+        &nbsp;&nbsp;<span class="syn-prop">margin</span>: <span class="syn-val">16px</span>;<br>
+        &nbsp;&nbsp;<span class="syn-prop">border</span>: <span class="syn-val">3px solid</span>;<br>
+        &nbsp;&nbsp;<span class="syn-prop">padding</span>: <span class="syn-val">14px</span>;<br>
+        &nbsp;&nbsp;<span class="syn-prop">width</span>: <span class="syn-val">100px</span>;<br>
+        <span class="syn-brace">}</span><br>
+        <span class="syn-cmt">/* Tổng kích thước: 166px */</span>
+      </div>
+
+      <button class="reset-btn" id="resetBtn">Reset về mặc định</button>
+
+      <div class="hint">Để content=100px, kéo margin lên 40px → thấy element "to" ra rất nhiều dù nội dung không đổi. Đó là lý do marketer nói "nút to quá" nhưng dev nói "nút vẫn 100px" — vì họ đang nói về content, bạn đang thấy total size.</div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  // ===== S1: Connector animation cycling =====
+  (function(){
+    // Already handled by CSS infinite animations
+  })();
+
+  // ===== S2: Active line cycling =====
+  (function(){
+    var lines=document.querySelectorAll('.sd-code .sdl');
+    if(!lines.length) return;
+    var idx=0;
+    // Find active lines
+    var activeIndices=[];
+    lines.forEach(function(l,i){if(l.classList.contains('active-line'))activeIndices.push(i);});
+    if(!activeIndices.length) return;
+    function cycleHighlight(){
+      lines.forEach(function(l){l.classList.remove('active-line');});
+      var target=activeIndices[idx%activeIndices.length];
+      lines[target].classList.add('active-line');
+      idx++;
+    }
+    setInterval(cycleHighlight,1200);
+  })();
+
+  // ===== S4: Responsive frame active cycling =====
+  (function(){
+    var frames=document.querySelectorAll('.resp-device-frame');
+    if(!frames.length) return;
+    var idx=0;
+    function cycleFrame(){
+      frames.forEach(function(f){f.classList.remove('rf-active');});
+      frames[idx].classList.add('rf-active');
+      idx=(idx+1)%frames.length;
+    }
+    setInterval(cycleFrame,2500);
+  })();
+
+  // ===== Practice: Box Model Sliders =====
+  (function(){
+    var slMargin=document.getElementById('slMargin');
+    var slBorder=document.getElementById('slBorder');
+    var slPadding=document.getElementById('slPadding');
+    var slContent=document.getElementById('slContent');
+    var svMargin=document.getElementById('svMargin');
+    var svBorder=document.getElementById('svBorder');
+    var svPadding=document.getElementById('svPadding');
+    var svContent=document.getElementById('svContent');
+    var boxPreview=document.getElementById('boxPreview');
+    var boxContent=document.getElementById('boxContent');
+    var codeOutput=document.getElementById('codeOutput');
+    var resetBtn=document.getElementById('resetBtn');
+
+    function update(){
+      var m=parseInt(slMargin.value);
+      var b=parseInt(slBorder.value);
+      var p=parseInt(slPadding.value);
+      var c=parseInt(slContent.value);
+
+      svMargin.textContent=m+'px';
+      svBorder.textContent=b+'px';
+      svPadding.textContent=p+'px';
+      svContent.textContent=c+'px';
+
+      boxPreview.style.margin=m+'px';
+      boxPreview.style.borderWidth=b+'px';
+      boxPreview.style.padding=p+'px';
+      boxContent.style.width=c+'px';
+
+      // Total size
+      var total=c + p*2 + b*2 + m*2;
+
+      codeOutput.innerHTML=
+        '<span class="syn-sel">.box</span> <span class="syn-brace">{</span><br>'+
+        '&nbsp;&nbsp;<span class="syn-prop">margin</span>: <span class="syn-val">'+m+'px</span>;<br>'+
+        '&nbsp;&nbsp;<span class="syn-prop">border</span>: <span class="syn-val">'+b+'px solid</span>;<br>'+
+        '&nbsp;&nbsp;<span class="syn-prop">padding</span>: <span class="syn-val">'+p+'px</span>;<br>'+
+        '&nbsp;&nbsp;<span class="syn-prop">width</span>: <span class="syn-val">'+c+'px</span>;<br>'+
+        '<span class="syn-brace">}</span><br>'+
+        '<span class="syn-cmt">/* Tổng kích thước: '+total+'px */</span>';
+    }
+
+    slMargin.addEventListener('input',update);
+    slBorder.addEventListener('input',update);
+    slPadding.addEventListener('input',update);
+    slContent.addEventListener('input',update);
+
+    resetBtn.addEventListener('click',function(){
+      slMargin.value=16;slBorder.value=3;slPadding.value=14;slContent.value=100;
+      update();
+    });
+
+    update();
+  })();
+</script>
+
+</body>
+</html>
