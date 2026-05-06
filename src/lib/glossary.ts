@@ -15,6 +15,12 @@ export type GlossaryTerm = {
     alt?: string;
     caption?: string;
   };
+  practice?: {
+    kind?: 'image' | 'interactive';
+    src: string;
+    alt?: string;
+    caption?: string;
+  };
 };
 
 export type TermViewMode = 'modal' | 'page';
@@ -31,7 +37,7 @@ export const terms: GlossaryTerm[] = [
     groups: ['design'],
     definition: 'Tất cả các tài liệu số (digital files) được sử dụng để xây dựng giao diện. Bao gồm hình ảnh (logo, background), icon (SVG), font chữ, video, và audio. Trong Vibecode, việc quản lý asset đúng cách giúp web chạy nhanh và hiển thị sắc nét.',
     example: "Designer gửi cho bạn folder 'Marketing-Assets' chứa logo dạng SVG và ảnh hero dạng WebP. Prompt: Sử dụng logo từ /public/assets/logo.svg và tối ưu ảnh hero để web load nhanh hơn.",
-    demo: { kind: 'interactive' }
+    demo: { kind: 'interactive', src: 'gif-asset-demo.html' }
   },
   { id: 'auth', name: 'Auth', nameEn: 'Authentication / Đăng nhập', letter: 'A', groups: ['infra'], definition: 'Auth là lớp kiểm tra danh tính người dùng trước khi cho vào hệ thống. Hiểu đơn giản: web cần biết bạn là ai, đăng nhập bằng cách nào, và có được phép vào khu vực đó không. Với marketer làm tool nội bộ, auth thường đi kèm Google login, email admin, session đăng nhập, và rule như “chỉ email công ty mới được vào”.', example: 'Prompt: "Thêm đăng nhập bằng Google cho tool này, chỉ email @company.com mới vào được dashboard, nếu đã có session cũ thì cho vào nhanh hơn." Đây là cách dùng auth rất thực tế.', related: ['session', 'token'], demo: { kind: 'interactive', src: 'gif-auth-demo.html', alt: 'Mô phỏng auth theo 4 trạng thái: chưa login, đúng team, sai domain, còn session' } },
   { id: 'async', name: 'Async / Await', nameEn: 'Bất đồng bộ', letter: 'A', groups: ['code'], definition: 'Cách xử lý tác vụ mất thời gian mà không làm đơ cả trang. Giống như đặt cà phê mang đi — bạn không đứng chờ, bạn làm việc khác, cà phê xong thì nhận.', example: 'Khi form submit, trang không bị đơ mà hiện loading spinner — đó là async đang chạy ngầm để gửi data lên server.' },
@@ -155,7 +161,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'line-spacing', name: 'Line Spacing', nameEn: 'Giãn cách dòng / Leading', letter: 'L', groups: ['design'], definition: 'Line Spacing (hay Leading) là khoảng cách giữa các dòng trong một đoạn văn bản. Chỉnh line spacing phù hợp giúp khối văn bản dễ đọc, không bị dính vào nhau hoặc quá rời rạc.', example: 'Với đoạn văn bản dài, line spacing thường để mức 1.5 - 1.6 để mắt dễ theo dõi. Với tiêu đề, có thể để mức 1.1 - 1.2. Prompt: "Chỉnh line spacing của đoạn văn này lên 1.6."', related: ['spacing', 'typography'], demo: { kind: 'interactive', src: 'gif-line-spacing-demo.html', alt: 'Mô phỏng các mức line spacing từ chặt đến thoáng' } },
   { id: 'line-height', name: 'Line Height', nameEn: 'Chiều cao dòng', letter: 'L', groups: ['design', 'code'], definition: 'Line Height là khoảng cách từ đáy một dòng text đến đáy dòng tiếp theo. Nó không phải là pixel mà là hệ số nhân với font size. Chỉnh line height phù hợp giúp khối văn bản dễ đọc, không bị dính vào nhau hoặc quá rời rạc.', example: 'Với đoạn văn bản dài, line height thường để mức 1.5 - 1.6 để mắt dễ theo dõi. Với tiêu đề, có thể để mức 1.1 - 1.2. Prompt: "Chỉnh line-height của đoạn văn này lên 1.6."', related: ['letter-spacing', 'line-spacing', 'typography'], demo: { kind: 'interactive', src: 'gif-lineheight-demo.html', alt: 'Mô phỏng các mức line-height từ chật đến thoáng' } },
   { id: 'margin', name: 'Margin', nameEn: 'Khoảng cách ngoài element', letter: 'M', groups: ['design'], definition: 'Margin là khoảng trống nằm bên ngoài một element, dùng để tách nó ra khỏi các khối xung quanh. Nếu Padding là khoảng thở bên trong khung, thì Margin là khoảng cách giữa khung đó với phần còn lại của layout.', example: '"Landing page đang bị dính giữa hero, social proof và CTA." Prompt: "Tăng margin-bottom giữa các section lên 48px, riêng khối CTA cuối để 64px để tách rõ điểm hành động."', related: ['padding', 'spacing', 'flexbox', 'grid'], demo: { kind: 'interactive', src: 'gif-margin-demo.html', alt: 'Mô phỏng 4 mức margin phổ biến từ chặt đến thoáng' } },
-  { id: 'model', name: 'Model', nameEn: 'Phiên bản AI', letter: 'M', groups: ['ai'], definition: 'Phiên bản cụ thể của một AI — như "Claude Sonnet 3.7" hay "GPT-4o". Mỗi model khác nhau về tốc độ, chi phí, và khả năng.', example: 'Trong Cursor: chọn model ở góc phải. Claude Sonnet 3.7 = tốt cho code phức tạp. Claude Haiku = nhanh hơn, rẻ hơn cho task đơn giản.' },
+  { id: 'model', name: 'Model', nameEn: 'Phiên bản AI', letter: 'M', groups: ['ai'], definition: 'Phiên bản cụ thể của một AI — như "Claude Sonnet 3.7" hay "GPT-4o". Mỗi model khác nhau về tốc độ, chi phí, và khả năng.', example: 'Trong Cursor: chọn model ở góc phải. Claude Sonnet 3.7 = tốt cho code phức tạp. Claude Haiku = nhanh hơn, rẻ hơn cho task đơn giản.', related: ['llm', 'prompt', 'context-window', 'api'], demo: { kind: 'interactive', src: 'gif-model-demo.html', alt: 'Mô phỏng 4 khía cạnh của Model: Black Box, Versions, Task to Model và Chat vs API' } },
   { id: 'mcp', name: 'MCP', nameEn: 'Model Context Protocol', letter: 'M', groups: ['ai', 'workflow'], definition: 'Giao thức giúp AI kết nối trực tiếp với tool bên ngoài — Supabase, Vercel, Notion, GitHub. Thay vì copy-paste data cho AI, MCP cho phép AI tự đọc và thực hiện action.', example: '"Cursor với Supabase MCP" → AI có thể đọc schema database của bạn và tự viết query đúng cấu trúc.' },
   { id: 'navbar', name: 'Nav bar', nameEn: 'Thanh điều hướng / Navigation Bar', letter: 'N', groups: ['design', 'code'], definition: 'Thanh điều hướng nằm ở đầu (hoặc cạnh) mỗi trang — chứa logo, menu links, và nút hành động. Navbar giúp người dùng biết mình đang ở đâu và có thể đi đâu tiếp theo.', example: 'Prompt: "Thêm mục \'Pricing\' vào navbar, khi scroll xuống thì navbar nên có thêm bóng đổ và đổi màu nền."', related: ['component', 'sticky', 'link'], demo: { kind: 'interactive', src: 'gif-navbar-demo.html', alt: 'Mô phỏng các trạng thái của navbar: mặc định, scrolled, mobile và active' } },
   { id: 'npm', name: 'npm', nameEn: 'Node Package Manager', letter: 'N', groups: ['infra'], definition: 'Công cụ cài và quản lý thư viện code. Giống App Store nhưng cho code — gõ "npm install tên-thư-viện" là cài xong.', example: '"npm install" trong terminal = cài tất cả dependency của project. "npm run dev" = chạy server local. 2 lệnh này dùng hàng ngày khi vibecode.' },
@@ -355,10 +361,17 @@ const deepDiveTermIds = new Set([
   'ssl',
   'hosting',
   'interface',
+  'model',
   'llm'
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
+  model: [
+    'Model là tên của bộ não AI cụ thể mà bạn đang gọi, ví dụ GPT-4o, Claude 3.5 Sonnet, Gemini 1.5. Nói "dùng AI" thì quá chung, còn nói đúng tên model thì dev mới biết cần tích hợp cái gì.',
+    'Các model khác nhau ở 4 thứ chính: tốc độ, giá token, context window, và khả năng suy luận. Vì vậy cùng một prompt nhưng đổi model có thể cho chất lượng, chi phí, và độ ổn định rất khác nhau.',
+    'Không có model tốt nhất cho mọi việc. Task ngắn, lặp lại, cần rẻ thì chọn model nhẹ. Task code khó, phân tích dài, hay cần suy luận sâu thì chọn model mạnh hơn.',
+    'Model không phải là ChatGPT hay app chat. App chỉ là giao diện; model mới là phần xử lý phía sau. Khi tích hợp vào web, dev gọi model qua API chứ không mở cửa sổ chat bằng tay.'
+  ],
   llm: [
     'LLM không đọc theo từng chữ cái mà đọc theo "token". Một token có thể là một từ, một phần của từ hoặc thậm chí là một dấu cách. Hiểu về token giúp bạn tối ưu chi phí và độ chính xác khi sử dụng API.',
     'Bản chất của LLM là "cỗ máy dự đoán". Nó không thực sự suy nghĩ như con người mà dựa trên xác suất để đoán xem token nào có khả năng xuất hiện tiếp theo cao nhất dựa trên bối cảnh đã có.',
