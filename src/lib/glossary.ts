@@ -78,7 +78,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'flexbox', name: 'Flexbox', nameEn: 'Hệ thống layout 1 chiều', letter: 'F', groups: ['design', 'code'], definition: 'Cách sắp xếp elements theo hàng ngang hoặc cột dọc. Khi bạn muốn "3 cái card nằm ngang và cách nhau đều" — đó là flexbox.', example: 'Prompt: "Icon và text nằm trên cùng một hàng, icon bên trái, khoảng cách 8px." → AI dùng flexbox.', related: ['grid', 'padding'] },
   { id: 'framework', name: 'Framework', nameEn: 'Khung làm việc', letter: 'F', groups: ['infra', 'code'], definition: 'Bộ khung có sẵn giúp bạn không phải xây từ đầu. Next.js là framework cho web — nó đã lo routing, SEO, performance. Bạn chỉ cần tập trung vào logic và giao diện.', example: 'markAI.vn dùng Next.js framework + Tailwind CSS framework. Hai thứ này cùng nhau giúp vibecoder build web chuyên nghiệp.' },
   { id: 'function', name: 'Function', nameEn: 'Hàm / Khối code tái dùng', letter: 'F', groups: ['code'], definition: 'Một khối code làm một việc cụ thể, có thể gọi đi gọi lại. Giống như quy trình SOP — viết một lần, áp dụng nhiều lần.', example: '"Hàm formatDate() nhận ngày tháng và trả về dạng \'DD/MM/YYYY\'" — gọi function này ở bất kỳ đâu trong app.' },
-  { id: 'git', name: 'Git', nameEn: 'Hệ thống quản lý phiên bản', letter: 'G', groups: ['workflow'], definition: 'Công cụ lưu lịch sử thay đổi của code. Giống như Track Changes trong Word nhưng mạnh hơn. Cho phép quay lại bất kỳ phiên bản nào trong quá khứ.', example: 'AI làm vỡ project → "git stash" để undo hết thay đổi chưa save, quay về trạng thái ổn. Đây là lifesaver khi vibecode gặp sự cố.', related: ['commit', 'repository'] },
+  { id: 'git', name: 'Git', nameEn: 'Hệ thống quản lý phiên bản', letter: 'G', groups: ['workflow'], definition: 'Hệ thống lưu phiên bản tự động cho code. Giống như một "cỗ máy thời gian", Git cho phép bạn lưu lại trạng thái của project tại từng thời điểm và quay lại bất kỳ phiên bản nào trong quá khứ nếu có lỗi xảy ra.', example: 'git clone url (Tải code về máy) · git pull (Cập nhật code mới nhất từ dev).', related: ['commit', 'repository'], demo: { kind: 'interactive', src: 'gif-git-demo.html', alt: 'Mô phỏng hệ thống quản lý phiên bản Git', caption: 'Git giúp team làm việc song song trên nhiều branch mà không sợ đè code của nhau.' } },
   { id: 'gradient', name: 'Gradient', nameEn: 'Màu chuyển mượt', letter: 'G', groups: ['design', 'code'], definition: 'Sự chuyển đổi mượt mà giữa hai hay nhiều màu sắc. Gradient giúp tạo ra chiều sâu, sự tinh tế và cảm giác hiện đại cho giao diện mà không cần sử dụng các tệp hình ảnh nặng. Có hai loại phổ biến: Linear (chuyển theo đường thẳng) và Radial (chuyển từ tâm ra ngoài).', example: 'Prompt: "Dùng gradient từ cam #d97706 sang đỏ #dc2626 cho nút CTA chính, góc 135 độ để tạo cảm giác năng động."', related: ['color-palette', 'primary-color', 'css'], demo: { kind: 'interactive', src: 'gif-gradient-demo.html', alt: 'Mô phỏng các loại gradient: Background, Button, Text và Overlay' } },
   { id: 'grid', name: 'Grid', nameEn: 'Hệ thống layout lưới', letter: 'G', groups: ['design', 'code'], definition: 'Hệ thống các đường kẻ ngang và dọc (lưới) dùng để sắp xếp các thành phần trên trang web một cách ngăn nắp. 12 cột là "tiêu chuẩn vàng" vì nó dễ dàng chia thành 2, 3, 4, hoặc 6 phần đều nhau.', example: 'Khi bạn muốn "3 bài blog trên 1 hàng", bạn đang dùng Grid 12 cột với mỗi bài chiếm 4 cột. Prompt: "Dùng grid 12 cột, mỗi card sản phẩm chiếm 3 cột trên desktop và 6 cột trên tablet".', related: ['flexbox', 'responsive', 'breakpoint'], demo: { kind: 'interactive', src: 'gif-grid-demo.html', alt: 'Mô phỏng hệ thống Grid layout: 8, 12, 16 cột và Nested Grid' } },
   { id: 'gutter', name: 'Gutter', nameEn: 'Khoảng cách giữa các cột/hàng', letter: 'G', groups: ['design', 'code'], definition: 'Khoảng trống giữa các cột (column) hoặc các hàng (row) trong một hệ thống lưới (grid). Gutter giúp phân tách các thành phần nội dung, tạo "khoảng thở" và giúp giao diện trông chuyên nghiệp, dễ đọc hơn.', example: 'Prompt: "Tăng gutter giữa các cột lên 24px để nội dung thoáng hơn, còn gutter giữa các hàng thì để 32px để phân tách rõ các section."', related: ['grid', 'spacing', 'padding', 'margin'], demo: { kind: 'interactive', src: 'gif-gutter-demo.html', alt: 'Mô phỏng các loại gutter: Column, Row, Nested và Responsive' } },
@@ -289,6 +289,7 @@ const deepDiveTermIds = new Set([
   'navigation',
   'cache',
   'cli',
+  'git',
   'commit',
   'context'
 ]);
@@ -730,6 +731,12 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     '.env bắt buộc viết CHỮ_HOA + GẠCH_DƯỚI. Sai quy tắc → code không đọc được biến. Khi dev báo "env variable not found" → kiểm tra xem tên biến trong .env có khớp chính xác chữ hoa/thường không.',
     'Cùng tên biến, khác giá trị → cùng code chạy khác nhau. DB_HOST=localhost trên máy dev, DB_HOST=prod.db.com trên server thật. Code không cần sửa — chỉ cần load file .env đúng.',
     'Push .env lên GitHub = dán mật khẩu lên bảng công cộng. Có bot tự động scan GitHub tìm API key bị lộ. Khi dev xin bạn "thêm .env vào .gitignore" → họ đang bảo vệ mật khẩu project.',
+  ],
+  git: [
+    'Git = hệ thống lưu phiên bản tự động cho code. Thay vì "final_v2_v3_v4", mỗi lần thay đổi được lưu thành 1 checkpoint có ID, thời gian, ghi chú.',
+    '4 khái niệm then chốt: Repository (nhà kho), Commit (checkpoint), Branch (nhánh), và Remote (bản trên mây).',
+    '"Đã push chưa?" là câu hỏi quan trọng nhất khi Vibe Coding. Code trên máy bạn (local) chưa ai thấy. Push lên GitHub (remote) rồi thì AI mới có thể hỗ trợ deploy hoặc review tiếp.',
+    'Trong Vibe Coding, bạn thực tế chỉ cần hiểu 2 lệnh: git clone (tải về lần đầu) và git pull (cập nhật mới nhất). Các lệnh phức tạp khác sẽ do AI Agent xử lý cho bạn.',
   ],
 };
 

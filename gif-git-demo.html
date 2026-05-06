@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Git Demo — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#1a1a18;--bg-c:#222220;--bg-e:#2a2a27;--bg-t:#161614;--fg:#e8e4dd;--fm:#8a877e;--ac:#e88c2e;--acd:#c97522;--am:#c9922a;--gn:#6b8f5e;--rd:#b54a4a;--bl:#5e7a8f;--bd:#3a3a36;--bdl:#4a4a45;--mn:'JetBrains Mono',monospace;--sn:'Space Grotesk',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--fg);font-family:var(--sn);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:24px 24px;}
+.pw{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:12px 20px 64px;}
+
+/* Grid Layout */
+.demo-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;}
+@media(max-width:850px){.demo-grid{grid-template-columns:1fr;}}
+
+.ss{border:1px solid var(--bd);background:var(--bg-c);margin-bottom:24px;overflow:hidden;height:100%;display:flex;flex-direction:column;}
+.ss.full-width{grid-column:1/-1;}
+.sh{border-bottom:1px solid var(--bd);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.02);}
+.sh h2{font-family:var(--mn);font-size:11px;font-weight:700;color:var(--ac);text-transform:uppercase;letter-spacing:1px;}
+.sh .nm{font-family:var(--mn);font-size:10px;color:var(--fm);}
+.sb{padding:20px;flex:1;}
+
+.ins{background:rgba(232,140,46,0.05);border-left:2px solid var(--ac);padding:12px 14px;margin-top:16px;font-size:12px;color:var(--fm);line-height:1.6;}
+.ins strong{color:var(--fg);} .ins code{font-family:var(--mn);font-size:11px;color:var(--am);background:rgba(201,146,42,.1);padding:1px 5px;}
+
+/* S1: Concept */
+.spl{display:flex;gap:20px;background:var(--bg);border:1px solid var(--bd);padding:16px;}
+@media(max-width:600px){.spl{flex-direction:column;}}
+.sp{flex:1;display:flex;flex-direction:column;gap:10px;}
+.sl{font-family:var(--mn);font-size:10px;color:var(--fm);text-transform:uppercase;letter-spacing:0.5px;}
+
+.tl-visual{position:relative;padding-left:80px;min-height:160px;}
+.tl-line{position:absolute;left:36px;top:8px;bottom:8px;width:2px;background:var(--bd);}
+.tl-node{position:absolute;left:26px;width:22px;height:22px;border:2px solid var(--bd);background:var(--bg-c);z-index:1;transition:border-color .6s,background .6s,box-shadow .6s;}
+.tl-node.tl-active{border-color:var(--ac);background:var(--ac);box-shadow:0 0 10px rgba(232,140,46,.4);}
+.tl-item{position:relative;padding:12px 0;display:flex;flex-direction:column;gap:2px;opacity:0;transform:translateX(8px);animation:tlIn .5s ease forwards;}
+.tl-item:nth-child(1){animation-delay:.3s;}.tl-item:nth-child(2){animation-delay:1s;}.tl-item:nth-child(3){animation-delay:1.7s;}
+@keyframes tlIn{to{opacity:1;transform:translateX(0);}}
+.tl-msg{font-size:13px;font-weight:500;color:var(--fg);}
+.tl-hash{font-family:var(--mn);font-size:10px;color:var(--acd);}
+.tl-desc{font-size:11px;color:var(--fm);margin-top:2px;}
+.tl-arrow{position:absolute;left:-52px;top:16px;font-family:var(--mn);font-size:16px;color:var(--fm);animation:arrP 2s ease-in-out infinite;}
+@keyframes arrP{0%,100%{opacity:.2;}50%{opacity:1;color:var(--ac);}}
+
+/* S2: Branch */
+.branch-vis{border:1px solid var(--bd);background:var(--bg);padding:20px 16px;position:relative;overflow:hidden;}
+.branch-row{display:flex;gap:0;align-items:stretch;margin-bottom:2px;min-height:36px;}
+.branch-label{width:60px;flex-shrink:0;display:flex;align-items:center;justify-content:flex-end;padding-right:10px;font-family:var(--mn);font-size:10px;font-weight:600;}
+.branch-track{flex:1;display:flex;align-items:center;position:relative;height:100%;padding:0 8px;}
+.branch-commit{width:16px;height:16px;border:2px solid;flex-shrink:0;position:relative;z-index:1;}
+.branch-line{position:absolute;top:50%;height:2px;transform:translateY(-50%);}
+.branch-tag{position:absolute;top:-8px;left:50%;transform:translateX(-50%);font-family:var(--mn);font-size:8px;white-space:nowrap;padding:0 4px;}
+
+/* S3: Collaboration */
+.remote-flow{display:flex;flex-direction:column;gap:0;}
+.rf-row{display:flex;align-items:stretch;border:1px solid var(--bd);background:var(--bg);overflow:hidden;}
+.rf-row+.rf-row{border-top:none;}
+.rf-icon{width:48px;flex-shrink:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;border-right:1px solid var(--bd);background:var(--bg-e);padding:10px 4px;}
+.rf-icon-box{width:20px;height:20px;border:1.5px solid var(--bdl);display:flex;align-items:center;justify-content:center;font-family:var(--mn);font-size:10px;color:var(--fm);}
+.rf-content{flex:1;padding:12px 14px;display:flex;flex-direction:column;gap:4px;justify-content:center;}
+.rf-title{font-size:12px;font-weight:600;color:var(--fg);}
+.rf-desc{font-size:11px;color:var(--fm);}
+
+/* S4: Table */
+.cmd-tbl{border:1px solid var(--bd);background:var(--bg);overflow:hidden;}
+.cmd-r{display:flex;align-items:stretch;border-bottom:1px solid var(--bd);}
+.cmd-r:last-child{border-bottom:none;}
+.cmd-name{width:90px;flex-shrink:0;padding:8px 12px;border-right:1px solid var(--bd);font-family:var(--mn);font-size:12px;font-weight:600;color:var(--ac);}
+.cmd-desc{flex:1;padding:8px 12px;font-size:12px;color:var(--fm);}
+
+.tp{color:var(--gn);}.tc{color:var(--fg);}.tf{color:var(--am);}.to{color:var(--fm);}
+@keyframes fi{to{opacity:1;}}
+</style>
+</head>
+<body>
+<div class="pw">
+<div class="demo-grid">
+
+<!-- CONCEPT -->
+<section class="ss full-width">
+<div class="sh"><h2>Bản chất của Git</h2><span class="nm">CONCEPT</span></div>
+<div class="sb">
+<div class="spl">
+<div class="sp">
+<div class="sl">Truyền thống (Rủi ro)</div>
+<div style="flex:1;display:flex;flex-direction:column;gap:4px;justify-content:center;">
+<div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--fm);"><span style="color:var(--rd);">✗</span> final_v2.docx</div>
+<div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--fm);"><span style="color:var(--rd);">✗</span> final_v3_real.docx</div>
+<div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--fm);"><span style="color:var(--rd);">✗</span> final_USE_THIS.docx</div>
+</div>
+</div>
+<div class="sp">
+<div class="sl">Với Git (An toàn)</div>
+<div class="tl-visual">
+<div class="tl-line"></div>
+<div class="tl-node" style="top:6px;"></div>
+<div class="tl-item" style="top:0;">
+<div class="tl-msg">Khởi tạo</div>
+<div class="tl-hash">e0f1a2b</div>
+<div class="tl-desc" style="color:var(--gn);">✓ Lưu an toàn</div>
+</div>
+<div class="tl-node" style="top:58px;"></div>
+<div class="tl-item" style="top:52px;">
+<div class="tl-msg">Sửa nội dung</div>
+<div class="tl-hash">1c9a3f8</div>
+<div class="tl-desc" style="color:var(--gn);">✓ Lưu an toàn</div>
+</div>
+<div class="tl-node tl-active" style="top:110px;"></div>
+<div class="tl-item" style="top:104px;">
+<div class="tl-msg">Thêm tính năng</div>
+<div class="tl-hash">b8d2e45</div>
+<div class="tl-desc" style="color:var(--ac);">← Hiện tại</div>
+<div class="tl-arrow">▸</div>
+</div>
+</div>
+</div>
+</div>
+<div class="ins"><strong>Git = cỗ máy thời gian cho code.</strong> Thay vì đặt tên file kiểu v1, v2, Git tự động chụp ảnh "checkpoint" kèm ghi chú. Bạn có thể quay lại bất kỳ thời điểm nào trong lịch sử chỉ bằng một lệnh.</div>
+</div>
+</section>
+
+<!-- COLLABORATION -->
+<section class="ss">
+<div class="sh"><h2>Local & Remote</h2><span class="nm">COLLABORATION</span></div>
+<div class="sb">
+<div class="remote-flow">
+<div class="rf-row">
+<div class="rf-icon"><div class="rf-icon-box" style="border-color:var(--bl);color:var(--bl);">🖥</div></div>
+<div class="rf-content"><div class="rf-title">Local (Máy của bạn)</div><div class="rf-desc">Nơi bạn gõ code và lưu commit. Chỉ mình bạn thấy.</div></div>
+</div>
+<div style="display:flex;justify-content:center;padding:4px 0;font-family:var(--mn);font-size:9px;color:var(--fm);">↑ push / ↓ pull</div>
+<div class="rf-row">
+<div class="rf-icon"><div class="rf-icon-box" style="border-color:var(--am);color:var(--am);">☁</div></div>
+<div class="rf-content"><div class="rf-title">Remote (GitHub/GitLab)</div><div class="rf-desc">Bản sao trên server để team chia sẻ và deploy lên web.</div></div>
+</div>
+</div>
+<div class="ins">Code trên máy bạn (Local) là chưa đủ. Chỉ khi bạn <strong>push</strong> lên GitHub (Remote), AI mới có thể nhận diện thay đổi để hỗ trợ deploy hoặc review tiếp.</div>
+</div>
+</section>
+
+<!-- COMMANDS -->
+<section class="ss">
+<div class="sh"><h2>Lệnh Git Marketer cần biết</h2><span class="nm">COMMANDS</span></div>
+<div class="sb">
+<div class="cmd-tbl">
+<div class="cmd-r"><div class="cmd-name">git clone</div><div class="cmd-desc">Tải project từ GitHub về máy lần đầu tiên.</div></div>
+<div class="cmd-r"><div class="cmd-name">git pull</div><div class="cmd-desc">Tải bản cập nhật mới nhất từ team về máy bạn.</div></div>
+<div class="cmd-r"><div class="cmd-name">git branch</div><div class="cmd-desc">Kiểm tra xem bạn đang ở "nhánh" nào của dự án.</div></div>
+<div class="cmd-r"><div class="cmd-name">git checkout</div><div class="cmd-desc">Chuyển sang một phiên bản code hoặc tính năng khác.</div></div>
+</div>
+<div class="ins">Trong Vibe Coding, bạn thường chỉ cần <code>clone</code> và <code>pull</code>. Các lệnh thay đổi code phức tạp như <code>commit</code> hay <code>push</code> sẽ do AI Agent xử lý tự động cho bạn.</div>
+</div>
+</section>
+
+</div>
+</div>
+</body>
+</html>

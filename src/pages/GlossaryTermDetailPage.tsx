@@ -175,6 +175,9 @@ import contextDemoHtml from '../../gif-context-demo.html?raw';
 import contextPracticeHtml from '../../gif-context-practice.html?raw';
 import envDemoHtml from '../../gif-env-demo.html?raw';
 import envPracticeHtml from '../../gif-env-practice.html?raw';
+import commitDemoHtml from '../../gif-commit-demo.html?raw';
+import gitDemoHtml from '../../gif-git-demo.html?raw';
+import gitPracticeHtml from '../../gif-git-practice.html?raw';
 
 
 // Final sync for viewport practice update
@@ -279,6 +282,7 @@ export default function GlossaryTermDetailPage() {
       case 'asset': return assetDemoHtml;
       case 'cache': return cacheDemoHtml;
       case 'cli': return cliDemoHtml;
+      case 'git': return gitDemoHtml;
       case 'commit': return commitDemoHtml;
       case 'context': return contextDemoHtml;
       case 'env': return envDemoHtml;
@@ -370,6 +374,7 @@ export default function GlossaryTermDetailPage() {
       case 'asset': return assetPracticeHtml;
       case 'cache': return cachePracticeHtml;
       case 'cli': return cliPracticeHtml;
+      case 'git': return gitPracticeHtml;
       case 'commit': return commitPracticeHtml;
       case 'context': return contextPracticeHtml;
       case 'env': return envPracticeHtml;
