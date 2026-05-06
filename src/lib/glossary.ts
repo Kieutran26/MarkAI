@@ -104,6 +104,26 @@ export const terms: GlossaryTerm[] = [
     }
   },
   { id: 'commit', name: 'Commit', nameEn: 'Lưu checkpoint code', letter: 'C', groups: ['workflow', 'code'], definition: 'Hành động lưu lại một điểm trong lịch sử code. Giống như Save game — bạn có thể quay lại đây bất cứ lúc nào nếu AI làm vỡ project.', example: 'Sau khi hero section chạy ổn: "git commit -m \'hero section done\'". Dù AI có làm hỏng phần sau, bạn vẫn rollback về được.', related: ['git', 'repository'], demo: { kind: 'interactive', src: 'gif-commit-demo.html', alt: 'Mô phỏng quy trình commit và lịch sử git', caption: 'Commit giúp đóng băng trạng thái code và lưu vào lịch sử.' } },
+  {
+    id: 'conflict',
+    name: 'Conflict',
+    nameEn: 'Merge Conflict / Xung đột code',
+    letter: 'C',
+    groups: ['workflow'],
+    definition: 'Conflict xảy ra khi hai người cùng sửa một dòng code hoặc cùng một file theo cách mà Git không thể tự gộp lại được. Đây là cơ chế bảo vệ của Git, buộc bạn phải kiểm tra lại để chắc chắn không ai xóa nhầm code của ai.',
+    example: 'Bạn và đồng nghiệp cùng sửa tiêu đề trang chủ. Bạn sửa thành "A", đồng nghiệp sửa thành "B". Khi gộp code, Git sẽ dừng lại và hiện các dấu <<<<<<< và >>>>>>> để bạn chọn giữ "A", "B" hay gộp cả hai.',
+    related: ['git', 'merge', 'branch', 'pull', 'commit'],
+    demo: {
+      kind: 'interactive',
+      src: 'gif-conflict-demo.html',
+      alt: 'Mô phỏng 4 khía cạnh của Conflict: Bản chất, Nhận diện, Nguyên nhân và Luồng xử lý'
+    },
+    practice: {
+      kind: 'interactive',
+      src: 'gif-conflict-practice.html',
+      alt: 'Thực hành giải quyết conflict thực tế trong code'
+    }
+  },
   { id: 'component', name: 'Component', nameEn: 'Khối giao diện tái dùng', letter: 'C', groups: ['code', 'design'], definition: 'Một khối giao diện độc lập, có thể dùng lại nhiều lần. Button, card sản phẩm, navbar, form — đều là component. Thiết kế một lần, dùng ở khắp nơi trong web.', example: '"Tôi có 12 trang web nhưng muốn cùng 1 footer." Đây là lúc dùng Footer component — sửa một chỗ, cập nhật khắp nơi.', related: ['props', 'state'], demo: { kind: 'interactive', src: 'gif-component-demo.html', alt: 'Mô phỏng 4 loại component phổ biến và code minh họa' } },
   { id: 'contrast', name: 'Contrast', nameEn: 'Độ tương phản', letter: 'C', groups: ['design', 'code'], definition: 'Sự khác biệt về độ sáng (luminance) giữa chữ và nền. Độ tương phản cao giúp nội dung dễ đọc, đặc biệt quan trọng cho khả năng tiếp cận (accessibility). Chuẩn WCAG quy định các mức ratio như 4.5:1 cho chữ thường và 3:1 cho chữ lớn.', example: 'Prompt: "Kiểm tra độ tương phản của nút CTA này, nếu chưa đạt chuẩn AA (4.5:1) thì hãy chỉnh màu nền đậm hơn hoặc chữ sáng hơn."', related: ['accessibility', 'ui', 'color-palette', 'fontweight'], demo: { kind: 'interactive', src: 'gif-contrast-demo.html', alt: 'Mô phỏng các mức độ tương phản và chuẩn WCAG' } },
   { id: 'context', name: 'Context', nameEn: 'Ngữ cảnh / Bối cảnh', letter: 'C', groups: ['ai'], definition: 'Toàn bộ thông tin nền tảng mà AI cần biết để đưa ra câu trả lời đúng. Context bao gồm role, project, tech, goal, constraint và format. Thiếu context là nguyên nhân chính khiến AI "đoán mò" và trả về kết quả generic.', example: 'Prompt: "Tôi là marketer SaaS, đang làm landing page cho app F&B bằng React + Tailwind. Mục tiêu là tăng tỷ lệ đăng ký. Hãy viết Hero headline." Trong đó, các thông tin bổ sung chính là context.', related: ['prompt', 'llm', 'context-window'], demo: { kind: 'interactive', src: 'gif-context-demo.html', alt: 'Mô phỏng 4 khía cạnh của Context: Definition, Comparison, Types và Process' } },
@@ -489,7 +509,8 @@ const deepDiveTermIds = new Set([
   'pull',
   'push',
   'gitignore',
-  'merge'
+  'merge',
+  'conflict'
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -1024,6 +1045,13 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Merge là "điểm hội quân". Sau khi mọi người đi đánh lẻ trên các branch riêng, merge là lúc tất cả thành quả được gom lại một chỗ.',
     'Có 2 loại merge phổ biến: Fast-forward (Git chỉ cần "kéo" mốc thời gian lên vì không có thay đổi nào chéo nhau) và Three-way merge (Git tạo ra một commit mới để gộp hai dòng lịch sử khác biệt).',
     'Quy tắc an toàn: Trước khi merge nhánh của mình vào main, hãy merge main ngược lại vào nhánh mình trước để giải quyết mọi conflict ở "sân nhà" cho an toàn.',
+  ],
+  conflict: [
+    'Conflict không phải là lỗi hệ thống. Nó là một thông báo: "Có hai ý kiến khác nhau ở đây, con người hãy vào quyết định đi".',
+    'Nhận diện Conflict nhanh qua các marker: <<<<<<< HEAD (phần của bạn), ======= (vách ngăn), >>>>>>> branch-name (phần của team).',
+    'Đừng hoảng loạn khi thấy file đầy dấu <<<<<<<. Chỉ cần xóa các dấu marker này và giữ lại nội dung bạn muốn, sau đó commit là xong.',
+    'Cách tốt nhất để tránh Conflict là Pull code mới nhất thường xuyên. Càng để lâu không sync với team, xác suất đụng hàng càng cao.',
+    'Trong Cursor/VS Code, bạn có các nút bấm nhanh như "Accept Current Change", "Accept Incoming Change" để fix conflict trong 1 giây mà không cần xóa marker thủ công.',
   ],
 };
 
