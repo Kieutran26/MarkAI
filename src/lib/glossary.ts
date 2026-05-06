@@ -83,6 +83,26 @@ export const terms: GlossaryTerm[] = [
   { id: 'card', name: 'Card', nameEn: 'Thẻ nội dung', letter: 'C', groups: ['design', 'code'], definition: 'Một khối chứa thông tin — gom ảnh, tiêu đề, mô tả, nút hành động vào một hộp. Card giúp phân tách các nội dung khác nhau trên trang một cách rõ ràng và dễ quét.', example: 'Product card cho sản phẩm, Blog card cho bài viết. Card là đơn vị cơ bản nhất để build các trang kiểu Dashboard hoặc Landing Page.', related: ['component', 'padding', 'radius'], demo: { kind: 'interactive', src: 'gif-card-demo.html', alt: 'Mô phỏng các loại card: Basic, Horizontal, Featured, Stats' } },
   { id: 'cli', name: 'CLI', nameEn: 'Command Line Interface / Giao diện dòng lệnh', letter: 'C', groups: ['infra', 'workflow'], definition: 'Giao diện dòng lệnh — nơi bạn điều khiển máy tính bằng cách gõ văn bản thay vì click chuột vào các biểu tượng. CLI là "ngôn ngữ gốc" của lập trình viên, giúp thực hiện các tác vụ phức tạp một cách cực kỳ nhanh chóng và chính xác.', example: 'Gõ "npm run dev" vào terminal để khởi động project, hoặc "git push" để đưa code lên server. Marketer không cần gõ giỏi, nhưng cần hiểu các lệnh cơ bản để phối hợp với AI.', related: ['terminal', 'npm', 'workflow', 'git'], demo: { kind: 'interactive', src: 'gif-cli-demo.html', alt: 'Mô phỏng CLI vs GUI, các lệnh phổ biến và workflow' } },
   { id: 'checkbox', name: 'Checkbox', nameEn: 'Ô đánh dấu', letter: 'C', groups: ['design', 'code'], definition: 'Thành phần giao diện cho phép người dùng chọn một hoặc nhiều tùy chọn từ một danh sách. Khác với Radio Button (chỉ chọn 1), Checkbox hỗ trợ đa lựa chọn và có 3 trạng thái chính: rỗng, chọn, và nửa-chọn (indeterminate) - thường dùng cho logic cha-con.', example: 'Prompt: "Thêm một danh sách checkbox để người dùng chọn các kênh marketing: \'Facebook\', \'Google Ads\', \'TikTok\', mặc định là chưa chọn cái nào, nếu chọn hết thì checkbox \'Tất cả\' ở trên cùng cũng tự sáng."', related: ['radio', 'form', 'boolean', 'state'], demo: { kind: 'interactive', src: 'gif-checkbox-demo.html', alt: 'Mô phỏng 4 khía cạnh của checkbox: trạng thái, nhãn, danh sách và form' } },
+  {
+    id: 'clone',
+    name: 'Clone',
+    nameEn: 'Clone GitHub / Nhân bản project',
+    letter: 'C',
+    groups: ['workflow'],
+    definition: 'Hành động tải toàn bộ một kho code (repository) từ server (như GitHub) về máy tính cá nhân của bạn. Clone không chỉ copy file mà còn copy cả lịch sử commit, giúp bạn có một bản sao hoàn chỉnh để làm việc.',
+    example: 'Bạn vừa được mời vào dự án mới. Thay vì download file zip, bạn mở terminal và gõ "git clone [url]". Sau 1 phút, toàn bộ project đã nằm sẵn trên máy để bạn bắt đầu vibecode.',
+    related: ['git', 'repository', 'commit', 'pull', 'push'],
+    demo: {
+      kind: 'interactive',
+      src: 'gif-clone-demo.html',
+      alt: 'Mô phỏng quy trình Clone: từ GitHub về máy cá nhân với đầy đủ file và lịch sử'
+    },
+    practice: {
+      kind: 'interactive',
+      src: 'gif-clone-practice.html',
+      alt: 'Thực hành Clone: trải nghiệm quy trình copy URL, gõ lệnh terminal và kiểm tra file hệ thống'
+    }
+  },
   { id: 'commit', name: 'Commit', nameEn: 'Lưu checkpoint code', letter: 'C', groups: ['workflow', 'code'], definition: 'Hành động lưu lại một điểm trong lịch sử code. Giống như Save game — bạn có thể quay lại đây bất cứ lúc nào nếu AI làm vỡ project.', example: 'Sau khi hero section chạy ổn: "git commit -m \'hero section done\'". Dù AI có làm hỏng phần sau, bạn vẫn rollback về được.', related: ['git', 'repository'], demo: { kind: 'interactive', src: 'gif-commit-demo.html', alt: 'Mô phỏng quy trình commit và lịch sử git', caption: 'Commit giúp đóng băng trạng thái code và lưu vào lịch sử.' } },
   { id: 'component', name: 'Component', nameEn: 'Khối giao diện tái dùng', letter: 'C', groups: ['code', 'design'], definition: 'Một khối giao diện độc lập, có thể dùng lại nhiều lần. Button, card sản phẩm, navbar, form — đều là component. Thiết kế một lần, dùng ở khắp nơi trong web.', example: '"Tôi có 12 trang web nhưng muốn cùng 1 footer." Đây là lúc dùng Footer component — sửa một chỗ, cập nhật khắp nơi.', related: ['props', 'state'], demo: { kind: 'interactive', src: 'gif-component-demo.html', alt: 'Mô phỏng 4 loại component phổ biến và code minh họa' } },
   { id: 'contrast', name: 'Contrast', nameEn: 'Độ tương phản', letter: 'C', groups: ['design', 'code'], definition: 'Sự khác biệt về độ sáng (luminance) giữa chữ và nền. Độ tương phản cao giúp nội dung dễ đọc, đặc biệt quan trọng cho khả năng tiếp cận (accessibility). Chuẩn WCAG quy định các mức ratio như 4.5:1 cho chữ thường và 3:1 cho chữ lớn.', example: 'Prompt: "Kiểm tra độ tương phản của nút CTA này, nếu chưa đạt chuẩn AA (4.5:1) thì hãy chỉnh màu nền đậm hơn hoặc chữ sáng hơn."', related: ['accessibility', 'ui', 'color-palette', 'fontweight'], demo: { kind: 'interactive', src: 'gif-contrast-demo.html', alt: 'Mô phỏng các mức độ tương phản và chuẩn WCAG' } },
@@ -443,6 +463,7 @@ const deepDiveTermIds = new Set([
   'navigation',
   'cache',
   'cli',
+  'clone',
   'git',
   'commit',
   'context',
@@ -529,6 +550,13 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Việc ignore node_modules/ giúp repo nhẹ hơn hàng chục lần. Bạn không cần lưu thư viện code của người khác vào kho của mình, chỉ cần lưu file "danh sách" (package.json) là đủ để người khác cài lại được.',
     'Pattern syntax trong .gitignore rất linh hoạt: dùng * để đại diện cho mọi thứ (wildcard), dùng / ở cuối để chỉ định cả thư mục, và dùng ! để tạo ngoại lệ (ví dụ: ignore toàn bộ .env nhưng giữ lại .env.example).',
     'Nếu bạn lỡ commit một file nhạy cảm trước khi thêm nó vào .gitignore, việc thêm vào sau này sẽ không tự động xóa file đó khỏi lịch sử Git. Bạn sẽ cần các lệnh nâng cao hơn để "tẩy sạch" hoàn toàn dấu vết cũ.'
+  ],
+  clone: [
+    'Clone không phải là "Download ZIP". Khi bạn download ZIP, bạn chỉ có bộ file cuối cùng. Khi bạn Clone, bạn bê nguyên cả "cỗ máy thời gian" (Git history) về máy mình.',
+    'Bạn chỉ cần Clone một lần duy nhất cho mỗi dự án. Sau đó, bạn dùng lệnh Pull để cập nhật những thay đổi mới, chứ không cần clone lại từ đầu.',
+    'Clone tạo ra một mối liên kết (Remote) giữa máy bạn và GitHub. Nhờ đó, bạn có thể Push những gì mình làm lên cho team xem hoặc Deploy lên web thật.',
+    'Marketer cần lưu ý: Đừng clone vào trong một folder đã có Git (lồng repo). Hãy tạo một folder "projects" riêng và clone từng dự án vào đó để tránh xung đột cấu hình.',
+    'Trong Vibecode, Clone là "tấm vé vào cổng". Không có bước này, AI không thể giúp bạn đọc code hiện tại hay viết thêm tính năng mới.'
   ],
   button: [
     'Button không chỉ là "cái nút để click". Nó là ngôn ngữ của hành động (Action Language). Mỗi variant truyền tải một thông điệp: Primary = "Làm ngay", Secondary = "Làm sau", Ghost = "Có thể làm".',
