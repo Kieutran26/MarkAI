@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Port — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#131313;--card:#1c1c1c;--border:#2e2e2e;--fg:#e8ddd0;--muted:#6b6358;
+--accent:#E88C2E;--amber:#d4930d;--green:#6b9e78;--red:#c44;
+--mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);overflow-x:hidden;padding:20px 16px 40px}
+.grid-bg{position:fixed;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);
+  background-size:48px 48px;pointer-events:none;z-index:0}
+.diag{position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:repeating-linear-gradient(45deg,transparent,transparent 96px,rgba(255,255,255,.012) 96px,rgba(255,255,255,.012) 97px)}
+.wrap{position:relative;z-index:1;max-width:900px;margin:0 auto}
+
+/* ── grid ── */
+.g{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:680px){.g{grid-template-columns:1fr}}
+
+/* ── card ── */
+.sc{background:#181818;border:1px solid #272727;display:flex;flex-direction:column;padding:18px;position:relative;min-height:260px;border-radius:3px}
+.sc-label{font-family:var(--mono);font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.sc-title{font-size:18px;font-weight:700;line-height:1.2;margin-bottom:16px}
+.sc-body{flex:1;display:flex;align-items:center;justify-content:center;position:relative;min-height:180px}
+.sc-insight{font-family:var(--mono);font-size:10px;color:var(--accent);border-top:1px solid var(--border);
+  padding-top:12px;margin-top:16px;white-space:normal;line-height:1.4}
+
+/* ── enter helpers ── */
+.enter-l{opacity:0;transform:translateX(-12px)}
+.enter-r{opacity:0;transform:translateX(12px)}
+.enter-s{opacity:0;transform:scale(.9)}
+.enter-up{opacity:0;transform:translateY(12px)}
+.vis{opacity:1!important;transform:none!important;transition:opacity .4s ease-out,transform .4s ease-out}
+
+/* ═══ SCENE 1 & 2: Server + Request ═══ */
+.s-flow{display:flex;align-items:center;justify-content:center;gap:0;width:100%;height:100%}
+.req-box{border:2px solid var(--border);background:rgba(0,0,0,.35);padding:8px 12px;text-align:center;flex-shrink:0;min-width:80px}
+.req-lbl{font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--muted);margin-bottom:4px}
+.req-val{font-family:var(--mono);font-size:20px;font-weight:700;color:var(--accent);transition:color .25s}
+.req-val.err{color:var(--red)}
+.s-line{width:0;height:2px;background:var(--accent);flex-shrink:0;transition:width .4s ease-out}
+.s-line.on{width:30px}
+.s-line.red{background:var(--red)}
+.srv-box{border:2px solid var(--border);background:rgba(0,0,0,.4);flex-shrink:0;width:100%;max-width:200px}
+.srv-hdr{font-family:var(--mono);font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--muted);
+  padding:6px 10px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.015)}
+.srv-row{display:flex;align-items:center;padding:8px 10px;border-bottom:1px solid var(--border);gap:8px;
+  transition:background .3s,border-color .3s}
+.srv-row:last-child{border-bottom:none}
+.srv-row .port{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--muted);min-width:38px;transition:color .3s}
+.srv-row .name{font-size:11px;flex:1;white-space:nowrap;overflow:hidden}
+.srv-row .status{font-family:var(--mono);font-size:9px;opacity:0;transition:opacity .3s;min-width:60px;text-align:right}
+.srv-row.ok{background:rgba(107,158,120,.08)}
+.srv-row.ok .port{color:var(--green)}
+.srv-row.ok .status{opacity:1;color:var(--green)}
+.srv-row.err{background:rgba(204,68,68,.08)}
+.srv-row.err .port{color:var(--red)}
+.srv-row.err .status{opacity:1;color:var(--red)}
+
+/* ═══ SCENE 3: Port Reference ═══ */
+.port-list{display:flex;flex-direction:column;gap:6px;width:100%}
+.port-card{display:flex;border:1px solid var(--border);background:rgba(0,0,0,.3);overflow:hidden}
+.pc-bar{width:3px;flex-shrink:0}
+.pc-body{padding:8px 12px;flex:1;min-width:0}
+.pc-head{display:flex;align-items:center;gap:6px;margin-bottom:2px}
+.pc-num{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--fg)}
+.pc-arrow{color:var(--muted);font-size:10px}
+.pc-name{font-size:12px;font-weight:600}
+.pc-desc{font-size:10px;color:var(--muted);line-height:1.2}
+
+/* ═══ SCENE 4: Local vs Production ═══ */
+.env-flow{display:flex;align-items:center;justify-content:center;gap:0;width:100%}
+.env-box{border:2px solid var(--border);background:rgba(0,0,0,.3);padding:10px 14px;text-align:center;flex:0 0 auto;min-width:110px}
+.env-lbl{font-family:var(--mono);font-size:8px;letter-spacing:1px;color:var(--muted);margin-bottom:4px;text-transform:uppercase}
+.env-port{font-family:var(--mono);font-size:18px;font-weight:700;color:var(--fg);margin-bottom:2px}
+.env-desc{font-size:10px;color:var(--muted);margin-bottom:6px}
+.env-dot{width:6px;height:6px;border-radius:50%;margin:0 auto;background:var(--border);transition:background .3s}
+.env-dot.ok{background:var(--green)}
+.env-mid{display:flex;flex-direction:column;align-items:center;gap:4px;padding:0 8px;flex-shrink:0}
+.env-arr{width:20px;height:2px;background:var(--border);position:relative;opacity:0;transition:opacity .4s,background .4s}
+.env-arr.l::after{content:'';position:absolute;left:-1px;top:-4px;border:5px solid transparent;border-right:6px solid var(--border)}
+.env-arr.r::after{content:'';position:absolute;right:-1px;top:-4px;border:5px solid transparent;border-left:6px solid var(--border)}
+.env-arr.vis{opacity:1;background:var(--accent)}
+.env-arr.vis.l::after{border-right-color:var(--accent)}
+.env-arr.vis.r::after{border-left-color:var(--accent)}
+.env-map{font-family:var(--mono);font-size:8px;color:var(--accent);white-space:nowrap;opacity:0;transition:opacity .4s;letter-spacing:.5px}
+.env-map.vis{opacity:1}
+
+
+@media(max-width:480px){
+  .s-flow{flex-direction:column;gap:4px}
+  .s-line{width:2px!important;height:0!important;transition:height .35s ease-out!important}
+  .s-line.on{height:16px!important;width:2px!important}
+  .req-box{order:2}
+  .srv-box{order:1}
+  .env-flow{flex-direction:column;gap:4px}
+  .env-box{order:1}
+  .env-mid{order:2;padding:4px 0}
+  .env-arr{width:2px!important;height:0!important;transition:height .35s!important}
+  .env-arr.vis{height:12px!important;width:2px!important}
+  .env-arr.l::after{left:-4px;top:auto;bottom:-1px;border:5px solid transparent;border-top:6px solid var(--accent)}
+  .env-arr.r::after{right:-4px;top:auto;bottom:-1px;border:5px solid transparent;border-top:6px solid var(--accent)}
+}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="diag"></div>
+
+<div class="wrap">
+  <div class="g">
+
+    <!-- SCENE 1: 1 server, nhiều cổng -->
+    <div class="sc">
+      <div class="sc-label">01 / 04</div>
+      <div class="sc-title">1 máy chủ, nhiều cổng</div>
+      <div class="sc-body">
+        <div class="s-flow">
+          <div class="req-box enter-l" id="r1req">
+            <div class="req-lbl">Request</div>
+            <div class="req-val" id="r1val">:3000</div>
+          </div>
+          <div class="s-line" id="r1line"></div>
+          <div class="srv-box enter-r" id="r1srv">
+            <div class="srv-hdr">SERVER</div>
+            <div class="srv-row" id="r1p3000"><span class="port">:3000</span><span class="name">Web App</span><span class="status"></span></div>
+            <div class="srv-row" id="r1p5432"><span class="port">:5432</span><span class="name">Database</span><span class="status"></span></div>
+            <div class="srv-row" id="r1p8080"><span class="port">:8080</span><span class="name">API Server</span><span class="status"></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="sc-insight">→ Port = cửa số. Cùng 1 máy, nhiều service, mỗi cái 1 cổng riêng.</div>
+    </div>
+
+    <!-- SCENE 2: Sai port = bị chặn -->
+    <div class="sc">
+      <div class="sc-label">02 / 04</div>
+      <div class="sc-title">Sai port = bị chặn ngay</div>
+      <div class="sc-body">
+        <div class="s-flow">
+          <div class="req-box enter-l" id="r2req">
+            <div class="req-lbl">Request</div>
+            <div class="req-val" id="r2val">:5432</div>
+          </div>
+          <div class="s-line" id="r2line"></div>
+          <div class="srv-box enter-r" id="r2srv">
+            <div class="srv-hdr">SERVER</div>
+            <div class="srv-row" id="r2p3000"><span class="port">:3000</span><span class="name">Web App</span><span class="status"></span></div>
+            <div class="srv-row" id="r2p5432"><span class="port">:5432</span><span class="name">Database</span><span class="status"></span></div>
+            <div class="srv-row" id="r2p8080"><span class="port">:8080</span><span class="name">API Server</span><span class="status"></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="sc-insight">→ Gõ sai port → "Connection refused". Không phải lỗi code, chỉ là gõ sai cửa.</div>
+    </div>
+
+    <!-- SCENE 3: 4 port cần nhớ -->
+    <div class="sc">
+      <div class="sc-label">03 / 04</div>
+      <div class="sc-title">4 port cần nhớ</div>
+      <div class="sc-body">
+        <div class="port-list">
+          <div class="port-card enter-up" id="pc0"><div class="pc-bar" style="background:var(--accent)"></div><div class="pc-body"><div class="pc-head"><span class="pc-num">:3000</span><span class="pc-arrow">→</span><span class="pc-name">Web App</span></div><div class="pc-desc">Next.js, Vite, React dev server</div></div></div>
+          <div class="port-card enter-up" id="pc1"><div class="pc-bar" style="background:var(--green)"></div><div class="pc-body"><div class="pc-head"><span class="pc-num">:5432</span><span class="pc-arrow">→</span><span class="pc-name">PostgreSQL</span></div><div class="pc-desc">Database chính của project</div></div></div>
+          <div class="port-card enter-up" id="pc2"><div class="pc-bar" style="background:var(--amber)"></div><div class="pc-body"><div class="pc-head"><span class="pc-num">:6379</span><span class="pc-arrow">→</span><span class="pc-name">Redis</span></div><div class="pc-desc">Cache, session store, queue</div></div></div>
+          <div class="port-card enter-up" id="pc3"><div class="pc-bar" style="background:var(--fg)"></div><div class="pc-body"><div class="pc-head"><span class="pc-num">:8080</span><span class="pc-arrow">→</span><span class="pc-name">API Server</span></div><div class="pc-desc">Backend API, proxy server</div></div></div>
+        </div>
+      </div>
+      <div class="sc-insight">→ Nhớ 4 port này → đọc lỗi nhanh gấp 3 lần, báo dev chính xác hơn.</div>
+    </div>
+
+    <!-- SCENE 4: Local ≠ Production -->
+    <div class="sc">
+      <div class="sc-label">04 / 04</div>
+      <div class="sc-title">Local ≠ Production</div>
+      <div class="sc-body">
+        <div class="env-flow">
+          <div class="env-box enter-l" id="envL">
+            <div class="env-lbl">Local</div>
+            <div class="env-port">:3000</div>
+            <div class="env-desc">Next.js dev</div>
+            <div class="env-dot" id="dotL"></div>
+          </div>
+          <div class="env-mid enter-up" id="envM">
+            <div class="env-arr l" id="arrL"></div>
+            <div class="env-map" id="envMap">Nginx Proxy</div>
+            <div class="env-arr r" id="arrR"></div>
+          </div>
+          <div class="env-box enter-r" id="envR">
+            <div class="env-lbl">Prod</div>
+            <div class="env-port">:80/:443</div>
+            <div class="env-desc">Cùng app</div>
+            <div class="env-dot" id="dotR"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sc-insight">→ Local chạy :3000, deploy bị 404? Có thể port chưa được map đúng.</div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function later(fn, ms) { return setTimeout(fn, ms); }
+
+/* ═══════════ SCENE 1: 1 server, nhiều cổng ═══════════ */
+function animScene0() {
+  const req = document.getElementById('r1req');
+  const val = document.getElementById('r1val');
+  const line = document.getElementById('r1line');
+  const srv = document.getElementById('r1srv');
+  const rows = [document.getElementById('r1p3000'), document.getElementById('r1p5432'), document.getElementById('r1p8080')];
+  const ports = [':3000', ':5432', ':8080'];
+
+  const run = () => {
+    [req, srv].forEach(el => el.classList.add('vis'));
+    const cycle = (i) => {
+      if (i >= 3) { later(run, 1500); return; }
+      val.textContent = ports[i];
+      line.classList.remove('on');
+      rows.forEach(r => { r.classList.remove('ok'); r.querySelector('.status').textContent = ''; });
+      later(() => line.classList.add('on'), 100);
+      later(() => {
+        rows[i].classList.add('ok');
+        rows[i].querySelector('.status').textContent = 'Connected';
+      }, 500);
+      later(() => cycle(i + 1), 1500);
+    };
+    cycle(0);
+  };
+  run();
+}
+
+/* ═══════════ SCENE 2: Sai port = bị chặn ═══════════ */
+function animScene1() {
+  const req = document.getElementById('r2req');
+  const val = document.getElementById('r2val');
+  const line = document.getElementById('r2line');
+  const srv = document.getElementById('r2srv');
+  const r3000 = document.getElementById('r2p3000');
+  const r5432 = document.getElementById('r2p5432');
+
+  const run = () => {
+    [req, srv].forEach(el => el.classList.add('vis'));
+    // Step 1: Wrong
+    val.textContent = ':5432'; val.classList.remove('err');
+    line.classList.remove('on', 'red');
+    [r3000, r5432].forEach(r => { r.classList.remove('ok', 'err'); r.querySelector('.status').textContent = ''; });
+
+    later(() => line.classList.add('on'), 500);
+    later(() => {
+      r5432.classList.add('err');
+      r5432.querySelector('.status').textContent = 'Refused';
+      val.classList.add('err');
+      line.classList.add('red');
+    }, 1000);
+
+    // Step 2: Correct
+    later(() => {
+      r5432.classList.remove('err'); r5432.querySelector('.status').textContent = '';
+      line.classList.remove('on', 'red');
+      val.textContent = ':3000'; val.classList.remove('err');
+    }, 2500);
+    later(() => line.classList.add('on'), 3000);
+    later(() => {
+      r3000.classList.add('ok');
+      r3000.querySelector('.status').textContent = 'Connected';
+    }, 3500);
+    later(run, 5500);
+  };
+  run();
+}
+
+/* ═══════════ SCENE 3: 4 port cần nhớ ═══════════ */
+function animScene2() {
+  const cards = [document.getElementById('pc0'), document.getElementById('pc1'), document.getElementById('pc2'), document.getElementById('pc3')];
+  const run = () => {
+    cards.forEach(c => c.classList.remove('vis'));
+    cards.forEach((c, i) => later(() => c.classList.add('vis'), i * 300));
+    later(run, 5000);
+  };
+  run();
+}
+
+/* ═══════════ SCENE 4: Local ≠ Production ═══════════ */
+function animScene3() {
+  const envL = document.getElementById('envL');
+  const envR = document.getElementById('envR');
+  const envM = document.getElementById('envM');
+  const arrL = document.getElementById('arrL');
+  const arrR = document.getElementById('arrR');
+  const envMap = document.getElementById('envMap');
+  const dotL = document.getElementById('dotL');
+  const dotR = document.getElementById('dotR');
+
+  const run = () => {
+    [envL, envM, envR].forEach(el => el.classList.remove('vis'));
+    [arrL, arrR, envMap].forEach(a => a.classList.remove('vis'));
+    dotL.classList.remove('ok'); dotR.classList.remove('ok');
+
+    later(() => envL.classList.add('vis'), 200);
+    later(() => envM.classList.add('vis'), 500);
+    later(() => envR.classList.add('vis'), 800);
+    later(() => { dotL.classList.add('ok'); dotR.classList.add('ok'); }, 1200);
+    later(() => arrL.classList.add('vis'), 1600);
+    later(() => envMap.classList.add('vis'), 2000);
+    later(() => arrR.classList.add('vis'), 2400);
+    later(run, 6000);
+  };
+  run();
+}
+
+animScene0();
+animScene1();
+animScene2();
+animScene3();
+</script>
+</body>
+</html>

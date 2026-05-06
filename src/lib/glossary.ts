@@ -169,7 +169,18 @@ export const terms: GlossaryTerm[] = [
   { id: 'padding', name: 'Padding', nameEn: 'Khoảng cách trong — không gian giữa nội dung và viền', letter: 'P', groups: ['design'], definition: 'Padding là khoảng trống nằm BÊN TRONG một element, tạo ra sự ngăn cách giữa nội dung (text, ảnh) và đường viền (border). Padding giúp nội dung "thở" được và dễ đọc hơn, không bị dính sát vào cạnh.', example: '"Nội dung dính sát vào viền card" → thiếu padding. Khi nói "thêm padding 16px" là yêu cầu nới rộng khoảng trống bên trong card để text trông thoáng hơn.', related: ['margin', 'spacing', 'css'], demo: { kind: 'interactive', src: 'gif-padding-demo.html', alt: 'Mô phỏng 4 mức padding từ không padding đến padding đều 4 cạnh' } },
   { id: 'props', name: 'Props', nameEn: 'Properties / Thuộc tính', letter: 'P', groups: ['code'], definition: 'Dữ liệu truyền vào component từ bên ngoài. Giống như thông số khi gọi món — cùng món Phở nhưng "không hành, thêm tái" là props khác nhau.', example: '<Button text="Đăng ký" color="accent" /> — "text" và "color" là props.' },
   { id: 'prompt', name: 'Prompt', nameEn: 'Câu lệnh cho AI', letter: 'P', groups: ['ai'], definition: 'Đoạn text bạn gửi cho AI để hướng dẫn nó làm việc. Prompt tốt = kết quả tốt. Prompt mơ hồ = AI đoán mò. Đây là kỹ năng quan trọng nhất trong vibecode.', example: 'Prompt tệ: "Làm trang web đẹp". Prompt tốt: "Tạo landing page Next.js có hero section, countdown 3 ngày, form email, màu brand #E8410A, responsive mobile."' },
-  { id: 'port', name: 'Port', nameEn: 'Cổng kết nối', letter: 'P', groups: ['infra'], definition: 'Số định danh cho service đang chạy trên máy. localhost:3000 → port 3000 là Next.js. "Port already in use" = có app khác đang chiếm port đó.', example: '"Error: port 3000 is already in use" → Tắt terminal khác hoặc dùng port khác: "npm run dev -- --port 3001".' },
+  {
+    id: 'port',
+    name: 'Port',
+    nameEn: 'Cổng kết nối',
+    letter: 'P',
+    groups: ['infra'],
+    definition: 'Số định danh cho service đang chạy trên máy. localhost:3000 → port 3000 là Next.js. "Port already in use" = có app khác đang chiếm port đó.',
+    example: '"Error: port 3000 is already in use" → Tắt terminal khác hoặc dùng port khác: "npm run dev -- --port 3001".',
+    related: ['localhost', 'deploy', 'hosting', 'environment'],
+    demo: { kind: 'interactive', src: 'gif-port-demo.html', alt: 'Mô phỏng 4 khía cạnh của Port: Port là gì, Port quy ước, Xung đột Port và Localhost:Port' },
+    practice: { kind: 'interactive', src: 'gif-port-practice.html', alt: 'Thực hành Port Explorer: kiểm tra các port phổ biến và giả lập xung đột' }
+  },
   { id: 'responsive', name: 'Responsive', nameEn: 'Thiết kế thích ứng', letter: 'R', groups: ['design', 'code'], definition: 'Khả năng trang web tự thay đổi layout để hiển thị tối ưu trên mọi thiết bị. Với Vibecode, bạn không cần vật lộn với CSS Media Queries phức tạp; chỉ cần ra lệnh cho AI xử lý các "điểm gãy" (breakpoints) để giao diện tự nhảy sang cấu trúc mới (ví dụ từ 4 cột sang 1 cột) một cách thông minh.', example: 'Khi thiết kế landing page, hãy bảo AI: "Làm responsive mobile-first, desktop hiện 3 cột nhưng mobile phải stack dọc 1 cột và ẩn bớt các ảnh nền nặng".', related: ['breakpoint', 'mobile-first', 'flexbox', 'grid'], demo: { kind: 'interactive', src: 'gif-responsive-demo.html', alt: 'Mô phỏng layout thay đổi theo Desktop, Tablet và Mobile' } },
   { id: 'request', name: 'Request / Response', nameEn: 'Yêu cầu / Phản hồi', letter: 'R', groups: ['infra'], definition: 'Cách client và server nói chuyện. Client gửi Request (yêu cầu), server trả Response (kết quả). Mỗi khi web load data từ API là một cặp Request-Response.', example: '"400 Bad Request" = server không hiểu yêu cầu. "404 Not Found" = không tìm thấy. "500 Server Error" = server bị lỗi.' },
   { id: 'repository', name: 'Repository', nameEn: 'Kho code', letter: 'R', groups: ['workflow'], definition: 'Thư mục project được Git quản lý, chứa toàn bộ code và lịch sử thay đổi. Mỗi project = một repository (repo). Lưu trên GitHub để có backup.', example: '"Tạo repo mới trên GitHub, clone về máy, code, commit, push." — Claude Code có thể làm hầu hết bước này.' },
@@ -362,10 +373,18 @@ const deepDiveTermIds = new Set([
   'hosting',
   'interface',
   'model',
-  'llm'
+  'llm',
+  'port'
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
+  port: [
+    'Port giống như số căn hộ trong một tòa nhà chung cư (IP address). IP đưa bạn đến đúng tòa nhà, nhưng Port mới giúp bạn gõ đúng cửa phòng của app bạn cần gặp.',
+    'Có 65,535 cổng trên mỗi máy tính. Các cổng từ 0-1023 thường được dành riêng cho các dịch vụ hệ thống quan trọng (như 80 cho web, 443 cho web bảo mật).',
+    'Xung đột Port (EADDRINUSE) là lỗi "đau đầu" nhất của người mới. Nó đơn giản là cửa đó đã có người ngồi rồi, bạn không thể mở thêm một app khác trên cùng cửa đó được.',
+    'Quy ước Port giúp team làm việc mượt hơn. Ví dụ khi nói "Frontend chạy 3000, Backend chạy 8000" thì mọi người trong team đều ngầm hiểu và biết cách config tool của mình.',
+    'Trong môi trường Localhost, mỗi app "vệ tinh" (DB, Cache, API) phải có một port riêng biệt để giao tiếp với nhau trên cùng một máy tính.'
+  ],
   model: [
     'Model là tên của bộ não AI cụ thể mà bạn đang gọi, ví dụ GPT-4o, Claude 3.5 Sonnet, Gemini 1.5. Nói "dùng AI" thì quá chung, còn nói đúng tên model thì dev mới biết cần tích hợp cái gì.',
     'Các model khác nhau ở 4 thứ chính: tốc độ, giá token, context window, và khả năng suy luận. Vì vậy cùng một prompt nhưng đổi model có thể cho chất lượng, chi phí, và độ ổn định rất khác nhau.',

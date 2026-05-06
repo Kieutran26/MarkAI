@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Port — Animated Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#101010;--bgc:#181818;--bgi:#131313;
+  --bd:#272727;--tx:#e0e0e0;--txm:#707070;--txd:#3a3a3a;
+  --ac:#E88C2E;--acl:#ffad5c;
+  --abg:rgba(232,140,46,.08);--abg2:rgba(232,140,46,.18);
+  --rd:#ef4444;--gn:#22c55e;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Space Grotesk',sans-serif;
+  background-color:var(--bg);
+  background-image:
+    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:20px 20px;
+  color:var(--tx);min-height:100vh;padding:20px 16px 40px;
+}
+.mono{font-family:'JetBrains Mono',monospace}
+
+.ch{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.ch .n{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--ac);background:var(--abg);border:1px solid rgba(217,119,6,.2);padding:1px 6px;border-radius:2px}
+.ch h2{font-size:14px;font-weight:600;letter-spacing:-.3px}
+
+/* ═══════════════════════════════════════
+   PRACTICE
+   ═══════════════════════════════════════ */
+.pra{max-width:900px;margin:0 auto;background:var(--bgc);border:1px solid var(--bd);border-radius:3px;padding:22px}
+.pra .ch{margin-bottom:6px}
+.pra-goal{font-size:12.5px;color:var(--txm);margin-bottom:18px;line-height:1.5}
+.pra-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:660px){.pra-grid{grid-template-columns:1fr}}
+.cfg{display:flex;flex-direction:column;gap:14px}
+.cfg-g{display:flex;flex-direction:column;gap:6px}
+.cfg-l{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txm);text-transform:uppercase;letter-spacing:.5px}
+.port-grid{display:flex;flex-wrap:wrap;gap:4px}
+.pg-b{padding:6px 10px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;background:var(--bgi);border:1px solid var(--bd);color:var(--txm);cursor:pointer;border-radius:2px;transition:all .15s}
+.pg-b:hover{border-color:var(--ac);color:var(--acl)}
+.pg-b.on{background:var(--abg2);border-color:var(--ac);color:var(--acl)}
+.pg-b .pg-cat{font-weight:400;font-size:8px;color:var(--txd);display:block;margin-top:1px}
+.pg-b.on .pg-cat{color:var(--txm)}
+.cfg-in{background:var(--bgi);border:1px solid var(--bd);border-radius:2px;padding:8px 10px;font-family:'Space Grotesk',sans-serif;font-size:13px;color:var(--tx);outline:none;transition:border-color .2s;width:100%}
+.cfg-in:focus{border-color:var(--ac)}
+.cfg-in::placeholder{color:var(--txd)}
+.tog{display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none}
+.tog-t{width:36px;height:20px;background:var(--bd);border-radius:2px;position:relative;transition:background .2s;flex-shrink:0}
+.tog-t.on{background:var(--rd)}
+.tog-k{width:16px;height:16px;background:#fff;border-radius:2px;position:absolute;top:2px;left:2px;transition:left .2s}
+.tog-t.on .tog-k{left:18px}
+.tog-x{font-size:12px;color:var(--txm)}
+.hint{font-size:11px;color:var(--txd);line-height:1.4;padding:8px 10px;background:var(--bgi);border-radius:2px;border-left:2px solid var(--bd)}
+
+/* ── PREVIEW ── */
+.pv{display:flex;flex-direction:column;gap:14px}
+.svc-card{background:var(--bgi);border:1px solid var(--bd);border-radius:3px;padding:12px 14px;display:flex;align-items:center;gap:12px}
+.svc-badge{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;padding:3px 8px;border-radius:2px;flex-shrink:0}
+.svc-badge.web{background:rgba(217,119,6,.12);color:var(--acl);border:1px solid rgba(217,119,6,.2)}
+.svc-badge.db{background:rgba(34,197,94,.1);color:var(--gn);border:1px solid rgba(34,197,94,.15)}
+.svc-badge.cache{background:rgba(239,68,68,.1);color:var(--rd);border:1px solid rgba(239,68,68,.15)}
+.svc-badge.dev{background:rgba(251,191,36,.1);color:#fbbf24;border:1px solid rgba(251,191,36,.15)}
+.svc-badge.unk{background:var(--bd);color:var(--txd);border:1px solid var(--bd)}
+.svc-name{font-size:13px;font-weight:600}
+.svc-desc{font-size:11px;color:var(--txm);margin-top:1px}
+.conn-box{background:var(--bgi);border:1px solid var(--bd);border-radius:2px;padding:8px 10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txm)}
+.conn-box b{color:var(--acl)}
+.term{background:#0a0a0a;border:1px solid var(--bd);border-radius:3px;padding:12px;min-height:80px}
+.term-line{font-family:'JetBrains Mono',monospace;font-size:11px;line-height:1.7}
+.term-p{color:var(--gn)}
+.term-c{color:var(--tx)}
+.term-o{color:var(--txm)}
+.term-err{color:var(--rd)}
+  .status-badge{display:inline-flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;padding:3px 8px;border-radius:2px}
+.status-badge.ok{background:rgba(34,197,94,.1);color:var(--gn);border:1px solid rgba(34,197,94,.15)}
+.status-badge.err{background:rgba(239,68,68,.1);color:var(--rd);border:1px solid rgba(239,68,68,.15)}
+.status-badge.idle{background:var(--bd);color:var(--txd);border:1px solid var(--bd)}
+.status-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
+.pr-box{background:var(--bgi);border:1px solid var(--bd);border-radius:3px;padding:12px 14px}
+.pr-box .cfg-l{display:block;margin-bottom:8px}
+.pr-txt{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--acl);line-height:1.55;word-break:break-word}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+</style>
+</head>
+<body>
+
+<!-- ═══ PRACTICE ═══ -->
+<section class="pra" aria-label="Thực hành">
+  <div class="ch"><span class="n">PRACTICE</span><h2>Port Explorer</h2></div>
+  <p class="pra-goal">Chọn port → xem service nào chạy ở đó. Bật xung đột → xem lỗi xuất hiện trong terminal như thế nào.</p>
+  <div class="pra-grid">
+    <div class="cfg">
+      <div class="cfg-g">
+        <span class="cfg-l">Chọn port</span>
+        <div class="port-grid" id="portGrid">
+          <button class="pg-b" data-p="80">:80<span class="pg-cat">web</span></button>
+          <button class="pg-b" data-p="443">:443<span class="pg-cat">web</span></button>
+          <button class="pg-b" data-p="3000">:3000<span class="pg-cat">dev</span></button>
+          <button class="pg-b" data-p="5432">:5432<span class="pg-cat">db</span></button>
+          <button class="pg-b" data-p="8080">:8080<span class="pg-cat">proxy</span></button>
+          <button class="pg-b" data-p="3306">:3306<span class="pg-cat">db</span></button>
+          <button class="pg-b" data-p="6379">:6379<span class="pg-cat">cache</span></button>
+          <button class="pg-b" data-p="27017">:27017<span class="pg-cat">db</span></button>
+        </div>
+      </div>
+      <div class="cfg-g">
+        <label class="cfg-l" for="customPort">Hoặc nhập port bất kỳ</label>
+        <input class="cfg-in" id="customPort" type="number" min="1" max="65535" placeholder="VD: 4000, 9000...">
+      </div>
+      <div class="cfg-g">
+        <div class="tog" id="conflictToggle" role="switch" aria-checked="false" tabindex="0" aria-label="Giả lập xung đột">
+          <div class="tog-t" id="togTrack"><div class="tog-k"></div></div>
+          <span class="tog-x">Giả lập xung đột port</span>
+        </div>
+      </div>
+      <div class="hint">Thử: chọn port 3000, bật xung đột — xem lỗi EADDRINUSE trong terminal. Rồi nhập port 9999 để xem phản hồi với port không phổ biến.</div>
+    </div>
+    <div class="pv">
+      <div id="svcCard" class="svc-card">
+        <span class="svc-badge unk">?</span>
+        <div>
+          <div class="svc-name" id="svcName">Chọn port</div>
+          <div class="svc-desc" id="svcDesc">Nhấn một port để xem thông tin</div>
+        </div>
+      </div>
+      <div>
+        <span class="cfg-l">Chuỗi kết nối</span>
+        <div class="conn-box" id="connBox">localhost:<b>?</b></div>
+      </div>
+      <div>
+        <span class="cfg-l">Terminal</span>
+        <div class="term" id="termBox">
+          <div class="term-line"><span class="term-p">$</span> <span class="term-c">chờ lựa chọn...</span></div>
+        </div>
+      </div>
+      <div id="statusBadge" class="status-badge idle"><span class="status-dot"></span>IDLE</div>
+      <div class="pr-box">
+        <span class="cfg-l">Nói với dev</span>
+        <div class="pr-txt" id="prTxt">Chọn port để xem gợi ý...</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<script>
+(function(){
+  var DATA={
+    80:{name:'HTTP',cat:'web',desc:'Web server mặc định, không mã hóa',url:'http://example.com',cmd:'nginx',badgeCls:'web'},
+    443:{name:'HTTPS',cat:'web',desc:'Web server với SSL/TLS bảo mật',url:'https://example.com',cmd:'nginx --ssl',badgeCls:'web'},
+    3000:{name:'Dev Server',cat:'dev',desc:'React, Next.js, Express, Vue dev server',url:'http://localhost:3000',cmd:'npm run dev',badgeCls:'dev'},
+    5432:{name:'PostgreSQL',cat:'db',desc:'Hệ quản trị cơ sở dữ liệu quan hệ',url:'postgresql://localhost:5432',cmd:'pg_ctl start',badgeCls:'db'},
+    8080:{name:'HTTP Alt / Proxy',cat:'web',desc:'Nginx proxy, Tomcat, alternate HTTP',url:'http://localhost:8080',cmd:'nginx -p 8080',badgeCls:'web'},
+    3306:{name:'MySQL',cat:'db',desc:'Hệ quản trị cơ sở dữ liệu MySQL',url:'mysql://localhost:3306',cmd:'mysqld',badgeCls:'db'},
+    6379:{name:'Redis',cat:'cache',desc:'In-memory cache, message queue',url:'redis://localhost:6379',cmd:'redis-server',badgeCls:'cache'},
+    27017:{name:'MongoDB',cat:'db',desc:'Database NoSQL document-oriented',url:'mongodb://localhost:27017',cmd:'mongod',badgeCls:'db'}
+  };
+
+  var selectedPort=null;
+  var conflict=false;
+
+  var $grid=document.getElementById('portGrid');
+  var $custom=document.getElementById('customPort');
+  var $toggle=document.getElementById('conflictToggle');
+  var $track=document.getElementById('togTrack');
+  var $svcCard=document.getElementById('svcCard');
+  var $svcName=document.getElementById('svcName');
+  var $svcDesc=document.getElementById('svcDesc');
+  var $conn=document.getElementById('connBox');
+  var $term=document.getElementById('termBox');
+  var $status=document.getElementById('statusBadge');
+  var $pr=document.getElementById('prTxt');
+  var $btns=$grid.querySelectorAll('.pg-b');
+
+  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+
+  function render(){
+    if(selectedPort===null){
+      $svcCard.innerHTML='<span class="svc-badge unk">?</span><div><div class="svc-name">Chọn port</div><div class="svc-desc">Nhấn một port để xem thông tin</div></div>';
+      $conn.innerHTML='localhost:<b>?</b>';
+      $term.innerHTML='<div class="term-line"><span class="term-p">$</span> <span class="term-c">chờ lựa chọn...</span></div>';
+      $status.className='status-badge idle';
+      $status.innerHTML='<span class="status-dot"></span>IDLE';
+      $pr.textContent='Chọn port để xem gợi ý...';
+      return;
+    }
+
+    var p=selectedPort;
+    var info=DATA[p];
+    var catLabel={web:'WEB',db:'DATABASE',dev:'DEV',cache:'CACHE'};
+
+    if(info){
+      /* service card */
+      $svcCard.innerHTML='<span class="svc-badge '+info.badgeCls+'">'+catLabel[info.cat]+'</span><div><div class="svc-name">'+esc(info.name)+'</div><div class="svc-desc">'+esc(info.desc)+'</div></div>';
+
+      /* connection */
+      $conn.innerHTML=esc(info.url);
+
+      /* terminal */
+      if(conflict){
+        $term.innerHTML=
+          '<div class="term-line"><span class="term-p">$</span> <span class="term-c">'+esc(info.cmd)+'</span></div>'+
+          '<div class="term-line"><span class="term-err">Error: listen EADDRINUSE: address already in use :::'+p+'</span></div>'+
+          '<div class="term-line"><span class="term-err">  at Server.setupListenHandle [as _listen2]</span></div>'+
+          '<div class="term-line"><span class="term-o" style="margin-top:4px">→ Port '+p+' đang bị process khác chiếm.</span></div>'+
+          '<div class="term-line"><span class="term-o">→ Kill process hoặc đổi sang port khác.</span></div>';
+        $status.className='status-badge err';
+        $status.innerHTML='<span class="status-dot"></span>EADDRINUSE';
+        $pr.textContent='Port '+p+' bị chiếm rồi. Kill process đang dùng port '+p+' hoặc đổi sang port khác (VD: '+(p+1)+'). Lỗi EADDRINUSE.';
+      } else {
+        $term.innerHTML=
+          '<div class="term-line"><span class="term-p">$</span> <span class="term-c">'+esc(info.cmd)+'</span></div>'+
+          '<div class="term-line"><span class="term-o">  '+esc(info.name)+' starting...</span></div>'+
+          '<div class="term-line"><span class="term-o">  Ready on '+esc(info.url)+'</span></div>'+
+          '<div class="term-line"><span style="color:var(--gn)">  ✓ Port '+p+' — available</span></div>';
+        $status.className='status-badge ok';
+        $status.innerHTML='<span class="status-dot"></span>LISTENING :'+p;
+        $pr.textContent='App chạy port '+p+' ('+info.name+'). Truy cập qua '+info.url+'. Port này đang available.';
+      }
+    } else {
+      /* unknown port */
+      $svcCard.innerHTML='<span class="svc-badge unk">?</span><div><div class="svc-name">Port '+p+'</div><div class="svc-desc">Không phải port quy ước phổ biến</div></div>';
+      $conn.innerHTML='localhost:<b>'+p+'</b>';
+
+      if(conflict){
+        $term.innerHTML=
+          '<div class="term-line"><span class="term-p">$</span> <span class="term-c">node server.js --port '+p+'</span></div>'+
+          '<div class="term-line"><span class="term-err">Error: listen EADDRINUSE: address already in use :::'+p+'</span></div>'+
+          '<div class="term-line"><span class="term-o" style="margin-top:4px">→ Port '+p+' bị chiếm. Đổi port hoặc kill process.</span></div>';
+        $status.className='status-badge err';
+        $status.innerHTML='<span class="status-dot"></span>EADDRINUSE';
+        $pr.textContent='Port '+p+' không phổ biến nhưng vẫn bị chiếm. Lỗi giống nhau: EADDRINUSE. Kill process hoặc đổi port.';
+      } else {
+        $term.innerHTML=
+          '<div class="term-line"><span class="term-p">$</span> <span class="term-c">node server.js --port '+p+'</span></div>'+
+          '<div class="term-line"><span class="term-o">  Server running on port '+p+'</span></div>'+
+          '<div class="term-line"><span style="color:var(--gn)">  ✓ Port '+p+' — available</span></div>'+
+          '<div class="term-line"><span class="term-o" style="margin-top:4px">⚠ Port '+p+' không phải quy ước — xác nhận đúng chưa?</span></div>';
+        $status.className='status-badge ok';
+        $status.innerHTML='<span class="status-dot"></span>LISTENING :'+p;
+        $pr.textContent='Port '+p+' không phổ biến. App vẫn chạy được, nhưng team khác có thể không biết port này dùng cho gì. Xem lại quy ước.';
+      }
+    }
+  }
+
+  function selectPort(p){
+    selectedPort=p;
+    $btns.forEach(function(b){
+      b.classList.toggle('on',parseInt(b.getAttribute('data-p'))===p);
+    });
+    $custom.value='';
+    render();
+  }
+
+  /* preset buttons */
+  $btns.forEach(function(b){
+    b.addEventListener('click',function(){
+      selectPort(parseInt(this.getAttribute('data-p')));
+    });
+  });
+
+  /* custom input */
+  $custom.addEventListener('input',function(){
+    var v=parseInt(this.value);
+    if(v>=1&&v<=65535){
+      selectedPort=v;
+      $btns.forEach(function(b){b.classList.remove('on')});
+      render();
+    } else if(this.value===''){
+      selectedPort=null;
+      $btns.forEach(function(b){b.classList.remove('on')});
+      render();
+    }
+  });
+
+  /* conflict toggle */
+  function toggleConflict(){
+    conflict=!conflict;
+    $track.classList.toggle('on',conflict);
+    $toggle.setAttribute('aria-checked',String(conflict));
+    render();
+  }
+  $toggle.addEventListener('click',toggleConflict);
+  $toggle.addEventListener('keydown',function(e){
+    if(e.key===' '||e.key==='Enter'){e.preventDefault();toggleConflict();}
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
