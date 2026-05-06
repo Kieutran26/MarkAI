@@ -235,8 +235,10 @@ body{
   <!-- ─── 03 CONTEXT WINDOW ─── -->
   <section class="c">
     <div class="ch"><span class="n">03</span><h2>Cửa sổ ngữ cảnh</h2></div>
-    <div class="st ctx-stage" id="ctxStage"></div>
-    <p class="ins">LLM có <strong>giới hạn "bộ nhớ ngắn"</strong> (context window). Gửi quá nhiều → token cũ bị đẩy ra. Trim prompt, xóa bớt history, hoặc dùng model cửa sổ lớn hơn.</p>
+    <div class="st">
+      <div id="ctxStage" class="ctx-stage"></div>
+    </div>
+    <p class="ins"><strong>Context Window</strong> = bộ nhớ ngắn hạn của LLM. Khi quá nhiều token, các nội dung cũ ở đầu sẽ bị "đẩy" ra để nhường chỗ cho cái mới.</p>
   </section>
 
   <!-- ─── 04 NHIỆT ĐỘ ─── -->
