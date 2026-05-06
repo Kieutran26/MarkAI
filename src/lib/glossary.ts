@@ -96,13 +96,13 @@ export const terms: GlossaryTerm[] = [
     demo: { kind: 'interactive', src: 'gif-hosting-demo.html', alt: 'Mô phỏng Hosting và quy trình vận hành' }
   },
   { id: 'inference', name: 'Inference', nameEn: 'AI xử lý và trả kết quả', letter: 'I', groups: ['ai'], definition: 'Quá trình AI nhận input (prompt của bạn) và tạo ra output (text, code, ảnh). Mỗi lần bạn hỏi AI và AI trả lời = một lần inference chạy trên server.', example: '"Inference cost" = chi phí mỗi lần gọi AI API. Khi dùng Claude API trong app, mỗi user message = một lần inference = một khoản phí nhỏ.' },
-  { 
-    id: 'interface', 
-    name: 'Interface (UI)', 
-    nameEn: 'Giao diện người dùng', 
-    letter: 'I', 
-    groups: ['design'], 
-    definition: 'Interface (Giao diện) là điểm tiếp xúc giữa người dùng và hệ thống. Nó không chỉ là "vẻ ngoài đẹp" mà là cách bạn tương tác với sản phẩm qua việc click, chạm, gõ, nói hoặc nhìn. Một interface tốt giúp xóa nhòa ranh giới giữa ý định của người dùng và khả năng của máy móc.', 
+  {
+    id: 'interface',
+    name: 'Interface (UI)',
+    nameEn: 'Giao diện người dùng',
+    letter: 'I',
+    groups: ['design'],
+    definition: 'Interface (Giao diện) là điểm tiếp xúc giữa người dùng và hệ thống. Nó không chỉ là "vẻ ngoài đẹp" mà là cách bạn tương tác với sản phẩm qua việc click, chạm, gõ, nói hoặc nhìn. Một interface tốt giúp xóa nhòa ranh giới giữa ý định của người dùng và khả năng của máy móc.',
     example: 'Khi AI nói "xây interface" thường là API cho hệ thống giao tiếp. Khi designer nói "interface" là cách user giao tiếp với app. Ví dụ: "Nút Đăng ký rõ ràng > nút Tiếp mơ hồ" là cải thiện interface về tính Clarity (Rõ ràng).',
     related: ['gui', 'cli', 'ux', 'accessibility'],
     demo: {
@@ -119,19 +119,38 @@ export const terms: GlossaryTerm[] = [
   { id: 'import', name: 'Import / Export', nameEn: 'Chia sẻ code giữa file', letter: 'I', groups: ['code'], definition: 'Cách một file dùng code từ file khác. Import = lấy vào. Export = chia sẻ ra. Khi AI tạo component, nó thường có "export default" để các trang khác import vào.', example: '"import Button from \'./Button\'" = trang này đang dùng component Button từ file Button.tsx. Nếu thiếu dòng này, component sẽ không hoạt động.' },
   { id: 'json', name: 'JSON', nameEn: 'Định dạng dữ liệu phổ biến', letter: 'J', groups: ['data', 'code'], definition: 'Định dạng text để trao đổi dữ liệu giữa hệ thống. Trông như: {"name": "Lan", "email": "lan@co.com"}. API thường trả về JSON.', example: 'Khi Airtable API trả dữ liệu, nó là JSON. Cursor/Claude sẽ parse JSON đó và hiển thị thành giao diện đẹp trên web.', related: ['api', 'request'] },
   { id: 'jsx', name: 'JSX', nameEn: 'JavaScript + HTML hợp nhất', letter: 'J', groups: ['code'], definition: 'Cú pháp viết HTML trong file JavaScript/TypeScript. React dùng JSX. Nhìn trông giống HTML nhưng có thêm logic. File .tsx là TypeScript + JSX.', example: 'Khi Cursor tạo component, nó tạo file .tsx với JSX. Chỉ cần biết đây là "HTML nâng cấp" mà AI viết cho bạn.' },
-  { 
-    id: 'localhost', 
-    name: 'Local Host', 
-    nameEn: 'localhost — máy tính của bạn', 
-    letter: 'L', 
-    groups: ['infra'], 
-    definition: 'Địa chỉ IP của chính máy tính bạn đang dùng (thường là 127.0.0.1). Đây là môi trường chạy web riêng tư — chỉ bạn thấy, internet không thấy. Marketer cần hiểu local host là nơi "thử nghiệm" an toàn trước khi đưa code lên server thật (hosting).', 
-    example: 'Khi AI bảo "xem trên local" → nghĩa là họ đang mở localhost:3000 trên máy AI. Bạn không thể xem link này từ máy bạn trừ khi họ "deploy" lên internet.', 
+  {
+    id: 'localhost',
+    name: 'Local Host',
+    nameEn: 'localhost — máy tính của bạn',
+    letter: 'L',
+    groups: ['infra'],
+    definition: 'Địa chỉ IP của chính máy tính bạn đang dùng (thường là 127.0.0.1). Đây là môi trường chạy web riêng tư — chỉ bạn thấy, internet không thấy. Marketer cần hiểu local host là nơi "thử nghiệm" an toàn trước khi đưa code lên server thật (hosting).',
+    example: 'Khi AI bảo "xem trên local" → nghĩa là họ đang mở localhost:3000 trên máy AI. Bạn không thể xem link này từ máy bạn trừ khi họ "deploy" lên internet.',
     related: ['port', 'deploy', 'hosting', 'environment'],
     demo: { kind: 'interactive', src: 'gif-localhost-demo.html', alt: 'Mô phỏng sự khác biệt giữa Local Host và Server Hosting' }
   },
   { id: 'loop', name: 'Loop', nameEn: 'Lặp lại tự động', letter: 'L', groups: ['code'], definition: 'Tự động lặp lại một đoạn code với từng item trong danh sách. Khi bạn có 50 sản phẩm và muốn hiển thị card cho từng cái — loop xử lý việc đó.', example: '"Hiển thị tất cả bài blog từ Supabase" → AI viết loop map qua array posts, render BlogCard cho từng bài.' },
-  { id: 'llm', name: 'LLM', nameEn: 'Large Language Model', letter: 'L', groups: ['ai'], definition: 'Mô hình AI được train trên lượng text khổng lồ để hiểu và tạo ngôn ngữ. Claude, GPT-4, Gemini đều là LLM. Đây là "não" của các AI tool bạn đang dùng.', example: '"Cursor dùng LLM nào?" → Cursor cho phép chọn model: Claude Sonnet, GPT-4o. Model = LLM cụ thể bạn đang chat với.', related: ['model', 'prompt'] },
+  {
+    id: 'llm',
+    name: 'LLM',
+    nameEn: 'Large Language Model',
+    letter: 'L',
+    groups: ['ai'],
+    definition: 'Mô hình AI được train trên lượng text khổng lồ để hiểu và tạo ngôn ngữ. Claude, GPT-4, Gemini đều là LLM. Đây là "não" của các AI tool bạn đang dùng.',
+    example: '"Cursor dùng LLM nào?" → Cursor cho phép chọn model: Claude Sonnet, GPT-4o. Model = LLM cụ thể bạn đang chat với.',
+    related: ['model', 'prompt', 'context', 'context-window'],
+    demo: {
+      kind: 'interactive',
+      src: 'gif-llm-demo.html',
+      alt: 'Mô phỏng 4 khía cạnh của LLM: Tokenization, Prediction, Context Window và Temperature'
+    },
+    practice: {
+      kind: 'interactive',
+      src: 'gif-llm-practice.html',
+      alt: 'Thực hành Prompt Lab: thử nghiệm temperature và quan sát tokenization'
+    }
+  },
   { id: 'letter-spacing', name: 'Letter Spacing', nameEn: 'Giãn cách ký tự / Tracking', letter: 'L', groups: ['design'], definition: 'Letter Spacing (hay Tracking) là khoảng cách giữa các ký tự trong một đoạn văn bản. Chỉnh letter spacing giúp chữ dễ đọc hơn hoặc tạo ra phong cách typography riêng biệt (ví dụ: chữ thưa ra cho cảm giác sang trọng).', example: 'Khi dùng font Serif cho tiêu đề, mình thường giảm nhẹ letter spacing để chữ trông chặt chẽ và chuyên nghiệp hơn. Prompt: "Giảm letter spacing của H1 xuống -0.02em."', related: ['spacing', 'typography'], demo: { kind: 'interactive', src: 'gif-letter-spacing-demo.html' } },
   { id: 'line-spacing', name: 'Line Spacing', nameEn: 'Giãn cách dòng / Leading', letter: 'L', groups: ['design'], definition: 'Line Spacing (hay Leading) là khoảng cách giữa các dòng trong một đoạn văn bản. Chỉnh line spacing phù hợp giúp khối văn bản dễ đọc, không bị dính vào nhau hoặc quá rời rạc.', example: 'Với đoạn văn bản dài, line spacing thường để mức 1.5 - 1.6 để mắt dễ theo dõi. Với tiêu đề, có thể để mức 1.1 - 1.2. Prompt: "Chỉnh line spacing của đoạn văn này lên 1.6."', related: ['spacing', 'typography'], demo: { kind: 'interactive', src: 'gif-line-spacing-demo.html', alt: 'Mô phỏng các mức line spacing từ chặt đến thoáng' } },
   { id: 'line-height', name: 'Line Height', nameEn: 'Chiều cao dòng', letter: 'L', groups: ['design', 'code'], definition: 'Line Height là khoảng cách từ đáy một dòng text đến đáy dòng tiếp theo. Nó không phải là pixel mà là hệ số nhân với font size. Chỉnh line height phù hợp giúp khối văn bản dễ đọc, không bị dính vào nhau hoặc quá rời rạc.', example: 'Với đoạn văn bản dài, line height thường để mức 1.5 - 1.6 để mắt dễ theo dõi. Với tiêu đề, có thể để mức 1.1 - 1.2. Prompt: "Chỉnh line-height của đoạn văn này lên 1.6."', related: ['letter-spacing', 'line-spacing', 'typography'], demo: { kind: 'interactive', src: 'gif-lineheight-demo.html', alt: 'Mô phỏng các mức line-height từ chật đến thoáng' } },
@@ -335,10 +354,17 @@ const deepDiveTermIds = new Set([
   'context',
   'ssl',
   'hosting',
-  'interface'
+  'interface',
+  'llm'
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
+  llm: [
+    'LLM không đọc theo từng chữ cái mà đọc theo "token". Một token có thể là một từ, một phần của từ hoặc thậm chí là một dấu cách. Hiểu về token giúp bạn tối ưu chi phí và độ chính xác khi sử dụng API.',
+    'Bản chất của LLM là "cỗ máy dự đoán". Nó không thực sự suy nghĩ như con người mà dựa trên xác suất để đoán xem token nào có khả năng xuất hiện tiếp theo cao nhất dựa trên bối cảnh đã có.',
+    'Context Window (Cửa sổ ngữ cảnh) là giới hạn bộ nhớ ngắn hạn của AI. Khi cuộc hội thoại quá dài vượt ngưỡng này, AI sẽ bắt đầu "quên" những thông tin ở phía trên để nhường chỗ cho thông tin mới.',
+    'Khi vibecode, việc hiểu các tham số này giúp bạn điều khiển AI hiệu quả hơn: "Dùng temperature 0.2 cho task refactor này" sẽ mang lại kết quả an toàn hơn là để mặc định.'
+  ],
   localhost: [
     'Local host là "bản nháp" riêng tư. Khi AI nói "trên local chạy ổn", nghĩa là code đã hoạt động trên máy AI, nhưng chưa chắc đã chạy đúng trên web thật (production).',
     'Địa chỉ 127.0.0.1 là con số kỹ thuật của localhost. Mọi máy tính trên thế giới đều gọi "chính nó" là 127.0.0.1.',
