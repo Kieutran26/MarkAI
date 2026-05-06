@@ -23,13 +23,13 @@ export const terms: GlossaryTerm[] = [
   { id: 'align', name: 'Align', nameEn: 'Căn lề / Alignment', letter: 'A', groups: ['design', 'code'], definition: 'Cách sắp xếp vị trí của các phần tử (text, hình khối, component) theo các trục ngang hoặc dọc. Căn lề tốt giúp tạo ra sự trật tự, cân bằng và dẫn dắt mắt người dùng một cách hiệu quả.', example: 'Prompt: "Căn giữa tiêu đề và đoạn văn, nút bấm căn lề phải. Trên mobile thì tất cả đều căn lề trái để dễ đọc hơn."', related: ['flexbox', 'grid', 'spacing', 'hierarchy'], demo: { kind: 'interactive', src: 'gif-align-demo.html', alt: 'Mô phỏng các kiểu căn lề: Horizontal, Vertical, Flex Distribution và Layout Alignment' } },
   { id: 'api', name: 'API', nameEn: 'API / API Key', letter: 'A', groups: ['infra', 'code'], definition: 'Với marketer mới học AI, API thường được hiểu thực tế là API key: một mã bí mật lấy từ nền tảng AI để app của bạn được phép gọi model. Nếu lộ key, người khác có thể dùng ké quota và làm bạn mất tiền.', example: 'Mình muốn dùng model AI trong app chat nội bộ. Cần vào platform lấy API key, lưu vào file .env, rồi mới gọi AI được. API key không nên dán thẳng lên giao diện hay đưa lên GitHub.', related: ['endpoint', 'webhook', 'request'], demo: { kind: 'interactive', src: 'gif-api-demo.html', alt: 'Mô phỏng cách lấy API key từ nền tảng AI rồi copy về app' } },
   { id: 'array', name: 'Array', nameEn: 'Mảng / Danh sách', letter: 'A', groups: ['code'], definition: 'Danh sách các item được xếp theo thứ tự. Giống như một cột Excel — mỗi ô là một item. Array trong code thường trông như này: ["Hà Nội", "TP.HCM", "Đà Nẵng"].', example: 'AI trả về "danh sách categories" — đó thường là một array mà code của bạn sẽ loop qua để hiển thị từng cái.', related: ['loop', 'database'], demo: { kind: 'interactive', src: 'gif-array-demo.html', alt: 'Mô phỏng 4 khía cạnh của Array: Basics, Accessing, Operations và Matrix' } },
-  { 
-    id: 'asset', 
-    name: 'Asset', 
-    nameEn: 'Tài nguyên thiết kế', 
-    letter: 'A', 
-    groups: ['design'], 
-    definition: 'Tất cả các tài liệu số (digital files) được sử dụng để xây dựng giao diện. Bao gồm hình ảnh (logo, background), icon (SVG), font chữ, video, và audio. Trong Vibecode, việc quản lý asset đúng cách giúp web chạy nhanh và hiển thị sắc nét.', 
+  {
+    id: 'asset',
+    name: 'Asset',
+    nameEn: 'Tài nguyên thiết kế',
+    letter: 'A',
+    groups: ['design'],
+    definition: 'Tất cả các tài liệu số (digital files) được sử dụng để xây dựng giao diện. Bao gồm hình ảnh (logo, background), icon (SVG), font chữ, video, và audio. Trong Vibecode, việc quản lý asset đúng cách giúp web chạy nhanh và hiển thị sắc nét.',
     example: "Designer gửi cho bạn folder 'Marketing-Assets' chứa logo dạng SVG và ảnh hero dạng WebP. Prompt: Sử dụng logo từ /public/assets/logo.svg và tối ưu ảnh hero để web load nhanh hơn.",
     demo: { kind: 'interactive' }
   },
@@ -43,13 +43,13 @@ export const terms: GlossaryTerm[] = [
   { id: 'button', name: 'Button', nameEn: 'Nút bấm / Button', letter: 'B', groups: ['design', 'code'], definition: 'Thành phần giao diện cơ bản nhất để kích hoạt một hành động. Một nút bấm tốt cần thể hiện rõ mức độ quan trọng (variant), kích thước phù hợp (size), và phản hồi trạng thái (state) ngay lập tức khi người dùng tương tác.', example: 'Prompt: "Làm một nút Primary màu cam cho việc Đăng ký, và một nút Ghost cho việc Hủy bỏ để giảm sự chú ý."', related: ['variant', 'state', 'hover', 'primary-color'], demo: { kind: 'interactive', src: 'gif-button-demo.html', alt: 'Mô phỏng 4 khía cạnh của Button: Variants, Sizes, Icons và States' } },
   { id: 'button-group', name: 'Button Group', nameEn: 'Nhóm nút bấm', letter: 'B', groups: ['design', 'code'], definition: 'Một nhóm các nút bấm có liên quan được đặt cạnh nhau thành một khối duy nhất. Button group giúp gom nhóm các hành động tương đồng, tiết kiệm diện tích và tạo ra sự phân cấp rõ ràng giữa các lựa chọn.', example: 'Prompt: "Tạo một button group gồm 3 nút: Ngày, Tuần, Tháng để lọc báo cáo, mặc định chọn Ngày."', related: ['button', 'segmented-button', 'split-buttons', 'variant'], demo: { kind: 'interactive', src: 'gif-buttongroup-demo.html', alt: 'Mô phỏng 4 loại button group: Segmented, Toggle, Icon và Mixed Action' } },
   { id: 'breadcrumb', name: 'Breadcrumb', nameEn: 'Đường dẫn liên kết', letter: 'B', groups: ['design', 'code'], definition: 'Một dãy các liên kết giúp người dùng xác định vị trí hiện tại của mình trong cấu trúc website và dễ dàng quay lại các cấp cao hơn. Giúp công cụ tìm kiếm hiểu cấu trúc website và hiển thị kết quả tìm kiếm thân thiện hơn. Giảm tỷ lệ thoát khuyến khích người dùng khám phá thêm các danh mục khác', example: 'Trang "MacBook Pro 14" có breadcrumb: Home > Laptops > MacBook Pro 14. Marketer dùng breadcrumb để tăng UX và giúp Google hiểu cấu trúc trang tốt hơn (SEO).', related: ['url', 'hierarchy', 'navigation'], demo: { kind: 'interactive', src: 'gif-breadcrumb-demo.html', alt: 'Mô phỏng các loại breadcrumb: Hierarchy, Location, Multi-level và Collapsed' } },
-  { 
-    id: 'cache', 
-    name: 'Cache', 
-    nameEn: 'Bộ nhớ đệm', 
-    letter: 'C', 
-    groups: ['infra'], 
-    definition: 'Lưu tạm dữ liệu vào một nơi "gần" bạn nhất để lần sau truy cập nhanh hơn. Giống như việc bạn để sẵn gia vị trên kệ bếp thay vì mỗi lần nấu ăn đều phải chạy ra siêu thị để mua.', 
+  {
+    id: 'cache',
+    name: 'Cache',
+    nameEn: 'Bộ nhớ đệm',
+    letter: 'C',
+    groups: ['infra'],
+    definition: 'Lưu tạm dữ liệu vào một nơi "gần" bạn nhất để lần sau truy cập nhanh hơn. Giống như việc bạn để sẵn gia vị trên kệ bếp thay vì mỗi lần nấu ăn đều phải chạy ra siêu thị để mua.',
     example: '"Tại sao tôi vừa sửa web mà load lại vẫn thấy bản cũ?" → Do trình duyệt đang lấy bản cũ từ Cache. Bạn cần "Clear Cache" hoặc nhấn Ctrl+Shift+R để lấy bản mới nhất từ Server.',
     related: ['performance', 'latency', 'server'],
     demo: { kind: 'interactive', src: 'gif-cache-demo.html', alt: 'Mô phỏng quy trình Cache Miss (lần đầu chậm) và Cache Hit (lần sau nhanh)' }
@@ -57,7 +57,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'card', name: 'Card', nameEn: 'Thẻ nội dung', letter: 'C', groups: ['design', 'code'], definition: 'Một khối chứa thông tin — gom ảnh, tiêu đề, mô tả, nút hành động vào một hộp. Card giúp phân tách các nội dung khác nhau trên trang một cách rõ ràng và dễ quét.', example: 'Product card cho sản phẩm, Blog card cho bài viết. Card là đơn vị cơ bản nhất để build các trang kiểu Dashboard hoặc Landing Page.', related: ['component', 'padding', 'radius'], demo: { kind: 'interactive', src: 'gif-card-demo.html', alt: 'Mô phỏng các loại card: Basic, Horizontal, Featured, Stats' } },
   { id: 'cli', name: 'CLI', nameEn: 'Command Line Interface / Giao diện dòng lệnh', letter: 'C', groups: ['infra', 'workflow'], definition: 'Giao diện dòng lệnh — nơi bạn điều khiển máy tính bằng cách gõ văn bản thay vì click chuột vào các biểu tượng. CLI là "ngôn ngữ gốc" của lập trình viên, giúp thực hiện các tác vụ phức tạp một cách cực kỳ nhanh chóng và chính xác.', example: 'Gõ "npm run dev" vào terminal để khởi động project, hoặc "git push" để đưa code lên server. Marketer không cần gõ giỏi, nhưng cần hiểu các lệnh cơ bản để phối hợp với dev.', related: ['terminal', 'npm', 'workflow', 'git'], demo: { kind: 'interactive', src: 'gif-cli-demo.html', alt: 'Mô phỏng CLI vs GUI, các lệnh phổ biến và workflow' } },
   { id: 'checkbox', name: 'Checkbox', nameEn: 'Ô đánh dấu', letter: 'C', groups: ['design', 'code'], definition: 'Thành phần giao diện cho phép người dùng chọn một hoặc nhiều tùy chọn từ một danh sách. Khác với Radio Button (chỉ chọn 1), Checkbox hỗ trợ đa lựa chọn và có 3 trạng thái chính: rỗng, chọn, và nửa-chọn (indeterminate) - thường dùng cho logic cha-con.', example: 'Prompt: "Thêm một danh sách checkbox để người dùng chọn các kênh marketing: \'Facebook\', \'Google Ads\', \'TikTok\', mặc định là chưa chọn cái nào, nếu chọn hết thì checkbox \'Tất cả\' ở trên cùng cũng tự sáng."', related: ['radio', 'form', 'boolean', 'state'], demo: { kind: 'interactive', src: 'gif-checkbox-demo.html', alt: 'Mô phỏng 4 khía cạnh của checkbox: trạng thái, nhãn, danh sách và form' } },
-  { id: 'commit', name: 'Commit', nameEn: 'Lưu checkpoint code', letter: 'C', groups: ['workflow', 'code'], definition: 'Hành động lưu lại một điểm trong lịch sử code. Giống như Save game — bạn có thể quay lại đây bất cứ lúc nào nếu AI làm vỡ project.', example: 'Sau khi hero section chạy ổn: "git commit -m \'hero section done\'". Dù AI có làm hỏng phần sau, bạn vẫn rollback về được.', related: ['git', 'repository'] },
+  { id: 'commit', name: 'Commit', nameEn: 'Lưu checkpoint code', letter: 'C', groups: ['workflow', 'code'], definition: 'Hành động lưu lại một điểm trong lịch sử code. Giống như Save game — bạn có thể quay lại đây bất cứ lúc nào nếu AI làm vỡ project.', example: 'Sau khi hero section chạy ổn: "git commit -m \'hero section done\'". Dù AI có làm hỏng phần sau, bạn vẫn rollback về được.', related: ['git', 'repository'], demo: { kind: 'interactive', src: 'gif-commit-demo.html', alt: 'Mô phỏng quy trình commit và lịch sử git', caption: 'Commit giúp đóng băng trạng thái code và lưu vào lịch sử.' } },
   { id: 'component', name: 'Component', nameEn: 'Khối giao diện tái dùng', letter: 'C', groups: ['code', 'design'], definition: 'Một khối giao diện độc lập, có thể dùng lại nhiều lần. Button, card sản phẩm, navbar, form — đều là component. Thiết kế một lần, dùng ở khắp nơi trong web.', example: '"Tôi có 12 trang web nhưng muốn cùng 1 footer." Đây là lúc dùng Footer component — sửa một chỗ, cập nhật khắp nơi.', related: ['props', 'state'], demo: { kind: 'interactive', src: 'gif-component-demo.html', alt: 'Mô phỏng 4 loại component phổ biến và code minh họa' } },
   { id: 'contrast', name: 'Contrast', nameEn: 'Độ tương phản', letter: 'C', groups: ['design', 'code'], definition: 'Sự khác biệt về độ sáng (luminance) giữa chữ và nền. Độ tương phản cao giúp nội dung dễ đọc, đặc biệt quan trọng cho khả năng tiếp cận (accessibility). Chuẩn WCAG quy định các mức ratio như 4.5:1 cho chữ thường và 3:1 cho chữ lớn.', example: 'Prompt: "Kiểm tra độ tương phản của nút CTA này, nếu chưa đạt chuẩn AA (4.5:1) thì hãy chỉnh màu nền đậm hơn hoặc chữ sáng hơn."', related: ['accessibility', 'ui', 'color-palette', 'fontweight'], demo: { kind: 'interactive', src: 'gif-contrast-demo.html', alt: 'Mô phỏng các mức độ tương phản và chuẩn WCAG' } },
   { id: 'context-window', name: 'Context Window', nameEn: 'Bộ nhớ làm việc của AI', letter: 'C', groups: ['ai'], definition: 'Lượng text tối đa AI có thể "đọc" và xử lý trong một lần. Khi conversation quá dài, AI bắt đầu quên phần đầu.', example: '"Mình đã prompt rất nhiều nhưng AI bắt đầu sai lung tung" → Context window đầy rồi. Mở conversation mới và tóm tắt lại yêu cầu.', related: ['prompt', 'model'] },
@@ -286,6 +286,7 @@ const deepDiveTermIds = new Set([
   'navigation',
   'cache',
   'cli',
+  'commit'
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -702,6 +703,11 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     '4 kiểu kinh điển: Top Nav (toàn trang), Bottom Nav (mobile), Sidebar (tiết kiệm không gian), và Breadcrumb (lộ trình).',
     'Khi thiết kế, hãy ưu tiên sự nhất quán: menu ở trang A phải nằm đúng vị trí đó ở trang B để user hình thành thói quen sử dụng.',
     'Đừng quên trạng thái "Active": người dùng luôn cần biết họ đang ở đâu (ví dụ: nút Home đang sáng lên khi ở trang chủ).',
+  ],
+  'commit': [
+    'Mỗi commit đi kèm một mã hash duy nhất để truy vết.',
+    'Ghi chú (commit message) giúp đồng nghiệp hiểu bạn đã thay đổi gì.',
+    'Chia nhỏ commit giúp việc quay lại bản cũ (rollback) an toàn hơn.',
   ],
 };
 

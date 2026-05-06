@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Commit Demo — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #1a1a18;
+    --bg-card: #222220;
+    --bg-elevated: #2a2a27;
+    --fg: #e8e4dd;
+    --fg-muted: #8a877e;
+    --accent: #d4622b;
+    --accent-dim: #a84e22;
+    --amber: #c9922a;
+    --green: #6b8f5e;
+    --red: #b54a4a;
+    --border: #3a3a36;
+    --border-light: #4a4a45;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Space Grotesk', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--sans);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+    background-size: 24px 24px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 24px;
+  }
+
+  /* Grid Layout */
+  .demo-grid {
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  @media (max-width: 850px) {
+    .demo-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .shape-section {
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    margin-bottom: 24px;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .shape-section.full-width {
+    grid-column: 1 / -1;
+  }
+
+  .section-head {
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255,255,255,0.02);
+  }
+  .section-head h2 {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .section-head .num {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-muted);
+  }
+  .section-body { 
+    padding: 20px; 
+    flex: 1;
+  }
+
+  .insight {
+    background: rgba(212,98,43,0.05);
+    border-left: 2px solid var(--accent);
+    padding: 12px 14px;
+    margin-top: 16px;
+    font-size: 12px;
+    color: var(--fg-muted);
+    line-height: 1.6;
+  }
+  .insight strong { color: var(--fg); }
+
+  /* ===== SECTION: Commit Concept ===== */
+  .commit-visual {
+    display: flex;
+    gap: 20px;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    padding: 16px;
+  }
+  @media (max-width: 600px) {
+    .commit-visual { flex-direction: column; }
+  }
+  .vis-panel {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .vis-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .file-diff {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .diff-line {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 2px 8px;
+    opacity: 0;
+    animation: diffSlideIn .4s ease forwards;
+  }
+  .diff-line:nth-child(1) { animation-delay: .3s; }
+  .diff-line:nth-child(2) { animation-delay: .6s; }
+  .diff-line:nth-child(3) { animation-delay: .9s; color: var(--green); }
+  .diff-line:nth-child(4) { animation-delay: 1.2s; color: var(--red); }
+  .diff-line:nth-child(5) { animation-delay: 1.5s; color: var(--green); }
+  @keyframes diffSlideIn {
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .snapshot-visual {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 0;
+  }
+  .snap-doc {
+    width: 36px;
+    height: 44px;
+    border: 1.5px solid var(--border-light);
+    background: var(--bg-elevated);
+    position: relative;
+    animation: docPulse 3s ease-in-out infinite;
+  }
+  .snap-doc .doc-lines {
+    position: absolute;
+    top: 6px; left: 4px; right: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .snap-doc .doc-line {
+    height: 2px;
+    background: var(--border-light);
+  }
+  .snap-doc .doc-line.changed {
+    background: var(--accent);
+  }
+  @keyframes docPulse {
+    0%, 100% { border-color: var(--border-light); }
+    50% { border-color: var(--accent-dim); }
+  }
+  .snap-arrow {
+    font-family: var(--mono);
+    font-size: 16px;
+    color: var(--fg-muted);
+  }
+  .snap-freeze {
+    width: 36px;
+    height: 44px;
+    border: 1.5px solid var(--accent);
+    background: rgba(212,98,43,.1);
+    position: relative;
+    animation: freezeAppear .6s ease forwards;
+    animation-delay: 2s;
+    opacity: 0;
+  }
+  @keyframes freezeAppear {
+    to { opacity: 1; }
+  }
+
+  /* ===== SECTION: Terminal ===== */
+  .terminal {
+    border: 1px solid var(--border-light);
+    background: #121211;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  }
+  .terminal-bar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 14px;
+    background: #1c1c1a;
+    border-bottom: 1px solid var(--border);
+  }
+  .terminal-dot { width: 8px; height: 8px; border-radius: 50%; }
+  .terminal-dot.r { background: #ff5f56; }
+  .terminal-dot.y { background: #ffbd2e; }
+  .terminal-dot.g { background: #27c93f; }
+  .terminal-title {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-muted);
+    margin-left: 10px;
+  }
+  .terminal-body {
+    padding: 20px;
+    font-family: var(--mono);
+    font-size: 12px;
+    line-height: 1.6;
+    min-height: 240px;
+  }
+  .t-line { opacity: 0; animation: termType .3s ease forwards; margin-bottom: 4px; }
+  .t-line .t-prompt { color: var(--green); }
+  .t-line .t-flag { color: var(--amber); }
+  .t-line .t-str { color: var(--accent); }
+  .t-line .t-output { color: var(--fg-muted); }
+  .t-line .t-hash { color: var(--accent-dim); font-weight: 700; }
+  .t-cursor {
+    display: inline-block;
+    width: 7px;
+    height: 14px;
+    background: var(--fg);
+    vertical-align: middle;
+    animation: cursorBlink 1s step-end infinite;
+  }
+  @keyframes cursorBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+  @keyframes termType { to { opacity: 1; } }
+
+  /* ===== SECTION: History ===== */
+  .history-timeline {
+    position: relative;
+    padding-left: 20px;
+    margin-left: 10px;
+  }
+  .history-timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 10px; bottom: 10px;
+    width: 2px;
+    background: var(--border);
+  }
+  .history-item {
+    position: relative;
+    padding: 12px 16px;
+    margin-bottom: 8px;
+    background: rgba(255,255,255,0.02);
+    border: 1px solid transparent;
+    transition: all 0.3s;
+  }
+  .history-item:hover {
+    background: rgba(255,255,255,0.04);
+    border-color: var(--border);
+  }
+  .history-dot {
+    position: absolute;
+    left: -25px; top: 18px;
+    width: 12px; height: 12px;
+    border: 2px solid var(--border-light);
+    background: var(--bg-card);
+    border-radius: 50%;
+    z-index: 1;
+  }
+  .history-item.active .history-dot {
+    border-color: var(--accent);
+    background: var(--accent);
+    box-shadow: 0 0 10px rgba(212,98,43,0.4);
+  }
+  .hi-msg { font-size: 13px; font-weight: 500; color: var(--fg); margin-bottom: 4px; }
+  .hi-meta { font-family: var(--mono); font-size: 10px; color: var(--fg-muted); display: flex; gap: 10px; }
+  .hi-hash { color: var(--accent-dim); }
+</style>
+</head>
+<body>
+
+<div class="page-wrap" id="app-root">
+
+  <div class="demo-grid">
+    <!-- TOP: CONCEPT (Full Width) -->
+    <section class="shape-section full-width">
+      <div class="section-head">
+        <h2>Bản chất của Commit</h2>
+        <span class="num">CONCEPT</span>
+      </div>
+      <div class="section-body">
+        <div class="commit-visual">
+          <div class="vis-panel">
+            <div class="vis-label">Thay đổi (Diff)</div>
+            <div class="file-diff">
+              <div class="diff-line" style="color:var(--fg-muted);">  title: "Vibecode"</div>
+              <div class="diff-line" style="color:var(--fg-muted);">  status: "Draft"</div>
+              <div class="diff-line" style="color:var(--green);">+ title: "Vibecode Pro"</div>
+              <div class="diff-line" style="color:var(--red);">- status: "Draft"</div>
+              <div class="diff-line" style="color:var(--green);">+ status: "Published"</div>
+            </div>
+          </div>
+          <div class="vis-panel">
+            <div class="vis-label">Snapshot (Checkpoint)</div>
+            <div class="snapshot-visual">
+              <div class="snap-doc"><div class="doc-lines"><div class="doc-line changed"></div><div class="doc-line"></div><div class="doc-line changed"></div></div></div>
+              <span class="snap-arrow">→</span>
+              <div class="snap-freeze"><div class="doc-lines"><div class="doc-line"></div><div class="doc-line"></div><div class="doc-line"></div></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="insight">
+          <strong>Commit không phải là copy file.</strong> Nó là một tấm ảnh "chụp nhanh" trạng thái code của bạn. Bạn có thể quay lại bất kỳ tấm ảnh nào trong quá khứ nếu code hiện tại bị lỗi.
+        </div>
+      </div>
+    </section>
+
+    <!-- LEFT: ACTION -->
+    <section class="shape-section">
+      <div class="section-head">
+        <h2>Thực hiện Commit</h2>
+        <span class="num">ACTION</span>
+      </div>
+      <div class="section-body">
+        <div class="terminal">
+          <div class="terminal-bar">
+            <div class="terminal-dot r"></div><div class="terminal-dot y"></div><div class="terminal-dot g"></div>
+            <span class="terminal-title">bash — ~/vibecode</span>
+          </div>
+          <div class="terminal-body" id="terminalBody">
+            <!-- JS Injection -->
+          </div>
+        </div>
+        <div class="insight">
+          Luôn có 2 bước: <code>git add</code> (chọn file) và <code>git commit</code> (đóng gói kèm ghi chú).
+        </div>
+      </div>
+    </section>
+
+    <!-- RIGHT: HISTORY -->
+    <section class="shape-section">
+      <div class="section-head">
+        <h2>Lịch sử (Git Log)</h2>
+        <span class="num">RESULT</span>
+      </div>
+      <div class="section-body">
+        <div class="history-timeline">
+          <div class="history-item active">
+            <div class="history-dot"></div>
+            <div class="hi-content">
+              <div class="hi-msg">feat: hoàn thiện trang checkout</div>
+              <div class="hi-meta"><span class="hi-hash">a7d2e41</span> <span>vừa xong</span></div>
+            </div>
+          </div>
+          <div class="history-item">
+            <div class="history-dot"></div>
+            <div class="hi-content">
+              <div class="hi-msg">fix: sửa lỗi hiển thị trên mobile</div>
+              <div class="hi-meta"><span class="hi-hash">b3f8c12</span> <span>10 phút trước</span></div>
+            </div>
+          </div>
+          <div class="history-item">
+            <div class="history-dot"></div>
+            <div class="hi-content">
+              <div class="hi-msg">init: khởi tạo cấu trúc dự án</div>
+              <div class="hi-meta"><span class="hi-hash">e9a4d3f</span> <span>1 giờ trước</span></div>
+            </div>
+          </div>
+        </div>
+        <div class="insight">
+          Mỗi commit là một <strong>checkpoint</strong> an toàn. Project càng phức tạp, lịch sử commit càng quan trọng để quản lý sự thay đổi.
+        </div>
+      </div>
+    </section>
+  </div>
+
+</div>
+
+<script>
+  (function() {
+    var body = document.getElementById('terminalBody');
+    if (!body) return;
+
+    var lines = [
+      { delay: 400, html: '<span class="t-prompt">$ </span>git add <span class="t-flag">index.html style.css</span>' },
+      { delay: 1400, html: '<span class="t-output">// Đã đưa file vào Staging Area...</span>' },
+      { delay: 2200, html: '' },
+      { delay: 2400, html: '<span class="t-prompt">$ </span>git commit <span class="t-flag">-m</span> <span class="t-str">"feat: hoàn thiện trang checkout"</span>' },
+      { delay: 3800, html: '<span class="t-output">[main </span><span class="t-hash">a7d2e41</span><span class="t-output">] feat: hoàn thiện trang checkout</span>' },
+      { delay: 4400, html: '<span class="t-output"> 2 files changed, 45 insertions(+)</span>' },
+      { delay: 5200, html: '<span class="t-prompt">$ </span><span class="t-cursor"></span>' }
+    ];
+
+    lines.forEach(function(l) {
+      var div = document.createElement('div');
+      div.className = 't-line';
+      div.style.animationDelay = l.delay + 'ms';
+      div.innerHTML = l.html || '&nbsp;';
+      body.appendChild(div);
+    });
+  })();
+</script>
+
+</body>
+</html>
