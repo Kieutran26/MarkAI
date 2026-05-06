@@ -45,6 +45,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'css', name: 'CSS', nameEn: 'Cascading Style Sheets', letter: 'C', groups: ['design', 'code'], definition: 'Ngôn ngữ kiểm soát giao diện — màu sắc, kích thước, khoảng cách, font, layout. Nếu HTML là khung xương thì CSS là da thịt và quần áo.', example: 'Prompt: "Đổi màu nền hero section sang màu kem #f5f0e8, chữ heading to hơn, thêm padding trên dưới." → AI sẽ chỉnh CSS.', related: ['tailwind', 'flexbox'] },
   { id: 'deploy', name: 'Deploy', nameEn: 'Triển khai / Đưa lên server', letter: 'D', groups: ['infra', 'workflow'], definition: 'Quá trình đưa code từ môi trường bạn đang vibecode (như Cursor/Claude Code) lên server thực tế để mọi người truy cập. Quy trình này thường diễn ra tự động qua GitHub và Vercel: mỗi khi bạn "push" code mới, hệ thống sẽ tự động Build, Test và cập nhật bản Live. Nếu bản mới bị lỗi, bạn có thể dễ dàng Rollback về bản cũ trong tích tắc.', example: 'Sau khi bảo AI sửa xong giao diện, bạn gõ lệnh push. Vercel tự động nhận diện và chạy pipeline deploy. 5 phút sau, bạn thấy thay đổi xuất hiện trên link web chính thức của dự án.', related: ['build', 'vercel', 'git'], demo: { kind: 'interactive', src: 'gif-deploy-demo.html', alt: 'Mô phỏng quy trình deploy từ khi push code đến khi thành công hoặc rollback' } },
   { id: 'database', name: 'Database', nameEn: 'Cơ sở dữ liệu', letter: 'D', groups: ['data'], definition: 'Nơi lưu trữ dữ liệu có cấu trúc. Giống như file Excel khổng lồ nhưng nhanh hơn, an toàn hơn. Supabase, PostgreSQL là ví dụ phổ biến.', example: '"Mỗi khi khách submit form, thông tin được lưu vào Supabase database" — một bảng, mỗi hàng là một submission.', demo: { kind: 'interactive', src: 'gif-database-demo.html', alt: 'Mô phỏng 4 tầng Database: Table, Relations, SQL, Architecture' } },
+  { id: 'drawer', name: 'Drawer', nameEn: 'Ngăn kéo / Side Menu', letter: 'D', groups: ['design', 'code'], definition: 'Một thành phần UI dạng bảng điều khiển thường nằm ở các cạnh của màn hình (trái, phải, dưới). Nó cho phép truy cập nhanh vào các tùy chọn điều hướng hoặc chức năng bổ sung mà không làm gián đoạn bối cảnh hiện tại.', example: 'Prompt: "Thêm một navigation drawer bên trái chứa các menu chính, mặc định ẩn đi và chỉ hiện ra khi bấm vào icon hamburger trên mobile."', related: ['sidebar', 'navbar', 'navigation', 'popup'], demo: { kind: 'interactive', src: 'gif-drawer-demo.html', alt: 'Mô phỏng 4 loại drawer: Side Navigation, Bottom Drawer, Temporary Overlay và Persistent Docked' } },
   { id: 'dark-mode', name: 'Dark mode / Light mode', nameEn: 'Theme Switching', letter: 'D', groups: ['design', 'code'], definition: 'Chế độ giao diện tối (Dark) và sáng (Light). Đây không chỉ là việc đổi màu nền, mà là việc thay đổi toàn bộ hệ thống bảng màu (color tokens) để tối ưu hiển thị theo môi trường ánh sáng, giúp giảm mỏi mắt và tiết kiệm pin.', example: 'Prompt: "Thiết kế web có hỗ trợ dark mode, khi người dùng đổi theme thì toàn bộ màu nền, màu chữ và viền phải thay đổi tương ứng, riêng màu thương hiệu thì giữ nguyên."', related: ['color-palette', 'design-system', 'contrast'], demo: { kind: 'interactive', src: 'gif-darkmode-demo.html', alt: 'Mô phỏng 4 kịch bản chuyển đổi theme: Toggle, Dashboard, Settings và Readability' } },
   { id: 'dependency', name: 'Dependency', nameEn: 'Thư viện phụ thuộc', letter: 'D', groups: ['code'], definition: 'Code của người khác mà project bạn dùng. Giống như nguyên liệu đầu vào — bạn không tự làm bơ, bạn mua từ ngoài. npm install là lệnh cài dependency.', example: '"module not found" error = project đang cần một dependency chưa được cài. Paste lỗi cho AI, nó sẽ chạy lệnh cài giúp.' },
   { id: 'dom', name: 'DOM', nameEn: 'Document Object Model', letter: 'D', groups: ['code', 'design'], definition: 'Cách trình duyệt "nhìn" trang web — một cây cấu trúc của tất cả elements. JavaScript tương tác với DOM để thay đổi trang mà không cần reload.', example: 'Khi bạn click nút và counter tăng lên mà trang không reload — JavaScript đang update DOM trực tiếp.' },
@@ -195,6 +196,7 @@ const deepDiveTermIds = new Set([
   'dark-mode',
   'database',
   'deploy',
+  'drawer',
   'dropdown',
   'element',
   'env',
@@ -446,6 +448,12 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Dropdown không chỉ là "cái hộp bấm ra list" — nó là một input quan trọng trong form, có value thật và state thật (mở/đóng, đã chọn/chưa chọn).',
     'Khi mô tả yêu cầu cho AI, hãy nêu rõ: danh sách option, giá trị mặc định, và có cho phép chọn nhiều (multi-select) hay không.',
     'Chú ý trạng thái "Disabled": Dùng khi user chưa đủ điều kiện để chọn (ví dụ: chưa chọn Tỉnh thành thì chưa cho chọn Quận huyện).',
+  ],
+  drawer: [
+    'Drawer là "ngôi nhà" của các điều hướng phụ hoặc bộ lọc phức tạp. Nó giúp giao diện chính luôn sạch sẽ mà vẫn đảm bảo tính năng đầy đủ khi cần.',
+    'Vị trí quan trọng: Side Drawer (trái/phải) thường dùng cho Desktop/Tablet, trong khi Bottom Drawer là "vua" trên Mobile vì nó nằm ngay trong tầm với của ngón cái.',
+    'Chế độ hiển thị: Temporary Drawer (đè lên nội dung) tạo sự tập trung cao độ cho tác vụ hiện tại, còn Persistent Drawer (đẩy nội dung) phù hợp cho các workspace cần truy cập menu liên tục.',
+    'UX Tip: Luôn cung cấp một cách đóng drawer trực quan (nút X, click ra ngoài overlay, hoặc vuốt ngược lại) để người dùng không cảm thấy bị "kẹt".',
   ],
   footer: [
     'Footer không phải "cái cuối trang cho có". Nó là component có cấu trúc: brand area, nav columns, newsletter capture, social links, legal bar.',

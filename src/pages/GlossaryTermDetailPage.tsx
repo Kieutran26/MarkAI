@@ -52,6 +52,8 @@ import sliderDemoHtml from '../../gif-slider-demo.html?raw';
 import sliderPracticeHtml from '../../gif-slider-practice.html?raw';
 import dropdownDemoHtml from '../../gif-dropdown-demo.html?raw';
 import dropdownPracticeHtml from '../../gif-dropdown-practice.html?raw';
+import drawerDemoHtml from '../../gif-drawer-demo.html?raw';
+import drawerPracticeHtml from '../../gif-drawer-practice.html?raw';
 import elementDemoHtml from '../../gif-element-demo.html?raw';
 import elementPracticeHtml from '../../gif-element-practice.html?raw';
 import footerDemoHtml from '../../gif-footer-demo.html?raw';
@@ -203,6 +205,7 @@ export default function GlossaryTermDetailPage() {
       case 'responsive': return responsiveDemoHtml;
       case 'slider': return sliderDemoHtml;
       case 'dropdown': return dropdownDemoHtml;
+      case 'drawer': return drawerDemoHtml;
       case 'element': return elementDemoHtml;
       case 'footer': return footerDemoHtml;
       case 'toggle': return toggleDemoHtml;
@@ -285,6 +288,7 @@ export default function GlossaryTermDetailPage() {
       case 'responsive': return responsivePracticeHtml;
       case 'slider': return sliderPracticeHtml;
       case 'dropdown': return dropdownPracticeHtml;
+      case 'drawer': return drawerPracticeHtml;
       case 'element': return elementPracticeHtml;
       case 'footer': return footerPracticeHtml;
       case 'toggle': return togglePracticeHtml;

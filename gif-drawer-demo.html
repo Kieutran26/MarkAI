@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drawer Demo — Vibecode Glossary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#141413;--bgc:#1c1b19;--fg:#e5ddd0;--mu:#6e675d;
+  --ac:#d4722a;--ag:rgba(212,114,42,.1);
+  --bd:#2e2a26;--lb:#a89d90;
+  --ok:#5a9e6f;--er:#c45c4a;
+  --mn:'JetBrains Mono',monospace;--sn:'Space Grotesk',sans-serif;
+  --ms:#2a2826;--msb:#3a3530;--msf:#c5bdb0;--msm:#7a7268;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--bg);color:var(--fg);font-family:var(--sn);
+  min-height:100vh;-webkit-font-smoothing:antialiased;
+  background-image:
+    linear-gradient(rgba(255,255,255,.016) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.016) 1px,transparent 1px);
+  background-size:20px 20px;
+}
+.w{max-width:860px;margin:0 auto;padding:14px 14px 52px}
+.g{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:0}
+@media(max-width:600px){.g{grid-template-columns:1fr}}
+
+/* Card */
+.c{background:var(--bgc);border:1px solid var(--bd);overflow:hidden;display:flex;flex-direction:column}
+.ct{padding:9px 13px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:7px}
+.cd{width:5px;height:5px;background:var(--ac);flex-shrink:0}
+.cg{font-family:var(--mn);font-size:9px;color:var(--ac);text-transform:uppercase;letter-spacing:1.5px;font-weight:600}
+.cs{padding:0;display:flex;position:relative;height:240px;background:var(--bg);overflow:hidden}
+.cb{padding:6px 13px;border-top:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center}
+.cb span{font-family:var(--mn);font-size:9px;color:var(--mu);letter-spacing:.3px}
+.lp{display:flex;align-items:center;gap:5px}
+.ld{width:4px;height:4px;border-radius:50%;background:var(--ac);animation:bk 2s ease-in-out infinite}
+@keyframes bk{0%,100%{opacity:.2}50%{opacity:1}}
+
+/* Mock UI Elements */
+.ui-main{flex:1;padding:12px;display:flex;flex-direction:column;gap:8px}
+.ui-box{background:var(--ms);border:1px solid var(--msb);height:40px;width:100%}
+.ui-box.lg{height:80px}
+.ui-header{height:30px;background:var(--msb);display:flex;align-items:center;padding:0 10px;gap:8px}
+.ui-circle{width:12px;height:12px;border-radius:50%;background:var(--mu)}
+
+/* Drawer Components */
+.drawer{
+    position:absolute;background:var(--bgc);border:1px solid var(--bd);
+    transition:transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index:10;display:flex;flex-direction:column;
+}
+.drawer-side{top:0;bottom:0;left:0;width:120px;border-top:none;border-bottom:none;border-left:none}
+.drawer-bottom{left:0;right:0;bottom:0;height:120px;border-left:none;border-right:none;border-bottom:none;border-top-left-radius:12px;border-top-right-radius:12px}
+
+.drawer-header{padding:10px;border-bottom:1px solid var(--bd);font-family:var(--mn);font-size:8px;color:var(--mu);text-transform:uppercase}
+.drawer-content{padding:10px;display:flex;flex-direction:column;gap:6px}
+.drawer-item{height:16px;background:var(--ms);width:100%;border-radius:2px;display:flex;align-items:center;padding:0 6px;gap:6px}
+.drawer-item::before{content:'';width:6px;height:6px;background:var(--mu);border-radius:1px}
+.drawer-item.ac{background:var(--ag)}
+.drawer-item.ac::before{background:var(--ac)}
+
+.overlay{position:absolute;inset:0;background:rgba(0,0,0,0.5);opacity:0;transition:opacity 0.4s;pointer-events:none;z-index:9}
+.overlay.ac{opacity:1}
+
+/* Specific Styles */
+#a1 .drawer{transform:translateX(-100%)}
+#a1.open .drawer{transform:translateX(0)}
+
+#a2 .drawer{transform:translateY(100%)}
+#a2.open .drawer{transform:translateY(0)}
+
+#a3 .drawer{transform:translateX(-100%)}
+#a3.open .drawer{transform:translateX(0)}
+
+#a4 .drawer{position:relative;transform:none;border-right:1px solid var(--bd)}
+
+/* Preview text */
+.pv{
+  position:absolute;bottom:10px;right:10px;background:var(--bgc);border:1px solid var(--bd);
+  padding:4px 8px;font-family:var(--mn);font-size:9px;color:var(--ac);z-index:5;
+}
+
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition-duration:0s!important}
+}
+</style>
+</head>
+<body>
+<div class="w">
+  <div class="g">
+
+    <!-- 1 · Navigation Drawer (Side) -->
+    <div class="c">
+      <div class="ct"><div class="cd"></div><span class="cg">Navigation (Side)</span></div>
+      <div class="cs" id="a1">
+        <div class="drawer drawer-side">
+          <div class="drawer-header">Menu</div>
+          <div class="drawer-content">
+            <div class="drawer-item ac"></div>
+            <div class="drawer-item"></div>
+            <div class="drawer-item"></div>
+            <div class="drawer-item"></div>
+          </div>
+        </div>
+        <div class="ui-main">
+          <div class="ui-header">
+            <div class="ui-circle" style="background:var(--ac)"></div>
+            <div style="height:4px;width:40px;background:var(--mu)"></div>
+          </div>
+          <div class="ui-box"></div>
+          <div class="ui-box lg"></div>
+        </div>
+        <div class="pv">Tự động trượt từ cạnh trái</div>
+      </div>
+      <div class="cb"><span>Dùng cho menu chính</span><span class="lp"><span class="ld"></span>loop</span></div>
+    </div>
+
+    <!-- 2 · Bottom Drawer -->
+    <div class="c">
+      <div class="ct"><div class="cd"></div><span class="cg">Bottom Drawer</span></div>
+      <div class="cs" id="a2">
+        <div class="overlay" id="a2o"></div>
+        <div class="drawer drawer-bottom">
+          <div style="width:30px;height:3px;background:var(--bd);margin:8px auto;border-radius:2px"></div>
+          <div class="drawer-content" style="flex-direction:row;flex-wrap:wrap;justify-content:center;gap:12px">
+            <div class="drawer-item" style="width:60px;height:30px;flex-direction:column;justify-content:center"><div style="font-size:7px;color:var(--mu);margin-top:2px">Action</div></div>
+            <div class="drawer-item" style="width:60px;height:30px;flex-direction:column;justify-content:center"></div>
+            <div class="drawer-item" style="width:60px;height:30px;flex-direction:column;justify-content:center"></div>
+          </div>
+        </div>
+        <div class="ui-main">
+          <div class="ui-box lg" style="height:120px;display:flex;align-items:center;justify-content:center">
+             <div style="width:60px;height:60px;background:var(--msb);border-radius:8px"></div>
+          </div>
+          <div class="ui-box"></div>
+        </div>
+        <div class="pv">Trượt từ dưới lên</div>
+      </div>
+      <div class="cb"><span>Dùng trên di động</span><span class="lp"><span class="ld"></span>loop</span></div>
+    </div>
+
+    <!-- 3 · Temporary (Overlay) -->
+    <div class="c">
+      <div class="ct"><div class="cd"></div><span class="cg">Temporary</span></div>
+      <div class="cs" id="a3">
+        <div class="overlay" id="a3o"></div>
+        <div class="drawer drawer-side" style="width:140px">
+          <div class="drawer-header">Filters</div>
+          <div class="drawer-content">
+            <div style="height:10px;width:100%;background:var(--msb)"></div>
+            <div style="height:2px;width:80%;background:var(--mu)"></div>
+            <div style="height:10px;width:100%;background:var(--msb)"></div>
+            <div style="height:2px;width:60%;background:var(--mu)"></div>
+          </div>
+        </div>
+        <div class="ui-main">
+          <div class="ui-header">
+             <div style="width:12px;height:12px;border:1px solid var(--ac)"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+            <div class="ui-box" style="height:60px"></div>
+            <div class="ui-box" style="height:60px"></div>
+            <div class="ui-box" style="height:60px"></div>
+            <div class="ui-box" style="height:60px"></div>
+          </div>
+        </div>
+        <div class="pv">Đè lên nội dung</div>
+      </div>
+      <div class="cb"><span>Mất khi nhấn ra ngoài</span><span class="lp"><span class="ld"></span>loop</span></div>
+    </div>
+
+    <!-- 4 · Persistent (Docked) -->
+    <div class="c">
+      <div class="ct"><div class="cd"></div><span class="cg">Persistent</span></div>
+      <div class="cs" id="a4">
+        <div class="drawer drawer-side">
+          <div class="drawer-header">Workspace</div>
+          <div class="drawer-content">
+            <div class="drawer-item"></div>
+            <div class="drawer-item"></div>
+            <div class="drawer-item ac"></div>
+            <div class="drawer-item"></div>
+          </div>
+        </div>
+        <div class="ui-main" style="background:var(--bgc)">
+          <div style="padding:10px;border-bottom:1px solid var(--bd);margin-bottom:8px">
+            <div style="height:6px;width:60px;background:var(--mu)"></div>
+          </div>
+          <div class="ui-box" style="background:var(--bg);border-style:dashed"></div>
+          <div class="ui-box" style="background:var(--bg);border-style:dashed"></div>
+        </div>
+        <div class="pv">Luôn hiển thị</div>
+      </div>
+      <div class="cb"><span>Cố định trên desktop</span><span class="lp"><span class="ld"></span>loop</span></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+/* Animation Loop for Drawers */
+function startAnim(){
+  // A1: Side Navigation
+  const a1 = document.getElementById('a1');
+  setInterval(() => {
+    a1.classList.toggle('open');
+  }, 2000);
+
+  // A2: Bottom Drawer
+  const a2 = document.getElementById('a2');
+  const a2o = document.getElementById('a2o');
+  setInterval(() => {
+    const isOpen = a2.classList.toggle('open');
+    a2o.classList.toggle('ac', isOpen);
+  }, 2500);
+
+  // A3: Temporary Overlay
+  const a3 = document.getElementById('a3');
+  const a3o = document.getElementById('a3o');
+  setInterval(() => {
+    const isOpen = a3.classList.toggle('open');
+    a3o.classList.toggle('ac', isOpen);
+  }, 3000);
+}
+
+document.addEventListener('DOMContentLoaded', startAnim);
+</script>
+</body>
+</html>
