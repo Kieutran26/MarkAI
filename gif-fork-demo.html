@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fork (GitHub) — Animated Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#101010;--bgc:#181818;--bgi:#131313;
+  --bd:#272727;--tx:#e0e0e0;--txm:#707070;--txd:#3a3a3a;
+  --ac:#d97706;--acl:#f59e0b;
+  --abg:rgba(217,119,6,.08);--abg2:rgba(217,119,6,.18);
+  --rd:#ef4444;--gn:#22c55e;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Space Grotesk',sans-serif;
+  background-color:var(--bg);
+  background-image:
+    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:20px 20px;
+  color:var(--tx);min-height:100vh;padding:20px 16px 48px;
+}
+.mono{font-family:'JetBrains Mono',monospace}
+.hd{max-width:900px;margin:0 auto 28px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.hd h1{font-size:32px;font-weight:700;letter-spacing:-1px;line-height:1}
+.hd .tag{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ac);border:1px solid var(--ac);padding:2px 8px;border-radius:2px}
+.hd .sub{width:100%;font-size:13px;color:var(--txm);margin-top:4px}
+.g{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:660px){.g{grid-template-columns:1fr}.hd h1{font-size:24px}}
+.c{background:var(--bgc);border:1px solid var(--bd);border-radius:3px;padding:18px;position:relative;overflow:hidden}
+.c::after{content:'';position:absolute;top:14px;right:14px;width:5px;height:5px;background:var(--ac);border-radius:50%;animation:dp 2.4s ease-in-out infinite}
+@keyframes dp{0%,100%{opacity:.3}50%{opacity:1}}
+.ch{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.ch .n{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--ac);background:var(--abg);border:1px solid rgba(217,119,6,.2);padding:1px 6px;border-radius:2px}
+.ch h2{font-size:14px;font-weight:600;letter-spacing:-.3px}
+.st{background:var(--bgi);border:1px solid var(--bd);border-radius:3px;padding:24px 18px;display:flex;flex-direction:column;align-items:center;min-height:150px;position:relative}
+.ins{margin-top:14px;font-size:11.5px;color:var(--txm);line-height:1.55;padding-left:12px;border-left:2px solid var(--bd)}
+.ins strong{color:var(--acl);font-weight:600}
+
+/* ── REPO BOX ── */
+.rbox{border:1px solid var(--bd);border-radius:2px;overflow:hidden;width:100%;max-width:210px}
+.rbox-hd{padding:5px 8px;background:rgba(255,255,255,.03);border-bottom:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--txm);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rbox-hd .owner{color:var(--tx)}
+.rbox-files{padding:7px 8px;display:flex;flex-direction:column;gap:3px}
+.rf{display:flex;align-items:center;gap:5px;font-size:10.5px;color:var(--tx);padding:1px 0}
+.rf-dot{width:7px;height:7px;border-radius:1px;flex-shrink:0}
+.rf.changed{background:var(--abg);border:1px solid rgba(217,119,6,.2);border-radius:2px;padding:2px 5px;margin:-2px -5px}
+
+/* ── ARROW CONNECTOR ── */
+.arrow-v{width:2px;height:0;background:repeating-linear-gradient(to bottom,var(--ac) 0 4px,transparent 4px 8px);position:relative;margin:4px 0;transition:none}
+.arrow-v::after{content:'';position:absolute;bottom:-5px;left:50%;transform:translateX(-50%);border-left:4px solid transparent;border-right:4px solid transparent;border-top:5px solid var(--ac);opacity:0}
+
+/* ═══════════════════════════════════════
+   01 — FORK LÀ SAO  (10s)
+   ═══════════════════════════════════════ */
+.s1-fork{opacity:0;animation:s1f 10s ease infinite}
+@keyframes s1f{
+  0%,15%{opacity:0;transform:translateY(-8px) scale(.96)}
+  25%{opacity:1;transform:translateY(0) scale(1)}
+  30%{box-shadow:0 0 18px rgba(217,119,6,.2)}
+  65%{opacity:1;transform:translateY(0) scale(1);box-shadow:0 0 18px rgba(217,119,6,.2)}
+  75%{opacity:1;transform:translateY(0) scale(1);box-shadow:none}
+  85%,100%{opacity:0;transform:translateY(-8px) scale(.96)}
+}
+.s1-arrow{animation:s1a 10s ease infinite}
+@keyframes s1a{
+  0%,10%{height:0}20%{height:22px}70%{height:22px}80%,100%{height:0}
+}
+.s1-arrow::after{animation:s1ah 10s ease infinite}
+@keyframes s1ah{0%,15%{opacity:0}22%{opacity:1}70%{opacity:1}78%,100%{opacity:0}}
+.s1-lbl{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txd);height:14px;opacity:0}
+.s1-lbl.l1{animation:s1l 10s ease infinite 0s}
+.s1-lbl.l2{animation:s1l 10s ease infinite 2.5s;color:var(--acl)}
+.s1-lbl.l3{animation:s1l 10s ease infinite 5s;color:var(--txm)}
+@keyframes s1l{0%{opacity:0}5%{opacity:1}18%{opacity:1}23%{opacity:0}100%{opacity:0}}
+
+/* ═══════════════════════════════════════
+   02 — FORK vs CLONE  (12s)
+   ═══════════════════════════════════════ */
+.cmp-row{display:flex;align-items:center;gap:8px;width:100%;max-width:320px;padding:8px;border-radius:2px;border:1px solid transparent;transition:none}
+.cmp-src,.cmp-dst{padding:6px 10px;border:1px solid var(--bd);border-radius:2px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txm);background:var(--bgi);white-space:nowrap}
+.cmp-dst{border-style:dashed}
+.cmp-arr{flex:1;height:1px;background:var(--bd);position:relative}
+.cmp-arr::after{content:'';position:absolute;right:-1px;top:50%;transform:translateY(-50%);border-top:4px solid transparent;border-bottom:4px solid transparent;border-left:5px solid var(--bd)}
+.cmp-tag{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;width:44px;text-align:right;flex-shrink:0}
+.cmp-row.r1{animation:cr1 12s ease infinite}
+.cmp-row.r2{animation:cr2 12s ease infinite}
+@keyframes cr1{
+  0%,3%{border-color:transparent;background:transparent}
+  6%{border-color:var(--ac);background:var(--abg)}
+  33%{border-color:var(--ac);background:var(--abg)}
+  37%,100%{border-color:transparent;background:transparent}
+}
+@keyframes cr2{
+  0%,35%{border-color:transparent;background:transparent}
+  39%{border-color:var(--acl);background:var(--abg2)}
+  66%{border-color:var(--acl);background:var(--abg2)}
+  70%,100%{border-color:transparent;background:transparent}
+}
+.cmp-desc{font-size:10px;color:var(--txd);height:14px;opacity:0}
+.cmp-desc.d1{animation:cdd 12s ease infinite 0s}
+.cmp-desc.d2{animation:cdd 12s ease infinite 3.5s}
+.cmp-desc.d3{animation:cdd 12s ease infinite 7s}
+@keyframes cdd{0%{opacity:0}4%{opacity:1}15%{opacity:1}20%{opacity:0}100%{opacity:0}}
+
+/* ═══════════════════════════════════════
+   03 — WORKFLOW  (14s)
+   ═══════════════════════════════════════ */
+.wf{display:flex;align-items:center;gap:0;width:100%;max-width:340px}
+.wf-node{display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0;z-index:1}
+.wf-circle{width:36px;height:36px;border-radius:50%;border:2px solid var(--bd);display:flex;align-items:center;justify-content:center;background:var(--bgi);transition:none}
+.wf-circle svg{width:16px;height:16px;stroke:var(--txd);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.wf-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--txd);white-space:nowrap}
+.wf-line{flex:1;height:2px;background:var(--bd);position:relative;overflow:hidden;min-width:16px}
+.wf-line-fill{position:absolute;left:0;top:0;height:100%;width:0;background:var(--ac);border-radius:1px}
+/* sequential activation */
+.wf-node:nth-child(1) .wf-circle{animation:wn 14s ease infinite 0s}
+.wf-node:nth-child(3) .wf-circle{animation:wn 14s ease infinite 3s}
+.wf-node:nth-child(5) .wf-circle{animation:wn 14s ease infinite 6.5s}
+.wf-node:nth-child(7) .wf-circle{animation:wn 14s ease infinite 10s}
+@keyframes wn{
+  0%,2%{border-color:var(--bd);background:var(--bgi);box-shadow:none}
+  5%{border-color:var(--ac);background:var(--abg2);box-shadow:0 0 16px rgba(217,119,6,.25)}
+  5%{border-color:var(--ac);background:var(--abg2);box-shadow:0 0 16px rgba(217,119,6,.25)}
+  22%{border-color:var(--ac);background:var(--abg2);box-shadow:0 0 16px rgba(217,119,6,.25)}
+  26%{border-color:var(--bd);background:var(--bgi);box-shadow:none}
+  100%{border-color:var(--bd);background:var(--bgi);box-shadow:none}
+}
+.wf-node:nth-child(1) .wf-lbl{animation:wl 14s ease infinite 0s}
+.wf-node:nth-child(3) .wf-lbl{animation:wl 14s ease infinite 3s}
+.wf-node:nth-child(5) .wf-lbl{animation:wl 14s ease infinite 6.5s}
+.wf-node:nth-child(7) .wf-lbl{animation:wl 14s ease infinite 10s}
+@keyframes wl{0%,2%{color:var(--txd)}5%{color:var(--acl)}22%{color:var(--acl)}26%{color:var(--txd)}100%{color:var(--txd)}}
+/* line fills */
+.wf-line:nth-child(2) .wf-line-fill{animation:wlf 14s ease infinite 1.5s}
+.wf-line:nth-child(4) .wf-line-fill{animation:wlf 14s ease infinite 4.5s}
+.wf-line:nth-child(6) .wf-line-fill{animation:wlf 14s ease infinite 8s}
+@keyframes wlf{0%,2%{width:0}8%{width:100%}22%{width:100%}28%{width:0}100%{width:0}}
+/* svg stroke color */
+.wf-node:nth-child(1) .wf-circle svg{animation:wsc 14s ease infinite 0s}
+.wf-node:nth-child(3) .wf-circle svg{animation:wsc 14s ease infinite 3s}
+.wf-node:nth-child(5) .wf-circle svg{animation:wsc 14s ease infinite 6.5s}
+.wf-node:nth-child(7) .wf-circle svg{animation:wsc 14s ease infinite 10s}
+@keyframes wsc{0%,2%{stroke:var(--txd)}5%{stroke:var(--acl)}22%{stroke:var(--acl)}26%{stroke:var(--txd)}100%{stroke:var(--txd)}}
+.wf-sub{font-size:10px;color:var(--txd);height:14px;margin-top:12px;opacity:0;text-align:center}
+.wf-sub.s1{animation:wfs 14s ease infinite 0s}
+.wf-sub.s2{animation:wfs 14s ease infinite 3.5s}
+.wf-sub.s3{animation:wfs 14s ease infinite 7s}
+.wf-sub.s4{animation:wfs 14s ease infinite 10.5s}
+@keyframes wfs{0%{opacity:0}3%{opacity:1;color:var(--txm)}18%{opacity:1;color:var(--txm)}22%{opacity:0}100%{opacity:0}}
+
+/* ═══════════════════════════════════════
+   04 — DIVERGENCE  (14s)
+   ═══════════════════════════════════════ */
+.br{width:100%;max-width:300px;display:flex;flex-direction:column;gap:0}
+.br-row{display:flex;align-items:center;gap:0}
+.br-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--txd);width:52px;flex-shrink:0;text-align:right;padding-right:8px}
+.br-tl{display:flex;align-items:center;gap:0;flex:1;position:relative;height:20px}
+.br-dot{width:10px;height:10px;border-radius:50%;border:2px solid var(--bd);background:var(--bgi);flex-shrink:0;opacity:0;position:relative;z-index:1}
+.br-line{height:2px;background:var(--bd);flex:1;min-width:0}
+.br-conn{width:2px;height:16px;background:var(--bd);margin-left:4px}
+/* main branch dots */
+.br-row.main .br-dot:nth-child(1){animation:bd 14s ease infinite .5s}
+.br-row.main .br-dot:nth-child(3){animation:bd 14s ease infinite 1.5s}
+.br-row.main .br-dot:nth-child(5){animation:bd 14s ease infinite 2.5s}
+.br-row.main .br-dot:nth-child(7){animation:bd 14s ease infinite 3.5s}
+/* fork branch dots */
+.br-row.fork .br-dot:nth-child(1){animation:bdf 14s ease infinite 5s}
+.br-row.fork .br-dot:nth-child(3){animation:bdf 14s ease infinite 6s}
+.br-row.fork .br-dot:nth-child(5){animation:bdf 14s ease infinite 7s}
+.br-row.fork .br-dot:nth-child(7){animation:bdf 14s ease infinite 8s}
+@keyframes bd{0%,4%{opacity:0;border-color:var(--bd);background:var(--bgi)}8%{opacity:1;border-color:var(--ac);background:var(--ac)}70%{opacity:1;border-color:var(--ac);background:var(--ac)}78%,100%{opacity:0}}
+@keyframes bdf{0%,4%{opacity:0;border-color:var(--bd);background:var(--bgi)}8%{opacity:1;border-color:var(--acl);background:var(--acl);border-style:solid}70%{opacity:1;border-color:var(--acl);background:var(--acl)}78%,100%{opacity:0}}
+/* labels animate */
+.br-row.main .br-label{animation:brl 14s ease infinite 0s}
+.br-row.fork .br-label{animation:brl 14s ease infinite 4.5s}
+@keyframes brl{0%,2%{color:var(--txd)}5%{color:var(--txm)}75%{color:var(--txm)}80%,100%{color:var(--txd)}}
+.br-ins{font-size:10px;color:var(--txd);height:14px;margin-top:10px;opacity:0;text-align:center}
+.br-ins.bi{animation:bri 14s ease infinite 8.5s}
+@keyframes bri{0%{opacity:0}4%{opacity:1;color:var(--acl)}18%{opacity:1;color:var(--acl)}24%{opacity:0}100%{opacity:0}}
+
+/* ── SUMMARY ── */
+.sum{max-width:900px;margin:20px auto 0;padding:16px 18px;border:1px solid var(--bd);border-radius:3px;background:var(--bgc);font-size:12.5px;color:var(--txm);line-height:1.6}
+.sum strong{color:var(--acl);font-weight:600}
+
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+</style>
+</head>
+<body>
+
+
+<!-- ═══ 4 SIMULATION CARDS ═══ -->
+
+<!-- ═══ 4 SIMULATION CARDS ═══ -->
+<div class="g">
+
+  <!-- ─── 01 FORK LÀ SAO ─── -->
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>Fork là sao</h2></div>
+    <div class="st">
+      <!-- Original -->
+      <div class="rbox">
+        <div class="rbox-hd"><span class="owner">team-brand</span>/landing-page</div>
+        <div class="rbox-files">
+          <div class="rf"><span class="rf-dot" style="background:#f59e0b"></span>index.html</div>
+          <div class="rf"><span class="rf-dot" style="background:#22c55e"></span>style.css</div>
+          <div class="rf"><span class="rf-dot" style="background:#b45309"></span>script.js</div>
+        </div>
+      </div>
+      <!-- Arrow -->
+      <div class="arrow-v s1-arrow"></div>
+      <!-- Fork copy -->
+      <div class="rbox s1-fork">
+        <div class="rbox-hd"><span class="owner">you</span>/landing-page</div>
+        <div class="rbox-files">
+          <div class="rf"><span class="rf-dot" style="background:#f59e0b"></span>index.html</div>
+          <div class="rf"><span class="rf-dot" style="background:#22c55e"></span>style.css</div>
+          <div class="rf"><span class="rf-dot" style="background:#b45309"></span>script.js</div>
+        </div>
+      </div>
+      <!-- Labels -->
+      <div class="s1-lbl l1">Bản gốc trên GitHub</div>
+      <div class="s1-lbl l2">Fork → copy nguyên bản sang account bạn</div>
+      <div class="s1-lbl l3">Cùng files, cùng nội dung — khác chủ sở hữu</div>
+    </div>
+    <p class="ins">Fork = <strong>copy toàn bộ repo</strong> sang GitHub account của bạn. Bản gốc không bị động vào. Bạn có toàn quyền sửa trong bản sao của mình.</p>
+  </section>
+
+  <!-- ─── 02 FORK vs CLONE ─── -->
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Fork khác Clone thế nào</h2></div>
+    <div class="st" style="gap:10px;align-items:stretch">
+      <!-- Fork row -->
+      <div class="cmp-row r1">
+        <span class="cmp-tag" style="color:var(--ac)">Fork</span>
+        <div class="cmp-src">GitHub (người khác)</div>
+        <div class="cmp-arr"></div>
+        <div class="cmp-dst">GitHub (của bạn)</div>
+      </div>
+      <!-- Clone row -->
+      <div class="cmp-row r2">
+        <span class="cmp-tag" style="color:var(--acl)">Clone</span>
+        <div class="cmp-src">GitHub</div>
+        <div class="cmp-arr"></div>
+        <div class="cmp-dst">Máy tính của bạn</div>
+      </div>
+      <!-- Descriptions -->
+      <div class="cmp-desc d1">Fork: vẫn trên GitHub, người khác thấy được, có thể tạo PR</div>
+      <div class="cmp-desc d2">Clone: tải về máy, làm việc offline, không ai thấy</div>
+      <div class="cmp-desc d3">Vibecode thường: Fork trước → Clone bản fork về máy</div>
+    </div>
+    <p class="ins"><strong>Fork = server → server</strong>. Clone = server → máy bạn. Khi làm việc với team, fork trước rồi mới clone. Đừng nhầm hai khái niệm này khi nói với dev.</p>
+  </section>
+
+  <!-- ─── 03 WORKFLOW ─── -->
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Luồng điển hình</h2></div>
+    <div class="st">
+      <div class="wf">
+        <!-- Node 1: Fork -->
+        <div class="wf-node">
+          <div class="wf-circle">
+            <svg viewBox="0 0 24 24"><path d="M6 3v12"/><path d="M18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M18 9c0 4-6 6-6 12"/></svg>
+          </div>
+          <span class="wf-lbl">Fork</span>
+        </div>
+        <div class="wf-line"><div class="wf-line-fill"></div></div>
+        <!-- Node 2: Edit -->
+        <div class="wf-node">
+          <div class="wf-circle">
+            <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </div>
+          <span class="wf-lbl">Edit</span>
+        </div>
+        <div class="wf-line"><div class="wf-line-fill"></div></div>
+        <!-- Node 3: PR -->
+        <div class="wf-node">
+          <div class="wf-circle">
+            <svg viewBox="0 0 24 24"><polyline points="7 17 17 7"/><polyline points="7 7 17 7 17 17"/></svg>
+          </div>
+          <span class="wf-lbl">PR</span>
+        </div>
+        <div class="wf-line"><div class="wf-line-fill"></div></div>
+        <!-- Node 4: Merge -->
+        <div class="wf-node">
+          <div class="wf-circle">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="8 12 12 16 16 12"/><line x1="12" y1="8" x2="12" y2="16"/></svg>
+          </div>
+          <span class="wf-lbl">Merge</span>
+        </div>
+      </div>
+      <div class="wf-sub s1">Copy repo gốc sang account bạn</div>
+      <div class="wf-sub s2">Sửa code trong bản fork của bạn</div>
+      <div class="wf-sub s3">Gửi Pull Request đề xuất ghép vào gốc</div>
+      <div class="wf-sub s4">Chủ repo gốc duyệt và merge</div>
+    </div>
+    <p class="ins">Fork → Edit → PR → Merge = <strong>chuẩn quy trình đóng góp</strong>. Bạn không sửa thẳng repo người khác — đề xuất qua PR để họ duyệt.</p>
+  </section>
+
+  <!-- ─── 04 DIVERGENCE ─── -->
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Phân kỳ</h2></div>
+    <div class="st">
+      <div class="br">
+        <!-- Main branch -->
+        <div class="br-row main">
+          <span class="br-label">main</span>
+          <div class="br-tl">
+            <div class="br-dot"></div><div class="br-line"></div>
+            <div class="br-dot"></div><div class="br-line"></div>
+            <div class="br-dot"></div><div class="br-line"></div>
+            <div class="br-dot"></div>
+          </div>
+        </div>
+        <!-- Connector -->
+        <div class="br-conn"></div>
+        <!-- Fork branch -->
+        <div class="br-row fork">
+          <span class="br-label">fork</span>
+          <div class="br-tl">
+            <div class="br-dot"></div><div class="br-line"></div>
+            <div class="br-dot"></div><div class="br-line"></div>
+            <div class="br-dot"></div><div class="br-line"></div>
+            <div class="br-dot"></div>
+          </div>
+        </div>
+      </div>
+      <div class="br-ins bi">Cùng điểm bắt đầu → đi hai hướng khác nhau</div>
+    </div>
+    <p class="ins">Sau khi fork, <strong>repo gốc tiếp tục cập nhật</strong> mà fork của bạn không tự nhận. Cần sync (pull từ gốc vào fork) để tránh bị tụt hậu — hay gặp khi báo "merge conflict".</p>
+  </section>
+</div>
+
+<!-- ═══ SUMMARY ═══ -->
+<div class="sum">
+  <strong>Fork</strong> = copy repo của người khác sang GitHub account của bạn, không chạm bản gốc. Ba điều marketer cần nhớ: (1) Fork khác Clone — fork vẫn trên server để team thấy, (2) Luồng chuẩn là Fork → Sửa → Pull Request → Merge — không bao giờ sửa thẳng repo người khác, (3) Fork có thể phân kỳ — gốc cập nhật mà fork không tự sync, cần bảo dev pull upstream. Khi nói "fork repo đó đi" = copy về account mình để tự do thử nghiệm.
+</div>
+
+</body>
+</html>

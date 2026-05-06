@@ -192,6 +192,8 @@ import modelDemoHtml from '../../gif-model-demo.html?raw';
 import modelPracticeHtml from '../../gif-model-practice.html?raw';
 import portDemoHtml from '../../gif-port-demo.html?raw';
 import portPracticeHtml from '../../gif-port-practice.html?raw';
+import forkDemoHtml from '../../gif-fork-demo.html?raw';
+import forkPracticeHtml from '../../gif-fork-practice.html?raw';
 
 
 
@@ -308,6 +310,7 @@ export default function GlossaryTermDetailPage() {
       case 'llm': return llmDemoHtml;
       case 'model': return modelDemoHtml;
       case 'port': return portDemoHtml;
+      case 'fork': return forkDemoHtml;
       default: return null;
     }
   };
@@ -407,6 +410,7 @@ export default function GlossaryTermDetailPage() {
       case 'llm': return llmPracticeHtml;
       case 'model': return modelPracticeHtml;
       case 'port': return portPracticeHtml;
+      case 'fork': return forkPracticeHtml;
       default: return null;
     }
   };

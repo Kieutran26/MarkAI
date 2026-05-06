@@ -81,6 +81,26 @@ export const terms: GlossaryTerm[] = [
   { id: 'env', name: '.env', nameEn: 'Environment Variables', letter: 'E', groups: ['infra'], definition: 'File chứa các biến bí mật — API key, password database, token. Không bao giờ upload file này lên GitHub. Vercel cho phép set env variables trong dashboard.', example: '"NEXT_PUBLIC_SUPABASE_KEY=xxx" trong file .env — đây là API key để connect với Supabase.', related: ['environment', 'api', 'git'], demo: { kind: 'interactive', src: 'gif-env-demo.html', alt: 'Mô phỏng file .env, quy tắc đặt tên, môi trường và bảo mật rò rỉ' } },
   { id: 'frontend', name: 'Frontend', nameEn: 'Phần giao diện người dùng', letter: 'F', groups: ['design', 'code'], definition: 'Tất cả những gì người dùng nhìn thấy và tương tác — buttons, form, layout, màu sắc, animation. HTML + CSS + JavaScript là frontend.', example: '"Tôi muốn thêm một section FAQ với accordion expand/collapse" — đây là frontend task, AI dùng Cursor để viết component này.', related: ['backend', 'component'], demo: { kind: 'interactive', src: 'gif-frontend-demo.html', alt: 'Mô phỏng 4 loại frontend: Static, Dynamic, Components, Responsive' } },
   { id: 'footer', name: 'Footer', nameEn: 'Chân trang', letter: 'F', groups: ['design', 'code'], definition: 'Phần cuối trang web — thường chứa thông tin liên hệ, logo, các liên kết phụ (sitemap), newsletter và bản quyền. Footer là component mang tính hệ thống, giúp người dùng không bao giờ rơi vào "ngõ cụt" khi kéo xuống hết trang.', example: 'Footer của markAI chứa logo, link tới các bài blog, fanpage và thông tin công ty. Chỉ cần sửa component Footer, toàn bộ các trang trên web sẽ được cập nhật phần cuối đồng loạt.', related: ['component', 'navbar', 'interface'], demo: { kind: 'interactive', src: 'gif-footer-demo.html', alt: 'Mô phỏng các loại Footer phổ biến và cấu trúc từng phần' } },
+  {
+    id: 'fork',
+    name: 'Fork',
+    nameEn: 'Copy repository / Nhân bản kho code',
+    letter: 'F',
+    groups: ['workflow'],
+    definition: 'Hành động copy một repository của người khác sang tài khoản GitHub của bạn. Điều này tạo ra một bản sao độc lập, cho phép bạn tự do sửa đổi mà không làm ảnh hưởng đến dự án gốc.',
+    example: 'Bạn thấy một template landing page đẹp trên GitHub nhưng không có quyền sửa. Bạn nhấn "Fork" để copy nó về account mình, sau đó tha hồ tùy chỉnh màu sắc và nội dung.',
+    related: ['git', 'repository', 'commit', 'pull-request'],
+    demo: {
+      kind: 'interactive',
+      src: 'gif-fork-demo.html',
+      alt: 'Mô phỏng quy trình Fork: từ repo gốc sang repo cá nhân và sự phân kỳ'
+    },
+    practice: {
+      kind: 'interactive',
+      src: 'gif-fork-practice.html',
+      alt: 'Thực hành Fork: trải nghiệm quy trình copy và đề xuất thay đổi qua PR'
+    }
+  },
   { id: 'flexbox', name: 'Flexbox', nameEn: 'Hệ thống layout 1 chiều', letter: 'F', groups: ['design', 'code'], definition: 'Cách sắp xếp elements theo hàng ngang hoặc cột dọc. Khi bạn muốn "3 cái card nằm ngang và cách nhau đều" — đó là flexbox.', example: 'Prompt: "Icon và text nằm trên cùng một hàng, icon bên trái, khoảng cách 8px." → AI dùng flexbox.', related: ['grid', 'padding'] },
   { id: 'framework', name: 'Framework', nameEn: 'Khung làm việc', letter: 'F', groups: ['infra', 'code'], definition: 'Bộ khung có sẵn giúp bạn không phải xây từ đầu. Next.js là framework cho web — nó đã lo routing, SEO, performance. Bạn chỉ cần tập trung vào logic và giao diện.', example: 'markAI.vn dùng Next.js framework + Tailwind CSS framework. Hai thứ này cùng nhau giúp vibecoder build web chuyên nghiệp.' },
   { id: 'function', name: 'Function', nameEn: 'Hàm / Khối code tái dùng', letter: 'F', groups: ['code'], definition: 'Một khối code làm một việc cụ thể, có thể gọi đi gọi lại. Giống như quy trình SOP — viết một lần, áp dụng nhiều lần.', example: '"Hàm formatDate() nhận ngày tháng và trả về dạng \'DD/MM/YYYY\'" — gọi function này ở bất kỳ đâu trong app.' },
@@ -374,7 +394,8 @@ const deepDiveTermIds = new Set([
   'interface',
   'model',
   'llm',
-  'port'
+  'port',
+  'fork'
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -415,6 +436,12 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Sức mạnh thực sự của CLI nằm ở tính tự động hóa. Nếu bạn cần tạo 100 thư mục, GUI mất 10 phút click, CLI mất đúng 1 dòng lệnh.',
     'Đừng hoảng sợ khi thấy màn hình đen chữ trắng (Terminal). Hầu hết thời gian dev chỉ dùng khoảng 5-10 lệnh cơ bản như ls, cd, mkdir, npm, git.',
     'Hiểu CLI giúp marketer hiểu được "nhịp đập" của dự án. Khi dev nói "đang build" hay "đã push", họ đang gõ những lệnh đó vào CLI.',
+  ],
+  fork: [
+    'Fork là "server-to-server copy". Khác with Clone là "server-to-local copy". Khi bạn fork, dự án vẫn nằm trên cloud của GitHub, chỉ là đổi chủ sở hữu từ người khác sang bạn.',
+    'Dùng Fork khi nào? (1) Khi bạn muốn đóng góp cho dự án mã nguồn mở, (2) Khi bạn muốn dùng code của người khác làm nền tảng cho dự án riêng, (3) Khi team quy định workflow "Forking Model" để đảm bảo an toàn cho nhánh chính.',
+    'Pull Request (PR) là cây cầu nối giữa bản fork và bản gốc. Nếu bạn sửa code trong bản fork và thấy nó tốt, bạn có thể gửi PR để chủ repo gốc xem xét và gộp vào dự án chính thức.',
+    'Fork giúp bạn an tâm thử nghiệm. Dù bạn có xóa hết code trong bản fork, dự án gốc của người khác vẫn hoàn toàn bình an vô sự.'
   ],
   button: [
     'Button không chỉ là "cái nút để click". Nó là ngôn ngữ của hành động (Action Language). Mỗi variant truyền tải một thông điệp: Primary = "Làm ngay", Secondary = "Làm sau", Ghost = "Có thể làm".',
