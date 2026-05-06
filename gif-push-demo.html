@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Push (GitHub) — Animated Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#101010;--bgc:#181818;--bgi:#131313;
+  --bd:#272727;--tx:#e0e0e0;--txm:#707070;--txd:#3a3a3a;
+  --ac:#d97706;--acl:#f59e0b;
+  --abg:rgba(217,119,6,.08);--abg2:rgba(217,119,6,.18);
+  --rd:#ef4444;--gn:#22c55e;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Space Grotesk',sans-serif;
+  background-color:var(--bg);
+  background-image:
+    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:20px 20px;
+  color:var(--tx);min-height:100vh;padding:24px 16px 48px;
+}
+.g{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:660px){.g{grid-template-columns:1fr}.hd h1{font-size:24px}}
+.c{background:var(--bgc);border:1px solid var(--bd);border-radius:3px;padding:18px;position:relative;overflow:hidden}
+.c::after{content:'';position:absolute;top:14px;right:14px;width:5px;height:5px;background:var(--ac);border-radius:50%;animation:dp 2.4s ease-in-out infinite}
+@keyframes dp{0%,100%{opacity:.3}50%{opacity:1}}
+.ch{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.ch .n{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--ac);background:var(--abg);border:1px solid rgba(217,119,6,.2);padding:1px 6px;border-radius:2px}
+.ch h2{font-size:14px;font-weight:600;letter-spacing:-.3px}
+.st{background:var(--bgi);border:1px solid var(--bd);border-radius:3px;padding:24px 16px;display:flex;flex-direction:column;align-items:center;min-height:150px;position:relative}
+.ins{margin-top:14px;font-size:11.5px;color:var(--txm);line-height:1.55;padding-left:12px;border-left:2px solid var(--bd)}
+.ins strong{color:var(--acl);font-weight:600}
+
+/* ── REPO BOX ── */
+.rb{border:1px solid var(--bd);border-radius:2px;overflow:hidden;width:100%;max-width:130px;transition:border-color .3s}
+.rb-h{padding:4px 7px;background:rgba(255,255,255,.025);border-bottom:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--txd);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rb-f{padding:5px 7px;display:flex;flex-direction:column;gap:2px}
+.rf{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--tx);padding:1px 0}
+.rf-d{width:6px;height:6px;border-radius:1px;flex-shrink:0}
+
+/* ── ARROW MID ── */
+.mid{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;min-width:32px;max-width:56px;position:relative;gap:3px}
+.mid-line{width:100%;height:2px;background:var(--bd);position:relative;overflow:hidden}
+.mid-fill{position:absolute;left:0;top:0;height:100%;width:0;background:var(--ac);border-radius:1px}
+.mid-head{width:0;height:0;border-top:4px solid transparent;border-bottom:4px solid transparent;border-left:5px solid var(--bd);margin-left:-1px}
+.mid-lbl{font-family:'JetBrains Mono',monospace;font-size:8.5px;color:var(--txd);white-space:nowrap;opacity:0}
+
+/* ═══════════════════════════════════════
+   01 — PUSH LÀ SAO  (10s)
+   ═══════════════════════════════════════ */
+.s1{display:flex;align-items:center;width:100%;max-width:320px;gap:0}
+.s1 .rb{max-width:120px}
+/* local files dim when sending */
+.s1 .rf{animation:s1ld 10s ease infinite}
+@keyframes s1ld{0%,20%{opacity:1}28%{opacity:.3}70%{opacity:.3}78%,100%{opacity:1}}
+/* local box glow */
+.s1 .rb:first-child{animation:s1lg 10s ease infinite}
+@keyframes s1lg{0%,16%{border-color:var(--bd)}22%{border-color:var(--ac);box-shadow:0 0 16px rgba(217,119,6,.2)}68%{border-color:var(--ac);box-shadow:0 0 16px rgba(217,119,6,.2)}74%,100%{border-color:var(--bd)}}
+/* mid arrow fill */
+.s1 .mid-fill{animation:s1mf 10s ease infinite}
+@keyframes s1mf{0%,18%{width:0}26%{width:100%}64%{width:100%}72%,100%{width:0}}
+.s1 .mid-head{animation:s1mh 10s ease infinite}
+@keyframes s1mh{0%,18%{border-left-color:var(--bd)}26%{border-left-color:var(--ac)}64%{border-left-color:var(--ac)}72%,100%{border-left-color:var(--bd)}}
+/* remote files appear */
+.s1 .rb:last-child .rf{opacity:0;animation:s1ra 10s ease infinite}
+@keyframes s1ra{0%,52%{opacity:0;transform:translateY(4px)}58%{opacity:1;transform:translateY(0)}70%{opacity:1;transform:translateY(0)}76%,100%{opacity:0;transform:translateY(-4px)}}
+/* remote box glow */
+.s1 .rb:last-child{animation:s1rg 10s ease infinite}
+@keyframes s1rg{0%,50%{border-color:var(--bd)}56%{border-color:var(--ac);box-shadow:0 0 16px rgba(217,119,6,.2)}70%{border-color:var(--ac);box-shadow:0 0 16px rgba(217,119,6,.2)}76%,100%{border-color:var(--bd)}}
+/* label */
+.s1-lbl{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txd);height:14px;margin-top:12px;opacity:0;animation:s1l 10s ease infinite}
+@keyframes s1l{0%,56%{opacity:0}62%{opacity:1;color:var(--acl)}72%{opacity:1;color:var(--acl)}78%,100%{opacity:0}}
+
+/* ═══════════════════════════════════════
+   02 — COMMIT TRƯỚC, PUSH SAU  (14s)
+   ═══════════════════════════════════════ */
+.s2{display:flex;align-items:center;width:100%;max-width:340px;gap:0}
+.s2 .rb{max-width:90px}
+/* file in working */
+.s2-f-w{animation:s2w 14s ease infinite}
+@keyframes s2w{0%,10%{opacity:0;transform:scale(.8)}14%{opacity:1;transform:scale(1)}28%{opacity:1;transform:scale(1)}34%,100%{opacity:0;transform:scale(.8)}}
+/* file in local */
+.s2-f-l{opacity:0;animation:s2l 14s ease infinite}
+@keyframes s2l{0%,32%{opacity:0;transform:scale(.8)}38%{opacity:1;transform:scale(1)}52%{opacity:1;transform:scale(1)}58%,100%{opacity:0;transform:scale(.8)}}
+/* file in remote */
+.s2-f-r{opacity:0;animation:s2r 14s ease infinite}
+@keyframes s2r{0%,56%{opacity:0;transform:scale(.8)}62%{opacity:1;transform:scale(1)}76%{opacity:1;transform:scale(1)}82%,100%{opacity:0;transform:scale(.8)}}
+/* mid1 commit arrow */
+.s2 .mid:nth-child(2) .mid-fill{animation:s2m1 14s ease infinite}
+@keyframes s2m1{0%,28%{width:0}36%{width:100%}52%{width:100%}58%,100%{width:0}}
+.s2 .mid:nth-child(2) .mid-head{animation:s2h1 14s ease infinite}
+@keyframes s2h1{0%,28%{border-left-color:var(--bd)}36%{border-left-color:var(--ac)}52%{border-left-color:var(--ac)}58%,100%{border-left-color:var(--bd)}}
+/* mid2 push arrow */
+.s2 .mid:nth-child(4) .mid-fill{animation:s2m2 14s ease infinite}
+@keyframes s2m2{0%,52%{width:0}60%{width:100%}76%{width:100%}82%,100%{width:0}}
+.s2 .mid:nth-child(4) .mid-head{animation:s2h2 14s ease infinite}
+@keyframes s2h2{0%,52%{border-left-color:var(--bd)}60%{border-left-color:var(--ac)}76%{border-left-color:var(--ac)}82%,100%{border-left-color:var(--bd)}}
+/* action labels */
+.s2 .mid:nth-child(2) .mid-lbl{animation:s2al1 14s ease infinite}
+@keyframes s2al1{0%,28%{opacity:0;color:var(--txd)}34%{opacity:1;color:var(--ac)}48%{opacity:1;color:var(--ac)}54%,100%{opacity:0}}
+.s2 .mid:nth-child(4) .mid-lbl{animation:s2al2 14s ease infinite}
+@keyframes s2al2{0%,52%{opacity:0;color:var(--txd)}58%{opacity:1;color:var(--acl)}72%{opacity:1;color:var(--acl)}78%,100%{opacity:0}}
+/* bottom labels */
+.s2-lbls{display:flex;flex-direction:column;gap:2px;margin-top:12px;height:28px;width:100%;max-width:300px;text-align:center}
+.s2-lbls span{font-family:'JetBrains Mono',monospace;font-size:9px;opacity:0}
+.s2-lbls .sl1{animation:s2ll 14s ease infinite 0s}
+.s2-lbls .sl2{animation:s2ll 14s ease infinite 3s}
+.s2-lbls .sl3{animation:s2ll 14s ease infinite 7s}
+@keyframes s2ll{0%{opacity:0}4%{opacity:1;color:var(--txm)}20%{opacity:1;color:var(--txm)}26%,100%{opacity:0}}
+
+/* ═══════════════════════════════════════
+   03 — PUSH BỊ CHẶN  (16s)
+   ═══════════════════════════════════════ */
+.s3{display:flex;align-items:center;width:100%;max-width:300px;gap:0;position:relative}
+.s3 .rb{max-width:110px;position:relative}
+/* version numbers - stacked for animation */
+.s3-ver{position:relative;height:16px;display:flex;align-items:center;justify-content:center}
+.s3-v{position:absolute;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--tx)}
+/* local versions */
+.s3-lv1{animation:s3lv1 16s ease infinite}
+@keyframes s3lv1{0%,32%{opacity:1;color:var(--tx)}36%{opacity:0}100%{opacity:0}}
+.s3-lv2{opacity:0;animation:s3lv2 16s ease infinite}
+@keyframes s3lv2{0%,34%{opacity:0}38%{opacity:1;color:var(--tx)}58%{opacity:1;color:var(--tx)}62%{opacity:0}72%{opacity:0;color:var(--gn)}76%{opacity:1;color:var(--gn)}90%{opacity:1;color:var(--gn)}94%,100%{opacity:0}}
+/* remote versions */
+.s3-rv1{animation:s3rv1 16s ease infinite}
+@keyframes s3rv1{0%,24%{opacity:1;color:var(--tx)}28%{opacity:0}100%{opacity:0}}
+.s3-rv2{opacity:0;animation:s3rv2 16s ease infinite}
+@keyframes s3rv2{0%,26%{opacity:0}30%{opacity:1;color:var(--acl)}90%{opacity:1;color:var(--acl)}94%,100%{opacity:0}}
+/* mid arrow success phase */
+.s3 .mid-fill{animation:s3mf 16s ease infinite}
+@keyframes s3mf{
+  0%,8%{width:0;background:var(--ac)}18%{width:100%;background:var(--ac)}26%{width:100%;background:var(--ac)}
+  30%{width:0;background:var(--ac)}
+  48%,56%{width:0;background:var(--rd)}62%{width:100%;background:var(--rd)}66%{width:0;background:var(--rd)}
+  74%,82%{width:0;background:var(--gn)}88%{width:100%;background:var(--gn)}92%,100%{width:0;background:var(--gn)}
+}
+.s3 .mid-head{animation:s3mh 16s ease infinite}
+@keyframes s3mh{
+  0%,8%{border-left-color:var(--bd)}18%{border-left-color:var(--ac)}26%{border-left-color:var(--ac)}30%{border-left-color:var(--bd)}
+  48%,56%{border-left-color:var(--bd)}62%{border-left-color:var(--rd)}66%{border-left-color:var(--bd)}
+  74%,82%{border-left-color:var(--bd)}88%{border-left-color:var(--gn)}92%,100%{border-left-color:var(--bd)}
+}
+/* status messages */
+.s3-status{position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;white-space:nowrap;opacity:0;pointer-events:none}
+.s3-st1{animation:s3st 16s ease infinite 0s;color:var(--gn)}
+.s3-st2{animation:s3st 16s ease infinite 5s;color:var(--acl)}
+.s3-st3{animation:s3st 16s ease infinite 8.5s;color:var(--rd)}
+.s3-st4{animation:s3st 16s ease infinite 12s;color:var(--gn)}
+@keyframes s3st{0%{opacity:0;transform:translateX(-50%) translateY(2px)}6%{opacity:1;transform:translateX(-50%) translateY(0)}18%{opacity:1;transform:translateX(-50%) translateY(0)}24%,100%{opacity:0;transform:translateX(-50%) translateY(-2px)}}
+/* box border flash */
+.s3 .rb:first-child{animation:s3bl 16s ease infinite}
+@keyframes s3bl{
+  0%,12%{border-color:var(--bd)}16%{border-color:var(--gn)}24%{border-color:var(--gn)}28%{border-color:var(--bd)}
+  56%{border-color:var(--bd)}60%{border-color:var(--rd)}66%{border-color:var(--rd)}70%{border-color:var(--bd)}
+  82%{border-color:var(--bd)}86%{border-color:var(--gn)}92%{border-color:var(--gn)}96%,100%{border-color:var(--bd)}
+}
+
+/* ═══════════════════════════════════════
+   04 — PUSH TRONG WORKFLOW  (12s)
+   ═══════════════════════════════════════ */
+.wf{display:flex;align-items:center;gap:0;width:100%;max-width:360px}
+.wf-n{display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0;z-index:1}
+.wf-c{width:34px;height:34px;border-radius:50%;border:2px solid var(--bd);display:flex;align-items:center;justify-content:center;background:var(--bgi)}
+.wf-c svg{width:14px;height:14px;stroke:var(--txd);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.wf-l{font-family:'JetBrains Mono',monospace;font-size:8.5px;color:var(--txd);white-space:nowrap}
+.wf-ln{flex:1;height:2px;background:var(--bd);position:relative;overflow:hidden;min-width:12px}
+.wf-lf{position:absolute;left:0;top:0;height:100%;width:0;background:var(--ac);border-radius:1px}
+/* sequential */
+.wf-n:nth-child(1) .wf-c{animation:wn 12s ease infinite 0s}
+.wf-n:nth-child(3) .wf-c{animation:wn 12s ease infinite 2.5s}
+.wf-n:nth-child(5) .wf-c{animation:wps 12s ease infinite 5s}
+.wf-n:nth-child(7) .wf-c{animation:wn 12s ease infinite 7.5s}
+.wf-n:nth-child(9) .wf-c{animation:wn 12s ease infinite 10s}
+@keyframes wn{0%,2%{border-color:var(--bd);background:var(--bgi);box-shadow:none}5%{border-color:var(--ac);background:var(--abg2);box-shadow:0 0 12px rgba(217,119,6,.2)}20%{border-color:var(--ac);background:var(--abg2);box-shadow:0 0 12px rgba(217,119,6,.2)}24%{border-color:var(--bd);background:var(--bgi);box-shadow:none}100%{border-color:var(--bd);background:var(--bgi);box-shadow:none}}
+/* push node: bigger glow */
+@keyframes wps{0%,2%{border-color:var(--bd);background:var(--bgi);box-shadow:none}5%{border-color:var(--acl);background:var(--abg2);box-shadow:0 0 20px rgba(217,119,6,.35)}20%{border-color:var(--acl);background:var(--abg2);box-shadow:0 0 20px rgba(217,119,6,.35)}24%{border-color:var(--bd);background:var(--bgi);box-shadow:none}100%{border-color:var(--bd);background:var(--bgi);box-shadow:none}}
+/* svg color */
+.wf-n:nth-child(1) .wf-c svg{animation:wsc 12s ease infinite 0s}
+.wf-n:nth-child(3) .wf-c svg{animation:wsc 12s ease infinite 2.5s}
+.wf-n:nth-child(5) .wf-c svg{animation:wsc 12s ease infinite 5s}
+.wf-n:nth-child(7) .wf-c svg{animation:wsc 12s ease infinite 7.5s}
+.wf-n:nth-child(9) .wf-c svg{animation:wsc 12s ease infinite 10s}
+@keyframes wsc{0%,2%{stroke:var(--txd)}5%{stroke:var(--acl)}20%{stroke:var(--acl)}24%{stroke:var(--txd)}100%{stroke:var(--txd)}}
+/* label color */
+.wf-n:nth-child(1) .wf-l{animation:wlc 12s ease infinite 0s}
+.wf-n:nth-child(3) .wf-l{animation:wlc 12s ease infinite 2.5s}
+.wf-n:nth-child(5) .wf-l{animation:wlp 12s ease infinite 5s}
+.wf-n:nth-child(7) .wf-l{animation:wlc 12s ease infinite 7.5s}
+.wf-n:nth-child(9) .wf-l{animation:wlc 12s ease infinite 10s}
+@keyframes wlc{0%,2%{color:var(--txd)}5%{color:var(--txm)}20%{color:var(--txm)}24%{color:var(--txd)}100%{color:var(--txd)}}
+@keyframes wlp{0%,2%{color:var(--txd)}5%{color:var(--acl);font-weight:700}20%{color:var(--acl);font-weight:700}24%{color:var(--txd)}100%{color:var(--txd)}}
+/* line fills */
+.wf-ln:nth-child(2) .wf-lf{animation:wlf 12s ease infinite 1.2s}
+.wf-ln:nth-child(4) .wf-lf{animation:wlf 12s ease infinite 3.7s}
+.wf-ln:nth-child(6) .wf-lf{animation:wlf 12s ease infinite 6.2s}
+.wf-ln:nth-child(8) .wf-lf{animation:wlf 12s ease infinite 8.7s}
+@keyframes wlf{0%,2%{width:0}8%{width:100%}20%{width:100%}26%{width:0}100%{width:0}}
+.wf-sub{font-size:10px;color:var(--txd);height:14px;margin-top:14px;opacity:0;text-align:center}
+.wf-sub.ws1{animation:wfs 12s ease infinite 0s}
+.wf-sub.ws2{animation:wfs 12s ease infinite 2.8s}
+.wf-sub.ws3{animation:wfs 12s ease infinite 5.3s}
+.wf-sub.ws4{animation:wfs 12s ease infinite 7.8s}
+.wf-sub.ws5{animation:wfs 12s ease infinite 10.3s}
+@keyframes wfs{0%{opacity:0}3%{opacity:1;color:var(--txm)}16%{opacity:1;color:var(--txm)}20%{opacity:0}100%{opacity:0}}
+
+.sum{max-width:900px;margin:20px auto 0;padding:16px 18px;border:1px solid var(--bd);border-radius:3px;background:var(--bgc);font-size:12.5px;color:var(--txm);line-height:1.6}
+.sum strong{color:var(--acl);font-weight:600}
+
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+</style>
+</head>
+<body>
+
+<div class="g">
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>Push là sao</h2></div>
+    <div class="st">
+      <div class="s1">
+        <div class="rb">
+          <div class="rb-h">MacBook — local</div>
+          <div class="rb-f">
+            <div class="rf"><span class="rf-d" style="background:#f59e0b"></span>index.html</div>
+            <div class="rf"><span class="rf-d" style="background:#22c55e"></span>style.css</div>
+          </div>
+        </div>
+        <div class="mid">
+          <div class="mid-line"><div class="mid-fill"></div></div>
+          <div class="mid-head"></div>
+          <div class="mid-lbl">push</div>
+        </div>
+        <div class="rb">
+          <div class="rb-h">GitHub — remote</div>
+          <div class="rb-f">
+            <div class="rf"><span class="rf-d" style="background:#f59e0b"></span>index.html</div>
+            <div class="rf"><span class="rf-d" style="background:#22c55e"></span>style.css</div>
+          </div>
+        </div>
+      </div>
+      <div class="s1-lbl">Files từ máy → xuất hiện trên GitHub</div>
+    </div>
+    <p class="ins">Push = <strong>từ máy lên server</strong>. Code trên MacBook của bạn được tải lên GitHub. Ai có quyền truy cập repo đều thấy thay đổi ngay sau push.</p>
+  </section>
+
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Commit trước, Push sau</h2></div>
+    <div class="st">
+      <div class="s2">
+        <div class="rb">
+          <div class="rb-h">Working</div>
+          <div class="rb-f"><div class="rf s2-f-w"><span class="rf-d" style="background:#f59e0b"></span>index.html</div></div>
+        </div>
+        <div class="mid">
+          <div class="mid-line"><div class="mid-fill"></div></div>
+          <div class="mid-head"></div>
+          <div class="mid-lbl">commit</div>
+        </div>
+        <div class="rb">
+          <div class="rb-h">Local</div>
+          <div class="rb-f"><div class="rf s2-f-l"><span class="rf-d" style="background:#f59e0b"></span>index.html</div></div>
+        </div>
+        <div class="mid">
+          <div class="mid-line"><div class="mid-fill"></div></div>
+          <div class="mid-head"></div>
+          <div class="mid-lbl">push</div>
+        </div>
+        <div class="rb">
+          <div class="rb-h">GitHub</div>
+          <div class="rb-f"><div class="rf s2-f-r"><span class="rf-d" style="background:#f59e0b"></span>index.html</div></div>
+        </div>
+      </div>
+      <div class="s2-lbls">
+        <span class="sl1">Sửa file → file nằm trong Working</span>
+        <span class="sl2">Commit → file lưu vào Local (vẫn trên máy)</span>
+        <span class="sl3">Push → file mới lên GitHub (ai cũng thấy)</span>
+      </div>
+    </div>
+    <p class="ins"><strong>Commit ≠ Push</strong>. Commit lưu snapshot trên máy. Push gửi snapshot đó lên server. Báo "đã commit" không nghĩa là dev đã thấy — phải push mới lên GitHub.</p>
+  </section>
+
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Khi push bị chặn</h2></div>
+    <div class="st">
+      <div class="s3">
+        <div class="rb">
+          <div class="rb-h">Local</div>
+          <div class="rb-f"><div class="s3-ver"><span class="s3-v s3-lv1">v2</span><span class="s3-v s3-lv2">v3</span></div></div>
+        </div>
+        <div class="mid" style="position:relative">
+          <div class="mid-line"><div class="mid-fill"></div></div>
+          <div class="mid-head"></div>
+          <div class="s3-status s3-st1">OK</div>
+          <div class="s3-status s3-st2">colleague push v3</div>
+          <div class="s3-status s3-st3">REJECTED</div>
+          <div class="s3-status s3-st4">OK</div>
+        </div>
+        <div class="rb">
+          <div class="rb-h">GitHub</div>
+          <div class="rb-f"><div class="s3-ver"><span class="s3-v s3-rv1">v2</span><span class="s3-v s3-rv2">v3</span></div></div>
+        </div>
+      </div>
+    </div>
+    <p class="ins">Push bị <strong>reject khi remote có commit mới</strong> mà local chưa có. Giải pháp: <strong>pull trước → push sau</strong>. Đây là lỗi "push rejected" phổ biến nhất khi làm việc nhóm.</p>
+  </section>
+
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Vị trí Push trong workflow</h2></div>
+    <div class="st">
+      <div class="wf">
+        <div class="wf-n">
+          <div class="wf-c"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div>
+          <span class="wf-l">Sửa</span>
+        </div>
+        <div class="wf-ln"><div class="wf-lf"></div></div>
+        <div class="wf-n">
+          <div class="wf-c"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></div>
+          <span class="wf-l">Stage</span>
+        </div>
+        <div class="wf-ln"><div class="wf-lf"></div></div>
+        <div class="wf-n">
+          <div class="wf-c"><svg viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></div>
+          <span class="wf-l">Commit</span>
+        </div>
+        <div class="wf-ln"><div class="wf-lf"></div></div>
+        <div class="wf-n">
+          <div class="wf-c"><svg viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><path d="M21 3l-7 7"/><path d="M21 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h6"/></svg></div>
+          <span class="wf-l">Push</span>
+        </div>
+        <div class="wf-ln"><div class="wf-lf"></div></div>
+        <div class="wf-n">
+          <div class="wf-c"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg></div>
+          <span class="wf-l">Live</span>
+        </div>
+      </div>
+      <div class="wf-sub ws1">Sửa code trong editor</div>
+      <div class="wf-sub ws2">Chọn file muốn commit</div>
+      <div class="wf-sub ws3">Lưu snapshot trên máy</div>
+      <div class="wf-sub ws4">Gửi lên GitHub — bước này!</div>
+      <div class="wf-sub ws5">Deploy / ai cũng thấy</div>
+    </div>
+    <p class="ins">Push nằm giữa <strong>commit và live</strong>. Không push = code chỉ trên máy bạn. Push xong = CI/CD tự deploy, hoặc dev pull để tiếp tục làm.</p>
+  </section>
+</div>
+
+<div class="sum">
+  <strong>Push</strong> = tải commit từ máy lên GitHub. Ba điều marketer cần nhớ: (1) Push khác Commit — commit lưu local, push gửi lên server, (2) Push có thể bị reject khi người khác đã push trước — cần pull trước rồi push lại, (3) "Đã commit rồi mà sao chưa thấy" = chưa push. Khi báo lỗi, nói rõ "push bị rejected" thay vì "lên GitHub không được" — dev sẽ biết ngay vấn đề.
+</div>
+
+</body>
+</html>

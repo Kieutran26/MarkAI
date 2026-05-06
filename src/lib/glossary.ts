@@ -201,6 +201,18 @@ export const terms: GlossaryTerm[] = [
     demo: { kind: 'interactive', src: 'gif-port-demo.html', alt: 'Mô phỏng 4 khía cạnh của Port: Port là gì, Port quy ước, Xung đột Port và Localhost:Port' },
     practice: { kind: 'interactive', src: 'gif-port-practice.html', alt: 'Thực hành Port Explorer: kiểm tra các port phổ biến và giả lập xung đột' }
   },
+  {
+    id: 'push',
+    name: 'Push',
+    nameEn: 'Tải code lên GitHub',
+    letter: 'P',
+    groups: ['workflow'],
+    definition: 'Hành động tải các commit từ máy tính cá nhân lên server (GitHub). Đây là bước bắt buộc để đồng bộ hóa code của bạn với team và kích hoạt các quy trình tự động như Deploy.',
+    example: 'Bạn vừa sửa xong giao diện, đã commit. Nhưng đồng nghiệp báo "vẫn chưa thấy code mới". Đó là vì bạn mới save local, cần gõ "git push" để code bay lên GitHub.',
+    related: ['git', 'commit', 'pull', 'repository', 'workflow'],
+    demo: { kind: 'interactive', src: 'gif-push-demo.html', alt: 'Mô phỏng 4 khía cạnh của Push: Bản chất, Commit vs Push, Push rejected và Workflow' },
+    practice: { kind: 'interactive', src: 'gif-push-practice.html', alt: 'Thực hành quy trình sửa -> commit -> push và xử lý xung đột push rejected' }
+  },
   { id: 'responsive', name: 'Responsive', nameEn: 'Thiết kế thích ứng', letter: 'R', groups: ['design', 'code'], definition: 'Khả năng trang web tự thay đổi layout để hiển thị tối ưu trên mọi thiết bị. Với Vibecode, bạn không cần vật lộn với CSS Media Queries phức tạp; chỉ cần ra lệnh cho AI xử lý các "điểm gãy" (breakpoints) để giao diện tự nhảy sang cấu trúc mới (ví dụ từ 4 cột sang 1 cột) một cách thông minh.', example: 'Khi thiết kế landing page, hãy bảo AI: "Làm responsive mobile-first, desktop hiện 3 cột nhưng mobile phải stack dọc 1 cột và ẩn bớt các ảnh nền nặng".', related: ['breakpoint', 'mobile-first', 'flexbox', 'grid'], demo: { kind: 'interactive', src: 'gif-responsive-demo.html', alt: 'Mô phỏng layout thay đổi theo Desktop, Tablet và Mobile' } },
   { id: 'request', name: 'Request / Response', nameEn: 'Yêu cầu / Phản hồi', letter: 'R', groups: ['infra'], definition: 'Cách client và server nói chuyện. Client gửi Request (yêu cầu), server trả Response (kết quả). Mỗi khi web load data từ API là một cặp Request-Response.', example: '"400 Bad Request" = server không hiểu yêu cầu. "404 Not Found" = không tìm thấy. "500 Server Error" = server bị lỗi.' },
   { id: 'repository', name: 'Repository', nameEn: 'Kho code', letter: 'R', groups: ['workflow'], definition: 'Thư mục project được Git quản lý, chứa toàn bộ code và lịch sử thay đổi. Mỗi project = một repository (repo). Lưu trên GitHub để có backup.', example: '"Tạo repo mới trên GitHub, clone về máy, code, commit, push." — Claude Code có thể làm hầu hết bước này.' },
@@ -395,7 +407,8 @@ const deepDiveTermIds = new Set([
   'model',
   'llm',
   'port',
-  'fork'
+  'fork',
+  'push'
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -442,6 +455,12 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Dùng Fork khi nào? (1) Khi bạn muốn đóng góp cho dự án mã nguồn mở, (2) Khi bạn muốn dùng code của người khác làm nền tảng cho dự án riêng, (3) Khi team quy định workflow "Forking Model" để đảm bảo an toàn cho nhánh chính.',
     'Pull Request (PR) là cây cầu nối giữa bản fork và bản gốc. Nếu bạn sửa code trong bản fork và thấy nó tốt, bạn có thể gửi PR để chủ repo gốc xem xét và gộp vào dự án chính thức.',
     'Fork giúp bạn an tâm thử nghiệm. Dù bạn có xóa hết code trong bản fork, dự án gốc của người khác vẫn hoàn toàn bình an vô sự.'
+  ],
+  push: [
+    'Push là hành động "xuất bản" code. Khi bạn chưa push, mọi thay đổi dù đã commit vẫn chỉ nằm an toàn trên ổ cứng máy bạn. Push chính là khoảnh khắc code của bạn rời khỏi máy để đến với thế giới.',
+    'Sự khác biệt giữa Commit và Push là lỗi "vỡ lòng" phổ biến nhất. Commit là "Lưu bản nháp", còn Push là "Gửi bản nháp đi". Đừng bao giờ báo với team "đã xong" nếu bạn mới chỉ commit mà chưa push.',
+    'Push Rejected (bị từ chối) không phải là lỗi code, mà là lỗi đồng bộ. Nó xảy ra khi remote (GitHub) có những commit mới hơn bản local của bạn. Giải pháp duy nhất: Pull bản mới về, gộp lại, rồi mới Push lên được.',
+    'Trong các dự án chuyên nghiệp, việc Push lên các nhánh quan trọng (như main/production) thường bị chặn và yêu cầu phải qua Pull Request để đảm bảo an toàn cho toàn bộ hệ thống.'
   ],
   button: [
     'Button không chỉ là "cái nút để click". Nó là ngôn ngữ của hành động (Action Language). Mỗi variant truyền tải một thông điệp: Primary = "Làm ngay", Secondary = "Làm sau", Ghost = "Có thể làm".',
