@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pull (GitHub) — Animated Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#101010;--bgc:#181818;--bgi:#131313;
+  --bd:#272727;--tx:#e0e0e0;--txm:#707070;--txd:#3a3a3a;
+  --ac:#d97706;--acl:#f59e0b;
+  --abg:rgba(217,119,6,.08);--abg2:rgba(217,119,6,.18);
+  --rd:#ef4444;--gn:#22c55e;--gnb:rgba(34,197,94,.12);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Space Grotesk',sans-serif;
+  background-color:var(--bg);
+  background-image:
+    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:20px 20px;
+  color:var(--tx);min-height:100vh;padding:24px 16px 48px;
+}
+.g{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:660px){.g{grid-template-columns:1fr}}
+.c{background:var(--bgc);border:1px solid var(--bd);border-radius:3px;padding:18px;position:relative;overflow:hidden}
+.c::after{content:'';position:absolute;top:14px;right:14px;width:5px;height:5px;background:var(--ac);border-radius:50%;animation:dp 2.4s ease-in-out infinite}
+@keyframes dp{0%,100%{opacity:.3}50%{opacity:1}}
+.ch{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.ch .n{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--ac);background:var(--abg);border:1px solid rgba(217,119,6,.2);padding:1px 6px;border-radius:2px}
+.ch h2{font-size:14px;font-weight:600;letter-spacing:-.3px}
+.st{background:var(--bgi);border:1px solid var(--bd);border-radius:3px;padding:24px 18px;display:flex;flex-direction:column;align-items:center;min-height:160px;position:relative}
+.ins{margin-top:14px;font-size:11.5px;color:var(--txm);line-height:1.55;padding-left:12px;border-left:2px solid var(--bd)}
+.ins strong{color:var(--acl);font-weight:600}
+
+/* ── SHARED BOX ── */
+.rbox{border:1px solid var(--bd);border-radius:2px;overflow:hidden;width:100%;max-width:180px;transition:border-color .3s}
+.rbox-hd{padding:5px 8px;background:rgba(255,255,255,.03);border-bottom:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--txm);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rbox-hd .ow{color:var(--tx)}
+.rbox-files{padding:6px 8px;display:flex;flex-direction:column;gap:3px}
+.rf{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--tx);padding:1px 0}
+.rfd{width:7px;height:7px;border-radius:1px;flex-shrink:0}
+.rf.new{background:var(--gnb);border:1px solid rgba(34,197,94,.2);border-radius:2px;padding:1px 4px;margin:-1px -4px}
+.rf.conf{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:2px;padding:1px 4px;margin:-1px -4px}
+
+/* ═══════════════════════════════════════
+   01 — HƯỚNG DỮ LIỆU  (10s)
+   ═══════════════════════════════════════ */
+.dir{display:flex;align-items:center;gap:0;width:100%;max-width:320px}
+.dir-box{flex-shrink:0;text-align:center}
+.dir-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--txd);margin-bottom:4px}
+.dir-mid{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;position:relative;min-width:80px}
+.dir-line{width:100%;height:2px;background:var(--bd);position:relative;overflow:hidden;border-radius:1px}
+.dir-fill{position:absolute;right:0;top:0;height:100%;width:0;background:var(--ac);border-radius:1px}
+.dir-fill.from-right{right:0;left:auto}
+.dir-fill.from-left{left:0;right:auto}
+.dir-pkt{position:absolute;width:28px;height:10px;background:var(--ac);border-radius:2px;top:-4px;opacity:0;box-shadow:0 0 12px rgba(217,119,6,.3)}
+/* push packet animation */
+.dir-pkt.push{animation:ppkt 10s ease infinite}
+@keyframes ppkt{
+  0%,12%{opacity:0;left:0}
+  16%{opacity:1;left:0}
+  38%{opacity:1;left:calc(100% - 28px)}
+  42%{opacity:0;left:calc(100% - 28px)}
+  100%{opacity:0;left:calc(100% - 28px)}
+}
+/* pull packet animation (right to left) */
+.dir-pkt.pull{animation:lpkt 10s ease infinite}
+@keyframes lpkt{
+  0%,52%{opacity:0;left:calc(100% - 28px)}
+  56%{opacity:1;left:calc(100% - 28px)}
+  78%{opacity:1;left:0}
+  82%{opacity:0;left:0}
+  100%{opacity:0;left:0}
+}
+/* labels */
+.dir-tag{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;height:14px;opacity:0}
+.dir-tag.push-t{color:var(--txd);animation:ptg 10s ease infinite}
+.dir-tag.pull-t{color:var(--acl);animation:pltg 10s ease infinite}
+@keyframes ptg{0%,10%{opacity:0}14%{opacity:1}36%{opacity:1}40%{opacity:0}100%{opacity:0}}
+@keyframes pltg{0%,50%{opacity:0}54%{opacity:1}76%{opacity:1}80%{opacity:0}100%{opacity:0}}
+
+/* ═══════════════════════════════════════
+   02 — PULL = FETCH + MERGE  (12s)
+   ═══════════════════════════════════════ */
+.fm{display:flex;flex-direction:column;gap:0;width:100%;max-width:280px}
+.fm-row{display:flex;align-items:center;gap:8px;padding:6px 8px;border:1px solid transparent;border-radius:2px;transition:none}
+.fm-src,.fm-dst{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txm);background:var(--bgi);border:1px solid var(--bd);padding:4px 8px;border-radius:2px;white-space:nowrap}
+.fm-arrow{flex:1;height:1px;position:relative}
+.fm-arrow::after{content:'';position:absolute;top:50%;transform:translateY(-50%);border-top:4px solid transparent;border-bottom:4px solid transparent}
+.fm-arrow.r::after{right:-1px;border-left:5px solid var(--bd)}
+.fm-phase{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;width:40px;text-align:right;flex-shrink:0;color:var(--txd)}
+.fm-desc{font-size:10px;color:var(--txd);height:14px;opacity:0;margin-top:2px;padding-left:52px}
+/* fetch phase */
+.fm-row.r1{animation:fmr1 12s ease infinite}
+.fm-row.r1 .fm-phase{animation:fmp 12s ease infinite}
+.fm-desc.d1{animation:fmd 12s ease infinite}
+@keyframes fmr1{0%,3%{border-color:transparent;background:transparent}6%{border-color:var(--ac);background:var(--abg)}34%{border-color:var(--ac);background:var(--abg)}38%,100%{border-color:transparent;background:transparent}}
+@keyframes fmp{0%,3%{color:var(--txd)}6%{color:var(--ac)}34%{color:var(--ac)}38%,100%{color:var(--txd)}}
+@keyframes fmd{0%{opacity:0}4%{opacity:1;color:var(--txm)}15%{opacity:1;color:var(--txm)}20%{opacity:0}100%{opacity:0}}
+/* merge phase */
+.fm-row.r2{animation:fmr2 12s ease infinite}
+.fm-row.r2 .fm-phase{animation:fmp2 12s ease infinite}
+.fm-desc.d2{animation:fmd2 12s ease infinite}
+@keyframes fmr2{0%,40%{border-color:transparent;background:transparent}44%{border-color:var(--acl);background:var(--abg2)}72%{border-color:var(--acl);background:var(--abg2)}76%,100%{border-color:transparent;background:transparent}}
+@keyframes fmp2{0%,40%{color:var(--txd)}44%{color:var(--acl)}72%{color:var(--acl)}76%,100%{color:var(--txd)}}
+@keyframes fmd2{0%,38%{opacity:0}42%{opacity:1;color:var(--txm)}55%{opacity:1;color:var(--txm)}60%{opacity:0}100%{opacity:0}}
+/* summary */
+.fm-sum{font-size:10px;color:var(--txd);height:14px;opacity:0;margin-top:4px;text-align:center}
+.fm-sum.s1{animation:fms 12s ease infinite 78s}
+@keyframes fms{0%,76%{opacity:0}80%{opacity:1;color:var(--acl)}92%{opacity:1;color:var(--acl)}96%,100%{opacity:0}}
+.fm-sum.s1{animation-delay:0s;animation-name:fms}
+
+/* ═══════════════════════════════════════
+   03 — VÒNG LẶP HẰNG NGÀY  (14s)
+   ═══════════════════════════════════════ */
+.cyc{display:flex;align-items:center;gap:0;width:100%;max-width:340px;flex-wrap:nowrap}
+.cyc-n{display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0;z-index:1}
+.cyc-c{width:34px;height:34px;border-radius:50%;border:2px solid var(--bd);display:flex;align-items:center;justify-content:center;background:var(--bgi)}
+.cyc-c svg{width:14px;height:14px;stroke:var(--txd);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.cyc-l{font-family:'JetBrains Mono',monospace;font-size:8.5px;color:var(--txd);white-space:nowrap}
+.cyc-ln{flex:1;height:2px;background:var(--bd);position:relative;overflow:hidden;min-width:10px}
+.cyc-ln-f{position:absolute;left:0;top:0;height:100%;width:0;background:var(--ac);border-radius:1px}
+/* 4 nodes sequential */
+.cyc-n:nth-child(1) .cyc-c{animation:cn 14s ease infinite 0s}
+.cyc-n:nth-child(3) .cyc-c{animation:cn 14s ease infinite 3.5s}
+.cyc-n:nth-child(5) .cyc-c{animation:cn 14s ease infinite 7s}
+.cyc-n:nth-child(7) .cyc-c{animation:cn 14s ease infinite 10.5s}
+@keyframes cn{0%,2%{border-color:var(--bd);background:var(--bgi);box-shadow:none}5%{border-color:var(--ac);background:var(--abg2);box-shadow:0 0 16px rgba(217,119,6,.25)}22%{border-color:var(--ac);background:var(--abg2);box-shadow:0 0 16px rgba(217,119,6,.25)}26%{border-color:var(--bd);background:var(--bgi);box-shadow:none}100%{border-color:var(--bd);background:var(--bgi);box-shadow:none}}
+.cyc-n:nth-child(1) .cyc-l{animation:cl 14s ease infinite 0s}
+.cyc-n:nth-child(3) .cyc-l{animation:cl 14s ease infinite 3.5s}
+.cyc-n:nth-child(5) .cyc-l{animation:cl 14s ease infinite 7s}
+.cyc-n:nth-child(7) .cyc-l{animation:cl 14s ease infinite 10.5s}
+@keyframes cl{0%,2%{color:var(--txd)}5%{color:var(--acl)}22%{color:var(--acl)}26%{color:var(--txd)}100%{color:var(--txd)}}
+/* svg stroke */
+.cyc-n:nth-child(1) .cyc-c svg{animation:csc 14s ease infinite 0s}
+.cyc-n:nth-child(3) .cyc-c svg{animation:csc 14s ease infinite 3.5s}
+.cyc-n:nth-child(5) .cyc-c svg{animation:csc 14s ease infinite 7s}
+.cyc-n:nth-child(7) .cyc-c svg{animation:csc 14s ease infinite 10.5s}
+@keyframes csc{0%,2%{stroke:var(--txd)}5%{stroke:var(--acl)}22%{stroke:var(--acl)}26%{stroke:var(--txd)}100%{stroke:var(--txd)}}
+/* line fills */
+.cyc-ln:nth-child(2) .cyc-ln-f{animation:clf 14s ease infinite 1.8s}
+.cyc-ln:nth-child(4) .cyc-ln-f{animation:clf 14s ease infinite 5.2s}
+.cyc-ln:nth-child(6) .cyc-ln-f{animation:clf 14s ease infinite 8.8s}
+@keyframes clf{0%,2%{width:0}8%{width:100%}22%{width:100%}28%{width:0}100%{width:0}}
+/* loop arrow from push back to pull */
+.cyc-loop{position:relative;width:100%;max-width:340px;height:20px;margin-top:2px}
+.cyc-loop svg{width:100%;height:20px}
+.cyc-loop path{fill:none;stroke:var(--bd);stroke-width:1.5;stroke-dasharray:4 4}
+.cyc-loop-lbl{position:absolute;bottom:0;left:50%;transform:translateX(-50%);font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--txd);opacity:0;animation:cyll 14s ease infinite 12s}
+@keyframes cyll{0%,78%{opacity:0}82%{opacity:1;color:var(--txm)}92%{opacity:1;color:var(--txm)}96%,100%{opacity:0}}
+.cyc-sub{font-size:10px;color:var(--txd);height:14px;margin-top:4px;opacity:0;text-align:center}
+.cyc-sub.s1{animation:cys 14s ease infinite 0s}
+.cyc-sub.s2{animation:cys 14s ease infinite 3.5s}
+.cyc-sub.s3{animation:cys 14s ease infinite 7s}
+.cyc-sub.s4{animation:cys 14s ease infinite 10.5s}
+@keyframes cys{0%,2%{opacity:0}4%{opacity:1;color:var(--txm)}18%{opacity:1;color:var(--txm)}22%{opacity:0}100%{opacity:0}}
+
+/* ═══════════════════════════════════════
+   04 — CONFLICT  (12s)
+   ═══════════════════════════════════════ */
+.cfl{display:flex;flex-direction:column;gap:8px;width:100%;max-width:280px}
+.cfl-row{display:flex;align-items:flex-start;gap:6px;font-size:10px}
+.cfl-who{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--txd);width:36px;flex-shrink:0;text-align:right;padding-top:2px}
+.cfl-code{font-family:'JetBrains Mono',monospace;font-size:9.5px;padding:4px 6px;background:var(--bgi);border:1px solid var(--bd);border-radius:2px;color:var(--tx);line-height:1.4;flex:1;opacity:0;white-space:pre}
+.cfl-code.yours{animation:ccy 12s ease infinite 0s}
+.cfl-code.theirs{animation:cct 12s ease infinite 1.5s}
+@keyframes ccy{0%,3%{opacity:0;transform:translateX(-8px)}8%{opacity:1;transform:translateX(0);border-color:var(--bd)}50%{opacity:1;transform:translateX(0);border-color:var(--bd)}55%,100%{opacity:1;transform:translateX(0)}}
+@keyframes cct{0%,4%{opacity:0;transform:translateX(8px)}9%{opacity:1;transform:translateX(0);border-color:var(--bd)}50%{opacity:1;transform:translateX(0);border-color:var(--bd)}55%,100%{opacity:1;transform:translateX(0)}}
+/* conflict marker appears */
+.cfl-mark{font-family:'JetBrains Mono',monospace;font-size:9.5px;padding:4px 6px;border-radius:2px;line-height:1.4;flex:1;opacity:0;white-space:pre}
+.cfl-mark.m1{animation:ccm 12s ease infinite 5.5s}
+.cfl-mark.m2{animation:ccm 12s ease infinite 6.5s}
+.cfl-mark.m3{animation:ccm 12s ease infinite 7.5s}
+@keyframes ccm{0%,3%{opacity:0;transform:scale(.9)}7%{opacity:1;transform:scale(1);background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:var(--rd)}78%{opacity:1;transform:scale(1);background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);color:var(--rd)}84%,100%{opacity:0;transform:scale(.9)}}
+/* warning */
+.cfl-warn{display:flex;align-items:center;gap:6px;padding:5px 8px;border-radius:2px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.15);opacity:0;margin-top:2px}
+.cfl-warn svg{width:12px;height:12px;stroke:var(--rd);fill:none;stroke-width:2;flex-shrink:0}
+.cfl-warn span{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--rd);font-weight:700}
+.cfl-warn.w1{animation:ccw 12s ease infinite 8.5s}
+@keyframes ccw{0%,82%{opacity:0;transform:translateY(4px)}87%{opacity:1;transform:translateY(0)}93%{opacity:1;transform:translateY(0)}98%,100%{opacity:0;transform:translateY(-4px)}}
+
+.sum{max-width:900px;margin:20px auto 0;padding:16px 18px;border:1px solid var(--bd);border-radius:3px;background:var(--bgc);font-size:12.5px;color:var(--txm);line-height:1.6}
+.sum strong{color:var(--acl);font-weight:600}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+</style>
+</head>
+<body>
+
+<div class="g">
+
+  <!-- ─── 01 HƯỚNG DỮ LIỆU ─── -->
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>Hướng dữ liệu</h2></div>
+    <div class="st">
+      <div class="dir">
+        <div class="dir-box">
+          <div class="rbox">
+            <div class="rbox-hd"><span class="ow">team</span>/landing</div>
+            <div class="rbox-files">
+              <div class="rf"><span class="rfd" style="background:#f59e0b"></span>index.html</div>
+              <div class="rf"><span class="rfd" style="background:#22c55e"></span>style.css</div>
+            </div>
+          </div>
+          <div class="dir-label">GitHub (remote)</div>
+        </div>
+        <div class="dir-mid">
+          <div class="dir-line">
+            <div class="dir-fill from-right"></div>
+            <div class="dir-pkt push"></div>
+            <div class="dir-pkt pull"></div>
+          </div>
+          <div class="dir-tag push-t">push →</div>
+          <div class="dir-tag pull-t">← pull</div>
+        </div>
+        <div class="dir-box">
+          <div class="rbox">
+            <div class="rbox-hd"><span class="ow">local</span>/landing</div>
+            <div class="rbox-files">
+              <div class="rf"><span class="rfd" style="background:#f59e0b"></span>index.html</div>
+              <div class="rf"><span class="rfd" style="background:#22c55e"></span>style.css</div>
+            </div>
+          </div>
+          <div class="dir-label">Máy bạn (local)</div>
+        </div>
+      </div>
+    </div>
+    <p class="ins">Push = <strong>từ máy lên server</strong>. Pull = <strong>từ server về máy</strong>. Hai hướng ngược nhau. Pull cập nhật code mới nhất từ team về local của bạn.</p>
+  </section>
+
+  <!-- ─── 02 PULL = FETCH + MERGE ─── -->
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Pull = Fetch + Merge</h2></div>
+    <div class="st" style="gap:2px;align-items:stretch">
+      <!-- Fetch -->
+      <div class="fm-row r1">
+        <span class="fm-phase">Fetch</span>
+        <div class="fm-src">GitHub</div>
+        <div class="fm-arrow r"></div>
+        <div class="fm-dst">Bộ nhớ tạm</div>
+      </div>
+      <div class="fm-desc d1">Tải code mới về nhưng chưa ghép vào file</div>
+      <!-- Merge -->
+      <div class="fm-row r2">
+        <span class="fm-phase">Merge</span>
+        <div class="fm-src">Bộ nhớ tạm</div>
+        <div class="fm-arrow r"></div>
+        <div class="fm-dst">File của bạn</div>
+      </div>
+      <div class="fm-desc d2">Ghép code mới vào file đang làm việc</div>
+      <div class="fm-sum s1">Hai bước liền — không phải chỉ "download"</div>
+    </div>
+    <p class="ins">Pull không phải download đơn giản. Nó <strong>fetch</strong> (tải về bộ nhớ tạm) rồi <strong>merge</strong> (ghép vào file). Nếu ghép lỗi → conflict.</p>
+  </section>
+
+  <!-- ─── 03 VÒNG LẶP ─── -->
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Vòng lặp hàng ngày</h2></div>
+    <div class="st">
+      <div class="cyc">
+        <div class="cyc-n">
+          <div class="cyc-c">
+            <svg viewBox="0 0 24 24"><polyline points="7 17 17 7"/><polyline points="7 7 17 7 17 17"/></svg>
+          </div>
+          <span class="cyc-l">Pull</span>
+        </div>
+        <div class="cyc-ln"><div class="cyc-ln-f"></div></div>
+        <div class="cyc-n">
+          <div class="cyc-c">
+            <svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          </div>
+          <span class="cyc-l">Code</span>
+        </div>
+        <div class="cyc-ln"><div class="cyc-ln-f"></div></div>
+        <div class="cyc-n">
+          <div class="cyc-c">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <span class="cyc-l">Commit</span>
+        </div>
+        <div class="cyc-ln"><div class="cyc-ln-f"></div></div>
+        <div class="cyc-n">
+          <div class="cyc-c">
+            <svg viewBox="0 0 24 24"><polyline points="17 7 7 17"/><polyline points="17 17 7 17 7 7"/></svg>
+          </div>
+          <span class="cyc-l">Push</span>
+        </div>
+      </div>
+      <!-- loop arrow -->
+      <div class="cyc-loop">
+        <svg viewBox="0 0 340 20"><path d="M300,2 Q340,2 340,10 Q340,18 300,18 L40,18 Q0,18 0,10 Q0,2 40,2 L60,2"/></svg>
+        <span class="cyc-loop-lbl">lặp lại mỗi ngày</span>
+      </div>
+      <div class="cyc-sub s1">Tải thay đổi mới nhất về</div>
+      <div class="cyc-sub s2">Sửa code trên máy</div>
+      <div class="cyc-sub s3">Lưu checkpoint locally</div>
+      <div class="cyc-sub s4">Gửi lên GitHub cho team</div>
+    </div>
+    <p class="ins">Pull luôn là <strong>bước đầu tiên</strong> trong ngày. Bỏ qua → code bạn cũ hơn bản gốc → push bị reject hoặc tạo conflict.</p>
+  </section>
+
+  <!-- ─── 04 CONFLICT ─── -->
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Khi pull gặp conflict</h2></div>
+    <div class="st" style="align-items:stretch">
+      <div class="cfl">
+        <div class="cfl-row"><span class="cfl-who">bạn</span><div class="cfl-code yours">.hero { color: #fff; }</div></div>
+        <div class="cfl-row"><span class="cfl-who">team</span><div class="cfl-code theirs">.hero { color: #000; }</div></div>
+        <div class="cfl-row"><span class="cfl-who"></span><div class="cfl-mark m1">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</div></div>
+        <div class="cfl-row"><span class="cfl-who">bạn</span><div class="cfl-mark m2">  color: #fff;</div></div>
+        <div class="cfl-row"><span class="cfl-who"></span><div class="cfl-mark m3">=======</div></div>
+        <div class="cfl-row"><span class="cfl-who">team</span><div class="cfl-mark m3" style="animation-delay:8.5s">  color: #000;</div></div>
+        <div class="cfl-row"><span class="cfl-who"></span><div class="cfl-mark m3" style="animation-delay:9.5s">&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; main</div></div>
+      </div>
+      <div class="cfl-warn w1">
+        <svg viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <span>MERGE CONFLICT — cần xử lý tay</span>
+      </div>
+    </div>
+    <p class="ins">Cả bạn và team đều sửa <strong>cùng dòng</strong> → Git không biết giữ cái nào. Nó chèn marker vào file — bạn phải chọn giữ hoặc gộp tay, rồi commit lại.</p>
+  </section>
+</div>
+
+<div class="sum">
+  <strong>Pull</strong> = tải thay đổi từ GitHub về máy và ghép vào code đang làm (fetch + merge). Ba điều marketer cần nhớ: (1) Pull ngược hướng Push — từ server về local, (2) Luôn pull trước khi code — nếu không, code bạn sẽ lỗi thời so với team, (3) Conflict xảy ra khi cùng sửa một chỗ — Git không tự quyết, bạn (hoặc dev) phải chọn giữ cái nào. Khi báo lỗi "pull bị conflict" = team sửa trùng phần bạn sửa, không phải "máy bị hỏng".
+</div>
+
+</body>
+</html>

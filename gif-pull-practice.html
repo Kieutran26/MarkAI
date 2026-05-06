@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pull (GitHub) — Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#101010;--bgc:#181818;--bgi:#131313;
+  --bd:#272727;--tx:#e0e0e0;--txm:#707070;--txd:#3a3a3a;
+  --ac:#d97706;--acl:#f59e0b;
+  --abg:rgba(217,119,6,.08);--abg2:rgba(217,119,6,.18);
+  --rd:#ef4444;--gn:#22c55e;--gnb:rgba(34,197,94,.12);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Space Grotesk',sans-serif;
+  background-color:var(--bg);
+  background-image:
+    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:20px 20px;
+  color:var(--tx);min-height:100vh;padding:24px 16px 48px;
+}
+.ch{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.ch .n{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--ac);background:var(--abg);border:1px solid rgba(217,119,6,.2);padding:1px 6px;border-radius:2px}
+.ch h2{font-size:14px;font-weight:600;letter-spacing:-.3px}
+
+/* ── SHARED BOX ── */
+.rbox{border:1px solid var(--bd);border-radius:2px;overflow:hidden;width:100%;max-width:180px;transition:border-color .3s}
+.rbox-hd{padding:5px 8px;background:rgba(255,255,255,.03);border-bottom:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--txm);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rbox-hd .ow{color:var(--tx)}
+.rbox-files{padding:6px 8px;display:flex;flex-direction:column;gap:3px}
+.rf{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--tx);padding:1px 0}
+.rfd{width:7px;height:7px;border-radius:1px;flex-shrink:0}
+.rf.new{background:var(--gnb);border:1px solid rgba(34,197,94,.2);border-radius:2px;padding:1px 4px;margin:-1px -4px}
+.rf.conf{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:2px;padding:1px 4px;margin:-1px -4px}
+
+/* ═══════════════════════════════════════
+   PRACTICE
+   ═══════════════════════════════════════ */
+.pra{max-width:900px;margin:0 auto;background:var(--bgc);border:1px solid var(--bd);border-radius:3px;padding:22px}
+.pra .ch{margin-bottom:6px}
+.pra-goal{font-size:12.5px;color:var(--txm);margin-bottom:18px;line-height:1.5}
+.pra-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:660px){.pra-grid{grid-template-columns:1fr}}
+.steps{display:flex;gap:6px;margin-bottom:16px}
+.sd{width:28px;height:28px;border-radius:50%;border:2px solid var(--bd);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--txd);transition:all .2s;flex-shrink:0;cursor:pointer}
+.sd.act{border-color:var(--ac);color:var(--acl);background:var(--abg2)}
+.sd.done{border-color:var(--ac);color:#fff;background:var(--ac)}
+.sd.err{border-color:var(--rd);color:var(--rd);background:rgba(239,68,68,.1)}
+.sd.ok{border-color:var(--gn);color:var(--gn);background:var(--gnb)}
+.sl{flex:1;height:2px;background:var(--bd);align-self:center;border-radius:1px;position:relative;overflow:hidden}
+.slf{position:absolute;left:0;top:0;height:100%;width:0;background:var(--ac);transition:width .3s}
+.slf.red{background:var(--rd)}
+.slf.grn{background:var(--gn)}
+.step-desc{font-size:13px;color:var(--tx);line-height:1.55;margin-bottom:16px;min-height:52px}
+.step-desc .mono{color:var(--acl);font-size:11px}
+.step-desc .red{color:var(--rd)}
+.step-desc .grn{color:var(--gn)}
+.step-nav{display:flex;gap:8px}
+.btn{padding:8px 16px;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;border:1px solid var(--bd);background:var(--bgi);color:var(--txm);border-radius:2px;cursor:pointer;transition:all .15s}
+.btn:hover:not(:disabled){border-color:var(--ac);color:var(--acl);background:var(--abg)}
+.btn:disabled{opacity:.3;cursor:default}
+.btn.pri{background:var(--ac);border-color:var(--ac);color:#fff}
+.btn.pri:hover:not(:disabled){background:var(--acl);border-color:var(--acl)}
+.btn.resolve{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.3);color:var(--gn)}
+.btn.resolve:hover:not(:disabled){background:rgba(34,197,94,.2)}
+.pv-stage{background:var(--bgi);border:1px solid var(--bd);border-radius:3px;padding:18px 14px;min-height:180px;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative}
+.pv-tag{position:absolute;top:8px;right:10px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--txd);padding:2px 6px;background:var(--bgc);border:1px solid var(--bd);border-radius:2px}
+.pv-arrow{width:2px;height:0;background:repeating-linear-gradient(to bottom,var(--ac) 0 3px,transparent 3px 6px);position:relative;transition:height .3s}
+.pv-arrow::after{content:'';position:absolute;bottom:-4px;left:50%;transform:translateX(-50%);border-left:3px solid transparent;border-right:3px solid transparent;border-top:4px solid var(--ac)}
+.pv-arrow.dn{background:repeating-linear-gradient(to bottom,var(--rd) 0 3px,transparent 3px 6px)}
+.pv-arrow.dn::after{border-top-color:var(--rd)}
+.pr-box{background:var(--bgi);border:1px solid var(--bd);border-radius:3px;padding:12px 14px;margin-top:14px}
+.pr-box .cl{display:block;margin-bottom:8px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txd);text-transform:uppercase;letter-spacing:.5px}
+.pr-txt{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--acl);line-height:1.55;word-break:break-word}
+.hint{font-size:11px;color:var(--txd);line-height:1.4;padding:8px 10px;background:var(--bgi);border-radius:2px;border-left:2px solid var(--bd);margin-top:14px}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+</style>
+</head>
+<body>
+
+<section class="pra" aria-label="Thực hành">
+  <div class="ch"><span class="n">PRACTICE</span><h2>Theo dấu quá trình Pull</h2></div>
+  <p class="pra-goal">Click qua từng bước để thấy chuyện gì xảy ra khi pull — kể cả khi gặp conflict.</p>
+  <div class="pra-grid">
+    <div>
+      <div class="steps" id="steps">
+        <div class="sd act" data-s="0">1</div>
+        <div class="sl"><div class="slf" id="sf0"></div></div>
+        <div class="sd" data-s="1">2</div>
+        <div class="sl"><div class="slf" id="sf1"></div></div>
+        <div class="sd" data-s="2">3</div>
+        <div class="sl"><div class="slf" id="sf2"></div></div>
+        <div class="sd" data-s="3">4</div>
+        <div class="sl"><div class="slf" id="sf3"></div></div>
+        <div class="sd" data-s="4">5</div>
+      </div>
+      <div class="step-desc" id="sDesc"></div>
+      <div class="step-nav">
+        <button class="btn" id="prevB" disabled>Trước</button>
+        <button class="btn resolve" id="resolveB" style="display:none">Resolve conflict</button>
+        <button class="btn pri" id="nextB">Tiếp</button>
+      </div>
+      <div class="hint">Click qua 5 bước. Ở bước 4 sẽ xuất hiện conflict — click "Resolve conflict" để xử lý.</div>
+    </div>
+    <div>
+      <div class="pv-stage" id="pvS">
+        <span class="pv-tag" id="pvT">Trước pull</span>
+      </div>
+      <div class="pr-box">
+        <span class="cl">Nói với dev</span>
+        <div class="pr-txt" id="prT"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  var D=[
+    {
+      desc:'Đây là trạng thái <strong>trước khi pull</strong>. GitHub có file <span class="mono">index.html</span> mới (v2) nhưng máy bạn vẫn ở v1. File <span class="mono">style.css</span> giống nhau.',
+      tag:'Trước pull',
+      prompt:'Pull bị lỗi — GitHub có bản mới nhưng mình chưa pull. Mình đang ở version cũ.',
+      dotCls:'act',
+      html:'<div class="rbox" style="border-color:var(--ac)"><div class="rbox-hd"><span class="ow">GitHub</span>/landing <span style="color:var(--ac);font-size:8px">v2</span></div><div class="rbox-files"><div class="rf new"><span class="rfd" style="background:#f59e0b"></span>index.html <span style="color:var(--gn);font-size:8px;margin-left:auto">new</span></div><div class="rf"><span class="rfd" style="background:#22c55e"></span>style.css</div></div></div><div class="pv-arrow" style="height:18px"></div><div class="rbox"><div class="rbox-hd"><span class="ow">Local</span>/landing <span style="color:var(--txd);font-size:8px">v1</span></div><div class="rbox-files"><div class="rf"><span class="rfd" style="background:#f59e0b"></span>index.html</div><div class="rf"><span class="rfd" style="background:#22c55e"></span>style.css</div></div></div>'
+    },
+    {
+      desc:'<span class="mono">git pull</span> bắt đầu. GitHub gửi thay đổi mới về bộ nhớ tạm (fetch). Dữ liệu "đang bay" từ server sang local.',
+      tag:'Đang fetch...',
+      prompt:'Pull bị lỗi — đang fetch từ GitHub về local, chưa merge.',
+      dotCls:'act',
+      html:'<div class="rbox" style="border-color:var(--ac)"><div class="rbox-hd"><span class="ow">GitHub</span>/landing <span style="color:var(--ac);font-size:8px">v2</span></div><div class="rbox-files"><div class="rf new"><span class="rfd" style="background:#f59e0b"></span>index.html <span style="color:var(--gn);font-size:8px;margin-left:auto">sending</span></div><div class="rf"><span class="rfd" style="background:#22c55e"></span>style.css</div></div></div><div class="pv-arrow" style="height:18px"></div><div class="rbox" style="border-color:var(--acl)"><div class="rbox-hd"><span class="ow">Local</span>/landing <span style="color:var(--acl);font-size:8px">fetching...</span></div><div class="rbox-files"><div class="rf"><span class="rfd" style="background:#f59e0b"></span>index.html</div><div class="rf"><span class="rfd" style="background:#22c55e"></span>style.css</div></div></div>'
+    },
+    {
+      desc:'Fetch xong. Git bắt đầu <strong>merge</strong> — ghép thay đổi mới vào file <span class="mono">index.html</span> của bạn. File <span class="mono">style.css</span> không đổi nên ghép tự động.',
+      tag:'Đang merge...',
+      prompt:'Pull bị lỗi — fetch xong, đang merge vào local.',
+      dotCls:'act',
+      html:'<div class="rbox"><div class="rbox-hd"><span class="ow">GitHub</span>/landing <span style="color:var(--txd);font-size:8px">v2</span></div><div class="rbox-files"><div class="rf"><span class="rfd" style="background:#f59e0b"></span>index.html</div><div class="rf"><span class="rfd" style="background:#22c55e"></span>style.css</div></div></div><div class="pv-arrow" style="height:18px"></div><div class="rbox" style="border-color:var(--acl)"><div class="rbox-hd"><span class="ow">Local</span>/landing <span style="color:var(--acl);font-size:8px">merging...</span></div><div class="rbox-files"><div class="rf new"><span class="rfd" style="background:#f59e0b"></span>index.html <span style="color:var(--acl);font-size:8px;margin-left:auto">merging</span></div><div class="rf"><span class="rfd" style="background:#22c55e"></span>style.css <span style="color:var(--gn);font-size:8px;margin-left:auto">ok</span></div></div></div>'
+    },
+    {
+      desc:'<span class="red" style="font-weight:700">Conflict!</span> Cả bạn và team đều sửa dòng <span class="mono">.hero { color }</span> trong <span class="mono">index.html</span>. Git không biết giữ cái nào — chèn conflict marker vào file.',
+      tag:'CONFLICT',
+      prompt:'Pull bị conflict ở file index.html — cả mình và team đều sửa cùng dòng .hero color. Cần resolve rồi commit.',
+      dotCls:'err',
+      showResolve:true,
+      html:'<div class="rbox"><div class="rbox-hd"><span class="ow">GitHub</span>/landing <span style="color:var(--txd);font-size:8px">v2</span></div><div class="rbox-files"><div class="rf"><span class="rfd" style="background:#f59e0b"></span>index.html</div><div class="rf"><span class="rfd" style="background:#22c55e"></span>style.css</div></div></div><div class="pv-arrow dn" style="height:18px"></div><div class="rbox" style="border-color:var(--rd)"><div class="rbox-hd"><span class="ow">Local</span>/landing <span style="color:var(--rd);font-size:8px">CONFLICT</span></div><div class="rbox-files"><div class="rf conf"><span class="rfd" style="background:var(--rd)"></span>index.html <span style="color:var(--rd);font-size:8px;margin-left:auto">conflict!</span></div><div class="rf"><span class="rfd" style="background:#22c55e"></span>style.css <span style="color:var(--gn);font-size:8px;margin-left:auto">ok</span></div></div></div>'
+    },
+    {
+      desc:'Conflict đã được <span class="grn" style="font-weight:700">resolve</span>. Chọn giữ code của team, commit lại. Local giờ đồng bộ với GitHub — <span class="grn">pull thành công</span>.',
+      tag:'Đã resolve',
+      prompt:'Đã resolve conflict index.html — giữ code team, commit xong. Local đồng bộ với GitHub.',
+      dotCls:'ok',
+      html:'<div class="rbox"><div class="rbox-hd"><span class="ow">GitHub</span>/landing <span style="color:var(--gn);font-size:8px">v2</span></div><div class="rbox-files"><div class="rf"><span class="rfd" style="background:#f59e0b"></span>index.html</div><div class="rf"><span class="rfd" style="background:#22c55e"></span>style.css</div></div></div><div class="pv-arrow" style="height:18px;background:repeating-linear-gradient(to bottom,var(--gn) 0 3px,transparent 3px 6px)"></div><div class="rbox" style="border-color:var(--gn)"><div class="rbox-hd"><span class="ow">Local</span>/landing <span style="color:var(--gn);font-size:8px">synced</span></div><div class="rbox-files"><div class="rf new"><span class="rfd" style="background:#f59e0b"></span>index.html <span style="color:var(--gn);font-size:8px;margin-left:auto">v2</span></div><div class="rf"><span class="rfd" style="background:#22c55e"></span>style.css</div></div></div>'
+    }
+  ];
+
+  var cur=0,resolved=false;
+  var $desc=document.getElementById('sDesc');
+  var $tag=document.getElementById('pvT');
+  var $stage=document.getElementById('pvS');
+  var $pr=document.getElementById('prT');
+  var $prev=document.getElementById('prevB');
+  var $next=document.getElementById('nextB');
+  var $resolve=document.getElementById('resolveB');
+  var $dots=document.querySelectorAll('.sd');
+  var $lines=[document.getElementById('sf0'),document.getElementById('sf1'),document.getElementById('sf2'),document.getElementById('sf3')];
+
+  function render(){
+    var s=D[cur];
+    $desc.innerHTML=s.desc;
+    $tag.textContent=s.tag;
+    /* remove old boxes */
+    $stage.querySelectorAll('.rbox,.pv-arrow').forEach(function(e){e.remove()});
+    $tag.insertAdjacentHTML('afterend',s.html);
+    $pr.textContent=s.prompt;
+    /* dots */
+    $dots.forEach(function(d,i){
+      d.className='sd';
+      if(i<cur)d.classList.add('done');
+      else if(i===cur)d.classList.add(s.dotCls);
+    });
+    /* lines */
+    $lines.forEach(function(l,i){
+      l.className='slf';
+      l.style.width=i<cur?'100%':'0';
+      if(cur===3&&i===2)l.classList.add('red');
+      if(cur===4&&i>=3)l.classList.add('grn');
+    });
+    /* buttons */
+    $prev.disabled=cur===0;
+    $resolve.style.display=(cur===3&&!resolved)?'inline-flex':'none';
+    if(cur===4){
+      $next.disabled=true;
+      $next.textContent='Hoàn thành';
+    }else{
+      $next.disabled=false;
+      $next.textContent='Tiếp';
+    }
+  }
+
+  $next.addEventListener('click',function(){
+    if(cur<4){cur++;resolved=false;render();}
+  });
+  $prev.addEventListener('click',function(){
+    if(cur>0){cur--;resolved=false;render();}
+  });
+  $resolve.addEventListener('click',function(){
+    resolved=true;
+    cur=4;render();
+  });
+
+  /* click dots to jump */
+  $dots.forEach(function(d){
+    d.addEventListener('click',function(){
+      var idx=parseInt(this.getAttribute('data-s'));
+      if(idx<=cur||(idx===cur+1)){cur=idx;resolved=false;render();}
+    });
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

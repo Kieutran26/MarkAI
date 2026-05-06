@@ -202,6 +202,18 @@ export const terms: GlossaryTerm[] = [
     practice: { kind: 'interactive', src: 'gif-port-practice.html', alt: 'Thực hành Port Explorer: kiểm tra các port phổ biến và giả lập xung đột' }
   },
   {
+    id: 'pull',
+    name: 'Pull',
+    nameEn: 'Tải code từ GitHub về máy',
+    letter: 'P',
+    groups: ['workflow'],
+    definition: 'Hành động tải những thay đổi mới nhất từ repository trên server (GitHub) về máy tính cá nhân của bạn và gộp (merge) chúng vào bản code hiện tại. Đây là việc đầu tiên bạn nên làm mỗi khi bắt đầu một buổi làm việc để đảm bảo code của bạn luôn được cập nhật so với cả team.',
+    example: 'Đồng nghiệp vừa thông báo "đã sửa xong lỗi header". Bạn cần gõ lệnh "git pull" để lấy bản vá đó về máy mình trước khi tiếp tục làm phần việc khác.',
+    related: ['git', 'fetch', 'merge', 'push', 'repository', 'workflow'],
+    demo: { kind: 'interactive', src: 'gif-pull-demo.html', alt: 'Mô phỏng 4 khía cạnh của Pull: Hướng dữ liệu, Fetch + Merge, Vòng lặp hàng ngày và Conflict' },
+    practice: { kind: 'interactive', src: 'gif-pull-practice.html', alt: 'Thực hành quy trình Pull: từ fetch đến merge và xử lý conflict thực tế' }
+  },
+  {
     id: 'push',
     name: 'Push',
     nameEn: 'Tải code lên GitHub',
@@ -408,6 +420,7 @@ const deepDiveTermIds = new Set([
   'llm',
   'port',
   'fork',
+  'pull',
   'push'
 ]);
 
@@ -461,6 +474,13 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Sự khác biệt giữa Commit và Push là lỗi "vỡ lòng" phổ biến nhất. Commit là "Lưu bản nháp", còn Push là "Gửi bản nháp đi". Đừng bao giờ báo với team "đã xong" nếu bạn mới chỉ commit mà chưa push.',
     'Push Rejected (bị từ chối) không phải là lỗi code, mà là lỗi đồng bộ. Nó xảy ra khi remote (GitHub) có những commit mới hơn bản local của bạn. Giải pháp duy nhất: Pull bản mới về, gộp lại, rồi mới Push lên được.',
     'Trong các dự án chuyên nghiệp, việc Push lên các nhánh quan trọng (như main/production) thường bị chặn và yêu cầu phải qua Pull Request để đảm bảo an toàn cho toàn bộ hệ thống.'
+  ],
+  pull: [
+    'Pull không phải là download đơn giản. Bản chất nó là sự kết hợp của 2 bước: Fetch (tải dữ liệu về bộ nhớ tạm) và Merge (ghép dữ liệu đó vào file bạn đang mở).',
+    'Quy tắc vàng của Git: "Pull early, pull often". Càng để lâu mới pull, lượng thay đổi tích tụ càng lớn, nguy cơ gặp Conflict (xung đột code) càng cao.',
+    'Conflict xảy ra khi cả bạn và đồng nghiệp cùng sửa trên một dòng code. Lúc này Git sẽ "đầu hàng" và yêu cầu bạn phải chọn thủ công xem giữ lại đoạn code nào.',
+    'Trước khi Pull, hãy đảm bảo bạn đã Commit hoặc Stash (tạm cất) những code đang làm dở. Nếu không, Git có thể từ chối Pull để bảo vệ dữ liệu chưa được lưu của bạn.',
+    'Trong môi trường AI-first (vibecode), việc Pull giúp AI "hiểu" được bối cảnh mới nhất của dự án mà các thành viên khác vừa đóng góp, từ đó đưa ra gợi ý chính xác hơn.'
   ],
   button: [
     'Button không chỉ là "cái nút để click". Nó là ngôn ngữ của hành động (Action Language). Mỗi variant truyền tải một thông điệp: Primary = "Làm ngay", Secondary = "Làm sau", Ghost = "Có thể làm".',
