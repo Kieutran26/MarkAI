@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Button Group Practice — Vibecode</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#141413;--bgc:#1c1b19;--fg:#e5ddd0;--mu:#6e675d;
+  --ac:#d4722a;--bd:#2e2a26;
+  --mn:'JetBrains Mono',monospace;--sn:'Space Grotesk',sans-serif;
+  --ms:#2a2826;--msb:#3a3530;--msf:#c5bdb0;--msm:#7a7268;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--bg);color:var(--fg);font-family:var(--sn);
+  min-height:100vh;-webkit-font-smoothing:antialiased;
+  background-image:
+    linear-gradient(rgba(255,255,255,.016) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.016) 1px,transparent 1px);
+  background-size:20px 20px;
+}
+.w{max-width:860px;margin:0 auto;padding:14px 14px 52px}
+.hl{font-family:var(--mn);font-size:10px;color:var(--mu);text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.hl::before{content:'';width:12px;height:1px;background:var(--ac)}
+.builder{
+  width:100%;background:var(--bgc);border:1px solid var(--bd);
+  display:flex;flex-direction:column;
+}
+.vp{
+  padding:40px 20px;display:flex;align-items:center;justify-content:center;
+  border-bottom:1px solid var(--bd);min-height:220px;
+}
+
+/* Base button group styles */
+.bg{display:inline-flex;border:1px solid var(--msb)}
+.bg .b{
+  font-family:var(--sn);font-size:12px;color:var(--msf);
+  padding:8px 16px;border:none;border-right:1px solid var(--msb);
+  background:var(--ms);cursor:pointer;transition:background .2s,color .2s;
+  outline:none;
+}
+.bg .b:last-child{border-right:none}
+.bg .b:hover{background:rgba(212,114,42,.1);color:var(--ac)}
+.bg .b.ac{background:var(--ac);color:#fff}
+.bg .b.ds{opacity:.3;pointer-events:none}
+
+.bg.ic .b{padding:8px 12px;font-size:14px}
+.bg.ic .b svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+
+.bg.mx .b.pri{background:var(--ac);color:#fff;font-weight:600}
+.bg.mx .b.sec{background:var(--ms);color:var(--msf)}
+.bg.mx .b.ico{background:var(--ms);color:var(--msm);padding:8px 12px}
+.bg.mx .b.sec:hover, .bg.mx .b.ico:hover{background:rgba(212,114,42,.1);color:var(--ac)}
+
+/* Controls */
+.ctrls{padding:24px}
+.row{display:flex;align-items:center;gap:15px;margin-bottom:16px}
+.row:last-child{margin-bottom:0}
+.lbl{font-family:var(--mn);font-size:10px;color:var(--mu);text-transform:uppercase;letter-spacing:1.5px;width:75px;flex-shrink:0}
+.opts{display:flex;gap:6px;flex-wrap:wrap}
+.opt{
+  font-family:var(--sn);font-size:12px;color:var(--mu);
+  background:transparent;border:1px solid var(--bd);
+  padding:6px 12px;cursor:pointer;transition:all .2s;
+}
+.opt:hover{border-color:var(--ac);color:var(--fg)}
+.opt.ac{background:var(--ac);border-color:var(--ac);color:#fff}
+
+.desc{font-size:12px;color:var(--msf);font-style:italic}
+
+@media(max-width:500px){
+  .row{flex-direction:column;align-items:flex-start;gap:8px}
+  .opts{width:100%}
+  .opt{flex:1;text-align:center}
+}
+</style>
+</head>
+<body>
+
+<div class="w">
+  <div class="hl">Mục tiêu: Tùy chỉnh Button Group Builder để hiểu cách các biến thể thay đổi trải nghiệm người dùng</div>
+
+  <div class="builder">
+  <div class="vp">
+    <!-- The dynamic button group -->
+    <div class="bg" id="preview-bg">
+      <button class="b ac">Day</button>
+      <button class="b">Week</button>
+      <button class="b">Month</button>
+    </div>
+  </div>
+  
+  <div class="ctrls">
+    <div class="row">
+      <span class="lbl">Variant</span>
+      <div class="opts" id="variant-opts">
+        <button class="opt ac" data-v="segmented">Segmented</button>
+        <button class="opt" data-v="toggle">Toggle</button>
+        <button class="opt" data-v="icon">Icon</button>
+        <button class="opt" data-v="mixed">Mixed</button>
+      </div>
+    </div>
+    
+    <div class="row">
+      <span class="lbl">Items</span>
+      <div class="opts" id="format-opts">
+        <!-- populated dynamically -->
+      </div>
+    </div>
+
+    <div class="row">
+      <span class="lbl">Details</span>
+      <span class="desc" id="desc-txt">Mutually exclusive selection (chỉ chọn 1).</span>
+    </div>
+  </div>
+</div>
+
+<script>
+const data = {
+  segmented: {
+    desc: "Mutually exclusive selection (chỉ chọn 1 item tại một thời điểm).",
+    items: ['Day', 'Week', 'Month', 'Year'],
+    defaultCount: 3,
+    cls: ''
+  },
+  toggle: {
+    desc: "Independent selection (có thể bật/tắt nhiều item độc lập).",
+    items: ['Bold', 'Italic', 'Underline', 'Strike'],
+    defaultCount: 4,
+    cls: ''
+  },
+  icon: {
+    desc: "Compact actions (dùng icon thay text để tiết kiệm không gian).",
+    items: [
+      '<svg viewBox="0 0 14 14"><rect x="4" y="4" width="8" height="8" rx="1"/><path d="M4 10H2.5a.5.5 0 01-.5-.5V2.5a.5.5 0 01.5-.5H10v1.5"/></svg>',
+      '<svg viewBox="0 0 14 14"><path d="M5 2v10M2 5h10"/></svg>',
+      '<svg viewBox="0 0 14 14"><path d="M4 3l3 4-3 4"/><path d="M7 11h4"/></svg>',
+      '<svg viewBox="0 0 14 14"><path d="M2 4h10M2 7h10M2 10h10"/></svg>'
+    ],
+    defaultCount: 3,
+    cls: 'ic'
+  },
+  mixed: {
+    desc: "Action hierarchy (phân cấp Primary nổi bật, Secondary ẩn bớt).",
+    items: [
+      { text: 'Save', cls: 'pri' },
+      { text: 'Preview', cls: 'sec' },
+      { text: 'Discard', cls: 'sec' },
+      { text: '<svg viewBox="0 0 14 14"><circle cx="7" cy="3" r="1"/><circle cx="7" cy="7" r="1"/><circle cx="7" cy="11" r="1"/></svg>', cls: 'ico' }
+    ],
+    defaultCount: 3,
+    cls: 'mx'
+  }
+};
+
+let currentVariant = 'segmented';
+let currentCount = 3;
+
+const previewBg = document.getElementById('preview-bg');
+const formatOpts = document.getElementById('format-opts');
+const descTxt = document.getElementById('desc-txt');
+
+function renderFormatOptions(variant) {
+  formatOpts.innerHTML = '';
+  const max = data[variant].items.length;
+  for (let i = 2; i <= max; i++) {
+    const btn = document.createElement('button');
+    btn.className = `opt ${i === currentCount ? 'ac' : ''}`;
+    btn.textContent = `${i} Items`;
+    btn.onclick = () => {
+      document.querySelectorAll('#format-opts .opt').forEach(b => b.classList.remove('ac'));
+      btn.classList.add('ac');
+      currentCount = i;
+      renderPreview();
+    };
+    formatOpts.appendChild(btn);
+  }
+}
+
+function renderPreview() {
+  const d = data[currentVariant];
+  previewBg.className = `bg ${d.cls}`;
+  descTxt.textContent = d.desc;
+  
+  let html = '';
+  for (let i = 0; i < currentCount; i++) {
+    let item = d.items[i];
+    if (currentVariant === 'mixed') {
+      if (i === currentCount - 1 && currentCount >= 2) {
+        item = d.items[3]; // The icon is always last
+      } else {
+        item = d.items[i];
+      }
+      html += `<button class="b ${item.cls}">${item.text}</button>`;
+    } else {
+      let activeClass = '';
+      if (currentVariant === 'segmented' && i === 0) activeClass = 'ac';
+      if (currentVariant === 'toggle' && (i === 0 || i === 2)) activeClass = 'ac';
+      html += `<button class="b ${activeClass}">${item}</button>`;
+    }
+  }
+  previewBg.innerHTML = html;
+  
+  // Attach interactivity
+  const btns = previewBg.querySelectorAll('.b');
+  btns.forEach((btn, idx) => {
+    btn.onclick = () => {
+      if (currentVariant === 'segmented') {
+        btns.forEach(b => b.classList.remove('ac'));
+        btn.classList.add('ac');
+      } else if (currentVariant === 'toggle') {
+        btn.classList.toggle('ac');
+      } else if (currentVariant === 'icon') {
+        btns.forEach(b => b.classList.remove('ac'));
+        btn.classList.add('ac');
+      }
+    };
+  });
+}
+
+document.querySelectorAll('#variant-opts .opt').forEach(btn => {
+  btn.onclick = () => {
+    document.querySelectorAll('#variant-opts .opt').forEach(b => b.classList.remove('ac'));
+    btn.classList.add('ac');
+    currentVariant = btn.dataset.v;
+    currentCount = data[currentVariant].defaultCount;
+    renderFormatOptions(currentVariant);
+    renderPreview();
+  };
+});
+
+// Init
+renderFormatOptions(currentVariant);
+renderPreview();
+</script>
+</body>
+</html>
