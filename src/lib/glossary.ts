@@ -31,6 +31,7 @@ export const terms: GlossaryTerm[] = [
   { id: 'backend', name: 'Backend', nameEn: 'Phần sau / Server', letter: 'B', groups: ['infra', 'code'], definition: 'Phần người dùng không thấy — nơi data được lưu, xử lý, và bảo mật. Nếu frontend là mặt tiền cửa hàng, backend là kho hàng và văn phòng phía sau.', example: '"Form đăng ký của tôi lưu data ở đâu?" → Supabase là backend.', related: ['frontend', 'database'], demo: { kind: 'interactive', src: 'gif-backend-demo.html', alt: 'Mô phỏng 4 tầng backend: API, DB, Auth, Jobs' } },
   { id: 'build', name: 'Build', nameEn: 'Đóng gói / Compile', letter: 'B', groups: ['infra'], definition: 'Quá trình biến code thô thành file tối ưu để đưa lên internet. Giống như in ấn trước khi phát hành tài liệu.', example: '"Build failed" = quá trình đóng gói bị lỗi trước khi deploy. Thường do code bị lỗi syntax hoặc thiếu package.', related: ['deploy', 'environment'] },
   { id: 'boolean', name: 'Boolean', nameEn: 'True / False', letter: 'B', groups: ['code'], definition: 'Kiểu dữ liệu chỉ có 2 giá trị: đúng hoặc sai (true/false). Dùng để kiểm soát logic — ví dụ: "isLoggedIn: true" nghĩa là người dùng đã đăng nhập.', example: 'Prompt: "Thêm tính năng toggle — khi bật thì hiện banner, khi tắt thì ẩn." AI sẽ dùng boolean showBanner: true/false.' },
+  { id: 'button', name: 'Button', nameEn: 'Nút bấm / Button', letter: 'B', groups: ['design', 'code'], definition: 'Thành phần giao diện cơ bản nhất để kích hoạt một hành động. Một nút bấm tốt cần thể hiện rõ mức độ quan trọng (variant), kích thước phù hợp (size), và phản hồi trạng thái (state) ngay lập tức khi người dùng tương tác.', example: 'Prompt: "Làm một nút Primary màu cam cho việc Đăng ký, và một nút Ghost cho việc Hủy bỏ để giảm sự chú ý."', related: ['variant', 'state', 'hover', 'primary-color'], demo: { kind: 'interactive', src: 'gif-button-demo.html', alt: 'Mô phỏng 4 khía cạnh của Button: Variants, Sizes, Icons và States' } },
   { id: 'breadcrumb', name: 'Breadcrumb', nameEn: 'Đường dẫn liên kết', letter: 'B', groups: ['design', 'code'], definition: 'Một dãy các liên kết giúp người dùng xác định vị trí hiện tại của mình trong cấu trúc website và dễ dàng quay lại các cấp cao hơn. Giúp công cụ tìm kiếm hiểu cấu trúc website và hiển thị kết quả tìm kiếm thân thiện hơn. Giảm tỷ lệ thoát khuyến khích người dùng khám phá thêm các danh mục khác', example: 'Trang "MacBook Pro 14" có breadcrumb: Home > Laptops > MacBook Pro 14. Marketer dùng breadcrumb để tăng UX và giúp Google hiểu cấu trúc trang tốt hơn (SEO).', related: ['url', 'hierarchy', 'navigation'], demo: { kind: 'interactive', src: 'gif-breadcrumb-demo.html', alt: 'Mô phỏng các loại breadcrumb: Hierarchy, Location, Multi-level và Collapsed' } },
   { id: 'cache', name: 'Cache', nameEn: 'Bộ nhớ đệm', letter: 'C', groups: ['infra'], definition: 'Lưu tạm kết quả để lần sau truy cập nhanh hơn. Giống như nhớ đường đi — lần đầu phải tra bản đồ, lần sau thuộc rồi đi liền.', example: '"Tôi sửa web rồi nhưng người dùng vẫn thấy phiên bản cũ" → Vấn đề cache. Xóa cache hoặc hard reload (Ctrl+Shift+R).' },
   { id: 'card', name: 'Card', nameEn: 'Thẻ nội dung', letter: 'C', groups: ['design', 'code'], definition: 'Một khối chứa thông tin — gom ảnh, tiêu đề, mô tả, nút hành động vào một hộp. Card giúp phân tách các nội dung khác nhau trên trang một cách rõ ràng và dễ quét.', example: 'Product card cho sản phẩm, Blog card cho bài viết. Card là đơn vị cơ bản nhất để build các trang kiểu Dashboard hoặc Landing Page.', related: ['component', 'padding', 'radius'], demo: { kind: 'interactive', src: 'gif-card-demo.html', alt: 'Mô phỏng các loại card: Basic, Horizontal, Featured, Stats' } },
@@ -184,6 +185,7 @@ const deepDiveTermIds = new Set([
   'breakpoint',
   'build',
   'card',
+  'button',
   'checkbox',
   'carousel',
   'component',
@@ -260,6 +262,12 @@ const deepDiveTermIds = new Set([
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
+  button: [
+    'Button không chỉ là "cái nút để click". Nó là ngôn ngữ của hành động (Action Language). Mỗi variant truyền tải một thông điệp: Primary = "Làm ngay", Secondary = "Làm sau", Ghost = "Có thể làm".',
+    'Hierarchy trong button: Đừng bao giờ để 2 nút Primary cạnh nhau. Nó giống như việc có 2 người cùng hét vào mặt user. Hãy dùng cặp Primary + Secondary hoặc Primary + Ghost.',
+    'Trạng thái (States) là linh hồn của button. Một nút bấm không có hover/pressed state sẽ cho cảm giác "chết" và không đáng tin cậy.',
+    'Accessibility: Đừng chỉ dùng màu sắc để phân biệt nút (ví dụ: nút xóa là đỏ). Hãy dùng label rõ ràng và icon nếu cần để đảm bảo người khiếm thị hoặc mù màu vẫn dùng được.',
+  ],
   align: [
     'Alignment (Căn lề) là "xương sống" của thiết kế chuyên nghiệp. Một trang web trông "không ổn" thường do các phần tử bị lệch hàng, lệch cột dù chỉ 1-2 pixel.',
     'Có 2 trục chính trong CSS: Main Axis (ngang mặc định) và Cross Axis (dọc mặc định). Hiểu về justify-content và align-items giúp bạn kiểm soát hoàn toàn không gian.',

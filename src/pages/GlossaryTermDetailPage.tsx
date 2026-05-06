@@ -20,6 +20,8 @@ import paddingDemoHtml from '../../gif-padding-demo.html?raw';
 import paddingPracticeHtml from '../../gif-padding-practice.html?raw';
 import borderDemoHtml from '../../gif-border-demo.html?raw';
 import borderPracticeHtml from '../../gif-border-practice.html?raw';
+import buttonDemoHtml from '../../gif-button-demo.html?raw';
+import buttonPracticeHtml from '../../gif-button-practice.html?raw';
 import radiusDemoHtml from '../../gif-radius-demo.html?raw';
 import radiusPracticeHtml from '../../gif-radius-practice.html?raw';
 import cornerDemoHtml from '../../gif-corner-demo.html?raw';
@@ -183,6 +185,7 @@ export default function GlossaryTermDetailPage() {
       case 'margin': return marginDemoHtml;
       case 'padding': return paddingDemoHtml;
       case 'border': return borderDemoHtml;
+      case 'button': return buttonDemoHtml;
       case 'radius': return radiusDemoHtml;
       case 'corner': return cornerDemoHtml;
       case 'card': return cardDemoHtml;
@@ -263,6 +266,7 @@ export default function GlossaryTermDetailPage() {
       case 'line-spacing': return lineSpacingPracticeHtml;
       case 'line-height': return lineheightPracticeHtml;
       case 'border': return borderPracticeHtml;
+      case 'button': return buttonPracticeHtml;
       case 'radius': return radiusPracticeHtml;
       case 'corner': return cornerPracticeHtml;
       case 'card': return cardPracticeHtml;
