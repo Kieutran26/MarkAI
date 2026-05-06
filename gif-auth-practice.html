@@ -54,6 +54,40 @@ body{
 .matrix th,.matrix td{padding:8px;border-bottom:1px solid var(--bd);text-align:left}
 .matrix th{color:var(--txm);font-weight:500}
 .matrix .hl{color:var(--ac);background:var(--abg)}
+
+/* Badge Hint - Vibecode Style */
+.btn-hint {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ac);
+  color: #000;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  padding: 2px 6px;
+  border-radius: 2px;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: pulseTop 2s infinite;
+  z-index: 999;
+  font-weight: 700;
+}
+.btn-hint::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid var(--ac);
+}
+@keyframes pulseTop {
+  0% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.08); }
+  100% { transform: translateX(-50%) scale(1); }
+}
 </style>
 </head>
 <body>
@@ -111,6 +145,11 @@ function setRole(r) {
     curRole = r;
     results = {};
     document.querySelectorAll('.role-b').forEach(b => b.classList.toggle('on', b.textContent.toLowerCase() === r));
+    
+    // Hide hint
+    const hint = document.querySelector('.btn-hint');
+    if (hint) hint.style.display = 'none';
+    
     render();
 }
 
@@ -125,8 +164,12 @@ function render() {
         const st = results[r.id];
         const cls = st === true ? 'ok' : st === false ? 'no' : '';
         const txt = st === true ? 'GRANTED' : st === false ? 'DENIED' : '';
+        const hint = r.id === 'dash' && st === undefined
+          ? '<div class="btn-hint">Click me!</div>'
+          : '';
         return `
             <div class="res-c ${cls}" onclick="check('${r.id}')">
+                ${hint}
                 <span class="res-st">${txt}</span>
                 <span class="res-n">${r.name}</span>
                 <span class="res-d">${r.desc}</span>

@@ -47,6 +47,32 @@ body{
 
 .denied{color:#ef4444;font-family:'JetBrains Mono',monospace;font-size:10px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px}
 .lock-icon{font-size:24px;margin-bottom:4px}
+
+/* Animations */
+@keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes pulseScale { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.02); } }
+@keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-2px); } 75% { transform: translateX(2px); } }
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+.ani-fade { animation: fadeIn 0.6s ease forwards; }
+.ani-pulse { animation: pulseScale 2s infinite ease-in-out; }
+.ani-shake { animation: shake 0.4s infinite; }
+.cursor::after { content: '|'; animation: blink 0.8s infinite; color: var(--ac); margin-left: 2px; }
+
+/* Mouse cursor simulation */
+.mouse-ptr {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  background: white;
+  clip-path: polygon(0 0, 0 100%, 30% 70%, 100% 70%);
+  z-index: 100;
+  pointer-events: none;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.5));
+  transition: all 0.6s cubic-bezier(0.45, 0, 0.55, 1);
+  transform: translate(20px, 20px);
+  opacity: 0;
+}
 </style>
 </head>
 <body>
@@ -55,11 +81,12 @@ body{
   <!-- 01: Landing -->
   <section class="c">
     <div class="ch"><span class="n">01</span><h2>User Landing</h2></div>
-    <div class="st">
+    <div class="st" id="st-01">
+      <div class="mouse-ptr" id="mouse"></div>
       <div class="auth-box">
         <div style="font-size:16px;font-weight:700;margin-bottom:4px">Welcome</div>
         <div style="font-size:10px;color:var(--txm);margin-bottom:8px">Please sign in to continue</div>
-        <div class="btn-g">Continue with Google</div>
+        <div class="btn-g" id="btn-01">Continue with Google</div>
       </div>
     </div>
     <p class="ins">Giao diện đăng nhập. Web hỏi: <strong>"Bạn là ai?"</strong>. Đây là điểm khởi đầu của quy trình Auth.</p>
@@ -70,7 +97,7 @@ body{
     <div class="ch"><span class="n">02</span><h2>Google Consent</h2></div>
     <div class="st">
       <div class="auth-box" style="border-color:var(--ac)">
-        <div class="acc-item">
+        <div class="acc-item" id="acc-item" style="opacity: 0;">
           <div class="acc-avatar"></div>
           <span class="acc-mail">user@gmail.com</span>
         </div>
@@ -85,9 +112,9 @@ body{
     <div class="ch"><span class="n">03</span><h2>Admin Access</h2></div>
     <div class="st">
       <div class="auth-box">
-        <div class="input-sim">admin@vibecode.io</div>
-        <div class="input-sim">••••••••••••</div>
-        <div style="width:100%;height:30px;background:var(--ac);display:flex;align-items:center;justify-content:center;color:#000;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700">LOGIN AS ADMIN</div>
+        <div class="input-sim" id="input-mail"></div>
+        <div class="input-sim" id="input-pass"></div>
+        <div id="login-btn" style="width:100%;height:30px;background:var(--bd);display:flex;align-items:center;justify-content:center;color:var(--txm);font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;transition: all 0.3s;">LOGIN AS ADMIN</div>
       </div>
     </div>
     <p class="ins">Kiểm tra <strong>quyền hạn (Role)</strong>. Không chỉ là đăng nhập, hệ thống còn xác định bạn có quyền <strong>quản trị</strong> không.</p>
@@ -98,14 +125,114 @@ body{
     <div class="ch"><span class="n">04</span><h2>Access Denied</h2></div>
     <div class="st">
       <div class="denied">
-        <div class="lock-icon">🔒</div>
-        <div style="font-weight:700">403 FORBIDDEN</div>
-        <div>Your account does not have permission.</div>
+        <div class="lock-icon" id="lock">🔒</div>
+        <div style="font-weight:700; color: #ef4444;" id="deny-status">403 FORBIDDEN</div>
+        <div style="opacity: 0.7;">Your account does not have permission.</div>
       </div>
     </div>
     <p class="ins">Nếu không đúng <strong>Role</strong> hoặc <strong>Domain</strong> (@company.com), Auth sẽ <strong>chặn</strong> quyền truy cập ngay lập tức.</p>
   </section>
 </div>
 
+<script>
+function wait(ms){return new Promise(r=>setTimeout(r,ms))}
+
+/* 01: Click Animation */
+(async function(){
+    const mouse = document.getElementById('mouse');
+    const btn = document.getElementById('btn-01');
+    while(true){
+        await wait(1000);
+        // Move mouse to button
+        mouse.style.opacity = 1;
+        mouse.style.transform = "translate(120px, 100px)";
+        await wait(1200);
+        
+        // Click effect
+        btn.style.transform = "scale(0.95)";
+        btn.style.borderColor = "var(--ac)";
+        btn.style.background = "var(--abg2)";
+        await wait(200);
+        btn.style.transform = "scale(1)";
+        await wait(500);
+        
+        // Move mouse away
+        mouse.style.transform = "translate(200px, 150px)";
+        mouse.style.opacity = 0;
+        await wait(1000);
+        
+        // Reset state
+        btn.style.borderColor = "var(--bd)";
+        btn.style.background = "var(--bgc)";
+        mouse.style.transform = "translate(20px, 20px)";
+        await wait(1000);
+    }
+})();
+
+/* 02: Consent Animation */
+(async function(){
+    const acc = document.getElementById('acc-item');
+    while(true){
+        await wait(1000);
+        acc.style.opacity = 1;
+        acc.classList.add('ani-fade');
+        await wait(3000);
+        acc.style.opacity = 0;
+        acc.classList.remove('ani-fade');
+        await wait(1000);
+    }
+})();
+
+/* 03: Typing Animation */
+(async function(){
+    const mail = document.getElementById('input-mail');
+    const pass = document.getElementById('input-pass');
+    const btn = document.getElementById('login-btn');
+    const mailText = "admin@vibecode.io";
+    const passText = "••••••••••••";
+    
+    while(true){
+        mail.textContent = "";
+        pass.textContent = "";
+        mail.classList.add('cursor');
+        btn.style.background = "var(--bd)";
+        btn.style.color = "var(--txm)";
+        
+        await wait(1000);
+        for(let c of mailText){
+            mail.textContent += c;
+            await wait(100);
+        }
+        mail.classList.remove('cursor');
+        await wait(500);
+        
+        pass.classList.add('cursor');
+        for(let c of passText){
+            pass.textContent += c;
+            await wait(80);
+        }
+        pass.classList.remove('cursor');
+        await wait(500);
+        
+        btn.style.background = "var(--ac)";
+        btn.style.color = "#000";
+        await wait(2000);
+    }
+})();
+
+/* 04: Deny Animation */
+(async function(){
+    const lock = document.getElementById('lock');
+    const status = document.getElementById('deny-status');
+    while(true){
+        await wait(2000);
+        lock.classList.add('ani-shake');
+        status.style.color = "#ff6b6b";
+        await wait(1000);
+        lock.classList.remove('ani-shake');
+        status.style.color = "#ef4444";
+    }
+})();
+</script>
 </body>
 </html>

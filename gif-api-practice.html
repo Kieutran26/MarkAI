@@ -62,6 +62,40 @@ body{
 .data-i{background:var(--bgc);border:1px solid var(--bd);padding:12px;border-radius:2px}
 .di-l{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--txm);text-transform:uppercase;margin-bottom:4px;display:block}
 .di-v{font-size:14px;font-weight:700;color:var(--ac)}
+  
+/* Badge Hint - Vibecode Style */
+.btn-hint {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ac);
+  color: #000;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  padding: 2px 6px;
+  border-radius: 2px;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: pulseTop 2s infinite;
+  z-index: 999;
+  font-weight: 700;
+}
+.btn-hint::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid var(--ac);
+}
+@keyframes pulseTop {
+  0% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.08); }
+  100% { transform: translateX(-50%) scale(1); }
+}
 </style>
 </head>
 <body>
@@ -133,7 +167,10 @@ body{
     </div>
 
     <div style="display:flex;gap:12px">
-      <button class="btn btn-primary" id="runBtn" onclick="run()">Chạy Flow</button>
+      <button class="btn btn-primary" id="runBtn" onclick="run()" style="position: relative;">
+        Chạy Flow
+        <div class="btn-hint">Click me!</div>
+      </button>
       <button class="btn" onclick="reset()">Reset</button>
     </div>
 
@@ -149,6 +186,10 @@ async function run() {
     if(running) return;
     running = true;
     document.getElementById('runBtn').disabled = true;
+    
+    // Hide hint on click
+    const hint = document.querySelector('.btn-hint');
+    if (hint) hint.style.display = 'none';
     
     for(let i=0; i<4; i++) {
         showStep(i);

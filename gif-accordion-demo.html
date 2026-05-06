@@ -4,371 +4,316 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Accordion Demo — markAI</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-    --bg:#131110;--fg:#e8e0d4;--muted:#706b64;
-    --accent:#d4712a;--accent-dim:#8b3a1a;
-    --card:#1c1a18;--card-alt:#242120;
-    --border:#302c28;--border-hi:#44403a;
+  --bg:#101010;--bgc:#181818;--bgi:#131313;
+  --bd:#272727;--tx:#e0e0e0;--txm:#707070;--txd:#3a3a3a;
+  --ac:#E88C2E;--acl:#ffb05c;--abg:rgba(232,140,46,.08);
 }
-*{margin:0;padding:0;box-sizing:border-box}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 body{
-    background:var(--bg);
-    background-image:
-        radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),
-        radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);
-    background-size:100% 100%,16px 16px;
-    display:flex;flex-direction:column;align-items:center;
-    min-height:100vh;font-family:'Space Grotesk',sans-serif;
-    color:var(--fg);padding:0;overflow-x:hidden;
+  font-family:'Space Grotesk',sans-serif;
+  background-color:var(--bg);
+  background-image:
+    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:20px 20px;
+  color:var(--tx);min-height:100vh;padding:20px 16px 48px;
 }
-
-#app-root{width:100%;padding:12px;display:flex;flex-direction:column;align-items:center;gap:16px}
-
-/* ===== Animation Box ===== */
-.aw{width:100%;position:relative}
-.ab{
-    width:700px;min-height:412px;
-    background:var(--card);border:2px solid var(--border);
-    transform-origin:top left;overflow:hidden;
-}
-.hd{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
-.hd-t{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:2.5px}
-.hd-f{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
-.la{
-    position:relative;width:100%;min-height:260px;
-    background:linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);
-    background-size:30px 30px;overflow:hidden;
-    display:grid;
-}
-
-/* Frame */
-.fr{
-    grid-area: 1/1;
-    display:flex;flex-direction:column;
-    opacity:0;pointer-events:none;transition:opacity .3s;
-    height: 0; overflow: hidden;
-}
-.fr.show{opacity:1;pointer-events:auto;height: auto; overflow: visible;}
-
-/* Accordion Specific Elements */
-.gp{display:flex;gap:8px;padding:10px 24px 0;flex-shrink:0}
-.gpm{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;color:var(--accent);letter-spacing:1.5px;border:1px solid var(--border);padding:2px 7px;opacity:0;transform:translateY(-4px);transition:opacity .3s,transform .3s}
-.fr.show .gpm{opacity:1;transform:translateY(0)}
-.ga{padding:8px 24px 0;flex:1;display:flex;flex-direction:column}
-.ai{border-left:3px solid transparent;border-bottom:1px solid var(--border);transition:border-color .3s,background .2s}
+.g{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:660px){.g{grid-template-columns:1fr}}
+.c{background:var(--bgc);border:1px solid var(--bd);border-radius:3px;padding:18px;position:relative;overflow:hidden}
+.c::after{content:'';position:absolute;top:14px;right:14px;width:5px;height:5px;background:var(--ac);border-radius:50%;animation:dp 2.4s ease-in-out infinite}
+@keyframes dp{0%,100%{opacity:.3}50%{opacity:1}}
+.ch{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.n{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--ac);background:var(--abg);border:1px solid rgba(232,140,46,.2);padding:1px 6px;border-radius:2px}
+.ch h2{font-size:14px;font-weight:600;letter-spacing:-.3px}
+.st{background:var(--bgi);border:1px solid var(--bd);border-radius:3px;padding:18px;min-height:240px;position:relative;overflow:hidden}
+.ins{margin-top:14px;font-size:11.5px;color:var(--txm);line-height:1.55;padding-left:12px;border-left:2px solid var(--bd)}
+.ins strong{color:var(--acl);font-weight:600}
+.tag-row{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.tag{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;color:var(--ac);letter-spacing:1px;border:1px solid var(--bd);padding:2px 7px}
+.acc{display:flex;flex-direction:column}
+.ai{border-left:3px solid transparent;border-bottom:1px solid var(--bd);transition:border-color .25s,background .25s}
 .ai:last-child{border-bottom:none}
-.ai.open{border-left-color:var(--accent);background:rgba(212,113,42,.04)}
-.ah{height:38px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;cursor:default;user-select:none}
-.at{font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;flex:1}
-.aic{font-size:10px;color:var(--muted);transition:transform .3s,color .3s;display:inline-block}
-.ai.open>.ah .aic{transform:rotate(90deg);color:var(--accent)}
-.ai > .ab-content{max-height:0;overflow:hidden;opacity:0;transition:max-height .35s ease,opacity .2s ease .05s;padding:0 12px}
-.ai.open>.ab-content{opacity:1;padding:0 12px 10px}
-.abt{font-size:10px;color:var(--muted);line-height:1.4}
-.abt-s{font-size:9px;color:var(--muted);line-height:1.3}
-.ic-plus{transition:color .3s}
-
-.ir{display:flex;gap:10px;align-items:flex-start;padding:0 24px}
-.ir-l{width:64px;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:1px;padding-top:10px;flex-shrink:0;opacity:0;transform:translateX(-6px);transition:opacity .3s,transform .3s}
-.fr.show .ir-l{opacity:.7;transform:translateX(0)}
-.ir .ai{flex:1}
-.ir .ah{height:34px}
-.ir .ai.open>.ab-content{padding:0 12px 8px}
-.ir-s{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--accent);padding-top:10px;flex-shrink:0;opacity:0;transition:opacity .3s .15s}
-.fr.show .ir-s.vis{opacity:.6}
-
-.nc{border:1px dashed var(--border);padding:8px 24px 10px;margin:0 24px;flex:1;display:flex;flex-direction:column}
-.nc-l{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);letter-spacing:1.5px;margin-bottom:4px;opacity:0;transition:opacity .3s}
-.fr.show .nc-l{opacity:.5}
-.ai-in{margin-left:12px;border-left:2px solid var(--border)}
-.ai-in.open{border-left-color:var(--accent)}
-.ai-in .ah{height:28px}
+.ai.open{border-left-color:var(--ac);background:var(--abg)}
+.ah{height:40px;display:flex;align-items:center;justify-content:space-between;padding:0 12px}
+.at{font-size:12px;font-weight:600}
+.aic{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txm);transition:transform .25s,color .25s}
+.ai.open .aic{transform:rotate(90deg);color:var(--ac)}
+.abody{max-height:0;overflow:hidden;opacity:0;padding:0 12px;transition:max-height .35s ease,opacity .2s ease,padding .2s ease}
+.ai.open .abody{opacity:1;padding:0 12px 10px}
+.abt{font-size:10px;color:var(--txm);line-height:1.45}
+.icon-rows{display:flex;flex-direction:column;gap:10px}
+.ir{display:grid;grid-template-columns:64px 1fr 48px;gap:10px;align-items:start}
+.ir-l,.ir-s{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--txm);letter-spacing:1px;padding-top:12px}
+.ir-s{color:var(--ac);text-align:right}
+.ir .ah{height:36px}
+.ir .abody{font-size:9px}
+.nested-wrap{border:1px dashed var(--bd);padding:10px}
+.nested-label{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--txm);letter-spacing:1.2px;margin-bottom:4px}
+.ai-in{margin-left:12px;border-left-width:2px}
+.ai-in .ah{height:30px}
 .ai-in .at{font-size:10px}
 .ai-in .aic{font-size:8px}
-.ai-in.open>.ab-content{padding:0 10px 6px}
-.sl{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--accent);letter-spacing:1.5px;padding:4px 24px 0;opacity:0;transition:opacity .3s;flex-shrink:0}
-.fr.show .sl{opacity:.5}
-
-/* Info */
-.inf{padding:11px 14px;border-top:1px solid var(--border);min-height:100px}
-.dn{font-size:17px;font-weight:800;line-height:1.15}
-.ds{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);margin-top:2px}
-.dd{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.4}
-.di{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);margin-top:6px;padding-top:6px;border-top:1px dashed var(--border);opacity:.78}
-
-/* ===== CONTROLS ===== */
-.ctrls{display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;justify-content:center;width:100%}
-.btn-ctrl{
-    background:var(--card);border:1px solid var(--border);
-    color:var(--muted);padding:8px 14px;font-family:'Space Grotesk',sans-serif;
-    font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;
-    display:flex;align-items:center;gap:8px;
-}
-.btn-ctrl:hover{border-color:var(--accent);color:var(--fg)}
-.btn-ctrl.active{border-color:var(--accent);color:var(--accent);background:rgba(212,113,42,0.05)}
-.btn-play{background:var(--accent);color:#000;border-color:var(--accent);width:34px;height:34px;padding:0;display:flex;align-items:center;justify-content:center;border-radius:50%}
-.btn-play:hover{background:var(--accent-dim);border-color:var(--accent-dim)}
-
-@media(max-width:520px){
-    .pw{padding:16px}.pm{flex-direction:column;align-items:flex-start;gap:6px}.pp-ga .ah{height:48px}
-}
+.state{margin-top:10px;padding-top:8px;border-top:1px dashed var(--bd);font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--ac);letter-spacing:1px;opacity:.7}
+body.measuring *{transition:none !important;animation:none !important}
 </style>
 </head>
 <body>
 
-<div id="app-root">
-    <div class="aw">
-        <div class="ab" id="ab">
-            <div class="hd"><span class="hd-t">ACCORDION</span><span class="hd-f" id="hf">01 / 04</span></div>
-            <div class="la" id="la">
-                <div class="fr" id="f0"></div>
-                <div class="fr" id="f1"></div>
-                <div class="fr" id="f2"></div>
-                <div class="fr" id="f3"></div>
-            </div>
-            <div class="inf">
-                <div class="dn" id="dn">Single Open</div>
-                <div class="ds" id="ds">MỞ 1 — ĐÓNG CÁI CŨ</div>
-                <div class="dd" id="dd">Mở 1 item → item đang mở tự đóng. Luôn chỉ có 1 item mở.</div>
-                <div class="di" id="di">FAQ, pricing — nơi muốn user tập trung vào 1 thông tin</div>
-            </div>
-        </div>
+<div class="g">
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>Single Open</h2></div>
+    <div class="st">
+      <div class="tag-row"><span class="tag">SINGLE OPEN</span><span class="tag">FAQ PATTERN</span></div>
+      <div class="acc" id="acc-single"></div>
+      <div class="state">state: item 0 open → switch → item 1 open</div>
     </div>
+    <p class="ins">Mở 1 item thì item cũ tự đóng. Hợp với <strong>FAQ</strong>, pricing, nơi user nên tập trung vào từng câu một.</p>
+  </section>
 
-    <!-- ===== CONTROLS ===== -->
-    <div class="ctrls">
-        <button class="btn-ctrl" data-i="0">Single Open</button>
-        <button class="btn-ctrl" data-i="1">Multiple Open</button>
-        <button class="btn-ctrl" data-i="2">With Icons</button>
-        <button class="btn-ctrl" data-i="3">Nested</button>
-        <button class="btn-ctrl btn-play" id="btnPlay"><svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg></button>
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Multiple Open</h2></div>
+    <div class="st">
+      <div class="tag-row"><span class="tag">MULTIPLE OPEN</span><span class="tag">SETTINGS</span></div>
+      <div class="acc" id="acc-multi"></div>
+      <div class="state">state: item 0 open → item 1 open → both stay open</div>
     </div>
+    <p class="ins">Nhiều item có thể mở cùng lúc. Hợp với <strong>settings</strong>, filter, nơi user cần so sánh nhiều nhóm nội dung.</p>
+  </section>
+
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>With Icons</h2></div>
+    <div class="st">
+      <div class="tag-row"><span class="tag">WITH ICONS</span><span class="tag">VISUAL HINTS</span></div>
+      <div class="icon-rows" id="acc-icons"></div>
+      <div class="state">state: chevron → plus/minus → arrow</div>
+    </div>
+    <p class="ins">Icon không chỉ để trang trí. Nó là <strong>hint trạng thái</strong> báo cho user biết vùng này có thể mở rộng.</p>
+  </section>
+
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Nested</h2></div>
+    <div class="st">
+      <div class="tag-row"><span class="tag">NESTED</span><span class="tag">IN CARD</span></div>
+      <div class="nested-wrap" id="acc-nested"></div>
+      <div class="state">state: outer opens → inner 0 opens → inner 1 opens</div>
+    </div>
+    <p class="ins">Accordion lồng nhau giúp chia nội dung theo tầng. Dùng khi thông tin <strong>phức tạp và có phân cấp</strong>.</p>
+  </section>
 </div>
 
 <script>
-/* ===== DATA ===== */
 var FAQ=[
-    {t:'Chính sách hoàn tiền',d:'Hoàn tiền trong 14 ngày kể từ ngày nhận hàng'},
-    {t:'Phương thức thanh toán',d:'Chấp nhận Visa, Mastercard và chuyển khoản ngân hàng'},
-    {t:'Thời gian giao hàng',d:'Giao hàng 3-5 ngày làm việc trên toàn quốc'},
-    {t:'Bảo hành sản phẩm',d:'Bảo hành 12 tháng cho tất cả sản phẩm chính hãng'}
+  {t:'Chính sách hoàn tiền',d:'Hoàn tiền trong 14 ngày kể từ ngày nhận hàng'},
+  {t:'Phương thức thanh toán',d:'Chấp nhận Visa, Mastercard và chuyển khoản ngân hàng'},
+  {t:'Thời gian giao hàng',d:'Giao hàng 3-5 ngày làm việc trên toàn quốc'},
+  {t:'Bảo hành sản phẩm',d:'Bảo hành 12 tháng cho tất cả sản phẩm chính hãng'}
 ];
 var SETT=[
-    {t:'Thông báo',d:'Cài đặt push, email, SMS theo sở thích'},
-    {t:'Bảo mật',d:'Mật khẩu, xác thực 2FA, quản lý phiên'},
-    {t:'Giao diện',d:'Chế độ tối, font size, ngôn ngữ hiển thị'},
-    {t:'Tài khoản',d:'Hồ sơ cá nhân, avatar, liên kết mạng xã hội'}
-];
-var INFO=[
-    {nm:'Single Open',sz:'MỞ 1 — ĐÓNG CÁI CŨ',dc:'Mở 1 item → item đang mở tự đóng. Luôn chỉ có 1 item mở.',ins:'FAQ, pricing — nơi muốn user tập trung vào 1 thông tin'},
-    {nm:'Multiple Open',sz:'MỞ NHIỀU CÙNG LÚC',dc:'Mở bao nhiêu item cũng được. Không tự đóng item khác.',ins:'Settings, filter — nơi user cần so sánh nhiều phần'},
-    {nm:'With Icons',sz:'ICON CHO HINT TRẠNG THÁI',dc:'Chevron, plus/minus, arrow — mỗi kiểu báo "có thể mở được".',ins:'Không phải icon trang trí — nó thay thế text "click để mở"'},
-    {nm:'Nested',sz:'LỒNG NHAU — CONTENT PHỨC TẠP',dc:'Accordion bên trong accordion — phân cấp thông tin sâu hơn.',ins:'Layout "gấp trong gấp" → có thể là nested accordion'}
+  {t:'Thông báo',d:'Cài đặt push, email, SMS theo sở thích'},
+  {t:'Bảo mật',d:'Mật khẩu, xác thực 2FA, quản lý phiên'},
+  {t:'Giao diện',d:'Chế độ tối, font size, ngôn ngữ hiển thị'},
+  {t:'Tài khoản',d:'Hồ sơ cá nhân, avatar, liên kết mạng xã hội'}
 ];
 
-/* ===== BUILD ACCORDION HTML ===== */
-function mkAi(d){
-    // Using .ab-content instead of .ab to avoid conflict with the main container #ab
-    return '<div class="ai"><div class="ah"><span class="at">'+d.t+'</span><span class="aic">▸</span></div><div class="ab-content" style="max-height:0"><span class="abt">'+d.d+'</span></div></div>';
+function mkAi(d, icon){
+  return '<div class="ai">'+
+    '<div class="ah"><span class="at">'+d.t+'</span><span class="aic">'+(icon || '▸')+'</span></div>'+
+    '<div class="abody"><span class="abt">'+d.d+'</span></div>'+
+  '</div>';
 }
 
-/* ===== RENDER ALL 4 FRAMES ===== */
-function renderFrames(){
-    /* F0: Single Open */
-    document.getElementById('f0').innerHTML=
-        '<div class="gp"><span class="gpm">SINGLE OPEN</span><span class="gpm">FAQ PATTERN</span></div>'+
-        '<div class="ga">'+FAQ.map(mkAi).join('')+'</div>'+
-        '<div class="sl">state: item 0 open → switch → item 1 open</div>';
+function setOpen(el, on, maxHeight){
+  if(!el) return;
+  var body = el.querySelector('.abody');
+  el.classList.toggle('open', on);
+  if(body) body.style.maxHeight = on ? (maxHeight || 56) + 'px' : '0px';
+}
 
-    /* F1: Multiple Open */
-    document.getElementById('f1').innerHTML=
-        '<div class="gp"><span class="gpm">MULTIPLE OPEN</span><span class="gpm">SETTINGS PATTERN</span></div>'+
-        '<div class="ga">'+SETT.map(mkAi).join('')+'</div>'+
-        '<div class="sl">state: item 0 open → item 1 open → both stay open</div>';
+function freezeGroupItemHeights(selector, maxHeight){
+  var items = Array.from(document.querySelectorAll(selector));
+  if(!items.length) return;
+  var tallest = 0;
+  items.forEach(function(item){
+    setOpen(item, true, maxHeight);
+    tallest = Math.max(tallest, item.offsetHeight);
+    setOpen(item, false);
+  });
+  items.forEach(function(item){
+    item.style.height = tallest + 'px';
+  });
+}
 
-    /* F2: With Icons — 3 rows, mỗi row 1 icon type */
-    var ics=[
-        {l:'CHEVRON',ic:'▸',cls:'',s:'▸ → ▾'},
-        {l:'PLUS',ic:'+',cls:'ic-plus',s:'+ → −'},
-        {l:'ARROW',ic:'→',cls:'',s:'→ → ↓'}
-    ];
-    var f2='<div class="gp"><span class="gpm">WITH ICONS</span><span class="gpm">VISUAL HINTS</span></div>';
-    ics.forEach(function(ic,i){
-        f2+='<div class="ir">'+
-            '<span class="ir-l" style="transition-delay:'+(0.1+i*0.12)+'s">'+ic.l+'</span>'+
-            '<div class="ai" data-ir="'+i+'">'+
-                '<div class="ah"><span class="at">Item title example</span><span class="aic '+ic.cls+'">'+ic.ic+'</span></div>'+
-                '<div class="ab-content" style="max-height:0"><span class="abt-s">Content appears when clicked</span></div>'+
-            '</div>'+
-            '<span class="ir-s" id="is'+i+'">'+ic.s+'</span>'+
-        '</div>';
-    });
-    document.getElementById('f2').innerHTML=f2;
+function freezeRowHeights(selector, openHeight){
+  var rows = Array.from(document.querySelectorAll(selector));
+  if(!rows.length) return;
+  var tallest = 0;
+  rows.forEach(function(row){
+    var item = row.querySelector('.ai');
+    if(item) setOpen(item, true, openHeight);
+    tallest = Math.max(tallest, row.offsetHeight);
+    if(item) setOpen(item, false);
+  });
+  rows.forEach(function(row){
+    row.style.height = tallest + 'px';
+  });
+}
 
-    /* F3: Nested / In Card */
-    document.getElementById('f3').innerHTML=
-        '<div class="gp"><span class="gpm">NESTED</span><span class="gpm">IN CARD</span></div>'+
-        '<div class="nc">'+
-            '<div class="nc-l">OUTER ACCORDION</div>'+
-            mkAi({t:'Câu hỏi chung',d:'Các câu hỏi thường gặp về dịch vụ'})+
-            '<div class="ai" id="nO">'+
-                '<div class="ah"><span class="at">Đơn hàng</span><span class="aic">▸</span></div>'+
-                '<div class="ab-content" style="max-height:0">'+
-                    '<div class="nc-l" style="margin-bottom:3px">INNER ACCORDION</div>'+
-                    '<div class="ai ai-in" id="nI0">'+
-                        '<div class="ah"><span class="at">Chi tiết đơn hàng</span><span class="aic">▸</span></div>'+
-                        '<div class="ab-content" style="max-height:0"><span class="abt-s">Xem sản phẩm đã mua</span></div>'+
-                    '</div>'+
-                    '<div class="ai ai-in" id="nI1">'+
-                        '<div class="ah"><span class="at">Trạng thái vận chuyển</span><span class="aic">▸</span></div>'+
-                        '<div class="ab-content" style="max-height:0"><span class="abt-s">Theo dõi real-time</span></div>'+
-                    '</div>'+
-                '</div>'+
-            '</div>'+
-            mkAi({t:'Tài khoản',d:'Quản lý thông tin cá nhân'})+
+function freezeNestedHeights(){
+  var nestedWrap = document.getElementById('acc-nested');
+  if(!nestedWrap) return;
+  var outer = document.getElementById('outer-order');
+  var inner0 = document.getElementById('inner-0');
+  var inner1 = document.getElementById('inner-1');
+  if(!outer || !inner0 || !inner1) return;
+
+  setOpen(outer, true, 160);
+  setOpen(inner0, true, 34);
+  setOpen(inner1, true, 34);
+  nestedWrap.style.height = nestedWrap.offsetHeight + 'px';
+  setOpen(inner0, false);
+  setOpen(inner1, false);
+  setOpen(outer, false);
+}
+
+function freezeDemoHeights(){
+  document.body.classList.add('measuring');
+  freezeGroupItemHeights('#acc-single .ai', 50);
+  freezeGroupItemHeights('#acc-multi .ai', 50);
+  freezeRowHeights('#acc-icons .ir', 34);
+  freezeNestedHeights();
+  document.body.classList.remove('measuring');
+}
+
+function render(){
+  document.getElementById('acc-single').innerHTML = FAQ.map(function(item){return mkAi(item);}).join('');
+  document.getElementById('acc-multi').innerHTML = SETT.map(function(item){return mkAi(item);}).join('');
+
+  var icons = [
+    {label:'CHEVRON', icon:'▸', state:'▸→▾'},
+    {label:'PLUS', icon:'+', state:'+→−'},
+    {label:'ARROW', icon:'→', state:'→→↓'}
+  ];
+  document.getElementById('acc-icons').innerHTML = icons.map(function(item){
+    return '<div class="ir">'+
+      '<span class="ir-l">'+item.label+'</span>'+
+      '<div class="ai">'+
+        '<div class="ah"><span class="at">Item title example</span><span class="aic">'+item.icon+'</span></div>'+
+        '<div class="abody"><span class="abt">Content appears when clicked</span></div>'+
+      '</div>'+
+      '<span class="ir-s">'+item.state+'</span>'+
+    '</div>';
+  }).join('');
+
+  document.getElementById('acc-nested').innerHTML =
+    '<div class="nested-label">OUTER ACCORDION</div>'+
+    mkAi({t:'Câu hỏi chung',d:'Các câu hỏi thường gặp về dịch vụ'})+
+    '<div class="ai" id="outer-order">'+
+      '<div class="ah"><span class="at">Đơn hàng</span><span class="aic">▸</span></div>'+
+      '<div class="abody">'+
+        '<div class="nested-label" style="margin-bottom:3px">INNER ACCORDION</div>'+
+        '<div class="ai ai-in" id="inner-0">'+
+          '<div class="ah"><span class="at">Chi tiết đơn hàng</span><span class="aic">▸</span></div>'+
+          '<div class="abody"><span class="abt">Xem sản phẩm đã mua</span></div>'+
         '</div>'+
-        '<div class="sl">state: outer opens → inner 0 opens → inner 1 opens</div>';
+        '<div class="ai ai-in" id="inner-1">'+
+          '<div class="ah"><span class="at">Trạng thái vận chuyển</span><span class="aic">▸</span></div>'+
+          '<div class="abody"><span class="abt">Theo dõi real-time</span></div>'+
+        '</div>'+
+      '</div>'+
+    '</div>'+
+    mkAi({t:'Tài khoản',d:'Quản lý thông tin cá nhân'});
 }
 
-/* ===== TOGGLE HELPER ===== */
-function tog(el,on,mh){
-    if(!el)return;
-    var bd=el.querySelector('.ab-content');
-    if(on){el.classList.add('open');if(bd)bd.style.maxHeight=(mh||50)+'px';}
-    else{el.classList.remove('open');if(bd)bd.style.maxHeight='0px';}
+function resetGroup(selector){
+  document.querySelectorAll(selector).forEach(function(el){
+    setOpen(el, false);
+    var icon = el.querySelector('.aic');
+    if(icon && icon.textContent === '−') icon.textContent = '+';
+  });
 }
 
-/* ===== ANIMATION ENGINE ===== */
-var frs=[0,1,2,3].map(function(i){return document.getElementById('f'+i)});
-var els={dn:document.getElementById('dn'),ds:document.getElementById('ds'),dd:document.getElementById('dd'),di:document.getElementById('di'),hf:document.getElementById('hf')};
-var ctrlBtns = document.querySelectorAll('.btn-ctrl[data-i]');
-var btnPlay = document.getElementById('btnPlay');
-
-var cur=0,ft=null,pa=null,t0=0,seqT=[],isPaused=false;
-var DUR=3500;
-
-function clearSeq(){seqT.forEach(function(t){clearTimeout(t)});seqT=[]}
-
-function startSeq(i){
-    clearSeq();
-    var fr=frs[i];
-    if(i===0){
-        var items=fr.querySelectorAll('.ga>.ai');
-        seqT.push(setTimeout(function(){tog(items[0],true,50)},400));
-        seqT.push(setTimeout(function(){tog(items[0],false);tog(items[1],true,50)},1500));
-        seqT.push(setTimeout(function(){tog(items[1],false);tog(items[2],true,50)},2600));
-    }else if(i===1){
-        var items=fr.querySelectorAll('.ga>.ai');
-        seqT.push(setTimeout(function(){tog(items[0],true,50)},400));
-        seqT.push(setTimeout(function(){tog(items[1],true,50)},1300));
-        seqT.push(setTimeout(function(){tog(items[2],true,50)},2200));
-    }else if(i===2){
-        var rows=fr.querySelectorAll('.ir .ai');
-        seqT.push(setTimeout(function(){tog(rows[0],true,36);document.getElementById('is0').classList.add('vis')},400));
-        seqT.push(setTimeout(function(){
-            tog(rows[0],false);
-            tog(rows[1],true,36);
-            var ic = rows[1].querySelector('.ic-plus');
-            if(ic) ic.textContent='−';
-            document.getElementById('is1').classList.add('vis');
-        },1400));
-        seqT.push(setTimeout(function(){
-            tog(rows[1],false);
-            var ic = rows[1].querySelector('.ic-plus');
-            if(ic) ic.textContent='+';
-            tog(rows[2],true,36);
-            document.getElementById('is2').classList.add('vis');
-        },2400));
-    }else if(i===3){
-        var o=document.getElementById('nO'),i0=document.getElementById('nI0'),i1=document.getElementById('nI1');
-        seqT.push(setTimeout(function(){tog(o,true,160)},400));
-        seqT.push(setTimeout(function(){tog(i0,true,34)},1400));
-        seqT.push(setTimeout(function(){tog(i1,true,34)},2300));
-    }
+function loopSingle(){
+  var items = document.querySelectorAll('#acc-single .ai');
+  if(!items.length) return;
+  var step = 0;
+  function run(){
+    resetGroup('#acc-single .ai');
+    if(step === 0) setOpen(items[0], true, 50);
+    if(step === 1) setOpen(items[1], true, 50);
+    if(step === 2) setOpen(items[2], true, 50);
+    step = (step + 1) % 3;
+  }
+  run();
+  setInterval(run, 1500);
 }
 
-function resetFrame(i){
-    var fr=frs[i];
-    fr.querySelectorAll('.ai.open').forEach(function(el){tog(el,false)});
-    fr.querySelectorAll('.ic-plus').forEach(function(el){el.textContent='+'});
-    fr.querySelectorAll('.ir-s.vis').forEach(function(el){el.classList.remove('vis')});
+function loopMulti(){
+  var items = document.querySelectorAll('#acc-multi .ai');
+  if(!items.length) return;
+  function run(){
+    resetGroup('#acc-multi .ai');
+    setTimeout(function(){setOpen(items[0], true, 50);}, 250);
+    setTimeout(function(){setOpen(items[1], true, 50);}, 900);
+    setTimeout(function(){setOpen(items[2], true, 50);}, 1550);
+  }
+  run();
+  setInterval(run, 2800);
 }
 
-function apply(i){
-    cur = i;
-    var s=INFO[i];
-    els.dn.textContent=s.nm;els.ds.textContent=s.sz;els.dd.textContent=s.dc;els.di.textContent=s.ins;
-    els.hf.textContent='0'+(i+1)+' / 04';
-    ctrlBtns.forEach((b,idx) => b.classList.toggle('active', idx===i));
-    
-    frs.forEach(function(f, j){
-        if(j === i) {
-            f.classList.add('show');
-            resetFrame(j);
-            f.querySelectorAll('.gpm').forEach(function(e,idx){e.style.transitionDelay=(0.05+idx*0.08)+'s'});
-            startSeq(j);
-        } else {
-            f.classList.remove('show');
-        }
+function loopIcons(){
+  var rows = document.querySelectorAll('#acc-icons .ir .ai');
+  if(!rows.length) return;
+  function run(){
+    resetGroup('#acc-icons .ir .ai');
+    rows.forEach(function(row, idx){
+      var icon = row.querySelector('.aic');
+      if(icon && idx === 1) icon.textContent = '+';
+      if(icon && idx === 2) icon.textContent = '→';
     });
+
+    setTimeout(function(){setOpen(rows[0], true, 34);}, 250);
+    setTimeout(function(){
+      resetGroup('#acc-icons .ir .ai');
+      setOpen(rows[1], true, 34);
+      var plus = rows[1].querySelector('.aic');
+      if(plus) plus.textContent = '−';
+    }, 1100);
+    setTimeout(function(){
+      resetGroup('#acc-icons .ir .ai');
+      setOpen(rows[2], true, 34);
+      var arrow = rows[2].querySelector('.aic');
+      if(arrow) arrow.textContent = '↓';
+    }, 1950);
+  }
+  run();
+  setInterval(run, 3200);
 }
 
-function next(){
-    if(isPaused) return;
-    cur=(cur+1)%4;
-    apply(cur);
+function loopNested(){
+  var outer = document.getElementById('outer-order');
+  var inner0 = document.getElementById('inner-0');
+  var inner1 = document.getElementById('inner-1');
+  if(!outer || !inner0 || !inner1) return;
+  function run(){
+    resetGroup('#acc-nested .ai');
+    setTimeout(function(){setOpen(outer, true, 160);}, 250);
+    setTimeout(function(){setOpen(inner0, true, 34);}, 1050);
+    setTimeout(function(){setOpen(inner1, true, 34);}, 1850);
+  }
+  run();
+  setInterval(run, 3200);
 }
 
-function startAnim(){
-    isPaused = false;
-    btnPlay.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
-    apply(cur);
-    if(ft) clearInterval(ft);
-    ft=setInterval(next,DUR);
-}
-
-function stopAnim(){
-    isPaused = true;
-    btnPlay.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>';
-    if(ft) clearInterval(ft);
-    clearSeq();
-}
-
-function scale(){
-    var wr=document.querySelector('.aw'),bx=document.getElementById('ab'),s=wr.clientWidth/700;
-    bx.style.transform='scale('+s+')';
-    wr.style.height=Math.ceil(bx.offsetHeight*s)+'px';
-}
-
-/* ===== CONTROLS ===== */
-ctrlBtns.forEach(btn => {
-    btn.onclick = () => {
-        var i = parseInt(btn.dataset.i);
-        stopAnim();
-        apply(i);
-    };
-});
-
-btnPlay.onclick = () => {
-    if(isPaused) startAnim();
-    else stopAnim();
-};
-
-/* ===== INIT ===== */
-renderFrames();
-window.addEventListener('resize',scale);
-if(window.ResizeObserver){
-    new ResizeObserver(scale).observe(document.getElementById('ab'));
-}
-requestAnimationFrame(function(){requestAnimationFrame(scale)});
-startAnim();
-
-document.addEventListener('visibilitychange',function(){
-    if(document.hidden){stopAnim()}
-    else if(!isPaused){startAnim()}
-});
+render();
+freezeDemoHeights();
+loopSingle();
+loopMulti();
+loopIcons();
+loopNested();
 </script>
 </body>
 </html>
