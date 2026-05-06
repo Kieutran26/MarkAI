@@ -23,7 +23,16 @@ export const terms: GlossaryTerm[] = [
   { id: 'align', name: 'Align', nameEn: 'Căn lề / Alignment', letter: 'A', groups: ['design', 'code'], definition: 'Cách sắp xếp vị trí của các phần tử (text, hình khối, component) theo các trục ngang hoặc dọc. Căn lề tốt giúp tạo ra sự trật tự, cân bằng và dẫn dắt mắt người dùng một cách hiệu quả.', example: 'Prompt: "Căn giữa tiêu đề và đoạn văn, nút bấm căn lề phải. Trên mobile thì tất cả đều căn lề trái để dễ đọc hơn."', related: ['flexbox', 'grid', 'spacing', 'hierarchy'], demo: { kind: 'interactive', src: 'gif-align-demo.html', alt: 'Mô phỏng các kiểu căn lề: Horizontal, Vertical, Flex Distribution và Layout Alignment' } },
   { id: 'api', name: 'API', nameEn: 'API / API Key', letter: 'A', groups: ['infra', 'code'], definition: 'Với marketer mới học AI, API thường được hiểu thực tế là API key: một mã bí mật lấy từ nền tảng AI để app của bạn được phép gọi model. Nếu lộ key, người khác có thể dùng ké quota và làm bạn mất tiền.', example: 'Mình muốn dùng model AI trong app chat nội bộ. Cần vào platform lấy API key, lưu vào file .env, rồi mới gọi AI được. API key không nên dán thẳng lên giao diện hay đưa lên GitHub.', related: ['endpoint', 'webhook', 'request'], demo: { kind: 'interactive', src: 'gif-api-demo.html', alt: 'Mô phỏng cách lấy API key từ nền tảng AI rồi copy về app' } },
   { id: 'array', name: 'Array', nameEn: 'Mảng / Danh sách', letter: 'A', groups: ['code'], definition: 'Danh sách các item được xếp theo thứ tự. Giống như một cột Excel — mỗi ô là một item. Array trong code thường trông như này: ["Hà Nội", "TP.HCM", "Đà Nẵng"].', example: 'AI trả về "danh sách categories" — đó thường là một array mà code của bạn sẽ loop qua để hiển thị từng cái.', related: ['loop', 'database'], demo: { kind: 'interactive', src: 'gif-array-demo.html', alt: 'Mô phỏng 4 khía cạnh của Array: Basics, Accessing, Operations và Matrix' } },
-  { id: 'asset', name: 'Asset', nameEn: 'Tài nguyên thiết kế', letter: 'A', groups: ['design'], definition: 'Tất cả file hình ảnh, icon, font, video dùng trong sản phẩm. Khi vibecode, AI thường hỏi "Asset đâu?" — tức là nó cần file ảnh/icon để gắn vào code.', example: 'Folder /assets/images/ chứa toàn bộ ảnh của campaign. Prompt cho AI: "dùng ảnh từ /assets/images/hero.jpg cho phần hero section".' },
+  { 
+    id: 'asset', 
+    name: 'Asset', 
+    nameEn: 'Tài nguyên thiết kế', 
+    letter: 'A', 
+    groups: ['design'], 
+    definition: 'Tất cả các tài liệu số (digital files) được sử dụng để xây dựng giao diện. Bao gồm hình ảnh (logo, background), icon (SVG), font chữ, video, và audio. Trong Vibecode, việc quản lý asset đúng cách giúp web chạy nhanh và hiển thị sắc nét.', 
+    example: "Designer gửi cho bạn folder 'Marketing-Assets' chứa logo dạng SVG và ảnh hero dạng WebP. Prompt: Sử dụng logo từ /public/assets/logo.svg và tối ưu ảnh hero để web load nhanh hơn.",
+    demo: { kind: 'interactive' }
+  },
   { id: 'auth', name: 'Auth', nameEn: 'Authentication / Đăng nhập', letter: 'A', groups: ['infra'], definition: 'Auth là lớp kiểm tra danh tính người dùng trước khi cho vào hệ thống. Hiểu đơn giản: web cần biết bạn là ai, đăng nhập bằng cách nào, và có được phép vào khu vực đó không. Với marketer làm tool nội bộ, auth thường đi kèm Google login, email admin, session đăng nhập, và rule như “chỉ email công ty mới được vào”.', example: 'Prompt: "Thêm đăng nhập bằng Google cho tool này, chỉ email @company.com mới vào được dashboard, nếu đã có session cũ thì cho vào nhanh hơn." Đây là cách dùng auth rất thực tế.', related: ['session', 'token'], demo: { kind: 'interactive', src: 'gif-auth-demo.html', alt: 'Mô phỏng auth theo 4 trạng thái: chưa login, đúng team, sai domain, còn session' } },
   { id: 'async', name: 'Async / Await', nameEn: 'Bất đồng bộ', letter: 'A', groups: ['code'], definition: 'Cách xử lý tác vụ mất thời gian mà không làm đơ cả trang. Giống như đặt cà phê mang đi — bạn không đứng chờ, bạn làm việc khác, cà phê xong thì nhận.', example: 'Khi form submit, trang không bị đơ mà hiện loading spinner — đó là async đang chạy ngầm để gửi data lên server.' },
   { id: 'border', name: 'Border', nameEn: 'Viền / Đường kẻ bao quanh', letter: 'B', groups: ['design', 'code'], definition: 'Đường viền bao quanh một element. Gồm 3 thuộc tính: style (kiểu đường), width (độ dày), và color (màu). Border là công cụ quan trọng để phân tách các khối nội dung và tạo điểm nhấn thị giác.', example: 'Prompt: "Thêm viền 1px màu xám nhạt cho các card sản phẩm, riêng card đang được chọn thì đổi viền sang màu cam 2px để làm nổi bật."', related: ['padding', 'radius', 'card'], demo: { kind: 'interactive', src: 'gif-border-demo.html', alt: 'Mô phỏng 4 thuộc tính border: style, width, color và sides' } },
@@ -179,6 +188,7 @@ const deepDiveTermIds = new Set([
   'api',
   'array',
   'auth',
+  'asset',
   'accordion',
   'async',
   'backend',
@@ -293,8 +303,14 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Chỉ cần nhớ 3 mảnh chính: endpoint để gọi đúng chỗ, request là dữ liệu mình gửi đi, response là thứ hệ thống trả về.',
   ],
   auth: [
-    'Auth không chỉ là nút đăng nhập. Nó còn quyết định ai được vào, vào bằng cách nào, và sau khi vào thì được thấy phần gì.',
-    'Với tool nội bộ, rule phổ biến là chỉ cho email công ty truy cập. Với sản phẩm public thì còn có session, logout, và reset mật khẩu.',
+    'Authentication là quá trình xác minh "Bạn là ai?" (VD: Đăng nhập bằng Email/Password).',
+    'Khác với Authorization (Phân quyền): "Bạn được làm gì?".',
+    'Trong Vibecode, AI sẽ giúp bạn dựng form Login và kết nối với các dịch vụ xác thực như Firebase hoặc Clerk.'
+  ],
+  asset: [
+    'Asset không chỉ là "ảnh", nó là mọi thứ cấu thành nên phần nhìn và phần tiếng của sản phẩm.',
+    'Sử dụng SVG cho icon để không bị vỡ nét (vector), sử dụng WebP cho ảnh chụp để dung lượng nhẹ.',
+    'Quản lý asset khoa học (chia folder images, fonts, icons) giúp AI dễ dàng tìm đúng file để gắn vào code.'
   ],
   accordion: [
     'Accordion là giải pháp tuyệt vời để quản lý nội dung dài mà không làm người dùng bị choáng ngợp (information overload).',
