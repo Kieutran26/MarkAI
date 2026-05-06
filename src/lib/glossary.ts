@@ -43,7 +43,17 @@ export const terms: GlossaryTerm[] = [
   { id: 'button', name: 'Button', nameEn: 'Nút bấm / Button', letter: 'B', groups: ['design', 'code'], definition: 'Thành phần giao diện cơ bản nhất để kích hoạt một hành động. Một nút bấm tốt cần thể hiện rõ mức độ quan trọng (variant), kích thước phù hợp (size), và phản hồi trạng thái (state) ngay lập tức khi người dùng tương tác.', example: 'Prompt: "Làm một nút Primary màu cam cho việc Đăng ký, và một nút Ghost cho việc Hủy bỏ để giảm sự chú ý."', related: ['variant', 'state', 'hover', 'primary-color'], demo: { kind: 'interactive', src: 'gif-button-demo.html', alt: 'Mô phỏng 4 khía cạnh của Button: Variants, Sizes, Icons và States' } },
   { id: 'button-group', name: 'Button Group', nameEn: 'Nhóm nút bấm', letter: 'B', groups: ['design', 'code'], definition: 'Một nhóm các nút bấm có liên quan được đặt cạnh nhau thành một khối duy nhất. Button group giúp gom nhóm các hành động tương đồng, tiết kiệm diện tích và tạo ra sự phân cấp rõ ràng giữa các lựa chọn.', example: 'Prompt: "Tạo một button group gồm 3 nút: Ngày, Tuần, Tháng để lọc báo cáo, mặc định chọn Ngày."', related: ['button', 'segmented-button', 'split-buttons', 'variant'], demo: { kind: 'interactive', src: 'gif-buttongroup-demo.html', alt: 'Mô phỏng 4 loại button group: Segmented, Toggle, Icon và Mixed Action' } },
   { id: 'breadcrumb', name: 'Breadcrumb', nameEn: 'Đường dẫn liên kết', letter: 'B', groups: ['design', 'code'], definition: 'Một dãy các liên kết giúp người dùng xác định vị trí hiện tại của mình trong cấu trúc website và dễ dàng quay lại các cấp cao hơn. Giúp công cụ tìm kiếm hiểu cấu trúc website và hiển thị kết quả tìm kiếm thân thiện hơn. Giảm tỷ lệ thoát khuyến khích người dùng khám phá thêm các danh mục khác', example: 'Trang "MacBook Pro 14" có breadcrumb: Home > Laptops > MacBook Pro 14. Marketer dùng breadcrumb để tăng UX và giúp Google hiểu cấu trúc trang tốt hơn (SEO).', related: ['url', 'hierarchy', 'navigation'], demo: { kind: 'interactive', src: 'gif-breadcrumb-demo.html', alt: 'Mô phỏng các loại breadcrumb: Hierarchy, Location, Multi-level và Collapsed' } },
-  { id: 'cache', name: 'Cache', nameEn: 'Bộ nhớ đệm', letter: 'C', groups: ['infra'], definition: 'Lưu tạm kết quả để lần sau truy cập nhanh hơn. Giống như nhớ đường đi — lần đầu phải tra bản đồ, lần sau thuộc rồi đi liền.', example: '"Tôi sửa web rồi nhưng người dùng vẫn thấy phiên bản cũ" → Vấn đề cache. Xóa cache hoặc hard reload (Ctrl+Shift+R).' },
+  { 
+    id: 'cache', 
+    name: 'Cache', 
+    nameEn: 'Bộ nhớ đệm', 
+    letter: 'C', 
+    groups: ['infra'], 
+    definition: 'Lưu tạm dữ liệu vào một nơi "gần" bạn nhất để lần sau truy cập nhanh hơn. Giống như việc bạn để sẵn gia vị trên kệ bếp thay vì mỗi lần nấu ăn đều phải chạy ra siêu thị để mua.', 
+    example: '"Tại sao tôi vừa sửa web mà load lại vẫn thấy bản cũ?" → Do trình duyệt đang lấy bản cũ từ Cache. Bạn cần "Clear Cache" hoặc nhấn Ctrl+Shift+R để lấy bản mới nhất từ Server.',
+    related: ['performance', 'latency', 'server'],
+    demo: { kind: 'interactive', src: 'gif-cache-demo.html', alt: 'Mô phỏng quy trình Cache Miss (lần đầu chậm) và Cache Hit (lần sau nhanh)' }
+  },
   { id: 'card', name: 'Card', nameEn: 'Thẻ nội dung', letter: 'C', groups: ['design', 'code'], definition: 'Một khối chứa thông tin — gom ảnh, tiêu đề, mô tả, nút hành động vào một hộp. Card giúp phân tách các nội dung khác nhau trên trang một cách rõ ràng và dễ quét.', example: 'Product card cho sản phẩm, Blog card cho bài viết. Card là đơn vị cơ bản nhất để build các trang kiểu Dashboard hoặc Landing Page.', related: ['component', 'padding', 'radius'], demo: { kind: 'interactive', src: 'gif-card-demo.html', alt: 'Mô phỏng các loại card: Basic, Horizontal, Featured, Stats' } },
   { id: 'cli', name: 'CLI', nameEn: 'Command Line Interface', letter: 'C', groups: ['infra'], definition: 'Giao diện dòng lệnh — bạn gõ lệnh chữ thay vì click. Terminal trong VS Code là CLI. Claude Code chạy trên CLI.', example: 'Gõ "npm run dev" vào terminal = CLI đang chạy lệnh khởi động server. Chỉ cần biết copy-paste đúng lệnh.', related: ['terminal', 'npm'] },
   { id: 'checkbox', name: 'Checkbox', nameEn: 'Ô đánh dấu', letter: 'C', groups: ['design', 'code'], definition: 'Thành phần giao diện cho phép người dùng chọn một hoặc nhiều tùy chọn từ một danh sách. Khác với Radio Button (chỉ chọn 1), Checkbox hỗ trợ đa lựa chọn và có 3 trạng thái chính: rỗng, chọn, và nửa-chọn (indeterminate) - thường dùng cho logic cha-con.', example: 'Prompt: "Thêm một danh sách checkbox để người dùng chọn các kênh marketing: \'Facebook\', \'Google Ads\', \'TikTok\', mặc định là chưa chọn cái nào, nếu chọn hết thì checkbox \'Tất cả\' ở trên cùng cũng tự sáng."', related: ['radio', 'form', 'boolean', 'state'], demo: { kind: 'interactive', src: 'gif-checkbox-demo.html', alt: 'Mô phỏng 4 khía cạnh của checkbox: trạng thái, nhãn, danh sách và form' } },
@@ -274,6 +284,7 @@ const deepDiveTermIds = new Set([
   'split-buttons',
   'segmented-button',
   'navigation',
+  'cache',
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -301,6 +312,12 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
   api: [
     'Nghĩ theo kiểu marketer: API là chiếc ống nối giữa tool A và tool B, để dữ liệu tự chảy thay vì bạn copy tay.',
     'Chỉ cần nhớ 3 mảnh chính: endpoint để gọi đúng chỗ, request là dữ liệu mình gửi đi, response là thứ hệ thống trả về.',
+  ],
+  cache: [
+    'Cache là "vũ khí bí mật" của hiệu năng. Một website load nhanh không phải vì server nó mạnh, mà vì nó biết cách không gọi server quá nhiều.',
+    'Cache Miss: Xảy ra khi dữ liệu chưa có trong cache. Hệ thống phải đi "đường xa" tới server. Đây là lúc người dùng phải chờ đợi.',
+    'Cache Hit: Xảy ra khi dữ liệu đã sẵn sàng. Tốc độ lúc này gần như tức thì (từ vài giây xuống còn vài mili giây).',
+    'Vấn đề của Cache: "There are only two hard things in Computer Science: cache invalidation and naming things." - Khó nhất là biết khi nào nên xóa bản cũ để lấy bản mới.',
   ],
   auth: [
     'Authentication là quá trình xác minh "Bạn là ai?" (VD: Đăng nhập bằng Email/Password).',
