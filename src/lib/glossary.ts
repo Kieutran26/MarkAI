@@ -84,7 +84,17 @@ export const terms: GlossaryTerm[] = [
   { id: 'gutter', name: 'Gutter', nameEn: 'Khoảng cách giữa các cột/hàng', letter: 'G', groups: ['design', 'code'], definition: 'Khoảng trống giữa các cột (column) hoặc các hàng (row) trong một hệ thống lưới (grid). Gutter giúp phân tách các thành phần nội dung, tạo "khoảng thở" và giúp giao diện trông chuyên nghiệp, dễ đọc hơn.', example: 'Prompt: "Tăng gutter giữa các cột lên 24px để nội dung thoáng hơn, còn gutter giữa các hàng thì để 32px để phân tách rõ các section."', related: ['grid', 'spacing', 'padding', 'margin'], demo: { kind: 'interactive', src: 'gif-gutter-demo.html', alt: 'Mô phỏng các loại gutter: Column, Row, Nested và Responsive' } },
   { id: 'github', name: 'GitHub', nameEn: 'Cloud lưu code', letter: 'G', groups: ['workflow'], definition: 'Nơi lưu code trên cloud — giống Google Drive nhưng cho code, với full lịch sử thay đổi. Vercel kết nối với GitHub để tự động deploy mỗi khi bạn push code mới.', example: 'Flow chuẩn: code trên máy → commit → push lên GitHub → Vercel tự build và deploy → có link live trong vài phút.', related: ['git', 'vercel'] },
   { id: 'hook', name: 'Hook', nameEn: 'Móc chức năng React', letter: 'H', groups: ['code'], definition: 'Hàm đặc biệt trong React để quản lý state và side effects. useEffect, useState là các hook phổ biến. AI tự viết hook cho bạn.', example: '"Khi trang load, tự động fetch danh sách sản phẩm từ database" — AI dùng useEffect hook để chạy logic này khi component mount.' },
-  { id: 'hosting', name: 'Hosting', nameEn: 'Lưu trữ web', letter: 'H', groups: ['infra'], definition: 'Dịch vụ cung cấp "chỗ ở" cho web của bạn trên internet. Vercel là hosting miễn phí tốt nhất cho Next.js project. Không cần biết server — Vercel lo hết.', example: '"Tôi cần hosting cho web campaign" → Dùng Vercel (miễn phí, dễ setup, tự động deploy từ GitHub).', related: ['vercel', 'deploy'] },
+  {
+    id: 'hosting',
+    name: 'Hosting',
+    nameEn: 'Lưu trữ web',
+    letter: 'H',
+    groups: ['infra'],
+    definition: 'Dịch vụ cung cấp "chỗ ở" cho web của bạn trên internet. Vercel là hosting miễn phí tốt nhất cho Next.js project. Không cần biết server — Vercel lo hết.',
+    example: '"Tôi cần hosting cho web campaign" → Dùng Vercel (miễn phí, dễ setup, tự động deploy từ GitHub).',
+    related: ['vercel', 'deploy'],
+    demo: { kind: 'interactive', src: 'gif-hosting-demo.html', alt: 'Mô phỏng Hosting và quy trình vận hành' }
+  },
   { id: 'inference', name: 'Inference', nameEn: 'AI xử lý và trả kết quả', letter: 'I', groups: ['ai'], definition: 'Quá trình AI nhận input (prompt của bạn) và tạo ra output (text, code, ảnh). Mỗi lần bạn hỏi AI và AI trả lời = một lần inference chạy trên server.', example: '"Inference cost" = chi phí mỗi lần gọi AI API. Khi dùng Claude API trong app, mỗi user message = một lần inference = một khoản phí nhỏ.' },
   { id: 'interface', name: 'Interface (UI)', nameEn: 'Giao diện người dùng', letter: 'I', groups: ['design'], definition: 'Tất cả những gì người dùng nhìn và chạm vào — không phải logic phía sau. UI tốt là UI mà người dùng không cần đọc hướng dẫn cũng dùng được.', example: '"Tôi muốn redesign UI của tool nội bộ" → Prompt: mô tả layout mới bạn muốn, AI viết component React với giao diện đó.' },
   { id: 'import', name: 'Import / Export', nameEn: 'Chia sẻ code giữa file', letter: 'I', groups: ['code'], definition: 'Cách một file dùng code từ file khác. Import = lấy vào. Export = chia sẻ ra. Khi AI tạo component, nó thường có "export default" để các trang khác import vào.', example: '"import Button from \'./Button\'" = trang này đang dùng component Button từ file Button.tsx. Nếu thiếu dòng này, component sẽ không hoạt động.' },
@@ -293,7 +303,8 @@ const deepDiveTermIds = new Set([
   'git',
   'commit',
   'context',
-  'ssl'
+  'ssl',
+  'hosting'
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -746,6 +757,11 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     '4 khái niệm then chốt: Repository (nhà kho), Commit (checkpoint), Branch (nhánh), và Remote (bản trên mây).',
     '"Đã push chưa?" là câu hỏi quan trọng nhất khi Vibe Coding. Code trên máy bạn (local) chưa ai thấy. Push lên GitHub (remote) rồi thì AI mới có thể hỗ trợ deploy hoặc review tiếp.',
     'Trong Vibe Coding, bạn thực tế chỉ cần hiểu 2 lệnh: git clone (tải về lần đầu) và git pull (cập nhật mới nhất). Các lệnh phức tạp khác sẽ do AI Agent xử lý cho bạn.',
+  ],
+  hosting: [
+    'Hosting là "mảnh đất" kỹ thuật nơi website của bạn cư trú. Nếu không có hosting, code của bạn chỉ là những tập tin nằm im trên máy tính cá nhân.',
+    'Sự khác biệt giữa Local và Hosting: Local là môi trường riêng tư của bạn, Hosting là môi trường công cộng 24/7.',
+    'Downtime (Thời gian chết): Là khi hosting gặp sự cố và người dùng không thể truy cập web. Với marketer, downtime đồng nghĩa với việc lãng phí ngân sách quảng cáo (ads đốt vào trang lỗi).',
   ],
 };
 

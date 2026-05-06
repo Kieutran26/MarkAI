@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thực hành: Hosting Flow — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #1a1a18;
+    --bg-card: #222220;
+    --bg-elevated: #2a2a27;
+    --fg: #e8e4dd;
+    --fg-muted: #8a877e;
+    --accent: #E88C2E;
+    --accent-dim: #a84e22;
+    --amber: #c9922a;
+    --green: #6b8f5e;
+    --red: #b54a4a;
+    --border: #3a3a36;
+    --border-light: #4a4a45;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Space Grotesk', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--sans);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+    background-size: 24px 24px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+
+
+
+  /* Practice section */
+  .practice-section {
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    margin-top: 20px;
+    overflow: visible;
+  }
+  .practice-section .section-head {
+    border-bottom: 1px solid var(--border);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255,255,255,.02);
+  }
+  .practice-section .section-head h2 {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+  .practice-body {
+    padding: 24px 20px 32px;
+  }
+  .practice-goal {
+    font-size: 13px;
+    color: var(--fg-muted);
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+  .practice-goal strong { color: var(--fg); }
+
+  /* Flow steps */
+  .flow-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 20px;
+  }
+  .flow-step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    cursor: pointer;
+    transition: border-color .2s, background .2s;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .flow-step + .flow-step { border-top: none; }
+  .flow-step:hover {
+    border-color: var(--border-light);
+    background: var(--bg-elevated);
+  }
+  .flow-step.active {
+    border-color: var(--accent);
+    background: rgba(232,140,46,.06);
+  }
+  .flow-step.done {
+    border-color: var(--green);
+    background: rgba(107,143,94,.06);
+  }
+  .flow-step .step-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .flow-step .step-text {
+    flex: 1;
+    font-size: 13px;
+  }
+  .flow-step .step-status {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .flow-step.done .step-status { color: var(--green); }
+
+  /* Result screen */
+  .result-screen {
+    border: 1px solid var(--border);
+    background: var(--bg);
+    padding: 32px 20px;
+    margin-bottom: 20px;
+    min-height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: border-color .4s;
+  }
+  .result-status {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  .result-msg {
+    font-size: 16px;
+    font-weight: 500;
+    margin-bottom: 12px;
+    max-width: 400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .result-detail {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--fg-muted);
+  }
+
+  .reset-btn {
+    width: 100%;
+    padding: 12px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--fg-muted);
+    font-family: var(--mono);
+    font-size: 12px;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .reset-btn:hover {
+    border-color: var(--fg-muted);
+    color: var(--fg);
+  }
+
+  .hint {
+    margin-top: 24px;
+    font-size: 12px;
+    color: var(--fg-muted);
+    font-style: italic;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+
+  <!-- ===== PRACTICE: Chọn bước trong flow ===== -->
+  <section class="practice-section" aria-label="Thực hành">
+    <div class="section-head">
+      <h2>Thực hành</h2>
+    </div>
+    <div class="practice-body">
+      <div class="practice-goal">
+        <strong>Mục tiêu:</strong> Click từng bước theo đúng thứ tự flow deploy → thấy ngay trạng thái thay đổi trên "màn hình user". Nếu click sai thứ tự → không có gì xảy ra.
+      </div>
+
+      <div class="flow-steps" id="flowSteps">
+        <div class="flow-step" data-order="1">
+          <span class="step-num">01</span>
+          <span class="step-text">Dev push code lên Git</span>
+          <span class="step-status">chờ</span>
+        </div>
+        <div class="flow-step" data-order="2">
+          <span class="step-num">02</span>
+          <span class="step-text">CI/CD tự động build & test</span>
+          <span class="step-status">chờ</span>
+        </div>
+        <div class="flow-step" data-order="3">
+          <span class="step-num">03</span>
+          <span class="step-text">Deploy lên hosting (server)</span>
+          <span class="step-status">chờ</span>
+        </div>
+        <div class="flow-step" data-order="4">
+          <span class="step-num">04</span>
+          <span class="step-text">DNS trỏ domain về server</span>
+          <span class="step-status">chờ</span>
+        </div>
+        <div class="flow-step" data-order="5">
+          <span class="step-num">05</span>
+          <span class="step-text">User truy cập website qua URL</span>
+          <span class="step-status">chờ</span>
+        </div>
+      </div>
+
+      <div class="result-screen" id="resultScreen">
+        <div class="result-inner">
+          <div class="result-status" id="resultStatus" style="color:var(--fg-muted);">—</div>
+          <div class="result-msg" id="resultMsg">Click bước 1 để bắt đầu flow deploy</div>
+          <div class="result-detail" id="resultDetail"></div>
+        </div>
+      </div>
+
+      <button class="reset-btn" id="resetBtn">Reset flow</button>
+
+      <div class="hint">Thử click bước 3 trước bước 1 — sẽ thấy không có gì xảy ra. Đó là vì hosting không phải bước đầu, nó cần code được build xong trước.</div>
+    </div>
+  </section>
+</div>
+
+<script>
+  (function() {
+    var steps = document.querySelectorAll('#flowSteps .flow-step');
+    var resultStatus = document.getElementById('resultStatus');
+    var resultMsg = document.getElementById('resultMsg');
+    var resultDetail = document.getElementById('resultDetail');
+    var resultScreen = document.getElementById('resultScreen');
+    var resetBtn = document.getElementById('resetBtn');
+    var currentStep = 0;
+
+    var states = [
+      {
+        status: 'LOCAL',
+        color: 'var(--fg-muted)',
+        msg: 'Code vẫn nằm trên máy dev — chưa ai thấy được',
+        detail: 'Git: chưa push | Build: chưa chạy | Hosting: chưa nhận',
+        borderColor: 'var(--border)'
+      },
+      {
+        status: 'GIT',
+        color: 'var(--amber)',
+        msg: 'Code đã lên Git — nhưng chỉ là lưu trữ, chưa chạy được',
+        detail: 'Git: pushed | Build: chưa chạy | Hosting: chưa nhận',
+        borderColor: 'var(--amber)'
+      },
+      {
+        status: 'BUILDING',
+        color: 'var(--amber)',
+        msg: 'CI/CD đang build & test — kiểm tra code có lỗi không',
+        detail: 'Git: pushed | Build: running... | Hosting: chờ',
+        borderColor: 'var(--amber)'
+      },
+      {
+        status: 'DEPLOYED',
+        color: 'var(--accent)',
+        msg: 'Code đã lên hosting — nhưng chưa có domain, chỉ truy cập qua IP',
+        detail: 'Git: pushed | Build: passed | Hosting: có code, chưa có domain',
+        borderColor: 'var(--accent)'
+      },
+      {
+        status: 'DNS READY',
+        color: 'var(--green)',
+        msg: 'Domain đã trỏ về server — nhưng chưa test xong',
+        detail: 'Git: pushed | Build: passed | Hosting: sẵn sàng | DNS: trỏ xong',
+        borderColor: 'var(--green)'
+      },
+      {
+        status: 'LIVE',
+        color: 'var(--green)',
+        msg: 'User truy cập được rồi — flow hoàn tất',
+        detail: 'mywebsite.com → DNS → Hosting (server) → trả về trang web',
+        borderColor: 'var(--green)'
+      }
+    ];
+
+    function updateUI() {
+      steps.forEach(function(step, i) {
+        var order = parseInt(step.dataset.order);
+        if (order <= currentStep) {
+          step.classList.remove('active');
+          step.classList.add('done');
+          step.querySelector('.step-status').textContent = 'xong';
+        } else if (order === currentStep + 1) {
+          step.classList.remove('done');
+          step.classList.add('active');
+          step.querySelector('.step-status').textContent = 'tiếp';
+        } else {
+          step.classList.remove('done', 'active');
+          step.querySelector('.step-status').textContent = 'chờ';
+        }
+      });
+
+      var s = states[currentStep];
+      resultStatus.textContent = s.status;
+      resultStatus.style.color = s.color;
+      resultMsg.textContent = s.msg;
+      resultDetail.textContent = s.detail;
+      resultScreen.style.borderColor = s.borderColor;
+    }
+
+    steps.forEach(function(step) {
+      step.addEventListener('click', function() {
+        var order = parseInt(this.dataset.order);
+        if (order === currentStep + 1) {
+          currentStep = order;
+          updateUI();
+        }
+      });
+    });
+
+    resetBtn.addEventListener('click', function() {
+      currentStep = 0;
+      updateUI();
+    });
+
+    updateUI();
+  })();
+</script>
+
+</body>
+</html>

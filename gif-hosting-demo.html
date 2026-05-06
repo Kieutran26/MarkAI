@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hosting Demo — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #1a1a18;
+    --bg-card: #222220;
+    --bg-elevated: #2a2a27;
+    --fg: #e8e4dd;
+    --fg-muted: #8a877e;
+    --accent: #E88C2E;
+    --accent-dim: #a84e22;
+    --amber: #c9922a;
+    --green: #6b8f5e;
+    --red: #b54a4a;
+    --border: #3a3a36;
+    --border-light: #4a4a45;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Space Grotesk', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--sans);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 16px;
+  }
+
+  /* Demo Grid Layout */
+  .demo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  @media (max-width: 768px) {
+    .demo-grid { grid-template-columns: 1fr; }
+  }
+
+  /* Component Block */
+  .demo-block {
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .block-head {
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255,255,255,.02);
+  }
+  .block-head h2 {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .block-body {
+    padding: 24px 20px;
+    flex: 1;
+  }
+
+  .insight {
+    background: var(--bg-elevated);
+    border-left: 3px solid var(--accent);
+    padding: 10px 14px;
+    margin-top: auto;
+    font-size: 12px;
+    color: var(--fg-muted);
+    line-height: 1.6;
+    border-top: 1px solid var(--border);
+  }
+  .insight strong { color: var(--fg); }
+
+  /* --- Simulation 1: Local vs Hosting --- */
+  .hosting-visual {
+    display: flex;
+    align-items: stretch;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    min-height: 140px;
+  }
+  .hv-side {
+    flex: 1;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+  .hv-side:first-child { border-right: 1px solid var(--border); }
+  .hv-label { font-family: var(--mono); font-size: 10px; color: var(--fg-muted); text-transform: uppercase; }
+  .hv-note { font-size: 11px; color: var(--fg-muted); text-align: center; }
+
+  .hv-arrow-area {
+    position: relative;
+    width: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .packet-track { position: absolute; width: 100%; height: 1.5px; background: var(--border); }
+  .packet {
+    position: absolute;
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    top: -2.5px;
+    left: 0;
+    box-shadow: 0 0 6px rgba(232,140,46,.5);
+    animation: packetMove 2s ease-in-out infinite;
+    clip-path: polygon(0% 0%, 70% 50%, 0% 100%, 30% 50%); /* Arrow shape */
+  }
+  @keyframes packetMove {
+    0% { left: -10%; opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { left: 110%; opacity: 0; }
+  }
+
+  /* Chevrons on track */
+  .chevron-track {
+    display: flex;
+    gap: 4px;
+    z-index: 1;
+  }
+  .chevron-track span {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-muted);
+    animation: chevPulse 2s infinite;
+  }
+  .chevron-track span:nth-child(2) { animation-delay: 0.2s; }
+  .chevron-track span:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes chevPulse {
+    0%, 100% { opacity: 0.3; color: var(--fg-muted); }
+    50% { opacity: 1; color: var(--accent); }
+  }
+
+  .local-screen {
+    width: 60px; height: 36px; border: 1.5px solid var(--border-light); background: var(--bg-elevated); border-radius: 2px; position: relative; overflow: hidden;
+  }
+  .local-screen::after {
+    content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px;
+    background: var(--accent); transform: scaleX(0); transform-origin: left; animation: screenLoad 3s ease-in-out infinite;
+  }
+  @keyframes screenLoad { 0%, 70% { transform: scaleX(0); } 85% { transform: scaleX(1); } 95%, 100% { transform: scaleX(0); } }
+  
+  .server-rack { width: 48px; display: flex; flex-direction: column; gap: 3px; }
+  .server-unit { height: 10px; border: 1px solid var(--border-light); background: var(--bg-elevated); display: flex; align-items: center; padding: 0 4px; gap: 2px; }
+  .server-led { width: 3px; height: 3px; border-radius: 50%; animation: ledBlink 1.5s ease-in-out infinite; }
+  .server-led.on { background: var(--green); }
+  .server-led.warn { background: var(--amber); animation-delay: .5s; }
+  @keyframes ledBlink { 0%, 100% { opacity: 1; } 50% { opacity: .4; } }
+
+  /* --- Simulation 2: DevOps Flow --- */
+  .devops-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .dev-step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 12px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+  }
+  .dev-step .step-icon {
+    width: 24px; height: 24px; border: 1px solid var(--border-light);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 9px; color: var(--fg-muted);
+  }
+  .dev-step.active .step-icon { border-color: var(--accent); color: var(--accent); background: rgba(232,140,46,.1); }
+  .dev-step .step-label { font-family: var(--mono); font-size: 11px; color: var(--fg-muted); }
+  .dev-step.active .step-label { color: var(--fg); }
+
+  /* --- Simulation 3: Downtime --- */
+  .downtime-vis {
+    border: 1px solid var(--border);
+    background: var(--bg);
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .dt-row { display: flex; align-items: center; gap: 10px; opacity: .6; }
+  .dt-row.crash { opacity: 1; color: var(--red); }
+  .dt-status { width: 8px; height: 8px; border-radius: 50%; background: var(--green); }
+  .dt-row.crash .dt-status { background: var(--red); animation: redPulse 1s infinite; }
+  @keyframes redPulse { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.5); opacity: .5; } }
+  .dt-msg { font-family: var(--mono); font-size: 11px; }
+
+  /* --- Simulation 4: Types --- */
+  .types-list { display: flex; flex-direction: column; gap: 8px; }
+  .type-item {
+    padding: 8px 12px; border: 1px solid var(--border); background: var(--bg);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .type-name { font-family: var(--mono); font-size: 11px; color: var(--accent); }
+  .type-price { font-family: var(--mono); font-size: 10px; color: var(--amber); }
+
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+  <div class="demo-grid">
+    
+    <!-- Block 1: Bản chất Hosting -->
+    <div class="demo-block">
+      <div class="block-head">
+        <h2>Bản chất: Thuê "đất" cho web</h2>
+      </div>
+      <div class="block-body">
+        <div class="hosting-visual">
+          <div class="hv-side">
+            <div class="hv-label">Local</div>
+            <div class="local-screen"></div>
+            <div class="hv-note">Máy tính cá nhân</div>
+          </div>
+        <div class="hv-arrow-area">
+          <div class="packet-track"></div>
+          <div class="packet"></div>
+          <div class="chevron-track">
+            <span>&gt;</span><span>&gt;</span><span>&gt;</span>
+          </div>
+        </div>
+          <div class="hv-side">
+            <div class="hv-label">Hosting</div>
+            <div class="server-rack">
+              <div class="server-unit"><div class="server-led on"></div><div class="server-led on"></div></div>
+              <div class="server-unit"><div class="server-led on"></div><div class="server-led warn"></div></div>
+            </div>
+            <div class="hv-note">Máy chủ Internet</div>
+          </div>
+        </div>
+      </div>
+      <div class="insight">
+        <strong>Giống như thuê nhà:</strong> Bạn xây web trên máy mình (Local), nhưng để mọi người vào xem, bạn phải chuyển nó lên một máy chủ luôn mở cửa (Hosting).
+      </div>
+    </div>
+
+    <!-- Block 2: DevOps Flow -->
+    <div class="demo-block">
+      <div class="block-head">
+        <h2>Quy trình (DevOps Flow)</h2>
+      </div>
+      <div class="block-body">
+        <div class="devops-flow">
+          <div class="dev-step"><div class="step-icon">{ }</div><div class="step-label">Viết code xong</div></div>
+          <div class="dev-step"><div class="step-icon">GIT</div><div class="step-label">Push lên GitHub</div></div>
+          <div class="dev-step active"><div class="step-icon">H</div><div class="step-label">Deploy lên Hosting (Vercel)</div></div>
+          <div class="dev-step"><div class="step-icon">WWW</div><div class="step-label">User truy cập URL</div></div>
+        </div>
+      </div>
+      <div class="insight">
+        <strong>Hosting là bước cuối:</strong> Code đúng nhưng chưa deploy lên hosting thì user vẫn không thấy gì. "Đã push" chưa đồng nghĩa với "Đã live".
+      </div>
+    </div>
+
+    <!-- Block 3: Rủi ro Downtime -->
+    <div class="demo-block">
+      <div class="block-head">
+        <h2>Rủi ro: Khi Hosting sập</h2>
+      </div>
+      <div class="block-body">
+        <div class="downtime-vis">
+          <div class="dt-row"><div class="dt-status"></div><div class="dt-msg">09:00 - Web Live</div></div>
+          <div class="dt-row crash"><div class="dt-status"></div><div class="dt-msg">10:15 - Server Down (Error 502)</div></div>
+          <div class="dt-row"><div class="dt-status"></div><div class="dt-msg">10:20 - Ads vẫn chạy -> Mất tiền</div></div>
+        </div>
+      </div>
+      <div class="insight">
+        <strong>Hosting chết = Đốt tiền Ads:</strong> Khi thấy lỗi 5xx, việc đầu tiên là tắt ads. Đừng đợi dev fix xong mới hành động.
+      </div>
+    </div>
+
+    <!-- Block 4: Các loại Hosting -->
+    <div class="demo-block">
+      <div class="block-head">
+        <h2>Các loại phổ biến</h2>
+      </div>
+      <div class="block-body">
+        <div class="types-list">
+          <div class="type-item"><span class="type-name">Shared Hosting</span><span class="type-price">$2-5/mo</span></div>
+          <div class="type-item"><span class="type-name">VPS (Phân vùng riêng)</span><span class="type-price">$10-50/mo</span></div>
+          <div class="type-item" style="border-color:var(--accent); background:rgba(232,140,46,.05);">
+            <span class="type-name">Cloud (Vercel)</span><span class="type-price">Free / Auto-scale</span>
+          </div>
+        </div>
+      </div>
+      <div class="insight">
+        <strong>Vercel là Cloud Hosting:</strong> Nó tự co giãn theo traffic và phân phối web toàn cầu để load nhanh nhất.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

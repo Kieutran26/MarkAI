@@ -1,0 +1,1363 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hosting — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #1a1a18;
+    --bg-card: #222220;
+    --bg-elevated: #2a2a27;
+    --fg: #e8e4dd;
+    --fg-muted: #8a877e;
+    --accent: #d4622b;
+    --accent-dim: #a84e22;
+    --amber: #c9922a;
+    --green: #6b8f5e;
+    --red: #b54a4a;
+    --border: #3a3a36;
+    --border-light: #4a4a45;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Space Grotesk', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--sans);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+    background-size: 24px 24px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 32px 20px 64px;
+  }
+
+  /* Header */
+  .term-header {
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 24px;
+    margin-bottom: 40px;
+  }
+  .term-header .label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+  .term-header h1 {
+    font-size: clamp(36px, 6vw, 56px);
+    font-weight: 700;
+    letter-spacing: -2px;
+    line-height: 1;
+  }
+  .term-header .group-tag {
+    display: inline-block;
+    margin-top: 12px;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--fg-muted);
+    border: 1px solid var(--border);
+    padding: 3px 8px;
+  }
+
+  /* Section block */
+  .shape-section {
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    margin-bottom: 28px;
+    overflow: hidden;
+  }
+  .shape-section .section-head {
+    border-bottom: 1px solid var(--border);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .shape-section .section-head h2 {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+  .shape-section .section-head .num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--fg-muted);
+  }
+  .section-body {
+    padding: 28px 20px;
+  }
+
+  .insight {
+    background: var(--bg-elevated);
+    border-left: 3px solid var(--accent);
+    padding: 12px 16px;
+    margin-top: 20px;
+    font-size: 13px;
+    color: var(--fg-muted);
+    line-height: 1.6;
+  }
+  .insight strong { color: var(--fg); }
+
+  /* ===== SECTION 1: Hosting là gì ===== */
+  .hosting-visual {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    overflow: hidden;
+  }
+  @media (max-width: 600px) {
+    .hosting-visual { flex-direction: column; }
+  }
+  .hv-side {
+    flex: 1;
+    padding: 20px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-height: 160px;
+    position: relative;
+  }
+  .hv-side:first-child {
+    border-right: 1px solid var(--border);
+  }
+  @media (max-width: 600px) {
+    .hv-side:first-child { border-right: none; border-bottom: 1px solid var(--border); }
+  }
+  .hv-label {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--fg-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .hv-icon {
+    font-size: 40px;
+    opacity: .6;
+    line-height: 1;
+  }
+  .hv-note {
+    font-size: 12px;
+    color: var(--fg-muted);
+    text-align: center;
+  }
+
+  /* Flow arrow giữa hai bên */
+  .hv-arrow-area {
+    position: relative;
+    width: 80px;
+    min-height: 60px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  @media (max-width: 600px) {
+    .hv-arrow-area { width: 100%; height: 50px; }
+  }
+
+  /* Data packet animation */
+  .packet-track {
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background: var(--border);
+  }
+  @media (max-width: 600px) {
+    .packet-track { width: 2px; height: 100%; }
+  }
+  .packet {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    background: var(--accent);
+    top: -3px;
+    left: 0;
+    box-shadow: 0 0 8px rgba(212,98,43,.5);
+    animation: packetMove 2.4s ease-in-out infinite;
+  }
+  @media (max-width: 600px) {
+    .packet { left: -3px; top: 0; animation-name: packetMoveV; }
+  }
+  .packet:nth-child(2) { animation-delay: .8s; opacity: .6; }
+  .packet:nth-child(3) { animation-delay: 1.6s; opacity: .4; }
+
+  @keyframes packetMove {
+    0% { left: -8px; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { left: calc(100% + 8px); opacity: 0; }
+  }
+  @keyframes packetMoveV {
+    0% { top: -8px; opacity: 0; }
+    10% { opacity: 1; }
+    90% { opacity: 1; }
+    100% { top: calc(100% + 8px); opacity: 0; }
+  }
+
+  /* Arrow chevron */
+  .arrow-chevrons {
+    display: flex;
+    gap: 4px;
+    z-index: 1;
+  }
+  @media (max-width: 600px) {
+    .arrow-chevrons { flex-direction: column; }
+  }
+  .arrow-chevrons span {
+    font-family: var(--mono);
+    font-size: 14px;
+    color: var(--fg-muted);
+    animation: chevPulse 2.4s ease-in-out infinite;
+  }
+  .arrow-chevrons span:nth-child(2) { animation-delay: .15s; }
+  .arrow-chevrons span:nth-child(3) { animation-delay: .3s; }
+  @keyframes chevPulse {
+    0%, 100% { opacity: .3; }
+    50% { opacity: 1; color: var(--accent); }
+  }
+
+  /* Máy tính local */
+  .local-screen {
+    width: 80px;
+    height: 50px;
+    border: 1.5px solid var(--border-light);
+    background: var(--bg-elevated);
+    border-radius: 2px;
+    position: relative;
+    overflow: hidden;
+  }
+  .local-screen::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%; height: 3px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: screenLoad 3s ease-in-out infinite;
+  }
+  @keyframes screenLoad {
+    0%, 70% { transform: scaleX(0); }
+    85% { transform: scaleX(1); }
+    95%, 100% { transform: scaleX(0); }
+  }
+  .local-base {
+    width: 40px;
+    height: 4px;
+    background: var(--border-light);
+    border-radius: 0 0 2px 2px;
+  }
+
+  /* Server rack */
+  .server-rack {
+    width: 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .server-unit {
+    height: 12px;
+    border: 1px solid var(--border-light);
+    background: var(--bg-elevated);
+    display: flex;
+    align-items: center;
+    padding: 0 4px;
+    gap: 3px;
+  }
+  .server-led {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    animation: ledBlink 1.5s ease-in-out infinite;
+  }
+  .server-led.on { background: var(--green); }
+  .server-led.warn { background: var(--amber); animation-delay: .5s; }
+  .server-led.off { background: var(--border); animation: none; }
+  @keyframes ledBlink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .4; }
+  }
+
+  /* ===== SECTION 2: 3 loại hosting ===== */
+  .types-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+  }
+  @media (max-width: 640px) {
+    .types-grid { grid-template-columns: 1fr; }
+  }
+  .type-card {
+    border: 1px solid var(--border);
+    background: var(--bg);
+    padding: 20px 14px 16px;
+    position: relative;
+    transition: border-color .3s;
+    cursor: default;
+  }
+  .type-card:hover { border-color: var(--accent); }
+  .type-card .type-name {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .type-card .type-price {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--amber);
+    margin-bottom: 14px;
+  }
+  .type-card .type-visual {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+    position: relative;
+  }
+
+  /* Shared hosting visual — nhiều user cùng 1 server */
+  .shared-vis {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+  }
+  .shared-users {
+    display: flex;
+    gap: 6px;
+  }
+  .shared-user {
+    width: 22px;
+    height: 22px;
+    border: 1px solid var(--border-light);
+    background: var(--bg-elevated);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 8px;
+    color: var(--fg-muted);
+    animation: sharedBounce 2s ease-in-out infinite;
+  }
+  .shared-user:nth-child(2) { animation-delay: .3s; }
+  .shared-user:nth-child(3) { animation-delay: .6s; }
+  .shared-user:nth-child(4) { animation-delay: .9s; }
+  @keyframes sharedBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-3px); }
+  }
+  .shared-arrow-down {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-muted);
+    animation: chevPulse 2s ease-in-out infinite;
+  }
+  .shared-server {
+    width: 50px;
+    height: 22px;
+    border: 1.5px solid var(--accent);
+    background: rgba(212,98,43,.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+  }
+  .shared-server .mini-led {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--green);
+    animation: ledBlink 1.2s ease-in-out infinite;
+  }
+
+  /* VPS visual — partition */
+  .vps-vis {
+    width: 70px;
+    height: 50px;
+    border: 1.5px solid var(--accent);
+    background: rgba(212,98,43,.05);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 1.5px;
+    padding: 1.5px;
+    position: relative;
+  }
+  .vps-part {
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 7px;
+    color: var(--fg-muted);
+    transition: background .4s;
+  }
+  .vps-part.mine {
+    background: rgba(212,98,43,.15);
+    color: var(--accent);
+    border-color: var(--accent-dim);
+    animation: vpsGlow 2s ease-in-out infinite;
+  }
+  @keyframes vpsGlow {
+    0%, 100% { background: rgba(212,98,43,.12); }
+    50% { background: rgba(212,98,43,.22); }
+  }
+
+  /* Cloud visual */
+  .cloud-vis {
+    position: relative;
+    width: 90px;
+    height: 56px;
+  }
+  .cloud-node {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border: 1px solid var(--border-light);
+    background: var(--bg-elevated);
+    border-radius: 50%;
+    animation: cloudFloat 3s ease-in-out infinite;
+  }
+  .cloud-node.active {
+    border-color: var(--accent);
+    background: rgba(212,98,43,.2);
+    box-shadow: 0 0 6px rgba(212,98,43,.3);
+  }
+  @keyframes cloudFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+  }
+  .cloud-line {
+    position: absolute;
+    height: 1px;
+    background: var(--border);
+    transform-origin: left center;
+  }
+  .cloud-line.active-line {
+    background: var(--accent-dim);
+    animation: linePulse 2s ease-in-out infinite;
+  }
+  @keyframes linePulse {
+    0%, 100% { opacity: .4; }
+    50% { opacity: 1; }
+  }
+
+  .type-card .type-desc {
+    font-size: 12px;
+    color: var(--fg-muted);
+    line-height: 1.5;
+  }
+  .type-card .type-tag {
+    display: inline-block;
+    margin-top: 8px;
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 6px;
+    border: 1px solid var(--border);
+    color: var(--fg-muted);
+  }
+
+  /* ===== SECTION 3: Khi hosting chết ===== */
+  .downtime-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .dt-step {
+    display: flex;
+    align-items: stretch;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    transition: border-color .3s;
+    min-height: 72px;
+  }
+  .dt-step + .dt-step { border-top: none; }
+  .dt-step:hover { border-color: var(--accent); z-index: 1; position: relative; }
+  .dt-time {
+    width: 72px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--fg-muted);
+    border-right: 1px solid var(--border);
+    background: var(--bg-elevated);
+  }
+  .dt-content {
+    flex: 1;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .dt-status-dot {
+    width: 10px;
+    height: 10px;
+    flex-shrink: 0;
+    border-radius: 50%;
+  }
+  .dt-status-dot.green { background: var(--green); box-shadow: 0 0 6px rgba(107,143,94,.4); }
+  .dt-status-dot.red { background: var(--red); box-shadow: 0 0 6px rgba(181,74,74,.4); animation: redPulse 1s ease-in-out infinite; }
+  .dt-status-dot.amber { background: var(--amber); box-shadow: 0 0 6px rgba(201,146,42,.4); animation: amberPulse 1.5s ease-in-out infinite; }
+  @keyframes redPulse {
+    0%, 100% { box-shadow: 0 0 6px rgba(181,74,74,.4); }
+    50% { box-shadow: 0 0 14px rgba(181,74,74,.7); }
+  }
+  @keyframes amberPulse {
+    0%, 100% { box-shadow: 0 0 6px rgba(201,146,42,.3); }
+    50% { box-shadow: 0 0 12px rgba(201,146,42,.6); }
+  }
+  .dt-text { flex: 1; }
+  .dt-text .dt-title {
+    font-size: 13px;
+    color: var(--fg);
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+  .dt-text .dt-desc {
+    font-size: 11px;
+    color: var(--fg-muted);
+  }
+
+  /* Crash line animation */
+  .crash-line {
+    position: absolute;
+    left: 72px;
+    right: 0;
+    top: 50%;
+    height: 1px;
+    background: var(--red);
+    transform: scaleX(0);
+    transform-origin: left;
+    animation: crashSpread 4s ease-in-out infinite;
+    z-index: 2;
+    pointer-events: none;
+  }
+  @keyframes crashSpread {
+    0%, 20% { transform: scaleX(0); opacity: 0; }
+    25% { opacity: 1; }
+    40% { transform: scaleX(1); opacity: 1; }
+    60% { transform: scaleX(1); opacity: .3; }
+    80%, 100% { transform: scaleX(0); opacity: 0; }
+  }
+
+  /* Error screen */
+  .error-screen-mini {
+    width: 56px;
+    height: 36px;
+    border: 1px solid var(--border-light);
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
+    flex-shrink: 0;
+  }
+  .error-screen-mini .err-icon {
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 700;
+    animation: errorFlash 4s ease-in-out infinite;
+  }
+  @keyframes errorFlash {
+    0%, 24% { color: var(--fg-muted); }
+    30%, 55% { color: var(--red); }
+    60%, 100% { color: var(--fg-muted); }
+  }
+  .error-screen-mini .err-text {
+    font-family: var(--mono);
+    font-size: 6px;
+    color: var(--fg-muted);
+    letter-spacing: .5px;
+  }
+
+  /* ===== SECTION 4: Hosting và DevOps flow ===== */
+  .devops-flow {
+    display: flex;
+    align-items: stretch;
+    gap: 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .devops-node {
+    flex: 1;
+    min-width: 100px;
+    padding: 16px 10px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    position: relative;
+    transition: border-color .3s, background .3s;
+    cursor: default;
+  }
+  .devops-node:hover {
+    border-color: var(--accent);
+    background: var(--bg-elevated);
+  }
+  .devops-node .node-icon {
+    width: 36px;
+    height: 36px;
+    border: 1.5px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--fg-muted);
+    transition: border-color .4s, color .4s, background .4s;
+  }
+  .devops-node.active-node .node-icon {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(212,98,43,.1);
+  }
+  .devops-node .node-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-muted);
+    text-align: center;
+    line-height: 1.3;
+  }
+  .devops-node .node-sub {
+    font-size: 10px;
+    color: var(--fg-muted);
+    opacity: .6;
+    text-align: center;
+  }
+
+  /* Connector arrow giữa các node */
+  .devops-conn {
+    width: 32px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .devops-conn::before {
+    content: '';
+    width: 100%;
+    height: 1.5px;
+    background: var(--border);
+    position: relative;
+  }
+  .devops-conn .conn-dot {
+    width: 5px;
+    height: 5px;
+    background: var(--accent);
+    position: absolute;
+    animation: connFlow 2s linear infinite;
+    box-shadow: 0 0 4px rgba(212,98,43,.4);
+  }
+  .devops-conn:nth-child(2) .conn-dot { animation-delay: 0s; }
+  .devops-conn:nth-child(4) .conn-dot { animation-delay: .4s; }
+  .devops-conn:nth-child(6) .conn-dot { animation-delay: .8s; }
+  .devops-conn:nth-child(8) .conn-dot { animation-delay: 1.2s; }
+  @keyframes connFlow {
+    0% { left: -5px; opacity: 0; }
+    15% { opacity: 1; }
+    85% { opacity: 1; }
+    100% { left: calc(100% - 2px); opacity: 0; }
+  }
+
+  /* Hosting zone highlight */
+  .devops-node.hosting-zone {
+    border-color: var(--accent-dim);
+    background: rgba(212,98,43,.04);
+  }
+  .hosting-bracket {
+    position: absolute;
+    bottom: -20px;
+    left: 10%;
+    right: 10%;
+    height: 14px;
+    border: 1px solid var(--accent-dim);
+    border-top: none;
+    pointer-events: none;
+  }
+  .hosting-bracket::after {
+    content: 'HOSTING';
+    position: absolute;
+    bottom: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--accent);
+    letter-spacing: 1.5px;
+  }
+
+  /* ===== Practice section ===== */
+  .practice-section {
+    border: 2px solid var(--accent);
+    background: var(--bg-card);
+    margin-top: 40px;
+    overflow: visible;
+  }
+  .practice-section .section-head {
+    border-bottom: 2px solid var(--accent);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(212,98,43,.06);
+  }
+  .practice-section .section-head h2 {
+    font-family: var(--mono);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+  }
+  .practice-body {
+    padding: 24px 20px 32px;
+  }
+  .practice-goal {
+    font-size: 13px;
+    color: var(--fg-muted);
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+  .practice-goal strong { color: var(--fg); }
+
+  /* Flow steps */
+  .flow-steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 20px;
+  }
+  .flow-step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    cursor: pointer;
+    transition: border-color .2s, background .2s;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .flow-step + .flow-step { border-top: none; }
+  .flow-step:hover {
+    border-color: var(--border-light);
+    background: var(--bg-elevated);
+  }
+  .flow-step.active {
+    border-color: var(--accent);
+    background: rgba(212,98,43,.06);
+  }
+  .flow-step.done {
+    border-color: var(--green);
+    background: rgba(107,143,94,.06);
+  }
+  .flow-step .step-num {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--fg-muted);
+    width: 24px;
+    flex-shrink: 0;
+  }
+  .flow-step.active .step-num { color: var(--accent); }
+  .flow-step.done .step-num { color: var(--green); }
+  .flow-step .step-text {
+    font-size: 13px;
+    color: var(--fg-muted);
+    flex: 1;
+  }
+  .flow-step.active .step-text { color: var(--fg); }
+  .flow-step.done .step-text { color: var(--green); }
+  .flow-step .step-status {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 8px;
+    border: 1px solid var(--border);
+    color: var(--fg-muted);
+    flex-shrink: 0;
+  }
+  .flow-step.active .step-status {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: rgba(212,98,43,.1);
+  }
+  .flow-step.done .step-status {
+    border-color: var(--green);
+    color: var(--green);
+    background: rgba(107,143,94,.1);
+  }
+
+  /* Result screen */
+  .result-screen {
+    border: 1px solid var(--border);
+    background: var(--bg);
+    min-height: 140px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color .3s;
+    position: relative;
+    overflow: hidden;
+  }
+  .result-inner {
+    text-align: center;
+    padding: 24px;
+  }
+  .result-status {
+    font-family: var(--mono);
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    transition: color .3s;
+  }
+  .result-msg {
+    font-size: 13px;
+    color: var(--fg-muted);
+    line-height: 1.5;
+  }
+  .result-detail {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--fg-muted);
+    opacity: .7;
+    margin-top: 8px;
+  }
+
+  /* Reset button */
+  .reset-btn {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--fg-muted);
+    cursor: pointer;
+    margin-top: 16px;
+    transition: border-color .2s, color .2s;
+  }
+  .reset-btn:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .hint {
+    font-size: 11px;
+    color: var(--fg-muted);
+    opacity: .7;
+    margin-top: 14px;
+    font-style: italic;
+  }
+  .hint::before {
+    content: '>';
+    font-family: var(--mono);
+    color: var(--accent);
+    margin-right: 6px;
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--border);
+    margin: 40px 0;
+    position: relative;
+  }
+  .divider::after {
+    content: '';
+    position: absolute;
+    left: 0; top: 0;
+    width: 60px; height: 1px;
+    background: var(--accent);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-wrap">
+
+  <!-- Header -->
+  <header class="term-header">
+    <div class="label">Thuật ngữ / Infra</div>
+    <h1>Hosting</h1>
+    <span class="group-tag">infra</span>
+  </header>
+
+  <!-- ===== SECTION 1: Hosting là gì ===== -->
+  <section class="shape-section" aria-label="Hosting là gì">
+    <div class="section-head">
+      <h2>Hosting là gì</h2>
+      <span class="num">01 / 04</span>
+    </div>
+    <div class="section-body">
+      <div class="hosting-visual">
+        <div class="hv-side">
+          <div class="hv-label">Máy của bạn</div>
+          <div class="local-screen"></div>
+          <div class="local-base"></div>
+          <div class="hv-note">Code nằm ở đây<br>khi dev viết</div>
+        </div>
+        <div class="hv-arrow-area">
+          <div class="packet-track">
+            <div class="packet"></div>
+            <div class="packet"></div>
+            <div class="packet"></div>
+          </div>
+          <div class="arrow-chevrons">
+            <span>›</span><span>›</span><span>›</span>
+          </div>
+        </div>
+        <div class="hv-side">
+          <div class="hv-label">Máy chủ (Server)</div>
+          <div class="server-rack">
+            <div class="server-unit"><span class="server-led on"></span><span class="server-led on"></span><span class="server-led off"></span></div>
+            <div class="server-unit"><span class="server-led on"></span><span class="server-led warn"></span><span class="server-led on"></span></div>
+            <div class="server-unit"><span class="server-led on"></span><span class="server-led on"></span><span class="server-led on"></span></div>
+            <div class="server-unit"><span class="server-led warn"></span><span class="server-led on"></span><span class="server-led off"></span></div>
+          </div>
+          <div class="hv-note">Code chạy ở đây 24/7<br>người dùng truy cập vào đây</div>
+        </div>
+      </div>
+      <div class="insight">
+        <strong>Hosting = thuê chỗ đặt code trên máy của người khác.</strong> Máy bạn tắt thì web tắt. Máy chủ (server) thì chạy 24/7. Khi dev nói "chưa deploy lên hosting" → code vẫn chỉ nằm trên máy dev, ai khác chưa xem được.
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECTION 2: 3 loại hosting ===== -->
+  <section class="shape-section" aria-label="3 loại hosting">
+    <div class="section-head">
+      <h2>3 loại hosting phổ biến</h2>
+      <span class="num">02 / 04</span>
+    </div>
+    <div class="section-body">
+      <div class="types-grid">
+        <!-- Shared -->
+        <div class="type-card">
+          <div class="type-name">Shared Hosting</div>
+          <div class="type-price">~30k — 150k/tháng</div>
+          <div class="type-visual">
+            <div class="shared-vis">
+              <div class="shared-users">
+                <div class="shared-user">A</div>
+                <div class="shared-user">B</div>
+                <div class="shared-user">C</div>
+                <div class="shared-user">D</div>
+              </div>
+              <div class="shared-arrow-down">↓ ↓ ↓ ↓</div>
+              <div class="shared-server">
+                <span class="mini-led"></span>
+                <span class="mini-led"></span>
+                <span class="mini-led"></span>
+              </div>
+            </div>
+          </div>
+          <div class="type-desc">Nhiều web cùng chia sẻ 1 server. Nếu web bên cạnh bị quá tải → web bạn cũng chậm theo.</div>
+          <span class="type-tag">WordPress entry</span>
+        </div>
+        <!-- VPS -->
+        <div class="type-card">
+          <div class="type-name">VPS</div>
+          <div class="type-price">~200k — 800k/tháng</div>
+          <div class="type-visual">
+            <div class="vps-vis">
+              <div class="vps-part">A</div>
+              <div class="vps-part mine">Bạn</div>
+              <div class="vps-part">B</div>
+              <div class="vps-part">C</div>
+            </div>
+          </div>
+          <div class="type-desc">Server bị chia thành các "căn hộ" riêng. Phần của bạn độc lập — không bị ảnh hưởng bởi hàng xóm.</div>
+          <span class="type-tag">mid-scale app</span>
+        </div>
+        <!-- Cloud -->
+        <div class="type-card">
+          <div class="type-name">Cloud</div>
+          <div class="type-price">~theo lượng dùng</div>
+          <div class="type-visual">
+            <div class="cloud-vis" id="cloudVis">
+              <!-- Nodes sẽ được tạo bằng JS -->
+            </div>
+          </div>
+          <div class="type-desc">Không phải 1 máy cố định. Nhiều máy kết nối lại, tự mở rộng khi nhiều người vào, thu lại khi ít.</div>
+          <span class="type-tag">Vercel, AWS, GCP</span>
+        </div>
+      </div>
+      <div class="insight">
+        <strong>Chọn sai loại hosting = phí tiền hoặc web chậm.</strong> Landing page đơn giản thì Shared đủ. App có traffic biến động mạnh thì mới cần Cloud. Dev chọn hosting dựa trên dự đoán traffic — marketer biết điều này để không hỏi "tại sao không dùng cái rẻ nhất".
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECTION 3: Khi hosting chết ===== -->
+  <section class="shape-section" aria-label="Khi hosting chết">
+    <div class="section-head">
+      <h2>Khi hosting "chết"</h2>
+      <span class="num">03 / 04</span>
+    </div>
+    <div class="section-body">
+      <div class="downtime-flow">
+        <div class="dt-step" style="position:relative;">
+          <div class="dt-time">T+0s</div>
+          <div class="dt-content">
+            <div class="dt-status-dot green"></div>
+            <div class="dt-text">
+              <div class="dt-title">Website bình thường</div>
+              <div class="dt-desc">User truy cập, server xử lý, trả về trang web</div>
+            </div>
+          </div>
+        </div>
+        <div class="dt-step" style="position:relative;">
+          <div class="crash-line"></div>
+          <div class="dt-time">T+1s</div>
+          <div class="dt-content">
+            <div class="dt-status-dot red"></div>
+            <div class="dt-text">
+              <div class="dt-title">Server sập đột ngột</div>
+              <div class="dt-desc">RAM đầy, CPU quá tải, hoặc nhà cung cấp cắt điện</div>
+            </div>
+            <div class="error-screen-mini">
+              <span class="err-icon">5xx</span>
+              <span class="err-text">SERVER ERROR</span>
+            </div>
+          </div>
+        </div>
+        <div class="dt-step">
+          <div class="dt-time">T+5s</div>
+          <div class="dt-content">
+            <div class="dt-status-dot red"></div>
+            <div class="dt-text">
+              <div class="dt-title">User thấy lỗi, ads vẫn chạy</div>
+              <div class="dt-desc">Tiền ads bị đốt vào trang lỗi — mất khách, mất tiền thật</div>
+            </div>
+          </div>
+        </div>
+        <div class="dt-step">
+          <div class="dt-time">T+2ph</div>
+          <div class="dt-content">
+            <div class="dt-status-dot amber"></div>
+            <div class="dt-text">
+              <div class="dt-title">Dev nhận thông báo, bắt đầu kiểm tra</div>
+              <div class="dt-desc">Kiểm tra log → xác định nguyên nhân → restart server hoặc chuyển hosting</div>
+            </div>
+          </div>
+        </div>
+        <div class="dt-step">
+          <div class="dt-time">T+15ph</div>
+          <div class="dt-content">
+            <div class="dt-status-dot green"></div>
+            <div class="dt-text">
+              <div class="dt-title">Khôi phục xong</div>
+              <div class="dt-desc">Nhưng nếu chạy ads lúc sập → tiền đã mất không lấy lại được</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="insight">
+        <strong>Hosting chết = ads đốt vào vùng trống.</strong> Khi thấy lỗi 5xx, việc đầu tiên là tắt ads — không phải đợi dev fix xong. marketer biết đọc mã lỗi giúp phản ứng đúng tốc độ, thay vì gửi screenshot cho dev rồi chờ.
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SECTION 4: Hosting trong flow DevOps ===== -->
+  <section class="shape-section" aria-label="Hosting trong DevOps">
+    <div class="section-head">
+      <h2>Hosting trong flow DevOps</h2>
+      <span class="num">04 / 04</span>
+    </div>
+    <div class="section-body">
+      <div class="devops-flow">
+        <div class="devops-node active-node">
+          <div class="node-icon">{ }</div>
+          <div class="node-label">Viết code</div>
+          <div class="node-sub">local</div>
+        </div>
+        <div class="devops-conn"><div class="conn-dot"></div></div>
+        <div class="devops-node">
+          <div class="node-icon">GIT</div>
+          <div class="node-label">Push lên Git</div>
+          <div class="node-sub">version control</div>
+        </div>
+        <div class="devops-conn"><div class="conn-dot"></div></div>
+        <div class="devops-node">
+          <div class="node-icon">CI</div>
+          <div class="node-label">Build & Test</div>
+          <div class="node-sub">tự động</div>
+        </div>
+        <div class="devops-conn"><div class="conn-dot"></div></div>
+        <div class="devops-node hosting-zone" style="position:relative;padding-bottom:36px;">
+          <div class="node-icon" style="border-color:var(--accent);color:var(--accent);background:rgba(212,98,43,.1);">H</div>
+          <div class="node-label" style="color:var(--accent);">Deploy lên Hosting</div>
+          <div class="node-sub">server chạy 24/7</div>
+          <div class="hosting-bracket"></div>
+        </div>
+        <div class="devops-conn"><div class="conn-dot"></div></div>
+        <div class="devops-node">
+          <div class="node-icon">URL</div>
+          <div class="node-label">User truy cập</div>
+          <div class="node-sub">live</div>
+        </div>
+      </div>
+      <div class="insight">
+        <strong>Hosting là bước cuối cùng trước khi user thấy sản phẩm.</strong> Code đúng 100% nhưng không deploy lên hosting → bằng không. Khi dev nói "đã push rồi", hỏi rõ "đã deploy lên hosting chưa" vì hai việc đó khác nhau.
+      </div>
+    </div>
+  </section>
+
+  <!-- Divider -->
+  <div class="divider"></div>
+
+  <!-- ===== PRACTICE: Chọn bước trong flow ===== -->
+  <section class="practice-section" aria-label="Thực hành">
+    <div class="section-head">
+      <h2>Thực hành</h2>
+    </div>
+    <div class="practice-body">
+      <div class="practice-goal">
+        <strong>Mục tiêu:</strong> Click từng bước theo đúng thứ tự flow deploy → thấy ngay trạng thái thay đổi trên "màn hình user". Nếu click sai thứ tự → không có gì xảy ra.
+      </div>
+
+      <div class="flow-steps" id="flowSteps">
+        <div class="flow-step" data-order="1">
+          <span class="step-num">01</span>
+          <span class="step-text">Dev push code lên Git</span>
+          <span class="step-status">chờ</span>
+        </div>
+        <div class="flow-step" data-order="2">
+          <span class="step-num">02</span>
+          <span class="step-text">CI/CD tự động build & test</span>
+          <span class="step-status">chờ</span>
+        </div>
+        <div class="flow-step" data-order="3">
+          <span class="step-num">03</span>
+          <span class="step-text">Deploy lên hosting (server)</span>
+          <span class="step-status">chờ</span>
+        </div>
+        <div class="flow-step" data-order="4">
+          <span class="step-num">04</span>
+          <span class="step-text">DNS trỏ domain về server</span>
+          <span class="step-status">chờ</span>
+        </div>
+        <div class="flow-step" data-order="5">
+          <span class="step-num">05</span>
+          <span class="step-text">User truy cập website qua URL</span>
+          <span class="step-status">chờ</span>
+        </div>
+      </div>
+
+      <div class="result-screen" id="resultScreen">
+        <div class="result-inner">
+          <div class="result-status" id="resultStatus" style="color:var(--fg-muted);">—</div>
+          <div class="result-msg" id="resultMsg">Click bước 1 để bắt đầu flow deploy</div>
+          <div class="result-detail" id="resultDetail"></div>
+        </div>
+      </div>
+
+      <button class="reset-btn" id="resetBtn">Reset flow</button>
+
+      <div class="hint">Thử click bước 3 trước bước 1 — sẽ thấy không có gì xảy ra. Đó là vì hosting không phải bước đầu, nó cần code được build xong trước.</div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  // === Cloud nodes visualization ===
+  (function() {
+    var container = document.getElementById('cloudVis');
+    if (!container) return;
+    // 8 nodes với vị trí cố định
+    var nodes = [
+      { x: 10, y: 15, active: true },
+      { x: 35, y: 5, active: false },
+      { x: 60, y: 12, active: true },
+      { x: 78, y: 28, active: false },
+      { x: 5, y: 38, active: false },
+      { x: 28, y: 30, active: true },
+      { x: 55, y: 35, active: false },
+      { x: 75, y: 48, active: true }
+    ];
+    // Lines kết nối một số node
+    var lines = [
+      [0, 1], [1, 2], [2, 3], [0, 5], [5, 2], [5, 6], [6, 7], [4, 5]
+    ];
+
+    // Vẽ lines trước
+    lines.forEach(function(pair) {
+      var n1 = nodes[pair[0]], n2 = nodes[pair[1]];
+      var dx = n2.x - n1.x, dy = n2.y - n1.y;
+      var len = Math.sqrt(dx * dx + dy * dy);
+      var angle = Math.atan2(dy, dx) * 180 / Math.PI;
+      var isActive = n1.active && n2.active;
+      var line = document.createElement('div');
+      line.className = 'cloud-line' + (isActive ? ' active-line' : '');
+      line.style.left = n1.x + 'px';
+      line.style.top = n1.y + 'px';
+      line.style.width = len + 'px';
+      line.style.transform = 'rotate(' + angle + 'deg)';
+      container.appendChild(line);
+    });
+
+    // Vẽ nodes
+    nodes.forEach(function(n, i) {
+      var el = document.createElement('div');
+      el.className = 'cloud-node' + (n.active ? ' active' : '');
+      el.style.left = n.x + 'px';
+      el.style.top = n.y + 'px';
+      el.style.animationDelay = (i * 0.3) + 's';
+      container.appendChild(el);
+    });
+  })();
+
+  // === Practice: Flow steps ===
+  (function() {
+    var steps = document.querySelectorAll('#flowSteps .flow-step');
+    var resultStatus = document.getElementById('resultStatus');
+    var resultMsg = document.getElementById('resultMsg');
+    var resultDetail = document.getElementById('resultDetail');
+    var resultScreen = document.getElementById('resultScreen');
+    var resetBtn = document.getElementById('resetBtn');
+    var currentStep = 0;
+
+    var states = [
+      {
+        status: 'LOCAL',
+        color: 'var(--fg-muted)',
+        msg: 'Code vẫn nằm trên máy dev — chưa ai thấy được',
+        detail: 'Git: chưa push | Build: chưa chạy | Hosting: chưa nhận',
+        borderColor: 'var(--border)'
+      },
+      {
+        status: 'GIT',
+        color: 'var(--amber)',
+        msg: 'Code đã lên Git — nhưng chỉ là lưu trữ, chưa chạy được',
+        detail: 'Git: pushed | Build: chưa chạy | Hosting: chưa nhận',
+        borderColor: 'var(--amber)'
+      },
+      {
+        status: 'BUILDING',
+        color: 'var(--amber)',
+        msg: 'CI/CD đang build & test — kiểm tra code có lỗi không',
+        detail: 'Git: pushed | Build: running... | Hosting: chờ',
+        borderColor: 'var(--amber)'
+      },
+      {
+        status: 'DEPLOYED',
+        color: 'var(--accent)',
+        msg: 'Code đã lên hosting — nhưng chưa có domain, chỉ truy cập qua IP',
+        detail: 'Git: pushed | Build: passed | Hosting: có code, chưa có domain',
+        borderColor: 'var(--accent)'
+      },
+      {
+        status: 'DNS READY',
+        color: 'var(--green)',
+        msg: 'Domain đã trỏ về server — nhưng chưa test xong',
+        detail: 'Git: pushed | Build: passed | Hosting: sẵn sàng | DNS: trỏ xong',
+        borderColor: 'var(--green)'
+      },
+      {
+        status: 'LIVE',
+        color: 'var(--green)',
+        msg: 'User truy cập được rồi — flow hoàn tất',
+        detail: 'mywebsite.com → DNS → Hosting (server) → trả về trang web',
+        borderColor: 'var(--green)'
+      }
+    ];
+
+    function updateUI() {
+      steps.forEach(function(step, i) {
+        var order = parseInt(step.dataset.order);
+        if (order <= currentStep) {
+          step.classList.remove('active');
+          step.classList.add('done');
+          step.querySelector('.step-status').textContent = 'xong';
+        } else if (order === currentStep + 1) {
+          step.classList.remove('done');
+          step.classList.add('active');
+          step.querySelector('.step-status').textContent = 'tiếp';
+        } else {
+          step.classList.remove('done', 'active');
+          step.querySelector('.step-status').textContent = 'chờ';
+        }
+      });
+
+      var s = states[currentStep];
+      resultStatus.textContent = s.status;
+      resultStatus.style.color = s.color;
+      resultMsg.textContent = s.msg;
+      resultDetail.textContent = s.detail;
+      resultScreen.style.borderColor = s.borderColor;
+    }
+
+    steps.forEach(function(step) {
+      step.addEventListener('click', function() {
+        var order = parseInt(this.dataset.order);
+        if (order === currentStep + 1) {
+          currentStep = order;
+          updateUI();
+        }
+        // Click sai thứ tự → không làm gì (như đã mô tả)
+      });
+    });
+
+    resetBtn.addEventListener('click', function() {
+      currentStep = 0;
+      updateUI();
+    });
+
+    // Khởi tạo
+    updateUI();
+  })();
+</script>
+
+</body>
+</html>
