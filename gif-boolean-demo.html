@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boolean — Vibecode Glossary</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root{
+            --bg:#141413;--bg-card:#1c1c1a;--fg:#e8e0d4;--muted:#6e6a63;
+            --accent:#d97706;--accent-dim:rgba(217,119,6,.12);
+            --accent-glow:rgba(217,119,6,.25);--border:#2e2c28;--border-hi:#3e3b35;
+            --slate:#33312d;--cream:#f5f0e8;--green:#22c55e;--red:#ef4444;
+            --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+        }
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        body{
+            background:var(--bg);color:var(--fg);font-family:var(--sans);
+            min-height:100vh;-webkit-font-smoothing:antialiased;
+            background-image:
+                linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+                linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+            background-size:20px 20px;
+        }
+        /* Grid */
+        .g4{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:12px 16px 0;max-width:920px;margin:0 auto}
+
+        /* Card */
+        .cd{background:var(--bg-card);border:1px solid var(--border);position:relative;overflow:hidden}
+        .cd::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 0%,rgba(217,119,6,.04) 0%,transparent 60%);pointer-events:none}
+        .cd-n{position:absolute;top:10px;right:12px;font-family:var(--mono);font-size:9px;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:2px 7px;letter-spacing:1.5px;z-index:5}
+        .cd-l{font-family:var(--mono);font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:2px;padding:14px 14px 2px;position:relative}
+        .cd-t{font-size:15px;font-weight:700;color:var(--cream);padding:2px 14px 10px;position:relative}
+        .cd-d{padding:0 14px 8px;height:230px;position:relative;display:flex;align-items:center;justify-content:center}
+        .cd-i{font-family:var(--mono);font-size:10px;color:var(--muted);padding:10px 14px 13px;border-top:1px solid var(--border);line-height:1.6;position:relative}
+        .cd-i em{color:var(--accent);font-style:normal}
+
+        /* Cursor giả */
+        .fc{
+            position:absolute;width:14px;height:14px;border:2px solid var(--accent);
+            border-radius:50%;pointer-events:none;z-index:20;opacity:0;
+            transition:left .4s cubic-bezier(.4,0,.2,1),top .4s cubic-bezier(.4,0,.2,1),opacity .2s;
+            box-shadow:0 0 10px var(--accent-glow);
+        }
+        .fc.show{opacity:1}
+        .fc::after{
+            content:'';position:absolute;inset:3px;background:var(--accent);
+            border-radius:50%;animation:cpulse .5s ease-out forwards;opacity:0;
+        }
+        @keyframes cpulse{0%{transform:scale(0);opacity:.6}100%{transform:scale(2.2);opacity:0}}
+
+        /* === Concept: Light Switch === */
+        .sw-wrap{display:flex;flex-direction:column;align-items:center;gap:15px}
+        .bulb{
+            width:60px;height:60px;border-radius:50% 50% 40% 40%;
+            border:2px solid var(--border-hi);background:var(--bg);
+            display:flex;align-items:center;justify-content:center;
+            font-size:24px;color:var(--muted);transition:all .3s;
+            position:relative;
+        }
+        .bulb.on{
+            background:var(--accent);color:var(--bg);
+            box-shadow:0 0 40px var(--accent-glow);border-color:var(--accent);
+        }
+        .bulb-base{
+            width:30px;height:12px;background:var(--border-hi);
+            border-radius:0 0 4px 4px;margin-top:-2px;
+        }
+        .sw-btn{
+            width:40px;height:60px;background:var(--slate);
+            border:2px solid var(--border-hi);border-radius:4px;
+            position:relative;padding:4px;cursor:pointer;
+        }
+        .sw-rocker{
+            width:100%;height:50%;background:var(--border-hi);
+            border-radius:2px;transition:transform .2s;
+        }
+        .sw-btn.on .sw-rocker{transform:translateY(100%);background:var(--accent)}
+        .val-lbl{font-family:var(--mono);font-size:14px;font-weight:700;letter-spacing:1px}
+        .val-lbl.true{color:var(--accent)}
+        .val-lbl.false{color:var(--muted)}
+
+        /* === UI Toggles === */
+        .ui-list{display:flex;flex-direction:column;gap:12px;width:100%;max-width:200px}
+        .ui-row{display:flex;align-items:center;justify-content:space-between}
+        .tg{
+            width:34px;height:18px;background:var(--slate);border-radius:20px;
+            padding:2px;position:relative;transition:background .2s;
+        }
+        .tg.on{background:var(--accent)}
+        .tg-knob{
+            width:14px;height:14px;background:var(--fg);border-radius:50%;
+            transition:transform .2s;
+        }
+        .tg.on .tg-knob{transform:translateX(16px)}
+        .ui-lbl{font-size:12px;color:var(--fg)}
+        .ui-sub{font-size:9px;color:var(--muted);font-family:var(--mono);display:block}
+        .heart-btn{font-size:18px;color:var(--muted);transition:all .2s;cursor:pointer}
+        .heart-btn.on{color:var(--accent)}
+
+        /* === Logic AND/OR === */
+        .log-wrap{display:flex;flex-direction:column;gap:10px;width:100%}
+        .log-row{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--fg)}
+        .log-box{width:85px;height:40px;padding:0 4px;border:1px solid #333;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;text-align:center;color:var(--muted);transition:all .2s;line-height:1.1;word-break:break-word}
+        .log-box.on{border-color:var(--accent);color:var(--accent);background:rgba(217,119,6,0.1)}
+        .log-res{
+            margin-left:auto;padding:4px 8px;border:1px dashed var(--border-hi);
+            color:var(--muted);transition:all .2s;min-width:80px;text-align:center;font-size:11px;
+        }
+        .log-res.on{border:1px solid var(--accent);color:var(--accent);background:var(--accent-dim)}
+
+        /* === Interface change === */
+        .if-mock{
+            width:100%;max-width:240px;height:160px;background:var(--bg);
+            border:1px solid var(--border);border-radius:8px;position:relative;overflow:hidden;
+        }
+        .if-header{
+            height:30px;background:var(--bg-card);border-bottom:1px solid var(--border);
+            display:flex;align-items:center;padding:0 10px;justify-content:space-between;
+        }
+        .if-menu{
+            position:absolute;top:30px;right:0;width:100px;background:var(--bg-card);
+            border-left:1px solid var(--border);border-bottom:1px solid var(--border);
+            transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);
+            padding:8px;display:flex;flex-direction:column;gap:5px;
+        }
+        .if-menu.open{transform:translateX(0)}
+        .if-line{height:4px;background:var(--slate);border-radius:2px;width:100%}
+        .if-btn{width:16px;height:16px;border:1px solid var(--border);border-radius:2px;display:flex;flex-direction:column;gap:2px;padding:3px;align-items:center;justify-content:center}
+        .if-btn span{width:100%;height:1.5px;background:var(--muted)}
+
+        @media(max-width:620px){
+            .g4{grid-template-columns:1fr}
+        }
+    </style>
+</head>
+<body>
+
+<main>
+    <div class="g4">
+        <!-- 1. Basic Concept -->
+        <section class="cd" aria-label="Boolean Concept">
+            <span class="cd-n">LOOP</span>
+            <div class="cd-l">Khía cạnh 01</div>
+            <h2 class="cd-t">Bật hoặc Tắt</h2>
+            <div class="cd-d" id="d1">
+                <div class="sw-wrap">
+                    <div class="bulb" id="bulb"><i class="fas fa-lightbulb"></i></div>
+                    <div class="sw-btn" id="swBtn">
+                        <div class="sw-rocker"></div>
+                    </div>
+                    <div class="val-lbl" id="valLbl">false</div>
+                </div>
+            </div>
+            <div class="cd-i">Boolean chỉ có 2 giá trị: <em>true</em> (đúng/bật) hoặc <em>false</em> (sai/tắt). Giống như công tắc đèn.</div>
+        </section>
+
+        <!-- 2. UI Elements -->
+        <section class="cd" aria-label="Boolean in UI">
+            <span class="cd-n">LOOP</span>
+            <div class="cd-l">Khía cạnh 02</div>
+            <h2 class="cd-t">Ứng dụng trong Giao diện</h2>
+            <div class="cd-d" id="d2">
+                <div class="fc" id="c2"></div>
+                <div class="ui-list">
+                    <div class="ui-row">
+                        <div class="ui-lbl">Thông báo<span class="ui-sub">is_enabled</span></div>
+                        <div class="tg" id="tg1"><div class="tg-knob"></div></div>
+                    </div>
+                    <div class="ui-row">
+                        <div class="ui-lbl">Chế độ tối<span class="ui-sub">is_dark_mode</span></div>
+                        <div class="tg" id="tg2"><div class="tg-knob"></div></div>
+                    </div>
+                    <div class="ui-row">
+                        <div class="ui-lbl">Yêu thích<span class="ui-sub">is_liked</span></div>
+                        <div class="heart-btn" id="heart"><i class="far fa-heart"></i></div>
+                    </div>
+                </div>
+            </div>
+            <div class="cd-i">Mọi nút gạt, checkbox hay trạng thái "Like" đều lưu trữ dữ liệu dưới dạng <em>Boolean</em>.</div>
+        </section>
+
+        <!-- 3. Logic AND/OR -->
+        <section class="cd" aria-label="Boolean Logic">
+            <span class="cd-n">LOOP</span>
+            <div class="cd-l">Khía cạnh 03</div>
+            <h2 class="cd-t">Logic Kết hợp</h2>
+            <div class="cd-d" id="d3">
+                <div class="log-wrap">
+                    <div class="log-row">
+                        <div class="log-box" id="a1">Đã nhập</div>
+                        <span>+</span>
+                        <div class="log-box" id="a2">Đúng Pass</div>
+                        <span>=</span>
+                        <div class="log-res" id="r1">Đăng nhập</div>
+                    </div>
+                    <div style="height:10px"></div>
+                    <div class="log-row">
+                        <div class="log-box" id="o1">WiFi</div>
+                        <span>hoặc</span>
+                        <div class="log-box" id="o2">4G</div>
+                        <span>=</span>
+                        <div class="log-res" id="r2">Có Mạng</div>
+                    </div>
+                </div>
+            </div>
+            <div class="cd-i">Logic cơ bản: <em>AND</em> (tất cả phải đúng) và <em>OR</em> (chỉ cần một cái đúng).</div>
+        </section>
+
+        <!-- 4. Visual State -->
+        <section class="cd" aria-label="Boolean Impact">
+            <span class="cd-n">LOOP</span>
+            <div class="cd-l">Khía cạnh 04</div>
+            <h2 class="cd-t">Thay đổi trạng thái</h2>
+            <div class="cd-d" id="d4">
+                <div class="fc" id="c4"></div>
+                <div class="if-mock">
+                    <div class="if-header">
+                        <div style="width:50px" class="if-line"></div>
+                        <div class="if-btn" id="menuBtn"><span></span><span></span><span></span></div>
+                    </div>
+                    <div style="padding:15px;display:flex;flex-direction:column;gap:8px">
+                        <div class="if-line" style="width:80%"></div>
+                        <div class="if-line" style="width:60%"></div>
+                        <div class="if-line" style="width:90%"></div>
+                    </div>
+                    <div class="if-menu" id="sideMenu">
+                        <div class="if-line"></div>
+                        <div class="if-line"></div>
+                        <div class="if-line"></div>
+                    </div>
+                </div>
+                <div style="position:absolute;bottom:10px;left:14px;font-family:var(--mono);font-size:10px;color:var(--accent)" id="menuState">isOpen = false</div>
+            </div>
+            <div class="cd-i">Boolean quyết định <em>hiển thị</em>: Nếu biến là true, hiện menu; nếu false, ẩn đi.</div>
+        </section>
+    </div>
+</main>
+
+<script>
+function moveCur(cur, el, container) {
+    var cr = el.getBoundingClientRect();
+    var pr = container.getBoundingClientRect();
+    cur.style.left = (cr.left - pr.left + cr.width / 2 - 7) + 'px';
+    cur.style.top = (cr.top - pr.top + cr.height / 2 - 7) + 'px';
+    cur.classList.add('show');
+    cur.style.animation = 'none';
+    void cur.offsetWidth;
+    cur.style.animation = '';
+}
+
+// 1. Basic Switch
+(function(){
+    const bulb = document.getElementById('bulb');
+    const btn = document.getElementById('swBtn');
+    const lbl = document.getElementById('valLbl');
+    let on = false;
+    setInterval(() => {
+        on = !on;
+        bulb.classList.toggle('on', on);
+        btn.classList.toggle('on', on);
+        lbl.textContent = on ? 'true' : 'false';
+        lbl.className = 'val-lbl ' + (on ? 'true' : 'false');
+    }, 1500);
+})();
+
+// 2. UI Toggles
+(function(){
+    const wrap = document.getElementById('d2');
+    const cur = document.getElementById('c2');
+    const tgs = [document.getElementById('tg1'), document.getElementById('tg2'), document.getElementById('heart')];
+    let step = 0;
+    setInterval(() => {
+        const el = tgs[step % 3];
+        moveCur(cur, el, wrap);
+        setTimeout(() => {
+            if(el.id === 'heart') {
+                el.classList.toggle('on');
+                const icon = el.querySelector('i');
+                icon.className = el.classList.contains('on') ? 'fas fa-heart' : 'far fa-heart';
+            } else {
+                el.classList.toggle('on');
+            }
+        }, 400);
+        step++;
+    }, 1200);
+})();
+
+// 3. Logic AND/OR
+(function(){
+    const a1 = document.getElementById('a1'), a2 = document.getElementById('a2'), r1 = document.getElementById('r1');
+    const o1 = document.getElementById('o1'), o2 = document.getElementById('o2'), r2 = document.getElementById('r2');
+    let step = 0;
+    setInterval(() => {
+        const s = step % 4;
+        // AND Logic
+        const v1 = s === 1 || s === 3;
+        const v2 = s === 2 || s === 3;
+        a1.classList.toggle('on', v1);
+        a2.classList.toggle('on', v2);
+        r1.classList.toggle('on', v1 && v2);
+        r1.textContent = (v1 && v2) ? 'Đăng nhập!' : '...';
+
+        // OR Logic
+        o1.classList.toggle('on', v1);
+        o2.classList.toggle('on', v2);
+        r2.classList.toggle('on', v1 || v2);
+        r2.textContent = (v1 || v2) ? 'Online' : 'Offline';
+
+        step++;
+    }, 1500);
+})();
+
+// 4. Interface Impact
+(function(){
+    const wrap = document.getElementById('d4');
+    const cur = document.getElementById('c4');
+    const btn = document.getElementById('menuBtn');
+    const menu = document.getElementById('sideMenu');
+    const lbl = document.getElementById('menuState');
+    let open = false;
+    setInterval(() => {
+        moveCur(cur, btn, wrap);
+        setTimeout(() => {
+            open = !open;
+            menu.classList.toggle('open', open);
+            lbl.textContent = 'isOpen = ' + open;
+            lbl.style.color = open ? 'var(--accent)' : 'var(--muted)';
+        }, 400);
+    }, 2000);
+})();
+</script>
+</body>
+</html>
