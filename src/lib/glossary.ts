@@ -55,7 +55,7 @@ export const terms: GlossaryTerm[] = [
     demo: { kind: 'interactive', src: 'gif-cache-demo.html', alt: 'Mô phỏng quy trình Cache Miss (lần đầu chậm) và Cache Hit (lần sau nhanh)' }
   },
   { id: 'card', name: 'Card', nameEn: 'Thẻ nội dung', letter: 'C', groups: ['design', 'code'], definition: 'Một khối chứa thông tin — gom ảnh, tiêu đề, mô tả, nút hành động vào một hộp. Card giúp phân tách các nội dung khác nhau trên trang một cách rõ ràng và dễ quét.', example: 'Product card cho sản phẩm, Blog card cho bài viết. Card là đơn vị cơ bản nhất để build các trang kiểu Dashboard hoặc Landing Page.', related: ['component', 'padding', 'radius'], demo: { kind: 'interactive', src: 'gif-card-demo.html', alt: 'Mô phỏng các loại card: Basic, Horizontal, Featured, Stats' } },
-  { id: 'cli', name: 'CLI', nameEn: 'Command Line Interface', letter: 'C', groups: ['infra'], definition: 'Giao diện dòng lệnh — bạn gõ lệnh chữ thay vì click. Terminal trong VS Code là CLI. Claude Code chạy trên CLI.', example: 'Gõ "npm run dev" vào terminal = CLI đang chạy lệnh khởi động server. Chỉ cần biết copy-paste đúng lệnh.', related: ['terminal', 'npm'] },
+  { id: 'cli', name: 'CLI', nameEn: 'Command Line Interface / Giao diện dòng lệnh', letter: 'C', groups: ['infra', 'workflow'], definition: 'Giao diện dòng lệnh — nơi bạn điều khiển máy tính bằng cách gõ văn bản thay vì click chuột vào các biểu tượng. CLI là "ngôn ngữ gốc" của lập trình viên, giúp thực hiện các tác vụ phức tạp một cách cực kỳ nhanh chóng và chính xác.', example: 'Gõ "npm run dev" vào terminal để khởi động project, hoặc "git push" để đưa code lên server. Marketer không cần gõ giỏi, nhưng cần hiểu các lệnh cơ bản để phối hợp với dev.', related: ['terminal', 'npm', 'workflow', 'git'], demo: { kind: 'interactive', src: 'gif-cli-demo.html', alt: 'Mô phỏng CLI vs GUI, các lệnh phổ biến và workflow' } },
   { id: 'checkbox', name: 'Checkbox', nameEn: 'Ô đánh dấu', letter: 'C', groups: ['design', 'code'], definition: 'Thành phần giao diện cho phép người dùng chọn một hoặc nhiều tùy chọn từ một danh sách. Khác với Radio Button (chỉ chọn 1), Checkbox hỗ trợ đa lựa chọn và có 3 trạng thái chính: rỗng, chọn, và nửa-chọn (indeterminate) - thường dùng cho logic cha-con.', example: 'Prompt: "Thêm một danh sách checkbox để người dùng chọn các kênh marketing: \'Facebook\', \'Google Ads\', \'TikTok\', mặc định là chưa chọn cái nào, nếu chọn hết thì checkbox \'Tất cả\' ở trên cùng cũng tự sáng."', related: ['radio', 'form', 'boolean', 'state'], demo: { kind: 'interactive', src: 'gif-checkbox-demo.html', alt: 'Mô phỏng 4 khía cạnh của checkbox: trạng thái, nhãn, danh sách và form' } },
   { id: 'commit', name: 'Commit', nameEn: 'Lưu checkpoint code', letter: 'C', groups: ['workflow', 'code'], definition: 'Hành động lưu lại một điểm trong lịch sử code. Giống như Save game — bạn có thể quay lại đây bất cứ lúc nào nếu AI làm vỡ project.', example: 'Sau khi hero section chạy ổn: "git commit -m \'hero section done\'". Dù AI có làm hỏng phần sau, bạn vẫn rollback về được.', related: ['git', 'repository'] },
   { id: 'component', name: 'Component', nameEn: 'Khối giao diện tái dùng', letter: 'C', groups: ['code', 'design'], definition: 'Một khối giao diện độc lập, có thể dùng lại nhiều lần. Button, card sản phẩm, navbar, form — đều là component. Thiết kế một lần, dùng ở khắp nơi trong web.', example: '"Tôi có 12 trang web nhưng muốn cùng 1 footer." Đây là lúc dùng Footer component — sửa một chỗ, cập nhật khắp nơi.', related: ['props', 'state'], demo: { kind: 'interactive', src: 'gif-component-demo.html', alt: 'Mô phỏng 4 loại component phổ biến và code minh họa' } },
@@ -285,9 +285,16 @@ const deepDiveTermIds = new Set([
   'segmented-button',
   'navigation',
   'cache',
+  'cli',
 ]);
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
+  cli: [
+    'CLI không phải là thứ gì đó "cổ đại". Ngược lại, nó là công cụ mạnh mẽ nhất của một developer hiện đại. Mọi AI tool như Claude Code hay Cursor đều có thể được điều khiển qua CLI.',
+    'Sức mạnh thực sự của CLI nằm ở tính tự động hóa. Nếu bạn cần tạo 100 thư mục, GUI mất 10 phút click, CLI mất đúng 1 dòng lệnh.',
+    'Đừng hoảng sợ khi thấy màn hình đen chữ trắng (Terminal). Hầu hết thời gian dev chỉ dùng khoảng 5-10 lệnh cơ bản như ls, cd, mkdir, npm, git.',
+    'Hiểu CLI giúp marketer hiểu được "nhịp đập" của dự án. Khi dev nói "đang build" hay "đã push", họ đang gõ những lệnh đó vào CLI.',
+  ],
   button: [
     'Button không chỉ là "cái nút để click". Nó là ngôn ngữ của hành động (Action Language). Mỗi variant truyền tải một thông điệp: Primary = "Làm ngay", Secondary = "Làm sau", Ghost = "Có thể làm".',
     'Hierarchy trong button: Đừng bao giờ để 2 nút Primary cạnh nhau. Nó giống như việc có 2 người cùng hét vào mặt user. Hãy dùng cặp Primary + Secondary hoặc Primary + Ghost.',

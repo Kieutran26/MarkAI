@@ -166,6 +166,8 @@ import assetDemoHtml from '../../gif-asset-demo.html?raw';
 import assetPracticeHtml from '../../gif-asset-practice.html?raw';
 import cacheDemoHtml from '../../gif-cache-demo.html?raw';
 import cachePracticeHtml from '../../gif-cache-practice.html?raw';
+import cliDemoHtml from '../../gif-cli-demo.html?raw';
+import cliPracticeHtml from '../../gif-cli-practice.html?raw';
 
 
 // Final sync for viewport practice update
@@ -268,6 +270,7 @@ export default function GlossaryTermDetailPage() {
       case 'boolean': return booleanDemoHtml;
       case 'asset': return assetDemoHtml;
       case 'cache': return cacheDemoHtml;
+      case 'cli': return cliDemoHtml;
       default: return null;
     }
   };
@@ -354,6 +357,7 @@ export default function GlossaryTermDetailPage() {
       case 'boolean': return booleanPracticeHtml;
       case 'asset': return assetPracticeHtml;
       case 'cache': return cachePracticeHtml;
+      case 'cli': return cliPracticeHtml;
       default: return null;
     }
   };
