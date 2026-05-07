@@ -31,20 +31,30 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
 .sim-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:20px}
 @media(max-width:560px){.sim-grid{grid-template-columns:1fr}}
 
-.sc{background:var(--bg-card);border:1px solid var(--border);cursor:pointer;position:relative;overflow:hidden;transition:border-color .3s,background .3s}
-.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;transform:scaleX(0);transform-origin:left;transition:transform .35s ease;z-index:2}
+.sc{background:var(--bg-card);border:1px solid var(--accent-border);cursor:pointer;position:relative;overflow:hidden;transition:border-color .3s,background .3s}
+.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--be);transform:scaleX(1);transform-origin:left;transition:transform .35s ease;z-index:2}
 .sc:hover{border-color:var(--be-border)}
-.sc.on{border-color:var(--be);background:var(--surface)}
-.sc.on::before{transform:scaleX(1);background:var(--be)}
-.sc[data-color="db"]::before{background:var(--db)}.sc[data-color="db"].on{border-color:var(--db)}
-.sc[data-color="queue"]::before{background:var(--queue)}.sc[data-color="queue"].on{border-color:var(--queue)}
+.sc.on{background:var(--surface)}
+.sc[data-color="db"]::before{background:var(--db)}
+.sc[data-color="queue"]::before{background:var(--queue)}
 
-.sc-head{padding:14px 14px 10px;display:flex;justify-content:space-between;align-items:center}
-.sc-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px}
-.sc-tag{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);transition:color .3s}
-.sc.on .sc-tag{color:var(--be)}
-.sc[data-color="db"].on .sc-tag{color:var(--db)}
-.sc[data-color="queue"].on .sc-tag{color:var(--queue)}
+.sc-head{padding:14px 14px 12px;display:flex;align-items:center;gap:10px}
+.sc-num{
+  font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;
+  color:var(--be);background:var(--be-soft);
+  border:1px solid var(--be-border);padding:1px 6px;border-radius:2px;
+}
+.sc-tag{
+  font-size:14px;font-weight:600;letter-spacing:-.3px;color:var(--fg);
+}
+.sc::after{
+  content:'';position:absolute;top:14px;right:14px;width:5px;height:5px;
+  background:var(--be);border-radius:50%;animation:dp 2.4s ease-in-out infinite;
+}
+@keyframes dp{0%,100%{opacity:.3}50%{opacity:1}}
+.sc.on .sc-tag{color:var(--fg)}
+.sc[data-color="db"]::after{background:var(--db)}
+.sc[data-color="queue"]::after{background:var(--queue)}
 
 .sc-demo{height:210px;padding:0 14px 14px;position:relative;overflow:hidden}
 @media(max-width:560px){.sc-demo{height:190px}}
@@ -94,10 +104,11 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
 .job-box span{font-family:'JetBrains Mono',monospace;font-size:7.5px;font-weight:500}
 .job-label{font-family:'JetBrains Mono',monospace;font-size:6.5px;color:var(--muted);opacity:.5}
 
-.ins{background:var(--surface);border:1px solid var(--border);padding:18px 22px;display:flex;align-items:flex-start;gap:12px;min-height:80px}
-.ins-i{color:var(--be);font-size:13px;margin-top:3px;flex-shrink:0}
-.ins-t{font-size:14px;color:var(--fg);opacity:.85;line-height:1.65;transition:opacity .25s,transform .25s}
-.ins-t.fading{opacity:0;transform:translateY(6px)}
+.ins{
+  margin-top:14px;font-size:11.5px;color:var(--muted);line-height:1.55;
+  padding-left:12px;border-left:2px solid var(--border);
+}
+.ins strong{color:var(--be);font-weight:600}
 </style>
 </head>
 <body>
@@ -105,10 +116,6 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
 <div id="app-root">
   <section aria-label="Mô phỏng backend">
     <div class="sim-grid" id="simGrid"></div>
-    <div class="ins">
-      <i class="fa-solid fa-lightbulb ins-i"></i>
-      <p class="ins-t" id="insT">Nhấn vào một panel để xem backend làm gì ở từng tầng.</p>
-    </div>
   </section>
 </div>
 
@@ -116,109 +123,127 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
 const sims = [
   {
     num:'01', tag:'API Endpoint', color:'',
-    ins:'API Endpoint là "cửa" mà frontend gõ để nói chuyện với backend. Mỗi endpoint là một URL riêng, trả về data dạng JSON. User không thấy endpoint, nhưng mọi nút bấm đều gọi một endpoint.',
-    build(el){
-      el.innerHTML=`<div class="api-shell">
-        <div class="api-line"><span class="api-method get">GET</span><span class="api-path">/api/users</span></div>
-        <div class="api-line" style="padding-left:16px"><span class="api-status">200 OK</span></div>
-        <div class="api-line" style="padding-left:16px"><span class="api-brace">{</span></div>
-        <div class="api-line" style="padding-left:24px"><span class="api-key">"data"</span><span class="api-brace">: [</span></div>
-        <div class="api-line" style="padding-left:32px"><span class="api-brace">{</span><span class="api-key">"id"</span><span class="api-brace">:</span> <span class="api-str">1</span><span class="api-brace">,</span> <span class="api-key">"name"</span><span class="api-brace">:</span> <span class="api-str">"An"</span><span class="api-brace">,</span> <span class="api-key">"email"</span><span class="api-brace">:</span> <span class="api-str">"an@..."</span><span class="api-brace">}</span></div>
-        <div class="api-line" style="padding-left:32px"><span class="api-brace">{</span><span class="api-key">"id"</span><span class="api-brace">:</span> <span class="api-str">2</span><span class="api-brace">,</span> <span class="api-key">"name"</span><span class="api-brace">:</span> <span class="api-str">"Bình"</span><span class="api-brace">}</span></div>
-        <div class="api-line" style="padding-left:24px"><span class="api-brace">]</span></div>
-        <div class="api-line" style="padding-left:16px"><span class="api-brace">}</span></div>
-        <div class="api-line api-req">--- POST /api/users { name: "An" } → 201 Created ---</div>
-      </div>`;
-      setTimeout(()=>{el.querySelectorAll('.api-line').forEach((l,i)=>{setTimeout(()=>l.classList.add('show'),i*80)})},100);
+    ins:'API Endpoint là <strong>"cửa"</strong> để frontend giao tiếp with backend. Trả về data dạng <strong>JSON</strong>.',
+    async build(el){
+      while(true) {
+        el.innerHTML=`<div class="api-shell">
+          <div class="api-line"><span class="api-method get">GET</span><span class="api-path">/api/users</span></div>
+          <div class="api-line" style="padding-left:16px"><span class="api-status">200 OK</span></div>
+          <div class="api-line" style="padding-left:16px"><span class="api-brace">{</span></div>
+          <div class="api-line" style="padding-left:24px"><span class="api-key">"data"</span><span class="api-brace">: [</span></div>
+          <div class="api-line" style="padding-left:32px"><span class="api-brace">{</span><span class="api-key">"id"</span><span class="api-brace">:</span> <span class="api-str">1</span><span class="api-brace">,</span> <span class="api-key">"name"</span><span class="api-brace">:</span> <span class="api-str">"An"</span><span class="api-brace">,</span> <span class="api-key">"email"</span><span class="api-brace">:</span> <span class="api-str">"an@..."</span><span class="api-brace">}</span></div>
+          <div class="api-line" style="padding-left:32px"><span class="api-brace">{</span><span class="api-key">"id"</span><span class="api-brace">:</span> <span class="api-str">2</span><span class="api-brace">,</span> <span class="api-key">"name"</span><span class="api-brace">:</span> <span class="api-str">"Bình"</span><span class="api-brace">}</span></div>
+          <div class="api-line" style="padding-left:24px"><span class="api-brace">]</span></div>
+          <div class="api-line" style="padding-left:16px"><span class="api-brace">}</span></div>
+          <div class="api-line api-req">--- POST /api/users { name: "An" } → 201 Created ---</div>
+        </div>`;
+        const lines = el.querySelectorAll('.api-line');
+        for(let i=0; i<lines.length; i++) {
+          await new Promise(r=>setTimeout(r, 100));
+          lines[i].classList.add('show');
+        }
+        await new Promise(r=>setTimeout(r, 4000));
+      }
     }
   },
   {
     num:'02', tag:'Database Schema', color:'db',
-    ins:'Database là nơi backend lưu mọi thứ — user, đơn hàng, setting. Schema là "bản thiết kế" của database: bảng nào, cột nào, loại data gì. Backend đọc/ghi schema này mỗi khi xử lý request. Sai schema = data hỏng.',
-    build(el){
-      el.innerHTML=`<div class="db-shell">
-        <div class="db-table" id="dt0"><div class="db-table-head"><i class="fa-solid fa-table"></i><span>users</span></div>
-          <div class="db-field"><span><span class="pk">PK</span>id</span><span class="type">INT</span></div>
-          <div class="db-field"><span>name</span><span class="type">VARCHAR</span></div>
-          <div class="db-field"><span>email</span><span class="type">VARCHAR</span></div>
-          <div class="db-field"><span>role</span><span class="type">ENUM</span></div>
-        </div>
-        <div class="db-table" id="dt1"><div class="db-table-head"><i class="fa-solid fa-table"></i><span>orders</span></div>
-          <div class="db-field"><span><span class="pk">PK</span>id</span><span class="type">INT</span></div>
-          <div class="db-field"><span>user_id</span><span class="type">FK → users</span></div>
-          <div class="db-field"><span>total</span><span class="type">DECIMAL</span></div>
-          <div class="db-field"><span>status</span><span class="type">ENUM</span></div>
-        </div>
-        <div class="db-table" id="dt2"><div class="db-table-head"><i class="fa-solid fa-table"></i><span>order_items</span></div>
-          <div class="db-field"><span><span class="pk">PK</span>id</span><span class="type">INT</span></div>
-          <div class="db-field"><span>order_id</span><span class="type">FK → orders</span></div>
-          <div class="db-field"><span>product</span><span class="type">VARCHAR</span></div>
-          <div class="db-field"><span>quantity</span><span class="type">INT</span></div>
-        </div>
-      </div>`;
-      setTimeout(()=>{for(let i=0;i<3;i++)setTimeout(()=>el.querySelector('#dt'+i).classList.add('show'),i*200)},100);
+    ins:'Database là nơi lưu trữ data. <strong>Schema</strong> là bản thiết kế: bảng nào, cột nào, loại data gì.',
+    async build(el){
+      while(true) {
+        el.innerHTML=`<div class="db-shell">
+          <div class="db-table" id="dt0"><div class="db-table-head"><i class="fa-solid fa-table"></i><span>users</span></div>
+            <div class="db-field"><span><span class="pk">PK</span>id</span><span class="type">INT</span></div>
+            <div class="db-field"><span>name</span><span class="type">VARCHAR</span></div>
+            <div class="db-field"><span>email</span><span class="type">VARCHAR</span></div>
+            <div class="db-field"><span>role</span><span class="type">ENUM</span></div>
+          </div>
+          <div class="db-table" id="dt1"><div class="db-table-head"><i class="fa-solid fa-table"></i><span>orders</span></div>
+            <div class="db-field"><span><span class="pk">PK</span>id</span><span class="type">INT</span></div>
+            <div class="db-field"><span>user_id</span><span class="type">FK → users</span></div>
+            <div class="db-field"><span>total</span><span class="type">DECIMAL</span></div>
+            <div class="db-field"><span>status</span><span class="type">ENUM</span></div>
+          </div>
+          <div class="db-table" id="dt2"><div class="db-table-head"><i class="fa-solid fa-table"></i><span>order_items</span></div>
+            <div class="db-field"><span><span class="pk">PK</span>id</span><span class="type">INT</span></div>
+            <div class="db-field"><span>order_id</span><span class="type">FK → orders</span></div>
+            <div class="db-field"><span>product</span><span class="type">VARCHAR</span></div>
+            <div class="db-field"><span>quantity</span><span class="type">INT</span></div>
+          </div>
+        </div>`;
+        const tables = el.querySelectorAll('.db-table');
+        for(let i=0; i<tables.length; i++) {
+          await new Promise(r=>setTimeout(r, 300));
+          tables[i].classList.add('show');
+        }
+        await new Promise(r=>setTimeout(r, 4000));
+      }
     }
   },
   {
     num:'03', tag:'Auth Flow', color:'',
-    ins:'Authentication là cách backend xác nhận "bạn là ai". Flow: User gửi email/password → Backend kiểm tra database → Nếu đúng, tạo JWT token → Gửi token cho frontend → Frontend đính kèm token ở mọi request sau. Token hết hạn → Phải login lại.',
-    build(el){
-      const W=el.offsetWidth||200, H=el.offsetHeight||170;
-      const cx=W/2, cy=H/2;
-      const positions=[
-        {x:cx-70,y:cy-55,label:'Client',icon:'fa-user'},
-        {x:cx,y:cy-55,label:'API Server',icon:'fa-server'},
-        {x:cx+70,y:cy-55,label:'Database',icon:'fa-database'},
-        {x:cx,y:cy+45,label:'JWT Token',icon:'fa-key'}
-      ];
-      const arrows=[
-        {from:0,to:1,lbl:'login'},
-        {from:1,to:2,lbl:'verify'},
-        {from:2,to:1,lbl:'user data'},
-        {from:1,to:3,lbl:'generate'}
-      ];
-      el.innerHTML=`<div class="auth-shell"></div>`;
-      const shell=el.querySelector('.auth-shell');
-      positions.forEach((p,i)=>{
-        const d=document.createElement('div');d.className='auth-step';
-        d.style.cssText=`left:${p.x}px;top:${p.y}px;transform:translate(-50%,-50%)`;
-        d.innerHTML=`<div class="auth-icon"><i class="fa-solid ${p.icon}"></i></div><div class="auth-label">${p.label}</div>`;
-        shell.appendChild(d);
-      });
-      setTimeout(()=>{
-        shell.querySelectorAll('.auth-step').forEach((s,i)=>setTimeout(()=>s.classList.add('show'),i*150));
-      },100);
+    ins:'Xác nhận <strong>"bạn là ai"</strong>. Sử dụng <strong>JWT Token</strong> để duy trì trạng thái đăng nhập.',
+    async build(el){
+      while(true) {
+        const W=el.offsetWidth||200, H=el.offsetHeight||170;
+        const cx=W/2, cy=H/2;
+        const positions=[
+          {x:cx-70,y:cy-55,label:'Client',icon:'fa-user'},
+          {x:cx,y:cy-55,label:'API Server',icon:'fa-server'},
+          {x:cx+70,y:cy-55,label:'Database',icon:'fa-database'},
+          {x:cx,y:cy+45,label:'JWT Token',icon:'fa-key'}
+        ];
+        el.innerHTML=`<div class="auth-shell"></div>`;
+        const shell=el.querySelector('.auth-shell');
+        positions.forEach((p,i)=>{
+          const d=document.createElement('div');d.className='auth-step';
+          d.style.cssText=`left:${p.x}px;top:${p.y}px;transform:translate(-50%,-50%)`;
+          d.innerHTML=`<div class="auth-icon"><i class="fa-solid ${p.icon}"></i></div><div class="auth-label">${p.label}</div>`;
+          shell.appendChild(d);
+        });
+        const steps = shell.querySelectorAll('.auth-step');
+        for(let i=0; i<steps.length; i++) {
+          await new Promise(r=>setTimeout(r, 200));
+          steps[i].classList.add('show');
+        }
+        await new Promise(r=>setTimeout(r, 3000));
+      }
     }
   },
   {
     num:'04', tag:'Background Jobs', color:'queue',
-    ins:'Một số việc backend KHÔNG làm ngay — gửi email, xử lý file, sync data. Thay vào đó, nó đẩy việc vào hàng đợi (queue), worker lấy ra làm sau. Lợi ích: không chậm request, retry tự động khi lỗi, mở rộng dễ dàng.',
-    build(el){
-      el.innerHTML=`<div class="job-shell">
-        <div class="job-node" id="jn0" style="left:8%;top:20%">
-          <div class="job-box"><i class="fa-solid fa-globe" style="color:var(--be)"></i><span>API Server</span></div>
-          <div class="job-label">Nhận request</div>
-        </div>
-        <div class="job-node" id="jn1" style="left:30%;top:20%">
-          <div class="job-box" style="border-color:var(--queue-border)"><i class="fa-solid fa-layer-group" style="color:var(--queue)"></i><span>Redis Queue</span></div>
-          <div class="job-label">Hàng đợi</div>
-        </div>
-        <div class="job-node" id="jn2" style="left:52%;top:20%">
-          <div class="job-box"><i class="fa-solid fa-gears" style="color:var(--accent)"></i><span>Worker</span></div>
-          <div class="job-label">Xử lý</div>
-        </div>
-        <div class="job-node" id="jn3" style="left:74%;top:20%">
-          <div class="job-box" style="border-color:var(--db-border)"><i class="fa-solid fa-database" style="color:var(--db)"></i><span>Database</span></div>
-          <div class="job-label">Lưu kết quả</div>
-        </div>
-        <div class="job-node" id="jn4" style="left:41%;top:68%">
-          <div class="job-box"><i class="fa-solid fa-envelope" style="color:var(--success)"></i><span>Email Service</span></div>
-          <div class="job-label">Gửi email</div>
-        </div>
-      </div>`;
-      setTimeout(()=>{
-        ['jn0','jn1','jn2','jn3','jn4'].forEach((id,i)=>setTimeout(()=>el.querySelector('#'+id).classList.add('show'),i*180));
-      },100);
+    ins:'Các tác vụ nặng được đẩy vào <strong>Queue</strong> để xử lý sau, giúp hệ thống không bị treo.',
+    async build(el){
+      while(true) {
+        el.innerHTML=`<div class="job-shell">
+          <div class="job-node" id="jn0" style="left:8%;top:20%">
+            <div class="job-box"><i class="fa-solid fa-globe" style="color:var(--be)"></i><span>API Server</span></div>
+            <div class="job-label">Nhận request</div>
+          </div>
+          <div class="job-node" id="jn1" style="left:30%;top:20%">
+            <div class="job-box" style="border-color:var(--queue-border)"><i class="fa-solid fa-layer-group" style="color:var(--queue)"></i><span>Redis Queue</span></div>
+            <div class="job-label">Hàng đợi</div>
+          </div>
+          <div class="job-node" id="jn2" style="left:52%;top:20%">
+            <div class="job-box"><i class="fa-solid fa-gears" style="color:var(--accent)"></i><span>Worker</span></div>
+            <div class="job-label">Xử lý</div>
+          </div>
+          <div class="job-node" id="jn3" style="left:74%;top:20%">
+            <div class="job-box" style="border-color:var(--db-border)"><i class="fa-solid fa-database" style="color:var(--db)"></i><span>Database</span></div>
+            <div class="job-label">Lưu kết quả</div>
+          </div>
+          <div class="job-node" id="jn4" style="left:41%;top:68%">
+            <div class="job-box"><i class="fa-solid fa-envelope" style="color:var(--success)"></i><span>Email Service</span></div>
+            <div class="job-label">Gửi email</div>
+          </div>
+        </div>`;
+        const nodes = ['jn0','jn1','jn2','jn3','jn4'];
+        for(let i=0; i<nodes.length; i++) {
+          await new Promise(r=>setTimeout(r, 200));
+          el.querySelector('#'+nodes[i]).classList.add('show');
+        }
+        await new Promise(r=>setTimeout(r, 3500));
+      }
     }
   }
 ];
@@ -231,9 +256,12 @@ let autoTimer;
 function renderSim(){
   simGrid.innerHTML = sims.map((s,i)=>`
     <div class="sc" data-i="${i}" data-color="${s.color}" tabindex="0" role="button">
-      <div class="sc-head"><span class="sc-num">${s.num}</span><span class="sc-tag">${s.tag}</span></div>
+      <div class="sc-head">
+        <span class="sc-num">${s.num}</span>
+        <h2 class="sc-tag">${s.tag}</h2>
+      </div>
       <div class="sc-demo" id="sd${i}"></div>
-      <div class="sc-ins">${s.ins}</div>
+      <p class="ins">${s.ins}</p>
     </div>`).join('');
   simGrid.querySelectorAll('.sc').forEach(c=>{
     c.addEventListener('click',()=>{
@@ -243,27 +271,8 @@ function renderSim(){
   });
 }
 
-function activateSim(i){
-  activeI = i;
-  simGrid.querySelectorAll('.sc').forEach((c,idx)=>c.classList.toggle('on',idx===i));
-  const demo=document.getElementById('sd'+i);
-  demo.innerHTML='';
-  sims[i].build(demo);
-  setIns(sims[i].ins);
-}
-
-function setIns(t){insT.classList.add('fading');setTimeout(()=>{insT.textContent=t;insT.classList.remove('fading')},250)}
-
-function startAuto(){
-  activateSim(0);
-  autoTimer = setInterval(()=>{
-    activeI = (activeI + 1) % sims.length;
-    activateSim(activeI);
-  }, 5000);
-}
-
 renderSim();
-startAuto();
+sims.forEach((s, i) => s.build(document.getElementById('sd' + i)));
 </script>
 </body>
 </html>
