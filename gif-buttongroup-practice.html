@@ -83,7 +83,7 @@ body {
   cursor: pointer;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .scenario-item:hover {
@@ -281,6 +281,40 @@ body {
 
 .animate-in { animation: fadeInUp 0.4s ease forwards; }
 
+/* Hint Badge */
+.btn-hint {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  padding: 2px 6px;
+  border-radius: 2px;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: pulseHint 2s infinite;
+  z-index: 999;
+}
+.btn-hint::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid var(--accent);
+}
+@keyframes pulseHint {
+  0% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.1); }
+  100% { transform: translateX(-50%) scale(1); }
+}
+
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
 </style>
 </head>
 <body>
@@ -337,6 +371,10 @@ body {
 
   <div class="progress-track">
     <div class="progress-bar" id="progress-indicator"></div>
+  </div>
+
+  <div style="margin-top: 16px; display: flex; justify-content: flex-start;">
+    <button id="reset-game" style="background: transparent; border: 1px solid var(--border); color: var(--text-muted); font-family: var(--font-main); font-size: 10px; padding: 4px 12px; cursor: pointer; border-radius: 2px;">LÀM LẠI</button>
   </div>
 </div>
 
@@ -402,11 +440,22 @@ function renderList() {
   data.forEach((s, i) => {
     const div = document.createElement('div');
     div.className = `scenario-item ${activeIdx === i ? 'active' : ''} ${solved.has(i) ? 'completed' : ''}`;
+    
+    let hintHtml = '';
+    if (i === 0 && activeIdx === -1) {
+      hintHtml = '<div class="btn-hint" id="first-hint">Bắt đầu tại đây</div>';
+    }
+    
     div.innerHTML = `
+      ${hintHtml}
       <div class="scenario-title">${s.title}</div>
       <div class="scenario-brief">${s.brief}</div>
     `;
-    div.onclick = () => selectScenario(i);
+    div.onclick = () => {
+      const hint = document.getElementById('first-hint');
+      if (hint) hint.style.display = 'none';
+      selectScenario(i);
+    };
     root.appendChild(div);
   });
 }
@@ -472,6 +521,17 @@ function updateProgress() {
     }, 600);
   }
 }
+
+document.getElementById('reset-game').onclick = () => {
+  solved.clear();
+  activeIdx = -1;
+  renderList();
+  stage.innerHTML = `<div style="color: #444; font-size: 12px; font-family: var(--font-mono);">[ Workspace Ready: Reset ]</div>`;
+  hint.textContent = '';
+  log.className = 'status-area';
+  log.innerHTML = `Vui lòng chọn một kịch bản giao diện bên trái để bắt đầu bài thực hành.`;
+  updateProgress();
+};
 
 renderList();
 </script>

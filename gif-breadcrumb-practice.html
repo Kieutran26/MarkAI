@@ -3,137 +3,355 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Breadcrumb Practice — markAI</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<title>Breadcrumb Practice — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0f0f12;--fg:#e8e0d4;--muted:#706b64;--accent:#e88c2e;--accent-dim:rgba(232,140,46,.15);--card:#16161b;--card-alt:#1c1c22;--border:#282830;--border-hi:#44403a;--c1:#4a5a8a;--c2:#4a8a5a;--c3:#b89a2a}
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);background-image:radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:16px 16px;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:12px 16px;min-height:auto;overflow:hidden}
+:root {
+  --bg: #0f0f12;
+  --bgc: #16161b;
+  --bgi: #121217;
+  --bd: #282830;
+  --tx: #e8e4dc;
+  --txm: #707070;
+  --ac: #E88C2E;
+  --abg: rgba(232, 140, 46, 0.1);
+  --abg2: rgba(232, 140, 46, 0.2);
+  --success: #22c55e;
+  --error: #ef4444;
+}
 
-.pw{width:100%;margin:0}
-.pw-h{font-size:16px;font-weight:800;margin-bottom:4px}
-.pw-h span{color:var(--accent)}
-.pw-s{font-size:11px;color:var(--muted);margin-bottom:16px;line-height:1.4}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-.pr-btns{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
-.pr-b{padding:8px 14px;border:1px solid var(--border);background:var(--card);font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;transition:all .2s}
-.pr-b:hover{border-color:var(--accent);color:var(--fg)}
-.pr-b.act{border-color:var(--accent);background:var(--accent-dim);color:var(--accent)}
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--tx);
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
 
-.pr-prev{border:1px solid var(--border);background:var(--card);overflow:hidden;margin-bottom:16px}
-.pr-prev-h{display:flex;justify-content:space-between;align-items:center;padding:8px 14px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
-.pr-prev-l{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1.5px;font-weight:700}
-.pr-prev-t{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;padding:2px 8px;border:1px solid var(--border);font-weight:700}
+.pw {
+  width: 100%;
+  max-width: 940px;
+}
 
-.pr-url{padding:10px 14px;border-bottom:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);background:rgba(0,0,0,.2);word-break:break-all;line-height:1.4}
-.pr-bc-area{padding:16px 14px;min-height:50px;display:flex;align-items:center}
-.pr-bc{display:flex;align-items:center;flex-wrap:wrap}
+.pw-h {
+  margin-bottom: 24px;
+  border-left: 2px solid var(--ac);
+  padding-left: 16px;
+}
 
-.pr-bi{font-size:13px;opacity:0;transform:translateX(-4px);transition:all .25s;white-space:nowrap}.pr-bi.vis{opacity:1;transform:translateX(0)}
-.pr-bi.cur{color:var(--accent);font-weight:700}.pr-bi:not(.cur){color:var(--muted)}
-.pr-bi.dot{color:var(--accent);font-weight:700;letter-spacing:2px}
-.pr-bs{margin:0 7px;color:var(--border-hi);font-size:12px;opacity:0;transition:opacity .2s}.pr-bs.vis{opacity:1}
+.pw-g {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--ac);
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
 
-.pr-fb{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);min-height:36px;margin-top:4px;line-height:1.5;padding:0 14px 14px}
-.pr-fb strong{color:var(--fg)}
+.pw-d {
+  font-size: 13px;
+  color: var(--txm);
+}
 
-.pr-ht{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:20px;padding-top:10px;border-top:1px dashed var(--border);opacity:.6;line-height:1.4}
+.pr-card {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+}
 
-@media(max-width:520px){.pr-btns{gap:6px}.pr-b{padding:6px 10px;font-size:11px}}
+.pr-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--ac);
+}
+
+.context-box {
+  background: var(--bgi);
+  border: 1px solid var(--bd);
+  padding: 16px;
+  margin-bottom: 24px;
+  text-align: center;
+}
+
+.context-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--txm);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.current-page {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--tx);
+}
+
+.assembly-area {
+  min-height: 44px;
+  border: 1px dashed var(--bd);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  margin-bottom: 24px;
+  background: rgba(0,0,0,0.2);
+  flex-wrap: wrap;
+}
+
+.crumb {
+  font-size: 13px;
+  padding: 4px 10px;
+  background: var(--bg);
+  border: 1px solid var(--bd);
+  border-radius: 2px;
+  cursor: pointer;
+  color: var(--tx);
+  transition: all 0.2s;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.crumb:hover {
+  border-color: var(--ac);
+  color: var(--ac);
+}
+
+.crumb.selected {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.sep {
+  color: var(--bd);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+}
+
+.options-area {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.feedback {
+  margin-top: 24px;
+  padding: 12px;
+  border-radius: 2px;
+  font-size: 13px;
+  font-weight: 500;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.feedback.show { opacity: 1; }
+.feedback.success { background: rgba(34, 197, 94, 0.1); border: 1px solid var(--success); color: var(--success); }
+.feedback.error { background: rgba(239, 68, 68, 0.1); border: 1px solid var(--error); color: var(--error); }
+
+.controls {
+  margin-top: 24px;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.btn {
+  padding: 6px 14px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 10px;
+  font-weight: 600;
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-reset {
+  background: transparent;
+  border: 1px solid var(--bd);
+  color: var(--txm);
+}
+
+.btn-reset:hover { border-color: var(--tx); color: var(--tx); }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 </style>
 </head>
 <body>
 
-<div class="pw">
-    <div class="pw-h">Thực hành — <span>URL thành Breadcrumb</span></div>
-    <div class="pw-s">Chọn kịch bản để thấy cách URL được parse thành các thành phần điều hướng trực quan.</div>
-    
-    <div class="pr-btns" id="prBtns"></div>
-    
-    <div class="pr-prev">
-        <div class="pr-prev-h">
-            <span class="pr-prev-l">REQUEST URL</span>
-            <span class="pr-prev-t" id="prType"></span>
-        </div>
-        <div class="pr-url" id="prUrl"></div>
-        <div class="pr-bc-area">
-            <div class="pr-bc" id="prBc"></div>
-        </div>
-        <div class="pr-fb" id="prFb"></div>
+<main class="pw">
+  <div class="pw-h">
+    <div class="pw-g">BREADCRUMB BUILDER</div>
+    <p class="pw-d">Sắp xếp các "vụn bánh" theo đúng thứ tự phân cấp từ lớn đến nhỏ.</p>
+  </div>
+
+  <div class="pr-card">
+    <div class="context-box">
+      <span class="context-label">Trang hiện tại</span>
+      <div class="current-page" id="target-page">iPhone 15 Pro</div>
     </div>
-    
-    <div class="pr-ht">Mẹo: Chú ý số lượng dấu "/" trong URL tương ứng với số lượng item trong Breadcrumb (trừ trường hợp Collapse).</div>
-</div>
+
+    <div class="assembly-area" id="assembly">
+      <!-- Crumb items go here -->
+    </div>
+
+    <div class="options-area" id="options">
+      <!-- Option buttons go here -->
+    </div>
+
+    <div class="feedback" id="feedback"></div>
+
+    <div class="controls">
+      <button class="btn btn-reset" onclick="resetLevel()">LÀM LẠI</button>
+    </div>
+  </div>
+</main>
 
 <script>
-const SCENARIOS=[
-    {label:'Sản phẩm',url:'/shop/laptops/macbook-pro-14',
-     items:[{t:'Home'},{t:'Shop'},{t:'Laptops'},{t:'MacBook Pro 14',cur:true}],
-     type:'HIERARCHY',sub:'E-COMMERCE',tc:'var(--accent)',
-     fb:'<strong>Phân cấp:</strong> URL có 4 segment → 4 breadcrumb items. Mỗi segment đại diện cho một tầng trong phễu sản phẩm.'},
-    {label:'Dashboard',url:'/dashboard/sales/overview',
-     items:[{t:'Dashboard'},{t:'Sales'},{t:'Sales Overview',cur:true}],
-     type:'LOCATION',sub:'APP NAV',tc:'var(--c1)',
-     fb:'<strong>Vị trí:</strong> Trong app quản trị, breadcrumb giúp user xác định "tọa độ" thay vì phân cấp hàng hóa.'},
-    {label:'Bài viết Blog',url:'/blog/ux-design/breadcrumb-guide',
-     items:[{t:'Blog'},{t:'UX Design'},{t:'Breadcrumb Guide',cur:true}],
-     type:'MULTI-LEVEL',sub:'CONTENT',tc:'var(--c2)',
-     fb:'<strong>Nội dung:</strong> 3-4 cấp là mức chuẩn cho blog. Giúp user dễ dàng quay lại danh mục chủ đề (UX Design).'},
-    {label:'Đường dẫn dài',url:'/shop/electronics/accessories/cables/adapters/usb-c-hub',
-     items:[{t:'Home'},{t:'...',dot:true},{t:'USB-C Hub',cur:true}],
-     type:'COLLAPSED',sub:'OVERFLOW',tc:'var(--c3)',
-     fb:'<strong>Thu gọn:</strong> URL 6 segment → quá dài gây rối mắt. Ta dùng "..." để ẩn bớt các cấp trung gian, chỉ giữ Đầu và Cuối.'}
+const LEVELS = [
+  {
+    target: "iPhone 15 Pro",
+    path: ["Home", "Electronics", "Apple", "Smartphones"],
+    options: ["Smartphones", "Electronics", "Apple", "Home"]
+  },
+  {
+    target: "Lịch sử giao dịch",
+    path: ["Dashboard", "Tài khoản", "Ví điện tử"],
+    options: ["Dashboard", "Ví điện tử", "Tài khoản"]
+  },
+  {
+    target: "Xây dựng Brand cho SaaS",
+    path: ["Blog", "Marketing", "Brand Strategy"],
+    options: ["Blog", "Brand Strategy", "Marketing"]
+  }
 ];
 
-const prBtns=document.getElementById('prBtns');
-const prUrl=document.getElementById('prUrl');
-const prBc=document.getElementById('prBc');
-const prType=document.getElementById('prType');
-const prFb=document.getElementById('prFb');
+let currentLevel = 0;
+let userPath = [];
 
-SCENARIOS.forEach((s,i)=>{
-    const b=document.createElement('button');
-    b.className='pr-b'+(i===0?' act':'');
-    b.textContent=s.label;
-    b.onclick=()=>renderPractice(i);
-    prBtns.appendChild(b);
-});
-
-function renderPractice(idx){
-    const s=SCENARIOS[idx];
-    prBtns.querySelectorAll('.pr-b').forEach((b,j)=>b.classList.toggle('act',j===idx));
-    prUrl.textContent=s.url;
-    prType.textContent=s.type + ' · ' + s.sub;
-    prType.style.color=s.tc;
-    prType.style.borderColor=s.tc;
-    
-    prBc.innerHTML='';
-    s.items.forEach((it,i)=>{
-        if(i>0){
-            const sep=document.createElement('span');
-            sep.className='pr-bs';
-            sep.textContent='›';
-            prBc.appendChild(sep);
-        }
-        const item=document.createElement('span');
-        item.className='pr-bi'+(it.cur?' cur':'')+(it.dot?' dot':'');
-        item.textContent=it.t;
-        prBc.appendChild(item);
-    });
-
-    requestAnimationFrame(()=>{
-        requestAnimationFrame(()=>{
-            prBc.querySelectorAll('.pr-bi,.pr-bs').forEach((el,i)=>{
-                el.style.transitionDelay=(i*0.04)+'s';
-                el.classList.add('vis');
-            });
-        });
-    });
-
-    prFb.innerHTML=s.fb;
+function initLevel() {
+  const level = LEVELS[currentLevel];
+  document.getElementById('target-page').textContent = level.target;
+  userPath = [];
+  renderAssembly();
+  renderOptions();
+  hideFeedback();
 }
 
-renderPractice(0);
+function renderAssembly() {
+  const container = document.getElementById('assembly');
+  container.innerHTML = '';
+  
+  if (userPath.length === 0) {
+    container.innerHTML = '<span style="color: var(--bd); font-size: 11px; font-family: \'JetBrains Mono\'">Bắt đầu từ cấp cao nhất...</span>';
+    return;
+  }
+
+  userPath.forEach((text, i) => {
+    const span = document.createElement('span');
+    span.className = 'crumb';
+    span.textContent = text;
+    span.onclick = () => removeCrumb(i);
+    container.appendChild(span);
+    
+    const sep = document.createElement('span');
+    sep.className = 'sep';
+    sep.textContent = '/';
+    container.appendChild(sep);
+  });
+  
+  const active = document.createElement('span');
+  active.className = 'crumb';
+  active.style.color = 'var(--ac)';
+  active.style.fontWeight = '600';
+  active.style.borderColor = 'var(--ac)';
+  active.style.pointerEvents = 'none';
+  active.textContent = LEVELS[currentLevel].target;
+  container.appendChild(active);
+}
+
+function renderOptions() {
+  const container = document.getElementById('options');
+  container.innerHTML = '';
+  const options = LEVELS[currentLevel].options;
+  
+  options.forEach(text => {
+    const isSelected = userPath.includes(text);
+    const btn = document.createElement('button');
+    btn.className = 'crumb' + (isSelected ? ' selected' : '');
+    btn.textContent = text;
+    btn.onclick = () => selectCrumb(text);
+    container.appendChild(btn);
+  });
+}
+
+function selectCrumb(text) {
+  userPath.push(text);
+  renderAssembly();
+  renderOptions();
+  checkProgress();
+}
+
+function removeCrumb(index) {
+  userPath.splice(index, 1);
+  renderAssembly();
+  renderOptions();
+  hideFeedback();
+}
+
+function checkProgress() {
+  const level = LEVELS[currentLevel];
+  if (userPath.length === level.path.length) {
+    const isCorrect = userPath.every((val, index) => val === level.path[index]);
+    if (isCorrect) {
+      showFeedback('CHÍNH XÁC! Phân cấp rất logic.', 'success');
+      setTimeout(() => {
+        currentLevel = (currentLevel + 1) % LEVELS.length;
+        initLevel();
+      }, 2000);
+    } else {
+      showFeedback('SAI THỨ TỰ. Hãy kiểm tra lại cấu trúc cha-con.', 'error');
+    }
+  }
+}
+
+function showFeedback(text, type) {
+  const fb = document.getElementById('feedback');
+  fb.textContent = text;
+  fb.className = 'feedback show ' + type;
+}
+
+function hideFeedback() {
+  document.getElementById('feedback').className = 'feedback';
+}
+
+function resetLevel() {
+  userPath = [];
+  renderAssembly();
+  renderOptions();
+  hideFeedback();
+}
+
+initLevel();
 </script>
 </body>
 </html>
