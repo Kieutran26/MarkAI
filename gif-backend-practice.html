@@ -49,6 +49,7 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
   font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;
   padding:10px 24px;border:1px solid var(--border);background:transparent;
   color:var(--fg);cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:8px;
+  position:relative;
 }
 .step-btn:hover{border-color:var(--be);background:var(--be-soft)}
 .step-btn:disabled{opacity:.3;cursor:default;border-color:var(--border);background:transparent}
@@ -89,6 +90,42 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
   .flow-icon-box{width:36px;height:36px;font-size:13px}
   .step-controls{flex-wrap:wrap}
 }
+
+/* Hint Badge */
+.btn-hint {
+  position: absolute;
+  bottom: calc(100% + 12px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #e88c2e !important;
+  color: #ffffff !important;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  padding: 4px 10px;
+  border-radius: 3px;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: pulseTop 2s infinite;
+  z-index: 999999 !important;
+  box-shadow: 0 4px 12px rgba(232,140,46,0.4);
+  display: block !important;
+  visibility: visible !important;
+}
+.btn-hint::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid #e88c2e;
+}
+@keyframes pulseTop {
+  0% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.1); }
+  100% { transform: translateX(-50%) scale(1); }
+}
 </style>
 </head>
 <body>
@@ -105,7 +142,10 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
     <div class="step-controls">
       <button class="step-btn" id="prevBtn" disabled><i class="fa-solid fa-arrow-left"></i> Back</button>
       <span class="step-counter" id="stepCtr">0 / 6</span>
-      <button class="step-btn primary" id="nextBtn">Next <i class="fa-solid fa-arrow-right"></i></button>
+      <button class="step-btn primary" id="nextBtn">
+        <span id="nextBtnText">Next <i class="fa-solid fa-arrow-right"></i></span>
+        <div class="btn-hint">Click me!</div>
+      </button>
     </div>
 
     <div class="step-fb" id="stepFb">
@@ -168,7 +208,10 @@ function goToStep(n){
   stepCtr.textContent = `${n} / ${steps.length}`;
   prevBtn.disabled = n <= 0;
   nextBtn.disabled = n >= steps.length;
-  nextBtn.innerHTML = n >= steps.length ? 'Done <i class="fa-solid fa-check"></i>' : 'Next <i class="fa-solid fa-arrow-right"></i>';
+  const nextBtnText = document.getElementById('nextBtnText');
+  if (nextBtnText) {
+    nextBtnText.innerHTML = n >= steps.length ? 'Done <i class="fa-solid fa-check"></i>' : 'Next <i class="fa-solid fa-arrow-right"></i>';
+  }
 
   if(n > 0 && n <= steps.length){
     stepFbText.textContent = steps[n-1].fb;
@@ -185,7 +228,11 @@ function goToStep(n){
   }
 }
 
-nextBtn.addEventListener('click',()=>goToStep(currentStep+1));
+nextBtn.addEventListener('click',()=>{
+  const hint = nextBtn.querySelector('.btn-hint');
+  if(hint) hint.style.display = 'none';
+  goToStep(currentStep+1);
+});
 prevBtn.addEventListener('click',()=>goToStep(currentStep-1));
 resetBtn.addEventListener('click',()=>goToStep(0));
 
