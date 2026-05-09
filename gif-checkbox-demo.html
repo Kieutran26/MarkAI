@@ -1,395 +1,486 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Checkbox — Vibecode Glossary</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <style>
-        :root{
-            --bg:#141413;--bg-card:#1c1c1a;--fg:#e8e0d4;--muted:#6e6a63;
-            --accent:#d97706;--accent-dim:rgba(217,119,6,.12);
-            --accent-glow:rgba(217,119,6,.25);--border:#2e2c28;--border-hi:#3e3b35;
-            --slate:#33312d;--cream:#f5f0e8;--green:#22c55e;--red:#ef4444;
-            --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
-        }
-        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        body{
-            background:var(--bg);color:var(--fg);font-family:var(--sans);
-            min-height:100vh;-webkit-font-smoothing:antialiased;
-            background-image:
-                linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
-                linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
-            background-size:20px 20px;
-        }
-        /* Grid */
-        .g4{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:12px 16px 0;max-width:920px;margin:0 auto}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkbox Demo — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f0f12;
+  --bgc: #16161b;
+  --bgi: #121217;
+  --bd: #282830;
+  --tx: #e8e4dc;
+  --txm: #707070;
+  --ac: #E88C2E;
+  --abg: rgba(232, 140, 46, 0.1);
+  --abg2: rgba(232, 140, 46, 0.2);
+}
 
-        /* Card */
-        .cd{background:var(--bg-card);border:1px solid var(--border);position:relative;overflow:hidden}
-        .cd::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 0%,rgba(217,119,6,.04) 0%,transparent 60%);pointer-events:none}
-        .cd-n{position:absolute;top:10px;right:12px;font-family:var(--mono);font-size:9px;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:2px 7px;letter-spacing:1.5px;z-index:5}
-        .cd-l{font-family:var(--mono);font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:2px;padding:14px 14px 2px;position:relative}
-        .cd-t{font-size:15px;font-weight:700;color:var(--cream);padding:2px 14px 10px;position:relative}
-        .cd-d{padding:0 14px 8px;height:230px;position:relative;display:flex;align-items:center;justify-content:center}
-        .cd-i{font-family:var(--mono);font-size:10px;color:var(--muted);padding:10px 14px 13px;border-top:1px solid var(--border);line-height:1.6;position:relative}
-        .cd-i em{color:var(--accent);font-style:normal}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-        /* === Checkbox base === */
-        .cb{display:flex;align-items:center;gap:9px;padding:4px 0;user-select:none}
-        .cb-box{
-            width:18px;height:18px;border:2px solid var(--border-hi);background:var(--bg);
-            position:relative;flex-shrink:0;transition:background .18s,border-color .18s,opacity .18s;
-        }
-        .cb-box.on,.cb-box.ind{background:var(--accent);border-color:var(--accent)}
-        .cb-box.dis{opacity:.32}
-        /* Checkmark */
-        .cb-box::after{
-            content:'';position:absolute;left:4px;top:1px;width:6px;height:10px;
-            border:solid #0e0e0d;border-width:0 2.5px 2.5px 0;
-            transform:rotate(45deg) scale(0);transition:transform .15s ease-out;
-        }
-        .cb-box.on::after{transform:rotate(45deg) scale(1)}
-        /* Indeterminate line */
-        .cb-box::before{
-            content:'';position:absolute;left:3px;top:50%;width:10px;height:2.5px;
-            background:#0e0e0d;transform:translateY(-50%) scaleX(0);transition:transform .15s ease-out;
-        }
-        .cb-box.ind::before{transform:translateY(-50%) scaleX(1)}
-        .cb-lbl{font-size:12px;color:var(--fg);line-height:1.3}
-        .cb-lbl.dis{opacity:.32}
-        .cb-lbl .sub{font-size:9px;color:var(--muted);display:block;margin-top:1px;font-family:var(--mono)}
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--tx);
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+}
 
-        /* Cursor giả */
-        .fc{
-            position:absolute;width:14px;height:14px;border:2px solid var(--accent);
-            border-radius:50%;pointer-events:none;z-index:20;opacity:0;
-            transition:left .4s cubic-bezier(.4,0,.2,1),top .4s cubic-bezier(.4,0,.2,1),opacity .2s;
-            box-shadow:0 0 10px var(--accent-glow);
-        }
-        .fc.show{opacity:1}
-        .fc::after{
-            content:'';position:absolute;inset:3px;background:var(--accent);
-            border-radius:50%;animation:cpulse .5s ease-out forwards;opacity:0;
-        }
-        @keyframes cpulse{0%{transform:scale(0);opacity:.6}100%{transform:scale(2.2);opacity:0}}
+.g {
+  width: 100%;
+  max-width: 940px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
 
-        /* === Card 1: States === */
-        .st-wrap{display:flex;flex-direction:column;align-items:center;gap:12px}
-        .st-box{width:36px;height:36px;border:2.5px solid var(--border-hi);background:var(--bg);position:relative;transition:background .2s,border-color .2s}
-        .st-box.on,.st-box.ind{background:var(--accent);border-color:var(--accent)}
-        .st-box.dis{opacity:.3}
-        .st-box::after{content:'';position:absolute;left:7px;top:2px;width:10px;height:17px;border:solid #0e0e0d;border-width:0 3px 3px 0;transform:rotate(45deg) scale(0);transition:transform .15s ease-out}
-        .st-box.on::after{transform:rotate(45deg) scale(1)}
-        .st-box::before{content:'';position:absolute;left:6px;top:50%;width:18px;height:3.5px;background:#0e0e0d;transform:translateY(-50%) scaleX(0);transition:transform .15s ease-out}
-        .st-box.ind::before{transform:translateY(-50%) scaleX(1)}
-        .st-label{font-family:var(--mono);font-size:10px;color:var(--muted);height:14px;transition:opacity .2s;text-align:center}
-        .st-row{display:flex;gap:16px;margin-top:4px}
-        .st-sm .st-box{width:22px;height:22px;border-width:2px}
-        .st-sm .st-box::after{left:4px;top:1px;width:6px;height:10px;border-width:0 2px 2px 0}
-        .st-sm .st-box::before{left:3px;width:12px;height:2.5px}
-        .st-sm .st-label{font-size:8px}
+@media (max-width: 600px) {
+  .g { grid-template-columns: 1fr; }
+}
 
-        /* === Card 2: Labeled === */
-        .lb-list{display:flex;flex-direction:column;gap:4px;width:100%}
-        .lb-count{font-family:var(--mono);font-size:9px;color:var(--muted);margin-bottom:6px;text-align:right;transition:color .2s}
-        .lb-count.hi{color:var(--accent)}
+.c {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
 
-        /* === Card 3: List === */
-        .ls-list{width:100%;display:flex;flex-direction:column;gap:2px}
-        .ls-item{display:flex;align-items:center;gap:9px;padding:6px 10px;border:1px solid transparent;transition:background .2s,border-color .2s}
-        .ls-item.par{border-bottom:1px solid var(--border);padding-bottom:8px;margin-bottom:4px}
-        .ls-item.hl{background:rgba(217,119,6,.04);border-color:rgba(217,119,6,.08)}
-        .ls-item .cb-lbl{font-size:11px}
+/* Accent Bar */
+.c::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--ac);
+}
 
-        /* === Card 4: Form === */
-        .fm-wrap{width:100%;display:flex;flex-direction:column;gap:6px}
-        .fm-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:8px;min-height:24px}
-        .fm-tag{
-            font-family:var(--mono);font-size:9px;padding:3px 8px;
-            background:var(--accent-dim);color:var(--accent);border:1px solid rgba(217,119,6,.15);
-            transform:scale(0);transition:transform .2s ease-out;white-space:nowrap;
-        }
-        .fm-tag.s{transform:scale(1)}
+/* Pulsating Indicator */
+.c::after {
+  content: '';
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 6px;
+  height: 6px;
+  background: var(--ac);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--ac);
+  animation: pulse 2s infinite;
+}
 
-        @media(max-width:620px){
-            .g4{grid-template-columns:1fr}
-            .st-row{gap:12px}
-        }
-        @media(prefers-reduced-motion:reduce){
-            *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
-        }
-    </style>
+@keyframes pulse {
+  0% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0.3; transform: scale(1); }
+}
+
+.ch {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.ch .n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ac);
+  background: var(--abg);
+  border: 1px solid var(--abg2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+.ch h2 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  text-transform: uppercase;
+}
+
+.st {
+  background: var(--bgi);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  flex: 1;
+  min-height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ins {
+  margin-top: 14px;
+  font-size: 11.5px;
+  color: var(--txm);
+  line-height: 1.6;
+  padding-left: 12px;
+  border-left: 2px solid var(--ac);
+}
+
+.ins strong {
+  color: var(--ac);
+  font-weight: 600;
+}
+
+.val {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--txm);
+  background: rgba(0,0,0,0.2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+/* Checkbox Visual Components */
+.cb-box {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--bd);
+  border-radius: 3px;
+  position: relative;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
+
+.cb-box.checked {
+  background: var(--ac);
+  border-color: var(--ac);
+}
+
+.cb-box.indet {
+  background: transparent;
+  border-color: var(--ac);
+}
+
+.cb-box svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: var(--bg);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 20;
+  stroke-dashoffset: 20;
+  transition: stroke-dashoffset 0.2s ease;
+}
+
+.cb-box.checked svg {
+  stroke-dashoffset: 0;
+}
+
+.cb-box .indet-line {
+  width: 10px;
+  height: 2px;
+  background: var(--ac);
+  border-radius: 1px;
+  display: none;
+}
+
+.cb-box.indet .indet-line {
+  display: block;
+}
+
+.cb-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 4px;
+  transition: background 0.2s;
+  width: 100%;
+}
+
+.cb-item:hover {
+  background: rgba(255,255,255,0.03);
+}
+
+.cb-label {
+  font-size: 13px;
+  color: var(--tx);
+}
+
+.cb-item.active .cb-label {
+  color: var(--ac);
+  font-weight: 500;
+}
+
+/* List Sim */
+.list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  max-width: 200px;
+}
+
+/* Form Sim */
+.form-card {
+  width: 100%;
+  max-width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.btn {
+  background: var(--bd);
+  color: var(--txm);
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: not-allowed;
+  transition: all 0.3s;
+  text-align: center;
+}
+
+.btn.active {
+  background: var(--ac);
+  color: var(--bg);
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(232, 140, 46, 0.3);
+}
+
+</style>
 </head>
 <body>
 
-<main>
-    <div class="g4">
-
-        <!-- 1. Checkbox States -->
-        <section class="cd" aria-label="Checkbox States">
-            <span class="cd-n">LOOP</span>
-            <div class="cd-l">Khía cạnh 01</div>
-            <h2 class="cd-t">Các trạng thái</h2>
-            <div class="cd-d">
-                <div class="st-wrap">
-                    <div class="st-box" id="stMain"></div>
-                    <div class="st-label" id="stLbl">&nbsp;</div>
-                    <div class="st-row">
-                        <div class="st-sm">
-                            <div class="st-box dis" id="stDis1"></div>
-                            <div class="st-label" style="opacity:0" id="stDL1">Disabled Off</div>
-                        </div>
-                        <div class="st-sm">
-                            <div class="st-box on dis" id="stDis2"></div>
-                            <div class="st-label" style="opacity:0" id="stDL2">Disabled On</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="cd-i">3 trạng thái hoạt động: <em>rỗng, chọn, nửa-chọn</em>. 2 trạng thái khóa: không cho thao tác.</div>
-        </section>
-
-        <!-- 2. Labeled Checkboxes -->
-        <section class="cd" aria-label="Labeled Checkboxes">
-            <span class="cd-n">LOOP</span>
-            <div class="cd-l">Khía cạnh 02</div>
-            <h2 class="cd-t">Checkbox có nhãn</h2>
-            <div class="cd-d" id="d2">
-                <div class="fc" id="c2"></div>
-                <div class="lb-list" style="width:200px">
-                    <div class="lb-count" id="lbCnt">Selected: 0/4</div>
-                    <div class="cb" data-i="0"><div class="cb-box"></div><div class="cb-lbl">Nhận email thông báo</div></div>
-                    <div class="cb" data-i="1"><div class="cb-box"></div><div class="cb-lbl">Đăng ký newsletter</div></div>
-                    <div class="cb" data-i="2"><div class="cb-box"></div><div class="cb-lbl">Nhắc nhở deadline</div></div>
-                    <div class="cb" data-i="3"><div class="cb-box"></div><div class="cb-lbl">Báo cáo tuần</div></div>
-                </div>
-            </div>
-            <div class="cd-i">Multi-select — <em>chọn bao nhiêu cũng được</em>. Khác radio: không giới hạn ở 1 lựa chọn.</div>
-        </section>
-
-        <!-- 3. List Checkboxes -->
-        <section class="cd" aria-label="List Checkboxes">
-            <span class="cd-n">LOOP</span>
-            <div class="cd-l">Khía cạnh 03</div>
-            <h2 class="cd-t">Checkbox trong danh sách</h2>
-            <div class="cd-d" id="d3">
-                <div class="fc" id="c3"></div>
-                <div class="ls-list" style="width:210px">
-                    <div class="ls-item par" data-i="-1">
-                        <div class="cb-box" id="lsPar"></div>
-                        <div class="cb-lbl" style="font-weight:600">Select All</div>
-                    </div>
-                    <div class="ls-item" data-i="0"><div class="cb-box" id="lsC0"></div><div class="cb-lbl">Brand Guidelines.pdf</div></div>
-                    <div class="ls-item" data-i="1"><div class="cb-box" id="lsC1"></div><div class="cb-lbl">Q4 Campaign Deck.pptx</div></div>
-                    <div class="ls-item" data-i="2"><div class="cb-box" id="lsC2"></div><div class="cb-lbl">Logo Assets.zip</div></div>
-                    <div class="ls-item" data-i="3"><div class="cb-box" id="lsC3"></div><div class="cb-lbl">Social Templates.fig</div></div>
-                </div>
-            </div>
-            <div class="cd-i">Parent-child logic: hết → <em>nửa-chọn</em> → tất cả. Indeterminate = "chưa quyết định hết".</div>
-        </section>
-
-        <!-- 4. Form Checkboxes -->
-        <section class="cd" aria-label="Form Checkboxes">
-            <span class="cd-n">LOOP</span>
-            <div class="cd-l">Khía cạnh 04</div>
-            <h2 class="cd-t">Checkbox trong form</h2>
-            <div class="cd-d" id="d4">
-                <div class="fc" id="c4"></div>
-                <div class="fm-wrap" style="width:210px">
-                    <div style="font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:1px;margin-bottom:4px">PREFERENCES</div>
-                    <div class="cb" data-i="0"><div class="cb-box" id="fmC0"></div><div class="cb-lbl">Dark mode<span class="sub">Giao diện tối</span></div></div>
-                    <div class="cb" data-i="1"><div class="cb-box" id="fmC1"></div><div class="cb-lbl">Compact layout<span class="sub">Hiển thị densely</span></div></div>
-                    <div class="cb" data-i="2"><div class="cb-box" id="fmC2"></div><div class="cb-lbl">Auto-save<span class="sub">Lưu mỗi 30s</span></div></div>
-                    <div class="cb" data-i="3"><div class="cb-box" id="fmC3"></div><div class="cb-lbl">Sound effects<span class="sub">Âm thanh thao tác</span></div></div>
-                    <div class="fm-tags" id="fmTags"></div>
-                </div>
-            </div>
-            <div class="cd-i">Mỗi checkbox = <em>1 cặp boolean</em>. Backend nhận mảng true/false — đơn giản, rõ ràng.</div>
-        </section>
+<div class="g">
+  <!-- 01: States & Logic -->
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>States & Logic</h2></div>
+    <div class="st">
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 15px;">
+        <div id="cb1" class="cb-box">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <div class="indet-line"></div>
+        </div>
+        <div id="label1" style="font-family: 'JetBrains Mono'; font-size: 12px; color: var(--ac);">UNCHECKED</div>
+      </div>
+      <div class="val">Type: Tri-state</div>
     </div>
-</main>
+    <p class="ins">Checkbox có 3 trạng thái chính: <strong>Rỗng</strong> (Unchecked), <strong>Chọn</strong> (Checked) và <strong>Nửa-chọn</strong> (Indeterminate).</p>
+  </section>
+
+  <!-- 02: Multiple Choice -->
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Multiple Choice</h2></div>
+    <div class="st">
+      <div class="list-container">
+        <div class="cb-item" id="item2_1">
+          <div class="cb-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          <span class="cb-label">Facebook Ads</span>
+        </div>
+        <div class="cb-item" id="item2_2">
+          <div class="cb-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          <span class="cb-label">Google Search</span>
+        </div>
+        <div class="cb-item" id="item2_3">
+          <div class="cb-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          <span class="cb-label">TikTok Shop</span>
+        </div>
+      </div>
+      <div class="val" id="count2">Selected: 0</div>
+    </div>
+    <p class="ins">Khác với Radio Button, Checkbox cho phép chọn <strong>nhiều phương án</strong> cùng lúc trong một danh sách.</p>
+  </section>
+
+  <!-- 03: Parent & Child -->
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Parent & Child</h2></div>
+    <div class="st">
+      <div class="list-container">
+        <div class="cb-item" id="parent3" style="border-bottom: 1px solid var(--bd); padding-bottom: 10px; margin-bottom: 6px;">
+          <div class="cb-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg><div class="indet-line"></div></div>
+          <span class="cb-label" style="font-weight: 700;">Select All</span>
+        </div>
+        <div style="padding-left: 14px; display: flex; flex-direction: column; gap: 4px;">
+          <div class="cb-item" id="child3_1">
+            <div class="cb-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+            <span class="cb-label">Email Campaign</span>
+          </div>
+          <div class="cb-item" id="child3_2">
+            <div class="cb-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+            <span class="cb-label">SMS Blast</span>
+          </div>
+        </div>
+      </div>
+      <div class="val" id="status3">Status: Mixed</div>
+    </div>
+    <p class="ins">Logic <strong>Cha-Con</strong> giúp quản lý các nhóm tùy chọn lớn một cách thông minh và tiết kiệm thao tác.</p>
+  </section>
+
+  <!-- 04: Form Guard -->
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Form Guard</h2></div>
+    <div class="st">
+      <div class="form-card">
+        <div style="height: 10px; width: 40%; background: var(--bd); border-radius: 2px;"></div>
+        <div style="height: 30px; width: 100%; background: var(--bgi); border: 1px solid var(--bd); border-radius: 4px;"></div>
+        <div class="cb-item" id="guard4">
+          <div class="cb-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          <span class="cb-label" style="font-size: 11px;">I agree to Terms & Conditions</span>
+        </div>
+        <div class="btn" id="btn4">SUBMIT FORM</div>
+      </div>
+      <div class="val" id="msg4">Waiting...</div>
+    </div>
+    <p class="ins">Trong các Form, Checkbox thường đóng vai trò là <strong>người gác cổng</strong> cho các hành động quan trọng.</p>
+  </section>
+</div>
 
 <script>
-function moveCur(cur, el, container) {
-    var cr = el.getBoundingClientRect();
-    var pr = container.getBoundingClientRect();
-    cur.style.left = (cr.left - pr.left + cr.width / 2 - 7) + 'px';
-    cur.style.top = (cr.top - pr.top + cr.height / 2 - 7) + 'px';
-    cur.classList.add('show');
-    cur.style.animation = 'none';
-    void cur.offsetWidth;
-    cur.style.animation = '';
-}
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-(function() {
-    var box = document.getElementById('stMain');
-    var lbl = document.getElementById('stLbl');
-    var d1 = document.getElementById('stDis1');
-    var dl1 = document.getElementById('stDL1');
-    var d2 = document.getElementById('stDis2');
-    var dl2 = document.getElementById('stDL2');
-    var step = 0, total = 5;
-    var names = ['Unchecked', 'Checked', 'Indeterminate', '', ''];
-
-    function run() {
-        box.className = 'st-box';
-        dl1.style.opacity = '0';
-        dl2.style.opacity = '0';
-
-        if (step === 0) { box.className = 'st-box'; }
-        else if (step === 1) { box.className = 'st-box on'; }
-        else if (step === 2) { box.className = 'st-box ind'; }
-        else if (step === 3) {
-            box.className = 'st-box ind';
-            dl1.style.opacity = '1';
-            dl2.style.opacity = '1';
-        }
-        else { box.className = 'st-box'; }
-
-        lbl.textContent = names[step] || '\u00a0';
-        step = (step + 1) % total;
-    }
-    run();
-    setInterval(run, 1800);
+// 01: States & Logic
+(async function() {
+  const cb = document.getElementById('cb1');
+  const label = document.getElementById('label1');
+  
+  while (true) {
+    // Unchecked
+    cb.classList.remove('checked', 'indet');
+    label.textContent = 'UNCHECKED';
+    label.style.color = 'var(--txm)';
+    await wait(2000);
+    
+    // Checked
+    cb.classList.add('checked');
+    label.textContent = 'CHECKED';
+    label.style.color = 'var(--ac)';
+    await wait(2000);
+    
+    // Indeterminate
+    cb.classList.remove('checked');
+    cb.classList.add('indet');
+    label.textContent = 'INDETERMINATE';
+    label.style.color = 'var(--ac)';
+    await wait(2000);
+  }
 })();
 
-(function() {
-    var wrap = document.getElementById('d2');
-    var cur = document.getElementById('c2');
-    var items = wrap.querySelectorAll('.cb');
-    var cnt = document.getElementById('lbCnt');
-    var states = [false, false, false, false];
-    var seq = [0,1,2,3,-1,-1, 3,2,1,0,-1,-1];
-    var si = 0;
-
-    function updCount() {
-        var n = states.filter(Boolean).length;
-        cnt.textContent = 'Selected: ' + n + '/4';
-        cnt.classList.toggle('hi', n > 0);
+// 02: Multiple Choice
+(async function() {
+  const items = [
+    document.getElementById('item2_1'),
+    document.getElementById('item2_2'),
+    document.getElementById('item2_3')
+  ];
+  const count = document.getElementById('count2');
+  
+  while (true) {
+    // Reset
+    items.forEach(item => {
+      item.classList.remove('active');
+      item.querySelector('.cb-box').classList.remove('checked');
+    });
+    count.textContent = 'Selected: 0';
+    await wait(1500);
+    
+    // Select one by one
+    for(let i=0; i<items.length; i++) {
+      items[i].classList.add('active');
+      items[i].querySelector('.cb-box').classList.add('checked');
+      count.textContent = `Selected: ${i+1}`;
+      await wait(1000);
     }
-
-    function run() {
-        var i = seq[si];
-        if (i === -1) { si++; return; }
-        states[i] = !states[i];
-        items[i].querySelector('.cb-box').className = 'cb-box' + (states[i] ? ' on' : '');
-        moveCur(cur, items[i].querySelector('.cb-box'), wrap);
-        updCount();
-        si = (si + 1) % seq.length;
-    }
-    run();
-    setInterval(run, 700);
+    
+    await wait(2000);
+  }
 })();
 
-(function() {
-    var wrap = document.getElementById('d3');
-    var cur = document.getElementById('c3');
-    var par = document.getElementById('lsPar');
-    var children = [
-        document.getElementById('lsC0'),
-        document.getElementById('lsC1'),
-        document.getElementById('lsC2'),
-        document.getElementById('lsC3')
-    ];
-    var items = wrap.querySelectorAll('.ls-item');
-    var cStates = [false, false, false, false];
-
-    function syncParent() {
-        var on = cStates.filter(Boolean).length;
-        par.className = 'cb-box';
-        if (on === 0) { }
-        else if (on === 4) { par.classList.add('on'); }
-        else { par.classList.add('ind'); }
-        items[0].classList.toggle('hl', on > 0 && on < 4);
-        for (var i = 0; i < 4; i++) {
-            items[i + 1].classList.toggle('hl', cStates[i]);
-        }
-    }
-
-    var actions = [
-        { type: 'par' },
-        { type: 'child', i: 1 },
-        { type: 'child', i: 3 },
-        { type: 'par' },
-        { type: 'child', i: 0 },
-        { type: 'child', i: 1 },
-        { type: 'child', i: 2 },
-        { type: 'child', i: 3 },
-        { type: 'pause' },
-        { type: 'reset' }
-    ];
-    var ai = 0;
-
-    function run() {
-        var a = actions[ai];
-        if (a.type === 'par') {
-            var allOn = cStates.every(Boolean);
-            var newVal = !allOn;
-            cStates = [newVal, newVal, newVal, newVal];
-            for (var j = 0; j < 4; j++) children[j].className = 'cb-box' + (newVal ? ' on' : '');
-            moveCur(cur, par, wrap);
-        } else if (a.type === 'child') {
-            cStates[a.i] = !cStates[a.i];
-            children[a.i].className = 'cb-box' + (cStates[a.i] ? ' on' : '');
-            moveCur(cur, children[a.i], wrap);
-        } else if (a.type === 'reset') {
-            cStates = [false, false, false, false];
-            for (var k = 0; k < 4; k++) children[k].className = 'cb-box';
-            par.className = 'cb-box';
-            items[0].classList.remove('hl');
-            for (var m = 0; m < 4; m++) items[m + 1].classList.remove('hl');
-        }
-        syncParent();
-        ai = (ai + 1) % actions.length;
-    }
-    syncParent();
-    setTimeout(function() { run(); }, 800);
-    setInterval(run, 1200);
+// 03: Parent & Child
+(async function() {
+  const parent = document.getElementById('parent3');
+  const parentBox = parent.querySelector('.cb-box');
+  const children = [
+    document.getElementById('child3_1'),
+    document.getElementById('child3_2')
+  ];
+  const status = document.getElementById('status3');
+  
+  while (true) {
+    // Step 1: All Unchecked
+    parentBox.classList.remove('checked', 'indet');
+    children.forEach(c => {
+      c.classList.remove('active');
+      c.querySelector('.cb-box').classList.remove('checked');
+    });
+    status.textContent = 'Status: None';
+    await wait(2000);
+    
+    // Step 2: One child checked -> Parent Indeterminate
+    children[0].classList.add('active');
+    children[0].querySelector('.cb-box').classList.add('checked');
+    parentBox.classList.add('indet');
+    status.textContent = 'Status: Mixed';
+    await wait(2000);
+    
+    // Step 3: All children checked -> Parent Checked
+    children[1].classList.add('active');
+    children[1].querySelector('.cb-box').classList.add('checked');
+    parentBox.classList.remove('indet');
+    parentBox.classList.add('checked');
+    status.textContent = 'Status: All Selected';
+    await wait(2000);
+  }
 })();
 
-(function() {
-    var wrap = document.getElementById('d4');
-    var cur = document.getElementById('c4');
-    var boxes = [
-        document.getElementById('fmC0'),
-        document.getElementById('fmC1'),
-        document.getElementById('fmC2'),
-        document.getElementById('fmC3')
-    ];
-    var items = wrap.querySelectorAll('.cb');
-    var tagsEl = document.getElementById('fmTags');
-    var labels = ['Dark mode', 'Compact', 'Auto-save', 'Sound'];
-    var states = [false, false, false, false];
-
-    function updTags() {
-        tagsEl.innerHTML = '';
-        for (var i = 0; i < 4; i++) {
-            if (states[i]) {
-                var t = document.createElement('span');
-                t.className = 'fm-tag s';
-                t.textContent = labels[i];
-                tagsEl.appendChild(t);
-            }
-        }
-    }
-
-    var seq = [0,1,2,3,-1,-1, 0,1,2,3,-1,-1];
-    var si = 0;
-
-    function run() {
-        var i = seq[si];
-        if (i === -1) { si++; return; }
-        states[i] = !states[i];
-        boxes[i].className = 'cb-box' + (states[i] ? ' on' : '');
-        moveCur(cur, boxes[i], wrap);
-        updTags();
-        si = (si + 1) % seq.length;
-    }
-    run();
-    setInterval(run, 650);
+// 04: Form Guard
+(async function() {
+  const guard = document.getElementById('guard4');
+  const guardBox = guard.querySelector('.cb-box');
+  const btn = document.getElementById('btn4');
+  const msg = document.getElementById('msg4');
+  
+  while (true) {
+    // Reset
+    guard.classList.remove('active');
+    guardBox.classList.remove('checked');
+    btn.classList.remove('active');
+    msg.textContent = 'Waiting...';
+    msg.style.color = 'var(--txm)';
+    await wait(2000);
+    
+    // User checks the guard
+    guard.classList.add('active');
+    guardBox.classList.add('checked');
+    btn.classList.add('active');
+    msg.textContent = 'Ready to Submit';
+    msg.style.color = 'var(--ac)';
+    await wait(2000);
+    
+    // Submit
+    msg.textContent = 'Submitted!';
+    btn.style.transform = 'scale(0.95)';
+    await wait(100);
+    btn.style.transform = 'scale(1)';
+    await wait(3000);
+  }
 })();
 </script>
 </body>
