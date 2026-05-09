@@ -65,11 +65,17 @@ export default function GlossaryTermModal({ term, isOpen, getTermName, onClose, 
             ))}
           </div>
 
-          <p className="glossary-body text-[15px] leading-[1.8] text-ink2">{term.definition}</p>
+          <p 
+            className="glossary-body text-[15px] leading-[1.8] text-ink2"
+            dangerouslySetInnerHTML={{ __html: term.definition }}
+          />
 
           <div>
             <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.06em] text-muted">Ví dụ thực tế</p>
-            <div className="border-l-2 border-l-accent bg-bg2 px-4 py-3 font-mono text-[12px] leading-[1.75] text-ink2">{term.example}</div>
+            <div 
+              className="border-l-2 border-l-accent bg-bg2 px-4 py-3 font-mono text-[12px] leading-[1.75] text-ink2"
+              dangerouslySetInnerHTML={{ __html: term.example }}
+            />
           </div>
 
           {term.related?.length ? (

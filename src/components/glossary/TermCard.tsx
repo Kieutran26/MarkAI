@@ -47,9 +47,10 @@ export default function TermCard({ term, viewMode, onOpenTerm }: TermCardProps) 
         </div>
 
         <div className="min-w-0 flex-1">
-          <p className="glossary-body max-w-[28ch] font-sans text-[12px] leading-[1.55] text-ink2">
-            {shortDescription}
-          </p>
+          <p 
+            className="glossary-body max-w-[28ch] font-sans text-[12px] leading-[1.55] text-ink2"
+            dangerouslySetInnerHTML={{ __html: shortDescription }}
+          />
           <div className="mt-3">
             <span className="inline-flex items-center border border-[var(--ink)] bg-[var(--ink)] px-2 py-[3px] font-mono text-[10px] uppercase tracking-[0.05em] text-[var(--bg)] transition-colors group-hover:border-accent group-hover:bg-accent group-hover:text-[var(--ink)]">
               Xem chi tiết →

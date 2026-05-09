@@ -1,275 +1,417 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Button - Demo</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#1a1a1a;--bg-card:#222;--accent:#d97706;--accent-dim:#92400e;
-  --accent-glow:rgba(217,119,6,.12);--fg:#e8e4df;--fg-muted:#8a8580;
-  --fg-dim:#5a5550;--border:#3a3a3a;--border-accent:#d97706;
-  --success:#22c55e;--success-bg:rgba(34,197,94,.1);
-  --error:#ef4444;--error-bg:rgba(239,68,68,.1);
-  --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;--radius:2px;
-}
-body{background:var(--bg);color:var(--fg);font-family:var(--sans);line-height:1.5;min-height:100vh;
-  background-image:linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);
-  background-size:24px 24px}
-.page-wrapper{max-width:960px;margin:0 auto;padding:16px 20px 40px}
-.section-header{display:flex;align-items:center;gap:12px;margin-bottom:20px;margin-top:56px;padding-top:32px;border-top:1px solid var(--border)}
-.section-header:first-of-type{margin-top:0;padding-top:0;border-top:none}
-.section-num{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--bg);background:var(--accent);width:28px;height:28px;display:flex;align-items:center;justify-content:center;border-radius:var(--radius);flex-shrink:0}
-.section-title{font-size:18px;font-weight:700;color:var(--fg)}
-.section-hint{font-family:var(--mono);font-size:10px;color:var(--fg-dim);margin-left:auto;letter-spacing:.5px}
-.grid-4{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-@media(max-width:640px){.grid-4{grid-template-columns:1fr}.section-hint{display:none}}
-.card{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;position:relative;overflow:hidden;transition:border-color .3s}
-.card:hover{border-color:#4a4a4a}
-.card-label{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:6px;display:flex;align-items:center;gap:6px}
-.card-label::before{content:'';width:6px;height:6px;background:var(--accent);border-radius:1px}
-.card-title{font-size:16px;font-weight:700;color:var(--fg);margin-bottom:4px}
-.card-desc{font-size:12px;color:var(--fg-muted);margin-bottom:20px;line-height:1.6}
-.demo-area{background:#141414;border:1px solid var(--border);border-radius:var(--radius);padding:20px;min-height:210px;position:relative;display:flex;flex-direction:column;justify-content:center;gap:10px;align-items:center}
-.style-badge{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--accent);background:var(--accent-glow);border:1px solid rgba(217,119,6,.3);padding:2px 8px;border-radius:var(--radius);position:absolute;top:10px;right:10px;opacity:0;transition:opacity .4s;z-index:4}
-.style-badge.visible{opacity:1}
-.insight-bar{margin-top:14px;padding:8px 12px;background:var(--accent-glow);border:1px solid rgba(217,119,6,.2);border-radius:var(--radius);font-size:11px;color:var(--accent);font-family:var(--mono);line-height:1.5;opacity:0;transform:translateY(4px);transition:all .4s}
-.insight-bar.visible{opacity:1;transform:translateY(0)}
-.auto-progress{height:2px;background:var(--border);margin-top:12px;border-radius:1px;overflow:hidden}
-.auto-progress-fill{height:100%;background:var(--accent);width:0%;transition:width .1s linear;border-radius:1px}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Button - Amber Brutalist Demo</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #E88C2E;
+      --bg: #0f0f12;
+      --card-bg: #16161b;
+      --border: #282830;
+      --text: #e8e4dc;
+      --text-muted: #707070;
+      --font-main: 'Space Grotesk', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
 
-/* ===== BUTTON COMPONENTS ===== */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.5px;cursor:default;border-radius:var(--radius);transition:all .25s ease;white-space:nowrap;padding:10px 20px;position:relative;overflow:hidden;outline:none}
-.btn-icon{font-size:13px;display:inline-flex;align-items:center;justify-content:center}
-.btn-primary{background:var(--accent);color:var(--bg);border:none}
-.btn-primary:hover, .btn-primary.sim-hover{background:#b45309}
-.btn-primary:active, .btn-primary.sim-pressed{background:#92400e;transform:scale(.97)}
-.btn-primary.disabled{opacity:.35;cursor:not-allowed;transform:none}
-.btn-secondary{background:rgba(255,255,255,.08);color:var(--fg);border:1px solid var(--border)}
-.btn-secondary:hover{background:rgba(255,255,255,.12);border-color:var(--fg-dim)}
-.btn-secondary:active{background:rgba(255,255,255,.06);transform:scale(.97)}
-.btn-secondary.disabled{opacity:.35;cursor:not-allowed;transform:none}
-.btn-outline{background:transparent;color:var(--accent);border:1px solid var(--accent)}
-.btn-outline:hover{background:var(--accent-glow);border-color:var(--accent)}
-.btn-outline:active{background:rgba(217,119,6,.2);transform:scale(.97)}
-.btn-outline.disabled{opacity:.35;cursor:not-allowed;transform:none}
-.btn-ghost{background:transparent;color:var(--fg-muted);border:none}
-.btn-ghost:hover{background:rgba(255,255,255,.06);color:var(--fg)}
-.btn-ghost:active{background:rgba(255,255,255,.03);transform:scale(.97)}
-.btn-ghost.disabled{opacity:.35;cursor:not-allowed;transform:none}
-.btn-lg{padding:14px 28px;font-size:12px}
-.btn-md{padding:10px 20px;font-size:10px}
-.btn-sm{padding:7px 14px;font-size:9px}
-.btn-xs{padding:4px 10px;font-size:8px}
-@keyframes spin{to{transform:rotate(360deg)}}
-.btn-spinner{width:12px;height:12px;border:2px solid transparent;border-top-color:currentColor;border-radius:50%;animation:spin .6s linear infinite;display:none}
-.btn.loading .btn-label{opacity:0}
-.btn.loading .btn-spinner{display:block}
-.btn.loading{pointer-events:none}
-.state-label{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;padding:2px 6px;border-radius:1px;transition:all .3s;position:absolute;bottom:-22px;left:50%;transform:translateX(-50%);white-space:nowrap}
-.sl-default{background:rgba(255,255,255,.05);color:var(--fg-dim)}
-.sl-hover{background:var(--accent-glow);color:var(--accent)}
-.sl-pressed{background:rgba(239,68,68,.1);color:var(--error)}
-.sl-disabled{background:rgba(255,255,255,.03);color:var(--fg-dim);opacity:.5}
-.sl-loading{background:var(--accent-glow);color:var(--accent)}
-</style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-main);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .demo-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      max-width: 940px;
+      width: 100%;
+    }
+
+    @media (max-width: 600px) {
+      .demo-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      position: relative;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--accent);
+      z-index: 2;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+
+    .card-num {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--accent);
+      border: 1px solid rgba(232, 140, 46, 0.3);
+      background: rgba(232, 140, 46, 0.1);
+      padding: 2px 6px;
+      border-radius: 2px;
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      letter-spacing: -0.01em;
+    }
+
+    .indicator {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--accent);
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(0.8); }
+      100% { opacity: 1; transform: scale(1); }
+    }
+
+    .simulation-area {
+      flex: 1;
+      min-height: 140px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px dashed rgba(255, 255, 255, 0.05);
+      border-radius: 2px;
+      position: relative;
+      margin-bottom: 14px;
+    }
+
+    .ins {
+      border-left: 2px solid var(--accent);
+      padding-left: 12px;
+      color: #707070;
+      font-size: 11.5px;
+      line-height: 1.5;
+    }
+
+    .ins strong {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* Button Components */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 20px;
+      font-family: var(--font-main);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+      border: none;
+      white-space: nowrap;
+      position: relative;
+    }
+
+    .btn-primary { background: var(--accent); color: #000; }
+    .btn-secondary { background: #282830; color: #fff; }
+    .btn-outline { background: transparent; border: 1px solid var(--accent); color: var(--accent); }
+    .btn-ghost { background: transparent; color: var(--text-muted); }
+
+    .btn:hover { filter: brightness(1.1); transform: translateY(-1px); }
+    .btn:active { transform: translateY(0) scale(0.98); }
+
+    .btn.sim-hover { filter: brightness(1.1); transform: translateY(-1px); }
+    .btn.sim-pressed { transform: translateY(0) scale(0.98); background: #c67420; }
+    .btn.disabled { opacity: 0.4; cursor: not-allowed; pointer-events: none; filter: grayscale(0.5); }
+    
+    .spinner {
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(0,0,0,0.2);
+      border-top-color: currentColor;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+    
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .badge-label {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      text-transform: uppercase;
+      color: var(--accent);
+      opacity: 0.6;
+    }
+
+    .btn-group {
+      display: flex;
+      gap: 0;
+    }
+    .btn-group .btn {
+      border-radius: 0;
+      border-right: 1px solid rgba(0,0,0,0.1);
+    }
+    .btn-group .btn:first-child { border-radius: 2px 0 0 2px; }
+    .btn-group .btn:last-child { border-radius: 0 2px 2px 0; border-right: none; }
+
+  </style>
 </head>
 <body>
 
-<div class="page-wrapper">
-
-  <div class="grid-4">
-    <!-- 1. VARIANTS -->
+  <div class="demo-container">
+    <!-- Cell 1: Variants -->
     <div class="card">
-      <div class="card-label">01</div>
-      <div class="card-title">Button Variants</div>
-      <div class="card-desc">4 loại variant — mỗi loại có mức nhấn mạnh khác nhau. Không phải "đẹp hơn" mà là "quan trọng hơn".</div>
-      <div class="demo-area" id="v1-area">
-        <span class="style-badge" id="b1">PRIMARY</span>
-        <div style="position:relative;display:inline-flex;flex-direction:column;gap:10px;align-items:center">
-          <button class="btn btn-primary btn-md" id="v1-btn">Submit</button>
-          <span class="state-label sl-default" id="v1-sl">Default</span>
-        </div>
-        <div class="auto-progress"><div class="auto-progress-fill" id="p1"></div></div>
+      <div class="indicator"></div>
+      <div class="card-header">
+        <div class="card-num">01</div>
+        <div class="card-title">Button Variants</div>
       </div>
-      <div class="insight-bar visible">Primary = hành động chính. Secondary = phụ. Outline = nhẹ. Ghost = gần vô hình. Variant = weight của button.</div>
+      <div class="simulation-area" id="sim-1">
+        <button class="btn btn-primary" id="btn-v1">Primary Action</button>
+        <div class="badge-label" id="label-v1">PRIMARY</div>
+      </div>
+      <div class="ins">
+        Các loại <strong>variant</strong> giúp phân cấp thị giác. <strong>Primary</strong> dành cho hành động quan trọng nhất, trong khi <strong>Ghost</strong> dành cho các lựa chọn phụ.
+      </div>
     </div>
 
-    <!-- 2. SIZES -->
+    <!-- Cell 2: States -->
     <div class="card">
-      <div class="card-label">02</div>
-      <div class="card-title">Button Sizes</div>
-      <div class="card-desc">4 cấp size — cùng variant, khác diện tích. Size = visual hierarchy, không phải preference.</div>
-      <div class="demo-area" id="v2-area">
-        <span class="style-badge" id="b2">LARGE</span>
-        <div style="position:relative;display:flex;flex-direction:column;gap:8px;align-items:center">
-          <button class="btn btn-primary btn-lg" id="v2-btn">Submit</button>
-          <span class="state-label sl-default" id="v2-sl">padding: 14px 28px</span>
-        </div>
-        <div class="auto-progress"><div class="auto-progress-fill" id="p2"></div></div>
+      <div class="indicator"></div>
+      <div class="card-header">
+        <div class="card-num">02</div>
+        <div class="card-title">Interaction States</div>
       </div>
-      <div class="insight-bar visible">Size = hierarchy. CTA lớn, cancel nhỏ. Đừng chọn size vì "trông hợp" — chọn vì "nếu quan trọng thì to".</div>
+      <div class="simulation-area" id="sim-2">
+        <button class="btn btn-primary" id="btn-v2">Submit Form</button>
+        <div class="badge-label" id="label-v2">DEFAULT</div>
+      </div>
+      <div class="ins">
+        Nút bấm cần phản hồi lại tương tác của người dùng qua các <strong>states</strong>: Default, <strong>Hover</strong>, <strong>Pressed</strong>, và <strong>Disabled</strong> để xác nhận hành động.
+      </div>
     </div>
 
-    <!-- 3. WITH ICONS -->
+    <!-- Cell 3: Loading & Icons -->
     <div class="card">
-      <div class="card-label">03</div>
-      <div class="card-title">Button with Icons</div>
-      <div class="card-desc">Icon bên trái/trái = clarify action. Icon only = tiết kiệm space khi label thừa.</div>
-      <div class="demo-area" id="v3-area">
-        <span class="style-badge" id="b3">ICON LEFT</span>
-        <div style="position:relative;display:inline-flex;flex-direction:column;gap:8px;align-items:center" id="v3-wrap">
-          <button class="btn btn-primary btn-md" id="v3-btn"><span class="btn-icon">+</span> New User</button>
-          <span class="state-label sl-default" id="v3-sl">icon-left</span>
-        </div>
-        <div class="auto-progress"><div class="auto-progress-fill" id="p3"></div></div>
+      <div class="indicator"></div>
+      <div class="card-header">
+        <div class="card-num">03</div>
+        <div class="card-title">Contextual Feedback</div>
       </div>
-      <div class="insight-bar visible">Icon = shortcut cho não. Thấy "+" biết ngay là "tạo mới". Label có thể bỏ khi icon đã đủ rõ — icon-only button.</div>
+      <div class="simulation-area" id="sim-3">
+        <button class="btn btn-primary" id="btn-v3">
+          <span id="icon-v3">+</span>
+          <span id="text-v3">Create Project</span>
+        </button>
+        <div class="badge-label" id="label-v3">ICON + LABEL</div>
+      </div>
+      <div class="ins">
+        Sử dụng <strong>Icons</strong> để tăng khả năng nhận diện nhanh. Trạng thái <strong>Loading</strong> ngăn chặn việc bấm lặp lại trong khi hệ thống đang xử lý dữ liệu.
+      </div>
     </div>
 
-    <!-- 4. STATES -->
+    <!-- Cell 4: Layout & Groups -->
     <div class="card">
-      <div class="card-label">04</div>
-      <div class="card-title">Button States</div>
-      <div class="card-desc">Default → Hover → Pressed → Disabled → Loading. 5 state, mỗi cái có rule riêng.</div>
-      <div class="demo-area" id="v4-area">
-        <span class="style-badge" id="b4">DEFAULT</span>
-        <div style="position:relative;display:inline-flex;flex-direction:column;align-items:center" id="v4-wrap">
-          <button class="btn btn-primary btn-md" id="v4-btn">Submit</button>
-          <span class="state-label sl-default" id="v4-sl">Default</span>
-        </div>
-        <div class="auto-progress"><div class="auto-progress-fill" id="p4"></div></div>
+      <div class="indicator"></div>
+      <div class="card-header">
+        <div class="card-num">04</div>
+        <div class="card-title">Layout & Hierarchy</div>
       </div>
-      <div class="insight-bar visible">5 state = lifecycle. Disabled ≠ hidden — user thấy button nhưng biết không thể click. Loading = "đang xử lý, đợi".</div>
+      <div class="simulation-area" id="sim-4">
+        <div class="btn-group" id="group-v4">
+          <button class="btn btn-secondary">Edit</button>
+          <button class="btn btn-secondary">Copy</button>
+          <button class="btn btn-secondary">Delete</button>
+        </div>
+        <div class="badge-label" id="label-v4">BUTTON GROUP</div>
+      </div>
+      <div class="ins">
+        <strong>Button Groups</strong> giúp gom nhóm các hành động liên quan. <strong>Hierarchy</strong> được thiết lập bằng cách kết hợp các kích thước và màu sắc khác nhau.
+      </div>
     </div>
   </div>
-</div>
 
-<script>
-function autoProgress(id, interval) {
-  const el = document.getElementById(id);
-  let s = Date.now();
-  (function tick() { el.style.width = ((Date.now() - s) % interval / interval * 100) + '%'; requestAnimationFrame(tick); })();
-}
+  <script>
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-// SIM 1
-(function(){
-  const variants = [
-    { cls:'btn-primary', label:'PRIMARY', slCls:'sl-default' },
-    { cls:'btn-secondary', label:'SECONDARY', slCls:'sl-default' },
-    { cls:'btn-outline', label:'OUTLINE', slCls:'sl-default' },
-    { cls:'btn-ghost', label:'GHOST', slCls:'sl-default' }
-  ];
-  const btn = document.getElementById('v1-btn');
-  const sl = document.getElementById('v1-sl');
-  const badge = document.getElementById('b1');
-  let idx = 0;
-  const interval = 1800;
-  let start = Date.now();
-  function set() {
-    const v = variants[idx];
-    btn.className = 'btn ' + v.cls + ' btn-md';
-    sl.className = 'state-label ' + v.slCls;
-    sl.textContent = v.label;
-    badge.textContent = v.label;
-    badge.classList.add('visible');
-    idx = (idx + 1) % variants.length;
-  }
-  (function tick() { if (Date.now() - start >= interval) { start = Date.now(); set(); } requestAnimationFrame(tick); })();
-  set();
-  autoProgress('p1', variants.length * interval);
-})();
-
-// SIM 2
-(function(){
-  const sizes = [
-    { cls:'btn-lg', label:'LARGE', pad:'padding: 14px 28px' },
-    { cls:'btn-md', label:'MEDIUM', pad:'padding: 10px 20px' },
-    { cls:'btn-sm', label:'SMALL', pad:'padding: 7px 14px' },
-    { cls:'btn-xs', label:'XS', pad:'padding: 4px 10px' }
-  ];
-  const btn = document.getElementById('v2-btn');
-  const sl = document.getElementById('v2-sl');
-  const badge = document.getElementById('b2');
-  let idx = 0;
-  const interval = 1600;
-  let start = Date.now();
-  function set() {
-    const s = sizes[idx];
-    btn.className = 'btn btn-primary ' + s.cls;
-    sl.className = 'state-label sl-default';
-    sl.textContent = s.pad;
-    badge.textContent = s.label;
-    badge.classList.add('visible');
-    idx = (idx + 1) % sizes.length;
-  }
-  (function tick() { if (Date.now() - start >= interval) { start = Date.now(); set(); } requestAnimationFrame(tick); })();
-  set();
-  autoProgress('p2', sizes.length * interval);
-})();
-
-// SIM 3
-(function(){
-  const layouts = [
-    { html:'<span class="btn-icon">+</span> New User', label:'ICON LEFT' },
-    { html:'Download <span class="btn-icon">&#8595;</span>', label:'ICON RIGHT' },
-    { html:'<span class="btn-icon" style="font-size:16px">&#128269;</span>', label:'ICON ONLY' }
-  ];
-  const btn = document.getElementById('v3-btn');
-  const sl = document.getElementById('v3-sl');
-  const badge = document.getElementById('b3');
-  let idx = 0;
-  const interval = 1800;
-  let start = Date.now();
-  function set() {
-    const l = layouts[idx];
-    btn.innerHTML = '<span class="btn-label">' + l.html + '</span><div class="btn-spinner"></div>';
-    sl.className = 'state-label sl-default';
-    sl.textContent = l.label;
-    badge.textContent = l.label;
-    badge.classList.add('visible');
-    idx = (idx + 1) % layouts.length;
-  }
-  (function tick() { if (Date.now() - start >= interval) { start = Date.now(); set(); } requestAnimationFrame(tick); })();
-  set();
-  autoProgress('p3', layouts.length * interval);
-})();
-
-// SIM 4
-(function(){
-  const states = [
-    { cls:'btn-primary btn-md', label:'Default', slCls:'sl-default' },
-    { cls:'btn-primary btn-md sim-hover', label:'Hover', slCls:'sl-hover' },
-    { cls:'btn-primary btn-md sim-pressed', label:'Pressed', slCls:'sl-pressed' },
-    { cls:'btn-primary btn-md disabled', label:'Disabled', slCls:'sl-disabled' },
-    { cls:'btn-primary btn-md loading', label:'Loading', slCls:'sl-loading' }
-  ];
-  const btn = document.getElementById('v4-btn');
-  const sl = document.getElementById('v4-sl');
-  const badge = document.getElementById('b4');
-  let idx = 0;
-  const interval = 1600;
-  let start = Date.now();
-  function set() {
-    const s = states[idx];
-    btn.className = 'btn ' + s.cls;
-    const label = btn.querySelector('.btn-label') || btn;
-    if (label.classList) {
-        if (s.cls.includes('loading')) label.style.opacity = '0';
-        else label.style.opacity = '1';
+    // Cell 1: Variants Loop
+    async function loop1() {
+      const btn = document.getElementById('btn-v1');
+      const label = document.getElementById('label-v1');
+      const variants = [
+        { class: 'btn-primary', name: 'PRIMARY' },
+        { class: 'btn-secondary', name: 'SECONDARY' },
+        { class: 'btn-outline', name: 'OUTLINE' },
+        { class: 'btn-ghost', name: 'GHOST' }
+      ];
+      let i = 0;
+      while (true) {
+        const v = variants[i];
+        btn.className = 'btn ' + v.class;
+        label.innerText = v.name;
+        i = (i + 1) % variants.length;
+        await sleep(2000);
+      }
     }
-    sl.className = 'state-label ' + s.slCls;
-    sl.textContent = s.label;
-    badge.textContent = s.label;
-    badge.classList.add('visible');
-    idx = (idx + 1) % states.length;
-  }
-  (function tick() { if (Date.now() - start >= interval) { start = Date.now(); set(); } requestAnimationFrame(tick); })();
-  set();
-  autoProgress('p4', states.length * interval);
-})();
-</script>
+
+    // Cell 2: States Loop
+    async function loop2() {
+      const btn = document.getElementById('btn-v2');
+      const label = document.getElementById('label-v2');
+      while (true) {
+        // Default
+        btn.className = 'btn btn-primary';
+        label.innerText = 'DEFAULT';
+        await sleep(1500);
+        
+        // Hover
+        btn.classList.add('sim-hover');
+        label.innerText = 'HOVER';
+        await sleep(1500);
+        
+        // Pressed
+        btn.classList.remove('sim-hover');
+        btn.classList.add('sim-pressed');
+        label.innerText = 'PRESSED';
+        await sleep(800);
+        
+        // Default again
+        btn.classList.remove('sim-pressed');
+        label.innerText = 'DEFAULT';
+        await sleep(1000);
+
+        // Disabled
+        btn.classList.add('disabled');
+        label.innerText = 'DISABLED';
+        await sleep(1500);
+        
+        btn.classList.remove('disabled');
+      }
+    }
+
+    // Cell 3: Loading & Icons
+    async function loop3() {
+      const btn = document.getElementById('btn-v3');
+      const icon = document.getElementById('icon-v3');
+      const text = document.getElementById('text-v3');
+      const label = document.getElementById('label-v3');
+      
+      while (true) {
+        // Icon + Label
+        icon.innerHTML = '+';
+        text.innerText = 'Create Project';
+        label.innerText = 'ICON + LABEL';
+        btn.classList.remove('disabled');
+        await sleep(2000);
+        
+        // Icon Only
+        text.innerText = '';
+        label.innerText = 'ICON ONLY';
+        await sleep(2000);
+        
+        // Loading State
+        text.innerText = 'Processing...';
+        icon.innerHTML = '<div class="spinner"></div>';
+        label.innerText = 'LOADING';
+        btn.classList.add('disabled');
+        await sleep(3000);
+      }
+    }
+
+    // Cell 4: Layout & Hierarchy
+    async function loop4() {
+      const container = document.getElementById('sim-4');
+      const label = document.getElementById('label-v4');
+      
+      while (true) {
+        // Button Group
+        container.innerHTML = `
+          <div class="btn-group">
+            <button class="btn btn-secondary">Edit</button>
+            <button class="btn btn-secondary">Copy</button>
+            <button class="btn btn-secondary">Delete</button>
+          </div>
+          <div class="badge-label">BUTTON GROUP</div>
+        `;
+        await sleep(2500);
+        
+        // Split Action (Primary + Outline)
+        container.innerHTML = `
+          <div style="display:flex; gap:8px;">
+            <button class="btn btn-primary">Save Changes</button>
+            <button class="btn btn-outline">Cancel</button>
+          </div>
+          <div class="badge-label">HIERARCHY (1st vs 2nd)</div>
+        `;
+        await sleep(2500);
+
+        // Vertical Stack
+        container.innerHTML = `
+          <div style="display:flex; flex-direction:column; gap:8px; width: 100%; max-width: 200px;">
+            <button class="btn btn-primary">Login</button>
+            <button class="btn btn-ghost">Forgot Password?</button>
+          </div>
+          <div class="badge-label">STACKED LAYOUT</div>
+        `;
+        await sleep(2500);
+      }
+    }
+
+    // Start all loops
+    loop1();
+    loop2();
+    loop3();
+    loop4();
+  </script>
 </body>
 </html>

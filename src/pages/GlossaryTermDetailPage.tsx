@@ -597,16 +597,21 @@ function TermDisplaySection({
           )}
           <h1 className={`${showBackLink ? 'mt-5' : 'mt-0'} font-serif text-[clamp(2.6rem,5vw,4.4rem)] leading-[0.95]`}>{term.name}</h1>
           <p className="mt-3 font-mono text-[11px] tracking-[0.04em] text-muted">{term.nameEn}</p>
-          <p className="mt-8 max-w-[46rem] font-sans text-[17px] leading-[1.8] text-ink2">{term.definition}</p>
+          <p 
+            className="mt-8 max-w-[46rem] font-sans text-[17px] leading-[1.8] text-ink2"
+            dangerouslySetInnerHTML={{ __html: term.definition }}
+          />
 
           {deepDiveNotes.length ? (
             <div className="mt-8 max-w-[52rem] border-l-2 border-l-accent bg-bg2 px-4 py-4">
               <p className="font-mono text-[10px] uppercase tracking-[0.06em] text-muted">Hiểu nhanh</p>
               <div className="mt-3 space-y-3">
                 {deepDiveNotes.map((note) => (
-                  <p key={note} className="font-sans text-[14px] leading-[1.75] text-ink2">
-                    {note}
-                  </p>
+                  <p 
+                    key={note} 
+                    className="font-sans text-[14px] leading-[1.75] text-ink2"
+                    dangerouslySetInnerHTML={{ __html: note }}
+                  />
                 ))}
               </div>
             </div>
@@ -620,7 +625,10 @@ function TermDisplaySection({
                   const [desc, prompt] = term.example.split('Prompt:');
                   return (
                     <>
-                      <p className="font-sans text-[15px] leading-[1.8] text-ink2 mb-4">{desc}</p>
+                      <p 
+                        className="font-sans text-[15px] leading-[1.8] text-ink2 mb-4"
+                        dangerouslySetInnerHTML={{ __html: desc }}
+                      />
                       <div className="terminal-box">
                         <div className="terminal-header">
                           <div className="terminal-dot red" />
