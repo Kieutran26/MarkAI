@@ -50,13 +50,47 @@ body{font-family:'Space Grotesk',sans-serif;background-color:var(--bg);backgroun
 .pv-f .fbadge.changed{background:var(--abg2);color:var(--acl);border:1px solid rgba(217,119,6,.2)}
 .pv-f .fbadge.new{background:var(--gnb);color:var(--gn);border:1px solid rgba(34,197,94,.2)}
 .step-nav{display:flex;gap:8px;margin-top:10px}
-.btn{padding:8px 16px;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;border:1px solid var(--bd);background:var(--bgi);color:var(--txm);border-radius:2px;cursor:pointer;transition:all .15s}
+.btn{position:relative;padding:8px 16px;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;border:1px solid var(--bd);background:var(--bgi);color:var(--txm);border-radius:2px;cursor:pointer;transition:all .15s}
 .btn:hover:not(:disabled){border-color:var(--ac);color:var(--acl);background:var(--abg)}
 .btn:disabled{opacity:.3;cursor:default}
 .btn.pri{background:var(--ac);border-color:var(--ac);color:#fff}
 .btn.pri:hover:not(:disabled){background:var(--acl);border-color:var(--acl)}
 .btn.grn{background:var(--gnb);border-color:rgba(34,197,94,.3);color:var(--gn)}
 .btn.grn:hover:not(:disabled){background:rgba(34,197,94,.2)}
+
+/* Hint Badge */
+.btn-hint {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ac);
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  padding: 2px 6px;
+  border-radius: 2px;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: pulseHint 2s infinite;
+  z-index: 999;
+}
+.btn-hint::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid var(--ac);
+}
+@keyframes pulseHint {
+  0% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.1); }
+  100% { transform: translateX(-50%) scale(1); }
+}
+
 .hint{font-size:11px;color:var(--txd);line-height:1.4;padding:8px 10px;background:var(--bgi);border-radius:2px;border-left:2px solid var(--bd);margin-top:8px}
 .pr-box{background:var(--bgi);border:1px solid var(--bd);border-radius:3px;padding:12px 14px;margin-top:14px}
 .pr-box .cl{display:block;margin-bottom:8px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txd);text-transform:uppercase;letter-spacing:.5px}
@@ -84,8 +118,11 @@ body{font-family:'Space Grotesk',sans-serif;background-color:var(--bg);backgroun
         <span class="cfg-l">Trạng thái</span>
         <div class="branch-info" id="bInfo"></div>
       </div>
-      <div class="step-nav" id="bNav">
-        <button class="btn grn" id="mergeBtn" disabled>Merge vào main</button>
+      <div class="step-nav" id="bNav" style="overflow: visible;">
+        <button class="btn grn" id="mergeBtn" disabled>
+          <span id="mergeBtnText">Merge vào main</span>
+          <div class="btn-hint" id="mergeHint" style="display: none;">Gộp code</div>
+        </button>
         <button class="btn" id="resetBtn">Reset</button>
       </div>
       <div class="hint">Click từng branch để xem file khác nhau. Chọn feature-hero hoặc fix-nav → click "Merge vào main" → quan sát main cập nhật. Click "Reset" để quay lại đầu.</div>
@@ -199,7 +236,20 @@ body{font-family:'Space Grotesk',sans-serif;background-color:var(--bg);backgroun
 
     /* merge button */
     $merge.disabled = (active === 'main' || !!merged[active]);
-    $merge.textContent = active !== 'main' ? 'Merge '+active+' vào main' : 'Merge vào main';
+    var $mBtnText = document.getElementById('mergeBtnText');
+    if($mBtnText) {
+      $mBtnText.textContent = active !== 'main' ? 'Merge '+active+' vào main' : 'Merge vào main';
+    }
+
+    /* hint visibility */
+    var $mHint = document.getElementById('mergeHint');
+    if($mHint) {
+      if (active !== 'main' && !merged[active]) {
+        $mHint.setAttribute('style', 'display: block !important');
+      } else {
+        $mHint.setAttribute('style', 'display: none !important');
+      }
+    }
 
     /* tabs merged state */
     $tabs.forEach(function(t){
@@ -223,7 +273,6 @@ body{font-family:'Space Grotesk',sans-serif;background-color:var(--bg);backgroun
     }
   }
 
-  /* ── TAB CLICK ── */
   $tabs.forEach(function(tab){
     tab.addEventListener('click', function(){
       $tabs.forEach(function(t){ t.classList.remove('on'); });

@@ -1,319 +1,400 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Branch — Animated Glossary</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-:root{
-  --bg:#101010;--bgc:#181818;--bgi:#131313;
-  --bd:#272727;--tx:#e0e0e0;--txm:#707070;--txd:#3a3a3a;
-  --ac:#d97706;--acl:#f59e0b;
-  --abg:rgba(217,119,6,.08);--abg2:rgba(217,119,6,.18);
-  --rd:#ef4444;--gn:#22c55e;--gnb:rgba(34,197,94,.12);--rdb:rgba(239,68,68,.1);
-}
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-body{font-family:'Space Grotesk',sans-serif;background-color:var(--bg);background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:20px 20px;color:var(--tx);min-height:100vh;padding:20px 16px 48px}
-.hd{max-width:900px;margin:0 auto 28px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
-.hd h1{font-size:32px;font-weight:700;letter-spacing:-1px;line-height:1}
-.hd .tag{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ac);border:1px solid var(--ac);padding:2px 8px;border-radius:2px}
-.hd .sub{width:100%;font-size:13px;color:var(--txm);margin-top:4px}
-.g{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:14px}
-@media(max-width:660px){.g{grid-template-columns:1fr}.hd h1{font-size:24px}}
-.c{background:var(--bgc);border:1px solid var(--bd);border-radius:3px;padding:18px;position:relative;overflow:hidden}
-.c::after{content:'';position:absolute;top:14px;right:14px;width:5px;height:5px;background:var(--ac);border-radius:50%;animation:dp 2.4s ease-in-out infinite}
-@keyframes dp{0%,100%{opacity:.3}50%{opacity:1}}
-.ch{display:flex;align-items:center;gap:10px;margin-bottom:16px}
-.ch .n{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--ac);background:var(--abg);border:1px solid rgba(217,119,6,.2);padding:1px 6px;border-radius:2px}
-.ch h2{font-size:14px;font-weight:600;letter-spacing:-.3px}
-.st{background:var(--bgi);border:1px solid var(--bd);border-radius:3px;padding:24px 18px;display:flex;flex-direction:column;align-items:center;min-height:150px;position:relative}
-.ins{margin-top:14px;font-size:11.5px;color:var(--txm);line-height:1.55;padding-left:12px;border-left:2px solid var(--bd)}
-.ins strong{color:var(--acl);font-weight:600}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Branch Demo — Vibecode Glossary</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --amber: #E88C2E;
+            --amber-dim: rgba(232, 140, 46, 0.1);
+            --amber-glow: rgba(232, 140, 46, 0.3);
+            --bg: #0f0f12;
+            --card-bg: #16161b;
+            --sim-bg: #0d0d10;
+            --border: #282830;
+            --text: #e8e4dc;
+            --muted: #707070;
+            --red: #ff4d4d;
+            --green: #22c55e;
+            --gap: 14px;
+            --ease: cubic-bezier(0.65, 0, 0.35, 1);
+            --mono: 'JetBrains Mono', monospace;
+        }
 
-/* ═══════════════════════════════════════
-   01 — BRANCH LÀ SAO  (14s SVG)
-   ═══════════════════════════════════════ */
-.tl-svg{width:100%;max-width:310px;height:auto}
-.tl-svg .base{stroke:var(--bd);fill:none;stroke-width:2}
-.tl-svg .glow{stroke:var(--ac);fill:none;stroke-width:2}
-.tl-svg .dot-bg{fill:var(--bd)}
-.tl-svg .dot-ac{fill:var(--ac)}
-.tl-svg .label-t{font-family:'JetBrains Mono',monospace;font-size:8px;fill:var(--txd)}
-.tl-svg .label-a{font-family:'JetBrains Mono',monospace;font-size:8px;fill:var(--acl)}
-/* main segment 1: x20→x70 */
-.tl-svg .m1{animation:seg 14s ease infinite 0s}
-/* fork connector */
-.tl-svg .fc{animation:seg 14s ease infinite 2s}
-/* feature line */
-.tl-svg .fl{animation:seg 14s ease infinite 3s}
-/* main segment 2: x70→x220 */
-.tl-svg .m2{animation:seg 14s ease infinite 2.5s}
-/* merge connector */
-.tl-svg .mc{animation:seg 14s ease infinite 8.5s}
-/* main segment 3: x220→x275 */
-.tl-svg .m3{animation:seg 14s ease infinite 9s}
-@keyframes seg{0%,2%{opacity:0}6%{opacity:1}70%{opacity:1}76%,100%{opacity:0}}
-/* dots */
-.tl-svg .d{animation:dot 14s ease infinite}
-@keyframes dot{0%,2%{r:0;opacity:0}5%{r:4;opacity:1}72%{r:4;opacity:1}78%,100%{r:0;opacity:0}}
-/* labels */
-.tl-svg .lt{opacity:0}
-.tl-svg .lt.l1{animation:la 14s ease infinite 1.5s}
-.tl-svg .lt.l2{animation:la 14s ease infinite 4s}
-.tl-svg .lt.l3{animation:la 14s ease infinite 8s}
-@keyframes la{0%,2%{opacity:0}5%{opacity:1}20%{opacity:1}26%,100%{opacity:0}}
-/* branch name labels */
-.tl-svg .bn{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700}
-.tl-svg .bn-main{fill:var(--ac);opacity:0;animation:bna 14s ease infinite 0s}
-.tl-svg .bn-feat{fill:var(--acl);opacity:0;animation:bna 14s ease infinite 2.5s}
-@keyframes bna{0%,1%{opacity:0}4%{opacity:1}74%{opacity:1}78%,100%{opacity:0}}
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* ═══════════════════════════════════════
-   02 — TẠI SAO CẦN BRANCH  (12s)
-   ═══════════════════════════════════════ */
-.scenario{width:100%;max-width:280px;display:flex;flex-direction:column;gap:10px}
-.sc-row{display:flex;align-items:center;gap:8px;padding:8px;border:1px solid transparent;border-radius:2px}
-.sc-label{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;width:70px;flex-shrink:0;text-align:right}
-.sc-mid{flex:1;display:flex;align-items:center;gap:4px;position:relative}
-.sc-file{font-family:'JetBrains Mono',monospace;font-size:10px;padding:3px 6px;border:1px solid var(--bd);border-radius:2px;background:var(--bgi);color:var(--tx);white-space:nowrap;transition:none}
-.sc-file.broken{border-color:var(--rd);background:var(--rdb);color:var(--rd)}
-.sc-file.safe{border-color:var(--gn);background:var(--gnb);color:var(--gn)}
-.sc-arrow{color:var(--txd);font-size:10px}
-.sc-result{font-family:'JetBrains Mono',monospace;font-size:9px;width:16px;height:16px;flex-shrink:0;display:flex;align-items:center;justify-content:center;border-radius:50%;opacity:0}
-.sc-result.warn{background:var(--rdb);border:1px solid rgba(239,68,68,.2)}
-.sc-result.ok{background:var(--gnb);border:1px solid rgba(34,197,94,.2)}
-/* Row 1 animation */
-.sc-row.r1{animation:sr1 12s ease infinite}
-.sc-row.r1 .sc-file.f1{animation:sf1 12s ease infinite 1s}
-.sc-row.r1 .sc-file.f2{animation:sf2 12s ease infinite 3s}
-.sc-row.r1 .sc-result{animation:srr 12s ease infinite 4.5s}
-@keyframes sr1{0%,2%{border-color:transparent;background:transparent}5%{border-color:var(--rd);background:var(--rdb)}42%{border-color:var(--rd);background:var(--rdb)}46%,100%{border-color:transparent;background:transparent}}
-@keyframes sf1{0%,8%{border-color:var(--bd);background:var(--bgi);color:var(--tx)}20%{border-color:var(--bd);background:var(--bgi);color:var(--tx)}25%,100%{border-color:var(--bd);background:var(--bgi);color:var(--tx)}}
-@keyframes sf2{0%,25%{border-color:var(--bd);background:var(--bgi);color:var(--tx)}30%{border-color:var(--rd);background:var(--rdb);color:var(--rd)}42%{border-color:var(--rd);background:var(--rdb);color:var(--rd)}48%,100%{border-color:var(--bd);background:var(--bgi);color:var(--tx)}}
-@keyframes srr{0%,42%{opacity:0;transform:scale(.5)}46%{opacity:1;transform:scale(1)}56%{opacity:1;transform:scale(1)}62%,100%{opacity:0;transform:scale(.5)}}
-/* Row 2 animation */
-.sc-row.r2{animation:sr2 12s ease infinite}
-.sc-row.r2 .sc-file.f3{animation:sf3 12s ease infinite 7s}
-.sc-row.r2 .sc-file.f4{animation:sf4 12s ease infinite 9s}
-.sc-row.r2 .sc-result{animation:srr2 12s ease infinite 10.5s}
-@keyframes sr2{0%,48%{border-color:transparent;background:transparent}52%{border-color:var(--gn);background:var(--gnb)}92%{border-color:var(--gn);background:var(--gnb)}96%,100%{border-color:transparent;background:transparent}}
-@keyframes sf3{0%,55%{border-color:var(--bd);background:var(--bgi);color:var(--tx)}60%{border-color:var(--acl);background:var(--abg2);color:var(--acl)}75%{border-color:var(--acl);background:var(--abg2);color:var(--acl)}80%,100%{border-color:var(--bd);background:var(--bgi);color:var(--tx)}}
-@keyframes sf4{0%,80%{border-color:var(--bd);background:var(--bgi);color:var(--tx)}85%{border-color:var(--gn);background:var(--gnb);color:var(--gn)}94%{border-color:var(--gn);background:var(--gnb);color:var(--gn)}98%,100%{border-color:var(--bd);background:var(--bgi);color:var(--tx)}}
-@keyframes srr2{0%,92%{opacity:0;transform:scale(.5)}96%{opacity:1;transform:scale(1)}100%{opacity:1;transform:scale(1)}}
-/* row descriptions */
-.sc-desc{font-size:10px;color:var(--txd);height:14px;opacity:0}
-.sc-desc.d1{animation:sdd 12s ease infinite 0s}
-.sc-desc.d2{animation:sdd 12s ease infinite 6s}
-@keyframes sdd{0%,2%{opacity:0}5%{opacity:1;color:var(--txm)}15%{opacity:1;color:var(--txm)}20%,100%{opacity:0}}
+        body {
+            background-color: var(--bg);
+            background-image: 
+                radial-gradient(ellipse at 25% 15%, rgba(232, 140, 46, 0.05) 0%, transparent 55%),
+                radial-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 16px 16px;
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
 
-/* ═══════════════════════════════════════
-   03 — LIFECYCLE  (14s)
-   ═══════════════════════════════════════ */
-.lc{display:flex;align-items:center;gap:0;width:100%;max-width:340px}
-.lc-n{display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0;z-index:1}
-.lc-c{width:32px;height:32px;border-radius:50%;border:2px solid var(--bd);display:flex;align-items:center;justify-content:center;background:var(--bgi)}
-.lc-c svg{width:13px;height:13px;stroke:var(--txd);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.lc-l{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--txd);white-space:nowrap}
-.lc-ln{flex:1;height:2px;background:var(--bd);position:relative;overflow:hidden;min-width:8px}
-.lc-lf{position:absolute;left:0;top:0;height:100%;width:0;background:var(--ac);border-radius:1px}
-.lc-n:nth-child(1) .lc-c{animation:cn 14s ease infinite 0s}
-.lc-n:nth-child(3) .lc-c{animation:cn 14s ease infinite 2.8s}
-.lc-n:nth-child(5) .lc-c{animation:cn 14s ease infinite 5.6s}
-.lc-n:nth-child(7) .lc-c{animation:cn 14s ease infinite 8.4s}
-.lc-n:nth-child(9) .lc-c{animation:cn 14s ease infinite 11.2s}
-@keyframes cn{0%,2%{border-color:var(--bd);background:var(--bgi);box-shadow:none}5%{border-color:var(--ac);background:var(--abg2);box-shadow:0 0 14px rgba(217,119,6,.2)}20%{border-color:var(--ac);background:var(--abg2);box-shadow:0 0 14px rgba(217,119,6,.2)}24%{border-color:var(--bd);background:var(--bgi);box-shadow:none}100%{border-color:var(--bd);background:var(--bgi);box-shadow:none}}
-.lc-n:nth-child(1) .lc-l{animation:cl 14s ease infinite 0s}
-.lc-n:nth-child(3) .lc-l{animation:cl 14s ease infinite 2.8s}
-.lc-n:nth-child(5) .lc-l{animation:cl 14s ease infinite 5.6s}
-.lc-n:nth-child(7) .lc-l{animation:cl 14s ease infinite 8.4s}
-.lc-n:nth-child(9) .lc-l{animation:cl 14s ease infinite 11.2s}
-@keyframes cl{0%,2%{color:var(--txd)}5%{color:var(--acl)}20%{color:var(--acl)}24%{color:var(--txd)}100%{color:var(--txd)}}
-.lc-n:nth-child(1) .lc-c svg{animation:csc 14s ease infinite 0s}
-.lc-n:nth-child(3) .lc-c svg{animation:csc 14s ease infinite 2.8s}
-.lc-n:nth-child(5) .lc-c svg{animation:csc 14s ease infinite 5.6s}
-.lc-n:nth-child(7) .lc-c svg{animation:csc 14s ease infinite 8.4s}
-.lc-n:nth-child(9) .lc-c svg{animation:csc 14s ease infinite 11.2s}
-@keyframes csc{0%,2%{stroke:var(--txd)}5%{stroke:var(--acl)}20%{stroke:var(--acl)}24%{stroke:var(--txd)}100%{stroke:var(--txd)}}
-.lc-ln:nth-child(2) .lc-lf{animation:clf 14s ease infinite 1.4s}
-.lc-ln:nth-child(4) .lc-lf{animation:clf 14s ease infinite 4.2s}
-.lc-ln:nth-child(6) .lc-lf{animation:clf 14s ease infinite 7s}
-.lc-ln:nth-child(8) .lc-lf{animation:clf 14s ease infinite 9.8s}
-@keyframes clf{0%,2%{width:0}7%{width:100%}20%{width:100%}26%{width:0}100%{width:0}}
-.lc-sub{font-size:10px;color:var(--txd);height:14px;margin-top:10px;opacity:0;text-align:center}
-.lc-sub.s1{animation:cys 14s ease infinite 0s}
-.lc-sub.s2{animation:cys 14s ease infinite 2.8s}
-.lc-sub.s3{animation:cys 14s ease infinite 5.6s}
-.lc-sub.s4{animation:cys 14s ease infinite 8.4s}
-.lc-sub.s5{animation:cys 14s ease infinite 11.2s}
-@keyframes cys{0%,2%{opacity:0}4%{opacity:1;color:var(--txm)}17%{opacity:1;color:var(--txm)}22%{opacity:0}100%{opacity:0}}
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--gap);
+            width: 100%;
+            max-width: 940px;
+        }
 
-/* ═══════════════════════════════════════
-   04 — BRANCH TYPES  (12s)
-   ═══════════════════════════════════════ */
-.bt-rows{display:flex;flex-direction:column;gap:8px;width:100%;max-width:280px}
-.bt-row{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid transparent;border-radius:2px}
-.bt-name{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;width:80px;flex-shrink:0}
-.bt-line{flex:1;height:2px;border-radius:1px;position:relative;overflow:hidden}
-.bt-line.main{background:var(--ac);border:none;height:3px}
-.bt-line.develop{background:repeating-linear-gradient(90deg,var(--acl) 0 6px,transparent 6px 10px);border:none;height:2px}
-.bt-line.feature{background:repeating-linear-gradient(90deg,var(--txm) 0 2px,transparent 2px 6px);border:none;height:1px}
-.bt-desc{font-size:10px;color:var(--txd);height:14px;opacity:0;padding-left:92px}
-/* Row animations */
-.bt-row.r1{animation:btr 12s ease infinite 0s}
-.bt-row.r2{animation:btr 12s ease infinite 4s}
-.bt-row.r3{animation:btr 12s ease infinite 8s}
-@keyframes btr{0%,2%{border-color:transparent;background:transparent}5%{border-color:var(--ac);background:var(--abg)}32%{border-color:var(--ac);background:var(--abg)}36%,100%{border-color:transparent;background:transparent}}
-.bt-desc.d1{animation:btd 12s ease infinite 0s}
-.bt-desc.d2{animation:btd 12s ease infinite 4s}
-.bt-desc.d3{animation:btd 12s ease infinite 8s}
-@keyframes btd{0%,3%{opacity:0}6%{opacity:1;color:var(--txm)}18%{opacity:1;color:var(--txm)}22%,100%{opacity:0}}
-/* dot indicators on lines */
-.bt-dot{position:absolute;width:6px;height:6px;border-radius:50%;background:var(--ac);top:50%;transform:translateY(-50%);opacity:0}
-.bt-row.r1 .bt-dot{animation:btdot 12s ease infinite 1s}
-.bt-row.r2 .bt-dot{animation:btdot 12s ease infinite 5s}
-.bt-row.r3 .bt-dot{animation:btdot 12s ease infinite 9s}
-@keyframes btdot{0%,4%{opacity:0;left:0}8%{opacity:1;left:20%}16%{opacity:1;left:60%}22%{opacity:0;left:80%}100%{opacity:0;left:80%}}
+        @media (max-width: 600px) {
+            .grid-container { grid-template-columns: 1fr; }
+        }
 
-.sum{max-width:900px;margin:20px auto 0;padding:16px 18px;border:1px solid var(--bd);border-radius:3px;background:var(--bgc);font-size:12.5px;color:var(--txm);line-height:1.6}
-.sum strong{color:var(--acl);font-weight:600}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
-</style>
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            position: relative;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute; top: 0; left: 0;
+            width: 100%; height: 2px;
+            background: var(--amber); z-index: 2;
+        }
+
+        .indicator {
+            position: absolute; top: 12px; right: 12px;
+            width: 6px; height: 6px;
+            background: var(--amber); border-radius: 50%;
+            box-shadow: 0 0 10px var(--amber);
+            animation: pulse 2s infinite; z-index: 3;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .card-header {
+            display: flex; align-items: center;
+            gap: 10px; margin-bottom: 20px;
+        }
+
+        .num-box {
+            font-family: var(--mono); font-size: 11px; font-weight: 700;
+            color: var(--amber); background: var(--amber-dim);
+            border: 1px solid rgba(232, 140, 46, 0.2);
+            padding: 2px 6px; border-radius: 2px;
+        }
+
+        .card-title {
+            font-size: 14px; font-weight: 600;
+            text-transform: uppercase; letter-spacing: 0.5px;
+            color: rgba(232, 228, 220, 0.9);
+        }
+
+        .sim-area {
+            height: 220px; background: var(--sim-bg);
+            border: 1px solid var(--border); border-radius: 3px;
+            position: relative; display: flex;
+            flex-direction: column; justify-content: center;
+            align-items: center; margin-bottom: 16px;
+            overflow: hidden; padding: 20px;
+        }
+
+        .ins {
+            border-left: 2px solid var(--amber);
+            padding-left: 14px; margin-top: auto;
+            color: var(--muted); font-size: 11.5px; line-height: 1.6;
+        }
+
+        .ins strong { color: var(--amber); font-weight: 600; }
+
+        /* --- Components --- */
+        .code-box {
+            font-family: var(--mono); font-size: 9px;
+            background: #000; border: 1px solid var(--border);
+            padding: 8px 12px; border-radius: 4px;
+            line-height: 1.5; color: var(--muted);
+            width: 100%;
+        }
+
+        /* 01: Branching Concept */
+        .branch-viz { width: 100%; position: relative; height: 100px; }
+        .line-main { position: absolute; top: 30px; left: 0; width: 100%; height: 2px; background: var(--border); }
+        .line-branch { position: absolute; top: 30px; left: 25%; width: 50%; height: 50px; border: 2px solid var(--border); border-top: 0; border-radius: 0 0 15px 15px; border-right: 0; }
+        .line-glow { position: absolute; background: var(--amber); box-shadow: 0 0 10px var(--amber); }
+        .commit { position: absolute; width: 8px; height: 8px; background: var(--border); border-radius: 50%; top: 27px; }
+        .commit.active { background: var(--amber); box-shadow: 0 0 10px var(--amber); }
+
+        /* 02: Isolation Logic */
+        .iso-container { display: flex; flex-direction: column; gap: 20px; width: 100%; }
+        .iso-site {
+            padding: 10px 15px; border: 1px solid var(--border); border-radius: 6px;
+            display: flex; justify-content: space-between; align-items: center;
+            background: #111; transition: all 0.3s;
+        }
+        .iso-status { font-family: var(--mono); font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 2px; }
+        .iso-site.online { border-color: var(--green); }
+        .iso-site.online .iso-status { background: rgba(34, 197, 94, 0.1); color: var(--green); }
+        .iso-site.error { border-color: var(--red); background: rgba(255, 77, 77, 0.05); }
+        .iso-site.error .iso-status { background: var(--red); color: #fff; }
+        
+        .iso-dev-area { display: flex; align-items: center; gap: 10px; padding-left: 10px; }
+        .iso-branch-line { width: 2px; height: 40px; background: var(--border); position: relative; }
+        .iso-branch-line::after { content: ''; position: absolute; bottom: 0; left: 0; width: 20px; height: 2px; background: var(--border); }
+
+        /* 03: Lifecycle */
+        .lc-steps { display: flex; justify-content: space-between; width: 100%; position: relative; padding: 0 10px; }
+        .lc-step { display: flex; flex-direction: column; align-items: center; gap: 8px; z-index: 2; }
+        .lc-icon { width: 30px; height: 30px; border: 1px solid var(--border); border-radius: 50%; background: #000; display: flex; align-items: center; justify-content: center; font-size: 12px; transition: all 0.3s; color: var(--muted); }
+        .lc-step.active .lc-icon { border-color: var(--amber); color: var(--amber); box-shadow: 0 0 15px var(--amber-dim); transform: scale(1.1); }
+        .lc-label { font-size: 8px; font-family: var(--mono); color: var(--muted); text-transform: uppercase; }
+        .lc-step.active .lc-label { color: var(--amber); }
+        .lc-progress { position: absolute; top: 15px; left: 25px; right: 25px; height: 1px; background: var(--border); z-index: 1; }
+        .lc-bar { height: 100%; background: var(--amber); width: 0; transition: width 0.4s; box-shadow: 0 0 5px var(--amber); }
+
+        /* 04: Hierarchy */
+        .hier-rows { display: flex; flex-direction: column; gap: 12px; width: 100%; }
+        .hier-row { display: flex; align-items: center; gap: 15px; padding: 10px; border: 1px solid var(--border); border-radius: 4px; background: #111; transition: all 0.3s; }
+        .hier-row.active { border-color: var(--amber); background: var(--amber-dim); }
+        .hier-tag { font-family: var(--mono); font-size: 9px; font-weight: 700; color: var(--muted); width: 60px; }
+        .hier-row.active .hier-tag { color: var(--amber); }
+        .hier-desc { font-size: 10px; color: var(--muted); flex: 1; }
+
+    </style>
 </head>
 <body>
 
-<div class="g">
+    <div class="grid-container">
+        <!-- Cell 1: Concept -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">01</div>
+                <div class="card-title">Concept</div>
+            </div>
+            <div class="sim-area">
+                <div class="branch-viz">
+                    <div class="line-main"></div>
+                    <div class="line-branch" id="viz-branch"></div>
+                    <div class="commit" style="left: 10%"></div>
+                    <div class="commit" style="left: 20%"></div>
+                    <div class="commit" style="left: 25%" id="viz-fork"></div>
+                    <div class="commit" style="left: 40%; top: 76px;" id="viz-c1"></div>
+                    <div class="commit" style="left: 60%; top: 76px;" id="viz-c2"></div>
+                    <div class="commit" style="left: 75%" id="viz-merge"></div>
+                    <div class="commit" style="left: 85%"></div>
+                </div>
+                <div style="font-family: var(--mono); font-size: 10px; color: var(--muted); margin-top: 20px;" id="viz-status">MAIN TIMELINE</div>
+            </div>
+            <div class="ins">
+                Branch là một <strong>bản sao song song</strong> của mã nguồn, cho phép bạn làm việc độc lập mà không ảnh hưởng đến luồng chính.
+            </div>
+        </div>
 
-  <!-- ─── 01 BRANCH LÀ SAO ─── -->
-  <section class="c">
-    <div class="ch"><span class="n">01</span><h2>Branch là sao</h2></div>
-    <div class="st">
-      <svg class="tl-svg" viewBox="0 0 300 80">
-        <!-- Base structure (always visible, dim) -->
-        <line x1="20" y1="20" x2="275" y2="20" class="base"/>
-        <line x1="70" y1="20" x2="70" y2="58" class="base"/>
-        <line x1="70" y1="58" x2="225" y2="58" class="base"/>
-        <line x1="225" y1="58" x2="225" y2="20" class="base"/>
-        <!-- Animated glow overlays -->
-        <line x1="20" y1="20" x2="70" y2="20" class="glow m1"/>
-        <line x1="70" y1="20" x2="70" y2="58" class="glow fc"/>
-        <line x1="70" y1="58" x2="225" y2="58" class="glow fl"/>
-        <line x1="70" y1="20" x2="225" y2="20" class="glow m2"/>
-        <line x1="225" y1="58" x2="225" y2="20" class="glow mc"/>
-        <line x1="225" y1="20" x2="275" y2="20" class="glow m3"/>
-        <!-- Branch name labels -->
-        <text x="4" y="22" class="bn bn-main">main</text>
-        <text x="4" y="60" class="bn bn-feat">feature</text>
-        <!-- Main dots -->
-        <circle cx="20" cy="20" r="3.5" class="dot-bg"/>
-        <circle cx="20" cy="20" r="0" class="dot-ac d" style="animation-delay:0.3s"/>
-        <circle cx="70" cy="20" r="3.5" class="dot-bg"/>
-        <circle cx="70" cy="20" r="0" class="dot-ac d" style="animation-delay:1.8s"/>
-        <circle cx="145" cy="20" r="3.5" class="dot-bg"/>
-        <circle cx="145" cy="20" r="0" class="dot-ac d" style="animation-delay:5s"/>
-        <circle cx="225" cy="20" r="3.5" class="dot-bg"/>
-        <circle cx="225" cy="20" r="0" class="dot-ac d" style="animation-delay:8s"/>
-        <circle cx="260" cy="20" r="3.5" class="dot-bg"/>
-        <circle cx="260" cy="20" r="0" class="dot-ac d" style="animation-delay:10s"/>
-        <!-- Feature dots -->
-        <circle cx="110" cy="58" r="3.5" class="dot-bg"/>
-        <circle cx="110" cy="58" r="0" class="dot-ac d" style="animation-delay:4s"/>
-        <circle cx="145" cy="58" r="3.5" class="dot-bg"/>
-        <circle cx="145" cy="58" r="0" class="dot-ac d" style="animation-delay:5.5s"/>
-        <circle cx="180" cy="58" r="3.5" class="dot-bg"/>
-        <circle cx="180" cy="58" r="0" class="dot-ac d" style="animation-delay:7s"/>
-        <!-- Annotations -->
-        <text x="74" y="14" class="label-t lt l1">tạo branch</text>
-        <text x="120" y="52" class="label-a lt l2">code song song</text>
-        <text x="210" y="14" class="label-t lt l3">merge lại</text>
-      </svg>
+        <!-- Cell 2: Isolation Benefit -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">02</div>
+                <div class="card-title">Isolation</div>
+            </div>
+            <div class="sim-area">
+                <div class="iso-container">
+                    <div class="iso-site online" id="iso-site">
+                        <div style="font-size: 11px; font-weight: 600;">Website Production</div>
+                        <div class="iso-status" id="iso-status">ONLINE</div>
+                    </div>
+                    <div id="iso-dev-path">
+                        <div style="font-size: 9px; color: var(--muted); margin-bottom: 5px;" id="iso-dev-label">CHỈNH SỬA TRỰC TIẾP TRÊN MAIN</div>
+                        <div class="code-box" id="iso-code">
+                            index.html <span id="iso-cursor" style="color:var(--amber)">|</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ins">
+                Branch tạo ra <strong>vùng an toàn</strong>: Lỗi trên branch sẽ không làm hỏng trang web đang chạy (Production) của cả team.
+            </div>
+        </div>
+
+        <!-- Cell 3: Lifecycle -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">03</div>
+                <div class="card-title">Lifecycle</div>
+            </div>
+            <div class="sim-area">
+                <div class="lc-steps">
+                    <div class="lc-progress"><div class="lc-bar" id="lc-bar"></div></div>
+                    <div class="lc-step" id="step-1">
+                        <div class="lc-icon">➕</div>
+                        <div class="lc-label">Tạo</div>
+                    </div>
+                    <div class="lc-step" id="step-2">
+                        <div class="lc-icon">💻</div>
+                        <div class="lc-label">Code</div>
+                    </div>
+                    <div class="lc-step" id="step-3">
+                        <div class="lc-icon">📤</div>
+                        <div class="lc-label">PR</div>
+                    </div>
+                    <div class="lc-step" id="step-4">
+                        <div class="lc-icon">⚓</div>
+                        <div class="lc-label">Merge</div>
+                    </div>
+                </div>
+                <div style="margin-top: 25px; font-size: 11px; color: var(--muted); text-align: center;" id="lc-desc">Bắt đầu quy trình...</div>
+            </div>
+            <div class="ins">
+                Vòng đời: <strong>Tạo</strong> branch → <strong>Code</strong> → Gửi <strong>PR</strong> (đề xuất) → <strong>Merge</strong> (gộp) lại vào main.
+            </div>
+        </div>
+
+        <!-- Cell 4: Hierarchy -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">04</div>
+                <div class="card-title">Types</div>
+            </div>
+            <div class="sim-area">
+                <div class="hier-rows">
+                    <div class="hier-row" id="row-main">
+                        <div class="hier-tag">main</div>
+                        <div class="hier-desc">Bản ổn định nhất (Production)</div>
+                    </div>
+                    <div class="hier-row" id="row-dev">
+                        <div class="hier-tag">develop</div>
+                        <div class="hier-desc">Nơi gộp các tính năng mới</div>
+                    </div>
+                    <div class="hier-row" id="row-feat">
+                        <div class="hier-tag">feature/*</div>
+                        <div class="hier-desc">Nơi thử nghiệm, làm tính năng</div>
+                    </div>
+                </div>
+            </div>
+            <div class="ins">
+                Các dự án chuyên nghiệp chia làm 3 loại: <strong>Main</strong> (Chạy thật), <strong>Develop</strong> (Gộp chung), <strong>Feature</strong> (Cá nhân).
+            </div>
+        </div>
     </div>
-    <p class="ins">Branch = <strong>đường song song</strong> tách từ main. Code trên branch không ảnh hưởng main. Khi xong → merge lại. Như bản nháp song song với bản chính.</p>
-  </section>
 
-  <!-- ─── 02 TẠI SAO CẦN ─── -->
-  <section class="c">
-    <div class="ch"><span class="n">02</span><h2>Tại sao cần branch</h2></div>
-    <div class="st">
-      <div class="scenario">
-        <div class="sc-desc d1">Sửa trực tiếp trên main → rủi ro cho cả team</div>
-        <div class="sc-row r1">
-          <span class="sc-label" style="color:var(--rd)">main</span>
-          <div class="sc-mid">
-            <div class="sc-file f1">index.html</div>
-            <span class="sc-arrow">→</span>
-            <div class="sc-file f2">index.html</div>
-          </div>
-          <div class="sc-result warn">!</div>
-        </div>
-        <div class="sc-desc d2">Sửa trên branch → an toàn, merge khi sẵn sàng</div>
-        <div class="sc-row r2">
-          <span class="sc-label" style="color:var(--gn)">branch</span>
-          <div class="sc-mid">
-            <div class="sc-file f3">index.html</div>
-            <span class="sc-arrow">→</span>
-            <div class="sc-file f4">index.html</div>
-          </div>
-          <div class="sc-result ok">&#10003;</div>
-        </div>
-      </div>
-    </div>
-    <p class="ins">Sửa thẳng main = <strong>cả team thấy code bị hỏng ngay</strong>. Sửa trên branch = chỉ bạn thấy, thử xong rồi mới merge. Branch = vùng an toàn để thử sai.</p>
-  </section>
+    <script>
+        const sleep = ms => new Promise(res => setTimeout(res, ms));
 
-  <!-- ─── 03 LIFECYCLE ─── -->
-  <section class="c">
-    <div class="ch"><span class="n">03</span><h2>Vòng đời branch</h2></div>
-    <div class="st">
-      <div class="lc">
-        <div class="lc-n"><div class="lc-c"><svg viewBox="0 0 24 24"><path d="M6 3v12"/><path d="M18 9a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M6 21a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/><path d="M18 9c0 4-6 6-6 12"/></svg></div><span class="lc-l">Tạo</span></div>
-        <div class="lc-ln"><div class="lc-lf"></div></div>
-        <div class="lc-n"><div class="lc-c"><svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg></div><span class="lc-l">Chuyển</span></div>
-        <div class="lc-ln"><div class="lc-lf"></div></div>
-        <div class="lc-n"><div class="lc-c"><svg viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.12 2.12 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></div><span class="lc-l">Code</span></div>
-        <div class="lc-ln"><div class="lc-lf"></div></div>
-        <div class="lc-n"><div class="lc-c"><svg viewBox="0 0 24 24"><polyline points="7 17 17 7"/><polyline points="7 7 17 7 17 17"/></svg></div><span class="lc-l">PR</span></div>
-        <div class="lc-ln"><div class="lc-lf"></div></div>
-        <div class="lc-n"><div class="lc-c"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="8 12 12 16 16 12"/><line x1="12" y1="8" x2="12" y2="16"/></svg></div><span class="lc-l">Merge</span></div>
-      </div>
-      <div class="lc-sub s1">Tạo branch mới từ main</div>
-      <div class="lc-sub s2">Chuyển workspace sang branch đó</div>
-      <div class="lc-sub s3">Sửa code, commit trên branch</div>
-      <div class="lc-sub s4">Gửi Pull Request đề xuất</div>
-      <div class="lc-sub s5">Ghép vào main, có thể xóa branch</div>
-    </div>
-    <p class="ins">5 bước: <strong>Tạo → Chuyển → Code → PR → Merge</strong>. Sau merge, branch thường bị xóa vì đã hoàn thành nhiệm vụ. Không giữ branch rác.</p>
-  </section>
+        // Sim 1: Concept
+        async function runSim1() {
+            const fork = document.getElementById('viz-fork');
+            const c1 = document.getElementById('viz-c1');
+            const c2 = document.getElementById('viz-c2');
+            const merge = document.getElementById('viz-merge');
+            const status = document.getElementById('viz-status');
+            const branch = document.getElementById('viz-branch');
 
-  <!-- ─── 04 BRANCH TYPES ─── -->
-  <section class="c">
-    <div class="ch"><span class="n">04</span><h2>Các loại branch</h2></div>
-    <div class="st">
-      <div class="bt-rows">
-        <div class="bt-row r1">
-          <span class="bt-name" style="color:var(--ac)">main</span>
-          <div class="bt-line main"><div class="bt-dot"></div></div>
-        </div>
-        <div class="bt-desc d1">Production — code đang chạy thật trên server, luôn ổn định</div>
-        <div class="bt-row r2">
-          <span class="bt-name" style="color:var(--acl)">develop</span>
-          <div class="bt-line develop"><div class="bt-dot" style="background:var(--acl)"></div></div>
-        </div>
-        <div class="bt-desc d2">Staging — nơi gộp feature trước khi lên main, test trước</div>
-        <div class="bt-row r3">
-          <span class="bt-name" style="color:var(--txm)">feature/*</span>
-          <div class="bt-line feature"><div class="bt-dot" style="background:var(--txm)"></div></div>
-        </div>
-        <div class="bt-desc d3">Working — tính năng mới, fix bug, thử nghiệm, ngắn hạn</div>
-      </div>
-    </div>
-    <p class="ins"><strong>main</strong> = production, không sửa trực tiếp. <strong>develop</strong> = vùng tập trung trước khi lên main. <strong>feature/*</strong> = từng tính năng nhỏ, xong rồi xóa. Ba tầng, ba mục đích.</p>
-  </section>
-</div>
+            while(true) {
+                status.textContent = '1. TẠO FEATURE BRANCH';
+                fork.classList.add('active');
+                branch.style.borderColor = 'var(--amber)';
+                await sleep(1500);
+                
+                status.textContent = '2. CODE SONG SONG';
+                c1.classList.add('active');
+                await sleep(1000);
+                c2.classList.add('active');
+                await sleep(1500);
+                
+                status.textContent = '3. MERGE VÀO MAIN';
+                merge.classList.add('active');
+                await sleep(2000);
+                
+                // Reset
+                [fork, c1, c2, merge].forEach(el => el.classList.remove('active'));
+                branch.style.borderColor = 'var(--border)';
+                status.textContent = 'MAIN TIMELINE';
+                await sleep(1500);
+            }
+        }
 
-<div class="sum">
-  <strong>Branch</strong> = đường song song tách từ main, cho phép sửa code mà không ảnh hưởng bản gốc. Ba điều marketer cần nhớ: (1) Không bao giờ sửa thẳng main — luôn tạo branch trước, (2) Branch có vòng đời: Tạo → Chuyển → Code → PR → Merge → Xóa, (3) main = production luôn ổn định, feature/* = thử nghiệm xong rồi gộp. Khi nói "tạo branch đi" = tạo bản sao song song để tự do sửa, không sợ phá hỏng code đang chạy.
-</div>
+        // Sim 2: Isolation
+        async function runSim2() {
+            const site = document.getElementById('iso-site');
+            const status = document.getElementById('iso-status');
+            const label = document.getElementById('iso-dev-label');
+            const code = document.getElementById('iso-code');
 
+            while(true) {
+                // Scenario: Direct to Main (BAD)
+                label.textContent = 'SỬA TRỰC TIẾP TRÊN MAIN (NGUY HIỂM)';
+                label.style.color = 'var(--red)';
+                await sleep(1000);
+                code.style.borderColor = 'var(--red)';
+                code.innerHTML = 'index.html <span style="color:var(--red)">[ERROR: syntax]</span>';
+                
+                site.className = 'iso-site error';
+                status.textContent = 'CRASHED (500)';
+                await sleep(3000);
+
+                // Scenario: On Branch (GOOD)
+                label.textContent = 'SỬA TRÊN FEATURE BRANCH (AN TOÀN)';
+                label.style.color = 'var(--amber)';
+                code.style.borderColor = 'var(--amber)';
+                code.innerHTML = 'index.html <span style="color:var(--amber)">+ <button></span>';
+                
+                site.className = 'iso-site online';
+                status.textContent = 'ONLINE';
+                await sleep(3000);
+            }
+        }
+
+        // Sim 3: Lifecycle
+        async function runSim3() {
+            const bar = document.getElementById('lc-bar');
+            const desc = document.getElementById('lc-desc');
+            const steps = [
+                { id: 'step-1', w: '0%', t: 'Tạo bản sao mới từ Main' },
+                { id: 'step-2', w: '33%', t: 'Làm việc trên code của bạn' },
+                { id: 'step-3', w: '66%', t: 'Gửi yêu cầu gộp code (PR)' },
+                { id: 'step-4', w: '100%', t: 'Đã gộp thành công vào Main!' }
+            ];
+
+            while(true) {
+                for (let i=0; i<steps.length; i++) {
+                    const s = steps[i];
+                    document.querySelectorAll('.lc-step').forEach(el => el.classList.remove('active'));
+                    document.getElementById(s.id).classList.add('active');
+                    bar.style.width = s.w;
+                    desc.textContent = s.t;
+                    await sleep(2000);
+                }
+                await sleep(1000);
+            }
+        }
+
+        // Sim 4: Hierarchy
+        async function runSim4() {
+            const rows = ['row-main', 'row-dev', 'row-feat'];
+            let i = 0;
+            while(true) {
+                document.querySelectorAll('.hier-row').forEach(el => el.classList.remove('active'));
+                document.getElementById(rows[i % 3]).classList.add('active');
+                i++;
+                await sleep(2000);
+            }
+        }
+
+        runSim1(); runSim2(); runSim3(); runSim4();
+    </script>
 </body>
 </html>

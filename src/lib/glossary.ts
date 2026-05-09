@@ -46,15 +46,15 @@ const rawTerms: GlossaryTerm[] = [
   { id: 'breakpoint', name: 'Breakpoint', nameEn: 'Điểm ngắt layout', letter: 'B', groups: ['design', 'code'], definition: 'Điểm dừng kỹ thuật mà tại đó giao diện web tự động thay đổi cấu trúc (layout) để phù hợp với kích thước màn hình. Ví dụ: từ 4 cột trên Desktop nhảy sang 1 cột trên Mobile. Hiểu về breakpoint giúp marketer feedback chính xác vùng màn hình bị lỗi thay vì nói "màn hình nhỏ" chung chung.', example: 'Prompt: "Ở breakpoint mobile (dưới 768px), hãy ẩn bớt các cột không quan trọng và chuyển menu sang dạng hamburger để giao diện gọn hơn."', related: ['responsive', 'mobile-first', 'layout'], demo: { kind: 'interactive', src: 'gif-breakpoint-demo.html', alt: 'Mô phỏng 4 mốc breakpoint phổ biến: Mobile, Tablet, Laptop, Desktop' } },
   { id: 'backend', name: 'Backend', nameEn: 'Phần sau / Server', letter: 'B', groups: ['infra', 'code'], definition: 'Phần người dùng không thấy — nơi data được lưu, xử lý, và bảo mật. Nếu frontend là mặt tiền cửa hàng, backend là kho hàng và văn phòng phía sau.', example: '"Form đăng ký của tôi lưu data ở đâu?" → Supabase là backend.', related: ['frontend', 'database'], demo: { kind: 'interactive', src: 'gif-backend-demo.html', alt: 'Mô phỏng 4 tầng backend: API, DB, Auth, Jobs' } },
   { id: 'build', name: 'Build', nameEn: 'Đóng gói / Compile', letter: 'B', groups: ['infra'], definition: 'Quá trình biến code thô thành file tối ưu để đưa lên internet. Giống như in ấn trước khi phát hành tài liệu.', example: '"Build failed" = quá trình đóng gói bị lỗi trước khi deploy. Thường do code bị lỗi syntax hoặc thiếu package.', related: ['deploy', 'environment'] },
-  { id: 'boolean', name: 'Boolean', nameEn: 'True / False', letter: 'B', groups: ['code'], definition: 'Kiểu dữ liệu chỉ có 2 giá trị: đúng hoặc sai (true/false). Dùng để kiểm soát logic — ví dụ: "isLoggedIn: true" nghĩa là người dùng đã đăng nhập.', example: 'Prompt: "Thêm tính năng toggle — khi bật thì hiện banner, khi tắt thì ẩn." AI sẽ dùng boolean showBanner: true/false.', related: ['state', 'toggle', 'checkbox'], demo: { kind: 'interactive', src: 'gif-boolean-demo.html', alt: 'Mô phỏng 4 khía cạnh của Boolean: Bật/Tắt, UI Toggles, Logic AND/OR và Interface Impact' } },
+  { id: 'boolean', name: 'Boolean', nameEn: 'True / False', letter: 'B', groups: ['code'], definition: 'Kiểu dữ liệu "Nhị phân" — chỉ có 2 trạng thái duy nhất: Đúng (True) hoặc Sai (False). Hãy nghĩ về nó như một công tắc đèn (Bật/Tắt) hoặc một người gác cổng (Cho qua/Chặn lại). Trong Vibecode, AI dùng Boolean để đưa ra các quyết định logic: Hiện hay Ẩn? Gửi hay Hủy?', example: 'Prompt: "Nếu khách hàng đã đăng nhập (isLoggedIn: true), hãy hiện nút Mua hàng. Nếu chưa (isLoggedIn: false), hãy hiện nút Đăng ký".', related: ['state', 'toggle', 'checkbox'], demo: { kind: 'interactive', src: 'gif-boolean-demo.html', alt: 'Mô phỏng 4 khía cạnh của Boolean: Bật/Tắt, UI Toggles, Logic AND/OR và Interface Impact' } },
   {
     id: 'branch',
     name: 'Branch',
     nameEn: 'Nhánh code / Luồng làm việc song song',
     letter: 'B',
     groups: ['workflow'],
-    definition: 'Một đường phát triển code độc lập tách ra từ luồng chính (main). Branch cho phép nhiều người làm việc cùng lúc trên các tính năng khác nhau mà không sợ làm hỏng code của nhau hay ảnh hưởng đến trang web đang chạy.',
-    example: 'Bạn đang làm landing page cho event tháng 5. Bạn tạo branch "event-may" để code. Code chính (main) vẫn chạy bình thường. Khi làm xong, bạn merge "event-may" vào "main" để cập nhật trang web.',
+    definition: 'Một "vùng làm việc song song" tách ra từ luồng chính (main). Branch cho phép bạn thoải mái thử nghiệm tính năng mới, sửa lỗi, hoặc thay đổi giao diện mà không sợ làm hỏng trang web đang chạy (Production). Hãy coi nó như một "Vũ trụ song song" — nơi bạn có thể làm mọi thứ mà không ảnh hưởng đến thế giới thực cho đến khi bạn sẵn sàng.',
+    example: 'Bạn muốn làm landing page cho chiến dịch Tết nhưng sợ sửa code sẽ làm hỏng trang chủ. Bạn tạo branch "tet-2026" để làm việc riêng trên đó. Khi mọi thứ đã hoàn hảo, bạn mới gộp (merge) nó vào trang chính.',
     related: ['git', 'commit', 'pull-request', 'merge', 'repository'],
     demo: {
       kind: 'interactive',
@@ -582,11 +582,11 @@ const deepDiveTermIds = new Set([
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
   branch: [
-    'Branch là "vùng an toàn" (Sandbox). Mọi lỗi lầm bạn gây ra trên một branch đều không ảnh hưởng đến bất kỳ ai khác cho đến khi bạn quyết định Merge.',
-    'Luôn tạo branch mới cho từng nhiệm vụ nhỏ (feature-x, fix-y). Đừng bao giờ làm quá nhiều thứ trên cùng một branch, nó sẽ khiến việc review và merge trở thành thảm họa.',
-    'Main branch (hoặc Master) là "thánh địa". Trong các dự án chuyên nghiệp, branch này thường được khóa lại, không ai được phép sửa trực tiếp mà phải qua quy trình Pull Request.',
-    'Conflict (xung đột) thường xảy ra lúc Merge. Điều này có nghĩa là Git thấy hai người cùng sửa một dòng code và không biết chọn bản nào. Đây là lúc cần con người can thiệp.',
-    'Sau khi merge thành công, hãy xóa branch đó đi. Việc giữ quá nhiều branch cũ đã hoàn thành nhiệm vụ sẽ làm rối mắt và khó quản lý kho code.'
+    'Branch là "vùng an toàn" (Sandbox). Mọi lỗi lầm hay thử nghiệm bạn gây ra trên một branch đều không ảnh hưởng đến trang web đang chạy cho đến khi bạn quyết định Merge.',
+    'Tư duy "Mỗi task một branch": Luông tạo branch mới cho từng nhiệm vụ nhỏ (ví dụ: `fix-logo`, `new-banner`). Điều này giúp bạn dễ dàng quản lý và nhờ AI hỗ trợ mà không bị rối.',
+    'Main branch là "Thánh địa": Đây là nơi chứa code đang chạy thật trên web. Trong Vibecode, bạn nên làm việc trên các branch phụ và chỉ gộp vào main khi đã kiểm tra kỹ.',
+    'Cách ly rủi ro: Nếu branch mới của bạn bị lỗi quá nặng, bạn chỉ cần xóa nó đi và tạo branch khác. Code gốc vẫn luôn an toàn.',
+    'Merge là khoảnh khắc "Go-live": Khi bạn gộp branch vào main, đó là lúc những thay đổi của bạn chính thức ra mắt thế giới.'
   ],
   port: [
     'Port giống như số căn hộ trong một tòa nhà chung cư (IP address). IP đưa bạn đến đúng tòa nhà, nhưng Port mới giúp bạn gõ đúng cửa phòng của app bạn cần gặp.',
@@ -741,10 +741,12 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Shorthand border: 1px solid black là cách viết cực nhanh cho 4 cạnh giống nhau. Nếu chỉ muốn gạch chân, hãy dùng border-bottom.',
   ],
   boolean: [
-    'Boolean là "ngôn ngữ nhị phân" của logic. Mọi quyết định trong code cuối cùng đều quy về câu hỏi: Có hay Không? Đúng hay Sai?',
-    'Trong UI, Boolean điều khiển sự hiện diện. Một biến "is_visible = false" sẽ làm cả một component biến mất khỏi màn hình.',
+    'Boolean là nền tảng của mọi quyết định thông minh. Mọi hệ thống phức tạp đều bắt đầu từ những câu hỏi Đúng/Sai đơn giản.',
+    'Trong UI/UX, Boolean thường xuất hiện dưới dạng "Hiện/Ẩn" (Toggle). Ví dụ: `showModal: true` thì hiện popup, `false` thì ẩn.',
+    'Sức mạnh của logic kết hợp: Bạn có thể kết hợp nhiều Boolean (AND/OR). Ví dụ: (Đã đăng nhập AND Có mã giảm giá) = Hiện nút áp dụng.',
+    'AI cực kỳ giỏi xử lý Boolean. Thay vì viết code phức tạp, hãy prompt: "Chỉ hiện section này nếu sản phẩm còn hàng" — AI sẽ tự tạo một biến Boolean `isAvailable` để điều khiển.',
+    'Kiểm soát trạng thái: Hãy coi Boolean là các "công tắc" để bạn bật/tắt các tính năng khác nhau của app một cách linh hoạt.',
     'Logic AND/OR: Hãy tưởng tượng AND là "cần cả hai" (như Cửa khóa AND Có chìa mới vào được), còn OR là "chỉ cần một" (như Có vé HOẶC Có thẻ thành viên là vào được).',
-    'Tip cho Marketer: Khi prompt AI làm tính năng bật/tắt, hãy dùng từ khóa "toggle boolean state" để AI viết code sạch và chuẩn nhất.',
   ],
   breakpoint: [
     'Breakpoint chính là "cửa ngõ" của thiết kế Responsive. Mỗi khi chiều rộng trình duyệt vượt qua một con số cụ thể (ví dụ 768px), một bộ CSS mới sẽ được kích hoạt để thay đổi layout.',
