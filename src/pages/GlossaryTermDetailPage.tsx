@@ -1,5 +1,5 @@
 import { Fragment, useEffect, useRef } from 'react';
-import { Link, Navigate, useParams } from 'react-router-dom';
+import { Link, Navigate, useParams, useNavigate } from 'react-router-dom';
 import '../components/glossary/glossary.css';
 import AuthPracticePanel from '../components/glossary/AuthPracticePanel';
 import SpacingPracticePanel from '../components/glossary/SpacingPracticePanel';
@@ -216,6 +216,7 @@ import mcpPracticeHtml from '../../gif-mcp-practice.html?raw';
 // Final sync for viewport practice update
 export default function GlossaryTermDetailPage() {
   const { termId } = useParams<{ termId: string }>();
+  const navigate = useNavigate();
   const term = termId ? getTermById(termId) : undefined;
 
   useEffect(() => {
@@ -465,6 +466,7 @@ export default function GlossaryTermDetailPage() {
         interactiveDemoHtml={interactiveDemoHtml}
         interactivePracticeHtml={interactivePracticeHtml}
         showBackLink={true}
+        onBack={() => navigate(-1)}
       />
 
       {extendedTerms.map((extTerm) => (
@@ -485,6 +487,7 @@ interface TermDisplaySectionProps {
   interactiveDemoHtml?: string | null;
   interactivePracticeHtml?: string | null;
   showBackLink?: boolean;
+  onBack?: () => void;
 }
 
 interface InteractiveFrameProps {
@@ -575,7 +578,8 @@ function TermDisplaySection({
   term, 
   interactiveDemoHtml, 
   interactivePracticeHtml,
-  showBackLink = false 
+  showBackLink = false,
+  onBack 
 }: TermDisplaySectionProps) {
   const deepDiveNotes = getTermDeepDiveNotes(term);
   const practiceCaption = undefined;
@@ -584,12 +588,12 @@ function TermDisplaySection({
       <div className="page-shell grid gap-0 lg:grid-cols-[minmax(0,3fr)_minmax(0,7fr)] items-start">
         <div className="border-b border-border px-[1.2rem] py-10 lg:border-b-0 lg:border-r lg:px-8 lg:py-14 lg:sticky lg:top-[52px] lg:h-fit">
           {showBackLink && (
-            <Link
-              to="/tu-dien-thuat-ngu"
-              className="inline-flex items-center border border-[var(--ink)] bg-[var(--ink)] px-[10px] py-[7px] font-mono text-[10px] uppercase tracking-[0.04em] text-[var(--bg)] no-underline transition-colors hover:border-accent hover:bg-accent hover:text-[var(--ink)] active:border-accent active:bg-accent active:text-[var(--ink)]"
+            <button
+              onClick={onBack}
+              className="inline-flex items-center border border-[var(--ink)] bg-[var(--ink)] px-[10px] py-[7px] font-mono text-[10px] uppercase tracking-[0.04em] text-[var(--bg)] no-underline transition-colors hover:border-accent hover:bg-accent hover:text-[var(--ink)] active:border-accent active:bg-accent active:text-[var(--ink)] cursor-pointer"
             >
               ← Quay lại từ điển
-            </Link>
+            </button>
           )}
           <h1 className={`${showBackLink ? 'mt-5' : 'mt-0'} font-serif text-[clamp(2.6rem,5vw,4.4rem)] leading-[0.95]`}>{term.name}</h1>
           <p className="mt-3 font-mono text-[11px] tracking-[0.04em] text-muted">{term.nameEn}</p>

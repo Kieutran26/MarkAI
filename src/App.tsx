@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Navigate, Routes, Route, useLocation } from 'react-router-dom';
+import { BrowserRouter as Router, Navigate, Routes, Route, useLocation, useNavigationType } from 'react-router-dom';
 import { useEffect } from 'react';
 import Nav from './components/Nav';
 import Footer from './components/Footer';
@@ -27,9 +27,15 @@ const LEGACY_GLOSSARY_PATH = '/vibecode/tu-ngu-chuyen-nganh/tu-dien-thuat-ngu';
 
 const ScrollToTop = () => {
   const { pathname } = useLocation();
+  const navigationType = useNavigationType();
+
   useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [pathname]);
+    // If it's a POP navigation (back/forward), don't scroll to top
+    // The browser will handle scroll restoration automatically
+    if (navigationType !== 'POP') {
+      window.scrollTo(0, 0);
+    }
+  }, [pathname, navigationType]);
   return null;
 };
 

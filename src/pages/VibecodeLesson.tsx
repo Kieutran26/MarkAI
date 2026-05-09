@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useNavigate } from 'react-router-dom';
 import { getLessonBySlug, getLessonSlug } from '../lib/lessons';
 import LessonLayout from '../components/lesson/LessonLayout';
 
 export default function VibecodeLesson() {
   const { slug } = useParams<{ slug: string }>();
+  const navigate = useNavigate();
   const [lesson, setLesson] = useState(getLessonBySlug(slug || 'vibecode-la-gi'));
 
   useEffect(() => {
@@ -12,7 +13,6 @@ export default function VibecodeLesson() {
 
     const foundLesson = getLessonBySlug(slug);
     setLesson(foundLesson);
-    window.scrollTo(0, 0);
 
     if (!foundLesson) return;
 
@@ -26,9 +26,9 @@ export default function VibecodeLesson() {
         <div className="text-center">
           <h1 className="font-serif text-3xl mb-4 text-ink">Bài học không tìm thấy</h1>
           <p className="font-mono text-muted mb-6">Trang bạn đang tìm không tồn tại.</p>
-          <Link to="/vibecode" className="btn-primary">
+          <button onClick={() => navigate(-1)} className="btn-primary">
             Quay lại lộ trình →
-          </Link>
+          </button>
         </div>
       </div>
     );

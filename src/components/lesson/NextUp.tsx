@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import type { Lesson } from '../../lib/lessons';
 
 interface NextUpProps {
@@ -25,6 +25,7 @@ const getSlug = (id: number) => {
 };
 
 export default function NextUp({ currentLesson, nextLesson, remainingLessons }: NextUpProps) {
+  const navigate = useNavigate();
   // If this is the last lesson, show completion message
   if (!nextLesson && remainingLessons.length === 0) {
     return (
@@ -39,9 +40,9 @@ export default function NextUp({ currentLesson, nextLesson, remainingLessons }: 
             <p className="next-up-desc">
               10 bài học từ zero đến deploy. Giờ bạn đã có thể tự build web app cho riêng mình.
             </p>
-            <Link to="/vibecode" className="btn-accent mt-6">
+            <button onClick={() => navigate(-1)} className="btn-accent mt-6">
               Quay lại lộ trình →
-            </Link>
+            </button>
           </div>
           <div className="next-up-right">
             <p className="next-up-label">✳ Bắt đầu project của riêng bạn</p>

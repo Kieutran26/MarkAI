@@ -1,4 +1,4 @@
-import { useParams, Link, Navigate } from 'react-router-dom';
+import { useParams, Link, Navigate, useNavigate } from 'react-router-dom';
 import { getTipBySlug, getRelatedTips, getDetailTips, getTipDetailContent, shouldShowFullTipLink } from '../../lib/tips-data';
 import ReadingProgressBar from '../../components/article/ReadingProgressBar';
 import TipHero from '../../components/tip-detail/TipHero';
@@ -11,6 +11,7 @@ import TipsCTA from '../../components/tips/TipsCTA';
 
 export default function TipDetail() {
   const { slug } = useParams<{ slug: string }>();
+  const navigate = useNavigate();
   const tip = getTipBySlug(slug || '');
   const detailContent = tip ? getTipDetailContent(tip) : undefined;
 
@@ -23,7 +24,7 @@ export default function TipDetail() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="font-serif text-2xl mb-4">Tip không tìm thấy</h1>
-          <Link to="/tips" className="btn-primary">Quay lại danh sách tips</Link>
+          <button onClick={() => navigate(-1)} className="btn-primary">Quay lại danh sách tips</button>
         </div>
       </div>
     );

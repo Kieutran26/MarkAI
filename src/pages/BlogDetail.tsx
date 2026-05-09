@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { posts, getPostBySlug } from '../lib/posts';
 import ArticleHero from '../components/article/ArticleHero';
 import ArticleContent from '../components/article/ArticleContent';
@@ -9,13 +9,14 @@ import RelatedArticles from '../components/article/RelatedArticles';
 
 export default function BlogDetailPage() {
   const { slug } = useParams<{ slug: string }>();
+  const navigate = useNavigate();
   const post = slug ? getPostBySlug(slug) : null;
 
   if (!post) {
     return (
       <div className="page-shell py-12 text-center">
         <h1 className="font-serif text-2xl mb-4">Bài viết không tìm thấy</h1>
-        <a href="/blog" className="btn-ghost">← Quay lại Blog</a>
+        <button onClick={() => navigate(-1)} className="btn-ghost">← Quay lại Blog</button>
       </div>
     );
   }

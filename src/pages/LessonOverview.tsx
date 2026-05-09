@@ -1,6 +1,6 @@
-﻿import type { ReactNode } from 'react';
+import type { ReactNode } from 'react';
 import { useEffect, useMemo, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Sparkles } from 'lucide-react';
 import { getLessonBySlug, getNextLesson, getPrevLesson, getRemainingLessons, getLessonSlug } from '../lib/lessons';
 import { fetchPublicLesson, type PublicLessonPayload } from '../lib/public-lesson-api';
@@ -12,6 +12,7 @@ import LessonNextUp from '../components/lesson/LessonNextUp';
 
 export default function LessonOverview() {
   const params = useParams();
+  const navigate = useNavigate();
   const lessonSlug = params.lessonSlug || '';
   const fallbackLesson = getLessonBySlug(lessonSlug);
   const [dbLesson, setDbLesson] = useState<PublicLessonPayload['lesson'] | null>(null);
@@ -36,7 +37,7 @@ export default function LessonOverview() {
         <div className="text-center">
           <h1 className="font-serif text-2xl mb-4">Bài học không tồn tại</h1>
           <p className="text-muted mb-6">Slug: {lessonSlug}</p>
-          <Link to="/vibecode" className="btn-primary">Quay lại lộ trình</Link>
+          <button onClick={() => navigate(-1)} className="btn-primary">Quay lại lộ trình</button>
         </div>
       </div>
     );

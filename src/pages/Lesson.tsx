@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 
 const lessonData: Record<string, any> = {
   "1": {
@@ -161,13 +161,12 @@ const lessonData: Record<string, any> = {
 
 export default function Lesson() {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (id) {
       localStorage.setItem('lesson_progress', id);
     }
-    // Scroll to top on lesson change
-    window.scrollTo(0, 0);
   }, [id]);
 
   const lesson = lessonData[id || "1"] || {
@@ -185,9 +184,12 @@ export default function Lesson() {
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_320px]">
         {/* Main Content */}
         <div className="py-8 md:py-16 pr-0 lg:pr-16 border-r border-border min-h-screen bg-white">
-          <Link to="/vibecode" className="font-mono text-[11px] text-muted hover:text-accent transition-colors no-underline block mb-8">
+          <button 
+            onClick={() => navigate(-1)} 
+            className="font-mono text-[11px] text-muted hover:text-accent transition-colors no-underline block mb-8 border-none bg-transparent cursor-pointer p-0"
+          >
             ← Quay lại lộ trình Vibecode
-          </Link>
+          </button>
           <div className="mb-12">
             <span className="badge badge-accent mb-6 inline-block uppercase tracking-widest">{lesson.badge}</span>
             <h1 className="font-serif text-[2.8rem] leading-[1.1] mb-6 text-ink">
@@ -238,7 +240,7 @@ export default function Lesson() {
                       className={`block p-3 font-mono text-[11px] border border-transparent transition-all no-underline leading-tight ${id === i.toString() ? 'bg-white border-border text-accent translate-x-2 shadow-sm' : 'text-muted hover:text-ink hover:translate-x-1'}`}
                     >
                       <div className="opacity-50 mb-1">BÀI 0{i}</div>
-                      <div className="uppercase tracking-tighter">{lessonData[key].title.split(' — ')[1].substring(0, 30)}...</div>
+                      <div className="uppercase tracking-tighter">{lessonData[key].title.substring(0, 30)}...</div>
                     </Link>
                   </li>
                 );

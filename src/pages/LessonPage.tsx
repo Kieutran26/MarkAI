@@ -8,8 +8,7 @@ export default function LessonPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Scroll to top on mount
-    window.scrollTo(0, 0);
+    // No explicit scroll to top, App.tsx handles it for new pages
   }, [slug]);
 
   if (!slug) {
@@ -18,7 +17,7 @@ export default function LessonPage() {
         <div className="text-center">
           <h1 className="font-serif text-2xl mb-4">Không tìm thấy bài học</h1>
           <button 
-            onClick={() => navigate('/vibecode')}
+            onClick={() => navigate(-1)}
             className="btn-primary"
           >
             Quay lại lộ trình
@@ -37,7 +36,7 @@ export default function LessonPage() {
           <h1 className="font-serif text-2xl mb-4">Bài học không tồn tại</h1>
           <p className="text-muted mb-6">Slug: {slug}</p>
           <button 
-            onClick={() => navigate('/vibecode')}
+            onClick={() => navigate(-1)}
             className="btn-primary"
           >
             Quay lại lộ trình
