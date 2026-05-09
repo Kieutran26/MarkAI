@@ -5,321 +5,413 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Button Group Demo — Vibecode Glossary</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#141413;--bgc:#1c1b19;--fg:#e5ddd0;--mu:#6e675d;
-  --ac:#d4722a;--ag:rgba(212,114,42,.1);
-  --bd:#2e2a26;--lb:#a89d90;
-  --ok:#5a9e6f;--er:#c45c4a;
-  --mn:'JetBrains Mono',monospace;--sn:'Space Grotesk',sans-serif;
-  --ms:#2a2826;--msb:#3a3530;--msf:#c5bdb0;--msm:#7a7268;
-}
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-body{
-  background:var(--bg);color:var(--fg);font-family:var(--sn);
-  min-height:100vh;-webkit-font-smoothing:antialiased;
-  background-image:
-    linear-gradient(rgba(255,255,255,.016) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(255,255,255,.016) 1px,transparent 1px);
-  background-size:20px 20px;
-}
-.w{max-width:860px;margin:0 auto;padding:14px 14px 52px}
-.g{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:0}
-@media(max-width:600px){.g{grid-template-columns:1fr}}
-
-/* Card */
-.c{background:var(--bgc);border:1px solid var(--bd);overflow:hidden}
-.ct{padding:9px 13px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:7px}
-.cd{width:5px;height:5px;background:var(--ac);flex-shrink:0}
-.cg{font-family:var(--mn);font-size:9px;color:var(--ac);text-transform:uppercase;letter-spacing:1.5px;font-weight:600}
-.cs{padding:16px 14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;min-height:170px}
-.cb{padding:6px 13px;border-top:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center}
-.cb span{font-family:var(--mn);font-size:9px;color:var(--mu);letter-spacing:.3px}
-.lp{display:flex;align-items:center;gap:5px}
-.ld{width:4px;height:4px;border-radius:50%;background:var(--ac);animation:bk 2s ease-in-out infinite}
-@keyframes bk{0%,100%{opacity:.2}50%{opacity:1}}
-
-/* ── Button Group Shared ── */
-.bg{display:inline-flex;border:1px solid var(--msb)}
-.bg .b{
-  font-family:var(--sn);font-size:11px;color:var(--msf);
-  padding:7px 14px;border:none;border-right:1px solid var(--msb);
-  background:var(--ms);cursor:default;transition:background .25s,color .25s;
-  position:relative;white-space:nowrap;
-}
-.bg .b:last-child{border-right:none}
-.bg .b.ac{background:var(--ac);color:#fff}
-.bg .b.hv{background:rgba(212,114,42,.15);color:var(--ac)}
-.bg .b.ds{opacity:.3;pointer-events:none}
-.bg .b.sel::after{
-  content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--ac);
+:root {
+  --bg: #0f0f12;
+  --card-bg: #16161b;
+  --accent: #E88C2E;
+  --text: #e8e4dc;
+  --text-muted: #707070;
+  --border: #282830;
+  --font-main: 'Space Grotesk', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
 }
 
-/* Icon button variant */
-.bg.ic .b{padding:7px 10px;font-size:13px}
-.bg.ic .b svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* Mixed variant */
-.bg.mx .b.pri{background:var(--ac);color:#fff;font-weight:600}
-.bg.mx .b.sec{background:var(--ms);color:var(--msf)}
-.bg.mx .b.ico{background:var(--ms);color:var(--msm);padding:7px 10px}
-.bg.mx .b.ico svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
-.bg.mx .b.sec.hv{background:rgba(212,114,42,.15);color:var(--ac)}
-.bg.mx .b.ico.hv{background:rgba(212,114,42,.15);color:var(--ac)}
-
-/* Role label */
-.rl{font-family:var(--mn);font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--mu);text-align:center;transition:color .3s}
-.rl.ac{color:var(--ac)}
-
-/* State label */
-.sl{font-family:var(--mn);font-size:9px;color:var(--msm);letter-spacing:.5px;text-align:center;min-height:14px;transition:color .25s}
-.sl.ac{color:var(--ac)}
-
-/* Mini preview area */
-.pv{
-  width:100%;background:var(--ms);border:1px solid var(--msb);
-  padding:8px 10px;font-size:10px;color:var(--msm);
-  text-align:center;transition:all .3s;min-height:32px;
-  display:flex;align-items:center;justify-content:center;
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-main);
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  -webkit-font-smoothing: antialiased;
 }
-.pv.ac{color:var(--ac);border-color:rgba(212,114,42,.3)}
 
-@media(max-width:520px){
-  .bg .b{padding:7px 10px;font-size:10px}
+.container {
+  width: 100%;
+  max-width: 940px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
 }
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation:none!important;transition-duration:0s!important}
+
+@media (max-width: 600px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
 }
+
+/* Card Style */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 280px;
+}
+
+/* Accent Bar */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent);
+  z-index: 2;
+}
+
+/* Header */
+.card-header {
+  padding: 16px 16px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-index {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  background: rgba(232, 140, 46, 0.1);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+.card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+/* Indicator */
+.indicator {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--accent);
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.3; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.1); }
+  100% { opacity: 0.3; transform: scale(0.9); }
+}
+
+/* Content Area */
+.card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  min-height: 140px;
+}
+
+/* Note Section */
+.ins {
+  margin: 0 16px 16px;
+  padding-left: 12px;
+  border-left: 2px solid var(--accent);
+  font-size: 11.5px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.ins strong {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Button Group Components */
+.btn-group {
+  display: inline-flex;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.btn-item {
+  background: #23232a;
+  border: none;
+  border-right: 1px solid var(--border);
+  color: #a0a0a8;
+  padding: 8px 16px;
+  font-family: var(--font-main);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: default;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-item:last-child {
+  border-right: none;
+}
+
+.btn-item.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+.btn-item.hover {
+  background: #2e2e38;
+  color: #fff;
+}
+
+.btn-item svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+
+/* Simulation specific */
+.preview-text {
+  margin-top: 16px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent);
+  opacity: 0.8;
+}
+
+.tag-list {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  background: #1e1e24;
+  color: var(--text-muted);
+  padding: 2px 6px;
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+
+.tag.active {
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
 </style>
 </head>
 <body>
-<div class="w">
 
-  <!-- ════════ SIMULATION ════════ -->
-  <div class="g">
-
-    <!-- 1 · Segmented -->
-    <div class="c">
-      <div class="ct"><div class="cd"></div><span class="cg">Segmented</span></div>
-      <div class="cs">
-        <div class="bg" id="a1">
-          <button class="b ac">Day</button>
-          <button class="b">Week</button>
-          <button class="b">Month</button>
-        </div>
-        <div class="pv ac" id="a1v">Viewing: Day</div>
-        <div class="sl ac" id="a1s">chọn 1 — mutually exclusive</div>
-      </div>
-      <div class="cb"><span>1 active, các nút còn lại tắt</span><span class="lp"><span class="ld"></span>loop</span></div>
+<div class="container">
+  <!-- Cell 1: Segmented -->
+  <div class="card">
+    <div class="indicator"></div>
+    <div class="card-header">
+      <span class="card-index">01</span>
+      <span class="card-title">Segmented Control</span>
     </div>
-
-    <!-- 2 · Toggle -->
-    <div class="c">
-      <div class="ct"><div class="cd"></div><span class="cg">Toggle</span></div>
-      <div class="cs">
-        <div class="bg" id="a2">
-          <button class="b ac">B</button>
-          <button class="b">I</button>
-          <button class="b">U</button>
-          <button class="b">S</button>
-        </div>
-        <div class="pv ac" id="a2v">Bold</div>
-        <div class="sl ac" id="a2s">độc lập — nhiều cái cùng lúc</div>
+    <div class="card-content">
+      <div class="btn-group" id="group-1">
+        <div class="btn-item">Daily</div>
+        <div class="btn-item">Weekly</div>
+        <div class="btn-item">Monthly</div>
       </div>
-      <div class="cb"><span>mỗi nút on/off riêng</span><span class="lp"><span class="ld"></span>loop</span></div>
+      <div class="preview-text" id="preview-1">View: Daily</div>
     </div>
-
-    <!-- 3 · Icon -->
-    <div class="c">
-      <div class="ct"><div class="cd"></div><span class="cg">Icon</span></div>
-      <div class="cs">
-        <div class="bg ic" id="a3">
-          <button class="b">
-            <svg viewBox="0 0 14 14"><rect x="4" y="4" width="8" height="8" rx="1"/><path d="M4 10H2.5a.5.5 0 01-.5-.5V2.5a.5.5 0 01.5-.5H10v1.5"/></svg>
-          </button>
-          <button class="b">
-            <svg viewBox="0 0 14 14"><path d="M5 2v10M2 5h10"/></svg>
-          </button>
-          <button class="b">
-            <svg viewBox="0 0 14 14"><path d="M4 3l3 4-3 4"/><path d="M7 11h4"/></svg>
-          </button>
-          <button class="b ds">
-            <svg viewBox="0 0 14 14"><path d="M2 4h10M2 7h10M2 10h10"/></svg>
-          </button>
-        </div>
-        <div class="pv" id="a3v">hover để thấy trạng thái</div>
-        <div class="sl" id="a3s">icon thay text — tiết kiệm không gian</div>
-      </div>
-      <div class="cb"><span>nhỏ gọn, không label</span><span class="lp"><span class="ld"></span>loop</span></div>
+    <div class="ins">
+      Lựa chọn <strong>Mutually Exclusive</strong>: Chỉ một nút duy nhất được kích hoạt tại một thời điểm. Thường dùng để <strong>lọc dữ liệu</strong> hoặc chuyển đổi chế độ xem.
     </div>
-
-    <!-- 4 · Mixed Action -->
-    <div class="c">
-      <div class="ct"><div class="cd"></div><span class="cg">Mixed Action</span></div>
-      <div class="cs">
-        <div class="bg mx" id="a4">
-          <button class="b pri">Save</button>
-          <button class="b sec">Preview</button>
-          <button class="b ico">
-            <svg viewBox="0 0 14 14"><circle cx="7" cy="3" r="1"/><circle cx="7" cy="7" r="1"/><circle cx="7" cy="11" r="1"/></svg>
-          </button>
-        </div>
-        <div style="display:flex;gap:20px;justify-content:center">
-          <div class="rl ac" id="r1">primary</div>
-          <div class="rl" id="r2">secondary</div>
-          <div class="rl" id="r3">more</div>
-        </div>
-        <div class="pv" id="a4v">phân cấp quan trọng trong 1 nhóm</div>
-      </div>
-      <div class="cb"><span>primary + secondary + icon</span><span class="lp"><span class="ld"></span>loop</span></div>
-    </div>
-
   </div>
 
+  <!-- Cell 2: Multi-Toggle -->
+  <div class="card">
+    <div class="indicator"></div>
+    <div class="card-header">
+      <span class="card-index">02</span>
+      <span class="card-title">Multi-Toggle</span>
+    </div>
+    <div class="card-content">
+      <div class="btn-group" id="group-2">
+        <div class="btn-item" style="font-weight: 700; font-family: serif;">B</div>
+        <div class="btn-item" style="font-style: italic; font-family: serif;">I</div>
+        <div class="btn-item" style="text-decoration: underline; font-family: serif;">U</div>
+      </div>
+      <div class="tag-list" id="tags-2">
+        <span class="tag">BOLD</span>
+        <span class="tag">ITALIC</span>
+        <span class="tag">UNDERLINE</span>
+      </div>
+    </div>
+    <div class="ins">
+      Trạng thái <strong>Independent</strong>: Các nút hoạt động độc lập, cho phép chọn nhiều tùy chọn cùng lúc. Phổ biến trong các <strong>thanh công cụ</strong> soạn thảo văn bản.
+    </div>
+  </div>
+
+  <!-- Cell 3: Icon Groups -->
+  <div class="card">
+    <div class="indicator"></div>
+    <div class="card-header">
+      <span class="card-index">03</span>
+      <span class="card-title">Iconic Group</span>
+    </div>
+    <div class="card-content">
+      <div class="btn-group" id="group-3">
+        <div class="btn-item">
+          <svg viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+        </div>
+        <div class="btn-item">
+          <svg viewBox="0 0 24 24"><path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+        </div>
+        <div class="btn-item">
+          <svg viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+        </div>
+      </div>
+      <div class="preview-text" id="preview-3">Action: Edit</div>
+    </div>
+    <div class="ins">
+      Tối ưu <strong>Diện tích</strong>: Sử dụng Icon thay cho Text để tiết kiệm không gian. Cần đảm bảo <strong>Tooltip</strong> hoặc nhãn ẩn để hỗ trợ khả năng tiếp cận.
+    </div>
+  </div>
+
+  <!-- Cell 4: Mixed Action -->
+  <div class="card">
+    <div class="indicator"></div>
+    <div class="card-header">
+      <span class="card-index">04</span>
+      <span class="card-title">Mixed Hierarchy</span>
+    </div>
+    <div class="card-content">
+      <div class="btn-group" id="group-4">
+        <div class="btn-item active" style="font-weight: 600;">Publish</div>
+        <div class="btn-item">Draft</div>
+        <div class="btn-item">
+          <svg viewBox="0 0 24 24"><path d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/></svg>
+        </div>
+      </div>
+      <div class="preview-text" id="preview-4">Status: Primary</div>
+    </div>
+    <div class="ins">
+      Phân cấp <strong>Visual Weight</strong>: Kết hợp các biến thể (Primary, Ghost) trong cùng một nhóm để dẫn dắt hành động <strong>ưu tiên</strong> của người dùng.
+    </div>
+  </div>
 </div>
 
 <script>
-/* ════════════════════════════════════
-   ANIM 1 — Segmented: cycle selection
-   ════════════════════════════════════ */
-(function(){
-  var btns=document.querySelectorAll('#a1 .b');
-  var pv=document.getElementById('a1v');
-  var labels=['Day','Week','Month'];
-  var cur=0;
-  function tick(){
-    for(var i=0;i<btns.length;i++){
-      btns[i].classList.toggle('ac',i===cur);
-    }
-    pv.textContent='Viewing: '+labels[cur];
-    pv.classList.add('ac');
-    cur=(cur+1)%btns.length;
-  }
-  tick();
-  setInterval(tick,900);
-})();
+const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-/* ════════════════════════════════════
-   ANIM 2 — Toggle: show combinations
-   ════════════════════════════════════ */
-(function(){
-  var btns=document.querySelectorAll('#a2 .b');
-  var pv=document.getElementById('a2v');
-  /* combos: [B, I, U, S] true=on */
-  var combos=[
-    [1,0,0,0],
-    [1,1,0,0],
-    [0,1,1,0],
-    [1,0,1,1],
-    [0,0,0,0],
+// Loop 1: Segmented
+async function loop1() {
+  const btns = document.querySelectorAll('#group-1 .btn-item');
+  const preview = document.getElementById('preview-1');
+  const texts = ['Daily', 'Weekly', 'Monthly'];
+  let current = 0;
+  
+  while(true) {
+    btns.forEach((b, i) => b.classList.toggle('active', i === current));
+    preview.textContent = `View: ${texts[current]}`;
+    current = (current + 1) % btns.length;
+    await sleep(2000);
+  }
+}
+
+// Loop 2: Multi-Toggle
+async function loop2() {
+  const btns = document.querySelectorAll('#group-2 .btn-item');
+  const tags = document.querySelectorAll('#tags-2 .tag');
+  
+  const scenarios = [
+    [true, false, false],
+    [true, true, false],
+    [false, true, false],
+    [false, true, true],
+    [true, false, true],
+    [false, false, false]
   ];
-  var names=['Bold','Bold + Italic','Italic + Underline','Bold + Underline + Strikethrough','(none)'];
-  var ci=0;
-  function tick(){
-    var c=combos[ci];
-    for(var i=0;i<btns.length;i++){
-      btns[i].classList.toggle('ac',!!c[i]);
-    }
-    pv.textContent=names[ci];
-    pv.classList.toggle('ac',c.indexOf(1)!==-1);
-    ci=(ci+1)%combos.length;
+  
+  let step = 0;
+  while(true) {
+    const current = scenarios[step];
+    btns.forEach((b, i) => b.classList.toggle('active', current[i]));
+    tags.forEach((t, i) => t.classList.toggle('active', current[i]));
+    
+    step = (step + 1) % scenarios.length;
+    await sleep(1500);
   }
-  tick();
-  setInterval(tick,1100);
-})();
+}
 
-/* ════════════════════════════════════
-   ANIM 3 — Icon: hover cycle + select
-   ════════════════════════════════════ */
-(function(){
-  var btns=document.querySelectorAll('#a3 .b');
-  var pv=document.getElementById('a3v');
-  var sl=document.getElementById('a3s');
-  var names=['Copy','Paste','Cut','—disabled—'];
-  var T=3600;
-  function reset(){
-    for(var i=0;i<3;i++) btns[i].classList.remove('hv','ac');
-    pv.classList.remove('ac');
-    pv.textContent='hover để thấy trạng thái';
-    sl.classList.remove('ac');
-  }
-  function play(){
-    reset();
-    /* Hover cycle */
-    for(var i=0;i<3;i++){
-      (function(idx,delay){
-        setTimeout(function(){
-          for(var j=0;j<3;j++) btns[j].classList.remove('hv');
-          btns[idx].classList.add('hv');
-          pv.textContent=names[idx];
-        },delay);
-      })(i,200+i*500);
+// Loop 3: Icon Groups
+async function loop3() {
+  const btns = document.querySelectorAll('#group-3 .btn-item');
+  const preview = document.getElementById('preview-3');
+  const actions = ['Edit', 'Copy', 'Delete'];
+  
+  while(true) {
+    for(let i = 0; i < btns.length; i++) {
+      btns[i].classList.add('hover');
+      preview.textContent = `Action: ${actions[i]}`;
+      await sleep(1000);
+      btns[i].classList.remove('hover');
+      
+      if (i === 1) { // Simulate click on Copy
+        btns[i].classList.add('active');
+        preview.textContent = `Copied!`;
+        await sleep(800);
+        btns[i].classList.remove('active');
+      }
     }
-    /* Select Copy */
-    setTimeout(function(){
-      for(var j=0;j<3;j++) btns[j].classList.remove('hv');
-      btns[0].classList.add('ac');
-      pv.textContent=names[0]+' — selected';
-      pv.classList.add('ac');
-      sl.textContent='icon thay text — tiết kiệm không gian';
-      sl.classList.add('ac');
-    },1800);
-    setTimeout(reset,3200);
   }
-  play();
-  setInterval(play,T);
-})();
+}
 
-/* ════════════════════════════════════
-   ANIM 4 — Mixed: highlight roles
-   ════════════════════════════════════ */
-(function(){
-  var pri=document.querySelector('#a4 .b.pri');
-  var sec=document.querySelector('#a4 .b.sec');
-  var ico=document.querySelector('#a4 .b.ico');
-  var rls=[document.getElementById('r1'),document.getElementById('r2'),document.getElementById('r3')];
-  var pv=document.getElementById('a4v');
-  var infos=[
-    {el:pri,rl:rls[0],txt:'Primary — hành động chính, nổi bật nhất'},
-    {el:sec,rl:rls[1],txt:'Secondary — hành động phụ, ít nổi bật hơn'},
-    {el:ico,rl:rls[2],txt:'More — mở menu thêm tùy chọn'},
-  ];
-  var T=4500;
-  function reset(){
-    sec.classList.remove('hv');ico.classList.remove('hv');
-    rls.forEach(function(r){r.classList.remove('ac')});
-    pv.classList.remove('ac');
-    pv.textContent='phân cấp quan trọng trong 1 nhóm';
+// Loop 4: Mixed Hierarchy
+async function loop4() {
+  const btns = document.querySelectorAll('#group-4 .btn-item');
+  const preview = document.getElementById('preview-4');
+  const info = ['Status: Primary', 'Status: Secondary', 'More Options'];
+  
+  while(true) {
+    // Pulse highlight
+    btns[0].style.transform = 'scale(1.05)';
+    preview.textContent = info[0];
+    await sleep(1200);
+    btns[0].style.transform = 'scale(1)';
+    
+    // Hover Draft
+    btns[1].classList.add('hover');
+    preview.textContent = info[1];
+    await sleep(1200);
+    btns[1].classList.remove('hover');
+    
+    // Hover More
+    btns[2].classList.add('hover');
+    preview.textContent = info[2];
+    await sleep(1200);
+    btns[2].classList.remove('hover');
   }
-  function play(){
-    reset();
-    /* Primary always active — highlight its role */
-    setTimeout(function(){
-      rls[0].classList.add('ac');
-      pv.textContent=infos[0].txt;
-      pv.classList.add('ac');
-    },200);
-    /* Secondary */
-    setTimeout(function(){
-      rls[0].classList.remove('ac');
-      sec.classList.add('hv');
-      rls[1].classList.add('ac');
-      pv.textContent=infos[1].txt;
-    },1400);
-    /* More */
-    setTimeout(function(){
-      rls[1].classList.remove('ac');
-      sec.classList.remove('hv');
-      ico.classList.add('hv');
-      rls[2].classList.add('ac');
-      pv.textContent=infos[2].txt;
-    },2600);
-    setTimeout(reset,3800);
-  }
-  play();
-  setInterval(play,T);
-})();
+}
+
+// Start all loops independently
+loop1();
+loop2();
+loop3();
+loop4();
 </script>
+
 </body>
 </html>
