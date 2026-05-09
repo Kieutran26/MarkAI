@@ -4,433 +4,426 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Commit Demo — Vibecode Glossary</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #1a1a18;
-    --bg-card: #222220;
-    --bg-elevated: #2a2a27;
-    --fg: #e8e4dd;
-    --fg-muted: #8a877e;
-    --accent: #e88c2e;
-    --accent-dim: #c97522;
-    --amber: #c9922a;
-    --green: #6b8f5e;
-    --red: #b54a4a;
-    --border: #3a3a36;
-    --border-light: #4a4a45;
-    --mono: 'JetBrains Mono', monospace;
-    --sans: 'Space Grotesk', sans-serif;
-  }
+:root {
+  --bg: #0f0f12;
+  --bgc: #16161b;
+  --bgi: #121217;
+  --bd: #282830;
+  --tx: #e8e4dc;
+  --txm: #707070;
+  --ac: #E88C2E;
+  --abg: rgba(232, 140, 46, 0.1);
+  --abg2: rgba(232, 140, 46, 0.2);
+}
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-  body {
-    background: var(--bg);
-    color: var(--fg);
-    font-family: var(--sans);
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
-  }
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--tx);
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+}
 
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
-    background-size: 24px 24px;
-    pointer-events: none;
-    z-index: 0;
-  }
+.g {
+  width: 100%;
+  max-width: 940px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
 
-  .page-wrap {
-    position: relative;
-    z-index: 1;
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 24px;
-  }
+@media (max-width: 600px) {
+  .g { grid-template-columns: 1fr; }
+}
 
-  /* Grid Layout */
-  .demo-grid {
-    display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: 24px;
-    align-items: start;
-  }
+.c {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
 
-  @media (max-width: 850px) {
-    .demo-grid {
-      grid-template-columns: 1fr;
-    }
-  }
+/* Accent Bar */
+.c::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--ac);
+}
 
-  .shape-section {
-    border: 1px solid var(--border);
-    background: var(--bg-card);
-    margin-bottom: 24px;
-    overflow: hidden;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-  .shape-section.full-width {
-    grid-column: 1 / -1;
-  }
+/* Pulsating Indicator */
+.c::after {
+  content: '';
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 6px;
+  height: 6px;
+  background: var(--ac);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--ac);
+  animation: pulse 2s infinite;
+}
 
-  .section-head {
-    border-bottom: 1px solid var(--border);
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: rgba(255,255,255,0.02);
-  }
-  .section-head h2 {
-    font-family: var(--mono);
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--accent);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-  .section-head .num {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--fg-muted);
-  }
-  .section-body { 
-    padding: 20px; 
-    flex: 1;
-  }
+@keyframes pulse {
+  0% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0.3; transform: scale(1); }
+}
 
-  .insight {
-    background: rgba(212,98,43,0.05);
-    border-left: 2px solid var(--accent);
-    padding: 12px 14px;
-    margin-top: 16px;
-    font-size: 12px;
-    color: var(--fg-muted);
-    line-height: 1.6;
-  }
-  .insight strong { color: var(--fg); }
+.ch {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 20px;
+}
 
-  /* ===== SECTION: Commit Concept ===== */
-  .commit-visual {
-    display: flex;
-    gap: 20px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    padding: 16px;
-  }
-  @media (max-width: 600px) {
-    .commit-visual { flex-direction: column; }
-  }
-  .vis-panel {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
-  .vis-label {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--fg-muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-  }
+.ch .n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ac);
+  background: var(--abg);
+  border: 1px solid var(--abg2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
 
-  .file-diff {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-  }
-  .diff-line {
-    font-family: var(--mono);
-    font-size: 11px;
-    padding: 2px 8px;
-    opacity: 0;
-    animation: diffSlideIn .4s ease forwards;
-  }
-  .diff-line:nth-child(1) { animation-delay: .3s; }
-  .diff-line:nth-child(2) { animation-delay: .6s; }
-  .diff-line:nth-child(3) { animation-delay: .9s; color: var(--green); }
-  .diff-line:nth-child(4) { animation-delay: 1.2s; color: var(--red); }
-  .diff-line:nth-child(5) { animation-delay: 1.5s; color: var(--green); }
-  @keyframes diffSlideIn {
-    to { opacity: 1; transform: translateX(0); }
-  }
+.ch h2 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  text-transform: uppercase;
+}
 
-  .snapshot-visual {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 10px 0;
-  }
-  .snap-doc {
-    width: 36px;
-    height: 44px;
-    border: 1.5px solid var(--border-light);
-    background: var(--bg-elevated);
-    position: relative;
-    animation: docPulse 3s ease-in-out infinite;
-  }
-  .snap-doc .doc-lines {
-    position: absolute;
-    top: 6px; left: 4px; right: 4px;
-    display: flex;
-    flex-direction: column;
-    gap: 3px;
-  }
-  .snap-doc .doc-line {
-    height: 2px;
-    background: var(--border-light);
-  }
-  .snap-doc .doc-line.changed {
-    background: var(--accent);
-  }
-  @keyframes docPulse {
-    0%, 100% { border-color: var(--border-light); }
-    50% { border-color: var(--accent-dim); }
-  }
-  .snap-arrow {
-    font-family: var(--mono);
-    font-size: 16px;
-    color: var(--fg-muted);
-  }
-  .snap-freeze {
-    width: 36px;
-    height: 44px;
-    border: 1.5px solid var(--accent);
-    background: rgba(212,98,43,.1);
-    position: relative;
-    animation: freezeAppear .6s ease forwards;
-    animation-delay: 2s;
-    opacity: 0;
-  }
-  @keyframes freezeAppear {
-    to { opacity: 1; }
-  }
+.st {
+  background: var(--bgi);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  flex: 1;
+  min-height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
 
-  /* ===== SECTION: Terminal ===== */
-  .terminal {
-    border: 1px solid var(--border-light);
-    background: #121211;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-  }
-  .terminal-bar {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 10px 14px;
-    background: #1c1c1a;
-    border-bottom: 1px solid var(--border);
-  }
-  .terminal-dot { width: 8px; height: 8px; border-radius: 50%; }
-  .terminal-dot.r { background: #ff5f56; }
-  .terminal-dot.y { background: #ffbd2e; }
-  .terminal-dot.g { background: #27c93f; }
-  .terminal-title {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--fg-muted);
-    margin-left: 10px;
-  }
-  .terminal-body {
-    padding: 20px;
-    font-family: var(--mono);
-    font-size: 12px;
-    line-height: 1.6;
-    min-height: 240px;
-  }
-  .t-line { opacity: 0; animation: termType .3s ease forwards; margin-bottom: 4px; }
-  .t-line .t-prompt { color: var(--green); }
-  .t-line .t-flag { color: var(--amber); }
-  .t-line .t-str { color: var(--accent); }
-  .t-line .t-output { color: var(--fg-muted); }
-  .t-line .t-hash { color: var(--accent-dim); font-weight: 700; }
-  .t-cursor {
-    display: inline-block;
-    width: 7px;
-    height: 14px;
-    background: var(--fg);
-    vertical-align: middle;
-    animation: cursorBlink 1s step-end infinite;
-  }
-  @keyframes cursorBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-  @keyframes termType { to { opacity: 1; } }
+.ins {
+  margin-top: 14px;
+  font-size: 11.5px;
+  color: var(--txm);
+  line-height: 1.6;
+  padding-left: 12px;
+  border-left: 2px solid var(--ac);
+}
 
-  /* ===== SECTION: History ===== */
-  .history-timeline {
-    position: relative;
-    padding-left: 20px;
-    margin-left: 10px;
-  }
-  .history-timeline::before {
-    content: '';
-    position: absolute;
-    left: 0; top: 10px; bottom: 10px;
-    width: 2px;
-    background: var(--border);
-  }
-  .history-item {
-    position: relative;
-    padding: 12px 16px;
-    margin-bottom: 8px;
-    background: rgba(255,255,255,0.02);
-    border: 1px solid transparent;
-    transition: all 0.3s;
-  }
-  .history-item:hover {
-    background: rgba(255,255,255,0.04);
-    border-color: var(--border);
-  }
-  .history-dot {
-    position: absolute;
-    left: -25px; top: 18px;
-    width: 12px; height: 12px;
-    border: 2px solid var(--border-light);
-    background: var(--bg-card);
-    border-radius: 50%;
-    z-index: 1;
-  }
-  .history-item.active .history-dot {
-    border-color: var(--accent);
-    background: var(--accent);
-    box-shadow: 0 0 10px rgba(212,98,43,0.4);
-  }
-  .hi-msg { font-size: 13px; font-weight: 500; color: var(--fg); margin-bottom: 4px; }
-  .hi-meta { font-family: var(--mono); font-size: 10px; color: var(--fg-muted); display: flex; gap: 10px; }
-  .hi-hash { color: var(--accent-dim); }
+.ins strong {
+  color: var(--ac);
+  font-weight: 600;
+}
+
+.val {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--txm);
+  background: rgba(0,0,0,0.2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+/* Commit Specific Components */
+.snapshot-box {
+  width: 60px;
+  height: 60px;
+  border: 2px solid var(--bd);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.5s;
+}
+
+.snapshot-box.active {
+  border-color: var(--ac);
+  background: var(--abg);
+}
+
+.file-fragment {
+  width: 12px;
+  height: 16px;
+  background: var(--ac);
+  position: absolute;
+  opacity: 0;
+}
+
+.timeline {
+  width: 80%;
+  height: 2px;
+  background: var(--bd);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.node {
+  width: 8px;
+  height: 8px;
+  background: var(--bd);
+  border-radius: 50%;
+  position: relative;
+  transition: all 0.3s;
+}
+
+.node.active {
+  background: var(--ac);
+  box-shadow: 0 0 10px var(--ac);
+  transform: scale(1.5);
+}
+
+.terminal-line {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--ac);
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid var(--ac);
+  width: 0;
+}
+
+.history-item {
+  width: 100%;
+  height: 24px;
+  border-left: 2px solid var(--bd);
+  margin-left: 10px;
+  padding-left: 10px;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  color: var(--txm);
+  transition: all 0.3s;
+}
+
+.history-item.active {
+  border-left-color: var(--ac);
+  color: var(--tx);
+  background: var(--abg);
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink {
+  50% { border-color: transparent }
+}
 </style>
 </head>
 <body>
 
-<div class="page-wrap" id="app-root">
+<div class="g">
+  <!-- 01: State Snapshot -->
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>State Snapshot</h2></div>
+    <div class="st">
+      <div id="box1" class="snapshot-box">
+        <div id="frag1" class="file-fragment"></div>
+        <div id="frag2" class="file-fragment"></div>
+        <div id="frag3" class="file-fragment"></div>
+        <span id="icon1" style="font-size: 24px; opacity: 0.3;">📸</span>
+      </div>
+      <div class="val" id="status1">WAITING</div>
+    </div>
+    <p class="ins">Ghi lại <strong>toàn bộ trạng thái</strong> của dự án tại một thời điểm cụ thể, giống như chụp một tấm ảnh tức thời.</p>
+  </section>
 
-  <div class="demo-grid">
-    <!-- TOP: CONCEPT (Full Width) -->
-    <section class="shape-section full-width">
-      <div class="section-head">
-        <h2>Bản chất của Commit</h2>
-        <span class="num">CONCEPT</span>
+  <!-- 02: Progress Timeline -->
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Progress Timeline</h2></div>
+    <div class="st">
+      <div class="timeline">
+        <div class="node" id="n1"></div>
+        <div class="node" id="n2"></div>
+        <div class="node" id="n3"></div>
+        <div class="node" id="n4"></div>
       </div>
-      <div class="section-body">
-        <div class="commit-visual">
-          <div class="vis-panel">
-            <div class="vis-label">Thay đổi (Diff)</div>
-            <div class="file-diff">
-              <div class="diff-line" style="color:var(--fg-muted);">  title: "Vibecode"</div>
-              <div class="diff-line" style="color:var(--fg-muted);">  status: "Draft"</div>
-              <div class="diff-line" style="color:var(--green);">+ title: "Vibecode Pro"</div>
-              <div class="diff-line" style="color:var(--red);">- status: "Draft"</div>
-              <div class="diff-line" style="color:var(--green);">+ status: "Published"</div>
-            </div>
-          </div>
-          <div class="vis-panel">
-            <div class="vis-label">Snapshot (Checkpoint)</div>
-            <div class="snapshot-visual">
-              <div class="snap-doc"><div class="doc-lines"><div class="doc-line changed"></div><div class="doc-line"></div><div class="doc-line changed"></div></div></div>
-              <span class="snap-arrow">→</span>
-              <div class="snap-freeze"><div class="doc-lines"><div class="doc-line"></div><div class="doc-line"></div><div class="doc-line"></div></div></div>
-            </div>
-          </div>
-        </div>
-        <div class="insight">
-          <strong>Commit không phải là copy file.</strong> Nó là một tấm ảnh "chụp nhanh" trạng thái code của bạn. Bạn có thể quay lại bất kỳ tấm ảnh nào trong quá khứ nếu code hiện tại bị lỗi.
-        </div>
-      </div>
-    </section>
+      <div class="val" id="log2">HISTORY</div>
+    </div>
+    <p class="ins">Mỗi commit tạo ra một <strong>mốc lịch sử</strong>, giúp bạn theo dõi quá trình phát triển của mã nguồn theo thời gian.</p>
+  </section>
 
-    <!-- LEFT: ACTION -->
-    <section class="shape-section">
-      <div class="section-head">
-        <h2>Thực hiện Commit</h2>
-        <span class="num">ACTION</span>
+  <!-- 03: Atomic Operation -->
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Atomic Operation</h2></div>
+    <div class="st">
+      <div style="display: flex; flex-direction: column; gap: 8px; width: 100%; padding: 0 10px;">
+        <div id="term3" class="terminal-line">git commit -m "feat: login"</div>
+        <div id="hash3" style="font-family: 'JetBrains Mono'; font-size: 10px; color: var(--txm); opacity: 0;">[main 7f2a1b9] 2 files changed...</div>
       </div>
-      <div class="section-body">
-        <div class="terminal">
-          <div class="terminal-bar">
-            <div class="terminal-dot r"></div><div class="terminal-dot y"></div><div class="terminal-dot g"></div>
-            <span class="terminal-title">bash — ~/vibecode</span>
-          </div>
-          <div class="terminal-body" id="terminalBody">
-            <!-- JS Injection -->
-          </div>
-        </div>
-        <div class="insight">
-          Luôn có 2 bước: <code>git add</code> (chọn file) và <code>git commit</code> (đóng gói kèm ghi chú).
-        </div>
-      </div>
-    </section>
+      <div class="val" id="op3">IDLE</div>
+    </div>
+    <p class="ins">Xác nhận các thay đổi đã "Staged" và gán cho chúng một <strong>mã định danh duy nhất</strong> (Hash) để quản lý.</p>
+  </section>
 
-    <!-- RIGHT: HISTORY -->
-    <section class="shape-section">
-      <div class="section-head">
-        <h2>Lịch sử (Git Log)</h2>
-        <span class="num">RESULT</span>
+  <!-- 04: Safety Rollback -->
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Safety Rollback</h2></div>
+    <div class="st">
+      <div style="display: flex; flex-direction: column; width: 80%; gap: 4px;">
+        <div class="history-item" id="h1">add: hero section</div>
+        <div class="history-item" id="h2">fix: navigation</div>
+        <div class="history-item" id="h3">bug: broken layout</div>
       </div>
-      <div class="section-body">
-        <div class="history-timeline">
-          <div class="history-item active">
-            <div class="history-dot"></div>
-            <div class="hi-content">
-              <div class="hi-msg">feat: hoàn thiện trang checkout</div>
-              <div class="hi-meta"><span class="hi-hash">a7d2e41</span> <span>vừa xong</span></div>
-            </div>
-          </div>
-          <div class="history-item">
-            <div class="history-dot"></div>
-            <div class="hi-content">
-              <div class="hi-msg">fix: sửa lỗi hiển thị trên mobile</div>
-              <div class="hi-meta"><span class="hi-hash">b3f8c12</span> <span>10 phút trước</span></div>
-            </div>
-          </div>
-          <div class="history-item">
-            <div class="history-dot"></div>
-            <div class="hi-content">
-              <div class="hi-msg">init: khởi tạo cấu trúc dự án</div>
-              <div class="hi-meta"><span class="hi-hash">e9a4d3f</span> <span>1 giờ trước</span></div>
-            </div>
-          </div>
-        </div>
-        <div class="insight">
-          Mỗi commit là một <strong>checkpoint</strong> an toàn. Project càng phức tạp, lịch sử commit càng quan trọng để quản lý sự thay đổi.
-        </div>
-      </div>
-    </section>
-  </div>
-
+      <div id="rollback4" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 32px; opacity: 0;">↩️</div>
+      <div class="val" id="ready4">STABLE</div>
+    </div>
+    <p class="ins">Cho phép bạn <strong>quay ngược thời gian</strong> về bất kỳ checkpoint nào nếu vô tình làm dự án bị lỗi.</p>
+  </section>
 </div>
 
 <script>
-  (function() {
-    var body = document.getElementById('terminalBody');
-    if (!body) return;
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-    var lines = [
-      { delay: 400, html: '<span class="t-prompt">$ </span>git add <span class="t-flag">index.html style.css</span>' },
-      { delay: 1400, html: '<span class="t-output">// Đã đưa file vào Staging Area...</span>' },
-      { delay: 2200, html: '' },
-      { delay: 2400, html: '<span class="t-prompt">$ </span>git commit <span class="t-flag">-m</span> <span class="t-str">"feat: hoàn thiện trang checkout"</span>' },
-      { delay: 3800, html: '<span class="t-output">[main </span><span class="t-hash">a7d2e41</span><span class="t-output">] feat: hoàn thiện trang checkout</span>' },
-      { delay: 4400, html: '<span class="t-output"> 2 files changed, 45 insertions(+)</span>' },
-      { delay: 5200, html: '<span class="t-prompt">$ </span><span class="t-cursor"></span>' }
-    ];
-
-    lines.forEach(function(l) {
-      var div = document.createElement('div');
-      div.className = 't-line';
-      div.style.animationDelay = l.delay + 'ms';
-      div.innerHTML = l.html || '&nbsp;';
-      body.appendChild(div);
+// 01: State Snapshot
+(async function() {
+  const box = document.getElementById('box1');
+  const frags = [document.getElementById('frag1'), document.getElementById('frag2'), document.getElementById('frag3')];
+  const icon = document.getElementById('icon1');
+  const status = document.getElementById('status1');
+  
+  while (true) {
+    status.textContent = 'WAITING';
+    box.classList.remove('active');
+    icon.style.opacity = '0.3';
+    frags.forEach(f => { f.style.opacity = '0'; f.style.transform = 'translate(0, 0)'; });
+    await wait(1500);
+    
+    status.textContent = 'CHANGING...';
+    frags.forEach((f, i) => {
+      f.style.opacity = '1';
+      f.style.top = (Math.random() * 80 - 40) + 'px';
+      f.style.left = (Math.random() * 80 - 40) + 'px';
     });
-  })();
-</script>
+    await wait(1500);
+    
+    status.textContent = 'COMMITTING...';
+    frags.forEach(f => {
+      f.style.transition = 'all 0.5s ease-in';
+      f.style.top = '22px';
+      f.style.left = '24px';
+      f.style.opacity = '0';
+    });
+    await wait(600);
+    
+    box.classList.add('active');
+    icon.style.opacity = '1';
+    status.textContent = 'SAVED';
+    await wait(2000);
+  }
+})();
 
+// 02: Progress Timeline
+(async function() {
+  const nodes = [document.getElementById('n1'), document.getElementById('n2'), document.getElementById('n3'), document.getElementById('n4')];
+  const log = document.getElementById('log2');
+  
+  while (true) {
+    nodes.forEach(n => n.classList.remove('active'));
+    log.textContent = 'HISTORY';
+    await wait(1500);
+    
+    for(let i=0; i<nodes.length; i++) {
+      nodes[i].classList.add('active');
+      log.textContent = `V.${i+1}`;
+      await wait(800);
+    }
+    
+    await wait(2000);
+  }
+})();
+
+// 03: Atomic Operation
+(async function() {
+  const term = document.getElementById('term3');
+  const hash = document.getElementById('hash3');
+  const op = document.getElementById('op3');
+  
+  while (true) {
+    term.style.width = '0';
+    hash.style.opacity = '0';
+    op.textContent = 'IDLE';
+    await wait(1500);
+    
+    op.textContent = 'TYPING...';
+    term.style.animation = 'typing 1.5s steps(20) forwards';
+    await wait(2000);
+    
+    op.textContent = 'EXECUTING...';
+    await wait(1000);
+    
+    hash.style.opacity = '1';
+    op.textContent = 'SUCCESS';
+    await wait(2500);
+    term.style.animation = 'none';
+  }
+})();
+
+// 04: Safety Rollback
+(async function() {
+  const items = [document.getElementById('h1'), document.getElementById('h2'), document.getElementById('h3')];
+  const rb = document.getElementById('rollback4');
+  const ready = document.getElementById('ready4');
+  
+  while (true) {
+    items.forEach(el => el.classList.remove('active'));
+    items[0].classList.add('active');
+    items[1].classList.add('active');
+    items[2].classList.add('active');
+    items[2].style.color = 'var(--ac)';
+    rb.style.opacity = '0';
+    ready.textContent = 'STABLE';
+    ready.style.color = 'var(--txm)';
+    await wait(2000);
+    
+    ready.textContent = 'ERROR DETECTED';
+    ready.style.color = '#ff4444';
+    items[2].style.background = 'rgba(255, 68, 68, 0.1)';
+    await wait(1500);
+    
+    rb.style.opacity = '1';
+    rb.style.transform = 'translate(-50%, -50%) rotate(-360deg)';
+    rb.style.transition = 'all 0.8s';
+    await wait(800);
+    
+    items[2].classList.remove('active');
+    items[2].style.background = 'transparent';
+    items[2].style.color = 'var(--txm)';
+    ready.textContent = 'ROLLBACK TO V.2';
+    ready.style.color = 'var(--ac)';
+    await wait(2000);
+    
+    rb.style.transition = 'none';
+    rb.style.transform = 'translate(-50%, -50%) rotate(0)';
+  }
+})();
+</script>
 </body>
 </html>

@@ -1100,9 +1100,10 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Đừng quên trạng thái "Active": người dùng luôn cần biết họ đang ở đâu (ví dụ: nút Home đang sáng lên khi ở trang chủ).',
   ],
   'commit': [
-    'Mỗi commit đi kèm một mã hash duy nhất để truy vết.',
-    'Ghi chú (commit message) giúp đồng nghiệp hiểu bạn đã thay đổi gì.',
-    'Chia nhỏ commit giúp việc quay lại bản cũ (rollback) an toàn hơn.',
+    'Commit là "nút Save" quyền năng nhất của bạn. Đừng bao giờ làm một lèo 3 tiếng rồi mới commit. Hãy chia nhỏ: làm xong header -> commit, xong footer -> commit.',
+    'Mỗi commit đi kèm một mã Hash (ví dụ: `7f2a1b9`). Đây là "biển số xe" định danh duy nhất giúp bạn gọi tên chính xác phiên bản đó khi cần quay lại.',
+    'Message là lời nhắn gửi tương lai: Đừng viết "fix lỗi" hay "cập nhật". Hãy viết "fix: lỗi tràn text trên mobile" hoặc "feat: thêm nút đăng ký". Sau 1 tháng nhìn lại, bạn sẽ biết mình đã làm gì.',
+    'Điểm checkpoint an toàn: Commit giúp bạn tự tin "phá phách". Nếu lỡ làm hỏng mọi thứ, chỉ cần 1 lệnh rollback là project quay về trạng thái ổn định gần nhất như chưa từng có chuyện gì xảy ra.',
   ],
   env: [
     '.env = file ẩn chứa "bí mật" của project. Thay vì ghi thẳng mật khẩu vào code, code đọc từ file .env. Giống bạn lưu password trong trình quản lý mật khẩu thay vì dán vào mỗi trang web.',

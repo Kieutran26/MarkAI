@@ -98,7 +98,7 @@
     border: 1px solid var(--border);
     background: var(--bg);
     transition: border-color .2s, background .2s;
-    overflow: hidden;
+    overflow: visible;
   }
   .pt-step + .pt-step { border-top: none; }
   .pt-step:hover { background: var(--bg-elevated); }
@@ -271,6 +271,41 @@
     margin-right: 6px;
   }
 
+  /* ===== HINT SYSTEM (from GUIDE_GLOSSARY_HINT.md) ===== */
+  .pt-check, .commit-btn, .commit-input-area { position: relative; }
+  
+  .btn-hint {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--mono);
+    font-size: 8px;
+    padding: 2px 6px;
+    border-radius: 2px;
+    white-space: nowrap;
+    pointer-events: none;
+    animation: pulseTop 2s infinite;
+    z-index: 999;
+  }
+  .btn-hint::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid var(--accent);
+  }
+  @keyframes pulseTop {
+    0% { transform: translateX(-50%) scale(1); }
+    50% { transform: translateX(-50%) scale(1.1); }
+    100% { transform: translateX(-50%) scale(1); }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after {
       animation-duration: 0.01ms !important;
@@ -298,6 +333,7 @@
         <div class="pt-step" data-file="hero.html">
           <div class="pt-check" role="checkbox" aria-checked="false" tabindex="0">
             <div class="pt-check-box">&#10003;</div>
+            <div class="btn-hint" id="hint-step-1">Bước 1: Chọn file</div>
           </div>
           <div class="pt-content">
             <div class="pt-file-icon">HTML</div>
@@ -352,7 +388,11 @@
       <!-- Commit message input -->
       <div class="commit-input-area">
         <input type="text" class="commit-msg-input" id="commitMsgInput" placeholder="Viết commit message..." maxlength="80" aria-label="Commit message"/>
-        <button class="commit-btn" id="commitBtn" disabled>Commit</button>
+        <div class="btn-hint" id="hint-step-2">Bước 2: Ghi chú</div>
+        <button class="commit-btn" id="commitBtn" disabled>
+          Commit
+          <div class="btn-hint" id="hint-step-3">Bước 3: Lưu</div>
+        </button>
       </div>
 
       <!-- Result log -->
@@ -379,6 +419,35 @@
     var selectedFiles = new Set();
     var commitCount = 0;
 
+    // Hints
+    var hint1 = document.getElementById('hint-step-1');
+    var hint2 = document.getElementById('hint-step-2');
+    var hint3 = document.getElementById('hint-step-3');
+
+    // Initial state: Only hint 1 is visible
+    if (hint2) hint2.style.display = 'none';
+    if (hint3) hint3.style.display = 'none';
+
+    function updateHints() {
+      // Step 1 -> Step 2
+      if (selectedFiles.size > 0) {
+        if (hint1) hint1.style.display = 'none';
+        
+        // Step 2 -> Step 3
+        if (msgInput.value.trim().length > 0) {
+          if (hint2) hint2.style.display = 'none';
+          if (hint3) hint3.style.display = 'block';
+        } else {
+          if (hint2) hint2.style.display = 'block';
+          if (hint3) hint3.style.display = 'none';
+        }
+      } else {
+        if (hint1) hint1.style.display = 'block';
+        if (hint2) hint2.style.display = 'none';
+        if (hint3) hint3.style.display = 'none';
+      }
+    }
+
     // Hash ngẫu nhiên kiểu git
     function randHash() {
       var chars = '0123456789abcdef';
@@ -389,6 +458,7 @@
 
     function updateBtnState() {
       commitBtn.disabled = selectedFiles.size === 0;
+      updateHints();
     }
 
     function logLine(html) {
@@ -424,6 +494,11 @@
       checkBox.addEventListener('keydown', function(e) {
         if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
       });
+    });
+
+    // Handle typing
+    msgInput.addEventListener('input', function() {
+      updateHints();
     });
 
     // Commit action
@@ -475,6 +550,10 @@
       if (allDone) {
         logLine('');
         logLine('<span class="rl-ok">// Tất cả file đã được commit. Clean working tree.</span>');
+        // Hide all hints when fully done
+        if (hint1) hint1.style.display = 'none';
+        if (hint2) hint2.style.display = 'none';
+        if (hint3) hint3.style.display = 'none';
       }
     });
 
