@@ -1,265 +1,570 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Breakpoint Demo — Animated</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;--adim:#8b3a1a;--card:#1c1a18;--calt:#242120;--border:#302c28;--bhi:#44403a}
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 100%,16px 16px;display:flex;flex-direction:column;align-items:stretch;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding-bottom:10px;gap:0;overflow-x:hidden}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breakpoint - Amber Brutalist 4-Cell Grid</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --amber: #E88C2E;
+            --bg: #0f0f12;
+            --card-bg: #16161b;
+            --border: #282830;
+            --text: #e8e4dc;
+            --muted: #707070;
+            --gap: 14px;
+            --ease: cubic-bezier(0.65, 0, 0.35, 1);
+        }
 
-/* Demo Frame */
-.aw{width:100%;position:relative;display:flex;flex-direction:column}
-.ab-wrap{position:relative;width:100%}
-.ab{width:700px;height:412px;background:var(--card);border:2px solid var(--border);transform-origin:top left;overflow:hidden}
-.hd{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
-.hd-t{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:2.5px}
-.hd-f{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-.la{position:relative;width:100%;height:260px;background:linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);background-size:30px 30px;overflow:hidden}
+        body {
+            background-color: var(--bg);
+            background-image: 
+                radial-gradient(ellipse at 25% 15%, rgba(232, 140, 46, 0.05) 0%, transparent 55%),
+                radial-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 16px 16px;
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-.wb{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);background:rgba(255,255,255,.03);border:1px solid var(--border);padding:2px 10px;pointer-events:none;display:flex;align-items:center;height:22px;letter-spacing:0.5px}
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--gap);
+            width: 100%;
+            max-width: 940px;
+        }
 
-.bc{position:absolute;left:50%;top:8px;height:166px;border:1px solid var(--border);background:var(--calt);transform:translateX(-50%);transition:width .72s cubic-bezier(.4,0,.2,1);overflow:hidden}
-.bn{height:22px;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 8px;background:rgba(0,0,0,.18);flex-shrink:0}
-.bnb{font-size:9px;font-weight:700;letter-spacing:1px}
-.bnm{display:flex;flex-direction:column;gap:2px;margin-left:auto;padding:4px 6px}
-.bnm i{display:block;width:12px;height:1.5px;background:var(--fg)}
-.bnl{font-size:7px;color:var(--muted);margin-left:auto;display:none;letter-spacing:.3px}
-.bc.sh .bnm{display:flex}.bc.sh .bnl{display:none}
-.bc.sf .bnm{display:none}.bc.sf .bnl{display:inline}
+        @media (max-width: 600px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+        }
 
-.bco{position:relative}
-.bcl{position:absolute;top:3px;right:6px;font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--accent);opacity:.45;pointer-events:none;z-index:2}
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            position: relative;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+        }
 
-.gc{position:absolute;background:var(--calt);border:1px solid var(--border);display:flex;align-items:center;overflow:hidden;transition:all .72s cubic-bezier(.4,0,.2,1)}
-.gcl{font-size:9px;font-weight:600;padding-left:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.gc-a{border-left:3px solid var(--accent)}
-.gc-b{border-left:3px solid #b89a2a}
-.gc-c{border-left:3px solid #4a8a5a}
-.gc-d{border-left:3px solid #4a5a7a}
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--amber);
+            z-index: 2;
+        }
 
-.bsc{position:absolute;left:20px;right:20px;bottom:30px;height:22px;display:flex;border:1px solid var(--border);overflow:hidden}
-.bss{display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:7px;font-weight:700;letter-spacing:1px;opacity:.25;transition:opacity .4s}
-.bss.act{opacity:1}
-.bss-m{flex:768;background:#7a3218}
-.bss-t{flex:256;background:var(--adim)}
-.bss-l{flex:416;background:#2a4a3a}
-.bss-d{flex:480;background:#2a3a4a}
+        .indicator {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 6px;
+            height: 6px;
+            background: var(--amber);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--amber);
+            animation: pulse 2s infinite;
+            z-index: 3;
+        }
 
-.bsk{position:absolute;bottom:30px;width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:5px solid var(--accent);transition:left .72s cubic-bezier(.4,0,.2,1);z-index:5}
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
 
-.bsl{position:absolute;left:20px;right:20px;bottom:8px;height:14px}
-.bsl span{position:absolute;font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);transform:translateX(-50%)}
-.bsl span:nth-child(1){left:0;transform:none}
-.bsl span:nth-child(2){left:264px}
-.bsl span:nth-child(3){left:352px}
-.bsl span:nth-child(4){left:495px}
-.bsl span:nth-child(5){right:0;left:auto;transform:none}
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 22px;
+        }
 
-.inf{padding:11px 14px;border-top:1px solid var(--border)}
-.dn{font-size:15px;font-weight:800;line-height:1.15}
-.ds{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);margin-top:2px}
-.dd{font-size:10px;color:var(--muted);margin-top:4px;line-height:1.4}
-.di{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);margin-top:6px;padding-top:6px;border-top:1px dashed var(--border);opacity:.78}
-.pt{height:2px;background:var(--border)}.pf{height:100%;background:var(--accent);width:0%}
-.fdw{display:flex;gap:4px;justify-content:center;padding:8px 0}
-.fdd{width:22px;height:2px;background:var(--border);transition:background .3s}.fdd.on{background:var(--accent)}
+        .num-box {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--amber);
+            background: rgba(232, 140, 46, 0.1);
+            border: 1px solid rgba(232, 140, 46, 0.2);
+            padding: 2px 5px;
+            border-radius: 2px;
+        }
 
-/* External Controls */
-.ctrl-row{display:flex;align-items:center;width:auto;align-self:center;background:transparent;border:none;padding:0;gap:12px;margin-top:10px}
-.state-btns{display:flex;gap:6px}
-.st-btn{background:#242120;border:1px solid var(--border);color:var(--muted);font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:500;padding:6px 14px;cursor:pointer;transition:all 0.2s;text-align:center;letter-spacing:0.5px;min-width:75px}
-.st-btn:hover{color:var(--fg);border-color:var(--bhi)}
-.st-btn.act{background:transparent;color:var(--accent);border-color:var(--accent);border-width:1.2px}
+        .card-title {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(232, 228, 220, 0.9);
+        }
 
-.pp-btn{width:32px;height:32px;border-radius:50%;border:none;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all 0.2s;padding:0;outline:none;flex-shrink:0}
-.pp-btn:hover{background:#e0842e;transform:scale(1.05)}
-.pp-btn svg{width:14px;height:14px;fill:currentColor}
+        .sim-area {
+            height: 160px;
+            background: #0d0d10;
+            border: 1px solid rgba(255,255,255,0.03);
+            border-radius: 4px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
 
-@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
-</style>
+        .ins {
+            border-left: 2px solid var(--amber);
+            padding-left: 14px;
+            margin-top: auto;
+            color: var(--muted);
+            font-size: 11.5px;
+            line-height: 1.6;
+        }
+
+        .ins strong {
+            color: var(--amber);
+            font-weight: 600;
+        }
+
+        /* --- Cell 1: Resolution morphing --- */
+        .device-morph {
+            width: 60px;
+            height: 100px;
+            border: 1.5px solid var(--amber);
+            border-radius: 6px;
+            position: relative;
+            transition: all 0.8s var(--ease);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .device-morph::after {
+            content: '';
+            position: absolute;
+            bottom: 4px;
+            width: 12px;
+            height: 2px;
+            background: var(--amber);
+            border-radius: 1px;
+            transition: all 0.8s var(--ease);
+        }
+        .res-text {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            position: absolute;
+            bottom: -25px;
+            color: var(--amber);
+            white-space: nowrap;
+        }
+
+        /* --- Cell 2: Real Viewport Scaling --- */
+        .sim-area-v2 {
+            height: 160px;
+            background: #0d0d10;
+            border: 1px solid rgba(255,255,255,0.03);
+            border-radius: 4px;
+            position: relative;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            margin-bottom: 16px;
+            overflow: hidden;
+            padding-left: 15px;
+        }
+        .viewport-mock {
+            width: 80%;
+            height: 110px;
+            border: 1.5px solid #333;
+            background: #111;
+            position: relative;
+            transition: width 2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            padding: 12px;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-content: center;
+            z-index: 1;
+            box-shadow: 5px 0 15px rgba(0,0,0,0.5);
+        }
+        .v-handle {
+            position: absolute;
+            right: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 16px;
+            height: 30px;
+            background: #222;
+            border: 1px solid #444;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2px;
+        }
+        .v-handle::before, .v-handle::after {
+            content: '';
+            width: 8px;
+            height: 1px;
+            background: #666;
+        }
+        .cursor-hand {
+            position: absolute;
+            right: -25px;
+            top: 60%;
+            width: 20px;
+            height: 20px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="white"><path d="M9 10V5a2 2 0 0 1 4 0v5h1V6a2 2 0 0 1 4 0v6h1V8a2 2 0 0 1 4 0v10a6 6 0 0 1-6 6H11a6 6 0 0 1-6-6V10h4z"/></svg>') no-repeat;
+            background-size: contain;
+            pointer-events: none;
+            z-index: 10;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+            transition: transform 2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .mode-badge {
+            position: absolute;
+            top: 8px;
+            left: 8px;
+            font-size: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            padding: 2px 4px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 2px;
+            color: var(--muted);
+            transition: all 0.3s;
+        }
+        .mode-badge.active {
+            background: var(--amber);
+            color: #000;
+            font-weight: 700;
+        }
+        .ruler-val {
+            position: absolute;
+            top: -22px;
+            right: 0;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--amber);
+            font-weight: 700;
+        }
+        .v-block {
+            background: rgba(232, 140, 46, 0.1);
+            border: 1px solid rgba(232, 140, 46, 0.3);
+            flex: 1 1 45px;
+            height: 35px;
+            border-radius: 2px;
+            transition: all 0.4s var(--ease);
+        }
+        .bp-line {
+            position: absolute;
+            height: 100%;
+            width: 1px;
+            background: rgba(232, 140, 46, 0.1);
+            border-right: 1px dashed rgba(232, 140, 46, 0.3);
+            left: 65%;
+            top: 0;
+            z-index: 0;
+            transition: all 0.3s;
+        }
+        .bp-line.active {
+            background: var(--amber);
+            box-shadow: 0 0 20px var(--amber);
+            border-right-style: solid;
+            opacity: 1;
+        }
+        .bp-label {
+            position: absolute;
+            top: 10px;
+            right: 5px;
+            font-size: 8px;
+            color: var(--amber);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.4;
+            writing-mode: vertical-rl;
+            height: 100%;
+        }
+        .v-block.flash {
+            animation: block-flash 0.5s;
+        }
+        @keyframes block-flash {
+            0% { background: var(--amber); box-shadow: 0 0 15px var(--amber); }
+            100% { background: rgba(232, 140, 46, 0.1); box-shadow: none; }
+        }
+
+        /* --- Cell 3: Laser Logic --- */
+        .laser-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 2px;
+            height: 100%;
+            background: var(--amber);
+            box-shadow: 0 0 15px var(--amber);
+            animation: scan 3s infinite linear;
+        }
+        @keyframes scan {
+            0% { left: 10%; opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { left: 90%; opacity: 0; }
+        }
+        .code-box {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: #555;
+            line-height: 1.8;
+        }
+        .code-active {
+            color: var(--amber);
+            text-shadow: 0 0 5px rgba(232, 140, 46, 0.5);
+        }
+
+        /* --- Cell 4: Visibility Morph --- */
+        .ui-container {
+            width: 120px;
+            height: 80px;
+            border: 1px solid #333;
+            position: relative;
+            background: #151515;
+            overflow: hidden;
+        }
+        .sidebar {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 35px;
+            height: 100%;
+            background: rgba(232, 140, 46, 0.1);
+            border-right: 1px solid var(--amber);
+            transform: translateX(-100%);
+            transition: transform 0.6s var(--ease);
+        }
+        .sidebar.visible {
+            transform: translateX(0);
+        }
+        .main-content {
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-left: 0;
+            transition: margin-left 0.6s var(--ease);
+        }
+        .main-content.pushed {
+            margin-left: 35px;
+        }
+        .skeleton {
+            height: 6px;
+            background: #222;
+            border-radius: 1px;
+        }
+        .skeleton.w1 { width: 80%; }
+        .skeleton.w2 { width: 60%; }
+        .skeleton.w3 { width: 90%; background: var(--amber); opacity: 0.4; }
+
+    </style>
 </head>
 <body>
 
-<div class="aw">
-    <div class="ab-wrap" id="ab-wrap">
-        <div class="ab" id="ab">
-        <div class="hd"><span class="hd-t">BREAKPOINT</span><div class="wb" id="wb">375px · MOBILE</div><span class="hd-f" id="hf">01 / 04</span></div>
-        <div class="la" id="la">
-            <div class="bc sh" id="bc" style="width:190px">
-                <div class="bn"><span class="bnb">BRAND</span><div class="bnm"><i></i><i></i><i></i></div><span class="bnl">Home · Features · About</span></div>
-                <div class="bco">
-                    <div class="bcl" id="bcl">1 COL</div>
-                    <div class="gc gc-a" id="c0" style="left:0;top:0;width:190px;height:32px"><span class="gcl">Analytics</span></div>
-                    <div class="gc gc-b" id="c1" style="left:0;top:36px;width:190px;height:32px"><span class="gcl">Builder</span></div>
-                    <div class="gc gc-c" id="c2" style="left:0;top:72px;width:190px;height:32px"><span class="gcl">Connect</span></div>
-                    <div class="gc gc-d" id="c3" style="left:0;top:108px;width:190px;height:32px"><span class="gcl">Report</span></div>
+    <div class="grid-container">
+        <!-- Cell 1: Resolution Watcher -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">01</div>
+                <div class="card-title">Resolution Watcher</div>
+            </div>
+            <div class="sim-area">
+                <div class="device-morph" id="dev-icon">
+                    <div class="res-text" id="res-val">375 x 812</div>
                 </div>
             </div>
-            <div class="bsk" id="bsk" style="left:147px"></div>
-            <div class="bsc">
-                <div class="bss bss-m act" id="bs0">MOBILE</div>
-                <div class="bss bss-t" id="bs1">TABLET</div>
-                <div class="bss bss-l" id="bs2">LAPTOP</div>
-                <div class="bss bss-d" id="bs3">DESKTOP</div>
+            <div class="ins">
+                Breakpoint là <strong>điểm mốc</strong> xác định giới hạn kích thước mà tại đó giao diện sẽ được tái cấu trúc.
             </div>
-            <div class="bsl"><span>0</span><span>768</span><span>1024</span><span>1440</span><span>1920+</span></div>
         </div>
-        <div class="inf">
-            <div class="dn" id="dn">Mobile</div>
-            <div class="ds" id="ds">0 — 767PX</div>
-            <div class="dd" id="dd">Đơn cột · Hamburger menu · Stack nội dung dọc</div>
-            <div class="di" id="di">Breakpoint = ranh giới nơi layout quyết định "đổi cách tổ chức"</div>
+
+        <!-- Cell 2: Layout Transformer -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">02</div>
+                <div class="card-title">Layout Transformer</div>
+            </div>
+            <div class="sim-area-v2">
+                <div class="bp-line" id="bp-line">
+                    <div class="bp-label">Breakpoint 768px</div>
+                </div>
+                <div class="viewport-mock" id="v-mock">
+                    <div class="mode-badge" id="mode-badge">Desktop</div>
+                    <div class="ruler-val" id="r-val">1280px</div>
+                    <div class="v-block"></div>
+                    <div class="v-block"></div>
+                    <div class="v-block"></div>
+                    <div class="v-handle"></div>
+                    <div class="cursor-hand" id="cursor"></div>
+                </div>
+            </div>
+            <div class="ins">
+                Giúp <strong>tối ưu không gian</strong> hiển thị bằng cách thay đổi hướng (axis) hoặc số lượng cột của Grid.
+            </div>
         </div>
-        <div class="pt"><div class="pf" id="pf"></div></div>
-        <div class="fdw"><div class="fdd on" id="d0"></div><div class="fdd" id="d1"></div><div class="fdd" id="d2"></div><div class="fdd" id="d3"></div></div>
-    </div>
-    </div>
 
-    <div class="ctrl-row">
-        <div class="state-btns">
-            <button class="st-btn act" onclick="jump(0)">MOBILE</button>
-            <button class="st-btn" onclick="jump(1)">TABLET</button>
-            <button class="st-btn" onclick="jump(2)">LAPTOP</button>
-            <button class="st-btn" onclick="jump(3)">DESKTOP</button>
+        <!-- Cell 3: Media Query Logic -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">03</div>
+                <div class="card-title">Media Query Gate</div>
+            </div>
+            <div class="sim-area">
+                <div class="laser-line"></div>
+                <div class="code-box">
+                    <div id="c1">@media (max-width: 768px) {</div>
+                    <div id="c2">&nbsp;&nbsp;.grid { columns: 1; }</div>
+                    <div id="c3">}</div>
+                </div>
+            </div>
+            <div class="ins">
+                Sử dụng <strong>Media Queries</strong> để áp dụng các bộ quy tắc CSS khác nhau dựa trên điều kiện thiết bị.
+            </div>
         </div>
-        <button class="pp-btn" id="ppBtn" onclick="togglePlay()">
-            <svg id="ppIcon" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-        </button>
+
+        <!-- Cell 4: Visibility Control -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">04</div>
+                <div class="card-title">Visibility Control</div>
+            </div>
+            <div class="sim-area">
+                <div class="ui-container">
+                    <div class="sidebar" id="sidebar"></div>
+                    <div class="main-content" id="main-ui">
+                        <div class="skeleton w3"></div>
+                        <div class="skeleton w1"></div>
+                        <div class="skeleton w2"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="ins">
+                Cho phép <strong>ẩn/hiện</strong> hoặc thay đổi hoàn toàn cách thức tương tác của các thành phần UI.
+            </div>
+        </div>
     </div>
-</div>
 
-<script>
-/* ===== ANIMATION STATES ===== */
-var ST=[
-    {wb:'375px · MOBILE',bcW:190,nav:'sh',seg:0,mk:147,col:'1 COL',
-     c:[{l:0,t:0,w:190,h:32},{l:0,t:36,w:190,h:32},{l:0,t:72,w:190,h:32},{l:0,t:108,w:190,h:32}],
-     nm:'Mobile',sz:'0 — 767PX',dc:'Đơn cột · Hamburger menu · Stack nội dung dọc',ins:'Breakpoint = ranh giới nơi layout quyết định "đổi cách tổ chức"'},
-    {wb:'1024px · TABLET',bcW:340,nav:'sh',seg:1,mk:323,col:'2 COL',
-     c:[{l:0,t:0,w:167,h:66},{l:173,t:0,w:167,h:66},{l:0,t:72,w:167,h:66},{l:173,t:72,w:167,h:66}],
-     nm:'Tablet',sz:'768 — 1023PX',dc:'Hai cột · Vẫn hamburger · Reflow nội dung ngang',ins:'Cùng breakpoint 768px — tablet lớn và laptop nhỏ có thể cùng layout'},
-    {wb:'1280px · LAPTOP',bcW:480,nav:'sf',seg:2,mk:439,col:'3 COL',
-     c:[{l:0,t:0,w:156,h:76},{l:162,t:0,w:156,h:76},{l:324,t:0,w:156,h:76},{l:0,t:82,w:480,h:34}],
-     nm:'Laptop',sz:'1024 — 1439PX',dc:'Ba cột · Full navigation · Layout phức tạp hơn',ins:'Ở 1024px, nav đổi từ hamburger sang full — breakpoint ảnh hưởng nhiều hơn cột'},
-    {wb:'1920px · DESKTOP',bcW:620,nav:'sf',seg:3,mk:592,col:'4 COL',
-     c:[{l:0,t:0,w:151,h:130},{l:157,t:0,w:151,h:130},{l:314,t:0,w:151,h:130},{l:471,t:0,w:149,h:130}],
-     nm:'Desktop',sz:'1440PX+',dc:'Bốn cột · Không gian rộng · Trải nghiệm đầy đủ',ins:'4 breakpoint phổ biến — phản ánh phân bố thiết bị thực tế trên thị trường'}
-];
+    <script>
+        const sleep = ms => new Promise(res => setTimeout(res, ms));
 
-var cs=[0,1,2,3].map(function(i){return document.getElementById('c'+i)});
-var bss=[0,1,2,3].map(function(i){return document.getElementById('bs'+i)});
-var dts=[0,1,2,3].map(function(i){return document.getElementById('d'+i)});
-var stBtns=document.querySelectorAll('.st-btn');
-var bc=document.getElementById('bc');
-var bsk=document.getElementById('bsk');
-var bcl=document.getElementById('bcl');
-var ppBtn=document.getElementById('ppBtn');
-var ppIcon=document.getElementById('ppIcon');
-var els={
-    dn:document.getElementById('dn'),ds:document.getElementById('ds'),
-    dd:document.getElementById('dd'),di:document.getElementById('di'),
-    hf:document.getElementById('hf'),pf:document.getElementById('pf'),
-    wb:document.getElementById('wb')
-};
+        // Sim 1: Device Morphing
+        async function runSim1() {
+            const dev = document.getElementById('dev-icon');
+            const res = document.getElementById('res-val');
+            while(true) {
+                // Mobile
+                dev.style.width = '45px'; dev.style.height = '80px'; dev.style.borderRadius = '6px';
+                res.textContent = '375 x 812 (Mobile)';
+                await sleep(2000);
+                // Tablet
+                dev.style.width = '80px'; dev.style.height = '100px'; dev.style.borderRadius = '4px';
+                res.textContent = '768 x 1024 (Tablet)';
+                await sleep(2000);
+                // Desktop
+                dev.style.width = '120px'; dev.style.height = '80px'; dev.style.borderRadius = '2px';
+                res.textContent = '1440 x 900 (Desktop)';
+                await sleep(2000);
+            }
+        }
 
-var cur=0,ft=null,pa=null,t0=0,isPlaying=true;
-var DUR=3200;
+        // Sim 2: Realistic Scaling with Drag Simulation
+        async function runSim2() {
+            const mock = document.getElementById('v-mock');
+            const rval = document.getElementById('r-val');
+            const bpline = document.getElementById('bp-line');
+            const cursor = document.getElementById('cursor');
+            const mode = document.getElementById('mode-badge');
+            const blocks = mock.querySelectorAll('.v-block');
+            
+            while(true) {
+                // Wide (Desktop)
+                mock.style.width = '85%';
+                rval.textContent = '1280px';
+                bpline.classList.remove('active');
+                mode.textContent = 'Desktop';
+                mode.classList.add('active');
+                await sleep(2500);
+                
+                // Narrowing (Drag to Mobile)
+                mock.style.width = '40%';
+                rval.textContent = '480px';
+                
+                // At the breakpoint
+                await sleep(800);
+                bpline.classList.add('active');
+                mode.textContent = 'Mobile';
+                blocks.forEach(b => b.classList.add('flash'));
+                
+                await sleep(500);
+                blocks.forEach(b => b.classList.remove('flash'));
+                await sleep(1200);
 
-var ICON_PLAY='M8 5v14l11-7z';
-var ICON_PAUSE='M6 19h4V5H6v14zm8-14v14h4V5h-4z';
+                // Expand back
+                mock.style.width = '85%';
+                rval.textContent = '1280px';
+                bpline.classList.remove('active');
+                mode.textContent = 'Desktop';
+                await sleep(2500);
+            }
+        }
 
-function apply(i){
-    var s=ST[i];
-    els.wb.textContent=s.wb;
-    els.dn.textContent=s.nm;
-    els.ds.textContent=s.sz;
-    els.dd.textContent=s.dc;
-    els.di.textContent=s.ins;
-    els.hf.textContent='0'+(i+1)+' / 04';
-    dts.forEach(function(d,j){d.classList.toggle('on',j===i)});
-    bss.forEach(function(b,j){b.classList.toggle('act',j===i)});
-    stBtns.forEach(function(b,j){b.classList.toggle('act',j===i)});
-    
-    bc.style.width=s.bcW+'px';
-    bc.className='bc '+s.nav;
-    bcl.textContent=s.col;
-    bsk.style.left=s.mk+'px';
-    s.c.forEach(function(p,j){
-        var c=cs[j];
-        c.style.left=p.l+'px';
-        c.style.top=p.t+'px';
-        c.style.width=p.w+'px';
-        c.style.height=p.h+'px';
-    });
-}
+        // Sim 3: Laser evaluation
+        async function runSim3() {
+            const lines = [document.getElementById('c1'), document.getElementById('c2'), document.getElementById('c3')];
+            while(true) {
+                await sleep(500);
+                lines.forEach(l => l.classList.add('code-active'));
+                await sleep(1500);
+                lines.forEach(l => l.classList.remove('code-active'));
+                await sleep(1000);
+            }
+        }
 
-function startProg(){
-    t0=performance.now();
-    els.pf.style.transition='none';
-    els.pf.style.width='0%';
-    function tick(n){
-        if(!isPlaying) return;
-        var p=Math.min(100,(n-t0)/DUR*100);
-        els.pf.style.width=p+'%';
-        if(p<100) pa=requestAnimationFrame(tick);
-    }
-    pa=requestAnimationFrame(tick);
-}
+        // Sim 4: Visibility Sidebar
+        async function runSim4() {
+            const side = document.getElementById('sidebar');
+            const main = document.getElementById('main-ui');
+            while(true) {
+                side.classList.add('visible');
+                main.classList.add('pushed');
+                await sleep(2000);
+                side.classList.remove('visible');
+                main.classList.remove('pushed');
+                await sleep(2000);
+            }
+        }
 
-function next(){
-    cur=(cur+1)%4;
-    apply(cur);
-    startProg();
-}
-
-function start(){
-    apply(cur);
-    startProg();
-    ft=setInterval(next,DUR);
-}
-
-function togglePlay(){
-    isPlaying = !isPlaying;
-    if(isPlaying){
-        ppIcon.querySelector('path').setAttribute('d', ICON_PAUSE);
-        start();
-    } else {
-        ppIcon.querySelector('path').setAttribute('d', ICON_PLAY);
-        clearInterval(ft);
-        cancelAnimationFrame(pa);
-    }
-}
-
-function jump(i){
-    cur = i;
-    apply(cur);
-    if(isPlaying) togglePlay(); // Pause when manual jump
-    els.pf.style.width = '0%';
-}
-
-function scale(){
-    var wr=document.getElementById('ab-wrap');
-    var bx=document.getElementById('ab');
-    var s=wr.clientWidth/700;
-    bx.style.transform='scale('+s+')';
-    wr.style.height=Math.ceil(412*s)+'px';
-}
-
-window.addEventListener('resize',scale);
-requestAnimationFrame(function(){requestAnimationFrame(scale)});
-start();
-
-document.addEventListener('visibilitychange',function(){
-    if(document.hidden){
-        clearInterval(ft);
-        cancelAnimationFrame(pa);
-    } else if(isPlaying){
-        start();
-    }
-});
-</script>
+        runSim1(); runSim2(); runSim3(); runSim4();
+    </script>
 </body>
 </html>
