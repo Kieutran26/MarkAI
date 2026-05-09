@@ -76,10 +76,11 @@ const rawTerms: GlossaryTerm[] = [
     nameEn: 'Bộ nhớ đệm',
     letter: 'C',
     groups: ['infra'],
-    definition: 'Lưu tạm dữ liệu vào một nơi "gần" bạn nhất để lần sau truy cập nhanh hơn. Giống như việc bạn để sẵn gia vị trên kệ bếp thay vì mỗi lần nấu ăn đều phải chạy ra siêu thị để mua.',
-    example: '"Tại sao tôi vừa sửa web mà load lại vẫn thấy bản cũ?" → Do trình duyệt đang lấy bản cũ từ Cache. Bạn cần "Clear Cache" hoặc nhấn Ctrl+Shift+R để lấy bản mới nhất từ Server.',
+    definition: 'Lưu tạm dữ liệu vào một nơi "gần" bạn nhất để lần sau truy cập nhanh hơn. Thay vì mỗi lần cần thông tin lại phải hỏi Server (mất vài giây), trình duyệt sẽ lấy ngay trong "túi áo" (Cache) chỉ trong vài phần nghìn giây.',
+    example: 'Bạn vừa sửa giá sản phẩm nhưng khách hàng vẫn thấy giá cũ? Đó là do trình duyệt của họ đang lấy bản lưu cũ từ Cache. Chỉ cần bảo họ "xóa cache" hoặc đợi vài phút là sẽ thấy bản mới.',
     related: ['performance', 'latency', 'server'],
-    demo: { kind: 'interactive', src: 'gif-cache-demo.html', alt: 'Mô phỏng quy trình Cache Miss (lần đầu chậm) và Cache Hit (lần sau nhanh)' }
+    demo: { kind: 'interactive', src: 'gif-cache-demo.html', alt: 'Mô phỏng 4 khía cạnh của Cache: Hit/Miss, TTL, Browser Cache và Edge CDN' },
+    practice: { kind: 'interactive', src: 'gif-cache-practice.html', alt: 'Trò chơi chọn chiến lược Cache: Tối ưu tốc độ và độ chính xác cho từng loại dữ liệu' }
   },
   { id: 'card', name: 'Card', nameEn: 'Thẻ nội dung', letter: 'C', groups: ['design', 'code'], definition: 'Một khối chứa thông tin — gom ảnh, tiêu đề, mô tả, nút hành động vào một hộp. Card giúp phân tách các nội dung khác nhau trên trang một cách rõ ràng và dễ quét.', example: 'Product card cho sản phẩm, Blog card cho bài viết. Card là đơn vị cơ bản nhất để build các trang kiểu Dashboard hoặc Landing Page.', related: ['component', 'padding', 'radius'], demo: { kind: 'interactive', src: 'gif-card-demo.html', alt: 'Mô phỏng các loại card: Basic, Horizontal, Featured, Stats' } },
   { id: 'cli', name: 'CLI', nameEn: 'Command Line Interface / Giao diện dòng lệnh', letter: 'C', groups: ['infra', 'workflow'], definition: 'Giao diện dòng lệnh — nơi bạn điều khiển máy tính bằng cách gõ văn bản thay vì click chuột vào các biểu tượng. CLI là "ngôn ngữ gốc" của lập trình viên, giúp thực hiện các tác vụ phức tạp một cách cực kỳ nhanh chóng và chính xác.', example: 'Gõ "npm run dev" vào terminal để khởi động project, hoặc "git push" để đưa code lên server. Marketer không cần gõ giỏi, nhưng cần hiểu các lệnh cơ bản để phối hợp với AI.', related: ['terminal', 'npm', 'workflow', 'git'], demo: { kind: 'interactive', src: 'gif-cli-demo.html', alt: 'Mô phỏng CLI vs GUI, các lệnh phổ biến và workflow' } },
@@ -614,6 +615,13 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Local host giúp tiết kiệm chi phí và thời gian. Bạn có thể sửa code và thấy kết quả ngay lập tức (Hot Reload) mà không cần tốn tiền thuê server hay chờ đợi deploy.',
     'Trong quy trình DevOps, local host là bước đệm quan trọng: Code -> Local Test -> Commit -> Deploy.'
   ],
+  cache: [
+    'Mục tiêu của cache là để người dùng không phải chờ đợi. Một trang web load nhanh thường là nhờ nó biết cách "tận dụng" lại những gì đã tải trước đó thay vì tải đi tải lại.',
+    'Đừng lưu quá đà: Không phải cái gì cũng nên lưu. Chỉ lưu những thứ ít thay đổi (logo, ảnh, bài viết). Những thứ nhảy số liên tục (như giá cổ phiếu hay số dư tài khoản) thì tuyệt đối đừng dùng cache lâu để tránh sai lệch.',
+    'Hit hay Miss?: Nếu lấy được dữ liệu trong cache thì gọi là Hit (Trúng - siêu nhanh). Nếu không thấy và phải đi hỏi Server thì gọi là Miss (Hụt - tốn thời gian hơn).',
+    'Cái bẫy dữ liệu cũ (Stale Data): Đây là tình huống "dở khóc dở cười" khi bạn đã đổi giao diện lung linh nhưng khách hàng vẫn thấy bản cũ xì vì trình duyệt của họ vẫn đang "khăng khăng" lấy dữ liệu từ cache cũ.',
+    'Khi web hiển thị "sai sai" sau khi vừa update, hãy nhớ đến Clear Cache. Nó giúp "dọn dẹp" bộ nhớ cũ để web lấy dữ liệu mới nhất, đảm bảo mọi người đều thấy cùng một phiên bản.'
+  ],
   interface: [
     'Interface (Giao diện) không chỉ là thứ bạn nhìn thấy, mà là thứ bạn CẢM THẤY khi tương tác. Một giao diện tốt là giao diện "tàng hình" — nó giúp bạn đạt được mục tiêu mà không cần phải suy nghĩ về công cụ.',
     'Sự rõ ràng (Clarity) quan trọng hơn sự bắt mắt. Một cái nút đẹp nhưng user không biết nó làm gì là một thất bại về interface.',
@@ -710,12 +718,6 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Mã hóa: SSL biến dữ liệu của bạn thành một dãy ký tự vô nghĩa trong suốt quá trình vận chuyển. Kẻ xấu có thể chặn được gói tin nhưng không thể đọc được nội dung bên trong.',
     'Xác thực: Ngoài việc mã hóa, SSL còn xác thực rằng website bạn đang truy cập thực sự thuộc về chủ sở hữu hợp pháp, giúp chống lại các trang web giả mạo (phishing).',
     'Lợi ích SEO: Google ưu tiên các trang web có HTTPS. Một trang web không có SSL sẽ bị trình duyệt cảnh báo "Không an toàn", gây mất niềm tin nơi khách hàng.',
-  ],
-  cache: [
-    'Cache là "vũ khí bí mật" của hiệu năng. Một website load nhanh không phải vì server nó mạnh, mà vì nó biết cách không gọi server quá nhiều.',
-    'Cache Miss: Xảy ra khi dữ liệu chưa có trong cache. Hệ thống phải đi "đường xa" tới server. Đây là lúc người dùng phải chờ đợi.',
-    'Cache Hit: Xảy ra khi dữ liệu đã sẵn sàng. Tốc độ lúc này gần như tức thì (từ vài giây xuống còn vài mili giây).',
-    'Vấn đề của Cache: "There are only two hard things in Computer Science: cache invalidation and naming things." - Khó nhất là biết khi nào nên xóa bản cũ để lấy bản mới.',
   ],
   auth: [
     'Authentication là quá trình xác minh "Bạn là ai?" (VD: Đăng nhập bằng Email/Password).',

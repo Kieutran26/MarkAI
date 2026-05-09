@@ -4,387 +4,529 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cache Demo — Vibecode Glossary</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #1a1a18;
-    --bg-card: #222220;
-    --bg-elevated: #2a2a27;
-    --fg: #e8e4dd;
-    --fg-muted: #8a877e;
-    --accent: #e88c2e;
-    --accent-dim: #b97025;
-    --amber: #c9922a;
-    --green: #6b8f5e;
-    --red: #b54a4a;
-    --border: #3a3a36;
-    --border-light: #4a4a45;
-    --mono: 'JetBrains Mono', monospace;
-    --sans: 'Space Grotesk', sans-serif;
-  }
+:root {
+  --bg: #0f0f12;
+  --bgc: #16161b;
+  --bgi: #121217;
+  --bd: #282830;
+  --tx: #e8e4dc;
+  --txm: #707070;
+  --ac: #E88C2E;
+  --abg: rgba(232, 140, 46, 0.1);
+  --abg2: rgba(232, 140, 46, 0.2);
+}
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-  body {
-    background: var(--bg);
-    color: var(--fg);
-    font-family: var(--sans);
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
-  }
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--tx);
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+}
 
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
-    background-size: 24px 24px;
-    pointer-events: none;
-    z-index: 0;
-  }
+.g {
+  width: 100%;
+  max-width: 940px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
 
-  .page-wrap {
-    position: relative;
-    z-index: 1;
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 32px 20px;
-  }
+@media (max-width: 600px) {
+  .g { grid-template-columns: 1fr; }
+}
 
-  .grid-container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-  }
+.c {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
 
-  @media (max-width: 768px) {
-    .grid-container { grid-template-columns: 1fr; }
-  }
+/* Accent Bar */
+.c::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--ac);
+}
 
-  .cache-card {
-    border: 1px solid var(--border);
-    background: var(--bg-card);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  .cache-card:hover {
-    border-color: var(--accent-dim);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-  }
+/* Pulsating Indicator */
+.c::after {
+  content: '';
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 6px;
+  height: 6px;
+  background: var(--ac);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--ac);
+  animation: pulse 2s infinite;
+}
 
-  .card-head {
-    border-bottom: 1px solid var(--border);
-    padding: 14px 18px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: rgba(255,255,255,0.02);
-  }
-  .card-head h2 {
-    font-family: var(--mono);
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--accent);
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-  }
-  .card-head .status {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--fg-muted);
-    background: var(--bg);
-    padding: 2px 6px;
-    border: 1px solid var(--border);
-  }
+@keyframes pulse {
+  0% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0.3; transform: scale(1); }
+}
 
-  .card-body {
-    padding: 20px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
+.ch {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 20px;
+}
 
-  .preview-box {
-    height: 320px;
-    background: var(--bg-elevated);
-    border: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-    padding: 20px;
-  }
+.ch .n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ac);
+  background: var(--abg);
+  border: 1px solid var(--abg2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
 
-  /* Cache Logic Visuals */
-  .flow-container {
-    display: flex;
-    align-items: center;
-    gap: 40px;
-    position: relative;
-    width: 100%;
-    justify-content: center;
-    padding: 20px;
-  }
+.ch h2 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  text-transform: uppercase;
+}
 
-  .node {
-    width: 60px;
-    height: 60px;
-    border: 2px solid var(--border);
-    background: var(--bg-card);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    z-index: 2;
-  }
-  .node span {
-    font-size: 8px;
-    font-family: var(--mono);
-    color: var(--fg-muted);
-    margin-top: 4px;
-    text-transform: uppercase;
-  }
-  .node svg {
-    width: 24px;
-    height: 24px;
-    fill: var(--fg-muted);
-  }
+.st {
+  background: var(--bgi);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  flex: 1;
+  min-height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
 
-  .connector {
-    position: absolute;
-    height: 2px;
-    background: var(--border);
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 200px;
-    z-index: 1;
-  }
+.ins {
+  margin-top: 14px;
+  font-size: 11.5px;
+  color: var(--txm);
+  line-height: 1.6;
+  padding-left: 12px;
+  border-left: 2px solid var(--ac);
+}
 
-  .data-packet {
-    width: 12px;
-    height: 12px;
-    background: var(--accent);
-    position: absolute;
-    top: 50%;
-    left: 20%;
-    transform: translate(-50%, -50%);
-    border-radius: 2px;
-    z-index: 3;
-    opacity: 0;
-  }
+.ins strong {
+  color: var(--ac);
+  font-weight: 600;
+}
 
-  /* Cache Miss Animation */
-  .animate-miss .data-packet {
-    animation: moveMiss 4s infinite linear;
-  }
-  @keyframes moveMiss {
-    0% { left: 20%; opacity: 0; }
-    5% { opacity: 1; }
-    40% { left: 80%; opacity: 1; }
-    45% { left: 80%; opacity: 0; }
-    55% { left: 80%; opacity: 0; background: var(--amber); }
-    60% { left: 80%; opacity: 1; }
-    95% { left: 20%; opacity: 1; }
-    100% { left: 20%; opacity: 0; }
-  }
-  .animate-miss .cache-node {
-    animation: flashBorder 4s infinite;
-  }
-  @keyframes flashBorder {
-    0%, 45% { border-color: var(--border); }
-    50%, 60% { border-color: var(--red); }
-    65%, 100% { border-color: var(--border); }
-  }
+.val {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--txm);
+  background: rgba(0,0,0,0.2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
 
-  /* Cache Hit Animation */
-  .animate-hit .data-packet {
-    animation: moveHit 2s infinite linear;
-  }
-  @keyframes moveHit {
-    0% { left: 20%; opacity: 0; }
-    10% { opacity: 1; }
-    45% { left: 50%; opacity: 1; }
-    55% { left: 50%; opacity: 1; background: var(--green); }
-    90% { left: 20%; opacity: 1; }
-    100% { left: 20%; opacity: 0; }
-  }
-  .animate-hit .cache-node {
-    border-color: var(--green);
-    box-shadow: 0 0 10px rgba(107, 143, 94, 0.2);
-  }
+/* Cache Visuals */
+.node {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--bd);
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--bgc);
+  z-index: 2;
+  position: relative;
+}
 
-  .cache-node {
-    border-style: dashed;
-    border-width: 2px;
-  }
+.node svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--txm);
+}
 
-  .card-desc {
-    font-size: 13px;
-    color: var(--fg-muted);
-    line-height: 1.6;
-    margin-top: auto;
-  }
+.node span {
+  font-size: 8px;
+  text-transform: uppercase;
+  margin-top: 4px;
+  color: var(--txm);
+}
 
-  .info-row {
-    font-family: var(--mono);
-    font-size: 11px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px 12px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-  }
-  .label-hit { color: var(--green); }
-  .label-miss { color: var(--red); }
+.node.active {
+  border-color: var(--ac);
+  background: var(--abg);
+}
+.node.active svg { fill: var(--ac); }
+.node.active span { color: var(--ac); }
+
+.packet {
+  width: 6px;
+  height: 6px;
+  background: var(--ac);
+  border-radius: 50%;
+  position: absolute;
+  z-index: 3;
+  box-shadow: 0 0 5px var(--ac);
+}
+
+.line {
+  position: absolute;
+  height: 1px;
+  background: var(--bd);
+  z-index: 1;
+}
+
+/* TTL Bar */
+.ttl-bar {
+  width: 80px;
+  height: 4px;
+  background: var(--bd);
+  border-radius: 2px;
+  overflow: hidden;
+  margin-top: 8px;
+}
+.ttl-fill {
+  height: 100%;
+  background: var(--ac);
+  width: 100%;
+}
+
+/* Browser Sim */
+.browser {
+  width: 120px;
+  border: 1px solid var(--bd);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.br-head {
+  height: 12px;
+  background: var(--bd);
+  display: flex;
+  align-items: center;
+  padding: 0 4px;
+  gap: 3px;
+}
+.dot { width: 4px; height: 4px; border-radius: 50%; background: var(--txm); opacity: 0.3; }
+.br-body {
+  height: 60px;
+  background: var(--bgc);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.skeleton { background: var(--bd); height: 6px; border-radius: 2px; }
 
 </style>
 </head>
 <body>
 
-<div class="page-wrap">
-  <div class="grid-container">
-    
-    <!-- Concept: Cache Miss -->
-    <article class="cache-card">
-      <div class="card-head">
-        <h2>01. Cache Miss (Lần đầu)</h2>
-        <span class="status">CHẬM</span>
-      </div>
-      <div class="card-body">
-        <div class="preview-box animate-miss">
-          <div class="flow-container">
-            <div class="connector" style="width: 140px;"></div>
-            <div class="node">
-              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
-              <span>Bạn</span>
-            </div>
-            <div class="node cache-node">
-              <svg viewBox="0 0 24 24"><path d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-4 8h-2V9h-2v2H9v2h2v2h2v-2h2v-2z"/></svg>
-              <span>Cache</span>
-            </div>
-            <div class="node">
-              <svg viewBox="0 0 24 24"><path d="M20 13c0 1.1-.9 2-2 2H6c-1.1 0-2-.9-2-2V5c0-1.1.9-2 2-2h12c1.1 0 2 .9 2 2v8zM6 17c-1.1 0-2 .9-2 2v2h16v-2c0-1.1-.9-2-2-2H6z"/></svg>
-              <span>Server</span>
-            </div>
-            <div class="data-packet"></div>
+<div class="g">
+  <!-- 01: Speed Comparison -->
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>Cache Hit vs Miss</h2></div>
+    <div class="st" id="st1">
+      <div style="display: flex; gap: 40px; align-items: center;">
+        <div class="node" id="client1">
+          <svg viewBox="0 0 24 24"><path d="M21,16.5C21,16.88 20.79,17.21 20.47,17.38L12.57,21.82C12.41,21.94 12.21,22 12,22C11.79,22 11.59,21.94 11.43,21.82L3.53,17.38C3.21,17.21 3,16.88 3,16.5V7.5C3,7.12 3.21,6.79 3.53,6.62L11.43,2.18C11.59,2.06 11.79,2 12,2C12.21,2 12.41,2.06 12.57,2.18L20.47,6.62C20.79,6.79 21,7.12 21,7.5V16.5Z"/></svg>
+          <span>Client</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 30px;">
+          <div class="node" id="cache1">
+            <svg viewBox="0 0 24 24"><path d="M2,17V20H22V17H2M2,10V13H22V10H2M2,3V6H22V3H2Z"/></svg>
+            <span>Cache</span>
+          </div>
+          <div class="node" id="db1">
+            <svg viewBox="0 0 24 24"><path d="M12,3C17.5,3 22,4.8 22,7V17C22,19.2 17.5,21 12,21C6.5,21 2,19.2 2,17V7C2,4.8 6.5,3 12,3M12,5C7,5 4,6.3 4,7C4,7.7 7,9 12,9C17,9 20,7.7 20,7C20,6.3 17,5 12,5Z"/></svg>
+            <span>DB</span>
           </div>
         </div>
-        <div class="info-row">
-          <span>Hành trình: Bạn → Cache (Trống) → Server → Bạn</span>
-          <span class="label-miss">MISS</span>
-        </div>
-        <p class="card-desc">Khi bạn yêu cầu dữ liệu lần đầu, Cache chưa có sẵn. Hệ thống phải đi quãng đường xa đến Server để lấy, sau đó mới lưu vào Cache cho lần sau.</p>
       </div>
-    </article>
+      <div class="val" id="timer1">Latency: --</div>
+    </div>
+    <p class="ins"><strong>Cache Hit</strong> giúp lấy dữ liệu cực nhanh, trong khi <strong>Cache Miss</strong> bắt buộc phải truy xuất từ Database chậm hơn.</p>
+  </section>
 
-    <!-- Concept: Cache Hit -->
-    <article class="cache-card">
-      <div class="card-head">
-        <h2>02. Cache Hit (Lần sau)</h2>
-        <span class="status">CỰC NHANH</span>
-      </div>
-      <div class="card-body">
-        <div class="preview-box animate-hit">
-          <div class="flow-container">
-            <div class="connector" style="width: 140px;"></div>
-            <div class="node">
-              <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
-              <span>Bạn</span>
-            </div>
-            <div class="node cache-node" style="border-style: solid;">
-              <svg viewBox="0 0 24 24"><path d="M19 5v14H5V5h14m0-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-4 8h-2V9h-2v2H9v2h2v2h2v-2h2v-2z"/></svg>
-              <span>Cache</span>
-            </div>
-            <div class="node" style="opacity: 0.3;">
-              <svg viewBox="0 0 24 24"><path d="M20 13c0 1.1-.9 2-2 2H6c-1.1 0-2-.9-2-2V5c0-1.1-.9-2 2-2h12c1.1 0 2 .9 2 2v8zM6 17c-1.1 0-2 .9-2 2v2h16v-2c0-1.1-.9-2-2-2H6z"/></svg>
-              <span>Server</span>
-            </div>
-            <div class="data-packet" style="background: var(--green);"></div>
-          </div>
+  <!-- 02: TTL & Invalidation -->
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>TTL & Expiry</h2></div>
+    <div class="st">
+      <div style="display: flex; flex-direction: column; align-items: center;">
+        <div class="node" id="item2">
+          <svg viewBox="0 0 24 24"><path d="M13,9V3.5L18.5,9M6,2C4.89,2 4,2.89 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2H6Z"/></svg>
+          <span>Data</span>
         </div>
-        <div class="info-row">
-          <span>Hành trình: Bạn → Cache (Có sẵn) → Bạn</span>
-          <span class="label-hit">HIT</span>
-        </div>
-        <p class="card-desc">Dữ liệu đã có sẵn ở "ngay cạnh" bạn (trong Cache). Không cần gọi đến Server xa xôi nữa, giúp ứng dụng phản hồi ngay lập tức.</p>
+        <div class="ttl-bar"><div class="ttl-fill" id="fill2"></div></div>
+        <span id="status2" style="font-size: 10px; margin-top: 8px; font-family: 'JetBrains Mono'; color: var(--ac);">ACTIVE</span>
       </div>
-    </article>
+      <div class="val">Strategy: Time-based</div>
+    </div>
+    <p class="ins">Dữ liệu trong cache có thời gian sống (<strong>TTL</strong>). Khi hết hạn, nó bị <strong>Invalidated</strong> để đảm bảo thông tin luôn mới.</p>
+  </section>
 
-    <article class="cache-card">
-      <div class="card-head">
-        <h2>03. Ví dụ thực tế</h2>
-        <span class="status">DỄ HIỂU</span>
-      </div>
-      <div class="card-body">
-        <div class="preview-box">
-          <div style="text-align: center; font-family: var(--mono); font-size: 11px; display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 240px;">
-             <div style="border: 1px solid var(--border); padding: 12px; background: var(--bg); display: flex; align-items: center; justify-content: center; gap: 8px;">
-                <span style="font-size: 20px;">🏠</span>
-                <div style="text-align: left;">
-                  <div style="color:var(--accent); font-weight: 700;">NHÀ BẾP</div>
-                  <div style="color:var(--fg-muted); font-size: 9px;">(User)</div>
-                </div>
-             </div>
-             <div style="color:var(--fg-muted); font-size: 14px;">↓</div>
-             <div style="border: 1px dashed var(--amber); padding: 12px; background: rgba(201, 146, 42, 0.05); display: flex; align-items: center; justify-content: center; gap: 8px;">
-                <span style="font-size: 20px;">🧂</span>
-                <div style="text-align: left;">
-                  <div style="color:var(--amber); font-weight: 700;">KỆ BẾP</div>
-                  <div style="color:var(--fg-muted); font-size: 9px;">(Cache)</div>
-                </div>
-             </div>
-             <div style="color:var(--fg-muted); font-size: 14px;">↓</div>
-             <div style="border: 1px solid var(--border); padding: 12px; background: var(--bg); display: flex; align-items: center; justify-content: center; gap: 8px;">
-                <span style="font-size: 20px;">🛒</span>
-                <div style="text-align: left;">
-                  <div style="color:var(--green); font-weight: 700;">SIÊU THỊ</div>
-                  <div style="color:var(--fg-muted); font-size: 9px;">(Server)</div>
-                </div>
-             </div>
+  <!-- 03: Browser Caching -->
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Browser Cache</h2></div>
+    <div class="st">
+      <div class="browser">
+        <div class="br-head"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+        <div class="br-body">
+          <div class="skeleton" style="width: 80%;"></div>
+          <div style="display: flex; gap: 4px; margin-top: 4px;">
+            <div id="img3" style="width: 30px; height: 30px; background: var(--bd); border-radius: 2px; display: flex; align-items: center; justify-content: center;">
+               <svg viewBox="0 0 24 24" style="width:16px; fill:var(--txm)"><path d="M8.5,13.5L11,16.5L14.5,12L19,18H5L8.5,13.5M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19Z"/></svg>
+            </div>
+            <div style="flex: 1; display: flex; flex-direction: column; gap: 4px;">
+              <div class="skeleton" style="width: 100%;"></div>
+              <div class="skeleton" style="width: 60%;"></div>
+            </div>
           </div>
         </div>
-        <p class="card-desc">Kệ bếp giống như Cache. Bạn để sẵn gia vị ở đó để lấy cho nhanh. Khi nào dùng hết trên kệ, bạn mới phải tốn công đi siêu thị để mua thêm.</p>
       </div>
-    </article>
+      <div class="val" id="source3">Source: Network</div>
+    </div>
+    <p class="ins"><strong>Trình duyệt</strong> lưu trữ tài nguyên tĩnh (ảnh, CSS). Lần đầu tải qua <strong>Network</strong>, lần sau lấy ngay từ <strong>Disk Cache</strong>.</p>
+  </section>
 
-    <!-- Why Cache? -->
-    <article class="cache-card">
-      <div class="card-head">
-        <h2>04. Tại sao cần Cache?</h2>
-        <span class="status">LỢI ÍCH</span>
-      </div>
-      <div class="card-body">
-        <div class="file-info" style="gap: 8px;">
-          <div class="info-row">
-            <span>Tốc độ tải trang</span>
-            <span style="color: var(--green)">+ 500%</span>
-          </div>
-          <div class="info-row">
-            <span>Tiết kiệm 4G/Wifi</span>
-            <span style="color: var(--green)">Tối đa</span>
-          </div>
-          <div class="info-row">
-            <span>Gánh nặng Server</span>
-            <span style="color: var(--amber)">Giảm 80%</span>
-          </div>
+  <!-- 04: Edge Caching (CDN) -->
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Edge (CDN)</h2></div>
+    <div class="st">
+      <div style="position: relative; width: 160px; height: 100px;">
+        <!-- User -->
+        <div class="node" style="position: absolute; left: 0; top: 30px; width: 30px; height: 30px;">
+          <svg viewBox="0 0 24 24" style="width:14px"><path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"/></svg>
         </div>
-        <p class="card-desc">Cache không chỉ làm web nhanh hơn mà còn giúp điện thoại của bạn đỡ tốn pin và tốn dung lượng mạng vì không phải tải đi tải lại một thứ.</p>
+        <!-- Edge -->
+        <div class="node" id="edge4" style="position: absolute; left: 70px; top: 10px; width: 30px; height: 30px;">
+          <svg viewBox="0 0 24 24" style="width:14px"><path d="M12,11L12,13H10V11H12M18,11L18,13H16V11H18M11,18V16H13V18H11M6,11L6,13H4V11H6M11,8V6H13V8H11M11,13V11H13V13H11Z"/></svg>
+          <span style="font-size: 6px;">Edge</span>
+        </div>
+        <!-- Origin -->
+        <div class="node" id="origin4" style="position: absolute; right: 0; top: 50px; width: 30px; height: 30px;">
+          <svg viewBox="0 0 24 24" style="width:14px"><path d="M12,3L2,12H5V20H19V12H22L12,3Z"/></svg>
+          <span style="font-size: 6px;">Origin</span>
+        </div>
+        
+        <div class="line" style="left: 25px; top: 45px; width: 50px; transform: rotate(-25deg);"></div>
+        <div class="line" style="left: 95px; top: 30px; width: 60px; transform: rotate(35deg);"></div>
       </div>
-    </article>
-
-  </div>
+      <div class="val" id="dist4">Distance: --</div>
+    </div>
+    <p class="ins">Mạng lưới <strong>CDN</strong> đẩy dữ liệu ra các trạm <strong>Edge</strong> gần bạn nhất, giúp giảm độ trễ do khoảng cách địa lý.</p>
+  </section>
 </div>
 
+<script>
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// 01: Speed Comparison
+(async function() {
+  const client = document.getElementById('client1');
+  const cache = document.getElementById('cache1');
+  const db = document.getElementById('db1');
+  const timer = document.getElementById('timer1');
+  const container = document.getElementById('st1');
+
+  async function sendPacket(from, to, speed) {
+    const p = document.createElement('div');
+    p.className = 'packet';
+    container.appendChild(p);
+    
+    const startRect = from.getBoundingClientRect();
+    const endRect = to.getBoundingClientRect();
+    const stRect = container.getBoundingClientRect();
+
+    const startX = startRect.left - stRect.left + startRect.width / 2;
+    const startY = startRect.top - stRect.top + startRect.height / 2;
+    const endX = endRect.left - stRect.left + endRect.width / 2;
+    const endY = endRect.top - stRect.top + endRect.height / 2;
+
+    p.style.left = startX + 'px';
+    p.style.top = startY + 'px';
+    
+    p.animate([
+      { left: startX + 'px', top: startY + 'px' },
+      { left: endX + 'px', top: endY + 'px' }
+    ], { duration: speed, easing: 'ease-in-out', fill: 'forwards' });
+
+    await wait(speed);
+    p.remove();
+  }
+
+  while (true) {
+    // Round 1: Cache Miss
+    timer.textContent = 'Status: Cache Miss';
+    timer.style.color = 'var(--txm)';
+    await sendPacket(client, cache, 400);
+    cache.classList.add('active');
+    await wait(200);
+    cache.classList.remove('active');
+    
+    await sendPacket(cache, db, 400);
+    db.classList.add('active');
+    await wait(800); // DB is slow
+    db.classList.remove('active');
+    
+    await sendPacket(db, client, 1200);
+    timer.textContent = 'Latency: 1200ms (Slow)';
+    timer.style.color = '#ff5555';
+    await wait(2000);
+
+    // Round 2: Cache Hit
+    timer.textContent = 'Status: Checking Cache...';
+    timer.style.color = 'var(--txm)';
+    await sendPacket(client, cache, 400);
+    cache.classList.add('active');
+    await wait(100); 
+    
+    await sendPacket(cache, client, 400);
+    cache.classList.remove('active');
+    timer.textContent = 'Latency: 20ms (Instant!)';
+    timer.style.color = 'var(--ac)';
+    await wait(3000);
+  }
+})();
+
+// 02: TTL & Invalidation
+(async function() {
+  const fill = document.getElementById('fill2');
+  const status = document.getElementById('status2');
+  const node = document.getElementById('item2');
+  
+  while (true) {
+    node.classList.add('active');
+    status.textContent = 'ACTIVE';
+    status.style.color = 'var(--ac)';
+    fill.style.width = '100%';
+    fill.style.background = 'var(--ac)';
+    
+    // Drain
+    fill.animate([{ width: '100%' }, { width: '0%' }], { duration: 4000, fill: 'forwards' });
+    await wait(4000);
+    
+    node.classList.remove('active');
+    status.textContent = 'EXPIRED';
+    status.style.color = 'var(--txm)';
+    fill.style.background = 'var(--bd)';
+    await wait(1500);
+    
+    status.textContent = 'REFRESHING...';
+    await wait(800);
+  }
+})();
+
+// 03: Browser Cache
+(async function() {
+  const img = document.getElementById('img3');
+  const source = document.getElementById('source3');
+  
+  while (true) {
+    // Network load
+    img.style.background = 'var(--bd)';
+    img.style.borderColor = 'transparent';
+    source.textContent = 'Source: Network';
+    source.style.color = 'var(--txm)';
+    await wait(1500);
+    
+    img.style.background = 'var(--abg)';
+    img.style.border = '1px solid var(--ac)';
+    img.querySelector('svg').style.fill = 'var(--ac)';
+    await wait(3000);
+    
+    // Cached load
+    img.style.opacity = '0';
+    source.textContent = 'Reloading Page...';
+    await wait(500);
+    img.style.opacity = '1';
+    source.textContent = 'Source: Disk Cache (0ms)';
+    source.style.color = 'var(--ac)';
+    await wait(4000);
+    
+    img.querySelector('svg').style.fill = 'var(--txm)';
+  }
+})();
+
+// 04: Edge Caching
+(async function() {
+  const edge = document.getElementById('edge4');
+  const origin = document.getElementById('origin4');
+  const dist = document.getElementById('dist4');
+  const container = edge.parentElement;
+  const user = container.querySelector('.node:first-child');
+
+  async function sendLocalPacket(from, to, speed) {
+    const p = document.createElement('div');
+    p.className = 'packet';
+    container.appendChild(p);
+    
+    const startRect = from.getBoundingClientRect();
+    const endRect = to.getBoundingClientRect();
+    const stRect = container.getBoundingClientRect();
+
+    const startX = startRect.left - stRect.left + startRect.width / 2;
+    const startY = startRect.top - stRect.top + startRect.height / 2;
+    const endX = endRect.left - stRect.left + endRect.width / 2;
+    const endY = endRect.top - stRect.top + endRect.height / 2;
+
+    p.style.left = startX + 'px';
+    p.style.top = startY + 'px';
+    
+    p.animate([
+      { left: startX + 'px', top: startY + 'px' },
+      { left: endX + 'px', top: endY + 'px' }
+    ], { duration: speed, easing: 'ease-in-out', fill: 'forwards' });
+
+    await wait(speed);
+    p.remove();
+  }
+  
+  while (true) {
+    // To Origin
+    dist.textContent = 'Route: Origin (US)';
+    dist.style.color = 'var(--txm)';
+    await sendLocalPacket(user, origin, 1200);
+    origin.classList.add('active');
+    await wait(1000);
+    origin.classList.remove('active');
+    await sendLocalPacket(origin, user, 1200);
+    await wait(1000);
+    
+    // To Edge
+    dist.textContent = 'Route: Edge (SG)';
+    dist.style.color = 'var(--ac)';
+    await sendLocalPacket(user, edge, 400);
+    edge.classList.add('active');
+    await wait(1000);
+    edge.classList.remove('active');
+    await sendLocalPacket(edge, user, 400);
+    await wait(2000);
+  }
+})();
+</script>
 </body>
 </html>
