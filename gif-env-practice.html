@@ -3,250 +3,350 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>.env Practice — Vibecode Glossary</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>.env Essence Practice — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-  :root{--bg:#1a1a18;--bg-card:#222220;--bg-elev:#2a2a27;--bg-term:#161614;--fg:#e8e4dd;--fg-m:#8a877e;--acc:#e88c2e;--acc-d:#a84e22;--amb:#c9922a;--grn:#6b8f5e;--red:#b54a4a;--blu:#5e7a8f;--bdr:#3a3a36;--bdr-l:#4a4a45;--mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;}
-  *{margin:0;padding:0;box-sizing:border-box;}
-  body{background:var(--bg);color:var(--fg);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
-  body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:24px 24px;}
-  .pw{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:20px;}
+:root {
+  --bg: #0f0f12;
+  --bgc: #16161b;
+  --bgi: #121217;
+  --bd: #282830;
+  --tx: #e8e4dc;
+  --txm: #707070;
+  --ac: #E88C2E;
+  --abg: rgba(232, 140, 46, 0.08);
+  --abg2: rgba(232, 140, 46, 0.18);
+  --err: #ef4444;
+  --gn: #22c55e;
+  --blu: #3b82f6;
+}
 
-  .pt{border:none;background:transparent;overflow:visible;}
-  .pb{padding:0;display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:start;}
-  @media(max-width:850px){.pb{grid-template-columns:1fr;gap:20px;}}
-  
-  .pg{grid-column:1/-1;font-size:12.5px;color:var(--fg-m);margin-bottom:0;line-height:1.6;background:var(--bg-elev);padding:12px 16px;border-left:3px solid var(--acc);border-top:1px solid var(--bdr);border-right:1px solid var(--bdr);border-bottom:1px solid var(--bdr);}
-  .pg strong{color:var(--fg);font-weight:600;}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-  .tgl-row{display:flex;align-items:center;gap:12px;padding:10px 14px;border-bottom:1px solid var(--bdr-l);transition:background .2s;}
-  .tgl-row:last-child{border-bottom:none;}
-  .tgl-lb{font-family:var(--mono);font-size:11px;color:var(--fg-m);min-width:100px;flex-shrink:0;}
-  .tgl-sw{width:36px;height:20px;border:1.5px solid var(--bdr);background:var(--bg-term);cursor:pointer;position:relative;transition:border-color .2s,background .2s;flex-shrink:0;}
-  .tgl-sw.on{border-color:var(--grn);background:rgba(107,143,94,.1);}
-  .tgl-sw .tgl-k{position:absolute;top:2px;left:2px;width:13px;height:12px;background:var(--fg-m);transition:left .2s,background .2s;}
-  .tgl-sw.on .tgl-k{left:18px;background:var(--grn);}
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--tx);
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+}
 
-  .rst-btn{font-family:var(--mono);font-size:10px;padding:6px 12px;border:1px solid var(--bdr);background:var(--bg-elev);color:var(--fg-m);cursor:pointer;transition:all .2s;text-transform:uppercase;letter-spacing:0.5px;}
-  .rst-btn:hover{border-color:var(--acc);color:var(--fg);background:var(--bg-card);}
-  .hint{grid-column:1/-1;font-size:11.5px;color:var(--fg-m);opacity:.8;margin-top:0;font-style:italic;line-height:1.6;background:rgba(232, 140, 46, 0.03);padding:12px 16px;border:1px solid var(--bdr);}
-  .hint::before{content:'>';font-family:var(--mono);color:var(--acc);margin-right:8px;font-style:normal;}
+.pra {
+  width: 100%;
+  max-width: 940px;
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 24px;
+  position: relative;
+}
 
-  .term-out{border:1px solid var(--bdr);background:var(--bg-term);overflow:hidden;transition:border-color .3s;height:100%;display:flex;flex-direction:column;}
-  .term-out.t-ok{border-color:var(--bdr);}.term-out.t-err{border-color:var(--red);}.term-out.t-warn{border-color:var(--amb);}
-  .term-bar{display:flex;align-items:center;gap:6px;padding:10px 12px;background:var(--bg-elev);border-bottom:1px solid var(--bdr);}
-  .term-dot{width:7px;height:7px;border-radius:50%;}.term-dot.r{background:#b54a4a;}.term-dot.y{background:var(--amb);}.term-dot.g{background:var(--grn);}
-  .term-title{font-family:var(--mono);font-size:10px;color:var(--fg-m);margin-left:8px;text-transform:lowercase;}
-  .term-body{padding:16px;font-family:var(--mono);font-size:11px;line-height:1.8;flex:1;min-height:240px;}
-  .tl{opacity:0;animation:fi .2s ease forwards;white-space:pre-wrap;word-break:break-all;}
-  @keyframes fi{to{opacity:1;}}
+.ch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
 
-  .tk{color:var(--blu);}.tv{color:var(--amb);}.tc{color:var(--fg-m);opacity:.5;}.to{color:var(--fg-m);}.te{color:var(--red);}.tg{color:var(--grn);}.ts{color:var(--acc);}
+.ch .n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ac);
+  background: var(--abg);
+  border: 1px solid var(--abg2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
 
-  @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:0.01ms!important;animation-iteration-count:1!important;transition-duration:0.01ms!important;}}
+.ch h2 {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.pra-goal {
+  font-size: 12.5px;
+  color: var(--txm);
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+.lab-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .lab-grid { grid-template-columns: 1fr; }
+}
+
+.card {
+  background: var(--bgi);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-hd {
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid var(--bd);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--txm);
+  display: flex;
+  justify-content: space-between;
+}
+
+.card-body {
+  padding: 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  line-height: 1.8;
+  min-height: 160px;
+  position: relative;
+}
+
+/* Essence Elements */
+.secret-bad {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--err);
+  padding: 2px 4px;
+  border-bottom: 1px dashed var(--err);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.secret-bad:hover { background: rgba(239, 68, 68, 0.3); }
+
+.env-var {
+  color: var(--ac);
+  font-weight: 700;
+  padding: 2px 4px;
+  background: var(--abg);
+  border-radius: 2px;
+}
+
+.flow-line {
+  position: absolute;
+  background: var(--ac);
+  height: 2px;
+  width: 0;
+  z-index: 10;
+  pointer-events: none;
+  box-shadow: 0 0 10px var(--ac);
+}
+
+/* Terminal */
+.term {
+  background: #000;
+  border: 1px solid var(--bd);
+  padding: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  border-radius: 2px;
+}
+.term-line { margin-bottom: 4px; opacity: 0; transform: translateY(5px); animation: fadeInUp 0.3s forwards; }
+@keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+/* Controls */
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.btn {
+  padding: 10px 20px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid var(--bd);
+  background: var(--bgi);
+  color: var(--txm);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn:hover:not(:disabled) {
+  border-color: var(--ac);
+  color: var(--ac);
+  background: var(--abg);
+}
+
+.btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.btn.primary {
+  background: var(--ac);
+  color: #fff;
+  border-color: var(--ac);
+}
+
+.token-key { color: var(--ac); }
+.token-val { color: var(--gn); }
+.token-cmt { color: var(--txm); opacity: 0.5; }
+.token-kw { color: #60a5fa; }
+
+/* Modal/Hint overlay */
+.step-hint {
+  background: var(--abg2);
+  border: 1px solid var(--ac);
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.step-hint i { color: var(--ac); margin-top: 3px; }
+.step-txt { font-size: 13px; line-height: 1.5; }
 </style>
 </head>
 <body>
-<div class="pw">
 
-  <!-- ===== PRACTICE ===== -->
-  <section class="pt" aria-label="Thực hành">
-    <div class="pb">
-      <div class="pg">
-        <strong>Mục tiêu:</strong> Điền giá trị cho các biến .env → thấy ngay output thay đổi. Thử nhập sai tên biến để thấy lỗi.
-      </div>
-
-      <!-- Left Column: Inputs -->
-      <div style="display:flex;flex-direction:column;gap:16px;">
-        <div style="border:1px solid var(--bdr);background:var(--bg-card);overflow:hidden;" id="envForm">
-          <div style="padding:10px 14px;border-bottom:1px solid var(--bdr);background:var(--bg-elev);display:flex;justify-content:space-between;align-items:center;">
-            <span style="font-family:var(--mono);font-size:10px;color:var(--acc);font-weight:700;text-transform:uppercase;letter-spacing:1px;">.env config</span>
-            <span style="font-family:var(--mono);font-size:9px;color:var(--fg-m);">editor</span>
-          </div>
-          <div class="tgl-row">
-            <span class="tgl-lb"><span class="tk">DB_HOST</span>=</span>
-            <input type="text" class="env-input" data-key="DB_HOST" value="localhost" style="flex:1;padding:6px 10px;font-family:var(--mono);font-size:11px;border:1px solid var(--bdr);background:var(--bg-term);color:var(--tv);outline:none;transition:border-color .2s;" aria-label="DB_HOST"/>
-          </div>
-          <div class="tgl-row">
-            <span class="tgl-lb"><span class="tk">DB_USER</span>=</span>
-            <input type="text" class="env-input" data-key="DB_USER" value="admin" style="flex:1;padding:6px 10px;font-family:var(--mono);font-size:11px;border:1px solid var(--bdr);background:var(--bg-term);color:var(--tv);outline:none;transition:border-color .2s;" aria-label="DB_USER"/>
-          </div>
-          <div class="tgl-row">
-            <span class="tgl-lb"><span class="tk">STRIPE_KEY</span>=</span>
-            <input type="text" class="env-input" data-key="STRIPE_KEY" value="sk_test_abc" style="flex:1;padding:6px 10px;font-family:var(--mono);font-size:11px;border:1px solid var(--bdr);background:var(--bg-term);color:var(--tv);outline:none;transition:border-color .2s;" aria-label="STRIPE_KEY"/>
-          </div>
-          <div class="tgl-row" style="border-bottom:none;">
-            <span class="tgl-lb"><span class="tk">DEBUG</span>=</span>
-            <div style="flex:1;display:flex;align-items:center;gap:10px;">
-              <span style="font-family:var(--mono);font-size:11px;color:var(--fg-m);" id="debugLabel">true</span>
-              <div class="tgl-sw on" id="debugToggle" role="switch" aria-checked="true" tabindex="0"><div class="tgl-k"></div></div>
-            </div>
-          </div>
-        </div>
-
-        <div style="display:flex;flex-direction:column;gap:10px;">
-          <div style="font-family:var(--mono);font-size:10px;color:var(--fg-m);text-transform:uppercase;letter-spacing:1px;padding-left:4px;">Presets</div>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;">
-            <button class="rst-btn" onclick="fillEnv('dev')">Dev</button>
-            <button class="rst-btn" onclick="fillEnv('prod')">Prod</button>
-            <button class="rst-btn" onclick="fillEnv('wrong')">Wrong Name</button>
-            <button class="rst-btn" id="resetBtn" style="border-color:var(--acc);color:var(--acc);">Reset</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Right Column: Terminal -->
-      <div class="term-out" id="termOut">
-        <div class="term-bar">
-          <div class="term-dot r"></div><div class="term-dot y"></div><div class="term-dot g"></div>
-          <span class="term-title">node server.js</span>
-        </div>
-        <div class="term-body" id="termBody"></div>
-      </div>
-
-      <div class="hint">Click "Wrong Name" → hệ thống tự đổi "DB_HOST" thành "db_host" (chữ thường). Terminal sẽ báo lỗi ngay. Đó chính xác là lỗi marketer hay mắc khi sửa .env.</div>
+<section class="pra" aria-label="Bản chất .env">
+  <div class="ch"><span class="n">ESSENCE</span><h2>Bản chất của .env</h2></div>
+  
+  <!-- Step Instruction -->
+  <div class="step-hint" id="stepHint">
+    <i class="fa-solid fa-triangle-exclamation"></i>
+    <div class="step-txt" id="stepTxt">
+      <strong>Vấn đề:</strong> Bạn đang dán mật khẩu trực tiếp vào code (Hardcoded). Điều này cực kỳ nguy hiểm nếu code bị lộ. 
+      <br>Hãy click vào phần <span style="color:var(--err)">màu đỏ</span> để trích xuất nó sang file .env!
     </div>
-  </section>
+  </div>
 
-</div>
+  <div class="lab-grid">
+    <!-- Code Editor -->
+    <div class="card">
+      <div class="card-hd"><span>server.js (Mã nguồn)</span><i class="fa-solid fa-code"></i></div>
+      <div class="card-body" id="codeEditor">
+        <span class="token-cmt">// Kết nối Database</span><br>
+        <span class="token-kw">const</span> config = {<br>
+        &nbsp;&nbsp;db_pass: <span class="secret-bad" id="secretPass" onclick="extractSecret('PASS', '123456')">"123456"</span>,<br>
+        &nbsp;&nbsp;api_key: <span class="secret-bad" id="secretKey" onclick="extractSecret('KEY', 'sk_test_99')">"sk_test_99"</span><br>
+        };
+      </div>
+    </div>
+
+    <!-- .env File -->
+    <div class="card">
+      <div class="card-hd"><span>.env (Cấu hình bí mật)</span><i class="fa-solid fa-vault"></i></div>
+      <div class="card-body" id="envEditor">
+        <span class="token-cmt"># File trống...</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Terminal Output -->
+  <div class="card" style="min-height: 100px;">
+    <div class="card-hd"><span>Console Output</span><i class="fa-solid fa-terminal"></i></div>
+    <div class="card-body term" id="termOutput" style="min-height: 80px;">
+      <div class="term-line" style="color:var(--txm)">Đợi bạn bảo mật mã nguồn...</div>
+    </div>
+  </div>
+
+  <!-- Final Controls (Hidden until refactored) -->
+  <div class="controls" id="finalControls" style="display: none;">
+    <button class="btn" onclick="switchEnv('LOCAL')"><i class="fa-solid fa-house-laptop"></i> Chạy Local</button>
+    <button class="btn" onclick="switchEnv('PROD')"><i class="fa-solid fa-server"></i> Chạy Production</button>
+    <button class="btn" id="resetBtn" onclick="location.reload()" style="margin-left:auto"><i class="fa-solid fa-rotate"></i> Reset</button>
+  </div>
+
+</section>
 
 <script>
-(function(){
-  var inputs=document.querySelectorAll('.env-input');
-  var debugToggle=document.getElementById('debugToggle');
-  var debugLabel=document.getElementById('debugLabel');
-  var termBody=document.getElementById('termBody');
-  var termOut=document.getElementById('termOut');
-  var resetBtn=document.getElementById('resetBtn');
+let extracted = { PASS: false, KEY: false };
+let currentEnv = 'NONE';
 
-  var debugOn=true;
+const envData = {
+  LOCAL: { PASS: 'local_db_123', KEY: 'sk_test_dev_mode' },
+  PROD: { PASS: 'P@ssw0rd_Str0ng_99', KEY: 'sk_live_money_real' }
+};
 
-  function getVals(){
-    var v={};
-    inputs.forEach(function(inp){v[inp.dataset.key]=inp.value.trim();});
-    v.DEBUG=debugOn;
-    return v;
+function extractSecret(type, value) {
+  if (extracted[type]) return;
+  extracted[type] = true;
+
+  // Update Code Editor
+  const el = document.getElementById(type === 'PASS' ? 'secretPass' : 'secretKey');
+  el.className = 'env-var';
+  el.textContent = `process.env.DB_${type}`;
+  el.onclick = null;
+
+  // Update .env Editor
+  const envEd = document.getElementById('envEditor');
+  if (envEd.innerHTML.includes('File trống')) envEd.innerHTML = '';
+  envEd.innerHTML += `<div><span class="token-key">DB_${type}</span>=<span class="token-val">"${value}"</span></div>`;
+
+  // Check if finished
+  if (extracted.PASS && extracted.KEY) {
+    completeRefactor();
+  } else {
+    updateTerminal(`<span style="color:var(--ac)">[OK]</span> Đã chuyển bí mật ${type} sang file .env.`);
   }
+}
 
-  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;');}
+function completeRefactor() {
+  document.getElementById('stepHint').style.borderColor = 'var(--gn)';
+  document.getElementById('stepHint').style.background = 'var(--gnb)';
+  document.getElementById('stepHint').querySelector('i').className = 'fa-solid fa-circle-check';
+  document.getElementById('stepHint').querySelector('i').style.color = 'var(--gn)';
+  document.getElementById('stepTxt').innerHTML = '<strong>Tuyệt vời!</strong> Bạn đã tách biệt hoàn toàn <strong>Cấu hình</strong> ra khỏi <strong>Mã nguồn</strong>. <br>Bây giờ, hãy thử đổi "môi trường" để xem app tự động đổi giá trị mà không cần sửa code.';
+  
+  document.getElementById('finalControls').style.display = 'flex';
+  updateTerminal(`<span style="color:var(--gn)">[SUCCESS]</span> Hệ thống đã được bảo mật! Sẵn sàng chạy thử.`);
+}
 
-  function render(){
-    var v=getVals();
-    var lines=[];
-    lines.push('<span class="to">Server starting...</span>');
-    lines.push('');
+function switchEnv(env) {
+  currentEnv = env;
+  const data = envData[env];
+  
+  // Update .env UI with animation
+  const envEd = document.getElementById('envEditor');
+  envEd.style.opacity = '0';
+  
+  setTimeout(() => {
+    envEd.innerHTML = `
+      <span class="token-cmt"># Môi trường ${env}</span><br>
+      <div><span class="token-key">DB_PASS</span>=<span class="token-val">"${data.PASS}"</span></div>
+      <div><span class="token-key">DB_KEY</span>=<span class="token-val">"${data.KEY}"</span></div>
+    `;
+    envEd.style.transition = 'opacity 0.3s';
+    envEd.style.opacity = '1';
+  }, 100);
 
-    var hasWrong=false;
+  // Update Terminal
+  updateTerminal(`
+    <span style="color:var(--blu)">[DEPLOYING]</span> Chạy ứng dụng trên môi trường <strong>${env}</strong>...<br>
+    <span style="color:var(--tx)">> DB Connected with password: <span style="color:var(--ac)">${data.PASS}</span></span><br>
+    <span style="color:var(--tx)">> API Initialized with key: <span style="color:var(--ac)">${data.KEY}</span></span><br>
+    <span style="color:var(--gn)">[RUNNING]</span> App đang hoạt động ổn định.
+  `);
+}
 
-    // DB connection
-    if(v.DB_HOST){
-      lines.push('<span class="to">Database:</span> <span class="tv">'+esc(v.DB_HOST)+'</span>');
-      lines.push('<span class="to">User:</span> <span class="tv">'+esc(v.DB_USER||'(undefined)')+'</span>');
-      if(v.DB_HOST==='localhost'){
-        lines.push('<span class="tg">  → Connecting to local database</span>');
-      } else {
-        lines.push('<span class="tg">  → Connecting to remote: '+esc(v.DB_HOST)+'</span>');
-      }
-    } else {
-      lines.push('<span class="te">ERROR: DB_HOST is not set!</span>');
-      hasWrong=true;
-    }
-
-    lines.push('');
-
-    // Stripe
-    if(v.STRIPE_KEY){
-      var isTest=v.STRIPE_KEY.indexOf('test')>-1||v.STRIPE_KEY.indexOf('sk_test')>-1;
-      var isLive=v.STRIPE_KEY.indexOf('live')>-1||v.STRIPE_KEY.indexOf('sk_live')>-1;
-      lines.push('<span class="to">Stripe:</span> <span class="tv">'+esc(v.STRIPE_KEY.substring(0,12))+'...</span>');
-      if(isTest){
-        lines.push('<span class="tg">  → Test mode (no real charges)</span>');
-      } else if(isLive){
-        lines.push('<span class="ts">  → LIVE MODE — real transactions!</span>');
-      }
-    } else {
-      lines.push('<span class="te">ERROR: STRIPE_KEY is not set!</span>');
-      hasWrong=true;
-    }
-
-    lines.push('');
-
-    // Debug
-    if(debugOn){
-      lines.push('<span class="tg">Debug: ON</span>');
-      lines.push('<span class="to">  → Logging all queries</span>');
-    } else {
-      lines.push('<span class="to">Debug: OFF</span>');
-    }
-
-    // Check for potential wrong naming
-    inputs.forEach(function(inp){
-      var val=inp.value.trim();
-      if(val.indexOf('=')>-1){
-        var keyPart=val.split('=')[0].trim();
-        if(keyPart!==inp.dataset.key){
-          lines.push('');
-          lines.push('<span class="te">WARNING: Variable "'+esc(keyPart)+'" not found!</span>');
-          lines.push('<span class="te">  Did you mean "'+esc(inp.dataset.key)+'" (UPPER_SNAKE_CASE)?</span>');
-          hasWrong=true;
-        }
-      }
-    });
-
-    termOut.className='term-out'+(hasWrong?' t-err':' t-ok');
-    termBody.innerHTML=lines.map(function(l,i){
-      return '<div class="tl" style="opacity:1;animation-delay:'+(i*0.02)+'s;">'+l+'</div>';
-    }).join('');
-  }
-
-  inputs.forEach(function(inp){
-    inp.addEventListener('input',render);
-  });
-
-  debugToggle.addEventListener('click',function(){
-    debugOn=!debugOn;
-    this.classList.toggle('on',debugOn);
-    this.setAttribute('aria-checked',debugOn);
-    debugLabel.textContent=debugOn?'true':'false';
-    debugLabel.style.color=debugOn?'var(--grn)':'var(--te)';
-    render();
-  });
-
-  window.fillEnv=function(type){
-    if(type==='dev'){
-      setInput('DB_HOST','localhost');
-      setInput('DB_USER','admin');
-      setInput('STRIPE_KEY','sk_test_abc123');
-      if(!debugOn)debugToggle.click();
-    } else if(type==='prod'){
-      setInput('DB_HOST','prod-db.cloudflare.com');
-      setInput('DB_USER','app_user');
-      setInput('STRIPE_KEY','sk_live_xyz789');
-      if(debugOn)debugToggle.click();
-    } else if(type==='wrong'){
-      setInput('DB_HOST','db_host=localhost');
-      setInput('DB_USER','admin');
-      setInput('STRIPE_KEY','stripe_key=sk_test_abc');
-    }
-    render();
-  };
-
-  function setInput(key,val){
-    inputs.forEach(function(inp){
-      if(inp.dataset.key===key)inp.value=val;
-    });
-  }
-
-  resetBtn.addEventListener('click',function(){
-    setInput('DB_HOST','localhost');
-    setInput('DB_USER','admin');
-    setInput('STRIPE_KEY','sk_test_abc');
-    if(!debugOn)debugToggle.click();
-    render();
-  });
-
-  render();
-})();
+function updateTerminal(msg) {
+  const term = document.getElementById('termOutput');
+  term.innerHTML = `<div class="term-line">${msg}</div>`;
+}
 </script>
 </body>
 </html>

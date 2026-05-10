@@ -4,147 +4,357 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>.env Demo — Vibecode Glossary</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-  :root{--bg:#1a1a18;--bg-card:#222220;--bg-elev:#2a2a27;--bg-term:#161614;--fg:#e8e4dd;--fg-m:#8a877e;--acc:#e88c2e;--acc-d:#a84e22;--amb:#c9922a;--grn:#6b8f5e;--red:#b54a4a;--blu:#5e7a8f;--bdr:#3a3a36;--bdr-l:#4a4a45;--mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;}
-  *{margin:0;padding:0;box-sizing:border-box;}
-  body{background:var(--bg);color:var(--fg);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
-  body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:24px 24px;}
-  .pw{position:relative;z-index:1;max-width:1100px;margin:0 auto;padding:20px;display:grid;grid-template-columns:repeat(2,1fr);gap:24px;}
-  @media(max-width:850px){.pw{grid-template-columns:1fr;gap:20px;}}
+:root {
+  --bg: #0f0f12;
+  --bgc: #16161b;
+  --bgi: #121217;
+  --bd: #282830;
+  --tx: #e8e4dc;
+  --txm: #707070;
+  --ac: #E88C2E;
+  --abg: rgba(232, 140, 46, 0.1);
+  --abg2: rgba(232, 140, 46, 0.2);
+  --err: #ef4444;
+  --gn: #22c55e;
+}
 
-  .ss{border:1px solid var(--bdr);background:var(--bg-card);margin-bottom:0;overflow:hidden;display:flex;flex-direction:column;height:100%;}
-  .ss .sh{border-bottom:1px solid var(--bdr);padding:12px 16px;display:flex;align-items:center;justify-content:space-between;background:var(--bg-elev);}
-  .ss .sh h2{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--acc);text-transform:uppercase;letter-spacing:1px;}
-  .ss .sh .nm{font-family:var(--mono);font-size:10px;color:var(--fg-m);opacity:0.7;}
-  .sb{padding:20px;flex:1;display:flex;flex-direction:column;gap:16px;}
-  .ins{background:var(--bg-elev);border-left:3px solid var(--acc);padding:12px 14px;font-size:12.5px;color:var(--fg-m);line-height:1.6;margin-top:auto;}
-  .ins strong{color:var(--fg);font-weight:600;}
-  .ins code{font-family:var(--mono);font-size:11px;color:var(--amb);background:rgba(201,146,42,.1);padding:1px 4px;}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-  .tk{color:var(--blu);}.tv{color:var(--amb);}.tc{color:var(--fg-m);opacity:.5;}
-  
-  .env-file{border:1px solid var(--bdr-l);background:var(--bg-term);padding:10px 12px;font-family:var(--mono);font-size:11px;line-height:1.8;}
-  .efl{opacity:0;animation:fi .3s ease forwards;}
-  .efl:nth-child(1){animation-delay:.1s;}.efl:nth-child(2){animation-delay:.2s;}.efl:nth-child(3){animation-delay:.3s;}.efl:nth-child(4){animation-delay:.4s;}.efl:nth-child(5){animation-delay:.5s;}
-  @keyframes fi{to{opacity:1;}}
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--tx);
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+}
 
-  .tgl-row{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--bdr-l);}
-  .tgl-row:last-child{border-bottom:none;}
-  .tgl-v{font-family:var(--mono);font-size:11px;}
+.g {
+  width: 100%;
+  max-width: 940px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
 
-  .leak-flash{position:absolute;inset:0;background:rgba(181,74,74,.15);opacity:0;animation:leakFlash 3s ease-in-out infinite;pointer-events:none;z-index:2;}
-  @keyframes leakFlash{0%,70%,100%{opacity:0;}35%{opacity:1;}}
-  
-  .secret-line{display:flex;align-items:center;gap:3px;}
-  .secret-char{width:7px;height:12px;background:var(--acc);border-radius:1px;animation:scPulse 1.5s ease-in-out infinite;}
-  @keyframes scPulse{0%,100%{opacity:.5;}50%{opacity:1;}}
+@media (max-width: 600px) {
+  .g { grid-template-columns: 1fr; }
+}
 
-  .status-dot{width:6px;height:6px;border-radius:50%;}
+.c {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.c::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--ac);
+}
+
+.c::after {
+  content: '';
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 6px;
+  height: 6px;
+  background: var(--ac);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--ac);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0.3; transform: scale(1); }
+}
+
+.ch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.ch .n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ac);
+  background: var(--abg);
+  border: 1px solid var(--abg2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+.ch h2 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  text-transform: uppercase;
+}
+
+.st {
+  background: var(--bgi);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  flex: 1;
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ins {
+  margin-top: 14px;
+  font-size: 11.5px;
+  color: var(--txm);
+  line-height: 1.6;
+  padding-left: 12px;
+  border-left: 2px solid var(--ac);
+}
+
+.ins strong {
+  color: var(--ac);
+  font-weight: 600;
+}
+
+/* Environment Specific Styles */
+.code-block {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  line-height: 1.6;
+  width: 100%;
+}
+.token-key { color: var(--ac); }
+.token-val { color: var(--gn); opacity: 0.8; }
+.token-cmt { color: var(--txm); opacity: 0.5; }
+
+.naming-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+.naming-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: var(--bg);
+  border: 1px solid var(--bd);
+  border-radius: 2px;
+}
+.naming-bad { color: var(--err); text-decoration: line-through; opacity: 0.6; font-size: 10px; }
+.naming-good { color: var(--gn); font-weight: 700; font-size: 11px; }
+
+.env-switch {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+.env-file-mini {
+  padding: 10px;
+  background: var(--bg);
+  border: 1px solid var(--bd);
+  position: relative;
+  transition: all 0.3s ease;
+}
+.env-label {
+  font-size: 9px;
+  color: var(--txm);
+  margin-bottom: 6px;
+  display: block;
+  text-transform: uppercase;
+}
+
+.git-shield {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+.shield-icon {
+  font-size: 40px;
+  color: var(--ac);
+  position: relative;
+}
+.lock-overlay {
+  position: absolute;
+  font-size: 16px;
+  bottom: -5px;
+  right: -5px;
+  background: var(--bgc);
+  padding: 2px;
+}
+.gitignore-text {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  padding: 4px 10px;
+  background: var(--abg);
+  border: 1px dashed var(--ac);
+  color: var(--ac);
+}
 </style>
 </head>
 <body>
-<div class="pw">
 
-  <!-- S1: Cấu trúc File -->
-  <section class="ss">
-    <div class="sh"><h2>01. Cấu trúc & Cách dùng</h2><span class="nm">.env file</span></div>
-    <div class="sb">
-      <div class="env-file">
-        <div class="efl"><span class="tc"># Cấu hình Database</span></div>
-        <div class="efl"><span class="tk">DB_HOST</span>=<span class="tv">localhost</span></div>
-        <div class="efl"><span class="tk">DB_PASS</span>=<span class="tv">secret_123</span></div>
-        <div class="efl"></div>
-        <div class="efl"><span class="tc"># API Keys</span></div>
-        <div class="efl"><span class="tk">STRIPE_KEY</span>=<span class="tv">sk_live_...</span></div>
-      </div>
-      <div style="font-size:12px;color:var(--fg-m);line-height:1.6;padding:0 4px;">
-        Mỗi dòng là một cặp <code style="color:var(--blu);">KEY</code>=<code style="color:var(--amb);">VALUE</code>. Dùng để lưu thông tin nhạy cảm tách biệt khỏi mã nguồn (code).
-      </div>
-      <div class="ins">
-        <strong>.env = kho lưu bí mật.</strong> Giống như tủ an toàn, code chỉ "mượn" chìa khóa khi cần chạy, không dán mật khẩu trực tiếp lên màn hình.
+<div class="g">
+  <!-- 01: Cấu trúc -->
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>Cấu trúc</h2></div>
+    <div class="st">
+      <div class="code-block" id="code1">
+        <div class="token-cmt"># Database config</div>
+        <div><span class="token-key">DB_HOST</span>=<span class="token-val">localhost</span></div>
+        <div><span class="token-key">DB_USER</span>=<span class="token-val">admin</span></div>
+        <div class="token-cmt"># API Keys</div>
+        <div><span class="token-key">STRIPE_KEY</span>=<span class="token-val" id="blinkVal">sk_live_...</span></div>
       </div>
     </div>
+    <p class="ins">Mỗi dòng là một cặp <strong>KEY=VALUE</strong>. Nó giống như một cuốn sổ tay lưu trữ các thông tin "bí mật" mà code cần sử dụng.</p>
   </section>
 
-  <!-- S2: Quy tắc đặt tên -->
-  <section class="ss">
-    <div class="sh"><h2>02. Quy tắc đặt tên</h2><span class="nm">Naming</span></div>
-    <div class="sb">
-      <div style="background:var(--bg-term);border:1px solid var(--bdr);padding:12px;border-radius:2px;">
-        <div class="tgl-row">
-          <span class="tgl-v" style="color:var(--red);">dbHost</span>
-          <span style="color:var(--fg-m);font-size:10px;">→</span>
-          <span class="tgl-v" style="color:var(--grn);">DB_HOST</span>
+  <!-- 02: Quy tắc -->
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Quy tắc</h2></div>
+    <div class="st">
+      <div class="naming-box">
+        <div class="naming-row">
+          <span class="naming-bad">db name</span>
+          <i class="fa-solid fa-arrow-right" style="font-size:10px; opacity:0.3"></i>
+          <span class="naming-good">DB_NAME</span>
         </div>
-        <div class="tgl-row">
-          <span class="tgl-v" style="color:var(--red);">api key</span>
-          <span style="color:var(--fg-m);font-size:10px;">→</span>
-          <span class="tgl-v" style="color:var(--grn);">API_KEY</span>
+        <div class="naming-row">
+          <span class="naming-bad">apiKey</span>
+          <i class="fa-solid fa-arrow-right" style="font-size:10px; opacity:0.3"></i>
+          <span class="naming-good">API_KEY</span>
         </div>
-        <div class="tgl-row">
-          <span class="tgl-v" style="color:var(--red);">stripe-key</span>
-          <span style="color:var(--fg-m);font-size:10px;">→</span>
-          <span class="tgl-v" style="color:var(--grn);">STRIPE_KEY</span>
+        <div class="naming-row">
+          <span class="naming-bad">port-num</span>
+          <i class="fa-solid fa-arrow-right" style="font-size:10px; opacity:0.3"></i>
+          <span class="naming-good">PORT</span>
         </div>
-      </div>
-      <div class="ins">
-        <strong>Bắt buộc: VIẾT_HOA + GẠCH_DƯỚI.</strong> Không dùng dấu gạch ngang (dash) hay khoảng trắng. Sai quy tắc sẽ khiến code không thể nhận diện được biến.
       </div>
     </div>
+    <p class="ins">Luôn sử dụng <strong>VIẾT_HOA</strong> và dấu <strong>gạch dưới</strong>. Không dùng khoảng trắng hay dấu gạch ngang.</p>
   </section>
 
-  <!-- S3: Môi trường (Local vs Prod) -->
-  <section class="ss">
-    <div class="sh"><h2>03. Đa môi trường</h2><span class="nm">Multi-env</span></div>
-    <div class="sb">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-        <div style="border:1px solid var(--bdr);background:var(--bg-term);overflow:hidden;">
-          <div style="padding:6px 10px;background:var(--bg-elev);font-family:var(--mono);font-size:9px;color:var(--blu);border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:5px;">
-            <div class="status-dot" style="background:var(--blu);"></div>.env.local
-          </div>
-          <div style="padding:10px;font-family:var(--mono);font-size:9px;line-height:1.8;">
-            <span class="tk">DB</span>=<span class="tv">localhost</span><br>
-            <span class="tk">DEBUG</span>=<span class="tv">true</span>
+  <!-- 03: Môi trường -->
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Môi trường</h2></div>
+    <div class="st">
+      <div class="env-switch">
+        <div class="env-file-mini" id="envLocal">
+          <span class="env-label">.env.local</span>
+          <div class="code-block" style="font-size:9px">
+            <span class="token-key">API_URL</span>=<span class="token-val">localhost:3000</span>
           </div>
         </div>
-        <div style="border:1px solid var(--bdr);background:var(--bg-term);overflow:hidden;">
-          <div style="padding:6px 10px;background:var(--bg-elev);font-family:var(--mono);font-size:9px;color:var(--grn);border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:5px;">
-            <div class="status-dot" style="background:var(--grn);"></div>.env.prod
-          </div>
-          <div style="padding:10px;font-family:var(--mono);font-size:9px;line-height:1.8;">
-            <span class="tk">DB</span>=<span class="tv">db.markai.vn</span><br>
-            <span class="tk">DEBUG</span>=<span class="tv">false</span>
+        <div class="env-file-mini" id="envProd" style="opacity: 0.3">
+          <span class="env-label">.env.production</span>
+          <div class="code-block" style="font-size:9px">
+            <span class="token-key">API_URL</span>=<span class="token-val">api.markai.vn</span>
           </div>
         </div>
-      </div>
-      <div class="ins">
-        <strong>Cùng code, khác giá trị.</strong> File <code>.env</code> giúp ứng dụng tự động thay đổi cấu hình phù hợp với nơi nó đang chạy (máy cá nhân hay server thật).
       </div>
     </div>
+    <p class="ins">Cùng một biến nhưng có <strong>giá trị khác nhau</strong> tùy vào việc ứng dụng đang chạy ở máy cá nhân hay server thật.</p>
   </section>
 
-  <!-- S4: Bảo mật & Git -->
-  <section class="ss">
-    <div class="sh"><h2>04. Bảo mật & Git</h2><span class="nm">Security</span></div>
-    <div class="sb" style="position:relative;">
-      <div class="leak-flash"></div>
-      <div style="border:1px solid var(--red);background:var(--bg-term);padding:14px;border-radius:2px;display:flex;flex-direction:column;gap:8px;">
-        <div style="font-family:var(--mono);font-size:10px;color:var(--red);text-transform:uppercase;letter-spacing:1px;font-weight:700;">Dữ liệu bị rò rỉ!</div>
-        <div style="font-family:var(--mono);font-size:11px;">
-          <span class="tk">PASSWORD</span>=
-          <div class="secret-line" style="margin-top:4px;">
-            <div class="secret-char"></div><div class="secret-char"></div><div class="secret-char"></div><div class="secret-char"></div><div class="secret-char"></div><div class="secret-char"></div><div class="secret-char"></div><div class="secret-char"></div><div class="secret-char"></div>
-          </div>
+  <!-- 04: Bảo mật -->
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Bảo mật</h2></div>
+    <div class="st">
+      <div class="git-shield">
+        <div class="shield-icon">
+          <i class="fa-solid fa-file-shield"></i>
+          <div class="lock-overlay"><i class="fa-solid fa-lock"></i></div>
         </div>
-        <div style="font-family:var(--mono);font-size:9px;color:var(--fg-m);opacity:0.6;margin-top:4px;">Lộ mật khẩu trên GitHub...</div>
-      </div>
-      <div class="ins">
-        <strong>Đừng bao giờ push .env!</strong> Hãy thêm <code>.env</code> vào file <code>.gitignore</code>. Lộ file này đồng nghĩa với việc dán mật khẩu lên bảng tin công cộng.
+        <div class="gitignore-text" id="gitText">.gitignore += ".env"</div>
       </div>
     </div>
+    <p class="ins">Đừng bao giờ đẩy file này lên GitHub! Hãy thêm <code>.env</code> vào <strong>.gitignore</strong> để giữ bí mật tuyệt đối.</p>
   </section>
-
 </div>
+
+<script>
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// 01: Blink the secret value
+(async function() {
+  const val = document.getElementById('blinkVal');
+  while (true) {
+    val.style.opacity = '0.2';
+    await wait(800);
+    val.style.opacity = '1';
+    await wait(800);
+  }
+})();
+
+// 02: Sequential highlight
+(async function() {
+  const rows = document.querySelectorAll('.naming-row');
+  let active = 0;
+  while (true) {
+    rows.forEach((r, i) => {
+      r.style.borderColor = (i === active) ? 'var(--ac)' : 'var(--bd)';
+      r.style.background = (i === active) ? 'var(--abg)' : 'var(--bg)';
+    });
+    active = (active + 1) % rows.length;
+    await wait(1500);
+  }
+})();
+
+// 03: Toggle Env
+(async function() {
+  const local = document.getElementById('envLocal');
+  const prod = document.getElementById('envProd');
+  while (true) {
+    local.style.opacity = '1';
+    local.style.borderColor = 'var(--ac)';
+    prod.style.opacity = '0.3';
+    prod.style.borderColor = 'var(--bd)';
+    await wait(2000);
+    local.style.opacity = '0.3';
+    local.style.borderColor = 'var(--bd)';
+    prod.style.opacity = '1';
+    prod.style.borderColor = 'var(--ac)';
+    await wait(2000);
+  }
+})();
+
+// 04: Shield pulse
+(async function() {
+  const text = document.getElementById('gitText');
+  while (true) {
+    text.style.transform = 'scale(1.05)';
+    text.style.borderColor = 'var(--ac)';
+    await wait(1000);
+    text.style.transform = 'scale(1)';
+    text.style.borderColor = 'transparent';
+    await wait(1000);
+  }
+})();
+</script>
 </body>
 </html>
