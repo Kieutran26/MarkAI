@@ -3,190 +3,289 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Deploy Demo — markAI</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<title>Deploy Demo — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-:root{
-  --bg:#0f0f12;--bg-card:#16161b;--fg:#e8e4dc;--muted:#6e6e7a;
-  --accent:#e88c2e;--accent-soft:rgba(232,140,46,.12);
-  --accent-border:rgba(232,140,46,.3);--border:#282830;
-  --surface:#1c1c23;--success:#3a9e5c;--success-soft:rgba(58,158,92,.12);
-  --success-border:rgba(58,158,92,.3);--warning:#c49030;--warning-soft:rgba(196,144,48,.1);
-  --error:#c43a3a;--error-soft:rgba(196,58,58,.12);--error-border:rgba(196,58,58,.3);
-  --bar-d:#2a2a34;--bar-m:#44444f;--shape-lt:#33333d;
+:root {
+  --bg: #0f0f12;
+  --bgc: #16161b;
+  --bgi: #121217;
+  --bd: #282830;
+  --tx: #e8e4dc;
+  --txm: #707070;
+  --ac: #E88C2E;
+  --abg: rgba(232, 140, 46, 0.1);
+  --abg2: rgba(232, 140, 46, 0.2);
+  --err: #ef4444;
+  --gn: #22c55e;
 }
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--fg);font-family:'Space Grotesk',sans-serif;line-height:1.6;overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(rgba(255,255,255,.022) 1px,transparent 1px);background-size:20px 20px;pointer-events:none;z-index:0}
 
-#app-root{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:24px}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-.sec-lbl{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:20px;display:flex;align-items:center;gap:10px}
-.sec-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--tx);
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+}
 
-.sim-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
-@media(max-width:720px){.sim-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:480px){.sim-grid{grid-template-columns:1fr}}
+.g {
+  width: 100%;
+  max-width: 940px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
 
-.sc{background:var(--bg-card);border:1px solid var(--border);cursor:pointer;position:relative;overflow:hidden;transition:border-color .3s,background .3s}
-.sc::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;transform:scaleX(0);transform-origin:left;transition:transform .35s ease;z-index:2}
-.sc:hover{border-color:var(--accent-border)}
-.sc.on{border-color:var(--accent);background:var(--surface)}
-.sc.on::before{transform:scaleX(1);background:var(--accent)}
-.sc[data-st="success"].on{border-color:var(--success)}.sc[data-st="success"].on::before{background:var(--success)}
-.sc[data-st="error"].on{border-color:var(--error)}.sc[data-st="error"].on::before{background:var(--error)}
-.sc[data-st="warn"].on{border-color:var(--warning)}.sc[data-st="warn"].on::before{background:var(--warning)}
+@media (max-width: 600px) {
+  .g { grid-template-columns: 1fr; }
+}
 
-.sc-head{padding:14px 14px 8px;display:flex;justify-content:space-between;align-items:center}
-.sc-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px}
-.sc-tag{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:1.2px;color:var(--muted);transition:color .3s}
-.sc.on .sc-tag{color:var(--accent)}
-.sc[data-st="success"].on .sc-tag{color:var(--success)}
-.sc[data-st="error"].on .sc-tag{color:var(--error)}
-.sc[data-st="warn"].on .sc-tag{color:var(--warning)}
+.c {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
 
-.sc-demo{padding:0 14px 14px;min-height:140px;position:relative;display:flex;flex-direction:column;justify-content:center}
+.c::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--ac);
+}
 
-/* Deploy state UI */
-.dep-env{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-bottom:8px;display:flex;gap:8px;align-items:center}
-.dep-env .dot{width:6px;height:6px;border-radius:50%;background:var(--success);opacity:.6}
-.dep-branch{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--fg);opacity:.5;margin-bottom:10px;display:flex;align-items:center;gap:6px}
-.dep-branch i{font-size:8px;color:var(--muted)}
-.dep-cmd{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);opacity:.4;margin-bottom:12px;padding:6px 8px;background:var(--bg);border:1px solid var(--border)}
-.dep-btn{padding:8px 20px;background:var(--accent);color:#fff;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;cursor:default;border:none;letter-spacing:.5px;text-align:center}
+.c::after {
+  content: '';
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 6px;
+  height: 6px;
+  background: var(--ac);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--ac);
+  animation: pulse 2s infinite;
+}
 
-.dep-steps{display:flex;flex-direction:column;gap:6px}
-.dep-step{display:flex;align-items:center;gap:8px;padding:5px 8px;background:var(--bg);border:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:9px;transition:all .3s}
+@keyframes pulse {
+  0% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0.3; transform: scale(1); }
+}
+
+.ch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.ch .n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ac);
+  background: var(--abg);
+  border: 1px solid var(--abg2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+.ch h2 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  text-transform: uppercase;
+}
+
+.st {
+  background: var(--bgi);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  flex: 1;
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ins {
+  margin-top: 14px;
+  font-size: 11.5px;
+  color: var(--txm);
+  line-height: 1.6;
+  padding-left: 12px;
+  border-left: 2px solid var(--ac);
+}
+
+.ins strong {
+  color: var(--ac);
+  font-weight: 600;
+}
+
+/* Original Content Styles */
+.dep-env{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--txm);margin-bottom:8px;display:flex;gap:8px;align-items:center}
+.dep-env .dot{width:6px;height:6px;border-radius:50%;background:var(--gn);opacity:.6}
+.dep-branch{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--tx);opacity:.5;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.dep-branch i{font-size:8px;color:var(--txm)}
+.dep-cmd{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--txm);opacity:.4;margin-bottom:12px;padding:6px 8px;background:var(--bg);border:1px solid var(--bd)}
+.dep-btn{padding:8px 20px;background:var(--ac);color:#fff;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;cursor:default;border:none;letter-spacing:.5px;text-align:center;transition: opacity 0.3s;}
+
+.dep-steps{display:flex;flex-direction:column;gap:6px;width:100%;max-width:160px}
+.dep-step{display:flex;align-items:center;gap:8px;padding:5px 8px;background:var(--bg);border:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:9px;transition:all .3s}
 .dep-step .s-icon{width:16px;height:16px;display:flex;align-items:center;justify-content:center;font-size:8px;flex-shrink:0}
-.dep-step.done .s-icon{color:var(--success)}
-.dep-step.active .s-icon{color:var(--accent)}
-.dep-step.pending .s-icon{color:var(--muted);opacity:.4}
-.dep-step.done{border-color:rgba(58,158,92,.15)}
-.dep-step.active{border-color:var(--accent-border);background:var(--accent-soft)}
+.dep-step.done .s-icon{color:var(--gn)}
+.dep-step.active .s-icon{color:var(--ac)}
+.dep-step.pending .s-icon{color:var(--txm);opacity:.4}
+.dep-step.done{border-color:rgba(34,197,94,.15)}
+.dep-step.active{border-color:var(--abg2);background:var(--abg)}
 .dep-step.pending{opacity:.5}
-.dep-step .s-label{color:var(--muted)}
-.dep-step.done .s-label{color:var(--fg);opacity:.7}
-.dep-step.active .s-label{color:var(--accent)}
-.dep-spinner{width:10px;height:10px;border:1.5px solid var(--accent);border-top-color:transparent;border-radius:50%;animation:spin .8s linear infinite}
+.dep-step .s-label{color:var(--txm)}
+.dep-step.done .s-label{color:var(--tx);opacity:.7}
+.dep-step.active .s-label{color:var(--ac)}
+.dep-spinner{width:10px;height:10px;border:1.5px solid var(--ac);border-top-color:transparent;border-radius:50%;animation:spin .8s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 .dep-success{text-align:center;padding:8px 0}
-.dep-success-icon{font-size:24px;color:var(--success);margin-bottom:8px}
-.dep-success-title{font-size:13px;font-weight:700;color:var(--success);margin-bottom:6px}
-.dep-success-url{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);margin-bottom:4px;word-break:break-all}
-.dep-success-time{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);opacity:.5}
+.dep-success-icon{font-size:24px;color:var(--gn);margin-bottom:8px}
+.dep-success-title{font-size:13px;font-weight:700;color:var(--gn);margin-bottom:6px}
+.dep-success-url{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ac);margin-bottom:4px;word-break:break-all}
+.dep-success-time{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--txm);opacity:.5}
 
 .dep-rollback{text-align:center;padding:8px 0}
-.dep-rollback-icon{font-size:24px;color:var(--warning);margin-bottom:8px}
-.dep-rollback-title{font-size:13px;font-weight:700;color:var(--warning);margin-bottom:6px}
-.dep-rollback-detail{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);line-height:1.5}
+.dep-rollback-icon{font-size:24px;color:var(--err);margin-bottom:8px}
+.dep-rollback-title{font-size:13px;font-weight:700;color:var(--err);margin-bottom:6px}
+.dep-rollback-detail{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txm);line-height:1.5}
 
-.ins{background:var(--surface);border:1px solid var(--border);padding:18px 22px;display:flex;align-items:flex-start;gap:12px;min-height:80px}
-.ins-i{color:var(--accent);font-size:13px;margin-top:3px;flex-shrink:0}
-.ins-t{font-size:14px;color:var(--fg);opacity:.85;line-height:1.65;transition:opacity .25s,transform .25s}
-.ins-t.fading{opacity:0;transform:translateY(6px)}
 </style>
 </head>
 <body>
-<div id="app-root">
-  <section aria-label="Mô phỏng deploy">
-    <div class="sim-grid" id="simGrid"></div>
-    <div class="ins">
-      <i class="fa-solid fa-lightbulb ins-i"></i>
-      <p class="ins-t" id="insT">Nhấn vào một trạng thái để xem giải thích.</p>
+
+<div class="g">
+  <!-- 01: Ready -->
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>Ready</h2></div>
+    <div class="st">
+      <div style="width:140px">
+        <div class="dep-env"><div class="dot"></div>Production</div>
+        <div class="dep-branch"><i class="fa-solid fa-code-branch"></i>main</div>
+        <div class="dep-cmd">$ git push origin main</div>
+        <div class="dep-btn" id="btn1">DEPLOY</div>
+      </div>
     </div>
+    <p class="ins">Code đã sẵn sàng. <strong>Trigger deploy</strong> (bằng tay hoặc tự động khi push code) để bắt đầu pipeline đưa sản phẩm lên server.</p>
+  </section>
+
+  <!-- 02: Deploying -->
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Deploying</h2></div>
+    <div class="st">
+      <div class="dep-steps">
+        <div class="dep-step done"><div class="s-icon"><i class="fa-solid fa-check"></i></div><span class="s-label">BUILD</span></div>
+        <div class="dep-step done"><div class="s-icon"><i class="fa-solid fa-check"></i></div><span class="s-label">TEST</span></div>
+        <div class="dep-step active" id="stepActive"><div class="s-icon"><div class="dep-spinner"></div></div><span class="s-label">DEPLOY</span></div>
+        <div class="dep-step pending" id="stepPending"><div class="s-icon"><i class="fa-solid fa-clock"></i></div><span class="s-label">VERIFY</span></div>
+      </div>
+    </div>
+    <p class="ins">Pipeline đang chạy ngầm: <strong>Build code</strong>, chạy <strong>Test tự động</strong>, rồi mới đẩy lên server thật. Mỗi bước phải pass mới đi tiếp.</p>
+  </section>
+
+  <!-- 03: Success -->
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Success</h2></div>
+    <div class="st">
+      <div class="dep-success">
+        <div class="dep-success-icon"><i class="fa-solid fa-check-circle"></i></div>
+        <div class="dep-success-title">Success!</div>
+        <div class="dep-success-url">app.example.com</div>
+        <div class="dep-success-time" id="time1">v1.4.0 is now live</div>
+      </div>
+    </div>
+    <p class="ins">Mọi thứ ổn định! Code mới đã <strong>live trên server</strong>. User có thể truy cập qua URL chính thức. Đây là trạng thái mong đợi nhất.</p>
+  </section>
+
+  <!-- 04: Rollback -->
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Rollback</h2></div>
+    <div class="st">
+      <div class="dep-rollback">
+        <div class="dep-rollback-icon"><i class="fa-solid fa-rotate-left"></i></div>
+        <div class="dep-rollback-title">Rollback</div>
+        <div class="dep-rollback-detail">
+          Reverting to v1.3.5<br>
+          <span style="color:var(--err);font-size:9px" id="rollReason">Reason: AI generated Error 500</span>
+        </div>
+      </div>
+    </div>
+    <p class="ins">Nếu bản mới bị lỗi nặng, bạn có thể kích hoạt <strong>Rollback</strong> — quay về phiên bản ổn định trước đó ngay lập tức để bảo vệ trải nghiệm user.</p>
   </section>
 </div>
 
 <script>
-const sims = [
-  {
-    num:'01', tag:'Ready', st:'',
-    ins:'Code đã sẵn sàng. Trigger deploy (bằng tay hoặc tự động khi push code) để bắt đầu pipeline đưa sản phẩm lên server.',
-    html:`<div class="dep-env"><div class="dot"></div>Production</div>
-      <div class="dep-branch"><i class="fa-solid fa-code-branch"></i>main</div>
-      <div class="dep-cmd">$ git push origin main</div>
-      <div class="dep-btn">DEPLOY</div>`
-  },
-  {
-    num:'02', tag:'Deploying', st:'warn',
-    ins:'Pipeline đang chạy ngầm: Build code, chạy Test tự động, rồi mới đẩy lên server thật. Mỗi bước phải pass mới đi tiếp.',
-    html:`<div class="dep-steps">
-      <div class="dep-step done"><div class="s-icon"><i class="fa-solid fa-check"></i></div><span class="s-label">BUILD</span></div>
-      <div class="dep-step done"><div class="s-icon"><i class="fa-solid fa-check"></i></div><span class="s-label">TEST</span></div>
-      <div class="dep-step active"><div class="s-icon"><div class="dep-spinner"></div></div><span class="s-label">DEPLOY</span></div>
-      <div class="dep-step pending"><div class="s-icon"><i class="fa-solid fa-clock"></i></div><span class="s-label">VERIFY</span></div>
-    </div>`
-  },
-  {
-    num:'03', tag:'Success', st:'success',
-    ins:'Mọi thứ ổn định! Code mới đã live trên server. User có thể truy cập qua URL chính thức. Đây là trạng thái mong đợi nhất.',
-    html:`<div class="dep-success">
-      <div class="dep-success-icon"><i class="fa-solid fa-check-circle"></i></div>
-      <div class="dep-success-title">Success!</div>
-      <div class="dep-success-url">app.example.com</div>
-      <div class="dep-success-time">v1.4.0 is now live</div>
-    </div>`
-  },
-  {
-    num:'04', tag:'Rollback', st:'error',
-    ins:'Nếu bản mới bị lỗi nặng, bạn có thể kích hoạt Rollback — quay về phiên bản ổn định trước đó ngay lập tức để bảo vệ trải nghiệm user.',
-    html:`<div class="dep-rollback">
-      <div class="dep-rollback-icon"><i class="fa-solid fa-rotate-left"></i></div>
-      <div class="dep-rollback-title">Rollback</div>
-      <div class="dep-rollback-detail">
-        Reverting to v1.3.5<br>
-        <span style="color:var(--error);font-size:9px">Reason: AI generated Error 500</span>
-      </div>
-    </div>`
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// 01: Ready Loop (Pulse Button)
+(async function() {
+  const btn = document.getElementById('btn1');
+  while (true) {
+    btn.style.opacity = '0.7';
+    await wait(1000);
+    btn.style.opacity = '1';
+    await wait(1000);
   }
-];
+})();
 
-const simGrid = document.getElementById('simGrid');
-const insT = document.getElementById('insT');
-let activeI = 0;
-let autoTimer;
+// 02: Deploying Loop (Toggle steps)
+(async function() {
+  const active = document.getElementById('stepActive');
+  const pending = document.getElementById('stepPending');
+  while (true) {
+    active.style.borderColor = 'var(--ac)';
+    pending.style.opacity = '0.5';
+    await wait(2000);
+    active.style.borderColor = 'var(--bd)';
+    pending.style.opacity = '1';
+    await wait(2000);
+  }
+})();
 
-function renderSim() {
-  simGrid.innerHTML = sims.map((s, i) => `
-    <div class="sc" data-i="${i}" data-st="${s.st}" tabindex="0" role="button">
-      <div class="sc-head"><span class="sc-num">${s.num}</span><span class="sc-tag">${s.tag}</span></div>
-      <div class="sc-demo">${s.html}</div>
-    </div>`).join('');
+// 03: Success Loop (Blink time)
+(async function() {
+  const time = document.getElementById('time1');
+  while (true) {
+    time.style.opacity = '0.3';
+    await wait(1500);
+    time.style.opacity = '0.8';
+    await wait(1500);
+  }
+})();
 
-  simGrid.querySelectorAll('.sc').forEach(c => {
-    c.addEventListener('click', () => {
-      clearInterval(autoTimer);
-      activateSim(+c.dataset.i);
-    });
-  });
-}
-
-function activateSim(i) {
-  activeI = i;
-  simGrid.querySelectorAll('.sc').forEach((c, idx) => c.classList.toggle('on', idx === i));
-  setIns(sims[i].ins);
-}
-
-function setIns(t) {
-  insT.classList.add('fading');
-  setTimeout(() => {
-    insT.textContent = t;
-    insT.classList.remove('fading');
-  }, 250);
-}
-
-function startAuto() {
-  activateSim(0);
-  autoTimer = setInterval(() => {
-    activeI = (activeI + 1) % sims.length;
-    activateSim(activeI);
-  }, 4000);
-}
-
-renderSim();
-startAuto();
+// 04: Rollback Loop (Shake reason)
+(async function() {
+  const reason = document.getElementById('rollReason');
+  while (true) {
+    reason.style.transform = 'translateX(2px)';
+    await wait(100);
+    reason.style.transform = 'translateX(-2px)';
+    await wait(100);
+    reason.style.transform = 'translateX(0)';
+    await wait(3000);
+  }
+})();
 </script>
 </body>
 </html>

@@ -82,6 +82,40 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
 
 .hint{font-size:12px;color:var(--muted);opacity:.5;margin-top:10px;display:flex;align-items:center;gap:6px}
 .hint i{font-size:10px;color:var(--accent)}
+
+.step-btn { position: relative; }
+.btn-hint {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent);
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 2px;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: hintPulse 2s infinite;
+  z-index: 999;
+}
+.btn-hint::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid var(--accent);
+}
+@keyframes hintPulse {
+  0% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.08); }
+  100% { transform: translateX(-50%) scale(1); }
+}
 </style>
 </head>
 <body>
@@ -93,7 +127,10 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
 
     <div class="step-controls">
       <button class="step-btn" id="prevBtn" disabled><i class="fa-solid fa-arrow-left"></i> Back</button>
-      <button class="step-btn primary" id="nextBtn">Next <i class="fa-solid fa-arrow-right"></i></button>
+      <div style="position: relative; display: inline-block;">
+        <div class="btn-hint" id="stepHint">Click to proceed!</div>
+        <button class="step-btn primary" id="nextBtn">Next <i class="fa-solid fa-arrow-right"></i></button>
+      </div>
       <button class="step-btn danger" id="failBtn" disabled><i class="fa-solid fa-bug"></i> Fail</button>
     </div>
 
@@ -236,7 +273,13 @@ function updateUI(){
   }
 }
 
+function hideHint() {
+  const h = document.getElementById('stepHint');
+  if(h) h.style.display = 'none';
+}
+
 nextBtn.addEventListener('click', () => {
+  hideHint();
   if(currentStep === 4){
     failed = false;
     currentStep = 5;
@@ -247,6 +290,7 @@ nextBtn.addEventListener('click', () => {
 });
 
 failBtn.addEventListener('click', () => {
+  hideHint();
   failed = true;
   currentStep = 6;
   updateUI();
