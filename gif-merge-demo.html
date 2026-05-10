@@ -1,238 +1,615 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Merge Demo — Vibecode Glossary</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#1a1a18;--bg-c:#222220;--bg-e:#2a2a27;--bg-t:#161614;--fg:#e8e4dd;--fm:#8a877e;--ac:#e88c2e;--acd:#c97522;--am:#c9922a;--gn:#6b8f5e;--rd:#b54a4a;--bl:#5e7a8f;--bd:#3a3a36;--bdl:#4a4a45;--mn:'JetBrains Mono',monospace;--sn:'Space Grotesk',sans-serif;}
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--fg);font-family:var(--sn);overflow-x:hidden;line-height:1.5;}
-body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:24px 24px;}
-.pw{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:12px 20px 64px;}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merge - Amber Brutalist 4-Cell Grid</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --amber: #E88C2E;
+            --bg: #0f0f12;
+            --card-bg: #16161b;
+            --border: #282830;
+            --text: #e8e4dc;
+            --muted: #707070;
+            --gap: 14px;
+            --ease: cubic-bezier(0.65, 0, 0.35, 1);
+            --dark: #0d0d10;
+            --green: #3a9e5c;
+            --red: #c45c4a;
+            --blue: #5a8ad4;
+        }
 
-/* Grid Layout */
-.demo-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:stretch;}
-@media(max-width:850px){.demo-grid{grid-template-columns:1fr;}}
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-.ss{border:1px solid var(--bd);background:var(--bg-c);margin-bottom:20px;overflow:hidden;display:flex;flex-direction:column;height:100%;transition:border-color .4s;}
-.ss:hover{border-color:var(--ac);}
-.ss.full-width{grid-column:1/-1;}
-.sh{border-bottom:1px solid var(--bd);padding:10px 16px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.02);}
-.sh h2{font-family:var(--mn);font-size:10px;font-weight:700;color:var(--ac);text-transform:uppercase;letter-spacing:1px;}
-.sh .nm{font-family:var(--mn);font-size:9px;color:var(--fm);}
-.sb{padding:20px;flex:1;display:flex;flex-direction:column;justify-content:center;min-height:180px;}
+        body {
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(ellipse at 25% 15%, rgba(232, 140, 46, 0.05) 0%, transparent 55%),
+                radial-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 16px 16px;
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-.ins{background:rgba(232,140,46,0.05);border-left:2px solid var(--ac);padding:10px 14px;margin-top:16px;font-size:11px;color:var(--fm);line-height:1.5;}
-.ins strong{color:var(--fg);}
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--gap);
+            width: 100%;
+            max-width: 940px;
+        }
 
-/* Scene 1: SVG Branch Graph */
-.s1-svg{width:100%;max-width:400px;height:auto;margin:0 auto;}
-.s1-svg line{stroke-width:2.5;stroke-linecap:round}
-.s1-svg .lm{stroke:var(--bd)}
-.s1-svg .lb{stroke:var(--ac);opacity:0;transition:opacity .4s}
-.s1-svg .lb.vis{opacity:1}
-.s1-svg .ld{stroke:var(--ac);stroke-dasharray:5 4;opacity:0;transition:opacity .4s}
-.s1-svg .ld.vis{opacity:1}
-.s1-svg circle{opacity:0;transition:opacity .3s,r .3s}
-.s1-svg circle.vis{opacity:1}
-.s1-svg .dm{fill:var(--fm)}.s1-svg .db{fill:var(--ac)}
-.s1-svg .merge-dot{fill:var(--gn);r:7}
-.s1-svg .merge-dot.vis{r:9}
-.s1-svg text{font-family:var(--mn);font-size:10px;letter-spacing:1.5px;fill:var(--fm);opacity:0;transition:opacity .4s}
-.s1-svg text.vis{opacity:1}
-@keyframes mpulse{0%,100%{r:9}50%{r:12}}
-.s1-svg .merge-dot.pulse{animation:mpulse 1.2s ease-in-out infinite}
+        @media (max-width: 600px) {
+            .grid-container { grid-template-columns: 1fr; }
+            .sim-area { height: 140px !important; }
+        }
 
-/* Code panels */
-.s-flow{display:flex;align-items:stretch;gap:10px;width:100%;}
-.s-panel{flex:1;border:1px solid var(--bd);background:var(--bg-t);overflow:hidden;display:flex;flex-direction:column;opacity:0;transform:translateY(10px);transition:opacity .4s,transform .4s;}
-.s-panel.vis{opacity:1;transform:none;}
-.s-ph{font-family:var(--mn);font-size:9px;letter-spacing:1px;text-transform:uppercase;padding:6px 10px;border-bottom:1px solid var(--bd);color:var(--fm);background:rgba(255,255,255,.02)}
-.s-lines{flex:1;padding:6px 0;display:flex;flex-direction:column;gap:2px}
-.sl{display:flex;align-items:center;padding:4px 10px;font-family:var(--mn);font-size:10px;border-left:3px solid transparent;gap:6px;min-height:24px;opacity:0;transition:opacity .4s;}
-.sl.vis{opacity:1;}
-.sl .sl-l{color:var(--fm);min-width:50px;flex-shrink:0}
-.sl .sl-v{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.sl.sa{border-left-color:var(--am);background:rgba(201,146,42,.06)}
-.sl.sb{border-left-color:var(--gn);background:rgba(107,143,94,.06)}
-.sl.sc{border-left-color:var(--rd);background:rgba(181,74,74,.06)}
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            position: relative;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+        }
 
-/* Markers */
-.cm{font-family:var(--mn);font-size:9px;padding:2px 10px;color:var(--rd);background:rgba(181,74,74,0.1);border-top:1px solid rgba(181,74,74,0.2);border-bottom:1px solid rgba(181,74,74,0.2);margin:1px 0;opacity:0;transition:opacity .3s;}
-.cm.vis{opacity:1;}
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--amber);
+            z-index: 2;
+        }
 
-/* Conflict boxes */
-.s4-wrap{display:flex;flex-direction:column;gap:8px;width:100%;}
-.s4-step{display:flex;align-items:center;gap:10px;opacity:0;transform:translateX(-10px);transition:opacity .4s,transform .4s;}
-.s4-step.vis{opacity:1;transform:none;}
-.s4-lbl{font-family:var(--mn);font-size:9px;letter-spacing:1px;color:var(--fm);min-width:60px;text-align:right;flex-shrink:0;text-transform:uppercase}
-.s4-box{flex:1;padding:8px 12px;border:1px solid var(--bd);background:var(--bg-t);font-family:var(--mn);font-size:10px;line-height:1.3}
-.s4-box.ok{border-color:var(--gn);color:var(--gn)}
-.s4-box.combine{border-color:var(--ac);color:var(--ac)}
+        .indicator {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 6px;
+            height: 6px;
+            background: var(--amber);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--amber);
+            animation: pulse 2s infinite;
+            z-index: 3;
+        }
 
-@media(max-width:640px){
-  .s-flow{flex-direction:column}
-  .s4-lbl{min-width:auto;text-align:left}
-  .s4-step{flex-direction:column;align-items:stretch;gap:4px}
-}
-</style>
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 22px;
+        }
+
+        .num-box {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--amber);
+            background: rgba(232, 140, 46, 0.1);
+            border: 1px solid rgba(232, 140, 46, 0.2);
+            padding: 2px 5px;
+            border-radius: 2px;
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(232, 228, 220, 0.9);
+        }
+
+        .sim-area {
+            height: 165px;
+            background: var(--dark);
+            border: 1px solid rgba(255,255,255,0.03);
+            border-radius: 4px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 16px;
+            overflow: hidden;
+            padding: 10px;
+        }
+
+        .ins {
+            border-left: 2px solid var(--amber);
+            padding-left: 14px;
+            margin-top: auto;
+            color: var(--muted);
+            font-size: 11.5px;
+            line-height: 1.6;
+        }
+
+        .ins strong {
+            color: var(--amber);
+            font-weight: 600;
+        }
+
+        /* Cell 1: Branch Graph */
+        .branch-svg {
+            width: 100%;
+            height: 100%;
+            max-width: 340px;
+        }
+        .branch-svg line {
+            stroke-width: 2.5;
+            stroke-linecap: round;
+        }
+        .branch-svg .main-line {
+            stroke: var(--border);
+            transition: stroke 0.3s;
+        }
+        .branch-svg .branch-line {
+            stroke: var(--amber);
+            opacity: 0;
+            transition: opacity 0.4s var(--ease);
+        }
+        .branch-svg .branch-line.vis { opacity: 1; }
+        .branch-svg circle {
+            opacity: 0;
+            transition: all 0.3s var(--ease);
+        }
+        .branch-svg circle.vis { opacity: 1; }
+        .branch-svg .dot-main { fill: var(--muted); }
+        .branch-svg .dot-branch { fill: var(--amber); }
+        .branch-svg .dot-merge {
+            fill: var(--green);
+            transition: all 0.3s var(--ease);
+        }
+        .branch-svg .dot-merge.pulse {
+            animation: mergePulse 1s ease-in-out infinite;
+        }
+        @keyframes mergePulse {
+            0%, 100% { r: 6; }
+            50% { r: 9; }
+        }
+        .branch-svg text {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1px;
+            fill: var(--muted);
+            opacity: 0;
+            transition: opacity 0.4s var(--ease);
+        }
+        .branch-svg text.vis { opacity: 1; }
+
+        /* Cell 2: Clean Merge */
+        .merge-flow {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            gap: 8px;
+            align-items: center;
+            justify-content: center;
+        }
+        .merge-panel {
+            flex: 1;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.02);
+            border-radius: 3px;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: all 0.4s var(--ease);
+        }
+        .merge-panel.vis {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .merge-ph {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--muted);
+            padding-bottom: 4px;
+            border-bottom: 1px solid var(--border);
+        }
+        .merge-line {
+            padding: 5px 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            border-left: 3px solid transparent;
+            background: rgba(255,255,255,0.02);
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.35s var(--ease);
+        }
+        .merge-line.vis {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .merge-line.ma { border-left-color: var(--amber); }
+        .merge-line.mb { border-left-color: var(--green); }
+        .merge-line.main { color: var(--text); }
+        .merge-line.feat { color: var(--muted); }
+        .merge-arrow {
+            font-size: 14px;
+            color: var(--amber);
+            opacity: 0;
+            transition: opacity 0.4s var(--ease);
+        }
+        .merge-arrow.vis { opacity: 1; }
+
+        /* Cell 3: Conflict */
+        .conflict-box {
+            width: 100%;
+            border: 1px solid var(--border);
+            background: rgba(196, 92, 74, 0.04);
+            border-radius: 3px;
+            padding: 10px 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            line-height: 1.6;
+        }
+        .conflict-marker {
+            color: var(--red);
+            opacity: 0;
+            transition: opacity 0.3s var(--ease);
+        }
+        .conflict-marker.vis { opacity: 1; }
+        .conflict-main {
+            border-left: 3px solid var(--red);
+            padding-left: 8px;
+            margin: 4px 0;
+            background: rgba(196,92,74,0.06);
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.35s var(--ease);
+        }
+        .conflict-main.vis {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .conflict-feat {
+            border-left: 3px solid var(--amber);
+            padding-left: 8px;
+            margin: 4px 0;
+            background: rgba(232,140,46,0.06);
+            opacity: 0;
+            transform: translateX(-10px);
+            transition: all 0.35s var(--ease);
+        }
+        .conflict-feat.vis {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .conflict-sep {
+            color: var(--muted);
+            opacity: 0;
+            transition: opacity 0.3s var(--ease);
+        }
+        .conflict-sep.vis { opacity: 1; }
+        .conflict-title {
+            font-size: 9px;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+
+        /* Cell 4: Resolution */
+        .resolution-wrap {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .res-step {
+            display: flex;
+            align-items: stretch;
+            gap: 10px;
+            opacity: 0;
+            transform: translateX(-12px);
+            transition: all 0.4s var(--ease);
+        }
+        .res-step.vis {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .res-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--amber);
+            width: 24px;
+            height: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(232,140,46,0.3);
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+        .res-box {
+            flex: 1;
+            border: 1px solid var(--border);
+            background: rgba(255,255,255,0.02);
+            padding: 8px 12px;
+            font-size: 11px;
+            border-radius: 3px;
+            transition: all 0.3s var(--ease);
+        }
+        .res-box.pick {
+            border-color: var(--green);
+            background: rgba(58,158,92,0.06);
+            color: var(--green);
+        }
+        .res-box.combine {
+            border-color: var(--amber);
+            background: rgba(232,140,46,0.06);
+            color: var(--text);
+        }
+        .res-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+    </style>
 </head>
 <body>
-<div class="pw">
-  <div class="demo-grid">
 
-    <!-- CONCEPT: Branch Graph -->
-    <section class="ss full-width">
-      <div class="sh"><h2>Bản chất của Merge</h2><span class="nm">01 / CONCEPT</span></div>
-      <div class="sb">
-        <svg class="s1-svg" viewBox="0 0 440 110" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <line class="lm" x1="20" y1="75" x2="420" y2="75"/>
-          <line class="lb" id="b1" x1="90" y1="75" x2="90" y2="30"/>
-          <line class="lb" id="b2" x1="90" y1="30" x2="280" y2="30"/>
-          <line class="ld" id="b3" x1="280" y1="30" x2="320" y2="75"/>
-          <circle class="dm" id="d1" cx="90" cy="75" r="5"/>
-          <circle class="dm" id="d2" cx="200" cy="75" r="5"/>
-          <circle class="merge-dot" id="dg" cx="320" cy="75" r="7"/>
-          <circle class="dm" id="d3" cx="420" cy="75" r="5"/>
-          <circle class="db" id="f1" cx="140" cy="30" r="5"/>
-          <circle class="db" id="f2" cx="210" cy="30" r="5"/>
-          <circle class="db" id="f3" cx="280" cy="30" r="5"/>
-          <text id="t1" x="150" y="18">feature/caption</text>
-          <text id="t2" x="220" y="100">main</text>
-          <text id="t3" x="330" y="60">merge</text>
-        </svg>
-        <div class="ins"><strong>Merge là gộp nhánh.</strong> Khi hai người làm riêng biệt trên hai luồng thời gian, Merge là lúc hội quân để hợp nhất thành quả.</div>
-      </div>
-    </section>
-
-    <!-- CLEAN MERGE -->
-    <section class="ss">
-      <div class="sh"><h2>Trường hợp 1: Merge Sạch</h2><span class="nm">02 / CLEAN</span></div>
-      <div class="sb">
-        <div class="s-flow">
-          <div class="s-panel" id="p1a">
-            <div class="s-ph">main</div>
-            <div class="s-lines">
-              <div class="sl sa" id="l1a"><span class="sl-l">Nút:</span><span class="sl-v">Cam</span></div>
+    <div class="grid-container">
+        <!-- Cell 1: Branch Graph -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">01</div>
+                <div class="card-title">Branch Flow</div>
             </div>
-          </div>
-          <div class="s-panel" id="p1b">
-            <div class="s-ph">feature</div>
-            <div class="s-lines">
-              <div class="sl sb" id="l1b"><span class="sl-l">Footer:</span><span class="sl-v">© 2024</span></div>
+            <div class="sim-area">
+                <svg class="branch-svg" viewBox="0 0 380 100" fill="none">
+                    <line class="main-line" x1="20" y1="70" x2="360" y2="70"/>
+                    <line class="branch-line" id="bl1" x1="80" y1="70" x2="80" y2="30"/>
+                    <line class="branch-line" id="bl2" x1="80" y1="30" x2="240" y2="30"/>
+                    <line class="branch-line" id="bl3" x1="240" y1="30" x2="280" y2="70"/>
+                    
+                    <circle class="dot-main" id="dm1" cx="80" cy="70" r="5"/>
+                    <circle class="dot-main" id="dm2" cx="170" cy="70" r="5"/>
+                    <circle class="dot-merge" id="dmg" cx="280" cy="70" r="6"/>
+                    <circle class="dot-main" id="dm3" cx="360" cy="70" r="5"/>
+                    
+                    <circle class="dot-branch" id="db1" cx="120" cy="30" r="5"/>
+                    <circle class="dot-branch" id="db2" cx="180" cy="30" r="5"/>
+                    <circle class="dot-branch" id="db3" cx="240" cy="30" r="5"/>
+                    
+                    <text id="bt1" x="130" y="18">feature/auth</text>
+                    <text id="bt2" x="190" y="95">main</text>
+                    <text id="bt3" x="290" y="58">merge</text>
+                </svg>
             </div>
-          </div>
+            <div class="ins">
+                <strong>Merge là gộp nhánh.</strong> Khi hai người làm riêng biệt trên hai luồng thời gian, Merge là lúc hội quân để hợp nhất thành quả.
+            </div>
         </div>
-        <div class="ins"><strong>Sửa khác chỗ → Tự gộp.</strong> Nếu mỗi người sửa một file hoặc một dòng khác nhau, Git sẽ tự động gộp.</div>
-      </div>
-    </section>
 
-    <!-- CONFLICT -->
-    <section class="ss">
-      <div class="sh"><h2>Trường hợp 2: Conflict</h2><span class="nm">03 / CONFLICT</span></div>
-      <div class="sb">
-        <div class="s-panel vis">
-          <div class="s-ph">merged_file.js</div>
-          <div class="s-lines">
-            <div class="cm" id="c2m1">&lt;&lt;&lt;&lt;&lt;&lt;&lt; main</div>
-            <div class="sl sc" id="l2a"><span class="sl-l">Sale:</span><span class="sl-v">Giảm 30%</span></div>
-            <div class="cm" id="c2m2">=======</div>
-            <div class="sl sc" id="l2b"><span class="sl-l">Sale:</span><span class="sl-v">Free Ship</span></div>
-            <div class="cm" id="c2m3">&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature</div>
-          </div>
+        <!-- Cell 2: Clean Merge -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">02</div>
+                <div class="card-title">Clean Merge</div>
+            </div>
+            <div class="sim-area">
+                <div class="merge-flow">
+                    <div class="merge-panel" id="mp-main">
+                        <div class="merge-ph">main</div>
+                        <div class="merge-line main ma" id="ml-main">Update Hero.tsx</div>
+                    </div>
+                    <div class="merge-arrow" id="ma-arrow">&#9654;</div>
+                    <div class="merge-panel" id="mp-feat">
+                        <div class="merge-ph">feature/footer</div>
+                        <div class="merge-line feat mb" id="ml-feat">Add Footer.tsx</div>
+                    </div>
+                </div>
+            </div>
+            <div class="ins">
+                <strong>Sửa khác chỗ → Tự gộp.</strong> Nếu mỗi người sửa một file hoặc một dòng khác nhau, Git sẽ tự động gộp mà không cần can thiệp.
+            </div>
         </div>
-        <div class="ins"><strong>Cùng sửa một dòng → Xung đột.</strong> Khi hai người cùng sửa một vị trí, Git sẽ đánh dấu bằng các ký tự lạ để bạn chọn.</div>
-      </div>
-    </section>
 
-    <!-- RESOLUTION -->
-    <section class="ss full-width">
-      <div class="sh"><h2>Cách giải quyết</h2><span class="nm">04 / RESOLUTION</span></div>
-      <div class="sb">
-        <div class="s4-wrap">
-          <div class="s4-step" id="s4s1">
-            <span class="s4-lbl">Cách 1:</span>
-            <div class="s4-box ok">Chọn 1 trong 2: Giữ lại bản đúng nhất.</div>
-          </div>
-          <div class="s4-step" id="s4s2" style="margin-top:8px;">
-            <span class="s4-lbl">Cách 2:</span>
-            <div class="s4-box combine">Kết hợp: Lấy cả hai để tạo ra nội dung tốt nhất.</div>
-          </div>
+        <!-- Cell 3: Conflict -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">03</div>
+                <div class="card-title">Conflict</div>
+            </div>
+            <div class="sim-area">
+                <div class="conflict-box">
+                    <div class="conflict-title">pricing.tsx</div>
+                    <div class="conflict-marker" id="cm1">&lt;&lt;&lt;&lt;&lt;&lt;&lt; main</div>
+                    <div class="conflict-main" id="cx-main">
+                        <span style="color:var(--red)">Sale: Giảm 30%</span>
+                    </div>
+                    <div class="conflict-sep" id="cx-sep">=======</div>
+                    <div class="conflict-feat" id="cx-feat">
+                        <span style="color:var(--amber)">Sale: Free Ship</span>
+                    </div>
+                    <div class="conflict-marker" id="cm2">&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature</div>
+                </div>
+            </div>
+            <div class="ins">
+                <strong>Cùng sửa một dòng → Xung đột.</strong> Khi hai người cùng sửa một vị trí, Git sẽ đánh dấu bằng các ký tự lạ để bạn chọn.
+            </div>
         </div>
-        <div class="ins"><strong>Marketer quyết định cuối.</strong> Conflict không phải lỗi code, nó là một câu hỏi về nội dung. Bạn chọn bản đúng mục tiêu campaign nhất.</div>
-      </div>
-    </section>
 
-  </div>
-</div>
+        <!-- Cell 4: Resolution -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">04</div>
+                <div class="card-title">Resolution</div>
+            </div>
+            <div class="sim-area">
+                <div class="resolution-wrap">
+                    <div class="res-step" id="rs1">
+                        <div class="res-num">01</div>
+                        <div class="res-box pick">
+                            <div class="res-title" style="color:var(--green)">Pick One</div>
+                            <div>Chọn bản đúng nhất</div>
+                        </div>
+                    </div>
+                    <div class="res-step" id="rs2">
+                        <div class="res-num">02</div>
+                        <div class="res-box combine">
+                            <div class="res-title" style="color:var(--amber)">Combine</div>
+                            <div>Kết hợp cả hai → "Giảm 30% + Free Ship"</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ins">
+                <strong>Marketer quyết định cuối.</strong> Conflict không phải lỗi code, nó là một câu hỏi về nội dung. Bạn chọn bản đúng mục tiêu campaign nhất.
+            </div>
+        </div>
+    </div>
 
-<script>
-const LOOP_DUR = 4500;
+    <script>
+        const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-function runS1() {
-  const ids = ['b1','b2','b3','d1','d2','d3','f1','f2','f3','dg','t1','t2','t3'];
-  const reset = () => ids.forEach(id => document.getElementById(id).classList.remove('vis','pulse'));
-  const start = () => {
-    reset();
-    setTimeout(()=>document.getElementById('d1').classList.add('vis'), 200);
-    setTimeout(()=>document.getElementById('b1').classList.add('vis'), 500);
-    setTimeout(()=>document.getElementById('b2').classList.add('vis'), 800);
-    setTimeout(()=>['f1','f2','f3','t1'].forEach(id=>document.getElementById(id).classList.add('vis')), 1100);
-    setTimeout(()=>document.getElementById('b3').classList.add('vis'), 1500);
-    setTimeout(()=>document.getElementById('dg').classList.add('vis','pulse'), 1800);
-    setTimeout(()=>['d2','d3','t2','t3'].forEach(id=>document.getElementById(id).classList.add('vis')), 2100);
-  };
-  start();
-  setInterval(start, LOOP_DUR);
-}
+        // Cell 1: Branch Graph animation
+        async function runCell1() {
+            const ids = {
+                lines: ['bl1','bl2','bl3'],
+                dotsMain: ['dm1','dm2','dm3'],
+                dotsBranch: ['db1','db2','db3'],
+                mergeDot: 'dmg',
+                texts: ['bt1','bt2','bt3']
+            };
 
-function runS2() {
-  const ids = ['p1a','p1b','l1a','l1b'];
-  const reset = () => ids.forEach(id => document.getElementById(id).classList.remove('vis'));
-  const start = () => {
-    reset();
-    setTimeout(()=>document.getElementById('p1a').classList.add('vis'), 300);
-    setTimeout(()=>document.getElementById('l1a').classList.add('vis'), 700);
-    setTimeout(()=>document.getElementById('p1b').classList.add('vis'), 1200);
-    setTimeout(()=>document.getElementById('l1b').classList.add('vis'), 1600);
-  };
-  start();
-  setInterval(start, LOOP_DUR);
-}
+            const reset = () => {
+                [...ids.lines, ...ids.dotsMain, ...ids.dotsBranch, ...ids.texts].forEach(id => {
+                    document.getElementById(id).classList.remove('vis');
+                });
+                document.getElementById(ids.mergeDot).classList.remove('vis','pulse');
+            };
 
-function runS3() {
-  const ids = ['c2m1','c2m2','c2m3','l2a','l2b'];
-  const reset = () => ids.forEach(id => document.getElementById(id).classList.remove('vis'));
-  const start = () => {
-    reset();
-    setTimeout(()=>document.getElementById('c2m1').classList.add('vis'), 400);
-    setTimeout(()=>document.getElementById('l2a').classList.add('vis'), 800);
-    setTimeout(()=>document.getElementById('c2m2').classList.add('vis'), 1300);
-    setTimeout(()=>document.getElementById('l2b').classList.add('vis'), 1700);
-    setTimeout(()=>document.getElementById('c2m3').classList.add('vis'), 2200);
-  };
-  start();
-  setInterval(start, LOOP_DUR);
-}
+            while (true) {
+                reset();
+                await sleep(300);
 
-function runS4() {
-  const ids = ['s4s1','s4s2'];
-  const reset = () => ids.forEach(id => document.getElementById(id).classList.remove('vis'));
-  const start = () => {
-    reset();
-    setTimeout(()=>document.getElementById('s4s1').classList.add('vis'), 600);
-    setTimeout(()=>document.getElementById('s4s2').classList.add('vis'), 1800);
-  };
-  start();
-  setInterval(start, LOOP_DUR);
-}
+                document.getElementById('dm1').classList.add('vis');
+                await sleep(300);
 
-runS1();
-runS2();
-runS3();
-runS4();
-</script>
+                document.getElementById('bl1').classList.add('vis');
+                await sleep(300);
+
+                document.getElementById('bl2').classList.add('vis');
+                await sleep(300);
+
+                ['db1','db2','db3','bt1'].forEach(id => document.getElementById(id).classList.add('vis'));
+                await sleep(400);
+
+                document.getElementById('bl3').classList.add('vis');
+                await sleep(300);
+
+                document.getElementById('dmg').classList.add('vis','pulse');
+                await sleep(300);
+
+                ['dm2','dm3','bt2','bt3'].forEach(id => document.getElementById(id).classList.add('vis'));
+                await sleep(2500);
+            }
+        }
+
+        // Cell 2: Clean Merge animation
+        async function runCell2() {
+            const panels = ['mp-main','mp-feat'];
+            const lines = ['ml-main','ml-feat'];
+            const arrow = 'ma-arrow';
+
+            while (true) {
+                panels.forEach(id => document.getElementById(id).classList.remove('vis'));
+                lines.forEach(id => document.getElementById(id).classList.remove('vis'));
+                document.getElementById(arrow).classList.remove('vis');
+                await sleep(400);
+
+                document.getElementById('mp-main').classList.add('vis');
+                await sleep(400);
+
+                document.getElementById('ml-main').classList.add('vis');
+                await sleep(400);
+
+                document.getElementById('mp-feat').classList.add('vis');
+                await sleep(400);
+
+                document.getElementById('ml-feat').classList.add('vis');
+                await sleep(400);
+
+                document.getElementById(arrow).classList.add('vis');
+                await sleep(2200);
+            }
+        }
+
+        // Cell 3: Conflict animation
+        async function runCell3() {
+            const markers = ['cm1','cm2'];
+            const lines = ['cx-main','cx-feat'];
+            const sep = 'cx-sep';
+
+            while (true) {
+                [...markers, ...lines].forEach(id => document.getElementById(id).classList.remove('vis'));
+                document.getElementById(sep).classList.remove('vis');
+                await sleep(400);
+
+                document.getElementById('cm1').classList.add('vis');
+                await sleep(400);
+
+                document.getElementById('cx-main').classList.add('vis');
+                await sleep(500);
+
+                document.getElementById(sep).classList.add('vis');
+                await sleep(400);
+
+                document.getElementById('cx-feat').classList.add('vis');
+                await sleep(500);
+
+                document.getElementById('cm2').classList.add('vis');
+                await sleep(2200);
+            }
+        }
+
+        // Cell 4: Resolution animation
+        async function runCell4() {
+            const steps = ['rs1','rs2'];
+
+            while (true) {
+                steps.forEach(id => document.getElementById(id).classList.remove('vis'));
+                await sleep(600);
+
+                document.getElementById('rs1').classList.add('vis');
+                await sleep(1400);
+
+                document.getElementById('rs2').classList.add('vis');
+                await sleep(2200);
+            }
+        }
+
+        runCell1(); runCell2(); runCell3(); runCell4();
+    </script>
 </body>
 </html>

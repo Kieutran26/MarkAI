@@ -1,176 +1,771 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Merge Practice — Vibecode Glossary</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#1a1a18;--bg-c:#222220;--bg-e:#2a2a27;--bg-t:#161614;--fg:#e8e4dd;--fm:#8a877e;--ac:#e88c2e;--acd:#c97522;--am:#c9922a;--gn:#6b8f5e;--rd:#b54a4a;--bl:#5e7a8f;--bd:#3a3a36;--bdl:#4a4a45;--mn:'JetBrains Mono',monospace;--sn:'Space Grotesk',sans-serif;}
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--fg);font-family:var(--sn);overflow-x:hidden;line-height:1.5;}
-body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:24px 24px;}
-.pw{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:12px 20px 64px;}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merge Practice - Amber Brutalist Builder</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --amber: #E88C2E;
+            --bg: #0f0f12;
+            --card-bg: #16161b;
+            --border: #282830;
+            --text: #e8e4dc;
+            --muted: #707070;
+            --gap: 14px;
+            --radius: 3px;
+            --ease: cubic-bezier(0.65, 0, 0.35, 1);
+            --dark: #0d0d10;
+            --green: #3a9e5c;
+            --green-soft: rgba(58,158,92,0.12);
+            --red: #c45c4a;
+            --red-soft: rgba(196,92,74,0.12);
+            --blue: #5a8ad4;
+        }
 
-/* ── Merge Editor ── */
-.editor{border:1px solid var(--bd);background:var(--bg-c);overflow:hidden;display:flex;flex-direction:column;box-shadow:0 20px 40px rgba(0,0,0,0.3)}
-.ed-hdr{padding:12px 16px;background:rgba(255,255,255,0.02);border-bottom:1px solid var(--bd);display:flex;align-items:center;justify-content:space-between}
-.ed-title{font-family:var(--mn);font-size:11px;color:var(--fm);display:flex;align-items:center;gap:8px}
-.ed-title span{color:var(--ac);font-weight:700;text-transform:uppercase}
-.ed-stats{font-family:var(--mn);font-size:10px;color:var(--rd);letter-spacing:1px;font-weight:700}
-.ed-stats.clean{color:var(--gn)}
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-.ed-body{padding:24px;font-family:var(--mn);font-size:13px;line-height:1.6;counter-reset:line;background:var(--bg-t)}
-.line{display:flex;gap:16px;min-height:21px}
-.line::before{counter-increment:line;content:counter(line);color:var(--bdl);min-width:24px;text-align:right;user-select:none}
-.code{color:var(--fg)}
-.kw{color:var(--bl)} .st{color:var(--am)} .co{color:var(--fm)}
+        body {
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(ellipse at 25% 15%, rgba(232, 140, 46, 0.05) 0%, transparent 55%),
+                radial-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 16px 16px;
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-/* Conflict Block */
-.cb{margin:8px 0;border:1px solid rgba(181,74,74,0.3);background:rgba(181,74,74,0.03);position:relative;transition:all 0.4s ease}
-.cb.resolved{border-color:var(--gn);background:rgba(107,143,94,0.05);margin:0}
-.cb-hdr{background:rgba(181,74,74,0.1);padding:4px 12px;font-size:10px;color:var(--rd);display:flex;justify-content:space-between;align-items:center;font-family:var(--mn);text-transform:uppercase}
-.cb.resolved .cb-hdr{display:none}
+        .builder-container {
+            width: 100%;
+            max-width: 940px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
 
-.cb-content{padding:8px 0}
-.cb-part{padding:4px 12px;transition:background 0.2s}
-.cb-sep{border-top:1px solid var(--bd);margin:4px 0}
+        .builder-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--amber);
+            z-index: 2;
+        }
 
-/* Actions */
-.cb-actions{padding:10px 12px;display:flex;gap:10px;border-top:1px solid var(--bd);background:rgba(0,0,0,0.1)}
-.btn{background:var(--bg-e);border:1px solid var(--bd);color:var(--fm);font-family:var(--mn);font-size:9px;padding:6px 12px;cursor:pointer;text-transform:uppercase;letter-spacing:0.5px;transition:all 0.2s}
-.btn:hover{border-color:var(--ac);color:var(--fg);background:var(--bg-c)}
-.btn.primary{border-color:var(--bl);color:var(--bl)}
+        .builder-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-/* Result UI */
-.success-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.8);display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity 0.5s;z-index:10}
-.success-overlay.show{opacity:1;pointer-events:auto}
-.success-card{background:var(--bg-c);border:2px solid var(--gn);padding:40px;text-align:center;max-width:440px;transform:translateY(20px);transition:transform 0.5s;box-shadow:0 0 30px rgba(107,143,94,0.2)}
-.success-overlay.show .success-card{transform:none}
-.success-card h3{font-size:24px;color:var(--gn);margin-bottom:12px;font-family:var(--sn);font-weight:700}
-.success-card p{color:var(--fm);margin-bottom:24px;font-size:14px}
-.push-btn{background:var(--gn);color:var(--bg);border:none;padding:14px 36px;font-family:var(--mn);font-weight:800;text-transform:uppercase;letter-spacing:2px;cursor:pointer;transition:transform 0.2s}
-.push-btn:hover{transform:scale(1.05);background:var(--fg)}
+        .builder-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--amber);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
 
-@media(max-width:640px){
-  .cb-actions{flex-direction:column;gap:6px}
-  .btn{width:100%;text-align:center}
-}
-</style>
+        .indicator {
+            width: 6px;
+            height: 6px;
+            background: var(--amber);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--amber);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .builder-goal {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--muted);
+            line-height: 1.6;
+            padding: 14px 20px;
+            border-left: 2px solid var(--amber);
+            margin: 0 20px;
+        }
+
+        .builder-goal strong {
+            color: var(--amber);
+            font-weight: 600;
+        }
+
+        .builder-body {
+            display: grid;
+            grid-template-columns: 340px 1fr;
+            min-height: 520px;
+        }
+
+        @media (max-width: 800px) {
+            .builder-body { grid-template-columns: 1fr; }
+        }
+
+        /* Controls */
+        .controls-pane {
+            padding: 24px;
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            overflow-y: auto;
+            max-height: 560px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .control-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .segmented {
+            display: flex;
+            background: var(--dark);
+            padding: 2px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
+
+        .seg-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--muted);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 8px 6px;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: all 0.2s;
+        }
+
+        .seg-btn.active {
+            background: var(--amber);
+            color: #000;
+        }
+
+        .seg-btn:hover:not(.active) {
+            color: var(--text);
+        }
+
+        /* Branch selector */
+        .branch-opt {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            background: var(--dark);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .branch-opt:hover {
+            border-color: rgba(232,140,46,0.3);
+        }
+
+        .branch-opt.selected {
+            border-color: var(--amber);
+            background: rgba(232,140,46,0.06);
+        }
+
+        .branch-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .branch-dot.main { background: var(--muted); }
+        .branch-dot.feature { background: var(--amber); }
+
+        .branch-name {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--text);
+        }
+
+        .branch-meta {
+            font-size: 9px;
+            color: var(--muted);
+            margin-left: auto;
+        }
+
+        /* Merge strategy */
+        .strategy-opt {
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            background: var(--dark);
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 6px;
+        }
+
+        .strategy-opt:hover {
+            border-color: rgba(232,140,46,0.3);
+        }
+
+        .strategy-opt.selected {
+            border-color: var(--amber);
+            background: rgba(232,140,46,0.06);
+        }
+
+        .strategy-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            color: var(--text);
+            margin-bottom: 2px;
+        }
+
+        .strategy-desc {
+            font-size: 9px;
+            color: var(--muted);
+        }
+
+        /* Preview */
+        .preview-pane {
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            background: var(--dark);
+            justify-content: center;
+        }
+
+        .preview-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .code-preview {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            line-height: 1.7;
+            overflow-x: auto;
+            min-height: 200px;
+        }
+
+        .code-line {
+            display: flex;
+            gap: 12px;
+        }
+
+        .line-num {
+            color: var(--muted);
+            min-width: 24px;
+            text-align: right;
+            font-size: 10px;
+            user-select: none;
+        }
+
+        .line-content { color: var(--text); }
+
+        .line-content.main { color: var(--blue); }
+        .line-content.feat { color: var(--amber); }
+        .line-content.merged { color: var(--green); }
+        .line-content.conflict { color: var(--red); }
+
+        .line-marker {
+            color: var(--red);
+            font-weight: 700;
+        }
+
+        /* Conflict exercise */
+        .conflict-exercise {
+            margin-top: 8px;
+            padding: 14px;
+            background: rgba(196,92,74,0.04);
+            border: 1px solid rgba(196,92,74,0.2);
+            border-radius: 4px;
+        }
+
+        .conflict-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--red);
+            margin-bottom: 10px;
+        }
+
+        .conflict-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            margin-bottom: 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .conflict-row:hover {
+            border-color: rgba(232,140,46,0.3);
+        }
+
+        .conflict-row.selected {
+            border-color: var(--amber);
+            background: rgba(232,140,46,0.06);
+        }
+
+        .conflict-row.resolved {
+            border-color: var(--green);
+            background: var(--green-soft);
+        }
+
+        .conflict-source {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            padding: 2px 6px;
+            border-radius: 2px;
+            text-transform: uppercase;
+        }
+
+        .conflict-source.main {
+            background: rgba(90,138,212,0.12);
+            color: var(--blue);
+        }
+
+        .conflict-source.feature {
+            background: rgba(232,140,46,0.12);
+            color: var(--amber);
+        }
+
+        .conflict-content {
+            flex: 1;
+            font-size: 11px;
+            color: var(--text);
+        }
+
+        .conflict-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 8px;
+            padding: 2px 6px;
+            border-radius: 2px;
+        }
+
+        .conflict-badge.pending {
+            background: rgba(196,92,74,0.12);
+            color: var(--red);
+        }
+
+        .conflict-badge.done {
+            background: var(--green-soft);
+            color: var(--green);
+        }
+
+        /* Action buttons */
+        .action-btns {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .action-btn {
+            flex: 1;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 8px 12px;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .action-btn.main {
+            background: transparent;
+            border: 1px solid var(--blue);
+            color: var(--blue);
+        }
+
+        .action-btn.main:hover {
+            background: rgba(90,138,212,0.1);
+        }
+
+        .action-btn.feature {
+            background: transparent;
+            border: 1px solid var(--amber);
+            color: var(--amber);
+        }
+
+        .action-btn.feature:hover {
+            background: rgba(232,140,46,0.1);
+        }
+
+        .action-btn.both {
+            background: var(--amber);
+            border: 1px solid var(--amber);
+            color: #000;
+        }
+
+        .action-btn.both:hover {
+            background: #d47a1e;
+        }
+
+        /* Result */
+        .result-area {
+            margin-top: 8px;
+            padding: 12px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: all 0.4s var(--ease);
+        }
+
+        .result-area.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .result-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            color: var(--green);
+            margin-bottom: 6px;
+        }
+
+        .result-content {
+            font-size: 11px;
+            color: var(--text);
+        }
+
+        /* Prompt */
+        .prompt-area {
+            background: #111116;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 14px;
+        }
+
+        .prompt-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            color: var(--muted);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .prompt-text {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .prompt-text strong {
+            color: var(--amber);
+        }
+
+        .copy-btn {
+            background: transparent;
+            border: 1px solid var(--amber);
+            color: var(--amber);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            padding: 4px 8px;
+            cursor: pointer;
+            margin-top: 10px;
+            border-radius: 2px;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: var(--amber);
+            color: #000;
+        }
+    </style>
 </head>
 <body>
-<div class="pw">
-  <div class="editor">
-    <div class="ed-hdr">
-      <div class="ed-title">📄 <span>campaign_config.js</span> — conflict detected</div>
-      <div class="ed-stats" id="stats">3 CONFLICTS REMAINING</div>
+
+    <div class="builder-container">
+        <div class="builder-header">
+            <div class="builder-title">Merge Builder</div>
+            <div class="indicator"></div>
+        </div>
+
+        <div class="builder-goal">
+            <strong>Mục tiêu:</strong> Thử chọn branch và merge strategy khác nhau — xem kết quả thay đổi realtime. Giải quyết conflicts bằng cách chọn version phù hợp.
+        </div>
+
+        <div class="builder-body">
+            <!-- Left: Controls -->
+            <div class="controls-pane">
+                <div class="control-group">
+                    <div class="control-label">Source Branch</div>
+                    <div class="branch-opt selected" id="br-main" onclick="selectBranch('main')">
+                        <div class="branch-dot main"></div>
+                        <span class="branch-name">main</span>
+                        <span class="branch-meta">production</span>
+                    </div>
+                    <div class="branch-opt" id="br-feature" onclick="selectBranch('feature')">
+                        <div class="branch-dot feature"></div>
+                        <span class="branch-name">feature/promo</span>
+                        <span class="branch-meta">3 commits ahead</span>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="control-label">Merge Strategy</div>
+                    <div class="strategy-opt selected" id="str-ff" onclick="selectStrategy('ff')">
+                        <div class="strategy-title">Fast Forward</div>
+                        <div class="strategy-desc">Gộp linear khi không có conflict</div>
+                    </div>
+                    <div class="strategy-opt" id="str-merge" onclick="selectStrategy('merge')">
+                        <div class="strategy-title">Merge Commit</div>
+                        <div class="strategy-desc">Tạo commit mới để giữ lịch sử</div>
+                    </div>
+                    <div class="strategy-opt" id="str-squash" onclick="selectStrategy('squash')">
+                        <div class="strategy-title">Squash</div>
+                        <div class="strategy-desc">Gộp tất cả commits thành 1</div>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="control-label">Conflict Resolution</div>
+                    <div class="conflict-exercise">
+                        <div class="conflict-title">2 Conflicts Pending</div>
+                        <div class="conflict-row" id="cr1" onclick="selectConflict(1)">
+                            <span class="conflict-source main">main</span>
+                            <span class="conflict-content">title = "Flash Sale"</span>
+                            <span class="conflict-badge pending" id="cb1">pending</span>
+                        </div>
+                        <div class="conflict-row" id="cr2" onclick="selectConflict(2)">
+                            <span class="conflict-source feature">feature</span>
+                            <span class="conflict-content">discount = "50% OFF"</span>
+                            <span class="conflict-badge pending" id="cb2">pending</span>
+                        </div>
+                        <div class="action-btns" id="action-btns" style="display:none">
+                            <button class="action-btn main" onclick="resolveConflict('main')">Main</button>
+                            <button class="action-btn feature" onclick="resolveConflict('feature')">Feature</button>
+                            <button class="action-btn both" onclick="resolveConflict('both')">Both</button>
+                        </div>
+                        <div class="result-area" id="result-area">
+                            <div class="result-title">&#10003; Resolved</div>
+                            <div class="result-content" id="result-content"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Preview -->
+            <div class="preview-pane">
+                <div class="preview-label">Preview</div>
+                <div class="code-preview" id="code-preview">
+                    <div class="code-line"><span class="line-num">1</span><span class="line-content">// campaign_config.js</span></div>
+                    <div class="code-line"><span class="line-num">2</span><span class="line-content">const config = {</span></div>
+                    <div class="code-line"><span class="line-num">3</span><span class="line-content merged">  title: "Flash Sale Weekend",</span></div>
+                    <div class="code-line"><span class="line-num">4</span><span class="line-content merged">  discount: "50% OFF",</span></div>
+                    <div class="code-line"><span class="line-num">5</span><span class="line-content">  status: "active"</span></div>
+                    <div class="code-line"><span class="line-num">6</span><span class="line-content">};</span></div>
+                </div>
+
+                <div class="prompt-area">
+                    <div class="prompt-label">Git Command</div>
+                    <div class="prompt-text" id="prompt-output">
+                        git checkout <strong>main</strong><br>
+                        git merge <strong>feature/promo</strong> --<strong>ff-only</strong>
+                    </div>
+                    <button class="copy-btn" onclick="copyPrompt()">Copy Command</button>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="ed-body" id="editorBody"></div>
-  </div>
 
-  <div class="success-overlay" id="successOverlay">
-    <div class="success-card">
-      <h3>CLEAN MERGE!</h3>
-      <p>Tuyệt vời! Bạn đã xử lý xong các xung đột nội dung. Bản tin đã sẵn sàng để được cập nhật lên hệ thống.</p>
-      <button class="push-btn" onclick="location.reload()">GIT PUSH & DEPLOY</button>
-    </div>
-  </div>
-</div>
+    <script>
+        let config = {
+            branch: 'main',
+            strategy: 'ff',
+            conflicts: {
+                1: { main: 'title = "Flash Sale"', feature: 'title = "Member Exclusive"', resolved: false, choice: null },
+                2: { main: 'discount = "30% OFF"', feature: 'discount = "50% OFF"', resolved: false, choice: null }
+            },
+            selectedConflict: null
+        };
 
-<script>
-const DATA = [
-  {
-    id: 0,
-    line: 5,
-    main: '<span class="kw">const</span> title = <span class="st">"Flash Sale cuối tuần"</span>;',
-    feature: '<span class="kw">const</span> title = <span class="st">"Đặc quyền thành viên"</span>;',
-    both: '<span class="kw">const</span> title = <span class="st">"Flash Sale - Đặc quyền thành viên"</span>;'
-  },
-  {
-    id: 1,
-    line: 12,
-    main: '<span class="kw">const</span> discount = <span class="st">"Giảm 50% toàn bộ"</span>;',
-    feature: '<span class="kw">const</span> discount = <span class="st">"Tặng quà đơn từ 500k"</span>;',
-    both: '<span class="kw">const</span> discount = <span class="st">"Giảm 50% + Quà tặng đơn từ 500k"</span>;'
-  },
-  {
-    id: 2,
-    line: 20,
-    main: '<span class="kw">const</span> cta = <span class="st">"Đặt hàng ngay"</span>;',
-    feature: '<span class="kw">const</span> cta = <span class="st">"Nhận ưu đãi"</span>;',
-    both: '<span class="kw">const</span> cta = <span class="st">"Đặt hàng & Nhận ưu đãi"</span>;'
-  }
-];
+        const conflictData = [
+            { id: 1, main: 'title = "Flash Sale"', feature: 'title = "Member Exclusive"' },
+            { id: 2, main: 'discount = "30% OFF"', feature: 'discount = "50% OFF"' }
+        ];
 
-const resolved = [false, false, false];
+        function selectBranch(branch) {
+            config.branch = branch;
+            document.querySelectorAll('.branch-opt').forEach(el => el.classList.remove('selected'));
+            document.getElementById('br-' + branch).classList.add('selected');
+            updatePreview();
+            updatePrompt();
+        }
 
-function renderLine(content) {
-  return `<div class="line"><div class="code">${content}</div></div>`;
-}
+        function selectStrategy(strategy) {
+            config.strategy = strategy;
+            document.querySelectorAll('.strategy-opt').forEach(el => el.classList.remove('selected'));
+            document.getElementById('str-' + strategy).classList.add('selected');
+            updatePreview();
+            updatePrompt();
+        }
 
-function buildEditor() {
-  const container = document.getElementById('editorBody');
-  let html = '';
-  
-  html += renderLine('<span class="kw">import</span> { config } <span class="kw">from</span> <span class="st">"./core"</span>;');
-  html += renderLine('<span class="co">// Marketing Campaign Config</span>');
-  html += renderLine('');
-  html += renderLine('<span class="kw">export const</span> campaign = {');
+        function selectConflict(id) {
+            if (config.conflicts[id].resolved) return;
+            config.selectedConflict = id;
+            document.querySelectorAll('.conflict-row').forEach((el, idx) => {
+                if (idx + 1 === id) el.classList.add('selected');
+                else el.classList.remove('selected');
+            });
+            document.getElementById('action-btns').style.display = 'flex';
+            document.getElementById('result-area').classList.remove('show');
+        }
 
-  DATA.forEach((d, i) => {
-    html += `<div class="cb" id="cb${i}">
-      <div class="cb-hdr"><span>CONFLICT AT LINE ${d.line}</span><span>Incoming vs Current</span></div>
-      <div class="cb-content" id="cbc${i}">
-        <div class="cb-part"><div class="line"><div class="code" style="color:var(--bl)">${d.main} <span style="color:var(--fm);font-size:9px;margin-left:8px">(current)</span></div></div></div>
-        <div class="cb-sep"></div>
-        <div class="cb-part"><div class="line"><div class="code" style="color:var(--ac)">${d.feature} <span style="color:var(--fm);font-size:9px;margin-left:8px">(incoming)</span></div></div></div>
-      </div>
-      <div class="cb-actions" id="cba${i}">
-        <button class="btn" onclick="resolve(${i}, 'main')">Accept Current</button>
-        <button class="btn" onclick="resolve(${i}, 'feature')">Accept Incoming</button>
-        <button class="btn" onclick="resolve(${i}, 'both')">Combine Both</button>
-      </div>
-    </div>`;
-    if (i < DATA.length - 1) {
-      html += renderLine('  status: <span class="st">"active"</span>,');
-      html += renderLine('  version: <span class="st">"1.2.0"</span>,');
-    }
-  });
+        function resolveConflict(choice) {
+            const id = config.selectedConflict;
+            if (!id) return;
 
-  html += renderLine('};');
-  container.innerHTML = html;
-}
+            config.conflicts[id].resolved = true;
+            config.conflicts[id].choice = choice;
 
-function resolve(id, type) {
-  const block = document.getElementById('cb' + id);
-  const content = document.getElementById('cbc' + id);
-  const actions = document.getElementById('cba' + id);
-  const stats = document.getElementById('stats');
-  
-  let text = '';
-  if (type === 'main') text = DATA[id].main;
-  else if (type === 'feature') text = DATA[id].feature;
-  else text = DATA[id].both;
+            const row = document.getElementById('cr' + id);
+            row.classList.remove('selected');
+            row.classList.add('resolved');
 
-  block.classList.add('resolved');
-  content.innerHTML = `<div class="line"><div class="code">${text}</div></div>`;
-  actions.style.display = 'none';
-  
-  resolved[id] = true;
-  
-  const remaining = resolved.filter(r => !r).length;
-  if (remaining === 0) {
-    stats.textContent = 'ALL CONFLICTS RESOLVED';
-    stats.classList.add('clean');
-    setTimeout(() => {
-      document.getElementById('successOverlay').classList.add('show');
-    }, 800);
-  } else {
-    stats.textContent = `${remaining} CONFLICTS REMAINING`;
-  }
-}
+            const badge = document.getElementById('cb' + id);
+            badge.textContent = 'resolved';
+            badge.classList.remove('pending');
+            badge.classList.add('done');
 
-buildEditor();
-</script>
+            const content = row.querySelector('.conflict-content');
+            if (choice === 'main') {
+                content.textContent = conflictData[id-1].main;
+                row.querySelector('.conflict-source').textContent = 'main';
+                row.querySelector('.conflict-source').className = 'conflict-source main';
+            } else if (choice === 'feature') {
+                content.textContent = conflictData[id-1].feature;
+                row.querySelector('.conflict-source').textContent = 'feature';
+                row.querySelector('.conflict-source').className = 'conflict-source feature';
+            } else {
+                content.textContent = choice === 'both' ? conflictData[id-1].main + ' + ' + conflictData[id-1].feature.split('=')[1].trim() : conflictData[id-1].main;
+                row.querySelector('.conflict-source').textContent = 'merged';
+                row.querySelector('.conflict-source').className = 'conflict-source main';
+                row.querySelector('.conflict-source').style.background = 'rgba(58,158,92,0.12)';
+                row.querySelector('.conflict-source').style.color = 'var(--green)';
+            }
+
+            document.getElementById('action-btns').style.display = 'none';
+
+            const resultArea = document.getElementById('result-area');
+            const resultContent = document.getElementById('result-content');
+            resultContent.textContent = choice === 'both' ? 'Combined both versions' : 'Selected ' + choice + ' version';
+            resultArea.classList.add('show');
+
+            updatePreview();
+            config.selectedConflict = null;
+        }
+
+        function updatePreview() {
+            const preview = document.getElementById('code-preview');
+            let html = '';
+            html += '<div class="code-line"><span class="line-num">1</span><span class="line-content">// campaign_config.js</span></div>';
+            html += '<div class="code-line"><span class="line-num">2</span><span class="line-content">const config = {</span></div>';
+
+            // Line 3: title
+            if (config.conflicts[1].resolved) {
+                const c = config.conflicts[1].choice;
+                const val = c === 'main' ? '"Flash Sale"' : c === 'feature' ? '"Member Exclusive"' : '"Flash Sale - Member Exclusive"';
+                html += '<div class="code-line"><span class="line-num">3</span><span class="line-content merged">  title: ' + val + ',</span></div>';
+            } else {
+                html += '<div class="code-line"><span class="line-num">3</span><span class="line-content conflict">  title: &lt;&lt;&lt;&lt;&lt;&lt;&lt; CONFLICT</span></div>';
+            }
+
+            // Line 4: discount
+            if (config.conflicts[2].resolved) {
+                const c = config.conflicts[2].choice;
+                const val = c === 'main' ? '"30% OFF"' : c === 'feature' ? '"50% OFF"' : '"Up to 50% OFF"';
+                html += '<div class="code-line"><span class="line-num">4</span><span class="line-content merged">  discount: ' + val + ',</span></div>';
+            } else {
+                html += '<div class="code-line"><span class="line-num">4</span><span class="line-content conflict">  discount: &lt;&lt;&lt;&lt;&lt;&lt;&lt; CONFLICT</span></div>';
+            }
+
+            html += '<div class="code-line"><span class="line-num">5</span><span class="line-content">  status: "active"</span></div>';
+            html += '<div class="code-line"><span class="line-num">6</span><span class="line-content">};</span></div>';
+
+            preview.innerHTML = html;
+        }
+
+        function updatePrompt() {
+            const output = document.getElementById('prompt-output');
+            const target = config.branch === 'main' ? 'feature/promo' : 'main';
+            const flag = config.strategy === 'ff' ? '--ff-only' : config.strategy === 'squash' ? '--squash' : '';
+
+            let cmd = 'git checkout <strong>' + config.branch + '</strong><br>git merge <strong>' + target + '</strong>';
+            if (flag) cmd += ' ' + flag;
+
+            const allResolved = config.conflicts[1].resolved && config.conflicts[2].resolved;
+            if (allResolved) {
+                cmd += '<br>git push origin <strong>' + config.branch + '</strong>';
+            }
+
+            output.innerHTML = cmd;
+        }
+
+        async function copyPrompt() {
+            const text = document.getElementById('prompt-output').innerText;
+            try {
+                await navigator.clipboard.writeText(text);
+                const btn = document.querySelector('.copy-btn');
+                const orig = btn.textContent;
+                btn.textContent = 'Copied!';
+                setTimeout(() => btn.textContent = orig, 2000);
+            } catch (e) {}
+        }
+
+        // Initialize conflict rows
+        function initConflicts() {
+            document.getElementById('cr1').querySelector('.conflict-content').textContent = conflictData[0].main;
+            document.getElementById('cr2').querySelector('.conflict-content').textContent = conflictData[1].feature;
+        }
+
+        initConflicts();
+    </script>
 </body>
 </html>
