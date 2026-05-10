@@ -3,318 +3,371 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dark Mode / Light Mode Demo — Vibecode Glossary</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>Dark Mode / Light Mode Demo — Amber Brutalist</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-:root{
-  --bg:#141413;--bg-card:#1c1b19;--fg:#e5ddd0;--muted:#6e675d;
-  --accent:#d4722a;--accent-glow:rgba(212,114,42,.1);
-  --border:#2e2a26;--label:#a89d90;
-  --ok:#5a9e6f;--err:#c45c4a;
-  --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+:root {
+  --bg: #0f0f12;
+  --bgc: #16161b;
+  --bgi: #121217;
+  --bd: #282830;
+  --tx: #e8e4dc;
+  --txm: #707070;
+  --ac: #E88C2E;
+  --abg: rgba(232, 140, 46, 0.1);
+  --abg2: rgba(232, 140, 46, 0.2);
+  --err: #ef4444;
+  --gn: #22c55e;
 }
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-body{
-  background:var(--bg);color:var(--fg);font-family:var(--sans);
-  -webkit-font-smoothing:antialiased;
-  background-image:
-    linear-gradient(rgba(255,255,255,.016) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(255,255,255,.016) 1px,transparent 1px);
-  background-size:20px 20px;
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--tx);
+  padding: 40px 16px;
+  display: flex;
+  justify-content: center;
 }
-.wrap{max-width:860px;margin:0 auto;padding:10px 14px}
 
-/* Header */
-.hd-label{font-family:var(--mono);font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:2.5px;margin-bottom:5px}
-.hd-title{font-size:clamp(22px,5vw,30px);font-weight:700;line-height:1.15}
-.hd-title em{font-style:normal;color:var(--accent)}
-
-/* Grid */
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:22px}
-@media(max-width:600px){.grid{grid-template-columns:1fr}}
-
-/* Card */
-.card{background:var(--bg-card);border:1px solid var(--border);overflow:hidden}
-.card-top{padding:9px 13px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:7px}
-.card-dot{width:5px;height:5px;background:var(--accent);flex-shrink:0}
-.card-tag{font-family:var(--mono);font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;font-weight:600}
-.card-stage{padding:10px;display:flex;align-items:center;justify-content:center}
-.card-bot{padding:6px 13px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-.card-bot span{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:.3px}
-.loop{display:flex;align-items:center;gap:5px}
-.loop-dot{width:4px;height:4px;border-radius:50%;background:var(--accent);animation:blink 2s ease-in-out infinite}
-@keyframes blink{0%,100%{opacity:.2}50%{opacity:1}}
-
-/* ═══ Mini UI System (used in animation cards) ═══ */
-.mu{
-  --mu-bg:#f4efe8;--mu-fg:#2a2520;--mu-card:#fff;--mu-bdr:#e0d8cf;--mu-mut:#8a8078;
-  background:var(--mu-bg);color:var(--mu-fg);
-  border:1px solid var(--mu-bdr);
-  transition:background .55s,color .55s,border-color .55s,box-shadow .55s;
-  box-shadow:0 0 30px rgba(244,239,232,.04);width:100%;
+.g {
+  width: 100%;
+  max-width: 940px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
 }
-.mu.dk{
-  --mu-bg:#1a1918;--mu-fg:#e5ddd0;--mu-card:#252320;--mu-bdr:#3a3530;--mu-mut:#6e675d;
-  box-shadow:0 0 30px rgba(0,0,0,.25);
+
+@media (max-width: 768px) {
+  .g { grid-template-columns: 1fr; }
 }
-.mc{background:var(--mu-card);border:1px solid var(--mu-bdr);transition:background .55s,border-color .55s}
-.mm{color:var(--mu-mut);transition:color .55s}
-.ma{color:var(--accent)}
-.mab{background:var(--accent);transition:background .55s}
 
-/* State badge inside mini UI */
-.mu-badge{
-  font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;
-  padding:2px 7px;border:1px solid var(--mu-bdr);
-  color:var(--mu-mut);transition:color .4s,border-color .4s;
+.c {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 24px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
 }
-.mu.dk .mu-badge{border-color:var(--accent);color:var(--accent)}
 
-/* Toggle switch */
-.tgl{
-  width:36px;height:20px;border-radius:3px;
-  background:#c8c0b6;position:relative;flex-shrink:0;
-  transition:background .3s;border:none;outline:none;
+.c::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--ac);
 }
-.tgl::after{
-  content:'';position:absolute;top:2px;left:2px;
-  width:16px;height:16px;border-radius:2px;
-  background:#fff;transition:transform .3s;
+
+.c::after {
+  content: '';
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 6px;
+  height: 6px;
+  background: var(--ac);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--ac);
+  animation: pulse 2s infinite;
 }
-.tgl.on{background:var(--accent)}
-.tgl.on::after{transform:translateX(16px)}
-.tgl:focus-visible{box-shadow:0 0 0 2px var(--accent)}
 
-/* Sun/Moon icons */
-.ic-wrap{width:16px;height:16px;position:relative;flex-shrink:0}
-.ic-wrap svg{position:absolute;inset:0;width:100%;height:100%;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;transition:opacity .4s,transform .4s}
-.ic-sun{opacity:1;transform:rotate(0)}
-.ic-moon{opacity:0;transform:rotate(-90deg)}
-.dk .ic-sun{opacity:0;transform:rotate(90deg)}
-.dk .ic-moon{opacity:1;transform:rotate(0)}
-
-/* Greeting text swap */
-.gw{position:relative;height:26px;overflow:hidden}
-.gw>div{position:absolute;width:100%;transition:opacity .4s,transform .4s}
-.g-am{opacity:1;transform:translateY(0)}
-.g-pm{opacity:0;transform:translateY(8px)}
-.dk .g-am{opacity:0;transform:translateY(-8px)}
-.dk .g-pm{opacity:1;transform:translateY(0)}
-
-/* Bar chart */
-.chart{display:flex;align-items:flex-end;gap:4px;height:46px}
-.bar{flex:1;border-radius:1px 1px 0 0;background:var(--accent);transition:height .5s ease}
-
-/* Settings items */
-.si{display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:1px;transition:background .3s}
-.si.act{background:var(--accent-glow)}
-.si-ico{width:14px;height:14px;stroke:var(--mu-mut);fill:none;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;transition:stroke .55s;flex-shrink:0}
-.si.act .si-ico{stroke:var(--accent)}
-.si-txt{font-size:11px;transition:color .3s}
-.si.act .si-txt{color:var(--accent);font-weight:600}
-
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation:none!important;transition-duration:0s!important}
+@keyframes pulse {
+  0% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0.3; transform: scale(1); }
 }
+
+.ch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.ch .n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ac);
+  background: var(--abg);
+  border: 1px solid var(--abg2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+.ch h2 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  text-transform: uppercase;
+}
+
+.st {
+  background: var(--bgi);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  flex: 1;
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ins {
+  margin-top: 16px;
+  font-size: 11.5px;
+  color: var(--txm);
+  line-height: 1.6;
+  padding-left: 12px;
+  border-left: 2px solid var(--ac);
+}
+
+.ins strong {
+  color: var(--ac);
+  font-weight: 600;
+}
+
+/* --- Simulation Components --- */
+.mock-ui {
+  width: 100%;
+  max-width: 240px;
+  background: #fff;
+  color: #1a1a1a;
+  border-radius: 6px;
+  padding: 16px;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.mock-ui.dark {
+  background: #1a1a1a;
+  color: #fff;
+}
+
+.mock-row {
+  height: 8px;
+  background: #eee;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+.mock-ui.dark .mock-row { background: #333; }
+
+.toggle-track {
+  width: 40px;
+  height: 20px;
+  background: #ccc;
+  border-radius: 10px;
+  position: relative;
+  transition: background 0.3s;
+}
+.toggle-track.on { background: var(--ac); }
+.toggle-thumb {
+  width: 16px;
+  height: 16px;
+  background: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.3s;
+}
+.toggle-track.on .toggle-thumb { transform: translateX(20px); }
+
+.contrast-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  padding: 4px 8px;
+  background: var(--gn);
+  color: #fff;
+  border-radius: 2px;
+}
+
+.ambient-sensor {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px dashed var(--ac);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.sensor-wave {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 1px solid var(--ac);
+  border-radius: 50%;
+  animation: ripple 2s infinite;
+}
+@keyframes ripple {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+.palette-swatch {
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
 </style>
 </head>
 <body>
-<div class="wrap" id="app-root">
 
-
-  <!-- ═══════ SIMULATION ═══════ -->
-  <div class="grid">
-
-    <!-- 1 · Toggle Switch -->
-    <div class="card">
-      <div class="card-top"><div class="card-dot"></div><span class="card-tag">Toggle Switch</span></div>
-      <div class="card-stage">
-        <div class="mu" id="m1">
-          <div style="padding:16px;display:flex;flex-direction:column;gap:12px">
-            <div style="display:flex;justify-content:space-between;align-items:center">
-              <div class="mu-badge">LIGHT</div>
-              <div style="display:flex;align-items:center;gap:8px">
-                <div class="ic-wrap">
-                  <svg class="ic-sun" viewBox="0 0 16 16"><circle cx="8" cy="8" r="3"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3.05 3.05l1.4 1.4M11.55 11.55l1.4 1.4M12.95 3.05l-1.4 1.4M4.45 11.55l-1.4 1.4"/></svg>
-                  <svg class="ic-moon" viewBox="0 0 16 16"><path d="M12 3a6 6 0 00-5 9.6A6 6 0 0112 3z"/></svg>
-                </div>
-                <div class="tgl"></div>
-              </div>
-            </div>
-            <div class="gw">
-              <div class="g-am" style="font-size:18px;font-weight:700">Good morning!</div>
-              <div class="g-pm" style="font-size:18px;font-weight:700">Good evening!</div>
-            </div>
-            <div class="mc" style="padding:10px 12px;display:flex;align-items:center;gap:8px">
-              <div class="mab" style="width:3px;height:24px;border-radius:1px"></div>
-              <div>
-                <div style="font-size:11px;font-weight:500">Review campaign report</div>
-                <div class="mm" style="font-size:9px;margin-top:2px">Due today at 5 PM</div>
-              </div>
-            </div>
-          </div>
+<div class="g">
+  <!-- 01: Theme Toggle -->
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>Switching Mechanism</h2></div>
+    <div class="st">
+      <div style="display:flex; flex-direction:column; align-items:center; gap:15px">
+        <div id="toggle1" class="toggle-track">
+          <div class="toggle-thumb"></div>
+        </div>
+        <div id="ui1" class="mock-ui">
+          <div class="mock-row" style="width:60%; background:var(--ac)"></div>
+          <div class="mock-row" style="width:100%"></div>
+          <div class="mock-row" style="width:80%"></div>
         </div>
       </div>
-      <div class="card-bot"><span>1 click = đổi toàn bộ palette</span><span class="loop"><span class="loop-dot"></span>loop</span></div>
     </div>
+    <p class="ins">Cơ chế <strong>Toggle</strong> cho phép người dùng chủ động chuyển đổi giữa giao diện sáng và tối. Toàn bộ <strong>token màu</strong> của hệ thống sẽ được swap đồng loạt.</p>
+  </section>
 
-    <!-- 2 · Dashboard -->
-    <div class="card">
-      <div class="card-top"><div class="card-dot"></div><span class="card-tag">Dashboard</span></div>
-      <div class="card-stage">
-        <div class="mu" id="m2">
-          <div style="padding:14px;display:flex;flex-direction:column;gap:10px">
-            <div style="display:flex;justify-content:space-between;align-items:center">
-              <div class="mu-badge">LIGHT</div>
-              <span class="mm" style="font-family:var(--mono);font-size:8px">overview</span>
-            </div>
-            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
-              <div class="mc" style="padding:8px;text-align:center">
-                <div style="font-size:14px;font-weight:700">1,248</div>
-                <div class="mm" style="font-family:var(--mono);font-size:7px;margin-top:2px;letter-spacing:.5px">USERS</div>
-              </div>
-              <div class="mc" style="padding:8px;text-align:center">
-                <div style="font-size:14px;font-weight:700">$42.5k</div>
-                <div class="mm" style="font-family:var(--mono);font-size:7px;margin-top:2px;letter-spacing:.5px">REVENUE</div>
-              </div>
-              <div class="mc" style="padding:8px;text-align:center">
-                <div style="font-size:14px;font-weight:700">386</div>
-                <div class="mm" style="font-family:var(--mono);font-size:7px;margin-top:2px;letter-spacing:.5px">ORDERS</div>
-              </div>
-            </div>
-            <div class="mm" style="font-family:var(--mono);font-size:8px;letter-spacing:.5px">SALES THIS WEEK</div>
-            <div class="chart">
-              <div class="bar" style="height:55%"></div>
-              <div class="bar" style="height:82%"></div>
-              <div class="bar" style="height:40%"></div>
-              <div class="bar" style="height:68%"></div>
-              <div class="bar" style="height:92%"></div>
-              <div class="bar" style="height:50%"></div>
-              <div class="bar" style="height:74%"></div>
-            </div>
-          </div>
+  <!-- 02: Contrast Balance -->
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Contrast Balance</h2></div>
+    <div class="st">
+      <div id="ui2" class="mock-ui dark" style="text-align:center">
+        <div style="font-size:18px; font-weight:700; margin-bottom:10px">Readability</div>
+        <p style="font-size:11px; opacity:0.7; margin-bottom:15px">Contrast ratio must meet WCAG AA standards.</p>
+        <div id="ratio2" class="contrast-badge">PASS: 7.2:1</div>
+      </div>
+    </div>
+    <p class="ins">Đảm bảo <strong>độ tương phản</strong> giữa chữ và nền. Trong chế độ tối, ta không dùng đen tuyệt đối (#000) để tránh hiện tượng <strong>eye fatigue</strong> khi đọc văn bản dài.</p>
+  </section>
+
+  <!-- 03: Ambient Context -->
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Ambient Context</h2></div>
+    <div class="st">
+      <div style="display:flex; flex-direction:column; align-items:center; gap:20px">
+        <div class="ambient-sensor">
+          <div class="sensor-wave"></div>
+          <i id="contextIcon" class="fa-solid fa-sun" style="font-size:20px; color:var(--ac)"></i>
+        </div>
+        <div id="ui3" class="mock-ui" style="height:60px; display:flex; align-items:center; justify-content:center">
+          <span id="ui3Label" style="font-family:'JetBrains Mono'; font-size:10px; font-weight:700">SYSTEM: LIGHT</span>
         </div>
       </div>
-      <div class="card-bot"><span>cùng data, khác palette</span><span class="loop"><span class="loop-dot"></span>loop</span></div>
     </div>
+    <p class="ins">Khả năng tự động thích ứng theo <strong>System Preference</strong> hoặc cảm biến ánh sáng. Giúp giao diện <strong>đồng bộ</strong> với môi trường sử dụng của người dùng.</p>
+  </section>
 
-    <!-- 3 · Settings -->
-    <div class="card">
-      <div class="card-top"><div class="card-dot"></div><span class="card-tag">Settings</span></div>
-      <div class="card-stage">
-        <div class="mu" id="m3" style="max-width:220px">
-          <div style="padding:14px;display:flex;flex-direction:column;gap:2px">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">
-              <div class="mu-badge">LIGHT</div>
-              <span class="mm" style="font-family:var(--mono);font-size:8px">preferences</span>
-            </div>
-            <div class="si act">
-              <svg class="si-ico" viewBox="0 0 16 16"><circle cx="8" cy="5" r="3"/><path d="M2 15a6 6 0 0112 0"/></svg>
-              <span class="si-txt">Account</span>
-            </div>
-            <div class="si">
-              <svg class="si-ico" viewBox="0 0 16 16"><circle cx="8" cy="8" r="5"/><path d="M8 3v10"/></svg>
-              <span class="si-txt">Appearance</span>
-            </div>
-            <div class="si">
-              <svg class="si-ico" viewBox="0 0 16 16"><path d="M8 1a4 4 0 014 4v2H4V5a4 4 0 014-4z"/><rect x="5" y="10" width="6" height="2" rx="1"/></svg>
-              <span class="si-txt">Notifications</span>
-            </div>
-            <div class="si">
-              <svg class="si-ico" viewBox="0 0 16 16"><rect x="2" y="6" width="12" height="8" rx="1"/><path d="M5 6V4a3 3 0 016 0v2"/></svg>
-              <span class="si-txt">Privacy</span>
-            </div>
-          </div>
+  <!-- 04: Palette Inversion -->
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Accent Preservation</h2></div>
+    <div class="st">
+      <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:10px">
+        <div style="display:flex; flex-direction:column; align-items:center; gap:5px">
+          <div class="palette-swatch" style="background:#fff"></div>
+          <div class="palette-swatch" style="background:#1a1a1a"></div>
+          <span style="font-size:9px; color:var(--txm)">Surface</span>
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:5px">
+          <div class="palette-swatch" style="background:#f4f4f4"></div>
+          <div class="palette-swatch" style="background:#2d2d2d"></div>
+          <span style="font-size:9px; color:var(--txm)">Border</span>
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:5px">
+          <div class="palette-swatch" style="background:var(--ac)"></div>
+          <div class="palette-swatch" style="background:var(--ac)"></div>
+          <span style="font-size:9px; color:var(--ac); font-weight:700">Accent</span>
         </div>
       </div>
-      <div class="card-bot"><span>active item giữ accent</span><span class="loop"><span class="loop-dot"></span>loop</span></div>
     </div>
-
-    <!-- 4 · Content Readability -->
-    <div class="card">
-      <div class="card-top"><div class="card-dot"></div><span class="card-tag">Readability</span></div>
-      <div class="card-stage">
-        <div class="mu" id="m4">
-          <div style="padding:16px;display:flex;flex-direction:column;gap:8px">
-            <div style="display:flex;justify-content:space-between;align-items:center">
-              <div class="mu-badge">LIGHT</div>
-              <span class="mm" style="font-family:var(--mono);font-size:8px">article</span>
-            </div>
-            <div style="font-size:14px;font-weight:700;line-height:1.35">Understanding Dark Mode in Modern Interfaces</div>
-            <div class="mm" style="font-size:10px;line-height:1.55">Dark mode reduces eye strain in low-light environments by lowering overall screen brightness. The key is maintaining sufficient contrast between text and background elements.</div>
-            <div style="display:flex;align-items:center;gap:6px;margin-top:2px">
-              <span class="mm" style="font-family:var(--mono);font-size:8px;letter-spacing:.5px">CONTRAST</span>
-              <div style="flex:1;height:3px;background:var(--mu-bdr);border-radius:1px;transition:background .55s;overflow:hidden">
-                <div style="width:85%;height:100%;background:var(--accent);border-radius:1px"></div>
-              </div>
-              <span class="ma" style="font-family:var(--mono);font-size:9px;font-weight:600">AA</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="card-bot"><span>độ tương phản giữ readable</span><span class="loop"><span class="loop-dot"></span>loop</span></div>
-    </div>
-
-  </div>
-
+    <p class="ins">Khi đảo ngược palette, các <strong>màu thương hiệu (Accent)</strong> thường được giữ nguyên hoặc điều chỉnh nhẹ sắc độ để duy trì tính <strong>nhận diện</strong> xuyên suốt.</p>
+  </section>
 </div>
 
 <script>
-/* ════════════════════════════════════════
-   4 ANIMATIONS — staggered start
-   ════════════════════════════════════════ */
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-/* 1 · Toggle Switch — cycle 3.2s, start 0ms */
-(function(){
-  var el=document.getElementById('m1');
-  var badge=el.querySelector('.mu-badge');
-  var dk=false;
-  (function run(){ setTimeout(function(){
-    dk=!dk;
-    el.classList.toggle('dk',dk);
-    badge.textContent=dk?'DARK':'LIGHT';
-    run();
-  },1600); })();
+// 01: Toggle Loop
+(async function() {
+  const toggle = document.getElementById('toggle1');
+  const ui = document.getElementById('ui1');
+  while (true) {
+    toggle.classList.add('on');
+    ui.classList.add('dark');
+    await wait(2000);
+    toggle.classList.remove('on');
+    ui.classList.remove('dark');
+    await wait(2000);
+  }
 })();
 
-/* 2 · Dashboard — cycle 4s, start 600ms */
-(function(){
-  var el=document.getElementById('m2');
-  var badge=el.querySelector('.mu-badge');
-  var dk=false;
-  setTimeout(function run(){ setTimeout(function(){
-    dk=!dk;
-    el.classList.toggle('dk',dk);
-    badge.textContent=dk?'DARK':'LIGHT';
-    run();
-  },2000); },600);
+// 02: Contrast Loop
+(async function() {
+  const ui = document.getElementById('ui2');
+  const ratio = document.getElementById('ratio2');
+  while (true) {
+    ui.classList.remove('dark');
+    ui.style.color = '#1a1a1a';
+    ratio.textContent = 'PASS: 12.5:1';
+    ratio.style.background = 'var(--gn)';
+    await wait(2500);
+    ui.classList.add('dark');
+    ui.style.color = '#fff';
+    ratio.textContent = 'PASS: 7.2:1';
+    ratio.style.background = 'var(--ac)';
+    await wait(2500);
+  }
 })();
 
-/* 3 · Settings — cycle 3.6s, start 1200ms */
-(function(){
-  var el=document.getElementById('m3');
-  var badge=el.querySelector('.mu-badge');
-  var dk=false;
-  setTimeout(function run(){ setTimeout(function(){
-    dk=!dk;
-    el.classList.toggle('dk',dk);
-    badge.textContent=dk?'DARK':'LIGHT';
-    run();
-  },1800); },1200);
+// 03: Ambient Loop
+(async function() {
+  const icon = document.getElementById('contextIcon');
+  const ui = document.getElementById('ui3');
+  const label = document.getElementById('ui3Label');
+  while (true) {
+    icon.className = 'fa-solid fa-sun';
+    ui.classList.remove('dark');
+    label.textContent = 'SYSTEM: LIGHT';
+    await wait(3000);
+    icon.className = 'fa-solid fa-moon';
+    ui.classList.add('dark');
+    label.textContent = 'SYSTEM: DARK';
+    await wait(3000);
+  }
 })();
 
-/* 4 · Readability — cycle 5s, start 1800ms */
-(function(){
-  var el=document.getElementById('m4');
-  var badge=el.querySelector('.mu-badge');
-  var dk=false;
-  setTimeout(function run(){ setTimeout(function(){
-    dk=!dk;
-    el.classList.toggle('dk',dk);
-    badge.textContent=dk?'DARK':'LIGHT';
-    run();
-  },2500); },1800);
+// 04: Palette Pulse (Just minor scale/glow to show activity)
+(async function() {
+  const accentSwatches = document.querySelectorAll('.palette-swatch[style*="var(--ac)"]');
+  while (true) {
+    accentSwatches.forEach(s => {
+      s.style.boxShadow = '0 0 10px var(--ac)';
+      s.style.transform = 'scale(1.05)';
+    });
+    await wait(1000);
+    accentSwatches.forEach(s => {
+      s.style.boxShadow = 'none';
+      s.style.transform = 'scale(1)';
+    });
+    await wait(1000);
+  }
 })();
 </script>
 </body>
