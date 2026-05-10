@@ -3,146 +3,326 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Opacity / Transparency — Practice</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<title>Opacity Practice — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;--card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a;--success:#3a9e5c;--success-soft:rgba(58,158,92,.12);--warning:#c49030;--warning-soft:rgba(196,144,48,.1);--shape-lt:#33333d}
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 100%,16px 16px;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:12px;gap:16px}
+:root {
+  --bg: #101010;
+  --bgc: #181818;
+  --bgi: #131313;
+  --bd: #272727;
+  --tx: #e0e0e0;
+  --txm: #707070;
+  --txd: #3a3a3a;
+  --ac: #E88C2E;
+  --acl: #f59e0b;
+  --abg: rgba(232, 140, 46, .08);
+  --abg2: rgba(232, 140, 46, .18);
+}
 
-.pw{width:100%;background:var(--card);border:2px solid var(--border);padding:20px 24px}
-.pw-h{font-size:15px;font-weight:700;margin-bottom:2px}.pw-h span{color:var(--accent)}
-.pw-s{font-size:11px;color:var(--muted);margin-bottom:14px}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-.ctx-r{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
-.ctx-b{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;padding:6px 12px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:6px}
-.ctx-b:hover{border-color:var(--accent);color:var(--fg)}
-.ctx-b.on{border-color:var(--accent);color:var(--accent);background:rgba(212,113,42,.1)}
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, .018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, .018) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--tx);
+  padding: 20px 16px;
+}
 
-.sl-sec{margin-bottom:20px}
-.sl-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
-.sl-lbl{font-size:11px;color:var(--muted);font-family:'JetBrains Mono',monospace}
-.sl-val{font-family:'JetBrains Mono',monospace;font-size:16px;font-weight:700;color:var(--accent)}
+.pra {
+  max-width: 940px;
+  margin: 0 auto;
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 22px;
+}
 
-.sl-wrap{position:relative;height:30px;display:flex;align-items:center}
-.sl-track{position:absolute;left:0;right:0;height:4px;background:var(--border)}
-.sl-zone{position:absolute;height:4px;background:rgba(212,113,42,0.2);border-left:1px solid var(--accent);border-right:1px solid var(--accent);z-index:1;pointer-events:none;transition:all .3s ease}
-.sl-zone.hit{background:rgba(58,158,92,0.2);border-color:var(--success)}
+.ch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
 
-input[type=range]{-webkit-appearance:none;width:100%;height:100%;background:transparent;outline:none;cursor:pointer;position:relative;z-index:2}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;background:var(--accent);border:2px solid var(--card);cursor:grab;border-radius:0}
+.ch .n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ac);
+  background: var(--abg);
+  border: 1px solid var(--abg2);
+  padding: 1px 6px;
+  border-radius: 2px;
+}
 
-.prev{background:var(--card-alt);border:1px solid var(--border);padding:32px 24px;margin-bottom:16px;min-height:160px;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.ch h2 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -.3px;
+  text-transform: uppercase;
+}
 
-/* Preview Specifics */
-.preview-content{width:100%;text-align:center;transition:opacity 0.2s ease}
-.preview-title{font-size:24px;font-weight:800;margin-bottom:8px}
-.preview-desc{font-size:14px;color:var(--muted)}
-.preview-overlay-bg{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=600') center/cover;z-index:0}
-.preview-overlay-layer{position:absolute;inset:0;background:#000;z-index:1}
-.preview-overlay-text{position:relative;z-index:2;font-size:18px;font-weight:700;color:#fff;text-shadow:0 1px 4px rgba(0,0,0,0.5)}
-.preview-icon{font-size:48px;color:var(--accent);margin-bottom:10px}
-.preview-btn{padding:12px 32px;background:var(--accent);color:#fff;border:none;border-radius:4px;font-weight:700;font-size:14px}
+.pra-goal {
+  font-size: 12.5px;
+  color: var(--txm);
+  margin-bottom: 18px;
+  line-height: 1.5;
+}
 
-.fb{display:flex;align-items:center;gap:8px;padding:10px 14px;font-size:12px;border:1px solid var(--border);background:var(--card-alt)}
-.fb.ok{border-color:var(--success);background:rgba(58,158,92,.05);color:var(--success)}
-.fb.no{border-color:var(--warning);background:rgba(196,144,48,.05);color:var(--warning)}
+.pra-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
 
-.pht{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:10px;padding-top:10px;border-top:1px dashed var(--border);opacity:.65}
+@media(max-width: 768px) {
+  .pra-grid { grid-template-columns: 1fr; }
+}
 
-@media(max-width:520px){.pw{padding:16px}}
+/* Control Panel */
+.ctrl-group {
+  margin-bottom: 20px;
+}
+
+.ctrl-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--txd);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.btn-group {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 7px 12px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid var(--bd);
+  background: var(--bgi);
+  color: var(--txm);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all .15s;
+}
+
+.btn:hover {
+  border-color: var(--ac);
+  color: var(--ac);
+}
+
+.btn.active {
+  background: var(--ac);
+  color: #fff;
+  border-color: var(--ac);
+}
+
+/* Preview Area */
+.preview-box {
+  background: #000;
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  min-height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=800');
+  background-size: cover;
+  background-position: center;
+}
+
+.overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: #000;
+  opacity: 0.4;
+  transition: opacity 0.4s;
+}
+
+.content-wrap {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  width: 100%;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+  transition: opacity 0.4s;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #fff;
+  opacity: 0.7;
+  margin-bottom: 20px;
+  transition: opacity 0.4s;
+}
+
+.cta-btn {
+  background: var(--ac);
+  color: #fff;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 13px;
+  transition: opacity 0.4s;
+}
+
+/* Prompt Box */
+.pr-box {
+  background: var(--bgi);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 14px;
+  margin-top: 24px;
+}
+
+.pr-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--txd);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.pr-txt {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--ac);
+  line-height: 1.6;
+}
+
+.hint {
+  font-size: 11px;
+  color: var(--txm);
+  margin-top: 12px;
+  line-height: 1.4;
+  font-style: italic;
+}
+
 </style>
 </head>
 <body>
 
-<div class="pw">
-  <div class="pw-h">Thực hành — <span>Vibe độ trong suốt</span></div>
-  <div class="pw-s">Chọn loại element → kéo slider vào vùng cam để tìm opacity "chuẩn"</div>
+<section class="pra">
+  <div class="ch"><span class="n">PRACTICE</span><h2>Opacity Builder</h2></div>
+  <p class="pra-goal">Thực hành điều chỉnh độ trong suốt để tối ưu hiển thị. Chọn đối tượng và mức Opacity tương ứng để xem kết quả.</p>
 
-  <div class="ctx-r" id="ctxR"></div>
+  <div class="pra-grid">
+    <!-- Controls -->
+    <div>
+      <div class="ctrl-group">
+        <span class="ctrl-label">Chọn đối tượng (Target)</span>
+        <div class="btn-group" id="targetBtns">
+          <button class="btn active" data-val="overlay">Lớp phủ nền (Overlay)</button>
+          <button class="btn" data-val="subtitle">Chữ phụ (Subtitle)</button>
+          <button class="btn" data-val="btn">Nút bấm (Disabled)</button>
+        </div>
+      </div>
 
-  <div class="sl-sec">
-    <div class="sl-head">
-      <span class="sl-lbl">opacity (0.0 - 1.0)</span>
-      <span class="sl-val" id="sV">0.50</span>
+      <div class="ctrl-group">
+        <span class="ctrl-label">Mức Opacity (Value)</span>
+        <div class="btn-group" id="valBtns">
+          <button class="btn" data-val="0.1">0.1 (Gần như ẩn)</button>
+          <button class="btn active" data-val="0.4">0.4 (Mờ vừa)</button>
+          <button class="btn" data-val="0.7">0.7 (Mờ nhẹ)</button>
+          <button class="btn" data-val="1.0">1.0 (Đậm đặc)</button>
+        </div>
+      </div>
+
+      <div class="hint">Mẹo: Opacity thấp (0.4 - 0.7) giúp tạo phân cấp cho thông tin phụ, trong khi Overlay đậm (0.6+) giúp text trắng nổi bật trên ảnh nền phức tạp.</div>
     </div>
-    <div class="sl-wrap">
-      <div class="sl-track"></div>
-      <div class="sl-zone" id="sZ"></div>
-      <input type="range" id="sR" min="0" max="100" step="1" value="50">
+
+    <!-- Preview -->
+    <div>
+      <div class="preview-box" id="preview">
+        <div class="overlay" id="overlay"></div>
+        <div class="content-wrap">
+          <h3 class="title">Tương lai của AI</h3>
+          <p class="subtitle" id="subtitle">Khám phá sức mạnh của Vibecode</p>
+          <button class="cta-btn" id="ctaBtn">Bắt đầu ngay</button>
+        </div>
+      </div>
+
+      <div class="pr-box">
+        <span class="pr-label">Prompt cho AI</span>
+        <div class="pr-txt" id="promptText">
+          Giảm độ trong suốt của lớp phủ nền xuống 0.4 để làm nổi bật nội dung phía trên.
+        </div>
+      </div>
     </div>
   </div>
-
-  <div class="prev" id="prev">
-    <!-- Content will be injected here -->
-  </div>
-
-  <div class="fb" id="fb">Chọn loại element rồi kéo slider</div>
-  <div class="pht">Hint: Opacity không chỉ làm mờ, nó là công cụ để điều khiển sự chú ý và trạng thái hệ thống.</div>
-</div>
+</section>
 
 <script>
-  const ctxs = [
-    { id:'text', name:'Text Phụ', range:[60, 80], hint:'Text phụ cần đủ rõ để đọc nhưng không được tranh sự chú ý với tiêu đề chính.' },
-    { id:'overlay', name:'Overlay Nền', range:[40, 70], hint:'Lớp phủ nền cần đủ đậm để text trắng bên trên nổi bật, nhưng không được làm mất hoàn toàn ảnh nền.' },
-    { id:'icon', name:'Icon Hover', range:[70, 90], hint:'Khi hover, icon thường giảm nhẹ opacity để tạo hiệu ứng phản hồi thị giác tinh tế.' },
-    { id:'disabled', name:'Nút Vô Hiệu', range:[30, 50], hint:'Nút bị khóa cần mờ hẳn đi để người dùng không cố gắng nhấn vào.' }
-  ];
+const overlay = document.getElementById('overlay');
+const subtitle = document.getElementById('subtitle');
+const ctaBtn = document.getElementById('ctaBtn');
+const promptText = document.getElementById('promptText');
 
-  const ctxR=document.getElementById('ctxR'), sR=document.getElementById('sR'), sV=document.getElementById('sV'), sZ=document.getElementById('sZ');
-  const fb=document.getElementById('fb'), prev=document.getElementById('prev');
+const state = {
+  target: 'overlay',
+  value: '0.4'
+};
 
-  let curCtx = ctxs[0];
+function updatePreview() {
+  // Reset all to defaults first (for clean state)
+  overlay.style.opacity = "0.4";
+  subtitle.style.opacity = "0.7";
+  ctaBtn.style.opacity = "1.0";
 
-  function renderCtx(){
-    ctxR.innerHTML = ctxs.map((c,i)=>`<button class="ctx-b${i===0?' on':''}" data-id="${c.id}">${c.name}</button>`).join('');
-    ctxR.querySelectorAll('.ctx-b').forEach(b=>{
-      b.onclick=()=>{
-        curCtx=ctxs.find(x=>x.id===b.dataset.id);
-        ctxR.querySelectorAll('.ctx-b').forEach(x=>x.classList.toggle('on',x===b));
-        update();
-      };
+  // Apply active state
+  if (state.target === 'overlay') overlay.style.opacity = state.value;
+  if (state.target === 'subtitle') subtitle.style.opacity = state.value;
+  if (state.target === 'btn') ctaBtn.style.opacity = state.value;
+
+  // Update prompt
+  let targetTxt = '';
+  if(state.target === 'overlay') targetTxt = 'lớp phủ nền (overlay)';
+  if(state.target === 'subtitle') targetTxt = 'dòng chữ phụ (subtitle)';
+  if(state.target === 'btn') targetTxt = 'nút bấm (để giả lập trạng thái disabled)';
+
+  promptText.innerText = `Chỉnh opacity của ${targetTxt} thành ${state.value} để tối ưu hóa thị giác.`;
+}
+
+function setupBtns(groupId, stateKey) {
+  const btns = document.querySelectorAll(`#${groupId} .btn`);
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      btns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state[stateKey] = btn.dataset.val;
+      updatePreview();
     });
-  }
+  });
+}
 
-  function update(){
-    const v = parseInt(sR.value);
-    const op = v / 100;
-    sV.textContent = op.toFixed(2);
-    
-    let html = '';
-    if(curCtx.id === 'text') {
-        html = `<div class="preview-content" style="opacity:${op}"><div class="preview-title">Nội dung phụ</div><div class="preview-desc">Thông tin này bổ sung cho ý chính phía trên.</div></div>`;
-    } else if(curCtx.id === 'overlay') {
-        html = `<div class="preview-overlay-bg"></div><div class="preview-overlay-layer" style="opacity:${op}"></div><div class="preview-overlay-text">Text trên nền ảnh</div>`;
-    } else if(curCtx.id === 'icon') {
-        html = `<div class="preview-icon" style="opacity:${op}"><i class="fa-solid fa-gear"></i></div><div class="preview-desc">Settings</div>`;
-    } else if(curCtx.id === 'disabled') {
-        html = `<button class="preview-btn" style="opacity:${op}">Đăng ký ngay</button>`;
-    }
-    prev.innerHTML = html;
+setupBtns('targetBtns', 'target');
+setupBtns('valBtns', 'value');
 
-    const lo=0, hi=100;
-    const zl=curCtx.range[0], zh=curCtx.range[1];
-    sZ.style.left = (zl/hi*100)+'%';
-    sZ.style.width = ((zh-zl)/hi*100)+'%';
-
-    const inZ = v >= zl && v <= zh;
-    sZ.classList.toggle('hit', inZ);
-    
-    if(inZ){
-      fb.className='fb ok';
-      fb.innerHTML=`<i class="fa-solid fa-check"></i> <span><strong>Hợp lý!</strong> ${curCtx.hint}</span>`;
-    } else {
-      fb.className='fb no';
-      fb.innerHTML=`<i class="fa-solid fa-xmark"></i> <span><strong>Chưa chuẩn.</strong> Thử tầm ${(zl/100).toFixed(1)}-${(zh/100).toFixed(1)} cho ${curCtx.name.toLowerCase()}.</span>`;
-    }
-  }
-
-  sR.oninput = update;
-  renderCtx();
-  update();
+updatePreview();
 </script>
+
 </body>
 </html>

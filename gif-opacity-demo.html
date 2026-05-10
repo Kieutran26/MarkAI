@@ -1,209 +1,433 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Opacity / Transparency — Animated</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<style>
-:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;--accent-dim:rgba(212,113,42,.15);--card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a;--surface:#1c1c23}
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 100%,16px 16px;display:flex;flex-direction:column;align-items:center;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:0;gap:8px}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opacity Demo - Amber Brutalist</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --amber: #E88C2E;
+            --bg: #0a0a0c;
+            --card-bg: #16161b;
+            --text: #e0e0e6;
+            --text-muted: #707070;
+            --border: #2a2a30;
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-sans: 'Space Grotesk', sans-serif;
+        }
 
-.aw{width:100%}
-.ab-wrap{width:100%;background:var(--card);border:2px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
-.la-wrap{width:100%;position:relative;overflow:hidden}
-.ab{width:700px;height:250px;transform-origin:top left;background:linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);background-size:30px 30px;position:relative}
-.hd{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
-.hd-t{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:2.5px}
-.hd-f{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
-.fr{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 24px;opacity:0;pointer-events:none;transition:opacity .3s}.fr.show{opacity:1;pointer-events:auto}
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* Opacity Specific Styles */
-.op-container{width:100%;max-width:500px;display:flex;flex-direction:column;gap:12px}
-.op-row{display:flex;align-items:center;gap:16px;padding:8px 12px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:4px;transition:all .3s ease}
-.op-val-tag{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--accent);background:var(--accent-dim);padding:2px 6px;border-radius:2px;min-width:34px;text-align:center}
-.op-target-box{flex:1;font-size:14px;font-weight:600}
-.op-use-tag{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px}
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font-sans);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
 
-/* Overlay Demo */
-.ov-grid{display:grid;grid-template-columns:repeat(4, 1fr);gap:10px;width:100%}
-.ov-item{position:relative;height:100px;border:1px solid var(--border);border-radius:4px;overflow:hidden;background:linear-gradient(45deg, #222, #444)}
-.ov-bg{position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=400') center/cover}
-.ov-layer{position:absolute;inset:0;background:#000;transition:opacity .5s ease}
-.ov-label{position:absolute;bottom:6px;right:6px;font-family:'JetBrains Mono',monospace;font-size:9px;color:#fff;z-index:2;text-shadow:0 1px 2px rgba(0,0,0,0.8)}
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            width: 100%;
+            max-width: 940px;
+        }
 
-/* Icon Demo */
-.ic-row{display:flex;justify-content:space-around;width:100%;padding:20px 0}
-.ic-item{display:flex;flex-direction:column;align-items:center;gap:8px}
-.ic-box{width:48px;height:48px;display:flex;align-items:center;justify-content:center;background:var(--card-alt);border:1px solid var(--border);border-radius:8px;color:var(--accent);font-size:20px;transition:opacity .5s ease}
-.ic-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted)}
+        @media (max-width: 600px) {
+            .grid { grid-template-columns: 1fr; }
+        }
 
-/* Component Demo */
-.cp-row{display:flex;flex-direction:column;gap:10px;width:100%;max-width:400px}
-.cp-item{display:flex;align-items:center;gap:12px}
-.cp-btn{padding:8px 20px;background:var(--accent);color:#fff;border:none;border-radius:4px;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;transition:opacity .5s ease;flex-shrink:0}
-.cp-desc{font-size:11px;color:var(--muted)}
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            position: relative;
+            padding-top: 2px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
 
-.inf{padding:11px 14px;border-top:1px solid var(--border);background:var(--card);min-height:86px}
-.dn{font-size:15px;font-weight:800;line-height:1.15}
-.ds{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);margin-top:2px}
-.dd{font-size:10px;color:var(--muted);margin-top:4px;line-height:1.4}
-.pt{height:2px;background:var(--border)}.pff{height:100%;background:var(--accent);width:0%}
+        .accent-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--amber);
+        }
 
-/* Controls */
-.ctr{display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 0;background:transparent}
-.ctr-b{padding:6px 12px;background:var(--card-alt);border:1px solid var(--border);color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:1px}
-.ctr-b:hover{border-color:var(--border-hi);color:var(--fg)}
-.ctr-b.act{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+        .header {
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid var(--border);
+        }
 
-.pp-b{width:32px;height:32px;border-radius:50%;background:var(--accent);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-left:4px;transition:transform .2s;flex-shrink:0}
-.pp-b:active{transform:scale(.92)}
-.pp-i{width:12px;height:12px;fill:#000}
+        .num-box {
+            font-family: var(--font-mono);
+            font-size: 11px;
+            color: var(--amber);
+            border: 1px solid var(--amber);
+            padding: 1px 5px;
+            line-height: 1;
+        }
 
-@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
-</style>
+        .title {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
+        }
+
+        .indicator {
+            position: absolute;
+            top: 14px;
+            right: 16px;
+            width: 8px;
+            height: 8px;
+            background: var(--amber);
+            border-radius: 50%;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; box-shadow: 0 0 5px var(--amber); }
+            50% { opacity: 0.3; }
+        }
+
+        .simulation {
+            height: 160px;
+            position: relative;
+            background: #0f0f13;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        .ins {
+            padding: 12px 16px;
+            font-size: 11.5px;
+            color: var(--text-muted);
+            border-left: 2px solid var(--amber);
+            line-height: 1.5;
+            background: rgba(232, 140, 46, 0.03);
+            min-height: 64px;
+        }
+
+        .ins strong {
+            color: var(--amber);
+            font-weight: 600;
+        }
+
+        /* Opacity Simulation Elements */
+        .mock-content {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .op-text {
+            font-size: 13px;
+            font-weight: 500;
+            transition: opacity 0.5s ease;
+        }
+
+        .overlay-demo {
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=400') center/cover;
+            border-radius: 4px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .overlay-layer {
+            position: absolute;
+            inset: 0;
+            background: #000;
+            transition: opacity 0.8s ease;
+        }
+
+        .overlay-label {
+            position: relative;
+            z-index: 2;
+            font-size: 24px;
+            font-weight: 700;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .icon-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+
+        .icon-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px;
+            background: #1a1a20;
+            border-radius: 4px;
+            border: 1px solid #2a2a30;
+            transition: opacity 0.4s ease;
+        }
+
+        .icon-box {
+            width: 20px;
+            height: 20px;
+            background: var(--amber);
+            border-radius: 3px;
+        }
+
+        .component-demo {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .mock-button {
+            padding: 10px 20px;
+            background: var(--amber);
+            color: #000;
+            border-radius: 4px;
+            font-weight: 700;
+            font-size: 12px;
+            width: 120px;
+            text-align: center;
+            transition: opacity 0.4s ease;
+        }
+
+        .tag {
+            font-family: var(--font-mono);
+            font-size: 9px;
+            color: var(--amber);
+            background: rgba(232, 140, 46, 0.1);
+            padding: 2px 6px;
+            border-radius: 2px;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+
+        .cursor {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--amber);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 100;
+            opacity: 0;
+            transition: all 0.4s ease-out;
+            box-shadow: 0 0 10px var(--amber);
+        }
+    </style>
 </head>
 <body>
+    <div class="grid">
+        <!-- 01: Visual Hierarchy -->
+        <div class="card">
+            <div class="accent-bar"></div>
+            <div class="indicator"></div>
+            <div class="header">
+                <div class="num-box">01</div>
+                <div class="title">Visual Hierarchy</div>
+            </div>
+            <div class="simulation" id="sim1">
+                <div class="tag" id="tag1">opacity: 1.0</div>
+                <div class="mock-content">
+                    <div class="op-text" id="txt1" style="font-size: 18px; font-weight: 700; color: var(--amber);">Main Heading Text</div>
+                    <div class="op-text" id="txt2">Secondary description text for context.</div>
+                    <div class="op-text" id="txt3" style="font-size: 11px;">Micro-copy or timestamp information.</div>
+                </div>
+            </div>
+            <div class="ins">
+                <strong>Opacity</strong> giúp tạo ra <strong>phân cấp thị giác</strong> mà không cần đổi màu, giữ cho thiết kế đồng nhất và tinh tế.
+            </div>
+        </div>
 
-<div class="aw">
-<div class="ab-wrap">
-  <div class="hd"><span class="hd-t">OPACITY / TRANSPARENCY</span><span class="hd-f" id="hf">01 / 04</span></div>
-  <div class="la-wrap" id="la-wrap">
-    <div class="ab" id="ab">
+        <!-- 02: Image Overlays -->
+        <div class="card">
+            <div class="accent-bar"></div>
+            <div class="indicator"></div>
+            <div class="header">
+                <div class="num-box">02</div>
+                <div class="title">Image Overlays</div>
+            </div>
+            <div class="simulation" id="sim2">
+                <div class="tag" id="tag2">overlay: 0.4</div>
+                <div class="overlay-demo">
+                    <div class="overlay-layer" id="overlay"></div>
+                    <div class="overlay-label">READABLE</div>
+                </div>
+            </div>
+            <div class="ins">
+                Sử dụng một lớp phủ (overlay) có <strong>độ mờ</strong> vừa phải giúp văn bản phía trên trở nên <strong>dễ đọc hơn</strong> trên nền hình ảnh.
+            </div>
+        </div>
 
-    <!-- FRAME 1: Text -->
-    <div class="fr" id="f0">
-      <div class="op-container">
-        <div class="op-row"><span class="op-val-tag">1.0</span><span class="op-target-box" style="opacity:1">Tiêu đề chính (Heading)</span><span class="op-use-tag">Đọc đầu tiên</span></div>
-        <div class="op-row"><span class="op-val-tag">0.7</span><span class="op-target-box" style="opacity:0.7">Mô tả phụ (Description)</span><span class="op-use-tag">Hỗ trợ đọc</span></div>
-        <div class="op-row"><span class="op-val-tag">0.5</span><span class="op-target-box" style="opacity:0.5">Ghi chú (Caption)</span><span class="op-use-tag">Nhìn nếu cần</span></div>
-        <div class="op-row"><span class="op-val-tag">0.3</span><span class="op-target-box" style="opacity:0.3">Watermark / Hint text</span><span class="op-use-tag">Gần như ẩn</span></div>
-      </div>
+        <!-- 03: Interaction States -->
+        <div class="card">
+            <div class="accent-bar"></div>
+            <div class="indicator"></div>
+            <div class="header">
+                <div class="num-box">03</div>
+                <div class="title">Interaction States</div>
+            </div>
+            <div class="simulation" id="sim3">
+                <div class="icon-grid">
+                    <div class="icon-item" id="item1">
+                        <div class="icon-box"></div>
+                        <span style="font-size: 10px;">Active</span>
+                    </div>
+                    <div class="icon-item" id="item2">
+                        <div class="icon-box"></div>
+                        <span style="font-size: 10px;">Hover</span>
+                    </div>
+                    <div class="icon-item" id="item3">
+                        <div class="icon-box"></div>
+                        <span style="font-size: 10px;">Default</span>
+                    </div>
+                    <div class="icon-item" id="item4">
+                        <div class="icon-box"></div>
+                        <span style="font-size: 10px;">Disabled</span>
+                    </div>
+                </div>
+                <div class="cursor" id="c3"></div>
+            </div>
+            <div class="ins">
+                <strong>Opacity</strong> thấp thường được dùng để chỉ thị trạng thái <strong>Disabled</strong> hoặc các yếu tố ít quan trọng hơn trong UI.
+            </div>
+        </div>
+
+        <!-- 04: Loading States -->
+        <div class="card">
+            <div class="accent-bar"></div>
+            <div class="indicator"></div>
+            <div class="header">
+                <div class="num-box">04</div>
+                <div class="title">Loading & Feedback</div>
+            </div>
+            <div class="simulation" id="sim4">
+                <div class="component-demo">
+                    <div class="mock-button" id="btn">SUBMIT</div>
+                    <div style="font-size: 10px; color: var(--text-muted);" id="btn-status">Ready</div>
+                </div>
+            </div>
+            <div class="ins">
+                Khi một thành phần đang <strong>xử lý</strong>, việc giảm độ mờ giúp người dùng biết nó tạm thời <strong>không thể tương tác</strong>.
+            </div>
+        </div>
     </div>
 
-    <!-- FRAME 2: Background -->
-    <div class="fr" id="f1">
-      <div class="ov-grid">
-        <div class="ov-item"><div class="ov-bg"></div><div class="ov-layer" style="opacity:0"></div><span class="ov-label">0.0</span></div>
-        <div class="ov-item"><div class="ov-bg"></div><div class="ov-layer" style="opacity:0.3"></div><span class="ov-label">0.3</span></div>
-        <div class="ov-item"><div class="ov-bg"></div><div class="ov-layer" style="opacity:0.6"></div><span class="ov-label">0.6</span></div>
-        <div class="ov-item"><div class="ov-bg"></div><div class="ov-layer" style="opacity:0.85"></div><span class="ov-label">0.85</span></div>
-      </div>
-    </div>
+    <script>
+        const wait = ms => new Promise(r => setTimeout(r, ms));
 
-    <!-- FRAME 3: Icons -->
-    <div class="fr" id="f2">
-      <div class="ic-row">
-        <div class="ic-item"><div class="ic-box" style="opacity:1"><i class="fa-solid fa-star"></i></div><span class="ic-label">1.0 Active</span></div>
-        <div class="ic-item"><div class="ic-box" style="opacity:0.7"><i class="fa-solid fa-star"></i></div><span class="ic-label">0.7 Hover</span></div>
-        <div class="ic-item"><div class="ic-box" style="opacity:0.4"><i class="fa-solid fa-star"></i></div><span class="ic-label">0.4 Inactive</span></div>
-        <div class="ic-item"><div class="ic-box" style="opacity:0.15"><i class="fa-solid fa-star"></i></div><span class="ic-label">0.15 Disabled</span></div>
-      </div>
-    </div>
+        // Loop 1: Text Hierarchy
+        async function loop1() {
+            const txt1 = document.getElementById('txt1');
+            const txt2 = document.getElementById('txt2');
+            const txt3 = document.getElementById('txt3');
+            const tag = document.getElementById('tag1');
+            
+            while (true) {
+                tag.textContent = "opacity: 1.0 | 0.7 | 0.4";
+                txt1.style.opacity = 1;
+                txt2.style.opacity = 0.7;
+                txt3.style.opacity = 0.4;
+                await wait(2000);
+                
+                tag.textContent = "opacity: 1.0 | 1.0 | 1.0";
+                txt1.style.opacity = 1;
+                txt2.style.opacity = 1;
+                txt3.style.opacity = 1;
+                await wait(1500);
+            }
+        }
 
-    <!-- FRAME 4: Components -->
-    <div class="fr" id="f3">
-      <div class="cp-row">
-        <div class="cp-item"><button class="cp-btn" style="opacity:1">Submit</button><span class="cp-desc">Bình thường (1.0)</span></div>
-        <div class="cp-item"><button class="cp-btn" style="opacity:0.7">Submit</button><span class="cp-desc">Đang xử lý (0.7)</span></div>
-        <div class="cp-item"><button class="cp-btn" style="opacity:0.4">Submit</button><span class="cp-desc">Vô hiệu hóa (0.4)</span></div>
-        <div class="cp-item"><button class="cp-btn" style="opacity:0.1">Submit</button><span class="cp-desc">Gần như ẩn (0.1)</span></div>
-      </div>
-    </div>
+        // Loop 2: Image Overlays
+        async function loop2() {
+            const overlay = document.getElementById('overlay');
+            const tag = document.getElementById('tag2');
+            const opacities = [0.2, 0.5, 0.8, 0];
+            
+            while (true) {
+                for (let op of opacities) {
+                    overlay.style.opacity = op;
+                    tag.textContent = `overlay: ${op.toFixed(1)}`;
+                    await wait(1500);
+                }
+            }
+        }
 
-    </div>
-  </div>
-  <div class="inf">
-    <div class="dn" id="dn">Text Opacity</div>
-    <div class="ds" id="ds">PHÂN CẤP NỘI DUNG</div>
-    <div class="dd" id="dd">Cùng một màu chữ, nhưng opacity khác nhau giúp người dùng biết cái gì quan trọng hơn để đọc trước.</div>
-  </div>
-  <div class="pt"><div class="pff" id="pff"></div></div>
-</div>
+        // Loop 3: Interaction States
+        async function loop3() {
+            const cursor = document.getElementById('c3');
+            const sim = document.getElementById('sim3');
+            const items = [
+                { el: document.getElementById('item1'), op: 1 },
+                { el: document.getElementById('item2'), op: 0.8 },
+                { el: document.getElementById('item3'), op: 0.6 },
+                { el: document.getElementById('item4'), op: 0.2 }
+            ];
 
-<div class="ctr">
-    <button class="ctr-b act" data-i="0">TEXT</button>
-    <button class="ctr-b" data-i="1">OVERLAY</button>
-    <button class="ctr-b" data-i="2">ICONS</button>
-    <button class="ctr-b" data-i="3">BUTTONS</button>
-    <button class="pp-b" id="pp" title="Play/Pause">
-        <svg class="pp-i" id="pp-i" viewBox="0 0 24 24"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>
-    </button>
-</div>
-</div>
+            while (true) {
+                for (let item of items) {
+                    const rect = item.el.getBoundingClientRect();
+                    const simRect = sim.getBoundingClientRect();
+                    cursor.style.opacity = 1;
+                    cursor.style.left = (rect.left - simRect.left + rect.width / 2 - 5) + 'px';
+                    cursor.style.top = (rect.top - simRect.top + rect.height / 2 - 5) + 'px';
+                    
+                    items.forEach(i => i.el.style.opacity = i.op);
+                    await wait(1200);
+                }
+                cursor.style.opacity = 0;
+                await wait(1000);
+            }
+        }
 
-<script>
-const INFO=[
-  {nm:'Text Opacity',sz:'PHÂN CẤP NỘI DUNG',dc:'Dùng opacity thay vì đổi màu xám giúp giữ được sắc thái của màu gốc (brand color) mà vẫn tạo được phân cấp đọc.'},
-  {nm:'Background Overlay',sz:'ĐỘ ĐẬM LỚP PHỦ',dc:'Lớp phủ đen (overlay) giúp text phía trên nổi bật hơn trên các hình ảnh phức tạp hoặc nhiều chi tiết.'},
-  {nm:'Icon States',sz:'TRẠNG THÁI TƯƠNG TÁC',dc:'Opacity thấp là tín hiệu trực quan báo rằng icon đó hiện không thể tương tác hoặc đang ở trạng thái nghỉ.'},
-  {nm:'Component Feedback',sz:'PHẢN HỒI HỆ THỐNG',dc:'Khi nút bấm mờ đi, người dùng hiểu rằng hệ thống đang bận hoặc nút đó chưa đủ điều kiện để bấm.'}
-];
+        // Loop 4: Loading States
+        async function loop4() {
+            const btn = document.getElementById('btn');
+            const status = document.getElementById('btn-status');
+            
+            while (true) {
+                btn.style.opacity = 1;
+                btn.textContent = "SUBMIT";
+                status.textContent = "Ready";
+                await wait(2000);
+                
+                btn.style.opacity = 0.6;
+                btn.textContent = "SENDING...";
+                status.textContent = "Processing (60% opacity)";
+                await wait(2000);
+                
+                btn.style.opacity = 0.3;
+                btn.textContent = "SENT";
+                status.textContent = "Disabled (30% opacity)";
+                await wait(1500);
+            }
+        }
 
-const el={dn:document.getElementById('dn'),ds:document.getElementById('ds'),dd:document.getElementById('dd'),hf:document.getElementById('hf'),pff:document.getElementById('pff')};
-const frames = [document.getElementById('f0'), document.getElementById('f1'), document.getElementById('f2'), document.getElementById('f3')];
-const ctrBs=document.querySelectorAll('.ctr-b');
-const ppB=document.getElementById('pp');
-const ppI=document.getElementById('pp-i');
-
-let cur=0,pa=null,t0=0,isPaused=false;
-const DUR=4000;
-
-function apply(i){
-  cur=i;
-  const s=INFO[i];el.dn.textContent=s.nm;el.ds.textContent=s.sz;el.dd.textContent=s.dc;
-  el.hf.textContent='0'+(i+1)+' / 04';
-  ctrBs.forEach((b,j)=>b.classList.toggle('act',j===i));
-  
-  frames.forEach((f,j)=>{
-    f.classList.toggle('show', j===i);
-  });
-}
-
-function tk(n){
-    if(isPaused) return;
-    const p=Math.min(100,(n-t0)/DUR*100);
-    el.pff.style.width=p+'%';
-    if(p<100)pa=requestAnimationFrame(tk);
-    else next();
-}
-
-function startProg(){t0=performance.now();el.pff.style.transition='none';el.pff.style.width='0%';pa=requestAnimationFrame(tk)}
-function next(){if(isPaused)return;cur=(cur+1)%4;apply(cur);startProg()}
-
-function togglePP(){
-    isPaused=!isPaused;
-    ppI.innerHTML=isPaused ? '<path d="M8 5v14l11-7z"/>' : '<path d="M6 4h4v16H6zm8 0h4v16h-4z"/>';
-    if(!isPaused){
-        t0=performance.now() - (parseFloat(el.pff.style.width||0)/100*DUR);
-        pa=requestAnimationFrame(tk);
-    }
-}
-
-ctrBs.forEach(b=>{
-    b.onclick=()=>{
-        isPaused=true;
-        ppI.innerHTML='<path d="M8 5v14l11-7z"/>';
-        apply(parseInt(b.dataset.i));
-        el.pff.style.width='0%';
-    }
-});
-
-ppB.onclick=togglePP;
-
-function scale(){const w=document.getElementById('la-wrap'),b=document.getElementById('ab'),s=w.clientWidth/700;b.style.transform='scale('+s+')';w.style.height=Math.ceil(250*s)+'px'}
-window.addEventListener('resize',scale);
-requestAnimationFrame(()=>requestAnimationFrame(scale));
-
-apply(0);
-startProg();
-
-document.addEventListener('visibilitychange',()=>{
-  if(document.hidden){cancelAnimationFrame(pa)}
-  else if(!isPaused){t0=performance.now() - (parseFloat(el.pff.style.width||0)/100*DUR);pa=requestAnimationFrame(tk);}
-});
-</script>
+        loop1();
+        loop2();
+        loop3();
+        loop4();
+    </script>
 </body>
 </html>
