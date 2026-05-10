@@ -1,406 +1,324 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gradient — Animated Demo</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  /* === DESIGN TOKENS === */
-  :root {
-    --bg: #131110;
-    --fg: #e8e0d4;
-    --muted: #706b64;
-    --accent: #e88c2e;
-    --accent-dim: rgba(232, 140, 46, 0.15);
-    --card: #1c1a18;
-    --card-alt: #242120;
-    --border: #302c28;
-    --border-hi: #44403a;
-    --radius: 2px;
-    --sans: 'Space Grotesk', sans-serif;
-    --mono: 'IBM Plex Mono', monospace;
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gradient - Amber Brutalist 4-Cell Grid</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --amber: #E88C2E;
+            --bg: #0f0f12;
+            --card-bg: #16161b;
+            --border: #282830;
+            --text: #e8e4dc;
+            --muted: #707070;
+            --gap: 14px;
+            --ease: cubic-bezier(0.65, 0, 0.35, 1);
+        }
 
-  /* === RESET & BASE === */
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background: var(--bg);
-    background-image: 
-      radial-gradient(ellipse at 25% 15%, rgba(232, 140, 46, 0.035) 0%, transparent 55%),
-      radial-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px);
-    background-size: 100% 100%, 16px 16px;
-    font-family: var(--sans);
-    color: var(--fg);
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    overflow-x: hidden;
-  }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  .aw { width: 100%; }
-  .ab-wrap { 
-    width: 100%; 
-    background: var(--card); 
-    border: 2px solid var(--border); 
-    display: flex; 
-    flex-direction: column; 
-    overflow: hidden; 
-  }
+        body {
+            background-color: var(--bg);
+            background-image: 
+                radial-gradient(ellipse at 25% 15%, rgba(232, 140, 46, 0.05) 0%, transparent 55%),
+                radial-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 16px 16px;
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-  .hd { 
-    display: flex; 
-    align-items: center; 
-    justify-content: space-between; 
-    padding: 9px 14px; 
-    border-bottom: 1px solid var(--border); 
-    background: rgba(255, 255, 255, 0.01); 
-  }
-  .hd-t { 
-    font-family: var(--mono); 
-    font-size: 11px; 
-    font-weight: 700; 
-    color: var(--accent); 
-    letter-spacing: 2.5px; 
-    text-transform: uppercase;
-  }
-  .hd-f { font-family: var(--mono); font-size: 10px; color: var(--muted); }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--gap);
+            width: 100%;
+            max-width: 940px;
+        }
 
-  .la-wrap { 
-    width: 100%; 
-    position: relative; 
-    overflow: hidden; 
-    background: var(--bg);
-  }
-  .ab { 
-    width: 700px; 
-    height: 250px; 
-    transform-origin: top left; 
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
+        @media (max-width: 600px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+        }
 
-  /* === CONTENT PANELS === */
-  .fr {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.4s ease;
-  }
-  .fr.show { opacity: 1; pointer-events: auto; }
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            position: relative;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+        }
 
-  /* === GRADIENT ELEMENTS (from original) === */
-  .plbl{position:absolute;font-family:var(--mono);font-size:.55rem;font-weight:600;letter-spacing:.03em;padding:4px 8px;border-radius:var(--radius);pointer-events:none;z-index:10;white-space:nowrap}
-  .plbl-solid{color:var(--muted);background:rgba(255,255,255,.06);border:1px solid var(--border)}
-  .plbl-grad{color:var(--accent);background:var(--accent-dim);border:1px solid rgba(232,140,46,.25)}
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--amber);
+            z-index: 2;
+        }
 
-  /* Shared Overlay */
-  .g-ov{position:absolute;inset:0;pointer-events:none;z-index:2}
-  
-  @keyframes gReveal{0%,14%{opacity:0}26%,68%{opacity:1}82%,100%{opacity:0}}
-  @keyframes sShow{0%,4%{opacity:0}8%,18%{opacity:1}24%,100%{opacity:0}}
-  @keyframes gShow{0%,20%{opacity:0}28%,64%{opacity:1}72%,100%{opacity:0}}
-  .g-anim{animation:gReveal 4s ease infinite}
-  .s-anim{animation:sShow 4s ease infinite}
-  .g-lbl{animation:gShow 4s ease infinite}
+        .indicator {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 6px;
+            height: 6px;
+            background: var(--amber);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--amber);
+            animation: pulse 2s infinite;
+            z-index: 3;
+        }
 
-  /* Panel 1: Hero BG */
-  .hero-mock{border-radius:3px;overflow:hidden;position:relative;width:340px;border:1px solid var(--border)}
-  .hero-bg-solid{background:#92400e;padding:20px 14px;display:flex;flex-direction:column;justify-content:flex-end;min-height:160px}
-  .hero-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:auto;padding-bottom:12px;border-bottom:1px solid rgba(255,255,255,.1)}
-  .hero-logo{font-family:var(--mono);font-size:.58rem;font-weight:700;color:rgba(255,255,255,.8);letter-spacing:.08em}
-  .hero-links{display:flex;gap:10px}
-  .hero-links span{font-size:.5rem;color:rgba(255,255,255,.5)}
-  .hero-title{font-size:.88rem;font-weight:700;color:#fff;line-height:1.2;margin-bottom:4px}
-  .hero-sub{font-size:.55rem;color:rgba(255,255,255,.6);margin-bottom:12px}
-  .hero-btn{display:inline-block;font-family:var(--mono);font-size:.54rem;font-weight:600;padding:6px 14px;color:#fff;background:rgba(255,255,255,.15);border-radius:3px;align-self:flex-start}
-  .hero-bg-grad{background:linear-gradient(135deg,#d97706,#92400e,#451a03)}
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
 
-  /* Panel 2: Buttons */
-  .btn-row{display:flex;flex-direction:column;gap:12px;width:240px;justify-content:center}
-  .gbtn-wrap{position:relative;border-radius:3px;overflow:hidden}
-  .gbtn-solid{display:block;width:100%;padding:12px 18px;border:none;border-radius:3px;font-family:var(--mono);font-size:.65rem;font-weight:600;letter-spacing:.03em;text-align:left}
-  .gbtn1-solid{background:#d97706;color:#fff}
-  .gbtn2-solid{background:#2563eb;color:#fff}
-  .gbtn3-solid{background:#059669;color:#fff}
-  .gbtn-grad1{background:linear-gradient(135deg,#f59e0b,#d97706,#92400e)}
-  .gbtn-grad2{background:linear-gradient(135deg,#60a5fa,#2563eb,#1e3a8a)}
-  .gbtn-grad3{background:linear-gradient(135deg,#34d399,#059669,#064e3b)}
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 22px;
+        }
 
-  /* Panel 3: Text */
-  .text-mock{width:300px;display:flex;flex-direction:column;justify-content:center;gap:8px}
-  .gt-line{position:relative;display:block}
-  .gt-solid{position:relative;z-index:1}
-  .gt-grad-layer{position:absolute;top:0;left:0;z-index:2;opacity:0}
-  .gt-line .gt-grad-layer.g-anim{opacity:0;animation:gReveal 4s ease infinite}
-  .gt-h{font-size:1.1rem;font-weight:700;color:var(--fg);line-height:1.2}
-  .gt-h .gt-grad-layer{background:linear-gradient(135deg,#f59e0b,#d97706,#dc2626);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-  .gt-s{font-size:0.8rem;font-weight:500;color:var(--muted);line-height:1.35}
-  .gt-s .gt-grad-layer{background:linear-gradient(135deg,#d97706,#92400e);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-  .gt-icons{display:flex;gap:18px;margin-top:10px}
-  .gt-icon{width:28px;height:28px;position:relative}
-  .gt-icon-solid{position:absolute;inset:0;z-index:1}
-  .gt-icon-grad{position:absolute;inset:0;z-index:2;opacity:0;border-radius:var(--radius)}
-  .gt-icon .gt-icon-grad.g-anim{opacity:0;animation:gReveal 4s ease infinite}
+        .num-box {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--amber);
+            background: rgba(232, 140, 46, 0.1);
+            border: 1px solid rgba(232, 140, 46, 0.2);
+            padding: 2px 5px;
+            border-radius: 2px;
+        }
 
-  /* Panel 4: Overlay */
-  .card-mock{border:1px solid var(--border);border-radius:3px;overflow:hidden;width:280px;display:flex;flex-direction:column;background:var(--card-alt)}
-  .card-img{position:relative;min-height:120px;background:linear-gradient(135deg,#1a3a4a,#2a1a3a 40%,#3a2a1a 70%,#1a2a3a);display:flex;align-items:flex-end;padding:12px}
-  .card-img-pattern{position:absolute;inset:0;background:repeating-linear-gradient(45deg,transparent,transparent 8px,rgba(255,255,255,.02) 8px,rgba(255,255,255,.02) 16px);pointer-events:none}
-  .card-ov-solid{position:absolute;inset:0;background:rgba(0,0,0,.65);z-index:2}
-  .card-ov-grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.8) 0%,transparent 100%);z-index:3}
-  .card-ov-grad.g-anim{opacity:0;animation:gReveal 4s ease infinite}
-  .card-img-text{position:relative;z-index:4;font-size:.85rem;font-weight:600;color:#fff}
-  .card-body-mock{padding:12px 14px}
-  .card-body-mock p{font-size:.65rem;color:var(--muted);line-height:1.45}
+        .card-title {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(232, 228, 220, 0.9);
+        }
 
-  /* === INFO BAR === */
-  .inf { padding: 10px 14px; border-top: 1px solid var(--border); background: var(--card); min-height: 70px; }
-  .dn { font-size: 15px; font-weight: 800; line-height: 1.15; color: var(--fg); }
-  .ds { font-family: var(--mono); font-size: 10px; color: var(--accent); margin-top: 2px; text-transform: uppercase; letter-spacing: 1px; }
-  .dd { font-size: 11px; color: var(--muted); margin-top: 4px; line-height: 1.4; }
-  .pt { height: 2px; background: var(--border); }
-  .pff { height: 100%; background: var(--accent); width: 0%; }
+        .sim-area {
+            height: 160px;
+            background: #0d0d10;
+            border: 1px solid rgba(255,255,255,0.03);
+            border-radius: 4px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
 
-  /* === CONTROLS === */
-  .ctr { display: flex; align-items: center; justify-content: center; gap: 8px; padding: 8px 0; }
-  .ctr-b { padding: 6px 12px; background: var(--card-alt); border: 1px solid var(--border); color: var(--muted); font-family: var(--mono); font-size: 9px; font-weight: 700; cursor: pointer; transition: all 0.2s; letter-spacing: 1px; text-transform: uppercase; }
-  .ctr-b:hover { border-color: var(--border-hi); color: var(--fg); }
-  .ctr-b.act { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
-  .pp-b { width: 32px; height: 32px; border-radius: 50%; background: var(--accent); border: none; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: transform 0.2s; flex-shrink: 0; }
-  .pp-b:active { transform: scale(0.92); }
-  .pp-i { width: 12px; height: 12px; fill: #000; }
+        .ins {
+            border-left: 2px solid var(--amber);
+            padding-left: 14px;
+            margin-top: auto;
+            color: var(--muted);
+            font-size: 11.5px;
+            line-height: 1.6;
+        }
 
-  @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } .g-anim { opacity: 1 !important; } }
-</style>
+        .ins strong {
+            color: var(--amber);
+            font-weight: 600;
+        }
+
+        /* --- Cell 1: Directional --- */
+        .grad-linear {
+            width: 100px;
+            height: 100px;
+            border-radius: 8px;
+            background: linear-gradient(0deg, var(--amber), #16161b);
+            transition: background 1.2s var(--ease);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* --- Cell 2: Radial --- */
+        .grad-radial {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--amber) 0%, transparent 70%);
+            transition: all 1.5s var(--ease);
+        }
+
+        /* --- Cell 3: Conic --- */
+        .grad-conic {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, var(--amber), #16161b, var(--amber));
+            transition: transform 2s linear;
+        }
+
+        /* --- Cell 4: Stops --- */
+        .grad-stops {
+            width: 80%;
+            height: 30px;
+            background: linear-gradient(90deg, var(--amber) 0%, #16161b 100%);
+            border-radius: 4px;
+            position: relative;
+            transition: all 1s var(--ease);
+        }
+        .stop-indicator {
+            position: absolute;
+            bottom: -15px;
+            width: 2px;
+            height: 10px;
+            background: var(--amber);
+            transition: all 1s var(--ease);
+        }
+
+    </style>
 </head>
 <body>
 
-<div class="aw">
-  <div class="ab-wrap">
-    <div class="hd"><span class="hd-t">Gradient</span><span class="hd-f" id="hf">01 / 04</span></div>
-    <div class="la-wrap" id="la-wrap">
-      <div class="ab" id="ab">
-        
-        <!-- Panel 1: Background -->
-        <div class="fr" id="f0">
-          <div class="plbl plbl-solid s-anim" style="top:20px;left:50%;transform:translateX(-50%)">solid #92400e</div>
-          <div class="plbl plbl-grad g-lbl" style="top:20px;right:140px">135deg, amber → dark</div>
-          <div class="hero-mock">
-            <div class="hero-bg-solid">
-              <div class="g-ov hero-bg-grad g-anim"></div>
-              <div class="hero-nav" style="position:relative;z-index:3">
-                <span class="hero-logo">NOVA</span>
-                <div class="hero-links"><span>Product</span><span>Pricing</span><span>About</span></div>
-              </div>
-              <div style="position:relative;z-index:3">
-                <div class="hero-title">Build beautiful products faster</div>
-                <div class="hero-sub">The modern platform for design teams</div>
-                <span class="hero-btn">Get Started</span>
-              </div>
+    <div class="grid-container">
+        <!-- Cell 1: Directional -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">01</div>
+                <div class="card-title">Directional</div>
             </div>
-          </div>
+            <div class="sim-area">
+                <div class="grad-linear" id="sim-linear"></div>
+            </div>
+            <div class="ins">
+                Gradient <strong>tuyến tính</strong> (Linear) thay đổi màu sắc theo một hướng cố định. Thường dùng để tạo cảm giác <strong>chuyển động</strong>.
+            </div>
         </div>
 
-        <!-- Panel 2: Buttons -->
-        <div class="fr" id="f1">
-          <div class="plbl plbl-solid s-anim" style="top:20px;left:50%;transform:translateX(-50%)">flat fill</div>
-          <div class="plbl plbl-grad g-lbl" style="bottom:20px;right:180px">gradient fill</div>
-          <div class="btn-row">
-            <div class="gbtn-wrap">
-              <span class="gbtn-solid gbtn1-solid">Get Started</span>
-              <span class="g-ov gbtn-grad1 g-anim" style="border-radius:3px"></span>
+        <!-- Cell 2: Focus & Depth -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">02</div>
+                <div class="card-title">Focus & Depth</div>
             </div>
-            <div class="gbtn-wrap">
-              <span class="gbtn-solid gbtn2-solid">Learn More</span>
-              <span class="g-ov gbtn-grad2 g-anim" style="border-radius:3px"></span>
+            <div class="sim-area">
+                <div class="grad-radial" id="sim-radial"></div>
             </div>
-            <div class="gbtn-wrap">
-              <span class="gbtn-solid gbtn3-solid">Sign Up Free</span>
-              <span class="g-ov gbtn-grad3 g-anim" style="border-radius:3px"></span>
+            <div class="ins">
+                Gradient <strong>tâm tỏa</strong> (Radial) chuyển màu từ trung tâm ra ngoài. Thường dùng để tạo hiệu ứng <strong>ánh sáng</strong>.
             </div>
-          </div>
         </div>
 
-        <!-- Panel 3: Text -->
-        <div class="fr" id="f2">
-          <div class="plbl plbl-solid s-anim" style="top:20px;left:50%;transform:translateX(-50%)">color: #e8e0d4</div>
-          <div class="plbl plbl-grad g-lbl" style="bottom:20px;right:160px">background-clip: text</div>
-          <div class="text-mock">
-            <span class="gt-line gt-h">
-              <span class="gt-solid">Creative solutions</span>
-              <span class="gt-grad-layer g-anim">Creative solutions</span>
-            </span>
-            <span class="gt-line gt-s">
-              <span class="gt-solid">for modern brands</span>
-              <span class="gt-grad-layer g-anim">for modern brands</span>
-            </span>
-            <div class="gt-icons">
-              <div class="gt-icon">
-                <svg class="gt-icon-solid" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-                <svg class="gt-icon-grad g-anim" viewBox="0 0 24 24" fill="none" stroke="url(#gi1)" stroke-width="2"><defs><linearGradient id="gi1" x1="0" y1="0" x2="24" y2="24"><stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#dc2626"/></linearGradient></defs><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-              </div>
-              <div class="gt-icon">
-                <svg class="gt-icon-solid" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-                <svg class="gt-icon-grad g-anim" viewBox="0 0 24 24" fill="none" stroke="url(#gi2)" stroke-width="2"><defs><linearGradient id="gi2" x1="0" y1="0" x2="24" y2="24"><stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#dc2626"/></linearGradient></defs><circle cx="12" cy="12" r="3"/><path d="M12 1v2m0 18v2M4.22 4.22l1.42 1.42m12.72 12.72l1.42 1.42M1 12h2m18 0h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-              </div>
-              <div class="gt-icon">
-                <svg class="gt-icon-solid" viewBox="0 0 24 24" fill="none" stroke="var(--muted)" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg>
-                <svg class="gt-icon-grad g-anim" viewBox="0 0 24 24" fill="none" stroke="url(#gi3)" stroke-width="2"><defs><linearGradient id="gi3" x1="0" y1="0" x2="24" y2="24"><stop offset="0%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#dc2626"/></linearGradient></defs><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/></svg>
-              </div>
+        <!-- Cell 3: Angular Sweep -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">03</div>
+                <div class="card-title">Angular Sweep</div>
             </div>
-          </div>
+            <div class="sim-area">
+                <div class="grad-conic" id="sim-conic"></div>
+            </div>
+            <div class="ins">
+                Gradient <strong>hình nón</strong> (Conic) xoay màu quanh tâm điểm. Ứng dụng trong <strong>biểu đồ tròn</strong> hoặc hiệu ứng kim loại.
+            </div>
         </div>
 
-        <!-- Panel 4: Overlay -->
-        <div class="fr" id="f3">
-          <div class="plbl plbl-solid s-anim" style="top:20px;left:50%;transform:translateX(-50%)">overlay: solid black</div>
-          <div class="plbl plbl-grad g-lbl" style="bottom:60px;right:180px">overlay: gradient</div>
-          <div class="card-mock">
-            <div class="card-img">
-              <div class="card-img-pattern"></div>
-              <div class="card-ov-solid"></div>
-              <div class="card-ov-grad g-anim"></div>
-              <span class="card-img-text">Plan Your Day</span>
+        <!-- Cell 4: Color Transition -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">04</div>
+                <div class="card-title">Color Transition</div>
             </div>
-            <div class="card-body-mock">
-              <p>Organize tasks, set priorities, and track progress — all in one clean interface.</p>
+            <div class="sim-area">
+                <div class="grad-stops" id="sim-stops">
+                    <div class="stop-indicator" style="left: 0%"></div>
+                    <div class="stop-indicator" style="left: 100%" id="stop-end"></div>
+                </div>
             </div>
-          </div>
+            <div class="ins">
+                Các <strong>điểm dừng</strong> (Stops) cho phép kiểm soát vị trí màu sắc. Càng nhiều điểm dừng, dải màu càng <strong>phức tạp</strong>.
+            </div>
         </div>
-
-      </div>
     </div>
-    <div class="inf">
-      <div class="dn" id="dn">Gradient Background</div>
-      <div class="ds" id="ds">Tạo chiều sâu cho giao diện</div>
-      <div class="dd" id="dd">Nền gradient giúp layout có chiều sâu và cảm giác premium mà không cần dùng đến hình ảnh nặng hay bóng đổ phức tạp.</div>
-    </div>
-    <div class="pt"><div class="pff" id="pff"></div></div>
-  </div>
 
-  <div class="ctr">
-    <button class="ctr-b act" data-i="0">Background</button>
-    <button class="ctr-b" data-i="1">Button</button>
-    <button class="ctr-b" data-i="2">Text / Icon</button>
-    <button class="ctr-b" data-i="3">Overlay</button>
-    <button class="pp-b" id="pp" title="Play/Pause">
-      <svg class="pp-i" id="pp-i" viewBox="0 0 24 24"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>
-    </button>
-  </div>
-</div>
+    <script>
+        const sleep = ms => new Promise(res => setTimeout(res, ms));
 
-<script>
-  const INFO = [
-    {nm:'Gradient Background', ds:'Tạo chiều sâu cho giao diện', dd:'Nền gradient giúp layout có chiều sâu và cảm giác premium mà không cần dùng đến hình ảnh nặng hay bóng đổ phức tạp.'},
-    {nm:'Gradient Button', ds:'Thu hút sự chú ý (CTA)', dd:'Button dùng gradient luôn thu hút ánh nhìn và khuyến khích click mạnh hơn so với các mảng màu phẳng (flat color).'},
-    {nm:'Gradient Text / Icon', ds:'Điểm nhấn thương hiệu', dd:'Áp dụng gradient cho chữ và icon giúp tạo cảm giác hiện đại, nghệ thuật, thường dùng cho các tiêu đề chính hoặc logo.'},
-    {nm:'Gradient Overlay', ds:'Đảm bảo tính dễ đọc', dd:'Lớp phủ gradient (Overlay) giúp văn bản hiển thị rõ nét trên nền hình ảnh phức tạp mà không làm mất đi vẻ đẹp của ảnh.'}
-  ];
+        // Sim 1: Directional Loop
+        async function runSim1() {
+            const el = document.getElementById('sim-linear');
+            const angles = ['0deg', '90deg', '180deg', '270deg', '135deg'];
+            let i = 0;
+            while(true) {
+                el.style.background = `linear-gradient(${angles[i]}, var(--amber), #16161b)`;
+                i = (i + 1) % angles.length;
+                await sleep(2000);
+            }
+        }
 
-  const el = {
-    dn: document.getElementById('dn'),
-    ds: document.getElementById('ds'),
-    dd: document.getElementById('dd'),
-    hf: document.getElementById('hf'),
-    pff: document.getElementById('pff'),
-    laWrap: document.getElementById('la-wrap'),
-    ab: document.getElementById('ab'),
-    ppB: document.getElementById('pp'),
-    ppI: document.getElementById('pp-i')
-  };
+        // Sim 2: Radial Loop
+        async function runSim2() {
+            const el = document.getElementById('sim-radial');
+            while(true) {
+                el.style.transform = 'scale(1.2)';
+                el.style.background = 'radial-gradient(circle, var(--amber) 0%, transparent 80%)';
+                await sleep(1500);
+                el.style.transform = 'scale(0.8)';
+                el.style.background = 'radial-gradient(circle, var(--amber) 30%, transparent 50%)';
+                await sleep(1500);
+            }
+        }
 
-  const panels = [0, 1, 2, 3].map(i => document.getElementById('f' + i));
-  const ctrBs = document.querySelectorAll('.ctr-b');
+        // Sim 3: Conic Loop
+        async function runSim3() {
+            const el = document.getElementById('sim-conic');
+            let angle = 0;
+            while(true) {
+                angle += 360;
+                el.style.transform = `rotate(${angle}deg)`;
+                await sleep(3000);
+            }
+        }
 
-  let cur = 0, pa = null, t0 = 0, isPaused = false;
-  const DUR = 4000;
+        // Sim 4: Stops Loop
+        async function runSim4() {
+            const el = document.getElementById('sim-stops');
+            const stopEnd = document.getElementById('stop-end');
+            while(true) {
+                // 2 colors
+                el.style.background = 'linear-gradient(90deg, var(--amber) 0%, #16161b 100%)';
+                stopEnd.style.left = '100%';
+                await sleep(2500);
+                
+                // 3 colors
+                el.style.background = 'linear-gradient(90deg, var(--amber) 0%, #ffffff 50%, #16161b 100%)';
+                stopEnd.style.left = '100%';
+                // Add a temporary middle indicator if needed, but keeping it simple for now
+                await sleep(2500);
+            }
+        }
 
-  function apply(i) {
-    cur = i;
-    const s = INFO[i];
-    el.dn.textContent = s.nm;
-    el.ds.textContent = s.ds;
-    el.dd.textContent = s.dd;
-    el.hf.textContent = '0' + (i + 1) + ' / 04';
-    
-    ctrBs.forEach((b, j) => b.classList.toggle('act', j === i));
-    panels.forEach((p, j) => {
-      p.classList.toggle('show', j === i);
-    });
-  }
-
-  function tk(n) {
-    if (isPaused) return;
-    const p = Math.min(100, (n - t0) / DUR * 100);
-    el.pff.style.width = p + '%';
-    if (p < 100) pa = requestAnimationFrame(tk);
-    else next();
-  }
-
-  function startProg() {
-    t0 = performance.now();
-    el.pff.style.transition = 'none';
-    el.pff.style.width = '0%';
-    pa = requestAnimationFrame(tk);
-  }
-
-  function next() {
-    if (isPaused) return;
-    cur = (cur + 1) % 4;
-    apply(cur);
-    startProg();
-  }
-
-  function togglePP() {
-    isPaused = !isPaused;
-    el.ppI.innerHTML = isPaused ? '<path d="M8 5v14l11-7z"/>' : '<path d="M6 4h4v16H6zm8 0h4v16h-4z"/>';
-    if (!isPaused) {
-      t0 = performance.now() - (parseFloat(el.pff.style.width || 0) / 100 * DUR);
-      pa = requestAnimationFrame(tk);
-    }
-  }
-
-  ctrBs.forEach(b => {
-    b.onclick = () => {
-      isPaused = true;
-      el.ppI.innerHTML = '<path d="M8 5v14l11-7z"/>';
-      apply(parseInt(b.dataset.i));
-      el.pff.style.width = '0%';
-    };
-  });
-
-  el.ppB.onclick = togglePP;
-
-  function scale() {
-    const w = el.laWrap.clientWidth;
-    const s = w / 700;
-    el.ab.style.transform = 'scale(' + s + ')';
-    el.laWrap.style.height = Math.ceil(250 * s) + 'px';
-  }
-
-  window.addEventListener('resize', scale);
-  requestAnimationFrame(() => requestAnimationFrame(scale));
-
-  apply(0);
-  startProg();
-
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) cancelAnimationFrame(pa);
-    else if (!isPaused) {
-      t0 = performance.now() - (parseFloat(el.pff.style.width || 0) / 100 * DUR);
-      pa = requestAnimationFrame(tk);
-    }
-  });
-</script>
+        runSim1(); runSim2(); runSim3(); runSim4();
+    </script>
 </body>
 </html>

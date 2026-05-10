@@ -580,7 +580,8 @@ const deepDiveTermIds = new Set([
   'merge',
   'conflict',
   'environment',
-  'flexbox'
+  'flexbox',
+  'gradient'
 ].filter((termId) => !removedGlossaryTermIds.has(termId)));
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
@@ -709,8 +710,10 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
   ],
   gradient: [
     'Gradient là một trong những công cụ mạnh nhất để tạo ra chiều sâu (depth) mà không làm tăng dung lượng trang web như khi dùng ảnh.',
-    'Khi làm việc với AI, hãy nhớ hai loại chính: Linear (chuyển theo hướng) và Radial (chuyển từ tâm). Linear thường dùng cho nền hoặc button, Radial thường dùng để giả lập ánh sáng hoặc hiệu ứng "glow".',
-    'Quy tắc vàng: Đừng dùng quá nhiều màu trong một gradient nếu không muốn giao diện bị "sến". Thường 2 màu là đủ, và nên chọn các màu gần nhau trên vòng tròn màu (analogous colors) để sự chuyển tiếp được mượt mà nhất.',
+    'Khi làm việc với AI, hãy nhớ ba loại chính: Linear (chuyển theo hướng), Radial (chuyển từ tâm) và Conic (xoay quanh tâm). Mỗi loại phục vụ một mục đích thị giác khác nhau.',
+    'Quy tắc vàng: Đừng dùng quá nhiều màu trong một gradient nếu không muốn giao diện bị "sến". Thường 2-3 màu là đủ, và nên chọn các màu gần nhau trên vòng tròn màu để dải màu trông tự nhiên.',
+    'Tính dễ đọc (Legibility): Khi dùng gradient làm nền cho chữ, hãy luôn kiểm tra độ tương phản. Một gradient quá rực rỡ có thể làm mờ đi thông tin quan trọng nhất của bạn.',
+    'Hiệu ứng Text Gradient: Bạn có thể bảo AI "clip gradient vào chữ". Đây là kỹ thuật giúp tiêu đề (Heading) trông hiện đại và có tính nhận diện thương hiệu cực cao mà không cần dùng file ảnh.'
   ],
   api: [
     'Nghĩ theo kiểu marketer: API là chiếc ống nối giữa tool A và tool B, để dữ liệu tự chảy thay vì bạn copy tay.',

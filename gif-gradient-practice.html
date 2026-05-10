@@ -1,269 +1,515 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gradient — Practice</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #131110;
-    --fg: #e8e0d4;
-    --muted: #706b64;
-    --accent: #e88c2e;
-    --accent-br: #f59e0b;
-    --card: #1c1a18;
-    --card-alt: #242120;
-    --border: #302c28;
-    --border-hi: #44403a;
-    --radius: 2px;
-    --sans: 'Space Grotesk', sans-serif;
-    --mono: 'IBM Plex Mono', monospace;
-  }
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  body {
-    background: var(--bg);
-    background-image: 
-      radial-gradient(ellipse at 25% 15%, rgba(232, 140, 46, 0.035) 0%, transparent 55%),
-      radial-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px);
-    background-size: 100% 100%, 16px 16px;
-    font-family: var(--sans);
-    color: var(--fg);
-    padding: 12px;
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gradient Practice - Amber Brutalist Builder</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --amber: #E88C2E;
+            --bg: #0f0f12;
+            --card-bg: #16161b;
+            --border: #282830;
+            --text: #e8e4dc;
+            --muted: #707070;
+            --gap: 14px;
+            --radius: 3px;
+        }
 
-  .pw { width: 100%; background: var(--card); border: 2px solid var(--border); padding: 20px 24px; border-radius: var(--radius); }
-  .pw-h { font-size: 15px; font-weight: 700; margin-bottom: 2px; }
-  .pw-h span { color: var(--accent); }
-  .pw-s { font-size: 11px; color: var(--muted); margin-bottom: 14px; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  .practice-body { display: grid; grid-template-columns: 1fr; gap: 20px; }
-  @media(min-width: 640px) { .practice-body { grid-template-columns: 260px 1fr; } }
+        body {
+            background-color: var(--bg);
+            background-image: 
+                radial-gradient(ellipse at 25% 15%, rgba(232, 140, 46, 0.05) 0%, transparent 55%),
+                radial-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 16px 16px;
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-  /* Type toggle */
-  .type-group { display: flex; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-bottom: 16px; }
-  .type-btn { flex: 1; padding: 8px; font-family: var(--mono); font-size: 10px; font-weight: 700; text-transform: uppercase; background: var(--card-alt); color: var(--muted); border: none; cursor: pointer; transition: all 0.15s; }
-  .type-btn:hover { color: var(--fg); }
-  .type-btn.active { background: var(--accent); color: var(--bg); }
+        .builder-container {
+            width: 100%;
+            max-width: 940px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
 
-  /* Angle slider */
-  .angle-ctrl { margin-bottom: 16px; }
-  .angle-hdr { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
-  .angle-lbl { font-family: var(--mono); font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; }
-  .angle-val { font-family: var(--mono); font-size: 12px; font-weight: 700; color: var(--accent); min-width: 36px; text-align: right; }
-  input[type=range] { width: 100%; height: 6px; -webkit-appearance: none; appearance: none; background: var(--bg); border: 1px solid var(--border); border-radius: 3px; outline: none; cursor: pointer; }
-  input[type=range]::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; background: var(--accent); border-radius: 0; cursor: pointer; }
-  .angle-ctrl.disabled { opacity: 0.35; pointer-events: none; }
+        .builder-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--amber);
+            z-index: 2;
+        }
 
-  /* Color swatches */
-  .color-row { margin-bottom: 14px; }
-  .color-row-lbl { font-family: var(--mono); font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
-  .color-hex { font-weight: 600; color: var(--accent); }
-  .swatches { display: flex; gap: 4px; flex-wrap: wrap; }
-  .sw { width: 24px; height: 24px; border: 2px solid transparent; border-radius: var(--radius); cursor: pointer; transition: all 0.1s; }
-  .sw:hover { transform: scale(1.1); }
-  .sw.active { border-color: var(--fg); }
+        .builder-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-  /* Preview */
-  .prev-wrap { display: flex; flex-direction: column; gap: 10px; }
-  .prev-label { font-family: var(--mono); font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; }
-  .prev-card { border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; transition: background 0.3s; }
-  .prev-card-inner { padding: 20px; display: flex; flex-direction: column; gap: 8px; }
-  .prev-title { font-size: 1rem; font-weight: 700; line-height: 1.2; position: relative; z-index: 1; transition: color 0.3s; }
-  .prev-sub { font-size: 0.75rem; font-weight: 500; line-height: 1.4; position: relative; z-index: 1; transition: color 0.3s; }
-  .prev-body { font-size: 0.65rem; color: rgba(255,255,255,0.7); line-height: 1.5; position: relative; z-index: 1; margin-bottom: 6px; }
-  .prev-btn { display: inline-block; font-family: var(--mono); font-size: 10px; font-weight: 700; padding: 8px 16px; color: #fff; border: none; border-radius: 2px; cursor: default; position: relative; z-index: 1; transition: background 0.3s; align-self: flex-start; text-transform: uppercase; }
+        .builder-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--amber);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
 
-  /* CSS Output */
-  .css-out { background: var(--card-alt); border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; margin-top: 10px; }
-  .css-out-hdr { display: flex; justify-content: space-between; align-items: center; padding: 6px 12px; border-bottom: 1px solid var(--border); background: rgba(255,255,255,0.01); }
-  .css-out-lbl { font-family: var(--mono); font-size: 9px; color: var(--muted); text-transform: uppercase; }
-  .css-copy { font-family: var(--mono); font-size: 9px; font-weight: 700; color: var(--accent); background: none; border: 1px solid var(--accent); padding: 2px 8px; cursor: pointer; transition: all 0.15s; }
-  .css-copy:hover { background: var(--accent-dim); }
-  .css-code { padding: 10px; font-family: var(--mono); font-size: 9px; color: var(--muted); line-height: 1.6; white-space: pre-wrap; word-break: break-all; }
-  .css-code .cm { color: var(--muted); opacity: 0.6; }
-  .css-code .cv { color: var(--fg); }
-  .css-copy-msg { font-family: var(--mono); font-size: 9px; color: #3a9e5c; padding: 2px 8px; opacity: 0; transition: opacity 0.2s; }
-  .css-copy-msg.show { opacity: 1; }
-</style>
+        .builder-body {
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            min-height: 500px;
+        }
+
+        @media (max-width: 800px) {
+            .builder-body {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* --- Left Column: Controls --- */
+        .controls-pane {
+            padding: 24px;
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .label-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .value-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--amber);
+            background: rgba(232, 140, 46, 0.1);
+            padding: 2px 6px;
+            border-radius: 2px;
+        }
+
+        /* Segmented Buttons */
+        .segmented {
+            display: flex;
+            background: #0d0d10;
+            padding: 2px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
+
+        .seg-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--muted);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 8px;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: all 0.2s;
+        }
+
+        .seg-btn.active {
+            background: var(--amber);
+            color: #000;
+        }
+
+        /* Swatches */
+        .swatches {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .swatch {
+            width: 24px;
+            height: 24px;
+            border-radius: 2px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .swatch:hover {
+            transform: scale(1.1);
+        }
+
+        .swatch.active {
+            border-color: var(--text);
+            box-shadow: 0 0 10px rgba(255,255,255,0.2);
+        }
+
+        /* Slider */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 4px;
+            background: #282830;
+            border-radius: 2px;
+            outline: none;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            background: var(--amber);
+            border-radius: 2px;
+            cursor: pointer;
+            box-shadow: 0 0 8px rgba(232, 140, 46, 0.4);
+        }
+
+        /* --- Right Column: Preview --- */
+        .preview-pane {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            background: #0d0d10;
+            justify-content: center;
+        }
+
+        .preview-box {
+            width: 100%;
+            height: 200px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .preview-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            line-height: 1.1;
+        }
+
+        .preview-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        /* --- Prompt Area --- */
+        .prompt-area {
+            background: #111116;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 16px;
+            margin-top: auto;
+        }
+
+        .prompt-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            color: var(--muted);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .prompt-text {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11.5px;
+            color: var(--text);
+            line-height: 1.6;
+            word-break: break-all;
+        }
+
+        .prompt-text strong {
+            color: var(--amber);
+        }
+
+        .copy-btn {
+            background: transparent;
+            border: 1px solid var(--amber);
+            color: var(--amber);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            padding: 4px 8px;
+            cursor: pointer;
+            margin-top: 12px;
+            border-radius: 2px;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: var(--amber);
+            color: #000;
+        }
+
+    </style>
 </head>
 <body>
 
-<div class="pw">
-  <div class="pw-h">Thực hành — <span>Gradient Creator</span></div>
-  <div class="pw-s">Tùy chỉnh kiểu màu chuyển mượt và copy mã CSS cho dự án của bạn</div>
+    <div class="builder-container">
+        <div class="builder-header">
+            <div class="builder-title">Gradient Builder</div>
+            <div class="value-badge" id="type-display">Linear</div>
+        </div>
 
-  <div class="practice-body">
-    <!-- Controls -->
-    <div>
-      <div class="type-group">
-        <button class="type-btn active" data-type="linear">Linear</button>
-        <button class="type-btn" data-type="radial">Radial</button>
-      </div>
-      <div class="angle-ctrl" id="angleCtrl">
-        <div class="angle-hdr">
-          <span class="angle-lbl">Góc quay</span>
-          <span class="angle-val" id="angleVal">135°</span>
+        <div class="builder-body">
+            <!-- Left: Controls -->
+            <div class="controls-pane">
+                <div class="control-group">
+                    <div class="label">Text Content</div>
+                    <input type="text" id="text-input" value="Creative UI" oninput="setText(this.value)" 
+                        style="background: #0d0d10; border: 1px solid var(--border); color: var(--text); padding: 8px; font-family: inherit; border-radius: 4px; outline: none; font-size: 13px;">
+                </div>
+
+                <div class="control-group">
+                    <div class="label">Apply To</div>
+                    <div class="segmented">
+                        <button class="seg-btn active" id="apply-bg" onclick="setApply('bg', this)">Background</button>
+                        <button class="seg-btn" id="apply-text" onclick="setApply('text', this)">Text Only</button>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="label">Type</div>
+                    <div class="segmented" id="type-segmented">
+                        <button class="seg-btn active" data-val="linear" onclick="setType('linear', this)">Linear</button>
+                        <button class="seg-btn" data-val="radial" onclick="setType('radial', this)">Radial</button>
+                        <button class="seg-btn" data-val="conic" onclick="setType('conic', this)">Conic</button>
+                    </div>
+                </div>
+
+                <div class="control-group" id="angle-group">
+                    <div class="label-row">
+                        <div class="label" id="angle-label">Angle</div>
+                        <div class="value-badge" id="angle-val">135°</div>
+                    </div>
+                    <input type="range" min="0" max="360" value="135" oninput="setAngle(this.value)">
+                </div>
+
+                <div class="control-group">
+                    <div class="label-row">
+                        <div class="label">Start Color</div>
+                        <div class="value-badge" id="color1-val">#E88C2E</div>
+                    </div>
+                    <div class="swatches" id="swatches1">
+                        <div class="swatch active" style="background: #E88C2E;" data-hex="#E88C2E"></div>
+                        <div class="swatch" style="background: #dc2626;" data-hex="#dc2626"></div>
+                        <div class="swatch" style="background: #7c3aed;" data-hex="#7c3aed"></div>
+                        <div class="swatch" style="background: #2563eb;" data-hex="#2563eb"></div>
+                        <div class="swatch" style="background: #059669;" data-hex="#059669"></div>
+                        <div class="swatch" style="background: #ffffff;" data-hex="#ffffff"></div>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="label-row">
+                        <div class="label">End Color</div>
+                        <div class="value-badge" id="color2-val">#16161b</div>
+                    </div>
+                    <div class="swatches" id="swatches2">
+                        <div class="swatch" style="background: #E88C2E;" data-hex="#E88C2E"></div>
+                        <div class="swatch" style="background: #dc2626;" data-hex="#dc2626"></div>
+                        <div class="swatch" style="background: #7c3aed;" data-hex="#7c3aed"></div>
+                        <div class="swatch active" style="background: #16161b;" data-hex="#16161b"></div>
+                        <div class="swatch" style="background: #000000;" data-hex="#000000"></div>
+                        <div class="swatch" style="background: #1e3a8a;" data-hex="#1e3a8a"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Preview -->
+            <div class="preview-pane">
+                <div class="preview-box" id="preview-bg">
+                    <div class="preview-title" id="preview-text">Creative UI</div>
+                    <button class="preview-btn" id="preview-btn">Get Started</button>
+                </div>
+
+                <div class="prompt-area">
+                    <div class="prompt-label">AI Prompt</div>
+                    <div class="prompt-text" id="prompt-output">
+                        Dùng gradient <strong>linear</strong> từ màu <strong>#E88C2E</strong> sang <strong>#16161b</strong>, góc <strong>135°</strong>.
+                    </div>
+                    <button class="copy-btn" onclick="copyPrompt()">Copy Prompt</button>
+                </div>
+            </div>
         </div>
-        <input type="range" min="0" max="360" value="135" id="angleSlider">
-      </div>
-      <div class="color-row">
-        <div class="color-row-lbl">Bắt đầu <span class="color-hex" id="hex1">#d97706</span></div>
-        <div class="swatches" id="sw1">
-          <button class="sw active" data-c="#d97706" style="background:#d97706"></button>
-          <button class="sw" data-c="#dc2626" style="background:#dc2626"></button>
-          <button class="sw" data-c="#059669" style="background:#059669"></button>
-          <button class="sw" data-c="#2563eb" style="background:#2563eb"></button>
-          <button class="sw" data-c="#7c3aed" style="background:#7c3aed"></button>
-          <button class="sw" data-c="#f97316" style="background:#f97316"></button>
-        </div>
-      </div>
-      <div class="color-row">
-        <div class="color-row-lbl">Kết thúc <span class="color-hex" id="hex2">#92400e</span></div>
-        <div class="swatches" id="sw2">
-          <button class="sw" data-c="#92400e" style="background:#92400e"></button>
-          <button class="sw active" data-c="#92400e" style="background:#92400e"></button>
-          <button class="sw" data-c="#451a03" style="background:#451a03"></button>
-          <button class="sw" data-c="#1e3a8a" style="background:#1e3a8a"></button>
-          <button class="sw" data-c="#4c1d95" style="background:#4c1d95"></button>
-          <button class="sw" data-c="#7c2d12" style="background:#7c2d12"></button>
-        </div>
-      </div>
     </div>
 
-    <!-- Preview -->
-    <div class="prev-wrap">
-      <div class="prev-label">Kết quả Realtime</div>
-      <div class="prev-card" id="prevCard">
-        <div class="prev-card-inner">
-          <div class="prev-title" id="prevTitle">Creative Solutions</div>
-          <div class="prev-sub" id="prevSub">for modern brands</div>
-          <div class="prev-body">Nền tảng thiết kế hiện đại giúp team của bạn làm việc nhanh hơn và sáng tạo hơn.</div>
-          <span class="prev-btn" id="prevBtn">Get Started</span>
-        </div>
-      </div>
-      <div class="css-out">
-        <div class="css-out-hdr">
-          <span class="css-out-lbl">CSS Code</span>
-          <div style="display:flex;align-items:center;gap:6px">
-            <span class="css-copy-msg" id="copyMsg">Copied!</span>
-            <button class="css-copy" id="copyBtn">COPY</button>
-          </div>
-        </div>
-        <div class="css-code" id="cssCode"></div>
-      </div>
-    </div>
-  </div>
-</div>
+    <script>
+        let config = {
+            type: 'linear',
+            angle: 135,
+            color1: '#E88C2E',
+            color2: '#16161b',
+            text: 'Creative UI',
+            applyTo: 'bg' // 'bg' or 'text'
+        };
 
-<script>
-  /* === STATE === */
-  var gType = 'linear';
-  var gAngle = 135;
-  var c1 = '#d97706';
-  var c2 = '#92400e';
+        function updateUI() {
+            const previewBg = document.getElementById('preview-bg');
+            const previewText = document.getElementById('preview-text');
+            const previewBtn = document.getElementById('preview-btn');
+            const promptOutput = document.getElementById('prompt-output');
+            const typeDisplay = document.getElementById('type-display');
 
-  /* === DOM === */
-  var typeBtns = document.querySelectorAll('.type-btn');
-  var angleCtrl = document.getElementById('angleCtrl');
-  var angleSlider = document.getElementById('angleSlider');
-  var angleVal = document.getElementById('angleVal');
-  var sw1 = document.getElementById('sw1');
-  var sw2 = document.getElementById('sw2');
-  var hex1 = document.getElementById('hex1');
-  var hex2 = document.getElementById('hex2');
-  var prevCard = document.getElementById('prevCard');
-  var prevTitle = document.getElementById('prevTitle');
-  var prevSub = document.getElementById('prevSub');
-  var prevBtn = document.getElementById('prevBtn');
-  var cssCode = document.getElementById('cssCode');
-  var copyBtn = document.getElementById('copyBtn');
-  var copyMsg = document.getElementById('copyMsg');
+            let css = '';
+            let angleLabel = 'Angle';
+            let angleSuffix = '°';
 
-  function gradCSS() {
-    if (gType === 'linear') {
-      return 'linear-gradient(' + gAngle + 'deg, ' + c1 + ', ' + c2 + ')';
-    }
-    // Use gAngle to shift the center position for Radial mode (mapped to 0-100%)
-    const pos = Math.round((gAngle / 360) * 100);
-    return 'radial-gradient(circle at ' + pos + '% 50%, ' + c1 + ', ' + c2 + ')';
-  }
+            if (config.type === 'linear') {
+                css = `linear-gradient(${config.angle}deg, ${config.color1}, ${config.color2})`;
+            } else if (config.type === 'radial') {
+                css = `radial-gradient(circle, ${config.color1}, ${config.color2})`;
+                angleLabel = 'Size';
+                angleSuffix = '%';
+            } else {
+                css = `conic-gradient(from ${config.angle}deg, ${config.color1}, ${config.color2}, ${config.color1})`;
+            }
 
-  function update() {
-    var g = gradCSS();
-    prevCard.style.background = g;
-    prevBtn.style.background = g;
-    
-    [prevTitle, prevSub].forEach(el => {
-      el.style.background = g;
-      el.style.webkitBackgroundClip = 'text';
-      el.style.backgroundClip = 'text';
-      el.style.webkitTextFillColor = 'transparent';
-      el.style.color = 'transparent';
-    });
+            // Reset styles
+            previewBg.style.background = '#0d0d10';
+            previewText.style.background = 'none';
+            previewText.style.webkitBackgroundClip = 'initial';
+            previewText.style.webkitTextFillColor = 'initial';
+            previewText.style.color = 'var(--text)';
+            previewBtn.style.background = 'var(--amber)';
+            previewText.textContent = config.text;
 
-    if (gType === 'linear') {
-      angleVal.textContent = gAngle + '\u00B0';
-      document.querySelector('.angle-lbl').textContent = 'Góc quay';
-    } else {
-      const pos = Math.round((gAngle / 360) * 100);
-      angleVal.textContent = pos + '%';
-      document.querySelector('.angle-lbl').textContent = 'Vị trí tâm';
-    }
+            if (config.applyTo === 'bg') {
+                previewBg.style.background = css;
+                previewBtn.style.background = css;
+            } else {
+                previewText.style.background = css;
+                previewText.style.webkitBackgroundClip = 'text';
+                previewText.style.webkitTextFillColor = 'transparent';
+                previewBtn.style.background = 'rgba(255,255,255,0.05)';
+                previewBtn.style.border = '1px solid var(--border)';
+            }
 
-    var bgLine = 'background: ' + g + ';';
-    var txtExtra = '-webkit-background-clip: text;\n-webkit-text-fill-color: transparent;';
-    cssCode.innerHTML =
-      '<span class="cm">/* Background & Button */</span>\n' +
-      '<span class="cv">' + escHTML(bgLine) + '</span>\n\n' +
-      '<span class="cm">/* Text Gradient */</span>\n' +
-      '<span class="cv">' + escHTML(bgLine) + '</span>\n' +
-      '<span class="cv">' + escHTML(txtExtra) + '</span>';
-  }
+            typeDisplay.textContent = config.type.toUpperCase();
+            document.getElementById('angle-label').textContent = angleLabel;
+            document.getElementById('angle-val').textContent = config.angle + angleSuffix;
 
-  function escHTML(s) {
-    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  }
+            // Update Prompt
+            let targetText = config.applyTo === 'bg' ? 'cho nền' : `cho chữ "<strong>${config.text}</strong>"`;
+            let promptAngle = config.type === 'radial' ? '' : `, góc <strong>${config.angle}°</strong>`;
+            promptOutput.innerHTML = `Dùng gradient <strong>${config.type}</strong> từ màu <strong>${config.color1}</strong> sang <strong>${config.color2}</strong> ${targetText}${promptAngle}.`;
+        }
 
-  typeBtns.forEach(function(btn) {
-    btn.onclick = function() {
-      typeBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      gType = btn.dataset.type;
-      update();
-    };
-  });
+        function setType(type, btn) {
+            config.type = type;
+            document.querySelectorAll('#type-segmented .seg-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            const angleGroup = document.getElementById('angle-group');
+            if (type === 'radial') {
+                angleGroup.style.opacity = '0.3';
+                angleGroup.style.pointerEvents = 'none';
+            } else {
+                angleGroup.style.opacity = '1';
+                angleGroup.style.pointerEvents = 'auto';
+            }
+            
+            updateUI();
+        }
 
-  angleSlider.oninput = function() {
-    gAngle = parseInt(this.value, 10);
-    update();
-  };
+        function setApply(mode, btn) {
+            config.applyTo = mode;
+            document.getElementById('apply-bg').classList.toggle('active', mode === 'bg');
+            document.getElementById('apply-text').classList.toggle('active', mode === 'text');
+            updateUI();
+        }
 
-  function setupSwatches(container, hexDisplay, setter) {
-    container.onclick = function(e) {
-      var sw = e.target.closest('.sw');
-      if (!sw) return;
-      container.querySelectorAll('.sw').forEach(s => s.classList.remove('active'));
-      sw.classList.add('active');
-      var color = sw.dataset.c;
-      hexDisplay.textContent = color;
-      setter(color);
-      update();
-    };
-  }
-  setupSwatches(sw1, hex1, v => c1 = v);
-  setupSwatches(sw2, hex2, v => c2 = v);
+        function setAngle(val) {
+            config.angle = val;
+            updateUI();
+        }
 
-  copyBtn.onclick = function() {
-    var g = gradCSS();
-    var text = '/* Background & Button */\nbackground: ' + g + ';\n\n/* Text Gradient */\nbackground: ' + g + ';\n-webkit-background-clip: text;\n-webkit-text-fill-color: transparent;';
-    navigator.clipboard.writeText(text).then(() => {
-      copyMsg.classList.add('show');
-      setTimeout(() => copyMsg.classList.remove('show'), 1500);
-    });
-  };
+        function setText(val) {
+            config.text = val;
+            updateUI();
+        }
 
-  update();
-</script>
+        // Color selection logic
+        document.getElementById('swatches1').addEventListener('click', (e) => {
+            if (e.target.classList.contains('swatch')) {
+                config.color1 = e.target.dataset.hex;
+                document.querySelectorAll('#swatches1 .swatch').forEach(s => s.classList.remove('active'));
+                e.target.classList.add('active');
+                document.getElementById('color1-val').textContent = config.color1;
+                updateUI();
+            }
+        });
+
+        document.getElementById('swatches2').addEventListener('click', (e) => {
+            if (e.target.classList.contains('swatch')) {
+                config.color2 = e.target.dataset.hex;
+                document.querySelectorAll('#swatches2 .swatch').forEach(s => s.classList.remove('active'));
+                e.target.classList.add('active');
+                document.getElementById('color2-val').textContent = config.color2;
+                updateUI();
+            }
+        });
+
+        async function copyPrompt() {
+            const text = document.getElementById('prompt-output').innerText;
+            await navigator.clipboard.writeText(text);
+            const btn = document.querySelector('.copy-btn');
+            const original = btn.textContent;
+            btn.textContent = 'Copied!';
+            setTimeout(() => btn.textContent = original, 2000);
+        }
+
+        updateUI();
+    </script>
 </body>
 </html>
