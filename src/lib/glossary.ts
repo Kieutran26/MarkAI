@@ -163,7 +163,7 @@ const rawTerms: GlossaryTerm[] = [
       alt: 'Thực hành Fork: trải nghiệm quy trình copy và đề xuất thay đổi qua PR'
     }
   },
-  { id: 'flexbox', name: 'Flexbox', nameEn: 'Hệ thống layout 1 chiều', letter: 'F', groups: ['design', 'code'], definition: 'Cách sắp xếp elements theo hàng ngang hoặc cột dọc. Khi bạn muốn "3 cái card nằm ngang và cách nhau đều" — đó là flexbox.', example: 'Prompt: "Icon và text nằm trên cùng một hàng, icon bên trái, khoảng cách 8px." → AI dùng flexbox.', related: ['grid', 'padding'] },
+  { id: 'flexbox', name: 'Flexbox', nameEn: 'Hệ thống layout 1 chiều', letter: 'F', groups: ['design', 'code'], definition: 'Cách sắp xếp các thành phần giao diện theo hàng ngang hoặc cột dọc một cách linh hoạt. Flexbox giúp bạn giải quyết các bài toán "nhức đầu" như căn giữa một khối hộp, dãn đều các nút bấm, hoặc tự động sắp xếp lại vị trí khi màn hình thu nhỏ.', example: 'Prompt: "Dùng Flexbox để xếp 3 card sản phẩm nằm ngang, dãn đều khoảng cách, và căn giữa chúng theo chiều dọc. Trên mobile thì tự động chuyển sang xếp chồng hàng dọc."', related: ['grid', 'padding', 'align', 'spacing', 'responsive'], demo: { kind: 'interactive', src: 'gif-flexbox-demo.html', alt: 'Mô phỏng 4 khía cạnh của Flexbox: Direction, Alignment, Distribution và Wrapping' }, practice: { kind: 'interactive', src: 'gif-flexbox-practice.html', alt: 'Thực hành Flexbox Builder: tự tay sắp xếp các khối hộp và xem prompt tương ứng' } },
   { id: 'framework', name: 'Framework', nameEn: 'Khung làm việc', letter: 'F', groups: ['infra', 'code'], definition: 'Bộ khung có sẵn giúp bạn không phải xây từ đầu. Next.js là framework cho web — nó đã lo routing, SEO, performance. Bạn chỉ cần tập trung vào logic và giao diện.', example: 'markAI.vn dùng Next.js framework + Tailwind CSS framework. Hai thứ này cùng nhau giúp vibecoder build web chuyên nghiệp.' },
   { id: 'function', name: 'Function', nameEn: 'Hàm / Khối code tái dùng', letter: 'F', groups: ['code'], definition: 'Một khối code làm một việc cụ thể, có thể gọi đi gọi lại. Giống như quy trình SOP — viết một lần, áp dụng nhiều lần.', example: '"Hàm formatDate() nhận ngày tháng và trả về dạng \'DD/MM/YYYY\'" — gọi function này ở bất kỳ đâu trong app.' },
   { id: 'git', name: 'Git', nameEn: 'Hệ thống quản lý phiên bản', letter: 'G', groups: ['workflow'], definition: 'Hệ thống lưu phiên bản tự động cho code. Giống như một "cỗ máy thời gian", Git cho phép bạn lưu lại trạng thái của project tại từng thời điểm và quay lại bất kỳ phiên bản nào trong quá khứ nếu có lỗi xảy ra.', example: 'git clone url (Tải code về máy) · git pull (Cập nhật code mới nhất từ AI).', related: ['commit', 'repository'], demo: { kind: 'interactive', src: 'gif-git-demo.html', alt: 'Mô phỏng hệ thống quản lý phiên bản Git', caption: 'Git giúp team làm việc song song trên nhiều branch mà không sợ đè code của nhau.' } },
@@ -579,10 +579,18 @@ const deepDiveTermIds = new Set([
   'gitignore',
   'merge',
   'conflict',
-  'environment'
+  'environment',
+  'flexbox'
 ].filter((termId) => !removedGlossaryTermIds.has(termId)));
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
+  flexbox: [
+    'Flexbox luôn bắt đầu bằng một cái thùng chứa bên ngoài. Khi bạn ra lệnh "display: flex", cái thùng đó sẽ có quyền "điều khiển" toàn bộ các vật thể bên trong nó.',
+    'Trục chính (Main Axis) & Trục phụ (Cross Axis): Nếu bạn chọn hướng là Hàng ngang, thì Justify sẽ điều khiển ngang. Nếu bạn chọn hướng Cột dọc, Justify lại điều khiển dọc. Luôn nhớ Justify đi theo "hướng chảy".',
+    'Trước khi có Flexbox, việc căn giữa một vật thể trong một cái khung là một cực hình. Với Flexbox, chỉ cần 2 lệnh: "justify-content: center" và "align-items: center".',
+    'Tính "Linh hoạt" (Flexible): Đúng như tên gọi, các vật thể trong Flexbox có thể co lại (shrink) hoặc giãn ra (grow) để lấp đầy không gian. Điều này giúp giao diện luôn đẹp dù màn hình to hay nhỏ.',
+    'Dùng cho 1 chiều: Flexbox cực mạnh khi sắp xếp các thứ theo 1 hướng (ngang HOẶC dọc). Nếu bạn muốn xếp theo cả 2 hướng cùng lúc (giống như bảng Excel phức tạp), hãy nghĩ đến Grid.'
+  ],
   environment: [
     'Tư duy "An toàn là trên hết": Đừng bao giờ làm thử những tính năng mới hoặc dữ liệu "nhạy cảm" trực tiếp trên Production. Hãy luôn bắt đầu từ Local, sau đó đẩy lên Staging để kiểm tra.',
     'Bản sao hoàn hảo: Môi trường Staging càng giống Production bao nhiêu, tỷ lệ lỗi khi ra mắt thật càng thấp bấy nhiêu. Đây là nơi để bạn "diễn tập" trước buổi biểu diễn chính thức.',

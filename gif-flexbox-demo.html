@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Flexbox Demo — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root {
+  --bg: #0f0f12;
+  --bgc: #16161b;
+  --bgi: #121217;
+  --bd: #282830;
+  --tx: #e8e4dc;
+  --txm: #707070;
+  --ac: #E88C2E;
+  --abg: rgba(232, 140, 46, 0.1);
+  --abg2: rgba(232, 140, 46, 0.2);
+  --err: #ef4444;
+  --gn: #22c55e;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--tx);
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.g {
+  width: 100%;
+  max-width: 940px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 600px) {
+  .g { grid-template-columns: 1fr; }
+}
+
+.c {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.c::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--ac);
+}
+
+.c::after {
+  content: '';
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 6px;
+  height: 6px;
+  background: var(--ac);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--ac);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0.3; transform: scale(1); }
+}
+
+.ch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.ch .n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ac);
+  background: var(--abg);
+  border: 1px solid var(--abg2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+.ch h2 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  text-transform: uppercase;
+}
+
+.st {
+  background: var(--bgi);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  flex: 1;
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ins {
+  margin-top: 14px;
+  font-size: 11.5px;
+  color: var(--txm);
+  line-height: 1.6;
+  padding-left: 12px;
+  border-left: 2px solid var(--ac);
+}
+
+.ins strong {
+  color: var(--ac);
+  font-weight: 600;
+}
+
+/* Flexbox specific styles */
+.flex-container {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  background: rgba(255,255,255,0.03);
+  border: 1px dashed var(--bd);
+  padding: 10px;
+  transition: all 0.5s ease;
+}
+
+.box {
+  width: 30px;
+  height: 30px;
+  background: var(--ac);
+  border: 1px solid rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  color: #fff;
+  transition: all 0.5s ease;
+}
+
+.box:nth-child(2) { background: #E88C2E; opacity: 0.8; }
+.box:nth-child(3) { background: #E88C2E; opacity: 0.6; }
+
+</style>
+</head>
+<body>
+
+<div class="g">
+  <!-- 01: Direction -->
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>Direction</h2></div>
+    <div class="st">
+      <div id="dirContainer" class="flex-container" style="flex-direction: row; gap: 8px;">
+        <div class="box">1</div>
+        <div class="box">2</div>
+        <div class="box">3</div>
+      </div>
+    </div>
+    <p class="ins"><strong>Hướng dòng chảy:</strong> Sắp xếp các phần tử theo hàng ngang (Row) hoặc cột dọc (Column). Giống như việc bạn chọn xếp hàng dọc hay hàng ngang.</p>
+  </section>
+
+  <!-- 02: Alignment -->
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Alignment</h2></div>
+    <div class="st">
+      <div id="alignContainer" class="flex-container" style="justify-content: center; align-items: flex-start; gap: 8px;">
+        <div class="box">1</div>
+        <div class="box">2</div>
+        <div class="box" style="height: 50px;">3</div>
+      </div>
+    </div>
+    <p class="ins"><strong>Căn lề (Align):</strong> Canh chỉnh các phần tử theo trục phụ (thường là dọc). Giống như việc bạn yêu cầu mọi người đứng "bằng đầu" hoặc "đứng giữa" hàng.</p>
+  </section>
+
+  <!-- 03: Distribution -->
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Distribution</h2></div>
+    <div class="st">
+      <div id="distContainer" class="flex-container" style="justify-content: flex-start; gap: 8px;">
+        <div class="box">1</div>
+        <div class="box">2</div>
+        <div class="box">3</div>
+      </div>
+    </div>
+    <p class="ins"><strong>Giãn cách (Justify):</strong> Phân bổ khoảng trống giữa các phần tử. Giống như việc chia đều khoảng cách các ghế trong một phòng họp.</p>
+  </section>
+
+  <!-- 04: Wrapping -->
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Wrapping</h2></div>
+    <div class="st">
+      <div id="wrapContainer" class="flex-container" style="flex-wrap: nowrap; gap: 8px;">
+        <div class="box" style="width: 40%;">1</div>
+        <div class="box" style="width: 40%;">2</div>
+        <div class="box" style="width: 40%;">3</div>
+      </div>
+    </div>
+    <p class="ins"><strong>Xuống dòng (Wrap):</strong> Quyết định xem các phần tử có được phép tự động xuống dòng khi hết chỗ hay không. Rất quan trọng khi làm web cho Mobile.</p>
+  </section>
+</div>
+
+<script>
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// 01: Direction Loop
+(async function() {
+  const container = document.getElementById('dirContainer');
+  while (true) {
+    container.style.flexDirection = 'row';
+    await wait(2500);
+    container.style.flexDirection = 'column';
+    await wait(2500);
+  }
+})();
+
+// 02: Alignment Loop
+(async function() {
+  const container = document.getElementById('alignContainer');
+  while (true) {
+    container.style.alignItems = 'flex-start';
+    await wait(2000);
+    container.style.alignItems = 'center';
+    await wait(2000);
+    container.style.alignItems = 'flex-end';
+    await wait(2000);
+  }
+})();
+
+// 03: Distribution Loop
+(async function() {
+  const container = document.getElementById('distContainer');
+  while (true) {
+    container.style.justifyContent = 'flex-start';
+    await wait(2000);
+    container.style.justifyContent = 'center';
+    await wait(2000);
+    container.style.justifyContent = 'space-between';
+    await wait(2000);
+    container.style.justifyContent = 'space-around';
+    await wait(2000);
+  }
+})();
+
+// 04: Wrapping Loop
+(async function() {
+  const container = document.getElementById('wrapContainer');
+  while (true) {
+    container.style.flexWrap = 'nowrap';
+    await wait(2500);
+    container.style.flexWrap = 'wrap';
+    await wait(2500);
+  }
+})();
+</script>
+</body>
+</html>
