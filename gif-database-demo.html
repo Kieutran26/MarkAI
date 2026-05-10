@@ -3,254 +3,432 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Database Demo — markAI</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<title>Database Demo — Amber Brutalist</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-  :root{
-    --bg:#0f0f12;--bg-card:#16161b;--fg:#e8e4dc;--muted:#6e6e7a;
-    --accent:#e88c2e;--accent-soft:rgba(232,140,46,.12);
-    --accent-border:rgba(232,140,46,.3);--border:#282830;
-    --surface:#1c1c23;--shape-lt:#33333d;--bar-m:#44444f;
-    --sql-kw:#cf5c26;--sql-str:#e88c2e;--sql-num:#3a7ec4;--sql-fn:#c49030;
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{
-    background:var(--bg);color:var(--fg);
-    font-family:'Space Grotesk',sans-serif;line-height:1.6;
-    overflow-x:hidden;
-  }
-  body::before{
-    content:'';position:fixed;inset:0;
-    background-image:radial-gradient(rgba(255,255,255,.022) 1px,transparent 1px);
-    background-size: 20px 20px;pointer-events:none;z-index:0;
-  }
+:root {
+  --bg: #0f0f12;
+  --bgc: #16161b;
+  --bgi: #121217;
+  --bd: #282830;
+  --tx: #e8e4dc;
+  --txm: #707070;
+  --ac: #E88C2E;
+  --abg: rgba(232, 140, 46, 0.1);
+  --abg2: rgba(232, 140, 46, 0.2);
+  --gn: #22c55e;
+  --bl: #3b82f6;
+}
 
-  #app-root{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:24px}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-  .sec-lbl{
-    font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;
-    letter-spacing:2px;text-transform:uppercase;color:var(--muted);
-    margin-bottom:20px;display:flex;align-items:center;gap:10px;
-  }
-  .sec-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--tx);
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+}
 
-  .sim-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
-  @media(max-width:860px){.sim-grid{grid-template-columns:repeat(2,1fr)}}
-  @media(max-width:480px){.sim-grid{grid-template-columns:1fr}}
+.g {
+  width: 100%;
+  max-width: 940px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
 
-  .sc{
-    background:var(--bg-card);border:1px solid var(--border);
-    padding:20px 14px 18px;cursor:pointer;position:relative;overflow:hidden;
-    transition:border-color .3s,background .3s;
-  }
-  .sc::before{
-    content:'';position:absolute;top:0;left:0;right:0;height:2px;
-    background:var(--accent);transform:scaleX(0);transform-origin:left;
-    transition:transform .35s ease;z-index:2;
-  }
-  .sc:hover{border-color:var(--accent-border)}
-  .sc.on{border-color:var(--accent);background:var(--surface)}
-  .sc.on::before{transform:scaleX(1)}
+@media (max-width: 600px) {
+  .g { grid-template-columns: 1fr; }
+}
 
-  .sc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
-  .sc-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px}
-  .sc-tag{
-    font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;
-    text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);transition:color .3s;
-  }
-  .sc.on .sc-tag{color:var(--accent)}
+.c {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
 
-  .sc-demo{height:160px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.c::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--ac);
+}
 
-  /* Tables */
-  .dbt-table{width:100%;border:1px solid var(--border);border-collapse:collapse;font-family:'JetBrains Mono',monospace;font-size:0;position:relative;background:var(--bg)}
-  .dbt-head{display:flex;border-bottom:1px solid var(--accent-border);background:var(--accent-soft);opacity:0;transition:opacity .4s ease}
-  .dbt-head.show{opacity:1}
-  .dbt-hcell{flex:1;padding:4px 6px;font-size:8px;font-weight:600;color:var(--accent);border-right:1px solid var(--accent-border);text-align:center}
-  .dbt-hcell:last-child{border-right:none}
-  .dbt-row{display:flex;border-bottom:1px solid rgba(40,40,48,.5);opacity:0;transform:translateX(-8px);transition:all .35s ease}
-  .dbt-row.show{opacity:1;transform:translateX(0)}
-  .dbt-cell{flex:1;padding:3px 6px;font-size:8px;color:var(--fg);opacity:.7;border-right:1px solid rgba(40,40,48,.3);text-align:center}
-  .dbt-cell.pk{color:#cf5c26;font-weight:500}
+.c::after {
+  content: '';
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 6px;
+  height: 6px;
+  background: var(--ac);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--ac);
+  animation: pulse 2s infinite;
+}
 
-  /* Relations */
-  .rel-shell{width:100%;height:100%;position:relative}
-  .rel-tbl{position:absolute;border:1px solid var(--border);background:var(--bg);opacity:0;transform:scale(.85);transition:all .5s ease}
-  .rel-tbl.show{opacity:1;transform:scale(1)}
-  .rel-tbl-head{padding:3px 6px;background:var(--accent-soft);border-bottom:1px solid var(--accent-border);font-family:'JetBrains Mono',monospace;font-size:7.5px;font-weight:600;color:var(--accent);display:flex;align-items:center;gap:4px}
-  .rel-tbl-head i{font-size:6px}
-  .rel-tbl-body{padding:2px}
-  .rel-fld{font-family:'JetBrains Mono',monospace;font-size:6.5px;color:var(--muted);padding:1px 6px;border-bottom:1px solid rgba(40,40,48,.3)}
-  .rel-fld:last-child{border-bottom:none}
-  .rel-fld .fk{color:#3a7ec4;font-size:6px}
+@keyframes pulse {
+  0% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0.3; transform: scale(1); }
+}
 
-  /* SQL */
-  .sql-shell{width:100%;height:100%;background:var(--bg);border:1px solid var(--border);overflow:hidden;position:relative;font-family:'JetBrains Mono',monospace;width:100%}
-  .sql-line{padding:3px 8px;font-size:8.5px;opacity:0;transform:translateX(-6px);transition:all .35s ease;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-  .sql-line.show{opacity:1;transform:translateX(0)}
-  .sql-kw{color:var(--sql-kw);font-weight:600}
-  .sql-str{color:var(--sql-str)}
-  .sql-num{color:var(--sql-num)}
-  .sql-tbl{color:var(--sql-fn)}
-  .sql-op{color:var(--muted)}
-  .sql-cmt{color:var(--muted);opacity:.4;font-size:7.5px}
+.ch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
 
-  /* Architecture */
-  .arch-shell{width:100%;height:100%;position:relative;display:flex;align-items:center;justify-content:center}
-  .arch-node{position:absolute;display:flex;flex-direction:column;align-items:center;gap:3px;opacity:0;transform:scale(.8);transition:all .5s ease;z-index:1}
-  .arch-node.show{opacity:1;transform:scale(1)}
-  .arch-box{border:1px solid var(--border);background:var(--bg);padding:5px 8px;display:flex;align-items:center;gap:6px}
-  .arch-box i{font-size:10px}
-  .arch-box span{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:500}
-  .arch-label{font-family:'JetBrains Mono',monospace;font-size:6.5px;color:var(--muted);opacity:.5}
-  .arch-arrow{position:absolute;opacity:0;transition:opacity .4s ease;z-index:0}
-  .arch-arrow.show{opacity:1}
-  .arch-arrow svg{overflow:visible}
+.ch .n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ac);
+  background: var(--abg);
+  border: 1px solid var(--abg2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
 
-  .ins{
-    background:var(--surface);border:1px solid var(--border);
-    padding:18px 22px;display:flex;align-items:flex-start;gap:12px;min-height:80px;
-  }
-  .ins-i{color:var(--accent);font-size:13px;margin-top:3px;flex-shrink:0}
-  .ins-t{font-size:14px;color:var(--fg);opacity:.85;line-height:1.65;transition:opacity .25s,transform .25s}
-  .ins-t.fading{opacity:0;transform:translateY(6px)}
+.ch h2 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  text-transform: uppercase;
+}
 
-  @media(max-width:480px){
-    #app-root{padding:14px}
-    .ins{padding:14px 16px}
-  }
+.st {
+  background: var(--bgi);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  flex: 1;
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ins {
+  margin-top: 14px;
+  font-size: 11.5px;
+  color: var(--txm);
+  line-height: 1.6;
+  padding-left: 12px;
+  border-left: 2px solid var(--ac);
+}
+
+.ins strong {
+  color: var(--ac);
+  font-weight: 600;
+}
+
+/* Database Specific Styles */
+/* 01: Schema */
+.db-table {
+  width: 100%;
+  max-width: 160px;
+  border: 1px solid var(--bd);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+}
+.db-row {
+  display: grid;
+  grid-template-columns: 20px 1fr 1fr;
+  border-bottom: 1px solid var(--bd);
+}
+.db-row:last-child { border-bottom: none; }
+.db-cell {
+  padding: 4px;
+  border-right: 1px solid var(--bd);
+  color: var(--txm);
+  height: 20px;
+}
+.db-cell:last-child { border-right: none; }
+.db-header { background: var(--abg); color: var(--ac); font-weight: 700; }
+.db-cell.active { color: var(--tx); background: rgba(255,255,255,0.05); }
+
+/* 02: Query */
+.query-box {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.sql-cmd {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--ac);
+  padding: 6px;
+  background: var(--bg);
+  border: 1px solid var(--bd);
+}
+.result-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.result-item {
+  font-size: 9px;
+  padding: 4px 8px;
+  border-radius: 2px;
+  background: var(--bg);
+  border: 1px solid var(--bd);
+  transition: all 0.3s;
+  color: var(--txm);
+}
+.result-item.highlight {
+  border-color: var(--ac);
+  color: var(--tx);
+  background: var(--abg);
+  transform: translateX(4px);
+}
+
+/* 03: Storage */
+.storage-viz {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  position: relative;
+}
+.st-box {
+  width: 50px;
+  height: 50px;
+  border: 1px solid var(--bd);
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border-radius: 4px;
+  position: relative;
+  z-index: 2;
+}
+.st-box i { font-size: 16px; color: var(--txm); }
+.st-box span { font-size: 8px; font-family: 'JetBrains Mono', monospace; color: var(--txm); }
+.st-box.active i { color: var(--ac); }
+.data-packet {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: var(--ac);
+  border-radius: 1px;
+  opacity: 0;
+  z-index: 1;
+}
+
+/* 04: Relations */
+.rel-viz {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+}
+.mini-tbl {
+  width: 65px;
+  border: 1px solid var(--bd);
+  background: var(--bg);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 7px;
+}
+.tbl-h { background: var(--bd); padding: 2px 4px; color: var(--tx); font-weight: 700; text-align: center; }
+.tbl-r { padding: 2px 4px; border-top: 1px solid var(--bd); color: var(--txm); display: flex; justify-content: space-between; }
+.tbl-r .key { color: var(--ac); }
+.tbl-r .fkey { color: var(--bl); }
+.rel-line {
+  flex: 1;
+  height: 1px;
+  background: var(--bd);
+  position: relative;
+}
+.rel-dot {
+  position: absolute;
+  top: -2px;
+  width: 5px;
+  height: 5px;
+  background: var(--ac);
+  border-radius: 50%;
+  left: 0;
+}
 </style>
 </head>
 <body>
 
-<div id="app-root">
-  <section aria-label="Mô phỏng database">
-    <div class="sim-grid" id="simGrid"></div>
-    <div class="ins">
-      <i class="fa-solid fa-lightbulb ins-i"></i>
-      <p class="ins-t" id="insT">Đang tải...</p>
+<div class="g">
+  <!-- 01: Schema -->
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>Schema</h2></div>
+    <div class="st">
+      <div class="db-table">
+        <div class="db-row db-header">
+          <div class="db-cell">ID</div>
+          <div class="db-cell">Name</div>
+          <div class="db-cell">Role</div>
+        </div>
+        <div class="db-row"><div class="db-cell">1</div><div class="db-cell" id="r1_1"></div><div class="db-cell" id="r1_2"></div></div>
+        <div class="db-row"><div class="db-cell">2</div><div class="db-cell" id="r2_1"></div><div class="db-cell" id="r2_2"></div></div>
+        <div class="db-row"><div class="db-cell">3</div><div class="db-cell" id="r3_1"></div><div class="db-cell" id="r3_2"></div></div>
+      </div>
     </div>
+    <p class="ins">Dữ liệu được tổ chức thành các <strong>Bảng (Tables)</strong>. Mỗi hàng là một <strong>Bản ghi (Record)</strong> duy nhất với các thuộc tính được định nghĩa sẵn.</p>
+  </section>
+
+  <!-- 02: Query -->
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Query</h2></div>
+    <div class="st">
+      <div class="query-box">
+        <div class="sql-cmd">SELECT * FROM users WHERE role='Admin'</div>
+        <div class="result-list">
+          <div class="result-item" id="qi1">User: Alice (Admin)</div>
+          <div class="result-item" id="qi2">User: Bob (Editor)</div>
+          <div class="result-item" id="qi3">User: Charlie (Admin)</div>
+        </div>
+      </div>
+    </div>
+    <p class="ins">Sử dụng ngôn ngữ <strong>SQL</strong> để truy vấn. Bạn có thể <strong>Lọc (Filter)</strong> dữ liệu để lấy chính xác thông tin cần thiết từ kho lưu trữ khổng lồ.</p>
+  </section>
+
+  <!-- 03: Storage -->
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Storage</h2></div>
+    <div class="st">
+      <div class="storage-viz">
+        <div class="st-box active">
+          <i class="fa-solid fa-memory"></i>
+          <span>RAM</span>
+        </div>
+        <div class="data-packet" id="packet"></div>
+        <div class="st-box" id="hddBox">
+          <i class="fa-solid fa-hard-drive"></i>
+          <span>DISK</span>
+        </div>
+      </div>
+    </div>
+    <p class="ins">Database đảm bảo tính <strong>Bền vững (Persistence)</strong>. Dữ liệu được ghi xuống <strong>Ổ đĩa</strong> để không bị mất khi mất điện hoặc server khởi động lại.</p>
+  </section>
+
+  <!-- 04: Relate -->
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Relate</h2></div>
+    <div class="st">
+      <div class="rel-viz">
+        <div class="mini-tbl">
+          <div class="tbl-h">Users</div>
+          <div class="tbl-r"><span class="key">PK1</span><span>Ana</span></div>
+          <div class="tbl-r"><span>PK2</span><span>Bo</span></div>
+        </div>
+        <div class="rel-line">
+          <div class="rel-dot" id="relDot"></div>
+        </div>
+        <div class="mini-tbl">
+          <div class="tbl-h">Orders</div>
+          <div class="tbl-r"><span>ID10</span><span class="fkey">FK1</span></div>
+          <div class="tbl-r"><span>ID11</span><span>FK2</span></div>
+        </div>
+      </div>
+    </div>
+    <p class="ins">Các bảng kết nối qua <strong>Khóa (Keys)</strong>. Một <strong>Khóa ngoại (Foreign Key)</strong> giúp liên kết dữ liệu giữa các thực thể khác nhau một cách logic.</p>
   </section>
 </div>
 
 <script>
-  const sims = [
-    {
-      num:'01', name:'Table',
-      ins:'Database lưu data dưới dạng bảng — mỗi hàng là một record, mỗi cột là một trường thông tin. Bảng users có id, name, email, role.',
-      build(el){
-        const rows = [
-          {id:'1',name:'An Nguyen',email:'an@mail.com',role:'admin'},
-          {id:'2',name:'Binh Tran',email:'binh@mail.com',role:'user'},
-          {id:'3',name:'Chi Le',email:'chi@mail.com',role:'user'}
-        ];
-        el.innerHTML=`<div class="dbt-table">
-          <div class="dbt-head"><div class="dbt-hcell">id</div><div class="dbt-hcell">name</div><div class="dbt-hcell">role</div></div>
-          ${rows.map(r=>`<div class="dbt-row"><div class="dbt-cell pk">${r.id}</div><div class="dbt-cell">${r.name}</div><div class="dbt-cell">${r.role}</div></div>`).join('')}
-        </div>`;
-        setTimeout(()=>{el.querySelector('.dbt-head').classList.add('show');el.querySelectorAll('.dbt-row').forEach((r,i)=>setTimeout(()=>r.classList.add('show'),100+i*120))},80);
-      }
-    },
-    {
-      num:'02', name:'Relations',
-      ins:'Các bảng không đứng độc lập — users có nhiều orders. Cột user_id trong orders chính là "cầu nối" đến bảng users.',
-      build(el){
-        el.innerHTML=`<div class="rel-shell">
-          <div class="rel-tbl" style="left:4px;top:10px;width:70px" id="rt0">
-            <div class="rel-tbl-head">users</div>
-            <div class="rel-tbl-body"><div class="rel-fld">PK id</div><div class="rel-fld">name</div></div>
-          </div>
-          <div class="rel-tbl" style="right:4px;top:50px;width:75px" id="rt1">
-            <div class="rel-tbl-head">orders</div>
-            <div class="rel-tbl-body"><div class="rel-fld">PK id</div><div class="rel-fld">FK user_id</div></div>
-          </div>
-        </div>`;
-        setTimeout(()=>{
-          ['rt0','rt1'].forEach((id,i)=>setTimeout(()=>el.querySelector('#'+id).classList.add('show'),i*200));
-        },80);
-      }
-    },
-    {
-      num:'03', name:'SQL Ops',
-      ins:'SQL là ngôn ngữ để "nói chuyện" với database. Chỉ có 4 thao tác: SELECT (đọc), INSERT (thêm), UPDATE (sửa), DELETE (xóa).',
-      build(el){
-        el.innerHTML=`<div class="sql-shell">
-          <div class="sql-line"><span class="sql-kw">SELECT</span> <span class="sql-op">*</span> <span class="sql-kw">FROM</span> <span class="sql-tbl">users</span><span class="sql-op">;</span></div>
-          <div class="sql-line"><span class="sql-kw">INSERT INTO</span> <span class="sql-tbl">users</span> <span class="sql-kw">VALUES</span> <span class="sql-op">(...);</span></div>
-          <div class="sql-line"><span class="sql-kw">UPDATE</span> <span class="sql-tbl">users</span> <span class="sql-kw">SET</span> role <span class="sql-op">=</span> <span class="sql-str">'..'</span><span class="sql-op">;</span></div>
-          <div class="sql-line"><span class="sql-kw">DELETE FROM</span> <span class="sql-tbl">users</span> <span class="sql-kw">WHERE</span> id <span class="sql-op">=</span> <span class="sql-num">1</span><span class="sql-op">;</span></div>
-        </div>`;
-        el.querySelectorAll('.sql-line').forEach((l,i)=>setTimeout(()=>l.classList.add('show'),80+i*70));
-      }
-    },
-    {
-      num:'04', name:'Architecture',
-      ins:'Database chạy trên server (MySQL, PostgreSQL...). App code kết nối đến server này để truy xuất dữ liệu.',
-      build(el){
-        el.innerHTML=`<div class="arch-shell">
-          <div class="arch-node" id="an0" style="left:5%;top:35%"><div class="arch-box"><i class="fa-solid fa-code"></i><span>App</span></div></div>
-          <div class="arch-arrow" id="aa0" style="left:30%;top:45%"><svg width="25" height="10"><line x1="0" y1="5" x2="20" y2="5" stroke="var(--muted)" stroke-width="1"/><polygon points="20,2 25,5 20,8" fill="var(--muted)"/></svg></div>
-          <div class="arch-node" id="an1" style="left:50%;top:35%"><div class="arch-box" style="border-color:var(--accent-border)"><i class="fa-solid fa-server" style="color:var(--accent)"></i><span>DB</span></div></div>
-        </div>`;
-        setTimeout(()=>{
-          ['an0','an1'].forEach((id,i)=>setTimeout(()=>el.querySelector('#'+id).classList.add('show'),i*200));
-          setTimeout(()=>el.querySelector('#aa0').classList.add('show'),400);
-        },80);
-      }
-    }
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// 01: Schema Loop (Filling data)
+(async function() {
+  const cells = [
+    ['r1_1', 'Alice'], ['r1_2', 'Admin'],
+    ['r2_1', 'Bob'], ['r2_2', 'User'],
+    ['r3_1', 'Eve'], ['r3_2', 'Dev']
   ];
+  while (true) {
+    for (let [id, val] of cells) {
+      const el = document.getElementById(id);
+      el.textContent = val;
+      el.classList.add('active');
+      await wait(400);
+    }
+    await wait(2000);
+    for (let [id] of cells) {
+      const el = document.getElementById(id);
+      el.textContent = '';
+      el.classList.remove('active');
+    }
+    await wait(1000);
+  }
+})();
 
-  const simGrid = document.getElementById('simGrid');
-  const insT = document.getElementById('insT');
-  let activeI = 0;
-  let autoTimer;
-
-  function renderSim() {
-    simGrid.innerHTML = sims.map((p, ci) => `
-      <div class="sc" data-i="${ci}" tabindex="0" role="button">
-        <div class="sc-top">
-          <span class="sc-num">${p.num}</span>
-          <span class="sc-tag">${p.name}</span>
-        </div>
-        <div class="sc-demo" id="sd${ci}"></div>
-      </div>`).join('');
-
-    simGrid.querySelectorAll('.sc').forEach(c => {
-      c.addEventListener('click', () => {
-        clearInterval(autoTimer);
-        activateCard(+c.dataset.i);
-      });
+// 02: Query Loop (Filtering)
+(async function() {
+  const items = [document.getElementById('qi1'), document.getElementById('qi2'), document.getElementById('qi3')];
+  while (true) {
+    await wait(1000);
+    items[0].classList.add('highlight');
+    items[2].classList.add('highlight');
+    items[1].style.opacity = '0.2';
+    await wait(3000);
+    items.forEach(el => {
+      el.classList.remove('highlight');
+      el.style.opacity = '1';
     });
+    await wait(1000);
   }
+})();
 
-  function activateCard(i) {
-    activeI = i;
-    simGrid.querySelectorAll('.sc').forEach((c, idx) => c.classList.toggle('on', idx === i));
-    const d = document.getElementById('sd'+i);
-    d.innerHTML = '';
-    sims[i].build(d);
-    setIns(sims[i].ins);
+// 03: Storage Loop (Data flow)
+(async function() {
+  const pkt = document.getElementById('packet');
+  const hdd = document.getElementById('hddBox');
+  while (true) {
+    pkt.style.transition = 'none';
+    pkt.style.left = '30%';
+    pkt.style.opacity = '0';
+    await wait(100);
+    pkt.style.transition = 'all 1s ease-in';
+    pkt.style.left = '65%';
+    pkt.style.opacity = '1';
+    await wait(1000);
+    pkt.style.opacity = '0';
+    hdd.classList.add('active');
+    await wait(1000);
+    hdd.classList.remove('active');
+    await wait(1000);
   }
+})();
 
-  function setIns(t) {
-    insT.classList.add('fading');
-    setTimeout(() => { 
-      insT.textContent = t; 
-      insT.classList.remove('fading'); 
-    }, 250);
+// 04: Relate Loop (Line travel)
+(async function() {
+  const dot = document.getElementById('relDot');
+  while (true) {
+    dot.style.transition = 'none';
+    dot.style.left = '0%';
+    dot.style.opacity = '1';
+    await wait(500);
+    dot.style.transition = 'left 1.5s ease-in-out';
+    dot.style.left = '100%';
+    await wait(1500);
+    dot.style.opacity = '0';
+    await wait(1000);
   }
-
-  function startAuto() {
-    activateCard(0);
-    autoTimer = setInterval(() => {
-      activeI = (activeI + 1) % sims.length;
-      activateCard(activeI);
-    }, 4500);
-  }
-
-  renderSim();
-  startAuto();
+})();
 </script>
 </body>
 </html>
