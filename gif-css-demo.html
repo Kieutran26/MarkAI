@@ -4,239 +4,428 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CSS Demo — Vibecode Glossary</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg:#141413;--bg-card:#1c1c1a;--fg:#e8e0d4;--muted:#6e6a63;
-    --accent:#e88c2e;--accent-dim:rgba(232,140,46,.12);
-    --border:#2e2c28;--border-hi:#3e3b35;--slate:#33312d;--cream:#f5f0e8;
-    --green:#6b8f5e;--amber:#c9922a;--blue:#5e7a8f;--red:#b54a4a;
-    --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
-  }
-  *{margin:0;padding:0;box-sizing:border-box;}
-  body{background:var(--bg);color:var(--fg);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased;background-image:linear-gradient(rgba(255,255,255,.016) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.016) 1px,transparent 1px);background-size:20px 20px;}
-  
-  .g4{display:grid;grid-template-columns:1fr 1fr;gap:12px;padding:16px;max-width:920px;margin:0 auto;}
-  @media(max-width:620px){.g4{grid-template-columns:1fr;}}
+:root {
+  --bg: #0f0f12;
+  --bgc: #16161b;
+  --bgi: #121217;
+  --bd: #282830;
+  --tx: #e8e4dc;
+  --txm: #707070;
+  --ac: #E88C2E;
+  --abg: rgba(232, 140, 46, 0.1);
+  --abg2: rgba(232, 140, 46, 0.2);
+  --err: #ef4444;
+  --gn: #22c55e;
+  --bl: #3b82f6;
+}
 
-  .cd{background:var(--bg-card);border:1px solid var(--border);position:relative;overflow:hidden;display:flex;flex-direction:column;}
-  .cd-l{font-family:var(--mono);font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:2px;padding:14px 14px 2px;}
-  .cd-t{font-size:15px;font-weight:700;color:var(--cream);padding:2px 14px 10px;}
-  .cd-d{padding:0 14px 12px;height:220px;display:flex;flex-direction:column;justify-content:center;position:relative;}
-  .cd-i{font-family:var(--mono);font-size:10px;color:var(--muted);padding:8px 14px 16px;border-top:1px solid var(--border);line-height:1.6;margin-top:auto;}
-  .cd-i strong{color:var(--accent);font-weight:600;font-style:normal;}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-  /* ===== Card 1: CSS Flow ===== */
-  .flow-box{display:flex;align-items:center;gap:8px;width:100%;}
-  .f-file{flex:1;background:#0e0e0d;border:1px solid var(--border-hi);padding:8px;font-family:var(--mono);font-size:9px;line-height:1.6;}
-  .f-conn{width:20px;height:1px;background:var(--border-hi);position:relative;}
-  .f-conn::after{content:'';position:absolute;right:0;top:-2px;width:5px;height:5px;border-top:1px solid var(--border-hi);border-right:1px solid var(--border-hi);transform:rotate(45deg);}
-  .f-browser{flex:1.2;background:var(--slate);border:1px solid var(--border-hi);height:100px;display:flex;flex-direction:column;overflow:hidden;}
-  .f-browser-bar{height:6px;background:#0e0e0d;border-bottom:1px solid var(--border-hi);}
-  .f-browser-body{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:8px;}
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--tx);
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+}
 
-  .syn-tag{color:var(--red);}.syn-sel{color:var(--green);}.syn-prop{color:var(--blue);}.syn-val{color:var(--amber);}
+.g {
+  width: 100%;
+  max-width: 940px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
 
-  /* ===== Card 2: Selector & Declaration ===== */
-  .syntax-box{background:#0e0e0d;border:1px solid var(--border-hi);padding:12px;font-family:var(--mono);font-size:11px;line-height:1.8;}
-  .hl-sel{background:rgba(107,143,94,.1);border-bottom:1px solid var(--green);}
-  .hl-prop{background:rgba(94,122,143,.1);border-bottom:1px solid var(--blue);}
-  .hl-val{background:rgba(201,146,42,.1);border-bottom:1px solid var(--amber);}
+@media (max-width: 600px) {
+  .g { grid-template-columns: 1fr; }
+}
 
-  /* ===== Card 3: Box Model ===== */
-  .bm-visual{display:flex;justify-content:center;align-items:center;}
-  .bm-m{border:1px dashed var(--muted);padding:10px;display:flex;}
-  .bm-b{border:2px solid var(--amber);padding:8px;display:flex;}
-  .bm-p{border:1px dashed var(--green);padding:8px;display:flex;}
-  .bm-c{background:var(--accent);width:60px;height:30px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:9px;color:#fff;}
-  .bm-labels{margin-top:12px;display:grid;grid-template-columns:1fr 1fr;gap:4px;}
-  .bm-lbl{font-family:var(--mono);font-size:9px;display:flex;align-items:center;gap:4px;color:var(--muted);}
-  .bm-dot{width:4px;height:4px;border-radius:50%;}
+.c {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
 
-  /* ===== Card 4: Responsive ===== */
-  .resp-box{display:flex;align-items:flex-end;gap:12px;justify-content:center;}
-  .dev{border:1px solid var(--border-hi);background:#0e0e0d;overflow:hidden;transition:all .5s;}
-  .dev-b{padding:4px;display:flex;flex-direction:column;gap:3px;}
-  .bar{height:2px;background:var(--slate);width:100%;}
-  .bar.h{background:var(--accent);height:4px;}
-  .grid-wrap{display:flex;gap:2px;}
-  .grid-item{flex:1;height:12px;background:var(--slate);}
+.c::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--ac);
+}
 
-  @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important;}}
+.c::after {
+  content: '';
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 6px;
+  height: 6px;
+  background: var(--ac);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--ac);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0.3; transform: scale(1); }
+}
+
+.ch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.ch .n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ac);
+  background: var(--abg);
+  border: 1px solid var(--abg2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+.ch h2 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+}
+
+.st {
+  background: var(--bgi);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  flex: 1;
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ins {
+  margin-top: 14px;
+  font-size: 11.5px;
+  color: var(--txm);
+  line-height: 1.6;
+  padding-left: 12px;
+  border-left: 2px solid var(--ac);
+}
+
+.ins strong {
+  color: var(--ac);
+  font-weight: 600;
+}
+
+.val {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--txm);
+  background: rgba(0,0,0,0.2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+/* 01: Selection Visuals */
+.code-panel {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+}
+.code-line {
+  padding: 8px;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid transparent;
+  transition: all 0.3s;
+}
+.code-line.active {
+  background: var(--abg);
+  border-color: var(--ac);
+  color: var(--ac);
+  transform: translateX(5px);
+}
+.tag { color: var(--err); }
+.attr { color: var(--ac); }
+.val-str { color: var(--gn); }
+
+/* 02: Styling Visuals */
+.preview-text {
+  font-size: 24px;
+  font-weight: 600;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  text-align: center;
+}
+.css-prop-box {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  font-family: 'JetBrains Mono';
+  font-size: 10px;
+  color: var(--txm);
+  background: rgba(0,0,0,0.4);
+  padding: 6px 10px;
+  border-radius: 4px;
+  border: 1px solid var(--bd);
+}
+.prop-name { color: var(--bl); }
+.prop-val { color: var(--ac); }
+
+/* 03: Box Model Visuals */
+.bm-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+.box-m {
+  border: 1px dashed var(--txm);
+  padding: 10px;
+  transition: all 0.4s;
+}
+.box-b {
+  border: 2px solid var(--ac);
+  padding: 8px;
+  transition: all 0.4s;
+}
+.box-p {
+  background: var(--abg);
+  border: 1px dashed var(--ac);
+  padding: 12px;
+  transition: all 0.4s;
+}
+.box-c {
+  background: var(--ac);
+  color: white;
+  width: 60px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 700;
+}
+.bm-label {
+  font-family: 'JetBrains Mono';
+  font-size: 10px;
+  color: var(--ac);
+  margin-top: 10px;
+}
+
+/* 04: Layout Visuals */
+.layout-grid {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+  max-width: 200px;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.l-item {
+  height: 30px;
+  background: var(--bd);
+  border: 1px solid var(--ac);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono';
+  font-size: 12px;
+  color: var(--ac);
+  opacity: 0.8;
+}
+
 </style>
 </head>
 <body>
 
-<div class="g4" id="app-root">
-
-  <!-- Card 1: Flow -->
-  <section class="cd">
-    <div class="cd-l">Quy trình</div>
-    <h2 class="cd-t">CSS Hoạt động thế nào?</h2>
-    <div class="cd-d">
-      <div class="flow-box">
-        <div class="f-file">
-          <span class="syn-tag">h1</span><br>
-          &nbsp;&nbsp;Hello
-        </div>
-        <div class="f-conn"></div>
-        <div class="f-file">
-          <span class="syn-sel">h1</span> {<br>
-          &nbsp;&nbsp;<span class="syn-prop">color</span>: <span class="syn-val">#e88</span>;<br>
-          }
-        </div>
-        <div class="f-conn"></div>
-        <div class="f-browser">
-          <div class="f-browser-bar"></div>
-          <div class="f-browser-body">
-            <h1 id="flowRes" style="font-size:16px;color:var(--accent);transition:color .5s;">Hello</h1>
-          </div>
-        </div>
+<div class="g">
+  <!-- 01: Selection -->
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>Chọn đối tượng</h2></div>
+    <div class="st">
+      <div class="code-panel">
+        <div class="code-line" id="line1"><span class="tag">&lt;h1&gt;</span>Tiêu đề chính<span class="tag">&lt;/h1&gt;</span></div>
+        <div class="code-line" id="line2"><span class="tag">&lt;button</span> <span class="attr">class=</span><span class="val-str">"btn"</span><span class="tag">&gt;</span>Nút bấm<span class="tag">&lt;/button&gt;</span></div>
+        <div class="code-line" id="line3"><span class="tag">&lt;p&gt;</span>Đoạn văn bản<span class="tag">&lt;/p&gt;</span></div>
       </div>
+      <div class="val" id="v1">Selector: h1</div>
     </div>
-    <div class="cd-i"><strong>CSS = lớp "áo" cho HTML.</strong> Browser đọc file cấu trúc (HTML) và file thẩm mỹ (CSS) để render ra trang web hoàn chỉnh.</div>
+    <p class="ins">Dùng <strong>Selector</strong> để "trỏ" đúng phần tử cần trang trí (VD: tên thẻ, class hay ID) giữa hàng nghìn dòng code.</p>
   </section>
 
-  <!-- Card 2: Syntax -->
-  <section class="cd">
-    <div class="cd-l">Cú pháp</div>
-    <h2 class="cd-t">Selector & Declaration</h2>
-    <div class="cd-d">
-      <div class="syntax-box">
-        <span class="hl-sel" id="synSel">h1</span> {<br>
-        &nbsp;&nbsp;<span class="hl-prop" id="synProp">color</span>: <span class="hl-val" id="synVal">#e88c2e</span>;<br>
-        &nbsp;&nbsp;font-size: 48px;<br>
-        }
+  <!-- 02: Styling -->
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Trang trí thuộc tính</h2></div>
+    <div class="st">
+      <div class="css-prop-box" id="propBox">
+        <span class="prop-name">color</span>: <span class="prop-val" id="vProp">#E88C2E</span>;
       </div>
-      <div style="margin-top:12px;font-family:var(--mono);font-size:10px;color:var(--accent);" id="synLabel">Selector: Chọn thẻ h1</div>
+      <div class="preview-text" id="pText">Vibecode</div>
+      <div class="val" id="v2">Declaration</div>
     </div>
-    <div class="cd-i"><strong>Chọn gì -> Đổi gì -> Thành bao nhiêu.</strong> Hiểu 3 phần này giúp bạn prompt AI chính xác hơn: "Đổi màu (property) của nút (selector) thành cam (value)".</div>
+    <p class="ins">Định nghĩa <strong>Property</strong> (thuộc tính) và <strong>Value</strong> (giá trị) để thay đổi màu sắc, font chữ hay kích thước của phần tử.</p>
   </section>
 
-  <!-- Card 3: Box Model -->
-  <section class="cd">
-    <div class="cd-l">Cấu trúc</div>
-    <h2 class="cd-t">Box Model (Hộp phần tử)</h2>
-    <div class="cd-d">
-      <div class="bm-visual">
-        <div class="bm-m" id="bmM">
-          <div class="bm-b" id="bmB">
-            <div class="bm-p" id="bmP">
-              <div class="bm-c">Content</div>
+  <!-- 03: Box Model -->
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Cấu trúc hình hộp</h2></div>
+    <div class="st">
+      <div class="bm-container">
+        <div class="box-m" id="bmM">
+          <div class="box-b" id="bmB">
+            <div class="box-p" id="bmP">
+              <div class="box-c">Content</div>
             </div>
           </div>
         </div>
+        <div class="bm-label" id="bmLabel">Padding</div>
       </div>
-      <div class="bm-labels">
-        <div class="bm-lbl"><span class="bm-dot" style="background:var(--muted);"></span>Margin</div>
-        <div class="bm-lbl"><span class="bm-dot" style="background:var(--amber);"></span>Border</div>
-        <div class="bm-lbl"><span class="bm-dot" style="background:var(--green);"></span>Padding</div>
-        <div class="bm-lbl"><span class="bm-dot" style="background:var(--accent);"></span>Content</div>
-      </div>
+      <div class="val" id="v3">Box Model</div>
     </div>
-    <div class="cd-i"><strong>Mọi thứ trên web đều là hình hộp.</strong> Khoảng cách "to" ra thường do Margin/Padding. Tổng kích thước = 4 lớp cộng lại.</div>
+    <p class="ins">Mọi thứ trên web đều là <strong>hình hộp</strong>. Bạn kiểm soát khoảng cách bằng Margin (ngoài), Padding (trong) và Border.</p>
   </section>
 
-  <!-- Card 4: Responsive -->
-  <section class="cd">
-    <div class="cd-l">Thích nghi</div>
-    <h2 class="cd-t">Responsive Design</h2>
-    <div class="cd-d">
-      <div class="resp-box">
-        <div class="dev" id="devDesk" style="width:120px;height:80px;border-color:var(--accent);">
-          <div class="dev-b">
-            <div class="bar h"></div>
-            <div class="grid-wrap">
-              <div class="grid-item"></div><div class="grid-item"></div><div class="grid-item"></div>
-            </div>
-            <div class="bar"></div>
-          </div>
-        </div>
-        <div class="dev" id="devMob" style="width:50px;height:80px;opacity:0.3;">
-          <div class="dev-b">
-            <div class="bar h"></div>
-            <div class="grid-item" style="height:10px;"></div>
-            <div class="grid-item" style="height:10px;"></div>
-            <div class="grid-item" style="height:10px;"></div>
-          </div>
-        </div>
+  <!-- 04: Layout -->
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Sắp xếp bố cục</h2></div>
+    <div class="st">
+      <div class="layout-grid" id="lGrid" style="grid-template-columns: 1fr 1fr;">
+        <div class="l-item">1</div>
+        <div class="l-item">2</div>
+        <div class="l-item">3</div>
+        <div class="l-item">4</div>
       </div>
-      <div style="margin-top:12px;font-family:var(--mono);font-size:10px;color:var(--muted);text-align:center;" id="respLabel">Desktop Layout (3 columns)</div>
+      <div class="val" id="v4">Flexbox / Grid</div>
     </div>
-    <div class="cd-i"><strong>Cùng HTML, khác Layout.</strong> CSS tự điều chỉnh giao diện theo màn hình. 3 cột trên máy tính sẽ thành 1 cột trên điện thoại.</div>
+    <p class="ins">CSS giúp <strong>sắp xếp</strong> các phần tử linh hoạt trên mọi màn hình. Biến 4 cột thành 1 cột chỉ với vài dòng code.</p>
   </section>
-
 </div>
 
 <script>
-  function wait(ms){return new Promise(r=>setTimeout(r,ms))}
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-  // Card 1: Flow Animation
-  (async function(){
-    const res = document.getElementById('flowRes');
-    while(true){
-      res.style.color = 'var(--accent)';
-      await wait(1500);
-      res.style.color = 'var(--muted)';
-      await wait(1500);
-    }
-  })();
+// 01: Selection Loop
+(async function() {
+  const lines = [
+    { id: 'line1', sel: 'h1' },
+    { id: 'line2', sel: '.btn' },
+    { id: 'line3', sel: 'p' }
+  ];
+  const val = document.getElementById('v1');
 
-  // Card 2: Syntax Cycling
-  (async function(){
-    const sel = document.getElementById('synSel');
-    const prop = document.getElementById('synProp');
-    const val = document.getElementById('synVal');
-    const lbl = document.getElementById('synLabel');
-    const steps = [
-      {id:'sel', txt:'Selector: Tìm thẻ h1', color:'var(--green)'},
-      {id:'prop', txt:'Property: Thuộc tính Color', color:'var(--blue)'},
-      {id:'val', txt:'Value: Giá trị màu Cam', color:'var(--amber)'}
-    ];
-    let i=0;
-    while(true){
-      const s = steps[i];
-      [sel,prop,val].forEach(el=>el.style.backgroundColor='transparent');
-      if(s.id==='sel') sel.style.backgroundColor='rgba(107,143,94,0.2)';
-      if(s.id==='prop') prop.style.backgroundColor='rgba(94,122,143,0.2)';
-      if(s.id==='val') val.style.backgroundColor='rgba(201,146,42,0.2)';
-      lbl.textContent = s.txt;
-      lbl.style.color = s.color;
+  while (true) {
+    for (const line of lines) {
+      lines.forEach(l => document.getElementById(l.id).classList.remove('active'));
+      document.getElementById(line.id).classList.add('active');
+      val.textContent = 'Selector: ' + line.sel;
       await wait(2000);
-      i=(i+1)%steps.length;
     }
-  })();
+  }
+})();
 
-  // Card 3: Box Model Pulse
-  (async function(){
-    const m = document.getElementById('bmM');
-    const b = document.getElementById('bmB');
-    const p = document.getElementById('bmP');
-    while(true){
-      m.style.padding = '14px'; await wait(1000);
-      m.style.padding = '6px'; await wait(1000);
-      p.style.padding = '12px'; await wait(1000);
-      p.style.padding = '4px'; await wait(1000);
-    }
-  })();
+// 02: Styling Loop
+(async function() {
+  const props = [
+    { name: 'color', val: '#E88C2E', style: { color: '#E88C2E', fontSize: '24px', fontWeight: '600' } },
+    { name: 'font-size', val: '40px', style: { color: '#E88C2E', fontSize: '40px', fontWeight: '600' } },
+    { name: 'font-weight', val: '100', style: { color: '#E88C2E', fontSize: '32px', fontWeight: '100' } },
+    { name: 'color', val: '#3b82f6', style: { color: '#3b82f6', fontSize: '32px', fontWeight: '800' } }
+  ];
+  const text = document.getElementById('pText');
+  const propBox = document.getElementById('propBox');
+  const vProp = document.getElementById('vProp');
+  const pName = propBox.querySelector('.prop-name');
 
-  // Card 4: Responsive Toggle
-  (async function(){
-    const desk = document.getElementById('devDesk');
-    const mob = document.getElementById('devMob');
-    const lbl = document.getElementById('respLabel');
-    while(true){
-      desk.style.opacity = '1'; desk.style.borderColor = 'var(--accent)';
-      mob.style.opacity = '0.3'; mob.style.borderColor = 'var(--border-hi)';
-      lbl.textContent = 'Desktop Layout (3 columns)';
-      await wait(2500);
-      desk.style.opacity = '0.3'; desk.style.borderColor = 'var(--border-hi)';
-      mob.style.opacity = '1'; mob.style.borderColor = 'var(--accent)';
-      lbl.textContent = 'Mobile Layout (1 column)';
-      await wait(2500);
+  while (true) {
+    for (const p of props) {
+      pName.textContent = p.name;
+      vProp.textContent = p.val;
+      vProp.style.color = p.style.color;
+      
+      Object.assign(text.style, p.style);
+      await wait(2000);
     }
-  })();
+  }
+})();
+
+// 03: Box Model Loop
+(async function() {
+  const m = document.getElementById('bmM');
+  const p = document.getElementById('bmP');
+  const label = document.getElementById('bmLabel');
+
+  while (true) {
+    // Reset
+    m.style.padding = '10px';
+    p.style.padding = '12px';
+    label.textContent = 'Standard Box';
+    await wait(1500);
+
+    // Padding focus
+    label.textContent = 'Expanding Padding';
+    label.style.color = 'var(--ac)';
+    p.style.padding = '24px';
+    await wait(1500);
+    p.style.padding = '4px';
+    await wait(1500);
+    p.style.padding = '12px';
+
+    // Margin focus
+    label.textContent = 'Expanding Margin';
+    label.style.color = 'var(--txm)';
+    m.style.padding = '20px';
+    await wait(1500);
+    m.style.padding = '2px';
+    await wait(1500);
+  }
+})();
+
+// 04: Layout Loop
+(async function() {
+  const grid = document.getElementById('lGrid');
+  const val = document.getElementById('v4');
+
+  while (true) {
+    grid.style.gridTemplateColumns = 'repeat(2, 1fr)';
+    val.textContent = 'Grid: 2x2';
+    await wait(2000);
+
+    grid.style.gridTemplateColumns = '1fr';
+    val.textContent = 'Grid: 1x4 (Stack)';
+    await wait(2000);
+
+    grid.style.gridTemplateColumns = 'repeat(4, 1fr)';
+    grid.style.maxWidth = '240px';
+    val.textContent = 'Grid: 1x4 (Row)';
+    await wait(2000);
+    grid.style.maxWidth = '200px';
+  }
+})();
 </script>
-
 </body>
 </html>
