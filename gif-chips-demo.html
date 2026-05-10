@@ -1,492 +1,463 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chips Demo — Vibecode Glossary</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <style>
-        :root {
-            --bg: #141413;
-            --bg-card: #1c1c1a;
-            --fg: #e8e0d4;
-            --muted: #6e6a63;
-            --accent: #d97706;
-            --accent-dim: rgba(217,119,6,.14);
-            --accent-glow: rgba(217,119,6,.3);
-            --border: #2e2c28;
-            --border-hi: #3e3b35;
-            --slate: #33312d;
-            --cream: #f5f0e8;
-            --red: #ef4444;
-            --green: #22c55e;
-            --mono: 'JetBrains Mono', monospace;
-            --sans: 'Space Grotesk', sans-serif;
-        }
-        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-        body{
-            background:var(--bg);color:var(--fg);font-family:var(--sans);
-            min-height:auto;
-            background-image:
-                linear-gradient(rgba(255,255,255,.016) 1px,transparent 1px),
-                linear-gradient(90deg,rgba(255,255,255,.016) 1px,transparent 1px);
-            background-size:20px 20px;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chips Demo — Vibecode Glossary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f0f12;
+  --card-bg: #16161b;
+  --accent: #E88C2E;
+  --text: #e8e4dc;
+  --text-muted: #707070;
+  --border: #282830;
+  --font-main: 'Space Grotesk', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
 
-        /* ===== Header ===== */
-        .page-header{padding:28px 20px 4px;max-width:920px;margin:0 auto}
-        .page-header .tag{
-            font-family:var(--mono);font-size:9px;letter-spacing:2px;text-transform:uppercase;
-            color:var(--accent);background:var(--accent-dim);border:1px solid rgba(217,119,6,.2);
-            display:inline-block;padding:3px 10px;margin-bottom:10px;
-        }
-        .page-header h1{font-size:clamp(24px,5vw,36px);font-weight:700;color:var(--cream);line-height:1.15;letter-spacing:-.5px}
-        .page-header p{font-size:13px;color:var(--muted);margin-top:6px;max-width:540px;line-height:1.55}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-        /* ===== Grid 2×2 ===== */
-        .grid-4{display:grid;grid-template-columns:1fr 1fr;gap:14px;padding:18px 16px 0;max-width:920px;margin:0 auto}
-        @media(max-width:620px){.grid-4{grid-template-columns:1fr}}
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-main);
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  -webkit-font-smoothing: antialiased;
+}
 
-        /* ===== Card ===== */
-        .card{
-            background:var(--bg-card);border:1px solid var(--border);position:relative;overflow:hidden;
-        }
-        .card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 30% 0%,rgba(217,119,6,.035) 0%,transparent 60%);pointer-events:none}
-        .card-num{position:absolute;top:10px;right:12px;font-family:var(--mono);font-size:9px;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:2px 7px;letter-spacing:1.5px;z-index:5}
-        .card-label{font-family:var(--mono);font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:2px;padding:14px 14px 2px;position:relative}
-        .card-title{font-size:15px;font-weight:700;color:var(--cream);padding:2px 14px 10px;position:relative}
-        .card-demo{padding:0 14px 8px;height:220px;position:relative}
-        .card-insight{font-family:var(--mono);font-size:10px;color:var(--muted);padding:10px 14px 13px;border-top:1px solid var(--border);line-height:1.6;position:relative}
-        .card-insight em{color:var(--accent);font-style:normal}
+.container {
+  width: 100%;
+  max-width: 940px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
 
-        /* ===== Fake cursor ===== */
-        .fc{position:absolute;width:14px;height:14px;border:2px solid var(--accent);border-radius:50%;pointer-events:none;z-index:20;opacity:0;transition:left .4s cubic-bezier(.4,0,.2,1),top .4s cubic-bezier(.4,0,.2,1),opacity .2s;box-shadow:0 0 10px var(--accent-glow)}
-        .fc.show{opacity:1}
+@media (max-width: 600px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+}
 
-        /* ===== Chip base ===== */
-        .chip{
-            display:inline-flex;align-items:center;gap:5px;
-            padding:5px 10px;font-family:var(--mono);font-size:10px;
-            border:1px solid var(--border);background:var(--bg);color:var(--fg);
-            border-radius:2px;transition:all .25s;white-space:nowrap;flex-shrink:0;
-        }
-        .chip.on{border-color:var(--accent);background:var(--accent-dim);color:var(--accent)}
-        .chip .cx{margin-left:2px;opacity:.45;font-size:8px;transition:opacity .2s}
-        .chip .cx:hover{opacity:1}
-        .chip i{font-size:10px}
+/* Card Style */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 280px;
+}
 
-        /* ===== 1. Input Chips ===== */
-        .input-mock{
-            display:flex;align-items:center;gap:6px;
-            border:1px solid var(--border-hi);background:#0e0e0d;
-            padding:7px 10px;margin-bottom:10px;border-radius:2px;
-        }
-        .input-mock .it{font-family:var(--mono);font-size:11px;color:var(--cream);min-width:1px}
-        .type-cur{display:inline-block;width:1.5px;height:13px;background:var(--accent);animation:blink .7s step-end infinite;vertical-align:middle;margin-left:1px}
-        @keyframes blink{0%,50%{opacity:1}51%,100%{opacity:0}}
-        .chips-row{display:flex;flex-wrap:wrap;gap:6px;min-height:28px}
-        .chip-enter{animation:chipIn .3s ease forwards}
-        .chip-exit{animation:chipOut .25s ease forwards}
-        @keyframes chipIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
-        @keyframes chipOut{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(.8)}}
+/* Accent Bar */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent);
+  z-index: 2;
+}
 
-        /* ===== 2. Filter Chips ===== */
-        .fchip-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
-        .filter-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
-        .fitem{
-            background:var(--slate);border:1px solid var(--border);border-radius:2px;
-            padding:8px 6px;text-align:center;transition:all .35s;
-        }
-        .fitem .fi-name{font-family:var(--mono);font-size:8px;color:var(--fg);display:block;margin-bottom:3px}
-        .fitem .fi-cat{font-family:var(--mono);font-size:7px;color:var(--muted);display:block}
-        .fitem.dim{opacity:.12;transform:scale(.96)}
+/* Header */
+.card-header {
+  padding: 16px 16px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
-        /* ===== 3. Choice Chips ===== */
-        .choice-section{margin-bottom:10px}
-        .choice-label{font-family:var(--mono);font-size:8px;color:var(--muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px}
-        .choice-row{display:flex;gap:6px;margin-bottom:8px}
-        .choice-preview{
-            height:36px;background:var(--slate);border:1px solid var(--border);
-            border-radius:2px;transition:all .4s;margin-top:6px;display:flex;align-items:center;justify-content:center;
-        }
-        .choice-dots{display:flex;gap:6px;margin-top:6px}
-        .cdot{width:14px;height:14px;border-radius:50%;border:2px solid var(--border);transition:all .3s}
-        .cdot.filled{border-color:var(--accent);background:var(--accent);opacity:.7}
+.card-index {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  background: rgba(232, 140, 46, 0.1);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
 
-        /* ===== 4. Action Chips ===== */
-        .action-row{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
-        .action-area{
-            flex:1;background:#0e0e0d;border:1px solid var(--border);border-radius:2px;
-            padding:10px;position:relative;transition:opacity .4s;
-        }
-        .action-area .aa-title{font-family:var(--mono);font-size:9px;color:var(--cream);margin-bottom:6px}
-        .action-area .aa-bar{height:4px;background:var(--slate);border-radius:1px;margin-bottom:4px}
-        .action-area .aa-bar.hi{background:var(--accent-dim);border:1px solid rgba(217,119,6,.1)}
-        .action-progress{height:3px;background:var(--border);border-radius:1px;margin-top:8px;overflow:hidden}
-        .action-progress-fill{height:100%;width:0;background:var(--accent);transition:width .7s ease}
-        .action-toast{
-            position:absolute;bottom:8px;left:50%;transform:translateX(-50%) translateY(16px);
-            opacity:0;background:var(--accent);color:#0e0e0d;
-            font-family:var(--mono);font-size:9px;font-weight:600;
-            padding:4px 10px;border-radius:2px;transition:all .3s;white-space:nowrap;z-index:5;
-        }
-        .action-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
 
-        @media(prefers-reduced-motion:reduce){
-            *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
-        }
-    </style>
+/* Indicator */
+.indicator {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--accent);
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.3; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.1); }
+  100% { opacity: 0.3; transform: scale(0.9); }
+}
+
+/* Content Area */
+.card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  min-height: 140px;
+}
+
+/* Note Section */
+.ins {
+  margin: 0 16px 16px;
+  padding-left: 12px;
+  border-left: 2px solid var(--accent);
+  font-size: 11.5px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.ins strong {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Chip Components */
+.chip-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+}
+
+.chip {
+  height: 32px;
+  padding: 0 12px;
+  border-radius: 16px;
+  background: #23232a;
+  border: 1px solid var(--border);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: #a0a0a8;
+  cursor: default;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  white-space: nowrap;
+}
+
+.chip.active {
+  background: rgba(232, 140, 46, 0.15);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.chip.primary {
+  background: var(--accent);
+  color: #fff;
+  border-color: var(--accent);
+}
+
+.chip-close {
+  width: 14px;
+  height: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  font-size: 10px;
+  color: currentColor;
+}
+
+.chip svg {
+  width: 14px;
+  height: 14px;
+  stroke: currentColor;
+  stroke-width: 2;
+  fill: none;
+}
+
+/* Simulation specific */
+.input-mock {
+  width: 100%;
+  max-width: 240px;
+  background: #0f0f12;
+  border: 1px solid var(--border);
+  padding: 8px;
+  border-radius: 6px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-height: 48px;
+  align-items: center;
+}
+
+.cursor {
+  width: 2px;
+  height: 20px;
+  background: var(--accent);
+  animation: blink 1s infinite step-end;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.status-label {
+  margin-top: 12px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+</style>
 </head>
 <body>
 
-<div id="app-root">
-<main class="grid-4">
+<div class="container">
+  <!-- Cell 1: Input Chips -->
+  <div class="card">
+    <div class="indicator"></div>
+    <div class="card-header">
+      <span class="card-index">01</span>
+      <span class="card-title">Input Chips</span>
+    </div>
+    <div class="card-content">
+      <div class="input-mock" id="input-container">
+        <div class="cursor" id="input-cursor"></div>
+      </div>
+      <div class="status-label" id="status-1">Typing...</div>
+    </div>
+    <div class="ins">
+      Đại diện cho <strong>Thực thể</strong>: Chuyển đổi văn bản nhập vào thành các khối dữ liệu rời rạc. Thường hỗ trợ hành động <strong>Xóa (Remove)</strong> trực tiếp.
+    </div>
+  </div>
 
-    <!-- ===== 1. INPUT CHIPS ===== -->
-    <section class="card" aria-label="Input Chips animation">
-        <span class="card-num">LOOP</span>
-        <div class="card-label">Kieu 01</div>
-        <h2 class="card-title">Input Chips</h2>
-        <div class="card-demo" id="d1">
-            <div class="fc" id="c1"></div>
-            <div class="input-mock" id="inpMock">
-                <i class="fas fa-tag" style="font-size:10px;color:var(--muted)"></i>
-                <span class="it" id="typTxt"></span>
-                <span class="type-cur" id="typCur"></span>
-            </div>
-            <div class="chips-row" id="chipsRow"></div>
-        </div>
-        <div class="card-insight">Gõ xong → chip sinh ra. Bấm X → chip mất. <em>Tag gọn, xóa dễ</em> — dùng cho input có nhiều giá trị.</div>
-    </section>
+  <!-- Cell 2: Filter Chips -->
+  <div class="card">
+    <div class="indicator"></div>
+    <div class="card-header">
+      <span class="card-index">02</span>
+      <span class="card-title">Filter Chips</span>
+    </div>
+    <div class="card-content">
+      <div class="chip-container" id="filter-group">
+        <div class="chip">Newest</div>
+        <div class="chip">Popular</div>
+        <div class="chip">Design</div>
+        <div class="chip">Code</div>
+      </div>
+      <div class="status-label" id="status-2">Results: 124</div>
+    </div>
+    <div class="ins">
+      Tối ưu <strong>Lọc nội dung</strong>: Cho phép người dùng thu hẹp kết quả bằng cách chọn nhiều thuộc tính. Trạng thái <strong>Kích hoạt (Active)</strong> cần rõ ràng.
+    </div>
+  </div>
 
-    <!-- ===== 2. FILTER CHIPS ===== -->
-    <section class="card" aria-label="Filter Chips animation">
-        <span class="card-num">LOOP</span>
-        <div class="card-label">Kieu 02</div>
-        <h2 class="card-title">Filter Chips</h2>
-        <div class="card-demo" id="d2">
-            <div class="fc" id="c2"></div>
-            <div class="fchip-row" id="fchipRow">
-                <div class="chip" data-cat="Design"><i class="fas fa-palette"></i>Design</div>
-                <div class="chip" data-cat="Code"><i class="fas fa-code"></i>Code</div>
-                <div class="chip" data-cat="Marketing"><i class="fas fa-bullhorn"></i>Marketing</div>
-                <div class="chip" data-cat="Data"><i class="fas fa-chart-bar"></i>Data</div>
-            </div>
-            <div class="filter-grid" id="fgrid">
-                <div class="fitem" data-cat="Design"><span class="fi-name">Landing Page</span><span class="fi-cat">Design</span></div>
-                <div class="fitem" data-cat="Marketing"><span class="fi-name">Email Flow</span><span class="fi-cat">Marketing</span></div>
-                <div class="fitem" data-cat="Code"><span class="fi-name">API Setup</span><span class="fi-cat">Code</span></div>
-                <div class="fitem" data-cat="Design"><span class="fi-name">Brand Kit</span><span class="fi-cat">Design</span></div>
-                <div class="fitem" data-cat="Data"><span class="fi-name">A/B Report</span><span class="fi-cat">Data</span></div>
-                <div class="fitem" data-cat="Code"><span class="fi-name">CRM Build</span><span class="fi-cat">Code</span></div>
-            </div>
-        </div>
-        <div class="card-insight">Chip bật = filter bật. Bấm lại = tắt. <em>Nhiều chip cùng lúc = filter kết hợp</em> — thay thế checkbox lọc.</div>
-    </section>
+  <!-- Cell 3: Choice Chips -->
+  <div class="card">
+    <div class="indicator"></div>
+    <div class="card-header">
+      <span class="card-index">03</span>
+      <span class="card-title">Choice Chips</span>
+    </div>
+    <div class="card-content">
+      <div class="chip-container" id="choice-group">
+        <div class="chip">Small</div>
+        <div class="chip">Medium</div>
+        <div class="chip">Large</div>
+      </div>
+      <div class="status-label" id="status-3">Size: Medium</div>
+    </div>
+    <div class="ins">
+      Lựa chọn <strong>Đơn nhất</strong>: Thay thế cho Radio Button trong không gian hẹp. Chỉ một chip được chọn tại một thời điểm trong nhóm <strong>Loại trừ (Exclusive)</strong>.
+    </div>
+  </div>
 
-    <!-- ===== 3. CHOICE CHIPS ===== -->
-    <section class="card" aria-label="Choice Chips animation">
-        <span class="card-num">LOOP</span>
-        <div class="card-label">Kieu 03</div>
-        <h2 class="card-title">Choice / Select Chips</h2>
-        <div class="card-demo" id="d3">
-            <div class="fc" id="c3"></div>
-            <div class="choice-section">
-                <div class="choice-label">Single select</div>
-                <div class="choice-row" id="singleRow">
-                    <div class="chip" data-v="s">Small</div>
-                    <div class="chip" data-v="m">Medium</div>
-                    <div class="chip" data-v="l">Large</div>
-                </div>
-                <div class="choice-preview" id="sizePrev"></div>
-            </div>
-            <div class="choice-section">
-                <div class="choice-label">Multi select</div>
-                <div class="choice-row" id="multiRow">
-                    <div class="chip" data-v="dark"><i class="fas fa-moon"></i>Dark</div>
-                    <div class="chip" data-v="min"><i class="fas fa-minus"></i>Minimal</div>
-                    <div class="chip" data-v="brand"><i class="fas fa-star"></i>Branded</div>
-                </div>
-                <div class="choice-dots" id="styleDots">
-                    <div class="cdot" data-v="dark"></div>
-                    <div class="cdot" data-v="min"></div>
-                    <div class="cdot" data-v="brand"></div>
-                </div>
-            </div>
+  <!-- Cell 4: Action Chips -->
+  <div class="card">
+    <div class="indicator"></div>
+    <div class="card-header">
+      <span class="card-index">04</span>
+      <span class="card-title">Action Chips</span>
+    </div>
+    <div class="card-content">
+      <div class="chip-container">
+        <div class="chip primary" id="action-chip">
+          <svg viewBox="0 0 24 24"><path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+          Add to Calendar
         </div>
-        <div class="card-insight">Single = chỉ 1 chip sáng. Multi = bật nhiều cùng lúc. <em>Thay radio/checkbox bằng chip</em> — gọn, trực quan hơn.</div>
-    </section>
-
-    <!-- ===== 4. ACTION CHIPS ===== -->
-    <section class="card" aria-label="Action Chips animation">
-        <span class="card-num">LOOP</span>
-        <div class="card-label">Kieu 04</div>
-        <h2 class="card-title">Action Chips</h2>
-        <div class="card-demo" id="d4">
-            <div class="fc" id="c4"></div>
-            <div class="action-row" id="actRow">
-                <div class="chip" data-act="share"><i class="fas fa-link"></i>Share Link</div>
-                <div class="chip" data-act="bookmark"><i class="far fa-bookmark" id="bmIcon"></i>Bookmark</div>
-                <div class="chip" data-act="download"><i class="fas fa-download"></i>Download</div>
-                <div class="chip" data-act="archive"><i class="fas fa-box-archive"></i>Archive</div>
-            </div>
-            <div class="action-area" id="actArea">
-                <div class="aa-title">Campaign Brief Q4.pdf</div>
-                <div class="aa-bar hi"></div>
-                <div class="aa-bar"></div>
-                <div class="aa-bar" style="width:70%"></div>
-                <div class="aa-bar" style="width:55%"></div>
-                <div class="action-progress"><div class="action-progress-fill" id="progFill"></div></div>
-                <div class="action-toast" id="aToast"></div>
-            </div>
-        </div>
-        <div class="card-insight">1 chip = 1 hành động ngay. Không cần mở menu. <em>Shortcut trực tiếp</em> — dùng cho action phổ biến, giảm friction.</div>
-    </section>
-</main>
+      </div>
+      <div class="status-label" id="status-4">Suggested Action</div>
+    </div>
+    <div class="ins">
+      Kích hoạt <strong>Nhiệm vụ</strong>: Thường xuất hiện theo ngữ cảnh để đề xuất hành động. Giúp người dùng thực hiện các <strong>Task</strong> nhanh chóng mà không cần Menu.
+    </div>
+  </div>
 </div>
 
 <script>
-/* ======== Tiện ích ======== */
-function pos(child, parent) {
-    const cr = child.getBoundingClientRect(), pr = parent.getBoundingClientRect();
-    return { x: cr.left - pr.left + cr.width / 2 - 7, y: cr.top - pr.top + cr.height / 2 - 7 };
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+// Loop 1: Input Chips
+async function loop1() {
+  const container = document.getElementById('input-container');
+  const cursor = document.getElementById('input-cursor');
+  const status = document.getElementById('status-1');
+  const tags = ['UI', 'UX', 'WEB'];
+  
+  while(true) {
+    // Clear
+    container.innerHTML = '';
+    container.appendChild(cursor);
+    status.textContent = 'Ready';
+    await sleep(1000);
+
+    for (let tagText of tags) {
+      status.textContent = 'Typing...';
+      await sleep(800);
+      
+      const chip = document.createElement('div');
+      chip.className = 'chip';
+      chip.innerHTML = `${tagText}<span class="chip-close">×</span>`;
+      chip.style.fontSize = '11px';
+      chip.style.height = '24px';
+      chip.style.opacity = '0';
+      chip.style.transform = 'scale(0.8)';
+      
+      container.insertBefore(chip, cursor);
+      
+      // Animate in
+      requestAnimationFrame(() => {
+        chip.style.opacity = '1';
+        chip.style.transform = 'scale(1)';
+      });
+      
+      status.textContent = 'Entity Added';
+      await sleep(1000);
+    }
+    
+    await sleep(1500);
+    
+    // Remove one by one
+    const chips = container.querySelectorAll('.chip');
+    for (let i = chips.length - 1; i >= 0; i--) {
+      status.textContent = 'Removing...';
+      chips[i].style.opacity = '0';
+      chips[i].style.transform = 'scale(0.8)';
+      await sleep(400);
+      chips[i].remove();
+      await sleep(400);
+    }
+  }
 }
-function moveC(c, p) { c.style.left = p.x + 'px'; c.style.top = p.y + 'px'; c.classList.add('show'); }
-const wait = ms => new Promise(r => setTimeout(r, ms));
 
-/* ======== 1. INPUT CHIPS ======== */
-(async function() {
-    const wrap = document.getElementById('d1');
-    const cur = document.getElementById('c1');
-    const txt = document.getElementById('typTxt');
-    const typCur = document.getElementById('typCur');
-    const row = document.getElementById('chipsRow');
-    const words = ['marketing', 'social', 'Q4 2025'];
+// Loop 2: Filter Chips
+async function loop2() {
+  const chips = document.querySelectorAll('#filter-group .chip');
+  const status = document.getElementById('status-2');
+  
+  while(true) {
+    // Scenario 1: All off
+    chips.forEach(c => c.classList.remove('active'));
+    status.textContent = 'Results: 320';
+    await sleep(1500);
+    
+    // Toggle 1
+    chips[0].classList.add('active');
+    status.textContent = 'Results: 124';
+    await sleep(1200);
+    
+    // Toggle 2
+    chips[2].classList.add('active');
+    status.textContent = 'Results: 42';
+    await sleep(1200);
+    
+    // Toggle 3
+    chips[3].classList.add('active');
+    status.textContent = 'Results: 15';
+    await sleep(2000);
+    
+    // Clear filters
+    status.textContent = 'Clearing...';
+    await sleep(800);
+  }
+}
 
-    function reset() { txt.textContent = ''; row.innerHTML = ''; }
+// Loop 3: Choice Chips
+async function loop3() {
+  const chips = document.querySelectorAll('#choice-group .chip');
+  const status = document.getElementById('status-3');
+  const labels = ['Small', 'Medium', 'Large'];
+  let current = 1; // Start with Medium
+  
+  while(true) {
+    chips.forEach((c, i) => c.classList.toggle('active', i === current));
+    status.textContent = `Size: ${labels[current]}`;
+    
+    await sleep(1800);
+    current = (current + 1) % chips.length;
+  }
+}
 
-    async function typeWord(w) {
-        for (let i = 0; i < w.length; i++) { txt.textContent += w[i]; await wait(70); }
-        await wait(250);
-        txt.textContent = '';
-        const chip = document.createElement('span');
-        chip.className = 'chip chip-enter';
-        chip.innerHTML = `<i class="fas fa-tag" style="font-size:8px;color:var(--accent);opacity:.5"></i>${w}<span class="cx"><i class="fas fa-xmark"></i></span>`;
-        row.appendChild(chip);
-    }
+// Loop 4: Action Chips
+async function loop4() {
+  const chip = document.getElementById('action-chip');
+  const status = document.getElementById('status-4');
+  const originalHTML = chip.innerHTML;
+  
+  while(true) {
+    // Normal state
+    chip.style.transform = 'scale(1)';
+    status.textContent = 'Suggested Action';
+    await sleep(2000);
+    
+    // Interaction
+    chip.style.transform = 'scale(0.95)';
+    chip.style.background = '#d17a25';
+    status.textContent = 'Processing...';
+    await sleep(300);
+    
+    // Success
+    chip.style.transform = 'scale(1)';
+    chip.style.background = '#2e7d32'; // Green
+    chip.innerHTML = '<svg viewBox="0 0 24 24" style="stroke: #fff;"><path d="M5 13l4 4L19 7"/></svg> Scheduled';
+    status.textContent = 'Event Added!';
+    await sleep(2500);
+    
+    // Reset
+    chip.style.background = 'var(--accent)';
+    chip.innerHTML = originalHTML;
+  }
+}
 
-    async function removeLast() {
-        const chips = row.querySelectorAll('.chip');
-        if (!chips.length) return;
-        const last = chips[chips.length - 1];
-        last.classList.remove('chip-enter');
-        last.classList.add('chip-exit');
-        await wait(280);
-        last.remove();
-    }
-
-    moveC(cur, pos(document.getElementById('inpMock'), wrap));
-
-    while (true) {
-        reset();
-        await wait(600);
-        for (const w of words) { await typeWord(w); await wait(200); }
-        await wait(1000);
-        const chips = row.querySelectorAll('.chip');
-        if (chips.length > 1) {
-            moveC(cur, pos(chips[1], wrap));
-            await wait(400);
-            await removeLast();
-        }
-        await wait(800);
-    }
-})();
-
-/* ======== 2. FILTER CHIPS ======== */
-(async function() {
-    const wrap = document.getElementById('d2');
-    const cur = document.getElementById('c2');
-    const chips = wrap.querySelectorAll('#fchipRow .chip');
-    const items = wrap.querySelectorAll('#fgrid .fitem');
-    const active = new Set();
-
-    function update() {
-        const any = active.size > 0;
-        items.forEach(it => {
-            it.classList.toggle('dim', any && !active.has(it.dataset.cat));
-        });
-    }
-
-    function toggle(i, forceState) {
-        const cat = chips[i].dataset.cat;
-        const shouldOn = forceState !== undefined ? forceState : !active.has(cat);
-        if (shouldOn) active.add(cat); else active.delete(cat);
-        chips[i].classList.toggle('on', shouldOn);
-        update();
-    }
-
-    /* Sequence: Design on → Marketing on → Design off → Code on → clear → loop */
-    const seq = [
-        [0, true], [2, true], [0, false], [1, true], [-1, null]
-    ];
-
-    while (true) {
-        /* Đảm bảo reset */
-        active.clear();
-        chips.forEach(c => c.classList.remove('on'));
-        update();
-        await wait(800);
-
-        for (const [idx, state] of seq) {
-            if (idx === -1) {
-                active.clear();
-                chips.forEach(c => c.classList.remove('on'));
-                update();
-            } else {
-                toggle(idx, state);
-                moveC(cur, pos(chips[idx], wrap));
-            }
-            await wait(1200);
-        }
-        await wait(600);
-    }
-})();
-
-/* ======== 3. CHOICE CHIPS ======== */
-(async function() {
-    const wrap = document.getElementById('d3');
-    const cur = document.getElementById('c3');
-    const singleChips = wrap.querySelectorAll('#singleRow .chip');
-    const multiChips = wrap.querySelectorAll('#multiRow .chip');
-    const sizePrev = document.getElementById('sizePrev');
-    const dots = wrap.querySelectorAll('#styleDots .cdot');
-    const sizes = { s: '40%', m: '65%', l: '90%' };
-    let singleIdx = -1;
-    const multiState = { dark: false, min: false, brand: false };
-
-    function setSingle(i) {
-        singleChips.forEach((c, j) => c.classList.toggle('on', j === i));
-        sizePrev.style.width = sizes[singleChips[i].dataset.v];
-        singleIdx = i;
-    }
-
-    function setMulti(key, val) {
-        multiState[key] = val;
-        multiChips.forEach(c => c.classList.toggle('on', multiState[c.dataset.v]));
-        dots.forEach(d => d.classList.toggle('filled', multiState[d.dataset.v]));
-    }
-
-    /* Single: S → M → L */
-    const singleSeq = [0, 1, 2];
-    /* Multi: dark on → min on → dark off → brand on */
-    const multiSeq = [
-        ['dark', true], ['min', true], ['dark', false], ['brand', true]
-    ];
-
-    while (true) {
-        /* Reset */
-        singleChips.forEach(c => c.classList.remove('on'));
-        multiChips.forEach(c => c.classList.remove('on'));
-        dots.forEach(d => d.classList.remove('filled'));
-        sizePrev.style.width = '40%';
-        singleIdx = -1;
-        Object.keys(multiState).forEach(k => multiState[k] = false);
-        await wait(600);
-
-        /* Single select demo */
-        for (const i of singleSeq) {
-            setSingle(i);
-            moveC(cur, pos(singleChips[i], wrap));
-            await wait(900);
-        }
-        await wait(600);
-
-        /* Multi select demo */
-        for (const [key, val] of multiSeq) {
-            const chip = [...multiChips].find(c => c.dataset.v === key);
-            setMulti(key, val);
-            moveC(cur, pos(chip, wrap));
-            await wait(800);
-        }
-        await wait(700);
-    }
-})();
-
-/* ======== 4. ACTION CHIPS ======== */
-(async function() {
-    const wrap = document.getElementById('d4');
-    const cur = document.getElementById('c4');
-    const chips = wrap.querySelectorAll('#actRow .chip');
-    const toast = document.getElementById('aToast');
-    const progFill = document.getElementById('progFill');
-    const actArea = document.getElementById('actArea');
-    const bmIcon = document.getElementById('bmIcon');
-
-    function showToast(msg) {
-        toast.textContent = msg;
-        toast.classList.add('show');
-    }
-    function hideToast() { toast.classList.remove('show'); }
-    function reset() {
-        hideToast();
-        progFill.style.width = '0';
-        actArea.style.opacity = '1';
-        bmIcon.className = 'far fa-bookmark';
-        chips.forEach(c => c.classList.remove('on'));
-    }
-
-    const actions = [
-        async () => {
-            chips[0].classList.add('on');
-            moveC(cur, pos(chips[0], wrap));
-            await wait(200);
-            showToast('Link copied!');
-            await wait(1200);
-            hideToast();
-            chips[0].classList.remove('on');
-        },
-        async () => {
-            chips[1].classList.add('on');
-            moveC(cur, pos(chips[1], wrap));
-            await wait(200);
-            bmIcon.className = 'fas fa-bookmark';
-            showToast('Saved!');
-            await wait(1200);
-            hideToast();
-            chips[1].classList.remove('on');
-        },
-        async () => {
-            chips[2].classList.add('on');
-            moveC(cur, pos(chips[2], wrap));
-            await wait(200);
-            progFill.style.width = '100%';
-            await wait(800);
-            showToast('Done!');
-            await wait(1000);
-            hideToast();
-            chips[2].classList.remove('on');
-        },
-        async () => {
-            chips[3].classList.add('on');
-            moveC(cur, pos(chips[3], wrap));
-            await wait(200);
-            actArea.style.opacity = '.3';
-            showToast('Archived');
-            await wait(1200);
-            hideToast();
-            chips[3].classList.remove('on');
-        }
-    ];
-
-    while (true) {
-        reset();
-        await wait(700);
-        for (const fn of actions) { await fn(); await wait(500); }
-        await wait(800);
-    }
-})();
+// Start all loops independently
+loop1();
+loop2();
+loop3();
+loop4();
 </script>
+
 </body>
 </html>
