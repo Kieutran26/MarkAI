@@ -616,6 +616,13 @@ const deepDiveTermIds = new Set([
 ].filter((termId) => !removedGlossaryTermIds.has(termId)));
 
 const deepDiveNotes: Partial<Record<string, string[]>> = {
+  navigation: [
+    'Navigation không chỉ là menu, nó là "hệ bản đồ" của sản phẩm. Một hệ thống điều hướng tốt giúp người dùng biết mình đang ở đâu, đã đi qua những gì và có thể đi đến đâu tiếp theo mà không cần nỗ lực tư duy.',
+    'Tính nhất quán (Consistency) là chìa khóa: Đừng đổi vị trí Navbar hay Sidebar giữa các trang khác nhau. Người dùng học cách sử dụng web của bạn qua thói quen, và việc thay đổi vị trí menu sẽ phá vỡ thói quen đó.',
+    'Phân cấp ưu tiên: Không phải link nào cũng quan trọng như nhau. Hãy dùng kích thước, màu sắc hoặc độ đậm (Font Weight) để làm nổi bật các mục tiêu chính (ví dụ: nút Đăng ký) so với các mục thông tin phụ.',
+    'Mobile-First Navigation: Trên điện thoại, ngón cái là công cụ tương tác chính. Đó là lý do tại sao Bottom Navigation (Thanh điều hướng dưới cùng) trở thành tiêu chuẩn cho app di động, giúp người dùng thao tác bằng một tay dễ dàng.',
+    'Đừng để người dùng rơi vào "ngõ cụt": Mọi trang đều phải có đường quay về trang chủ hoặc các cấp cao hơn. Breadcrumb là công cụ tuyệt vời để giải quyết vấn đề này cho các website có cấu trúc thư mục sâu.'
+  ],
   flexbox: [
     'Flexbox luôn bắt đầu bằng một cái thùng chứa bên ngoài. Khi bạn ra lệnh "display: flex", cái thùng đó sẽ có quyền "điều khiển" toàn bộ các vật thể bên trong nó.',
     'Trục chính (Main Axis) & Trục phụ (Cross Axis): Nếu bạn chọn hướng là Hàng ngang, thì Justify sẽ điều khiển ngang. Nếu bạn chọn hướng Cột dọc, Justify lại điều khiển dọc. Luôn nhớ Justify đi theo "hướng chảy".',
