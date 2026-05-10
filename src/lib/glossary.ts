@@ -391,7 +391,7 @@ const rawTerms: GlossaryTerm[] = [
     example: 'Bạn có file .env chứa mật khẩu database. Nếu không thêm ".env" vào .gitignore, khi bạn push code lên GitHub, cả thế giới sẽ thấy mật khẩu của bạn. Prompt: "Kiểm tra file .gitignore xem đã chặn các file .env và thư mục node_modules chưa để đảm bảo an toàn."',
     related: ['git', 'commit', 'repository', 'env'],
     demo: { kind: 'interactive', src: 'gif-gitignore-demo.html', alt: 'Mô phỏng 4 khía cạnh của .gitignore: Bộ lọc, Cái gì nên ignore, Trước/Sau và Pattern syntax' },
-    practice: { kind: 'interactive', src: 'gif-gitignore-practice.html', alt: 'Thực hành cấu hình .gitignore: gõ pattern và quan sát kết quả filter realtime' }
+    practice: { kind: 'interactive', src: 'gif-gitignore-practice.html', alt: 'Thực hành cấu hình .gitignore bằng Prompt Builder: chọn nhóm file và tạo lệnh cho AI' }
   },
 ];
 
@@ -678,11 +678,10 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Trong môi trường AI-first (vibecode), việc Pull giúp AI "hiểu" được bối cảnh mới nhất của dự án mà các thành viên khác vừa đóng góp, từ đó đưa ra gợi ý chính xác hơn.'
   ],
   gitignore: [
-    '.gitignore hoạt động như một "bộ lọc" ở cửa ngõ repository. Nó giúp bạn chủ động chọn lọc những gì thực sự thuộc về source code để đưa lên GitHub.',
-    'Bảo mật là ưu tiên số 1 của .gitignore. Các file chứa thông tin nhạy cảm như .env (API key, password) tuyệt đối không được để lọt ra ngoài vì kẻ xấu có thể quét GitHub để tìm những file này trong vài giây.',
-    'Việc ignore node_modules/ giúp repo nhẹ hơn hàng chục lần. Bạn không cần lưu thư viện code của người khác vào kho của mình, chỉ cần lưu file "danh sách" (package.json) là đủ để người khác cài lại được.',
-    'Pattern syntax trong .gitignore rất linh hoạt: dùng * để đại diện cho mọi thứ (wildcard), dùng / ở cuối để chỉ định cả thư mục, và dùng ! để tạo ngoại lệ (ví dụ: ignore toàn bộ .env nhưng giữ lại .env.example).',
-    'Nếu bạn lỡ commit một file nhạy cảm trước khi thêm nó vào .gitignore, việc thêm vào sau này sẽ không tự động xóa file đó khỏi lịch sử Git. Bạn sẽ cần các lệnh nâng cao hơn để "tẩy sạch" hoàn toàn dấu vết cũ.'
+    '.gitignore là "lá chắn" đầu tiên. Nếu bạn quên ignore .env, API key của bạn có thể bị lộ lên GitHub trong vòng 1 giây, và hacker có bot tự động scan những file này để đánh cắp tiền/dữ liệu.',
+    'Không chỉ là bảo mật, nó còn là về "vệ sinh" code. node_modules có thể nặng hàng trăm MB. Nếu không ignore, việc tải project về sẽ cực kỳ chậm và làm "rác" lịch sử lưu trữ của cả team.',
+    'Nguyên tắc "Ignore sớm, ignore luôn": Hãy thiết lập .gitignore ngay từ khi khởi tạo project. Nếu một file đã lỡ commit rồi mới thêm vào .gitignore, Git vẫn sẽ tiếp tục theo dõi nó cho đến khi bạn dùng lệnh xóa thủ công khỏi bộ nhớ đệm (cache).',
+    'Pattern phổ biến: *.log (chặn mọi file nhật ký), dist/ (chặn thư mục chứa code đã biên dịch), .DS_Store (chặn file rác hệ thống Mac). Hiểu 3 pattern này giúp bạn tự tin "dọn dẹp" bất kỳ dự án nào.',
   ],
   clone: [
     'Clone không phải là "Download ZIP". Khi bạn download ZIP, bạn chỉ có bộ file cuối cùng. Khi bạn Clone, bạn bê nguyên cả "cỗ máy thời gian" (Git history) về máy mình.',
