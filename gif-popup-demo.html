@@ -3,192 +3,415 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Popup / Modal — Animated</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<title>Popup Demo — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0f0f12;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;--accent-dim:rgba(212,113,42,.15);--card:#16161b;--card-alt:#1c1c22;--border:#282830;--border-hi:#44403a;--ok:#4a8a5a;--err:#a03030}
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{height:auto;overflow:hidden}
-body{background:var(--bg);background-image:radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:16px 16px;display:flex;flex-direction:column;align-items:center;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:12px 16px 4px}
+:root {
+  --bg: #0f0f12;
+  --bgc: #16161b;
+  --bgi: #121217;
+  --bd: #282830;
+  --tx: #e8e4dc;
+  --txm: #707070;
+  --ac: #E88C2E;
+  --abg: rgba(232, 140, 46, 0.1);
+  --abg2: rgba(232, 140, 46, 0.2);
+}
 
-.aw{width:100%}
-.ab{width:100%;height:320px;background:var(--card);border:1px solid var(--border);overflow:hidden;display:flex;flex-direction:column;position:relative}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-.hd{display:flex;align-items:center;justify-content:space-between;padding:7px 14px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
-.hd-t{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:2.5px}
-.hd-f{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
-.la{position:relative;flex:1;background:linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);background-size:30px 30px;overflow:hidden}
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--tx);
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+}
 
-.fr{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .3s}.fr.show{opacity:1;pointer-events:auto}
+.g {
+  width: 100%;
+  max-width: 940px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
 
-/* Fake Page */
-.pg{position:absolute;inset:0;padding:12px 20px;display:flex;flex-direction:column;opacity:.3;filter:grayscale(1)}
-.pg-nav{display:flex;align-items:center;justify-content:space-between;padding-bottom:8px;border-bottom:1px solid var(--border);margin-bottom:10px}
-.pg-brand{font-size:11px;font-weight:700;color:var(--accent)}
-.pg-links{display:flex;gap:10px}
-.pg-lk{width:30px;height:4px;background:var(--muted);border-radius:2px}
-.pg-bars{display:flex;flex-direction:column;gap:6px}
-.pg-bar{height:10px;background:var(--card-alt);border:1px solid var(--border)}
-.pg-cards{display:flex;gap:8px;margin-top:10px}
-.pg-card{flex:1;height:60px;background:var(--card-alt);border:1px solid var(--border)}
+@media (max-width: 600px) {
+  .g { grid-template-columns: 1fr; }
+}
 
-/* Popup Overlay */
-.ov{position:absolute;inset:0;background:rgba(10,9,12,.7);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s}
-.fr.show .ov{opacity:1}
+.c {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
 
-/* Popup Box */
-.pp{background:var(--card);border:1px solid var(--border);padding:18px 22px;width:280px;transform:scale(.92);opacity:0;transition:transform .4s cubic-bezier(.175,.885,.32,1.275),opacity .3s}
-.fr.show .pp{transform:scale(1);opacity:1}
-.pp-i{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:12px;margin-left:auto;margin-right:auto}
-.pp-i.warn{background:rgba(212,113,42,.15);color:var(--accent)}
-.pp-i.err{background:rgba(160,48,48,.15);color:var(--err)}
-.pp-i.ok{background:rgba(74,138,90,.15);color:var(--ok)}
+/* Accent Bar */
+.c::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--ac);
+}
 
-.pp-t{font-size:15px;font-weight:700;margin-bottom:6px;text-align:center}
-.pp-d{font-size:10px;color:var(--muted);line-height:1.4;margin-bottom:16px;text-align:center}
-.pp-acts{display:flex;gap:8px;justify-content:center}
-.pp-btn{padding:0 14px;height:30px;font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;border:1px solid var(--border);background:var(--card-alt);color:var(--fg);cursor:default}
-.pp-btn.pri{background:var(--accent);border-color:var(--accent);color:#000}
-.pp-btn.err{background:var(--err);border-color:var(--err);color:#fff}
+/* Pulsating Indicator */
+.c::after {
+  content: '';
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 6px;
+  height: 6px;
+  background: var(--ac);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--ac);
+  animation: pulse 2s infinite;
+}
 
-.pp-in{width:100%;height:32px;background:var(--card-alt);border:1px solid var(--border);margin-bottom:8px;padding:0 10px;font-size:10px;color:var(--fg);display:flex;align-items:center}
+@keyframes pulse {
+  0% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0.3; transform: scale(1); }
+}
 
-/* Info */
-.inf{padding:8px 14px;background:var(--card);border-top:1px solid var(--border);min-height:72px}
-.dn{font-size:14px;font-weight:800;line-height:1.1;color:var(--fg)}
-.ds{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);margin-top:2px;text-transform:uppercase;letter-spacing:1px}
-.dd{font-size:10px;color:var(--muted);margin-top:4px;line-height:1.4}
+.ch {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 20px;
+}
 
-.pt{height:2px;background:var(--border)}.pf{height:100%;background:var(--accent);width:0%}
+.ch .n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ac);
+  background: var(--abg);
+  border: 1px solid var(--abg2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
 
-/* Controls */
-.ctr{display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 16px 4px;background:transparent}
-.ctr-b{padding:6px 12px;background:var(--card-alt);border:1px solid var(--border);color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:1px}
-.ctr-b:hover{border-color:var(--border-hi);color:var(--fg)}
-.ctr-b.act{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+.ch h2 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  text-transform: uppercase;
+}
 
-.pp-b{width:32px;height:32px;border-radius:50%;background:var(--accent);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-left:4px;transition:transform .2s;flex-shrink:0}
-.pp-b:active{transform:scale(.92)}
-.pp-bi{width:12px;height:12px;fill:#000}
+.st {
+  background: var(--bgi);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  flex: 1;
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
 
-@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+.ins {
+  margin-top: 14px;
+  font-size: 11.5px;
+  color: var(--txm);
+  line-height: 1.6;
+  padding-left: 12px;
+  border-left: 2px solid var(--ac);
+}
+
+.ins strong {
+  color: var(--ac);
+  font-weight: 600;
+}
+
+.val {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--txm);
+  background: rgba(0,0,0,0.2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+/* Popup Visuals */
+.browser-ui {
+  width: 100%;
+  height: 100px;
+  border: 1px solid var(--bd);
+  border-radius: 4px;
+  background: var(--bg);
+  position: relative;
+  overflow: hidden;
+}
+
+.browser-header {
+  height: 12px;
+  background: var(--bd);
+  display: flex;
+  align-items: center;
+  padding: 0 6px;
+  gap: 3px;
+}
+
+.dot { width: 4px; height: 4px; border-radius: 50%; background: var(--txm); opacity: 0.3; }
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  opacity: 0;
+  transition: opacity 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.popup-box {
+  width: 60px;
+  background: var(--bgc);
+  border: 1px solid var(--ac);
+  border-radius: 4px;
+  padding: 8px;
+  transform: scale(0.8);
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+.popup-line { height: 3px; width: 100%; background: var(--bd); border-radius: 1px; margin-bottom: 3px; }
+.popup-btn { height: 6px; width: 20px; background: var(--ac); border-radius: 1px; margin: 4px auto 0; }
+
+/* Exit Intent Specific */
+.cursor {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  fill: var(--tx);
+  pointer-events: none;
+  z-index: 10;
+  transition: all 1s linear;
+}
+
+/* Toast Specific */
+.toast-box {
+  position: absolute;
+  bottom: 8px;
+  right: -80px;
+  width: 70px;
+  background: var(--bgc);
+  border: 1px solid var(--ac);
+  border-radius: 3px;
+  padding: 6px;
+  font-size: 6px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Form Specific */
+.form-input { height: 8px; width: 100%; background: var(--bd); border-radius: 1px; margin-bottom: 4px; }
+
 </style>
 </head>
 <body>
 
-<div class="aw">
-<div class="ab" id="ab">
-  <div class="hd"><span class="hd-t">POPUP (MODAL)</span><span class="hd-f" id="hf">01 / 04</span></div>
-  <div class="la" id="la">
-    <!-- Page Background (shared) -->
-    <div class="pg">
-      <div class="pg-nav"><span class="pg-brand">DASHBOARD</span><div class="pg-links"><div class="pg-lk"></div><div class="pg-lk"></div><div class="pg-lk"></div></div></div>
-      <div class="pg-bars"><div class="pg-bar" style="width:70%"></div><div class="pg-bar" style="width:90%"></div><div class="pg-bar" style="width:40%"></div></div>
-      <div class="pg-cards"><div class="pg-card"></div><div class="pg-card"></div><div class="pg-card"></div></div>
+<div class="g">
+  <!-- 01: Modal Overlay -->
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>Modal Overlay</h2></div>
+    <div class="st">
+      <div class="browser-ui">
+        <div class="browser-header"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+        <div class="overlay" id="ov1">
+          <div class="popup-box" id="pb1">
+            <div class="popup-line" style="width: 80%"></div>
+            <div class="popup-line"></div>
+            <div class="popup-btn"></div>
+          </div>
+        </div>
+      </div>
+      <div class="val" id="val1">State: Idle</div>
     </div>
+    <p class="ins"><strong>Overlay</strong> làm mờ nền để tập trung sự chú ý vào <strong>Popup</strong>, ngăn người dùng tương tác với nội dung bên dưới.</p>
+  </section>
 
-    <!-- F0: Alert -->
-    <div class="fr" id="f0">
-      <div class="ov"><div class="pp"><div class="pp-i warn">!</div><div class="pp-t">Are you sure?</div><div class="pp-d">This action cannot be undone. All data will be permanently deleted.</div><div class="pp-acts"><button class="pp-btn">Cancel</button><button class="pp-btn pri">Yes, continue</button></div></div></div>
+  <!-- 02: Exit Intent -->
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Exit Intent</h2></div>
+    <div class="st">
+      <div class="browser-ui" id="b2">
+        <div class="browser-header"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+        <svg class="cursor" id="cursor2" viewBox="0 0 24 24"><path d="M7,2l12,11.2l-5.8,0.5l3.3,7.3l-2.2,1l-3.2-7.4L7,19V2z"/></svg>
+        <div class="overlay" id="ov2">
+          <div class="popup-box" id="pb2">
+            <div class="popup-line" style="width: 90%; background: var(--ac)"></div>
+            <div class="popup-line"></div>
+            <div class="popup-btn"></div>
+          </div>
+        </div>
+      </div>
+      <div class="val" id="val2">Cursor: Inside</div>
     </div>
-    <!-- F1: Confirm -->
-    <div class="fr" id="f1">
-      <div class="ov"><div class="pp"><div class="pp-i err">✕</div><div class="pp-t">Remove item?</div><div class="pp-d">Are you sure you want to remove this item from your cart?</div><div class="pp-acts"><button class="pp-btn">Cancel</button><button class="pp-btn err">Remove</button></div></div></div>
-    </div>
-    <!-- F2: Form -->
-    <div class="fr" id="f2">
-      <div class="ov"><div class="pp"><div class="pp-t" style="text-align:left">Invite Team</div><div class="pp-d" style="text-align:left">Enter email addresses to send invitations.</div><div class="pp-in">name@company.com</div><div class="pp-in" style="opacity:.4">name@company.com</div><div class="pp-acts" style="justify-content:flex-end"><button class="pp-btn">Cancel</button><button class="pp-btn pri">Send</button></div></div></div>
-    </div>
-    <!-- F3: Success -->
-    <div class="fr" id="f3">
-      <div class="ov"><div class="pp"><div class="pp-i ok">✓</div><div class="pp-t">Success!</div><div class="pp-d">Your changes have been saved successfully to the server.</div><div class="pp-acts"><button class="pp-btn pri">Great</button></div></div></div>
-    </div>
-  </div>
-  <div class="inf">
-    <div class="dn" id="dn">Alert</div>
-    <div class="ds" id="ds">CẢNH BÁO — PHẢI PHẢN HỒI</div>
-    <div class="dd" id="dd">Chặn tương tác với trang chính cho đến khi người dùng đưa ra quyết định.</div>
-  </div>
-  <div class="pt"><div class="pf" id="pf"></div></div>
-</div>
+    <p class="ins"><strong>Exit Intent</strong> kích hoạt khi phát hiện người dùng sắp <strong>rời khỏi trang</strong> (di chuột lên thanh địa chỉ) để giữ chân khách.</p>
+  </section>
 
-<div class="ctr">
-    <button class="ctr-b act" data-i="0">ALERT</button>
-    <button class="ctr-b" data-i="1">CONFIRM</button>
-    <button class="ctr-b" data-i="2">FORM</button>
-    <button class="ctr-b" data-i="3">SUCCESS</button>
-    <button class="pp-b" id="pp" title="Play/Pause">
-        <svg class="pp-bi" id="pp-bi" viewBox="0 0 24 24"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>
-    </button>
-</div>
+  <!-- 03: Positioning -->
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Positioning</h2></div>
+    <div class="st">
+      <div class="browser-ui">
+        <div class="browser-header"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+        <div class="toast-box" id="toast3">
+          <div class="popup-line" style="width: 40%"></div>
+          <div class="popup-line"></div>
+        </div>
+        <div class="popup-box" id="pb3" style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%) scale(0); opacity: 0; width: 80px;">
+           <div class="popup-line" style="height: 2px;"></div>
+        </div>
+      </div>
+      <div class="val" id="val3">Type: Toast</div>
+    </div>
+    <p class="ins">Popup không chỉ ở giữa. <strong>Toasts</strong> ở góc hoặc <strong>Banners</strong> ở trên cùng giúp truyền đạt tin nhắn ít gây phiền nhiễu hơn.</p>
+  </section>
+
+  <!-- 04: Conversion Form -->
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Lead Magnet</h2></div>
+    <div class="st">
+      <div class="browser-ui">
+        <div class="browser-header"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+        <div class="overlay" id="ov4" style="opacity: 1;">
+          <div class="popup-box" id="pb4" style="opacity: 1; transform: scale(1); width: 80px;">
+            <div class="popup-line" style="width: 70%; margin-bottom: 6px;"></div>
+            <div class="form-input" id="fi4"></div>
+            <div class="popup-btn" id="btn4"></div>
+          </div>
+        </div>
+      </div>
+      <div class="val" id="val4">Action: Waiting</div>
+    </div>
+    <p class="ins">Popup là công cụ <strong>tăng tỷ lệ chuyển đổi</strong> mạnh mẽ nhất bằng cách thu thập <strong>email</strong> hoặc thông tin liên hệ trực tiếp.</p>
+  </section>
 </div>
 
 <script>
-const INFO=[
-  {nm:'Alert',sz:'CẢNH BÁO — PHẢI PHẢN HỒI',dc:'Popup xuất hiện buộc người dùng phải chú ý và xác nhận trước khi có thể làm bất cứ việc gì khác trên trang.'},
-  {nm:'Confirm',sz:'XÁC NHẬN — HÀNH ĐỘNG HỦY',dc:'Dùng cho các thao tác quan trọng hoặc có tính phá hủy (xóa, hủy). Thường có nút màu đỏ (danger) để cảnh báo.'},
-  {nm:'Form / Input',sz:'FORM — THU THẬP DỮ LIỆU',dc:'Popup chứa các ô nhập liệu. Giúp người dùng thực hiện nhanh một tác vụ mà không cần chuyển sang trang mới.'},
-  {nm:'Success / Feedback',sz:'THÔNG BÁO — PHẢN HỒI',dc:'Phản hồi kết quả sau một hành động thành công. Giúp người dùng yên tâm rằng tác vụ đã hoàn tất.'}
-];
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-const frs=[0,1,2,3].map(i=>document.getElementById('f'+i));
-const el={dn:document.getElementById('dn'),ds:document.getElementById('ds'),dd:document.getElementById('dd'),hf:document.getElementById('hf'),pf:document.getElementById('pf')};
-const ctrBs=document.querySelectorAll('.ctr-b');
-const ppB=document.getElementById('pp');
-const ppI=document.getElementById('pp-bi');
+// 01: Modal Overlay Animation
+(async function() {
+  const ov = document.getElementById('ov1');
+  const pb = document.getElementById('pb1');
+  const val = document.getElementById('val1');
+  while (true) {
+    await wait(1000);
+    ov.style.opacity = '1';
+    pb.style.opacity = '1';
+    pb.style.transform = 'scale(1)';
+    val.textContent = 'State: Active';
+    await wait(2500);
+    ov.style.opacity = '0';
+    pb.style.opacity = '0';
+    pb.style.transform = 'scale(0.8)';
+    val.textContent = 'State: Closing';
+    await wait(1000);
+    val.textContent = 'State: Idle';
+    await wait(1000);
+  }
+})();
 
-let cur=0,pa=null,t0=0,isPaused=false;
-const DUR=3500;
-
-function apply(i){
-  cur=i;
-  const s=INFO[i];el.dn.textContent=s.nm;el.ds.textContent=s.sz;el.dd.textContent=s.dc;
-  el.hf.textContent='0'+(i+1)+' / 04';
-  ctrBs.forEach((b,j)=>b.classList.toggle('act',j===i));
+// 02: Exit Intent Animation
+(async function() {
+  const cursor = document.getElementById('cursor2');
+  const ov = document.getElementById('ov2');
+  const pb = document.getElementById('pb2');
+  const val = document.getElementById('val2');
   
-  frs.forEach(f=>f.classList.remove('show'));
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{
-    frs[i].classList.add('show');
-  }));
-}
+  while (true) {
+    // Inside
+    cursor.style.left = '40%';
+    cursor.style.top = '60%';
+    val.textContent = 'Cursor: Inside';
+    ov.style.opacity = '0';
+    pb.style.opacity = '0';
+    pb.style.transform = 'scale(0.8)';
+    await wait(2000);
+    
+    // Leaving
+    cursor.style.left = '45%';
+    cursor.style.top = '-5px';
+    val.textContent = 'Cursor: Leaving...';
+    await wait(800);
+    
+    // Trigger
+    ov.style.opacity = '1';
+    pb.style.opacity = '1';
+    pb.style.transform = 'scale(1)';
+    val.textContent = 'Action: Exit Popup';
+    await wait(2500);
+  }
+})();
 
-function tk(n){
-    if(isPaused) return;
-    const p=Math.min(100,(n-t0)/DUR*100);
-    el.pf.style.width=p+'%';
-    if(p<100)pa=requestAnimationFrame(tk);
-    else next();
-}
-function startProg2(){t0=performance.now();el.pf.style.transition='none';el.pf.style.width='0%';pa=requestAnimationFrame(tk)}
-function next(){if(isPaused)return;cur=(cur+1)%4;apply(cur);startProg2()}
+// 03: Positioning Animation
+(async function() {
+  const toast = document.getElementById('toast3');
+  const banner = document.getElementById('pb3');
+  const val = document.getElementById('val3');
+  
+  while (true) {
+    // Toast
+    toast.style.right = '8px';
+    val.textContent = 'Type: Toast';
+    await wait(2500);
+    toast.style.right = '-80px';
+    await wait(500);
+    
+    // Banner
+    banner.style.opacity = '1';
+    banner.style.transform = 'translateX(-50%) scale(1)';
+    val.textContent = 'Type: Top Banner';
+    await wait(2500);
+    banner.style.opacity = '0';
+    banner.style.transform = 'translateX(-50%) scale(0)';
+    await wait(1000);
+  }
+})();
 
-function togglePP(){
-    isPaused=!isPaused;
-    ppI.innerHTML=isPaused ? '<path d="M8 5v14l11-7z"/>' : '<path d="M6 4h4v16H6zm8 0h4v16h-4z"/>';
-    if(!isPaused){
-        t0=performance.now() - (parseFloat(el.pf.style.width||0)/100*DUR);
-        pa=requestAnimationFrame(tk);
-    }
-}
-
-ctrBs.forEach(b=>{
-    b.onclick=()=>{
-        isPaused=true;
-        ppI.innerHTML='<path d="M8 5v14l11-7z"/>';
-        apply(parseInt(b.dataset.i));
-        el.pf.style.width='0%';
-    }
-});
-
-ppB.onclick=togglePP;
-
-apply(0);
-startProg2();
-
-document.addEventListener('visibilitychange',()=>{
-    if(document.hidden){cancelAnimationFrame(pa);}
-    else if(!isPaused){t0=performance.now() - (parseFloat(el.pf.style.width||0)/100*DUR);pa=requestAnimationFrame(tk);}
-});
+// 04: Conversion Form Animation
+(async function() {
+  const input = document.getElementById('fi4');
+  const btn = document.getElementById('btn4');
+  const val = document.getElementById('val4');
+  
+  while (true) {
+    input.style.background = 'var(--bd)';
+    btn.style.background = 'var(--ac)';
+    val.textContent = 'Action: Waiting';
+    await wait(1500);
+    
+    // Typing
+    val.textContent = 'Action: Typing...';
+    input.style.background = 'var(--abg2)';
+    await wait(1500);
+    
+    // Success
+    val.textContent = 'Action: Success!';
+    btn.style.background = '#4CAF50';
+    await wait(2000);
+  }
+})();
 </script>
 </body>
 </html>
