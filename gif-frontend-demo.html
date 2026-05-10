@@ -3,246 +3,333 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Frontend Demo — markAI</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<title>Frontend Demo — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-  :root{
-    --bg:#0f0f12;--bg-card:#16161b;--fg:#e8e4dc;--muted:#6e6e7a;
-    --accent:#e88c2e;--accent-soft:rgba(232,140,46,.12);
-    --accent-border:rgba(232,140,46,.3);--border:#282830;
-    --surface:#1c1c23;--bar-d:#2a2a34;--bar-m:#44444f;--shape-lt:#33333d;
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{
-    background:var(--bg);color:var(--fg);
-    font-family:'Space Grotesk',sans-serif;line-height:1.6;
-    overflow-x:hidden;
-  }
-  body::before{
-    content:'';position:fixed;inset:0;
-    background-image:radial-gradient(rgba(255,255,255,.022) 1px,transparent 1px);
-    background-size:20px 20px;pointer-events:none;z-index:0;
-  }
+:root {
+  --bg: #0f0f12;
+  --bgc: #16161b;
+  --bgi: #121217;
+  --bd: #282830;
+  --tx: #e8e4dc;
+  --txm: #707070;
+  --ac: #E88C2E;
+  --abg: rgba(232, 140, 46, 0.1);
+  --abg2: rgba(232, 140, 46, 0.2);
+  --err: #ef4444;
+  --gn: #22c55e;
+}
 
-  #app-root{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:24px}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-  .sim-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
-  @media(max-width:850px){.sim-grid{grid-template-columns:repeat(2,1fr)}}
-  @media(max-width:480px){.sim-grid{grid-template-columns:1fr}}
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--tx);
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+}
 
-  .sc{
-    background:var(--bg-card);border:1px solid var(--border);
-    cursor:pointer;position:relative;overflow:hidden;
-    transition:border-color .3s,background .3s;
-  }
-  .sc::before{
-    content:'';position:absolute;top:0;left:0;right:0;height:2px;
-    background:var(--accent);transform:scaleX(0);transform-origin:left;
-    transition:transform .35s ease;z-index:2;
-  }
-  .sc:hover{border-color:var(--accent-border)}
-  .sc.on{border-color:var(--accent);background:var(--surface)}
-  .sc.on::before{transform:scaleX(1)}
+.g {
+  width: 100%;
+  max-width: 940px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
 
-  .sc-head{padding:12px 14px 8px;display:flex;justify-content:space-between;align-items:center}
-  .sc-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px}
-  .sc-tag{
-    font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;
-    text-transform:uppercase;letter-spacing:1px;color:var(--muted);transition:color .3s;
-  }
-  .sc.on .sc-tag{color:var(--accent)}
+@media (max-width: 600px) {
+  .g { grid-template-columns: 1fr; }
+}
 
-  .sc-demo{height:140px;padding:0 14px 14px;position:relative;overflow:hidden}
+.c {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
 
-  /* Mini page shell */
-  .mini-page{width:100%;height:100%;background:var(--bg);border:1px solid var(--border);overflow:hidden;position:relative}
-  .mini-page::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.008) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.008) 1px,transparent 1px);background-size:10px 10px;pointer-events:none}
-  .mp-bar{height:8px;background:var(--bar-d);display:flex;align-items:center;padding:0 4px;gap:3px}
-  .mp-dot{width:4px;height:4px;border-radius:50%;background:var(--bar-m);opacity:.5}
-  .mp-body{padding:8px;position:relative;height:calc(100% - 8px);overflow:hidden}
+.c::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--ac);
+}
 
-  /* Static elements */
-  .sp-el{position:absolute;left:8px;right:8px;opacity:0;transition:opacity .4s ease}
-  .sp-el.show{opacity:1}
-  .sp-hero{top:8px;height:24px;background:var(--accent);opacity:0;transition:opacity .4s ease}
-  .sp-hero.show{opacity:.7}
-  .sp-title{top:40px;height:8px;background:var(--bar-m);width:60%}
-  .sp-text{top:54px;height:5px;background:var(--bar-d)}
-  .sp-text2{top:63px;height:5px;background:var(--bar-d);width:80%}
-  .sp-btn{top:78px;height:16px;width:60px;background:var(--accent);opacity:0;transition:opacity .4s ease}
-  .sp-btn.show{opacity:.5}
+.c::after {
+  content: '';
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 6px;
+  height: 6px;
+  background: var(--ac);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--ac);
+  animation: pulse 2s infinite;
+}
 
-  /* Dynamic elements */
-  .dp-skeleton{position:absolute;left:8px;right:8px;height:6px;background:var(--bar-d);animation:dpPulse 1s ease-in-out infinite}
-  @keyframes dpPulse{0%,100%{opacity:.3}50%{opacity:.7}}
-  .dp-s1{top:8px;width:50%}.dp-s2{top:20px;width:80%}.dp-s3{top:32px;width:40%}.dp-s4{top:48px;width:70%}.dp-s5{top:60px;width:55%}
-  .dp-data{position:absolute;opacity:0;transition:opacity .4s ease}
-  .dp-data.show{opacity:1}
-  .dp-stat{top:8px;left:8px;display:flex;gap:8px}
-  .dp-stat-box{padding:4px 8px;border:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted)}
-  .dp-stat-box b{color:var(--accent);font-weight:600;display:block;font-size:10px;margin-bottom:1px}
-  .dp-row{left:8px;right:8px;height:14px;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 4px;font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted)}
-  .dp-r1{top:40px}.dp-r2{top:55px}.dp-r3{top:70px}
+@keyframes pulse {
+  0% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0.3; transform: scale(1); }
+}
 
-  /* Component based */
-  .cb-comp{position:absolute;opacity:0;transition:all .5s cubic-bezier(.4,0,.2,1);transform:translateY(8px)}
-  .cb-comp.show{opacity:1;transform:translateY(0)}
-  .cb-header{top:4px;left:4px;right:4px;height:14px;background:var(--bar-d);border-bottom:1px solid var(--border)}
-  .cb-card{top:22px;left:4px;width:55%;height:70px;background:var(--shape-lt);border:1px solid var(--border)}
-  .cb-card-inner1{position:absolute;top:4px;left:4px;width:70%;height:5px;background:var(--bar-m)}
-  .cb-card-inner2{position:absolute;top:12px;left:4px;width:50%;height:4px;background:var(--bar-d)}
-  .cb-card-inner3{position:absolute;bottom:6px;left:4px;width:30px;height:8px;background:var(--accent);opacity:.5}
-  .cb-btn{top:22px;right:4px;width:30px;height:10px;background:var(--accent);opacity:.5}
-  .cb-btn2{top:36px;right:4px;width:36px;height:10px;background:var(--bar-m);opacity:.4}
-  .cb-tag{bottom:4px;left:4px;height:14px;width:40px;background:var(--accent-soft);border:1px solid var(--accent-border);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:6px;color:var(--accent)}
+.ch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
 
-  /* Responsive */
-  .resp-frame{position:absolute;top:4px;left:4px;bottom:4px;right:4px;border:1px solid var(--border);transition:all .5s cubic-bezier(.4,0,.2,1);overflow:hidden}
-  .resp-frame.f-desk{width:calc(100% - 8px);height:calc(100% - 8px)}
-  .resp-frame.f-tab{width:70%;height:calc(100% - 8px);left:50%;transform:translateX(-50%)}
-  .resp-frame.f-mob{width:35%;height:calc(100% - 8px);left:50%;transform:translateX(-50%)}
-  .resp-inner{padding:4px;transition:all .4s ease}
-  .resp-h{height:4px;background:var(--accent);opacity:.5;margin-bottom:3px;transition:all .3s}
-  .resp-t{height:3px;background:var(--bar-m);margin-bottom:2px;transition:all .3s}
-  .resp-cols{display:flex;gap:2px;margin-top:3px;transition:all .4s ease}
-  .resp-col{flex:1;height:20px;background:var(--shape-lt);border:1px solid var(--border);transition:all .4s ease}
-  .resp-cols.mob .resp-col{flex:100%}.resp-cols.tab .resp-col:nth-child(3){display:none}
-  .resp-label{position:absolute;bottom:2px;right:4px;font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--accent);opacity:.7;transition:opacity .3s}
+.ch .n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ac);
+  background: var(--abg);
+  border: 1px solid var(--abg2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
 
-  .ins{
-    background:var(--surface);border:1px solid var(--border);
-    padding:18px 22px;display:flex;align-items:flex-start;gap:12px;min-height:80px;
-  }
-  .ins-i{color:var(--accent);font-size:13px;margin-top:3px;flex-shrink:0}
-  .ins-t{font-size:14px;color:var(--fg);opacity:.85;line-height:1.65;transition:opacity .25s,transform .25s}
-  .ins-t.fading{opacity:0;transform:translateY(6px)}
+.ch h2 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  text-transform: uppercase;
+}
 
-  @media(max-width:480px){
-    #app-root{padding:14px}
-    .ins{padding:14px 16px}
-  }
+.st {
+  background: var(--bgi);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  flex: 1;
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ins {
+  margin-top: 14px;
+  font-size: 11.5px;
+  color: var(--txm);
+  line-height: 1.6;
+  padding-left: 12px;
+  border-left: 2px solid var(--ac);
+}
+
+.ins strong {
+  color: var(--ac);
+  font-weight: 600;
+}
+
+/* UI Content Styles */
+.fe-comp { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; width: 100%; }
+.fe-box { background: var(--bg); border: 1px solid var(--bd); padding: 10px; border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; transition: all 0.3s; }
+.fe-box i { font-size: 16px; color: var(--txm); }
+.fe-box span { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--txm); text-transform: uppercase; }
+.fe-box.active { border-color: var(--ac); background: var(--abg); }
+.fe-box.active i { color: var(--ac); }
+.fe-box.active span { color: var(--ac); }
+
+.fe-layout { width: 100%; height: 100%; display: flex; flex-direction: column; gap: 8px; }
+.fe-nav { height: 20px; border: 1px dashed var(--bd); border-radius: 2px; }
+.fe-main { flex: 1; display: grid; grid-template-columns: 1fr 3fr; gap: 8px; }
+.fe-side { border: 1px dashed var(--bd); border-radius: 2px; }
+.fe-content { border: 1px solid var(--ac); background: var(--abg); border-radius: 2px; }
+.fe-mobile { width: 80px; height: 120px; border: 2px solid var(--bd); border-radius: 8px; margin: 0 auto; display: flex; flex-direction: column; gap: 6px; padding: 10px; position: relative; }
+.fe-mobile::before { content: ''; width: 20px; height: 2px; background: var(--bd); position: absolute; top: 4px; left: 50%; transform: translateX(-50%); }
+
+.fe-interact { position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 15px; }
+.fe-btn { padding: 10px 20px; border: 1px solid var(--ac); background: transparent; color: var(--ac); font-family: 'Space Grotesk', sans-serif; font-size: 12px; font-weight: 600; cursor: pointer; position: relative; overflow: hidden; }
+.fe-cursor { position: absolute; font-size: 18px; color: var(--tx); pointer-events: none; z-index: 10; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5)); }
+
+.fe-visual { width: 100%; display: flex; flex-direction: column; gap: 12px; }
+.fe-vis-row { display: flex; align-items: center; gap: 10px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--txm); }
+.fe-vis-bar { height: 6px; background: var(--bd); border-radius: 10px; flex: 1; position: relative; overflow: hidden; }
+.fe-vis-fill { position: absolute; top: 0; left: 0; height: 100%; background: var(--ac); width: 0; transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1); }
+
 </style>
 </head>
 <body>
 
-<div id="app-root">
-  <section aria-label="Mô phỏng các loại frontend">
-    <div class="sim-grid" id="simGrid"></div>
-    <div class="ins">
-      <i class="fa-solid fa-lightbulb ins-i"></i>
-      <p class="ins-t" id="insT">Đang tải...</p>
+<div class="g">
+  <!-- 01: Components -->
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>Components</h2></div>
+    <div class="st">
+      <div class="fe-comp">
+        <div class="fe-box" id="comp1"><i class="fa-solid fa-toggle-on"></i><span>Switch</span></div>
+        <div class="fe-box" id="comp2"><i class="fa-solid fa-keyboard"></i><span>Input</span></div>
+        <div class="fe-box" id="comp3"><i class="fa-solid fa-circle-play"></i><span>Video</span></div>
+        <div class="fe-box" id="comp4"><i class="fa-solid fa-chart-line"></i><span>Chart</span></div>
+      </div>
     </div>
+    <p class="ins">Frontend là tập hợp các <strong>UI Components</strong>. Mọi trang web phức tạp đều được lắp ghép từ những thành phần nhỏ, có thể tái sử dụng.</p>
+  </section>
+
+  <!-- 02: Responsive -->
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Responsive</h2></div>
+    <div class="st" id="layoutContainer">
+      <div class="fe-layout" id="desktopLayout">
+        <div class="fe-nav"></div>
+        <div class="fe-main">
+          <div class="fe-side"></div>
+          <div class="fe-content"></div>
+        </div>
+      </div>
+    </div>
+    <p class="ins">Giao diện phải <strong>Responsive</strong> — tự động thay đổi cấu trúc để hiển thị hoàn hảo trên mọi thiết bị từ Desktop đến Mobile.</p>
+  </section>
+
+  <!-- 03: Interaction -->
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Interaction</h2></div>
+    <div class="st">
+      <div class="fe-interact">
+        <div class="fe-btn" id="feBtn">CLICK ME</div>
+        <div id="feStatus" style="font-family:'JetBrains Mono',monospace; font-size:10px; color:var(--txm)">Status: Idle</div>
+        <i class="fa-solid fa-arrow-pointer fe-cursor" id="feCursor"></i>
+      </div>
+    </div>
+    <p class="ins">Xử lý <strong>Interaction</strong> là linh hồn của Frontend. Code lắng nghe hành động của người dùng và phản hồi lại bằng trạng thái mới.</p>
+  </section>
+
+  <!-- 04: Visuals -->
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Visual Styling</h2></div>
+    <div class="st">
+      <div class="fe-visual">
+        <div class="fe-vis-row"><span>COLOR</span><div class="fe-vis-bar"><div class="fe-vis-fill" id="vis1"></div></div></div>
+        <div class="fe-vis-row"><span>WEIGHT</span><div class="fe-vis-bar"><div class="fe-vis-fill" id="vis2"></div></div></div>
+        <div class="fe-vis-row"><span>RADIUS</span><div class="fe-vis-bar"><div class="fe-vis-fill" id="vis3"></div></div></div>
+        <div class="fe-vis-row"><span>MOTION</span><div class="fe-vis-bar"><div class="fe-vis-fill" id="vis4"></div></div></div>
+      </div>
+    </div>
+    <p class="ins">Sử dụng CSS để thổi hồn vào mã lệnh. <strong>Visual Styling</strong> tạo ra trải nghiệm thẩm mỹ, giúp thương hiệu trở nên độc bản.</p>
   </section>
 </div>
 
 <script>
-const sims = [
-  {
-    num:'01', tag:'Static (SSR)',
-    ins:'Server gửi nguyên trang HTML hoàn chỉnh. Browser chỉ việc hiển thị. Nhanh cho SEO, tốt cho Blog/Landing page.',
-    build(el){
-      el.innerHTML = `<div class="mini-page"><div class="mp-bar"><div class="mp-dot"></div><div class="mp-dot"></div><div class="mp-dot"></div></div><div class="mp-body"><div class="sp-hero"></div><div class="sp-el sp-title"></div><div class="sp-el sp-text"></div><div class="sp-el sp-text2"></div><div class="sp-el sp-btn"></div></div></div>`;
-      setTimeout(()=>{
-        el.querySelector('.sp-hero').classList.add('show');
-        setTimeout(()=>el.querySelector('.sp-title').classList.add('show'),150);
-        setTimeout(()=>el.querySelector('.sp-text').classList.add('show'),300);
-        setTimeout(()=>el.querySelector('.sp-text2').classList.add('show'),450);
-        setTimeout(()=>el.querySelector('.sp-btn').classList.add('show'),600);
-      },100);
-    }
-  },
-  {
-    num:'02', tag:'Dynamic (CSR)',
-    ins:'Tải "vỏ" trước, gọi API lấy data đổ vào sau. Mượt như app, không cần reload trang. Dùng cho Dashboard/SaaS.',
-    build(el){
-      el.innerHTML = `<div class="mini-page"><div class="mp-bar"><div class="mp-dot"></div><div class="mp-dot"></div><div class="mp-dot"></div></div><div class="mp-body"><div class="dp-skeleton dp-s1"></div><div class="dp-skeleton dp-s2"></div><div class="dp-skeleton dp-s3"></div><div class="dp-skeleton dp-s4"></div><div class="dp-skeleton dp-s5"></div><div class="dp-data dp-stat"><div class="dp-stat-box"><b>12.4K</b>Users</div><div class="dp-stat-box"><b>8.2K</b>Orders</div><div class="dp-stat-box"><b>$24K</b>Rev</div></div><div class="dp-data dp-row dp-r1">user_001 — active</div><div class="dp-data dp-row dp-r2">user_002 — pending</div><div class="dp-data dp-row dp-r3">user_003 — active</div></div></div>`;
-      setTimeout(()=>{
-        el.querySelectorAll('.dp-skeleton').forEach(s=>s.style.display='none');
-        el.querySelectorAll('.dp-data').forEach((d,i)=>{setTimeout(()=>d.classList.add('show'),i*100)});
-      },1200);
-    }
-  },
-  {
-    num:'03', tag:'Components',
-    ins:'Frontend chia thành các khối nhỏ (Button, Card) để tái sử dụng. Đây là cách React, Vue, Next.js hoạt động.',
-    build(el){
-      el.innerHTML = `<div class="mini-page"><div class="mp-bar"><div class="mp-dot"></div><div class="mp-dot"></div><div class="mp-dot"></div></div><div class="mp-body"><div class="cb-comp cb-header"></div><div class="cb-comp cb-card"><div class="cb-card-inner1"></div><div class="cb-card-inner2"></div><div class="cb-card-inner3"></div></div><div class="cb-comp cb-btn"></div><div class="cb-comp cb-btn2"></div><div class="cb-comp cb-tag">TAG</div></div></div>`;
-      setTimeout(()=>{
-        el.querySelectorAll('.cb-comp').forEach((c,i)=>{setTimeout(()=>c.classList.add('show'),i*120)});
-      },100);
-    }
-  },
-  {
-    num:'04', tag:'Responsive',
-    ins:'Tự động thay đổi layout theo màn hình. Desktop: nhiều cột, Mobile: 1 cột. Giúp trải nghiệm nhất quán mọi thiết bị.',
-    build(el){
-      let cycle;
-      el.innerHTML = `<div class="mini-page"><div class="mp-bar"><div class="mp-dot"></div><div class="mp-dot"></div><div class="mp-dot"></div></div><div class="mp-body"><div class="resp-frame f-desk"><div class="resp-inner"><div class="resp-h"></div><div class="resp-t"></div><div class="resp-cols" id="respCols"><div class="resp-col"></div><div class="resp-col"></div><div class="resp-col"></div></div></div><div class="resp-label" id="respLbl">Desktop</div></div></div></div>`;
-      const frame = el.querySelector('.resp-frame');
-      const cols = el.querySelector('#respCols');
-      const lbl = el.querySelector('#respLbl');
-      const states = [{cls:'f-desk',colCls:'',label:'Desktop'},{cls:'f-tab',colCls:'tab',label:'Tablet'},{cls:'f-mob',colCls:'mob',label:'Mobile'}];
-      let idx = 0;
-      function next(){
-        idx = (idx+1)%3;
-        frame.className = 'resp-frame '+states[idx].cls;
-        cols.className = 'resp-cols '+states[idx].colCls;
-        lbl.textContent = states[idx].label;
-      }
-      setTimeout(()=>{cycle=setInterval(next,1500)},800);
-      el._cleanup=()=>clearInterval(cycle);
-    }
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// 01: Components Loop
+(async function() {
+  const boxes = [
+    document.getElementById('comp1'),
+    document.getElementById('comp2'),
+    document.getElementById('comp3'),
+    document.getElementById('comp4')
+  ];
+  let i = 0;
+  while (true) {
+    boxes.forEach(b => b.classList.remove('active'));
+    boxes[i].classList.add('active');
+    i = (i + 1) % boxes.length;
+    await wait(1500);
   }
-];
+})();
 
-const simGrid = document.getElementById('simGrid');
-const insT = document.getElementById('insT');
-let activeI = -1;
-let autoTimer;
-
-function renderSim(){
-  simGrid.innerHTML = sims.map((s,i)=>`
-    <div class="sc" data-i="${i}" tabindex="0" role="button">
-      <div class="sc-head"><span class="sc-num">${s.num}</span><span class="sc-tag">${s.tag}</span></div>
-      <div class="sc-demo" id="sd${i}"></div>
-    </div>`).join('');
-
-  simGrid.querySelectorAll('.sc').forEach(c=>{
-    c.addEventListener('click',()=>{
-      clearInterval(autoTimer);
-      activateCard(+c.dataset.i);
-    });
-  });
-}
-
-function activateCard(i){
-  if(activeI>=0 && sims[activeI]._cleanup_ref){
-    sims[activeI]._cleanup_ref();
+// 02: Responsive Loop
+(async function() {
+  const container = document.getElementById('layoutContainer');
+  while (true) {
+    // Show Desktop
+    container.innerHTML = `
+      <div class="fe-layout">
+        <div class="fe-nav"></div>
+        <div class="fe-main">
+          <div class="fe-side"></div>
+          <div class="fe-content"></div>
+        </div>
+      </div>
+    `;
+    await wait(3000);
+    
+    // Show Mobile
+    container.innerHTML = `
+      <div class="fe-mobile">
+        <div class="fe-nav"></div>
+        <div class="fe-content" style="flex:1"></div>
+        <div class="fe-content" style="height:20px"></div>
+      </div>
+    `;
+    await wait(3000);
   }
-  activeI = i;
-  simGrid.querySelectorAll('.sc').forEach((c,idx)=>c.classList.toggle('on',idx===i));
-  const demo = document.getElementById('sd'+i);
-  demo.innerHTML='';
-  sims[i].build(demo);
-  if(demo._cleanup) sims[i]._cleanup_ref = demo._cleanup;
-  setIns(sims[i].ins);
-}
+})();
 
-function setIns(t){
-  insT.classList.add('fading');
-  setTimeout(()=>{insT.textContent=t;insT.classList.remove('fading')},250);
-}
+// 03: Interaction Loop
+(async function() {
+  const cursor = document.getElementById('feCursor');
+  const btn = document.getElementById('feBtn');
+  const status = document.getElementById('feStatus');
+  
+  while (true) {
+    // Idle
+    cursor.style.transition = 'all 1s ease-in-out';
+    cursor.style.left = '20%';
+    cursor.style.top = '80%';
+    status.innerText = 'Status: Idle';
+    btn.style.background = 'transparent';
+    btn.style.color = 'var(--ac)';
+    await wait(1500);
+    
+    // Hover
+    cursor.style.left = '50%';
+    cursor.style.top = '30%';
+    await wait(1000);
+    btn.style.background = 'var(--abg)';
+    status.innerText = 'Status: Hover';
+    await wait(500);
+    
+    // Click
+    btn.style.background = 'var(--ac)';
+    btn.style.color = '#fff';
+    status.innerText = 'Status: Clicked!';
+    status.style.color = 'var(--ac)';
+    await wait(300);
+    btn.style.transform = 'scale(0.95)';
+    await wait(100);
+    btn.style.transform = 'scale(1)';
+    await wait(1500);
+    
+    status.style.color = 'var(--txm)';
+  }
+})();
 
-function startAuto(){
-  activateCard(0);
-  autoTimer = setInterval(()=>{
-    activateCard((activeI+1)%sims.length);
-  },5000);
-}
-
-renderSim();
-startAuto();
+// 04: Visuals Loop
+(async function() {
+  const fills = [
+    document.getElementById('vis1'),
+    document.getElementById('vis2'),
+    document.getElementById('vis3'),
+    document.getElementById('vis4')
+  ];
+  
+  while (true) {
+    fills.forEach(f => f.style.width = Math.random() * 100 + '%');
+    await wait(2000);
+    fills.forEach(f => f.style.width = '20%');
+    await wait(1000);
+    fills.forEach((f, idx) => f.style.width = (idx + 1) * 25 + '%');
+    await wait(2000);
+  }
+})();
 </script>
 </body>
 </html>
