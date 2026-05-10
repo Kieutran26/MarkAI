@@ -3,149 +3,370 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Primary / Secondary Color — Practice</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<title>Primary / Secondary Color Lab — Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--pri:#d4712a;--pri-dim:#8b3a1a;--sec:#4a6a7a;--sec-dim:#2a4048;--card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a;--ok:#4a8a5a;--accent:var(--pri)}
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 100%,16px 16px;display:flex;flex-direction:column;align-items:center;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:12px;gap:8px}
+:root {
+  --bg: #0f0f12;
+  --bg-card: #16161b;
+  --bg-el: #1c1c23;
+  --fg: #e8e4dc;
+  --muted: #707070;
+  --accent: #E88C2E;
+  --accent-soft: rgba(232, 140, 46, 0.1);
+  --accent-border: rgba(232, 140, 46, 0.3);
+  --border: #282830;
+  --error: #ef4444;
+  --success: #22c55e;
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Space Grotesk', sans-serif;
+}
 
-.pw{width:100%;background:var(--card);border:2px solid var(--border);padding:20px 24px}
-.pw-h{font-size:15px;font-weight:700;margin-bottom:2px}.pw-h span{color:var(--pri)}
-.pw-s{font-size:11px;color:var(--muted);margin-bottom:14px}
-.sw-row{display:flex;align-items:center;gap:14px;margin-bottom:14px;padding:10px 14px;border:1px dashed var(--border);background:var(--card-alt)}
-.sw-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:1px;min-width:60px}
-.sw-ar{font-size:16px;color:var(--muted);flex-shrink:0;transition:transform .3s}.sw-ar.flip{transform:rotate(180deg)}
-.tgl{width:44px;height:24px;border:2px solid var(--border);background:var(--card-alt);cursor:pointer;position:relative;transition:all .2s;flex-shrink:0}
-.tgl::after{content:'';position:absolute;width:16px;height:16px;background:var(--muted);top:2px;left:2px;transition:all .2s}
-.tgl.on{border-color:var(--pri);background:var(--pri-dim)}
-.tgl.on::after{background:var(--pri);left:22px}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-.pp{border:1px solid var(--border);background:var(--card-alt);overflow:hidden;margin-bottom:10px;transition:border-color .3s}
-.pp-lbl{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:2px;padding:6px 14px 0;opacity:.4}
-.pp-inner{padding:10px 14px 14px}
+body {
+  font-family: var(--sans);
+  background-color: var(--bg);
+  background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.02) 1px, transparent 0);
+  background-size: 24px 24px;
+  color: var(--fg);
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
 
-.pp-hero{display:flex;align-items:center;gap:14px;margin-bottom:10px}
-.pp-hero-t{font-size:18px;font-weight:800;flex:1;line-height:1.1;transition:color .3s}
-.pp-hero-t.pri{color:var(--pri)}.pp-hero-t.sec{color:var(--sec)}
-.pp-btn{padding:0 16px;height:30px;font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:600;border:2px solid;cursor:default;transition:all .3s;white-space:nowrap}
-.pp-btn.pri{background:var(--pri);border-color:var(--pri);color:#fff}
-.pp-btn.sec{background:var(--sec);border-color:var(--sec);color:#fff}
+.pra-wrap {
+  width: 100%;
+  max-width: 900px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 28px;
+  position: relative;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+}
 
-.pp-cards{display:flex;gap:8px;margin-bottom:10px}
-.pp-cd{flex:1;border:1px solid var(--border);background:var(--card);padding:8px;transition:all .3s}
-.pp-cd.hl{border-top:3px solid}
-.pp-cd.hl.pri{border-top-color:var(--pri);border-color:rgba(212,113,42,.3)}
-.pp-cd.hl.sec{border-top-color:var(--sec);border-color:rgba(74,106,122,.3)}
-.pp-cd-t{font-size:9px;font-weight:700;margin-bottom:2px}
-.pp-cd-d{font-size:8px;color:var(--muted);line-height:1.3}
-.pp-cd-p{font-size:10px;font-weight:700;margin-top:4px;transition:color .3s}
-.pp-cd-p.pri{color:var(--pri)}.pp-cd-p.sec{color:var(--sec)}
+.pra-wrap::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 3px;
+  background: var(--accent);
+}
 
-.pp-form{display:flex;gap:8px;margin-bottom:8px}
-.pp-fi{flex:1;display:flex;flex-direction:column;gap:2px}
-.pp-fi-l{font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:1px;transition:color .3s}
-.pp-fi-l.pri{color:var(--pri)}.pp-fi-l.sec{color:var(--sec)}
-.pp-fi-in{height:26px;border:2px solid var(--border);background:var(--card);padding:0 8px;font-size:9px;color:var(--fg);display:flex;align-items:center;transition:border-color .3s}
-.pp-fi-in.pri{border-color:var(--pri)}.pp-fi-in.sec{border-color:var(--sec)}
+/* Header */
+.ch { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.ch .n {
+  font-family: var(--mono);
+  font-size: 11px; font-weight: 700;
+  color: var(--accent); background: var(--accent-soft);
+  padding: 2px 8px; border-radius: 2px;
+  border: 1px solid var(--accent-border);
+}
+.ch h2 { font-size: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
 
-.pp-bar{display:flex;align-items:flex-end;gap:4px;height:30px}
-.pp-b{width:20px;transition:background .3s;border-radius:1px 1px 0 0}
-.pp-b.pri{background:var(--pri)}.pp-b.sec{background:var(--sec)}
-.pp-b.pri-d{background:var(--pri-dim)}.pp-b.sec-d{background:var(--sec-dim)}
+.pra-goal { font-size: 13px; color: var(--muted); margin-bottom: 24px; line-height: 1.6; max-width: 600px; }
 
-.pfb{font-family:'JetBrains Mono',monospace;font-size:11px;min-height:18px;color:var(--muted);transition:color .2s;line-height:1.4}.pfb.w{color:var(--pri)}
-.pht{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);opacity:.65}
+/* Grid */
+.pra-grid { display: grid; grid-template-columns: 320px 1fr; gap: 28px; }
+@media (max-width: 800px) { .pra-grid { grid-template-columns: 1fr; } }
 
-@media(max-width:520px){.pw{padding:16px}.pp-cards{flex-direction:column}.pp-form{flex-direction:column}}
+/* Lab Controls */
+.controls { display: flex; flex-direction: column; gap: 20px; }
+.ctrl-item { display: flex; flex-direction: column; gap: 10px; }
+.ctrl-label { font-family: var(--mono); font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; }
+
+.btn-group { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px; }
+.color-btn {
+  font-family: var(--mono);
+  font-size: 9px;
+  padding: 8px 4px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  border-radius: 2px;
+  text-transform: uppercase;
+}
+.color-btn:hover { color: var(--fg); border-color: var(--muted); }
+.color-btn.active { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); font-weight: 700; }
+
+/* Metric Bar */
+.metric-box { background: var(--bg); border: 1px solid var(--border); padding: 16px; border-radius: 3px; margin-top: 10px; }
+.metric-hdr { display: flex; justify-content: space-between; margin-bottom: 8px; }
+.metric-title { font-family: var(--mono); font-size: 9px; color: var(--muted); font-weight: 700; }
+.metric-val { font-family: var(--mono); font-size: 10px; color: var(--accent); font-weight: 700; }
+
+.bar-wrap { height: 8px; background: var(--border); border-radius: 4px; display: flex; overflow: hidden; }
+.bar-n { height: 100%; background: #3a3a40; transition: width 0.3s; }
+.bar-s { height: 100%; background: #606060; transition: width 0.3s; }
+.bar-p { height: 100%; background: var(--accent); transition: width 0.3s; }
+
+.bar-legend { display: flex; gap: 12px; margin-top: 10px; }
+.leg-i { display: flex; align-items: center; gap: 6px; font-family: var(--mono); font-size: 8px; color: var(--muted); }
+.leg-c { width: 6px; height: 6px; border-radius: 1px; }
+
+/* Preview */
+.preview { display: flex; flex-direction: column; gap: 16px; position: sticky; top: 20px; }
+.mock-stage {
+  background: #000;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  height: 340px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  position: relative;
+  overflow: hidden;
+}
+.mock-stage::before {
+  content: 'LIVE MOCKUP';
+  position: absolute;
+  top: 12px; left: 16px;
+  font-family: var(--mono);
+  font-size: 8px; color: var(--muted);
+  letter-spacing: 2px;
+}
+
+.mock-ui {
+  width: 100%;
+  max-width: 320px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 24px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  transition: all 0.3s;
+}
+
+.m-header { height: 4px; width: 40px; border-radius: 1px; transition: background 0.3s; }
+.m-title { font-size: 20px; font-weight: 700; line-height: 1.2; transition: color 0.3s; }
+.m-desc { height: 6px; width: 100%; background: var(--border); border-radius: 2px; }
+.m-desc.s { width: 60%; }
+
+.m-actions { display: flex; gap: 10px; margin-top: 8px; }
+.m-btn-p { flex: 1; height: 32px; border-radius: 3px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; transition: all 0.3s; }
+.m-btn-s { flex: 1; height: 32px; border-radius: 3px; border: 1.5px solid; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; transition: all 0.3s; }
+
+/* Feedback */
+.fb-box {
+  background: var(--bg-card);
+  border-left: 3px solid var(--border);
+  padding: 16px;
+  min-height: 80px;
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--muted);
+  transition: all 0.3s;
+}
+.fb-box.success { border-color: var(--success); color: var(--fg); background: rgba(34, 197, 94, 0.05); }
+.fb-box.warning { border-color: var(--accent); color: var(--fg); background: var(--accent-soft); }
+.fb-box.error { border-color: var(--error); color: var(--fg); background: rgba(239, 68, 68, 0.05); }
+
+.fb-box strong { color: var(--accent); font-weight: 700; }
+
 </style>
 </head>
 <body>
-<div class="pw">
-  <div class="pw-h">Thực hành — <span>Swap Primary / Secondary</span></div>
-  <div class="pw-s">Bật toggle để đổi vai trò 2 màu → thấy visual hierarchy thay đổi</div>
-  <div class="sw-row">
-    <span class="sw-lbl">NORMAL</span>
-    <span class="sw-ar" id="swAr">&#8596;</span>
-    <div class="tgl" id="swTgl"></div>
-    <span class="sw-ar flip" id="swAr2">&#8596;</span>
-    <span class="sw-lbl">SWAPPED</span>
-  </div>
-  <div class="pp" id="ppBox">
-    <div class="pp-lbl">PREVIEW</div>
-    <div class="pp-inner" id="ppIn">
-      <div class="pp-hero">
-        <span class="pp-hero-t pri" id="ppT">Special Offer</span>
-        <button class="pp-btn pri" id="ppBtn">Shop Now</button>
+
+<div class="pra-wrap">
+  <div class="ch"><span class="n">LAB</span><h2>Phân cấp Màu sắc</h2></div>
+  <p class="pra-goal">Thiết lập màu sắc cho từng thành phần UI để đạt được sự cân bằng thị giác hoàn hảo. Hãy thử áp dụng quy tắc <strong>60-30-10</strong>:</p>
+
+  <div class="pra-grid">
+    <div class="controls">
+      <div class="ctrl-item">
+        <span class="ctrl-label">Tiêu đề (Headline)</span>
+        <div class="btn-group" data-target="title">
+          <button class="color-btn" data-val="neutral">Mặc định</button>
+          <button class="color-btn active" data-val="primary">Primary</button>
+          <button class="color-btn" data-val="secondary">Secondary</button>
+        </div>
       </div>
-      <div class="pp-cards">
-        <div class="pp-cd hl pri" id="ppC1"><div class="pp-cd-t">Featured</div><div class="pp-cd-d">Highlight product</div><div class="pp-cd-p pri" id="ppC1p">$199</div></div>
-        <div class="pp-cd hl sec" id="ppC2"><div class="pp-cd-t">Alternative</div><div class="pp-cd-d">Support option</div><div class="pp-cd-p sec" id="ppC2p">$149</div></div>
-        <div class="pp-cd" id="ppC3"><div class="pp-cd-t">Standard</div><div class="pp-cd-d">Default item</div><div class="pp-cd-p" style="color:var(--muted)">$79</div></div>
+
+      <div class="ctrl-item">
+        <span class="ctrl-label">Nút chính (CTA Main)</span>
+        <div class="btn-group" data-target="btnP">
+          <button class="color-btn" data-val="neutral">Mặc định</button>
+          <button class="color-btn active" data-val="primary">Primary</button>
+          <button class="color-btn" data-val="secondary">Secondary</button>
+        </div>
       </div>
-      <div class="pp-form">
-        <div class="pp-fi"><div class="pp-fi-l pri" id="ppFl1">PRIORITY FIELD</div><div class="pp-fi-in pri" id="ppFi1">important data</div></div>
-        <div class="pp-fi"><div class="pp-fi-l sec" id="ppFl2">SUPPORT FIELD</div><div class="pp-fi-in sec" id="ppFi2">optional data</div></div>
+
+      <div class="ctrl-item">
+        <span class="ctrl-label">Nút phụ (CTA Ghost)</span>
+        <div class="btn-group" data-target="btnS">
+          <button class="color-btn active" data-val="neutral">Mặc định</button>
+          <button class="color-btn" data-val="primary">Primary</button>
+          <button class="color-btn" data-val="secondary">Secondary</button>
+        </div>
       </div>
-      <div class="pp-bar" id="ppBar">
-        <div class="pp-b pri" style="height:80%"></div>
-        <div class="pp-b sec" style="height:55%"></div>
-        <div class="pp-b pri" style="height:90%"></div>
-        <div class="pp-b sec" style="height:40%"></div>
-        <div class="pp-b pri" style="height:65%"></div>
+
+      <div class="metric-box">
+        <div class="metric-hdr">
+          <span class="metric-title">CÂN BẰNG THỊ GIÁC (60-30-10)</span>
+          <span class="metric-val" id="metricVal">80/10/10</span>
+        </div>
+        <div class="bar-wrap">
+          <div class="bar-n" id="barN" style="width: 80%"></div>
+          <div class="bar-s" id="barS" style="width: 10%"></div>
+          <div class="bar-p" id="barP" style="width: 10%"></div>
+        </div>
+        <div class="bar-legend">
+          <div class="leg-i"><div class="leg-c" style="background:#3a3a40"></div>Neutral</div>
+          <div class="leg-i"><div class="leg-c" style="background:#606060"></div>Secondary</div>
+          <div class="leg-i"><div class="leg-c" style="background:var(--accent)"></div>Primary</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="preview">
+      <div class="mock-stage" id="stage">
+        <div class="mock-ui" id="mockUi">
+          <div class="m-header" id="uiHeader"></div>
+          <div class="m-title" id="uiTitle">Unlock your Potential</div>
+          <div class="m-desc"></div>
+          <div class="m-desc s"></div>
+          <div class="m-actions">
+            <div class="m-btn-p" id="uiBtnP">Join Now</div>
+            <div class="m-btn-s" id="uiBtnS">Learn More</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fb-box" id="fbBox">
+        Click vào các nút bên trái để bắt đầu thiết lập hệ màu.
       </div>
     </div>
   </div>
-  <div class="pfb" id="pfb">Normal — Primary (cam) nhấn hành động chính, Secondary (xanh) hỗ trợ</div>
-  <div class="pht">Hint: Bật swap → để ý button "Shop Now" đổi màu, featured card đổi highlight, chart đổi meaning</div>
 </div>
+
 <script>
-let swapped=false;
-const swTgl=document.getElementById('swTgl');
-const pfb=document.getElementById('pfb');
-const swapMap=[
-  ['ppT','pri','sec'],
-  ['ppBtn','pri','sec'],
-  ['ppC1','pri','sec'],
-  ['ppC1p','pri','sec'],
-  ['ppC2','sec','pri'],
-  ['ppC2p','sec','pri'],
-  ['ppFl1','pri','sec'],
-  ['ppFl2','sec','pri'],
-  ['ppFi1','pri','sec'],
-  ['ppFi2','sec','pri']
-];
-const barEls=document.getElementById('ppBar').children;
+const targets = {
+  title: 'primary',
+  btnP: 'primary',
+  btnS: 'neutral'
+};
 
-function doSwap(){
-  swapped=!swapped;
-  swTgl.classList.toggle('on',swapped);
-  document.getElementById('swAr').classList.toggle('flip',swapped);
-  document.getElementById('swAr2').classList.toggle('flip',!swapped);
+const colors = {
+  primary: '#E88C2E',
+  secondary: '#707070',
+  neutral: '#e8e4dc',
+  bg: '#16161b'
+};
 
-  swapMap.forEach(([id,c1,c2])=>{
-    const el=document.getElementById(id);
-    if(swapped){el.classList.remove(c1);el.classList.add(c2)}
-    else{el.classList.remove(c2);el.classList.add(c1)}
-  });
+function update() {
+  const uiTitle = document.getElementById('uiTitle');
+  const uiBtnP = document.getElementById('uiBtnP');
+  const uiBtnS = document.getElementById('uiBtnS');
+  const uiHeader = document.getElementById('uiHeader');
+  const fbBox = document.getElementById('fbBox');
+  const barN = document.getElementById('barN');
+  const barS = document.getElementById('barS');
+  const barP = document.getElementById('barP');
+  const metricVal = document.getElementById('metricVal');
 
-  for(let i=0;i<barEls.length;i++){
-    barEls[i].classList.toggle('pri',!swapped===(i%2===0));
-    barEls[i].classList.toggle('sec',swapped===(i%2===0));
+  // Apply Colors to Mockup
+  // Title
+  uiTitle.style.color = colors[targets.title];
+  uiHeader.style.background = colors[targets.title];
+
+  // Btn P
+  if (targets.btnP === 'primary') {
+    uiBtnP.style.background = colors.primary;
+    uiBtnP.style.color = '#000';
+    uiBtnP.style.border = 'none';
+  } else if (targets.btnP === 'secondary') {
+    uiBtnP.style.background = colors.secondary;
+    uiBtnP.style.color = '#fff';
+    uiBtnP.style.border = 'none';
+  } else {
+    uiBtnP.style.background = '#282830';
+    uiBtnP.style.color = colors.neutral;
+    uiBtnP.style.border = 'none';
   }
 
-  const ppBox=document.getElementById('ppBox');
-  ppBox.style.borderColor=swapped?'var(--sec)':'var(--border)';
+  // Btn S
+  if (targets.btnS === 'primary') {
+    uiBtnS.style.borderColor = colors.primary;
+    uiBtnS.style.color = colors.primary;
+    uiBtnS.style.background = 'transparent';
+  } else if (targets.btnS === 'secondary') {
+    uiBtnS.style.borderColor = colors.secondary;
+    uiBtnS.style.color = colors.secondary;
+    uiBtnS.style.background = 'transparent';
+  } else {
+    uiBtnS.style.borderColor = '#282830';
+    uiBtnS.style.color = colors.muted;
+    uiBtnS.style.background = 'transparent';
+  }
 
-  if(!swapped){
-    pfb.textContent='Normal — Primary (cam) nhấn hành động chính, Secondary (xanh) hỗ trợ';
-    pfb.className='pfb';
-  }else{
-    pfb.textContent='Swapped — Secondary (xanh) thành chính, Primary (cam) thành phụ → hierarchy đảo ngược';
-    pfb.className='pfb w';
+  // Calculate "Weight" (Simplified simulation)
+  let pW = 0, sW = 0, nW = 60; // Base neutral is 60%
+  
+  if (targets.title === 'primary') pW += 10;
+  else if (targets.title === 'secondary') sW += 10;
+  else nW += 10;
+
+  if (targets.btnP === 'primary') pW += 15;
+  else if (targets.btnP === 'secondary') sW += 15;
+  else nW += 15;
+
+  if (targets.btnS === 'primary') pW += 10;
+  else if (targets.btnS === 'secondary') sW += 10;
+  else nW += 10;
+
+  // Normalize to 100
+  const total = pW + sW + nW;
+  const pPct = Math.round((pW / total) * 100);
+  const sPct = Math.round((sW / total) * 100);
+  const nPct = 100 - pPct - sPct;
+
+  barP.style.width = pPct + '%';
+  barS.style.width = sPct + '%';
+  barN.style.width = nPct + '%';
+  metricVal.textContent = `${nPct}/${sPct}/${pPct}`;
+
+  // Feedback Logic
+  fbBox.className = 'fb-box';
+  if (pPct > 30) {
+    fbBox.classList.add('error');
+    fbBox.innerHTML = '⚠️ <strong>Quá nhiều Primary!</strong> Màu chính đang chiếm ưu thế quá mức (<em>' + pPct + '%</em>). Điều này làm mất đi sự nổi bật của nút bấm quan trọng nhất.';
+  } else if (targets.btnP === 'primary' && targets.btnS === 'primary') {
+    fbBox.classList.add('warning');
+    fbBox.innerHTML = '⚡ <strong>Xung đột Phân cấp:</strong> Cả hai nút đều dùng màu Primary. Người dùng sẽ không biết hành động nào là quan trọng nhất.';
+  } else if (targets.btnP === 'neutral' && targets.title === 'neutral') {
+    fbBox.classList.add('warning');
+    fbBox.innerHTML = '⚪ <strong>Thiếu điểm nhấn:</strong> Giao diện quá trung tính. Hãy dùng màu <strong>Primary</strong> cho nút "Join Now" để dẫn dắt người dùng.';
+  } else if (targets.btnP === 'primary' && targets.btnS === 'secondary' && pPct <= 20) {
+    fbBox.classList.add('success');
+    fbBox.innerHTML = '✅ <strong>Cân bằng Tuyệt vời!</strong> Màu Primary (<em>' + pPct + '%</em>) tập trung vào hành động chính, trong khi Secondary hỗ trợ các yếu tố phụ. Rất chuẩn 60-30-10.';
+  } else {
+    fbBox.innerHTML = 'Hãy tiếp tục điều chỉnh để đạt được sự phân cấp rõ ràng giữa <strong>Primary</strong> và <strong>Secondary</strong>.';
   }
 }
-swTgl.addEventListener('click',doSwap);
+
+document.querySelectorAll('.color-btn').forEach(btn => {
+  btn.onclick = function() {
+    const group = this.parentElement.dataset.target;
+    const val = this.dataset.val;
+    targets[group] = val;
+    
+    this.parentElement.querySelectorAll('.color-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    
+    update();
+  };
+});
+
+update();
 </script>
+
 </body>
 </html>

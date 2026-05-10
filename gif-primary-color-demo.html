@@ -3,254 +3,309 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Primary / Secondary Color — Animated</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<title>Primary / Secondary Color Demo — Amber Brutalist</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--pri:#d4712a;--pri-dim:#8b3a1a;--sec:#4a6a7a;--sec-dim:#2a4048;--card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a;--ok:#4a8a5a;--accent:var(--pri);--accent-dim:rgba(212,113,42,.15)}
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 100%,16px 16px;display:flex;flex-direction:column;align-items:center;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:12px;gap:8px}
+:root {
+  --bg: #0a0a0c;
+  --bgc: #16161b;
+  --bgi: #0f0f12;
+  --bd: #2a2a32;
+  --tx: #e4e4e7;
+  --txm: #707070;
+  --ac: #E88C2E;
+  --abg: rgba(232, 140, 46, 0.1);
+  
+  /* Primary & Secondary Color Simulation Tokens */
+  --p-clr: #3b82f6; /* Blue as primary for demo */
+  --s-clr: #64748b; /* Slate as secondary for demo */
+}
 
-.aw{width:100%}
-.ab-wrap{width:100%;background:var(--card);border:2px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
-.la-wrap{width:100%;position:relative;overflow:hidden}
-.ab{width:700px;height:280px;transform-origin:top left;background:linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);background-size:30px 30px;position:relative}
-.hd{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
-.hd-t{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--pri);letter-spacing:2.5px}
-.hd-f{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-.fr{position:absolute;inset:0;display:flex;flex-direction:column;padding:14px 20px;opacity:0;pointer-events:none;transition:opacity .3s}.fr.show{opacity:1;pointer-events:auto}
-.si{opacity:0;transform:translateY(4px);transition:opacity .25s,transform .25s}.fr.show .si{opacity:1;transform:translateY(0)}
-.fl{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;color:var(--pri);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px}
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(232, 140, 46, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(232, 140, 46, 0.03) 1px, transparent 1px);
+  background-size: 30px 30px;
+  color: var(--tx);
+  min-height: 100vh;
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
 
-/* Color swatches */
-.csw{display:flex;gap:16px;margin-bottom:10px}
-.csw-i{display:flex;flex-direction:column;gap:3px;align-items:center}
-.csw-b{width:36px;height:36px;border:1px solid var(--border)}
-.csw-l{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);letter-spacing:1px}
+.g {
+  width: 100%;
+  max-width: 940px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
 
-/* Buttons */
-.br{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
-.bt{padding:0 18px;height:32px;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;border:2px solid var(--border);cursor:default;white-space:nowrap;transition:all .25s}
-.bt-p{background:var(--pri);border-color:var(--pri);color:#fff}
-.bt-s{background:var(--sec);border-color:var(--sec);color:#fff}
-.bt-po{background:transparent;border-color:var(--pri);color:var(--pri)}
-.bt-so{background:transparent;border-color:var(--sec);color:var(--sec)}
-.bt-d{background:var(--card-alt);border-color:var(--border);color:var(--muted);opacity:.45}
-.bl{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);letter-spacing:1px;opacity:0;transition:opacity .3s}.fr.show .bl{opacity:1}
+@media (max-width: 660px) {
+  .g { grid-template-columns: 1fr; }
+}
 
-/* Cards */
-.cr{display:flex;gap:8px;flex:1;min-height:0}
-.cd{flex:1;border:1px solid var(--border);background:var(--card-alt);padding:8px;display:flex;flex-direction:column;overflow:hidden;transition:border-color .3s}
-.cd.pri{border-color:var(--pri);border-top:3px solid var(--pri)}
-.cd.sec{border-color:var(--sec);border-top:3px solid var(--sec)}
-.cd-img{height:32px;margin-bottom:6px;display:flex;align-items:center;justify-content:center}
-.cd-img-i{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);letter-spacing:1px}
-.cd-t{font-size:10px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.cd-p{font-size:9px;font-weight:600;margin-top:auto;white-space:nowrap}
-.cd-p.pri{color:var(--pri)}.cd-p.sec{color:var(--sec)}
-.cd-b{font-size:7px;color:var(--muted);margin-top:2px}
+/* Card Style */
+.c {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-top: 2px solid var(--ac);
+  border-radius: 3px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
 
-/* Form */
-.fg{display:flex;flex-direction:column;gap:8px;flex:1}
-.fi{display:flex;flex-direction:column;gap:2px}
-.fi-l{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:1px;transition:color .3s}
-.fi-l.pri{color:var(--pri)}.fi-l.sec{color:var(--sec)}
-.fi-in{height:30px;border:2px solid var(--border);background:var(--card-alt);padding:0 10px;font-family:'Space Grotesk',monospace;font-size:10px;color:var(--fg);display:flex;align-items:center;transition:border-color .3s}
-.fi-in.pri{border-color:var(--pri)}.fi-in.sec{border-color:var(--sec)}
-.fi-h{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);opacity:.5;margin-top:1px}
+/* Indicator dot */
+.c::after {
+  content: '';
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 6px;
+  height: 6px;
+  background: var(--ac);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--ac);
+  animation: pulse 2s infinite;
+}
 
-/* Chart */
-.ch-row{display:flex;gap:12px;flex:1;min-height:0}
-.ch{flex:1;border:1px solid var(--border);background:var(--card-alt);padding:10px;display:flex;flex-direction:column}
-.ch-t{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);letter-spacing:1.5px;margin-bottom:8px}
-.ch-bars{display:flex;align-items:flex-end;gap:4px;flex:1;min-height:0}
-.ch-b{flex:1;transition:height .4s;border-radius:1px 1px 0 0}
-.ch-b.pri{background:var(--pri)}.ch-b.sec{background:var(--sec)}
-.ch-b.pri-d{background:var(--pri-dim)}.ch-b.sec-d{background:var(--sec-dim)}
-.ch-leg{display:flex;gap:10px;margin-top:6px}
-.ch-li{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);display:flex;align-items:center;gap:4px}
-.ch-ld{width:8px;height:3px;border-radius:1px}
-.ch-ui{display:flex;gap:6px;margin-top:8px}
-.ch-u{width:20px;height:3px;border-radius:1px}
+@keyframes pulse {
+  0% { opacity: 0.4; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.1); }
+  100% { opacity: 0.4; transform: scale(0.9); }
+}
 
-/* Controls structure like radius */
-.inf{padding:11px 14px;border-top:1px solid var(--border);background:var(--card);min-height:86px}
-.dn{font-size:15px;font-weight:800;line-height:1.15}
-.ds{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);margin-top:2px}
-.dd{font-size:10px;color:var(--muted);margin-top:4px;line-height:1.4}
-.pt{height:2px;background:var(--border)}.pff{height:100%;background:var(--accent);width:0%}
+/* Header */
+.ch {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 18px;
+}
 
-.ctr{display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 0;background:transparent}
-.ctr-b{padding:6px 12px;background:var(--card-alt);border:1px solid var(--border);color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:1px}
-.ctr-b:hover{border-color:var(--border-hi);color:var(--fg)}
-.ctr-b.act{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+.n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ac);
+  background: var(--abg);
+  padding: 2px 6px;
+  border: 1px solid rgba(232, 140, 46, 0.2);
+  border-radius: 2px;
+}
 
-.pp-b{width:32px;height:32px;border-radius:50%;background:var(--accent);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-left:4px;transition:transform .2s;flex-shrink:0}
-.pp-b:active{transform:scale(.92)}
-.pp-i{width:12px;height:12px;fill:#000}
+.ch h2 {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--tx);
+}
 
-@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+/* Simulation Area */
+.st {
+  background: var(--bgi);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  height: 200px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Note Section */
+.ins {
+  margin-top: 16px;
+  font-size: 11.5px;
+  color: var(--txm);
+  line-height: 1.6;
+  padding-left: 12px;
+  border-left: 2px solid var(--ac);
+}
+
+.ins strong {
+  color: var(--ac);
+  font-weight: 600;
+}
+
+/* Demo Specific Components */
+
+/* Cell 1: Action Hierarchy */
+.btn-stack { display: flex; flex-direction: column; gap: 12px; width: 140px; }
+.btn { height: 36px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 12px; transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+.btn-p { background: var(--p-clr); color: white; }
+.btn-s { border: 1.5px solid var(--s-clr); color: var(--s-clr); }
+
+.btn-p.inactive { opacity: 0.3; filter: grayscale(1); }
+.btn-s.active { background: var(--s-clr); color: white; }
+
+/* Cell 2: Visual Dominance */
+.brand-ui { width: 160px; background: #000; border: 1px solid var(--bd); border-radius: 4px; overflow: hidden; }
+.ui-nav { height: 24px; background: var(--p-clr); transition: background 0.6s; }
+.ui-hero { height: 60px; display: flex; flex-direction: column; padding: 10px; gap: 6px; }
+.ui-box { height: 10px; background: var(--bd); border-radius: 2px; }
+.ui-box.s { width: 60%; background: var(--s-clr); transition: transform 0.6s; }
+.ui-cta { height: 14px; width: 40px; background: var(--p-clr); border-radius: 2px; margin-top: auto; }
+
+/* Cell 3: Interaction States */
+.state-box { width: 120px; display: flex; flex-direction: column; gap: 8px; }
+.input-f { height: 32px; border: 1px solid var(--bd); background: rgba(255,255,255,0.02); border-radius: 3px; position: relative; transition: border-color 0.3s; }
+.input-f::before { content: ''; position: absolute; left: 8px; top: 12px; width: 40px; height: 8px; background: var(--txm); border-radius: 2px; opacity: 0.3; }
+.input-f.focus { border-color: var(--p-clr); border-width: 2px; }
+.input-f.sec-focus { border-color: var(--s-clr); }
+
+/* Cell 4: Palette Balance */
+.palette { display: flex; gap: 6px; }
+.pal-c { width: 40px; height: 80px; border-radius: 4px; display: flex; align-items: flex-end; padding: 6px; font-family: 'JetBrains Mono'; font-size: 8px; color: rgba(255,255,255,0.8); font-weight: 700; transition: transform 0.4s; }
+.p-bg { background: var(--p-clr); }
+.s-bg { background: var(--s-clr); }
+.n-bg { background: var(--txm); }
+
 </style>
 </head>
 <body>
 
-<div class="aw">
-<div class="ab-wrap">
-  <div class="hd"><span class="hd-t">PRIMARY / SECONDARY COLOR</span><span class="hd-f" id="hf">01 / 04</span></div>
-  <div class="la-wrap" id="la-wrap">
-    <div class="ab" id="ab">
-      <!-- F0 -->
-      <div class="fr" id="f0">
-        <div class="fl si">01 BUTTON OPTIONS</div>
-        <div class="csw si">
-          <div class="csw-i"><div class="csw-b" style="background:var(--pri)"></div><span class="csw-l">PRIMARY</span></div>
-          <div class="csw-i"><div class="csw-b" style="background:var(--sec)"></div><span class="csw-l">SECONDARY</span></div>
-        </div>
-        <div class="si" style="flex:1;display:flex;flex-direction:column;gap:10px;justify-content:center">
-          <div class="br"><button class="bt bt-p">Get Started</button><span class="bl">primary · filled</span></div>
-          <div class="br"><button class="bt bt-s">Learn More</button><span class="bl">secondary · filled</span></div>
-          <div class="br"><button class="bt bt-po">View Plans</button><span class="bl">primary · outline</span><button class="bt bt-so">Contact</button><span class="bl">secondary · outline</span></div>
-        </div>
+<div class="g">
+  <!-- 01 Action Hierarchy -->
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>Action Hierarchy</h2></div>
+    <div class="st">
+      <div class="btn-stack">
+        <div class="btn btn-p" id="b1-p">Primary Action</div>
+        <div class="btn btn-s" id="b1-s">Secondary</div>
       </div>
-      <!-- F1 -->
-      <div class="fr" id="f1">
-        <div class="fl si">02 CARDS & HIGHLIGHTS</div>
-        <div class="csw si">
-          <div class="csw-i"><div class="csw-b" style="background:var(--pri)"></div><span class="csw-l">PRIMARY</span></div>
-          <div class="csw-i"><div class="csw-b" style="background:var(--sec)"></div><span class="csw-l">SECONDARY</span></div>
-        </div>
-        <div class="cr si">
-          <div class="cd pri"><div class="cd-img" style="background:#252018"><span class="cd-img-i">HEADPHONES</span></div><div class="cd-t">Wireless Pro</div><div class="cd-p pri">$199.00</div><div class="cd-b">Bestseller</div></div>
-          <div class="cd sec"><div class="cd-img" style="background:#182220"><span class="cd-img-i">WATCH</span></div><div class="cd-t">Smart Watch</div><div class="cd-p sec">$149.00</div><div class="cd-b">New</div></div>
-          <div class="cd"><div class="cd-img" style="background:#1a1a18"><span class="cd-img-i">LAMP</span></div><div class="cd-t">Desk Lamp</div><div class="cd-p" style="color:var(--muted)">$79.00</div><div class="cd-b">Standard</div></div>
-        </div>
-      </div>
-      <!-- F2 -->
-      <div class="fr" id="f2">
-        <div class="fl si">03 FORM ELEMENTS</div>
-        <div class="csw si">
-          <div class="csw-i"><div class="csw-b" style="background:var(--pri)"></div><span class="csw-l">PRIMARY</span></div>
-          <div class="csw-i"><div class="csw-b" style="background:var(--sec)"></div><span class="csw-l">SECONDARY</span></div>
-        </div>
-        <div class="fg si">
-          <div class="fi"><div class="fi-l pri">FULL NAME</div><div class="fi-in pri">Linh Nguyen</div><div class="fi-h">primary · active field</div></div>
-          <div class="fi"><div class="fi-l sec">EMAIL</div><div class="fi-in sec">linh@brand.co</div><div class="fi-h">secondary · active field</div></div>
-          <div class="fi"><div class="fi-l">PHONE</div><div class="fi-in">+84 123 456 789</div><div class="fi-h">default · inactive field</div></div>
-        </div>
-      </div>
-      <!-- F3 -->
-      <div class="fr" id="f3">
-        <div class="fl si">04 DATA VISUALIZATION & UI ACCENTS</div>
-        <div class="csw si">
-          <div class="csw-i"><div class="csw-b" style="background:var(--pri)"></div><span class="csw-l">PRIMARY</span></div>
-          <div class="csw-i"><div class="csw-b" style="background:var(--sec)"></div><span class="csw-l">SECONDARY</span></div>
-        </div>
-        <div class="ch-row si">
-          <div class="ch">
-            <div class="ch-t">REVENUE COMPARISON</div>
-            <div class="ch-bars"><div class="ch-b pri" style="height:75%"></div><div class="ch-b sec" style="height:55%"></div><div class="ch-b pri" style="height:90%"></div><div class="ch-b sec" style="height:45%"></div><div class="ch-b pri" style="height:65%"></div><div class="ch-b sec" style="height:80%"></div></div>
-            <div class="ch-leg"><div class="ch-li"><div class="ch-ld" style="background:var(--pri)"></div>2024</div><div class="ch-li"><div class="ch-ld" style="background:var(--sec)"></div>2023</div></div>
-          </div>
-          <div class="ch" style="flex:0 0 160px">
-            <div class="ch-t">UI ACCENTS</div>
-            <div class="ch-ui"><div class="ch-u" style="background:var(--pri)"></div><div class="ch-u" style="background:var(--pri-dim)"></div><div class="ch-u" style="background:var(--sec)"></div><div class="ch-u" style="background:var(--sec-dim)"></div></div>
-            <div style="font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);margin-top:6px;line-height:1.5">Primary: data, CTA<br>Secondary: compare, labels</div>
-          </div>
+    </div>
+    <p class="ins"><strong>Primary Color</strong> được dành cho hành động quan trọng nhất, trong khi <strong>Secondary Color</strong> dùng cho các lựa chọn thay thế yếu hơn.</p>
+  </section>
+
+  <!-- 02 Visual Dominance -->
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Visual Dominance</h2></div>
+    <div class="st">
+      <div class="brand-ui">
+        <div class="ui-nav" id="b2-nav"></div>
+        <div class="ui-hero">
+          <div class="ui-box"></div>
+          <div class="ui-box s" id="b2-s"></div>
+          <div class="ui-cta" id="b2-p"></div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="inf">
-    <div class="dn" id="dn">Button Options</div>
-    <div class="ds" id="ds">NÚT BẤM</div>
-    <div class="dd" id="dd">Primary = hành động chính, Secondary = hành động phụ — cùng pattern, khác mức nhấn</div>
-  </div>
-  <div class="pt"><div class="pff" id="pff"></div></div>
-</div>
+    <p class="ins">Màu chính định danh <strong>thương hiệu (Identity)</strong>. Màu phụ hỗ trợ phân vùng <strong>bố cục (layout)</strong> mà không làm loãng sự chú ý.</p>
+  </section>
 
-<div class="ctr">
-    <button class="ctr-b act" data-i="0">BUTTONS</button>
-    <button class="ctr-b" data-i="1">CARDS</button>
-    <button class="ctr-b" data-i="2">FORMS</button>
-    <button class="ctr-b" data-i="3">CHART</button>
-    <button class="pp-b" id="pp" title="Play/Pause">
-        <svg class="pp-i" id="pp-i" viewBox="0 0 24 24"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>
-    </button>
-</div>
+  <!-- 03 Interaction States -->
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Interaction States</h2></div>
+    <div class="st">
+      <div class="state-box">
+        <div class="input-f" id="b3-1"></div>
+        <div class="input-f" id="b3-2"></div>
+      </div>
+    </div>
+    <p class="ins">Sử dụng Primary Color cho trạng thái <strong>Active/Focus</strong> của các thành phần quan trọng, tạo sự nhất quán trong <strong>phản hồi (feedback)</strong>.</p>
+  </section>
+
+  <!-- 04 Palette Balance -->
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Palette Balance</h2></div>
+    <div class="st">
+      <div class="palette">
+        <div class="pal-c p-bg" id="b4-p">PRI</div>
+        <div class="pal-c s-bg" id="b4-s">SEC</div>
+        <div class="pal-c n-bg" id="b4-n">NEU</div>
+      </div>
+    </div>
+    <p class="ins">Một hệ thống màu tốt tuân theo quy tắc <strong>60-30-10</strong>: Trung tính chiếm đa số, Màu chính là điểm nhấn, Màu phụ tạo sự <strong>cân bằng</strong>.</p>
+  </section>
 </div>
 
 <script>
-const INFO=[
-  {nm:'Button Options',sz:'NÚT BẤM',dc:'Primary = hành động chính, Secondary = hành động phụ — cùng pattern, khác mức nhấn. Khi feedback "đổi nút màu cam", hãy dùng từ "Primary" để AI áp đúng mã màu.'},
-  {nm:'Cards & Highlights',sz:'CARD & HIGHLIGHT',dc:'Primary highlight cho sản phẩm nổi bật, secondary cho lựa chọn thay thế. "Đổi màu card" cần nói rõ highlight nào, vì primary/secondary có ý nghĩa phân cấp.'},
-  {nm:'Form Elements',sz:'FORM INPUT',dc:'Primary border cho field quan trọng nhất, secondary cho field phụ. "Input bị lỗi màu" có thể do field đang dùng sai trạng thái primary hay secondary focus.'},
-  {nm:'Data Visualization',sz:'CHART & UI ACCENT',dc:'Primary cho dữ liệu chính, secondary cho so sánh — chart cần cả 2 mới có chiều sâu. "Đổi màu chart" nên nói rõ đổi primary dataset hay secondary.'}
-];
-
-const el={dn:document.getElementById('dn'),ds:document.getElementById('ds'),dd:document.getElementById('dd'),hf:document.getElementById('hf'),pff:document.getElementById('pff')};
-const frs=[0,1,2,3].map(i=>document.getElementById('f'+i));
-const ctrBs=document.querySelectorAll('.ctr-b');
-const ppB=document.getElementById('pp');
-const ppI=document.getElementById('pp-i');
-
-let cur=0,pa=null,t0=0,isPaused=false;
-const DUR=3500;
-
-function apply(i){
-  cur=i;
-  const s=INFO[i];el.dn.textContent=s.nm;el.ds.textContent=s.sz;el.dd.textContent=s.dc;
-  el.hf.textContent='0'+(i+1)+' / 04';
-  ctrBs.forEach((b,j)=>b.classList.toggle('act',j===i));
-  
-  frs.forEach(f=>f.classList.remove('show'));
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{
-    frs[i].classList.add('show');
-  }));
+// Animation Cell 1
+async function anim1() {
+  const p = document.getElementById('b1-p');
+  const s = document.getElementById('b1-s');
+  while(true) {
+    p.classList.remove('inactive');
+    s.classList.remove('active');
+    await new Promise(r => setTimeout(r, 2000));
+    p.classList.add('inactive');
+    s.classList.add('active');
+    await new Promise(r => setTimeout(r, 2000));
+  }
 }
 
-function tk(n){
-    if(isPaused) return;
-    const p=Math.min(100,(n-t0)/DUR*100);
-    el.pff.style.width=p+'%';
-    if(p<100)pa=requestAnimationFrame(tk);
-    else next();
+// Animation Cell 2
+async function anim2() {
+  const nav = document.getElementById('b2-nav');
+  const p = document.getElementById('b2-p');
+  const s = document.getElementById('b2-s');
+  const colors = [
+    {p: '#3b82f6', s: '#64748b'},
+    {p: '#e11d48', s: '#4b5563'},
+    {p: '#10b981', s: '#374151'},
+    {p: '#E88C2E', s: '#1e293b'}
+  ];
+  let i = 0;
+  while(true) {
+    const c = colors[i % colors.length];
+    nav.style.background = c.p;
+    p.style.background = c.p;
+    s.style.background = c.s;
+    i++;
+    await new Promise(r => setTimeout(r, 1500));
+  }
 }
 
-function startProg(){t0=performance.now();el.pff.style.transition='none';el.pff.style.width='0%';pa=requestAnimationFrame(tk)}
-function next(){if(isPaused)return;cur=(cur+1)%4;apply(cur);startProg()}
-
-function togglePP(){
-    isPaused=!isPaused;
-    ppI.innerHTML=isPaused ? '<path d="M8 5v14l11-7z"/>' : '<path d="M6 4h4v16H6zm8 0h4v16h-4z"/>';
-    if(!isPaused){
-        t0=performance.now() - (parseFloat(el.pff.style.width||0)/100*DUR);
-        pa=requestAnimationFrame(tk);
-    }
+// Animation Cell 3
+async function anim3() {
+  const i1 = document.getElementById('b3-1');
+  const i2 = document.getElementById('b3-2');
+  while(true) {
+    i1.className = 'input-f focus';
+    i2.className = 'input-f';
+    await new Promise(r => setTimeout(r, 1200));
+    i1.className = 'input-f';
+    i2.className = 'input-f sec-focus';
+    await new Promise(r => setTimeout(r, 1200));
+    i2.className = 'input-f';
+    await new Promise(r => setTimeout(r, 800));
+  }
 }
 
-ctrBs.forEach(b=>{
-    b.onclick=()=>{
-        isPaused=true;
-        ppI.innerHTML='<path d="M8 5v14l11-7z"/>';
-        apply(parseInt(b.dataset.i));
-        el.pff.style.width='0%';
-    }
-});
+// Animation Cell 4
+async function anim4() {
+  const p = document.getElementById('b4-p');
+  const s = document.getElementById('b4-s');
+  const n = document.getElementById('b4-n');
+  while(true) {
+    p.style.transform = 'translateY(-10px)';
+    await new Promise(r => setTimeout(r, 800));
+    p.style.transform = '';
+    s.style.transform = 'translateY(-10px)';
+    await new Promise(r => setTimeout(r, 800));
+    s.style.transform = '';
+    n.style.transform = 'translateY(-10px)';
+    await new Promise(r => setTimeout(r, 800));
+    n.style.transform = '';
+    await new Promise(r => setTimeout(r, 1000));
+  }
+}
 
-ppB.onclick=togglePP;
-
-function scale(){const w=document.getElementById('la-wrap'),b=document.getElementById('ab'),s=w.clientWidth/700;b.style.transform='scale('+s+')';w.style.height=Math.ceil(280*s)+'px'}
-window.addEventListener('resize',scale);
-requestAnimationFrame(()=>requestAnimationFrame(scale));
-
-apply(0);
-startProg();
-
-document.addEventListener('visibilitychange',()=>{
-  if(document.hidden){cancelAnimationFrame(pa)}
-  else if(!isPaused){t0=performance.now() - (parseFloat(el.pff.style.width||0)/100*DUR);pa=requestAnimationFrame(tk);}
-});
+// Start all
+anim1();
+anim2();
+anim3();
+anim4();
 </script>
+
 </body>
 </html>
