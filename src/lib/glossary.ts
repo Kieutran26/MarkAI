@@ -497,7 +497,6 @@ const deepDiveTermIds = new Set([
   'drawer',
   'dropdown',
   'element',
-  'env',
   'footer',
   'frontend',
   'gradient',
@@ -782,11 +781,6 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
   component: [
     'Component là tư duy "LEGO" trong lập trình hiện đại. Thay vì viết hàng ngàn dòng code cho mỗi trang, chúng ta chia nhỏ thành các khối độc lập.',
     'Khi bạn muốn "thay đổi style toàn trang", nếu project build bằng component, bạn chỉ cần bảo AI sửa 1 file duy nhất. Nếu không, AI phải đi dò và sửa từng trang một rất mất thời gian.',
-  ],
-  contrast: [
-    'Contrast (Độ tương phản) là yếu tố sống còn của khả năng tiếp cận (Accessibility). Một thiết kế đẹp nhưng không đọc được thì vẫn là một thiết kế thất bại.',
-    'Chuẩn WCAG 2.1 quy định: Mức AA cần ratio tối thiểu 4.5:1 cho văn bản thường và 3:1 cho văn bản lớn. Mức AAA (cao nhất) cần 7:1 cho văn bản thường.',
-    'Kinh nghiệm: Đừng chỉ tin vào mắt mình. Luôn dùng công cụ check ratio (như trong mô phỏng) vì mắt người có độ nhạy sáng khác nhau, đặc biệt là với những người có thị lực kém hoặc bị mù màu.',
   ],
   database: [
     'Database là nơi lưu dữ liệu thật, nên khi mô tả yêu cầu cho AI bạn thường nên nói rõ: lưu vào bảng nào, mỗi dòng đại diện cho cái gì.',
