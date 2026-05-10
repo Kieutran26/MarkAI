@@ -210,6 +210,8 @@ import conflictDemoHtml from '../../gif-conflict-demo.html?raw';
 import conflictPracticeHtml from '../../gif-conflict-practice.html?raw';
 import mcpDemoHtml from '../../gif-mcp-demo.html?raw';
 import mcpPracticeHtml from '../../gif-mcp-practice.html?raw';
+import environmentDemoHtml from '../../gif-environment-demo.html?raw';
+import environmentPracticeHtml from '../../gif-environment-practice.html?raw';
 
 
 
@@ -336,6 +338,7 @@ export default function GlossaryTermDetailPage() {
       case 'merge': return mergeDemoHtml;
       case 'conflict': return conflictDemoHtml;
       case 'mcp': return mcpDemoHtml;
+      case 'environment': return environmentDemoHtml;
       default: return null;
     }
   };
@@ -444,6 +447,7 @@ export default function GlossaryTermDetailPage() {
       case 'merge': return mergePracticeHtml;
       case 'conflict': return conflictPracticeHtml;
       case 'mcp': return mcpPracticeHtml;
+      case 'environment': return environmentPracticeHtml;
       default: return null;
     }
   };

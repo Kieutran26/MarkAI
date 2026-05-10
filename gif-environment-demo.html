@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Environment Demo — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root {
+  --bg: #0f0f12;
+  --bgc: #16161b;
+  --bgi: #121217;
+  --bd: #282830;
+  --tx: #e8e4dc;
+  --txm: #707070;
+  --ac: #E88C2E;
+  --abg: rgba(232, 140, 46, 0.1);
+  --abg2: rgba(232, 140, 46, 0.2);
+  --err: #ef4444;
+  --gn: #22c55e;
+  --blu: #3b82f6;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--tx);
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.g {
+  width: 100%;
+  max-width: 940px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 600px) {
+  .g { grid-template-columns: 1fr; }
+}
+
+.c {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.c::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--ac);
+}
+
+.c::after {
+  content: '';
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 6px;
+  height: 6px;
+  background: var(--ac);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--ac);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0.3; transform: scale(1); }
+}
+
+.ch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.ch .n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ac);
+  background: var(--abg);
+  border: 1px solid var(--abg2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+.ch h2 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  text-transform: uppercase;
+}
+
+.st {
+  background: var(--bgi);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  flex: 1;
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ins {
+  margin-top: 14px;
+  font-size: 11.5px;
+  color: var(--txm);
+  line-height: 1.6;
+  padding-left: 12px;
+  border-left: 2px solid var(--ac);
+}
+
+.ins strong {
+  color: var(--ac);
+  font-weight: 600;
+}
+
+/* Specific Styles */
+.env-icon { font-size: 32px; color: var(--ac); margin-bottom: 12px; }
+.env-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--txm); text-transform: uppercase; margin-bottom: 4px; }
+.env-status { font-size: 13px; font-weight: 700; color: var(--tx); }
+
+.laptop { position: relative; width: 60px; height: 40px; border: 3px solid var(--txm); border-radius: 3px; }
+.laptop::after { content: ''; position: absolute; bottom: -6px; left: -10px; width: 80px; height: 4px; background: var(--txm); border-radius: 2px; }
+.laptop-screen { position: absolute; inset: 4px; background: #000; overflow: hidden; display: flex; flex-direction: column; gap: 2px; padding: 2px; }
+.line { height: 2px; background: var(--txm); opacity: 0.3; width: 100%; }
+.line.active { background: var(--ac); opacity: 1; animation: typing 2s infinite; }
+@keyframes typing { 0%, 100% { width: 0; } 50% { width: 80%; } }
+
+.lab { font-size: 40px; color: var(--blu); }
+.beaker { position: relative; animation: shake 1s infinite alternate; }
+@keyframes shake { from { transform: rotate(-5deg); } to { transform: rotate(5deg); } }
+
+.cloud { font-size: 44px; color: var(--gn); position: relative; }
+.users { position: absolute; bottom: -10px; right: -10px; display: flex; gap: 4px; }
+.user { width: 10px; height: 10px; background: var(--tx); border-radius: 50%; opacity: 0.6; animation: pop 1.5s infinite; }
+.user:nth-child(2) { animation-delay: 0.5s; }
+@keyframes pop { 0%, 100% { transform: scale(0.8); opacity: 0.4; } 50% { transform: scale(1.2); opacity: 1; } }
+
+.config-box { font-family: 'JetBrains Mono', monospace; font-size: 9px; padding: 10px; border: 1px solid var(--bd); background: var(--bg); width: 100%; }
+.config-key { color: var(--ac); }
+.config-val { color: var(--gn); }
+
+</style>
+</head>
+<body>
+
+<div class="g">
+  <!-- 01: Local -->
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>Máy cá nhân (Local)</h2></div>
+    <div class="st">
+      <div style="text-align:center">
+        <div class="laptop" style="margin: 0 auto 15px;">
+          <div class="laptop-screen">
+            <div class="line"></div>
+            <div class="line active"></div>
+            <div class="line"></div>
+          </div>
+        </div>
+        <div class="env-status">Đang code...</div>
+      </div>
+    </div>
+    <p class="ins">Môi trường <strong>Local</strong> là chiếc máy tính cá nhân của lập trình viên. Đây là nơi duy nhất bạn có thể làm sai, làm thử thoải mái mà không ai biết.</p>
+  </section>
+
+  <!-- 02: Staging -->
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Thử nghiệm (Staging)</h2></div>
+    <div class="st">
+      <div style="text-align:center">
+        <div class="beaker"><i class="fa-solid fa-flask lab"></i></div>
+        <div class="env-status" style="margin-top:10px">Đang kiểm thử</div>
+      </div>
+    </div>
+    <p class="ins"><strong>Staging</strong> là một server "nháp" giống hệt server thật. Đội ngũ testers sẽ vào đây để kiểm tra lần cuối xem code có lỗi gì trước khi ra mắt khách hàng.</p>
+  </section>
+
+  <!-- 03: Production -->
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Sống thật (Production)</h2></div>
+    <div class="st">
+      <div style="text-align:center">
+        <div class="cloud">
+          <i class="fa-solid fa-cloud"></i>
+          <div class="users">
+            <div class="user"></div>
+            <div class="user"></div>
+            <div class="user"></div>
+          </div>
+        </div>
+        <div class="env-status" style="margin-top:15px">Live & Phục vụ user</div>
+      </div>
+    </div>
+    <p class="ins"><strong>Production</strong> là "mặt tiền" của ứng dụng. Đây là nơi khách hàng thật truy cập. Mọi thứ ở đây phải cực kỳ ổn định và đã được kiểm chứng kỹ càng.</p>
+  </section>
+
+  <!-- 04: Variables -->
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Biến môi trường</h2></div>
+    <div class="st">
+      <div class="config-box">
+        <div style="margin-bottom:8px; opacity: 0.5;"># Tùy theo môi trường:</div>
+        <div><span class="config-key">DB_URL</span> = <span class="config-val" id="dbVal">"localhost:3000"</span></div>
+        <div><span class="config-key">API_KEY</span> = <span class="config-val">"sk_test_..."</span></div>
+        <div><span class="config-key">DEBUG</span> = <span class="config-val" id="debugVal">true</span></div>
+      </div>
+    </div>
+    <p class="ins">Mỗi môi trường dùng một bộ <strong>Config</strong> riêng. Ví dụ: Local dùng dữ liệu giả, Production dùng dữ liệu thật. Code sẽ tự động "nhận diện" để chạy đúng.</p>
+  </section>
+</div>
+
+<script>
+const dbVal = document.getElementById('dbVal');
+const debugVal = document.getElementById('debugVal');
+const environments = [
+  { db: '"localhost:3000"', debug: 'true' },
+  { db: '"test-db.markai.vn"', debug: 'true' },
+  { db: '"db.markai.vn"', debug: 'false' }
+];
+let current = 0;
+
+setInterval(() => {
+  current = (current + 1) % environments.length;
+  dbVal.style.opacity = 0;
+  debugVal.style.opacity = 0;
+  setTimeout(() => {
+    dbVal.textContent = environments[current].db;
+    debugVal.textContent = environments[current].debug;
+    dbVal.style.opacity = 1;
+    debugVal.style.opacity = 1;
+  }, 300);
+}, 3000);
+</script>
+</body>
+</html>
