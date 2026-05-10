@@ -1,117 +1,629 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Margin Demo</title>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root{--bg:#0f0f12;--card:#16161b;--text:#e8e4dc;--muted:#6e6e7a;--accent:#cf5c26;--accent-soft:rgba(207,92,38,.08);--accent-border:rgba(207,92,38,.28);--border:#282830;--surface:#1c1c23;--zone:rgba(207,92,38,.06);--zone-stroke:rgba(207,92,38,.2);--shape:#393946}
-    *{box-sizing:border-box;margin:0;padding:0}
-    body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;line-height:1.6}
-    body::before{content:"";position:fixed;inset:0;background-image:radial-gradient(rgba(255,255,255,.022) 1px,transparent 1px);background-size:20px 20px;pointer-events:none}
-    .entry{position:relative;max-width:940px;margin:0 auto;padding:24px 24px 20px}
-    .badge{display:inline-block;margin-bottom:16px;padding:4px 12px;border:1px solid var(--accent-border);background:var(--accent-soft);color:var(--accent);font:600 10px 'JetBrains Mono',monospace;letter-spacing:2px;text-transform:uppercase}
-    h1{font-size:clamp(34px,6vw,54px);font-weight:800;letter-spacing:-2px;line-height:1.08}
-    .sub{margin-top:6px;color:var(--muted);font:13px 'JetBrains Mono',monospace}
-    .lede{max-width:680px;margin:28px 0 40px;padding:18px 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);font-size:16px;opacity:.88}
-    .lede strong{color:var(--accent)}
-    .section-label{display:flex;align-items:center;gap:10px;margin-bottom:20px;color:var(--muted);font:600 11px 'JetBrains Mono',monospace;letter-spacing:2px;text-transform:uppercase}
-    .section-label::after{content:"";flex:1;height:1px;background:var(--border)}
-    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}
-    .card{background:var(--card);border:1px solid var(--border);padding:24px;cursor:pointer;transition:border-color .28s,background .28s;position:relative;overflow:visible}
-    .card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .3s ease}
-    .card:hover{border-color:var(--accent-border)}
-    .card.active{border-color:var(--accent);background:var(--surface)}
-    .card.active::before{transform:scaleX(1)}
-    .head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-    .num,.tag,.val,.dim,.insight-label{font-family:'JetBrains Mono',monospace}
-    .num,.tag,.val{font-size:9px;color:var(--muted);letter-spacing:1px}
-    .tag{font-weight:600;text-transform:uppercase;letter-spacing:1.5px}
-    .card.active .tag,.card.active .val{color:var(--accent)}
-    .val{margin-top:8px;text-align:right;font-size:10px;opacity:.8}
-    .zone{position:relative;padding:var(--m);border:1px dashed var(--zone-stroke);background:var(--zone);transition:padding .5s cubic-bezier(.4,0,.2,1)}
-    .shape{background:var(--shape);padding:8px 10px;text-align:center}
-    .shape h3{margin-bottom:2px;font-size:11px}
-    .shape p{margin-bottom:6px;color:var(--muted);font-size:8px;line-height:1.3;max-width:120px;margin-left:auto;margin-right:auto}
-    .shape span{display:inline-block;padding:3px 10px;background:var(--accent);color:#fff;font-size:8px;font-weight:600}
-    .dim{position:absolute;font-size:8px;color:var(--accent);opacity:0;transition:opacity .28s;pointer-events:none}
-    .card.active .dim{opacity:.9}
-    .top{top:calc(var(--m) / 2);left:50%;transform:translate(-50%,-50%)}
-    .bottom{bottom:calc(var(--m) / 2);left:50%;transform:translate(-50%,50%)}
-    .left{left:calc(var(--m) / 2);top:50%;transform:translate(-50%,-50%)}
-    .right{right:calc(var(--m) / 2);top:50%;transform:translate(50%,-50%)}
-    .insight{display:flex;gap:12px;align-items:flex-start;margin-top:20px;padding:18px 22px;border:1px solid var(--border);background:var(--surface)}
-    .insight-label{color:var(--accent);font-size:13px;margin-top:3px}
-    .insight-text{font-size:14px;line-height:1.65;opacity:.86;transition:opacity .22s,transform .22s}
-    .insight-text.fading{opacity:0;transform:translateY(6px)}
-    @media (max-width:520px){.entry{padding:32px 14px 48px}.grid{grid-template-columns:1fr}}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Margin - Amber Brutalist 4-Cell Grid</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --amber: #E88C2E;
+            --bg: #0f0f12;
+            --card-bg: #16161b;
+            --border: #282830;
+            --text: #e8e4dc;
+            --muted: #707070;
+            --gap: 14px;
+            --ease: cubic-bezier(0.65, 0, 0.35, 1);
+            --dark: #0d0d10;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(ellipse at 25% 15%, rgba(232, 140, 46, 0.05) 0%, transparent 55%),
+                radial-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 16px 16px;
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--gap);
+            width: 100%;
+            max-width: 940px;
+        }
+
+        @media (max-width: 600px) {
+            .grid-container { grid-template-columns: 1fr; }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            position: relative;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--amber);
+            z-index: 2;
+        }
+
+        .indicator {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 6px;
+            height: 6px;
+            background: var(--amber);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--amber);
+            animation: pulse 2s infinite;
+            z-index: 3;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 22px;
+        }
+
+        .num-box {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--amber);
+            background: rgba(232, 140, 46, 0.1);
+            border: 1px solid rgba(232, 140, 46, 0.2);
+            padding: 2px 5px;
+            border-radius: 2px;
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(232, 228, 220, 0.9);
+        }
+
+        .sim-area {
+            height: 175px;
+            background: var(--dark);
+            border: 1px solid rgba(255,255,255,0.03);
+            border-radius: 4px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
+
+        .ins {
+            border-left: 2px solid var(--amber);
+            padding-left: 14px;
+            margin-top: auto;
+            color: var(--muted);
+            font-size: 11.5px;
+            line-height: 1.6;
+        }
+
+        .ins strong {
+            color: var(--amber);
+            font-weight: 600;
+        }
+
+        /* Cell 1: Margin Sweep */
+        .sweep-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            padding: 6px 10px 4px 10px;
+        }
+        .sweep-outer {
+            position: relative;
+            width: 100%;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .sweep-zone {
+            border: 1px dashed rgba(232,140,46,0.25);
+            background: rgba(232,140,46,0.04);
+            transition: padding 0.6s var(--ease);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .sweep-content {
+            background: #393946;
+            padding: 8px 16px;
+            text-align: center;
+            font-size: 11px;
+            color: var(--text);
+            font-weight: 500;
+        }
+        .sweep-val-wrap {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+            margin-top: 4px;
+            padding-bottom: 4px;
+        }
+        .sweep-val {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--amber);
+            transition: all 0.4s var(--ease);
+        }
+        .sweep-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            color: var(--muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+        .dim-line {
+            position: absolute;
+            background: var(--amber);
+            opacity: 0.5;
+            transition: all 0.6s var(--ease);
+        }
+        .dim-line.top { top: 0; left: 50%; width: 2px; height: 0; transform: translateX(-50%); }
+        .dim-line.bottom { bottom: 0; left: 50%; width: 2px; height: 0; transform: translateX(-50%); }
+        .dim-line.left-m { left: 0; top: 50%; height: 2px; width: 0; transform: translateY(-50%); }
+        .dim-line.right-m { right: 0; top: 50%; height: 2px; width: 0; transform: translateY(-50%); }
+        .dim-badge {
+            position: absolute;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 8px;
+            color: var(--amber);
+            background: rgba(15,15,18,0.85);
+            padding: 1px 4px;
+            border-radius: 2px;
+            white-space: nowrap;
+            opacity: 0.8;
+            transition: all 0.6s var(--ease);
+        }
+
+        /* Cell 2: Box Model */
+        .bm-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            padding: 10px;
+        }
+        .bm-margin-box {
+            border: 1px dashed rgba(232,140,46,0.3);
+            background: rgba(232,140,46,0.04);
+            padding: 10px;
+            transition: padding 0.5s var(--ease);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .bm-border-box {
+            border: 2px solid rgba(232,228,220,0.25);
+            background: rgba(255,255,255,0.03);
+            padding: 8px;
+            transition: padding 0.5s var(--ease);
+        }
+        .bm-padding-box {
+            border: 1px dashed rgba(232,228,220,0.12);
+            background: rgba(232,228,220,0.04);
+            padding: 6px;
+            transition: padding 0.5s var(--ease);
+        }
+        .bm-content-box {
+            background: #393946;
+            padding: 6px 10px;
+            font-size: 9px;
+            color: var(--text);
+            font-family: 'JetBrains Mono', monospace;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+        .bm-layer-label {
+            position: absolute;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 7px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            opacity: 0.6;
+            transition: opacity 0.4s;
+        }
+        .bm-layer-label.margin-l { top: 2px; left: 4px; color: var(--amber); }
+        .bm-layer-label.border-l { top: 14px; left: 16px; color: rgba(232,228,220,0.5); }
+        .bm-layer-label.padding-l { top: 24px; left: 28px; color: rgba(232,228,220,0.35); }
+
+        /* Cell 3: Margin Collapse */
+        .mc-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            padding: 10px;
+            gap: 0;
+        }
+        .mc-block {
+            width: 80%;
+            background: #393946;
+            border: 1px solid rgba(255,255,255,0.06);
+            text-align: center;
+            font-size: 10px;
+            color: rgba(232,228,220,0.8);
+            font-weight: 500;
+            transition: margin 0.6s var(--ease), padding 0.4s var(--ease);
+            position: relative;
+        }
+        .mc-gap-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--amber);
+            transition: all 0.5s var(--ease);
+            text-align: center;
+        }
+        .mc-arrow {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 0;
+            overflow: visible;
+            transition: height 0.5s var(--ease);
+            position: relative;
+        }
+        .mc-arrow-line {
+            width: 1px;
+            background: var(--amber);
+            opacity: 0.4;
+            transition: height 0.5s var(--ease);
+        }
+        .mc-state-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            color: var(--muted);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-bottom: 6px;
+            text-align: center;
+        }
+
+        /* Cell 4: Auto Margin Center */
+        .am-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            padding: 10px;
+        }
+        .am-track {
+            width: 100%;
+            height: 36px;
+            background: rgba(232,140,46,0.04);
+            border: 1px dashed rgba(232,140,46,0.2);
+            position: relative;
+            display: flex;
+            align-items: center;
+            transition: all 0.5s var(--ease);
+        }
+        .am-block {
+            height: 36px;
+            background: #393946;
+            border: 1px solid rgba(255,255,255,0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 9px;
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text);
+            letter-spacing: 0.5px;
+            transition: all 0.6s var(--ease);
+        }
+        .am-margin-visual {
+            flex: 1;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.5s var(--ease);
+        }
+        .am-margin-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 8px;
+            color: var(--amber);
+            opacity: 0.7;
+        }
+        .am-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--amber);
+            margin-top: 6px;
+            transition: all 0.4s var(--ease);
+        }
+        .am-desc {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 8px;
+            color: var(--muted);
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-top: 2px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-  <div id="app-root">
-  <div class="entry">
 
-    <section aria-label="Mô phỏng margin">
-      <div class="grid" id="grid"></div>
-      <div class="insight">
-        <div class="insight-label">i</div>
-        <p class="insight-text" id="insight">Nhấn vào từng mức margin để xem giải thích. Vùng cam nhạt là margin zone nằm bên ngoài element.</p>
-      </div>
-    </section>
-  </div>
-  </div>
-
-  <script>
-    const presets=[
-      {num:"01",val:0,ins:"Không margin: card dính sát hàng xóm và mép container. Hợp cho bảng dữ liệu hoặc grid item rất chặt."},
-      {num:"02",val:16,ins:"Margin 16px: mức an toàn và phổ biến nhất cho card, block nội dung và khoảng cách dọc cơ bản."},
-      {num:"03",val:32,ins:"Margin 32px: tạo khoảng thở rõ ràng hơn, hợp cho những khối cần cảm giác tách biệt và dễ quét mắt."},
-      {num:"04",val:64,ins:"Margin 64px: dùng cho các section lớn hoặc điểm ngắt nhịp mạnh. Quá tay sẽ làm layout bị loãng."}
-    ];
-    const grid=document.getElementById("grid");
-    const insight=document.getElementById("insight");
-    let active=-1;
-
-    function render(){
-      grid.innerHTML=presets.map((p,i)=>`
-        <article class="card${i===active?" active":""}" data-i="${i}" role="button" tabindex="0" aria-label="Margin ${p.val}px">
-          <div class="head"><span class="num">${p.num}</span><span class="tag">MARGIN ${p.val}</span></div>
-          <div class="zone" style="--m:${p.val}px">
-            <span class="dim top">${p.val}px</span>
-            <span class="dim bottom">${p.val}px</span>
-            <span class="dim left">${p.val}px</span>
-            <span class="dim right">${p.val}px</span>
-            <div class="shape">
-              <h3>Headline</h3>
-              <p>Description text for this component demo block.</p>
-              <span>BUTTON</span>
+    <div class="grid-container">
+        <!-- Cell 1: Margin Sweep -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">01</div>
+                <div class="card-title">Margin Sweep</div>
             </div>
-          </div>
-          <div class="val">margin: ${p.val}px</div>
-        </article>`).join("");
-      grid.querySelectorAll(".card").forEach((card)=>{
-        const next=Number(card.dataset.i);
-        const activate=()=>setActive(next);
-        card.addEventListener("click",activate);
-        card.addEventListener("keydown",(e)=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();activate();}});
-      });
-    }
+            <div class="sim-area" id="cell1" style="height:145px">
+                <div class="sweep-wrapper" style="padding:4px 10px">
+                    <div class="sweep-outer">
+                        <div class="sweep-zone" id="sw-zone" style="padding:0px">
+                            <div class="dim-badge" id="sw-badge-top" style="top:-2px;left:50%;transform:translateX(-50%)">0px</div>
+                            <div class="sweep-content">Element</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:-8px;margin-bottom:10px">
+                <span class="sweep-val" id="sw-val" style="font-size:13px">0px</span>
+                <span class="sweep-label" style="font-size:9px">margin</span>
+            </div>
+            <div class="ins">
+                Thuộc tính <strong>margin</strong> tạo khoảng cách bên ngoài element. Từ 0 (dính sát) đến 64px (thoáng rộng) — mỗi mức thay đổi cảm nhận layout.
+            </div>
+        </div>
 
-    function setInsight(text){
-      insight.classList.add("fading");
-      setTimeout(()=>{insight.textContent=text;insight.classList.remove("fading");},180);
-    }
+        <!-- Cell 2: Box Model -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">02</div>
+                <div class="card-title">Box Model</div>
+            </div>
+            <div class="sim-area" id="cell2">
+                <div class="bm-wrapper">
+                    <div class="bm-margin-box" id="bm-margin">
+                        <div class="bm-layer-label margin-l">margin</div>
+                        <div class="bm-border-box" id="bm-border">
+                            <div class="bm-layer-label border-l">border</div>
+                            <div class="bm-padding-box" id="bm-padding">
+                                <div class="bm-layer-label padding-l">padding</div>
+                                <div class="bm-content-box" id="bm-content">Content</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="ins">
+                <strong>Margin</strong> nằm ngoài cùng box model, sau border và padding. Nó là khoảng cách từ viền border đến element bên cạnh — không ảnh hưởng đến kích thước nội bộ.
+            </div>
+        </div>
 
-    function setActive(i){
-      active=active===i?-1:i;
-      render();
-      setInsight(active===-1
-        ? "Nhấn vào từng mức margin để xem giải thích. Vùng cam nhạt là margin zone nằm bên ngoài element."
-        : presets[active].ins);
-    }
+        <!-- Cell 3: Margin Collapse -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">03</div>
+                <div class="card-title">Margin Collapse</div>
+            </div>
+            <div class="sim-area" id="cell3">
+                <div class="mc-wrapper">
+                    <div class="mc-state-label" id="mc-label">SEPARATED</div>
+                    <div class="mc-block" id="mc-block-a" style="margin-bottom:0">Block A</div>
+                    <div class="mc-gap-label" id="mc-gap">0px</div>
+                    <div class="mc-block" id="mc-block-b" style="margin-top:0" style="margin-top:0">Block B</div>
+                </div>
+            </div>
+            <div class="ins">
+                Khi 2 margin dọc kề nhau, <strong>chỉ giữ phần lớn hơn</strong> — gọi là margin collapse. Margin 20px + 10px = 20px, không phải 30px. Đây là lỗi phổ biến nhất cho新手.
+            </div>
+        </div>
 
-    render();
-  </script>
+        <!-- Cell 4: Auto Margin Center -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">04</div>
+                <div class="card-title">Auto Center</div>
+            </div>
+            <div class="sim-area" id="cell4">
+                <div class="am-wrapper">
+                    <div class="am-track" id="am-track">
+                        <div class="am-margin-visual" id="am-ml">
+                            <span class="am-margin-label" id="am-ml-label">auto</span>
+                        </div>
+                        <div class="am-block" id="am-block" style="width:50%">auto center</div>
+                        <div class="am-margin-visual" id="am-mr">
+                            <span class="am-margin-label" id="am-mr-label">auto</span>
+                        </div>
+                    </div>
+                    <div class="am-badge" id="am-badge">margin: 0 auto</div>
+                    <div class="am-desc" id="am-desc">Horizontally centered</div>
+                </div>
+            </div>
+            <div class="ins">
+                Đặt <strong>margin: 0 auto</strong> trên block element có width cố định sẽ căn giữa theo chiều ngang — browser tự chia đều khoảng trống 2 bên.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+        // Cell 1: Margin Sweep — cycle through values
+        async function runCell1() {
+            const zone = document.getElementById('sw-zone');
+            const val = document.getElementById('sw-val');
+            const badgeTop = document.getElementById('sw-badge-top');
+            const values = [0, 8, 16, 24, 32, 48, 64, 48, 32, 16, 8];
+            let i = 0;
+            while (true) {
+                const v = values[i % values.length];
+                zone.style.padding = v + 'px';
+                val.textContent = v + 'px';
+                badgeTop.textContent = v + 'px';
+                badgeTop.style.top = (v > 0 ? Math.floor(v/2) - 2 : -2) + 'px';
+                i++;
+                await sleep(1400);
+            }
+        }
+
+        // Cell 2: Box Model — pulse margin layer
+        async function runCell2() {
+            const marginBox = document.getElementById('bm-margin');
+            const borderBox = document.getElementById('bm-border');
+            const paddingBox = document.getElementById('bm-padding');
+            const contentBox = document.getElementById('bm-content');
+
+            const phases = [
+                { m: 8, b: 2, p: 6, c: 'Content' },
+                { m: 20, b: 2, p: 6, c: 'Content' },
+                { m: 4, b: 2, p: 14, c: 'Content' },
+                { m: 16, b: 4, p: 10, c: 'Content' },
+                { m: 32, b: 2, p: 6, c: 'Content' },
+                { m: 8, b: 2, p: 6, c: 'Content' },
+            ];
+            let i = 0;
+            while (true) {
+                const p = phases[i % phases.length];
+                marginBox.style.padding = p.m + 'px';
+                borderBox.style.borderWidth = p.b + 'px';
+                paddingBox.style.padding = p.p + 'px';
+                contentBox.textContent = p.c;
+                i++;
+                await sleep(2000);
+            }
+        }
+
+        // Cell 3: Margin Collapse — show collapse vs separation
+        async function runCell3() {
+            const blockA = document.getElementById('mc-block-a');
+            const blockB = document.getElementById('mc-block-b');
+            const gapLabel = document.getElementById('mc-gap');
+            const stateLabel = document.getElementById('mc-label');
+
+            const phases = [
+                { a: 0, b: 0, label: 'NO MARGIN', gap: '0px' },
+                { a: 16, b: 0, label: 'A HAS MARGIN', gap: '16px' },
+                { a: 0, b: 16, label: 'B HAS MARGIN', gap: '16px' },
+                { a: 20, b: 10, label: 'COLLAPSE', gap: '20px' },
+                { a: 10, b: 20, label: 'COLLAPSE', gap: '20px' },
+                { a: 24, b: 24, label: 'EQUAL', gap: '24px' },
+                { a: 0, b: 0, label: 'RESET', gap: '0px' },
+            ];
+            let i = 0;
+            while (true) {
+                const p = phases[i % phases.length];
+                blockA.style.marginBottom = p.a + 'px';
+                blockB.style.marginTop = p.b + 'px';
+                gapLabel.textContent = p.gap;
+                stateLabel.textContent = p.label;
+                i++;
+                await sleep(1800);
+            }
+        }
+
+        // Cell 4: Auto Margin Center — shift block positions
+        async function runCell4() {
+            const block = document.getElementById('am-block');
+            const ml = document.getElementById('am-ml');
+            const mr = document.getElementById('am-mr');
+            const mlLabel = document.getElementById('am-ml-label');
+            const mrLabel = document.getElementById('am-mr-label');
+            const badge = document.getElementById('am-badge');
+            const desc = document.getElementById('am-desc');
+            const track = document.getElementById('am-track');
+
+            const states = [
+                { pos: 'left', ml: '0', mr: 'auto', badge: 'margin-left: 0', desc: 'LEFT ALIGNED', bw: '45%' },
+                { pos: 'center', ml: '0', mr: 'auto', badge: 'margin: 0 auto', desc: 'CENTERED', bw: '45%' },
+                { pos: 'right', ml: 'auto', mr: '0', badge: 'margin-right: 0', desc: 'RIGHT ALIGNED', bw: '45%' },
+                { pos: 'center', ml: '0', mr: 'auto', badge: 'margin: 0 auto', desc: 'CENTERED AGAIN', bw: '50%' },
+                { pos: 'center', ml: '0', mr: 'auto', badge: 'margin: 0 auto', desc: 'WIDTH: 35%', bw: '35%' },
+                { pos: 'center', ml: '0', mr: '0', badge: 'margin: 0', desc: 'FULL WIDTH', bw: '100%' },
+            ];
+            let i = 0;
+            while (true) {
+                const s = states[i % states.length];
+                if (s.pos === 'left') {
+                    track.style.justifyContent = 'flex-start';
+                    block.style.marginLeft = '0';
+                    block.style.marginRight = 'auto';
+                    mlLabel.textContent = '0';
+                    mrLabel.textContent = 'auto';
+                } else if (s.pos === 'right') {
+                    track.style.justifyContent = 'flex-start';
+                    block.style.marginLeft = 'auto';
+                    block.style.marginRight = '0';
+                    mlLabel.textContent = 'auto';
+                    mrLabel.textContent = '0';
+                } else {
+                    track.style.justifyContent = 'flex-start';
+                    block.style.marginLeft = '0';
+                    block.style.marginRight = '0';
+                    mlLabel.textContent = 'auto';
+                    mrLabel.textContent = 'auto';
+                }
+                block.style.width = s.bw;
+                badge.textContent = s.badge;
+                desc.textContent = s.desc;
+                i++;
+                await sleep(2200);
+            }
+        }
+
+        runCell1(); runCell2(); runCell3(); runCell4();
+    </script>
 </body>
 </html>
