@@ -1,213 +1,406 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Context Practice — Vibecode Glossary</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#1a1a18;--bgc:#222220;--bge:#2a2a27;--bgt:#161614;--fg:#e8e4dd;--fm:#8a877e;--ac:#e88c2e;--acd:#c97522;--am:#c9922a;--gn:#6b8f5e;--rd:#b54a4a;--bl:#5e7a8f;--bd:#3a3a36;--bdl:#4a4a45;--mn:'JetBrains Mono',monospace;--sn:'Space Grotesk',sans-serif;}
-*{margin:0;padding:0;box-sizing:border-box;}
-body{background:var(--bg);color:var(--fg);font-family:var(--sn);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
-body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;background-image:linear-gradient(rgba(255,255,255,.018)1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018)1px,transparent 1px);background-size:24px 24px;}
-.pw{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:24px;}
-
-/* Practice */
-.pt{border:1px solid var(--bd);background:var(--bgc);overflow:visible;}
-.pt .sh{border-bottom:1px solid var(--bd);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.02);}
-.pt .sh h2{font-family:var(--mn);font-size:13px;font-weight:700;color:var(--ac);text-transform:uppercase;letter-spacing:1.5px;}
-.pb{padding:24px 20px 32px;}
-.pg{font-size:13px;color:var(--fm);margin-bottom:16px;line-height:1.6;}.pg strong{color:var(--fg);}
-
-.pr-prompt-area{margin-bottom:16px;}
-.pr-prompt-area label{display:block;font-family:var(--mn);font-size:10px;color:var(--fm);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;}
-.pr-prompt-input{width:100%;min-height:80px;padding:12px 14px;font-family:var(--mn);font-size:12px;line-height:1.6;border:1px solid var(--bd);background:var(--bgt);color:var(--fg);outline:none;resize:vertical;transition:border-color .2s;}
-.pr-prompt-input:focus{border-color:var(--ac);}
-.pr-prompt-input::placeholder{color:var(--fm);opacity:.4;}
-
-.pr-ctx-chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px;}
-.pr-chip{font-family:var(--mn);font-size:10px;padding:5px 10px;border:1px solid var(--bd);background:var(--bg);color:var(--fm);cursor:pointer;transition:all .2s;user-select:none;-webkit-user-select:none;}
-.pr-chip:hover{border-color:var(--bdl);background:var(--bge);}
-.pr-chip.chip-on{border-color:var(--ac);color:var(--ac);background:rgba(212,98,43,.08);}
-
-.pr-result-area{border:1px solid var(--bd);background:var(--bg);overflow:hidden;}
-.pr-result-head{padding:8px 14px;border-bottom:1px solid var(--bd);background:var(--bge);display:flex;align-items:center;justify-content:space-between;}
-.pr-result-head span{font-family:var(--mn);font-size:10px;color:var(--fm);}
-.pr-result-body{padding:16px;font-size:13px;line-height:1.6;color:var(--fm);min-height:80px;transition:all .3s;}
-
-.pr-score{display:flex;gap:12px;margin-top:12px;flex-wrap:wrap;}
-.pr-score-item{font-family:var(--mn);font-size:10px;padding:4px 10px;border:1px solid var(--bd);color:var(--fm);}
-.pr-score-item.high{border-color:var(--gn);color:var(--gn);}
-.pr-score-item.low{border-color:var(--rd);color:var(--rd);}
-.pr-score-item.mid{border-color:var(--am);color:var(--am);}
-
-.rst{font-family:var(--mn);font-size:11px;padding:8px 16px;border:1px solid var(--bd);background:var(--bg);color:var(--fm);cursor:pointer;margin-top:12px;transition:border-color .2s,color:.2s;}
-.rst:hover{border-color:var(--ac);color:var(--ac);}
-.hint{font-size:11px;color:var(--fm);opacity:.7;margin-top:14px;font-style:italic;}
-.hint::before{content:'>';font-family:var(--mn);color:var(--ac);margin-right:6px;}
-
-.to{color:var(--fm);}
-
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;}}
-</style>
-</head>
-<body>
-<div class="pw" id="app-root">
-  <section class="pt" aria-label="Thực hành">
-    <div class="sh"><h2>Thực hành</h2></div>
-    <div class="pb">
-      <div class="pg"><strong>Mục tiêu:</strong> Viết prompt → chọn context types → thấy ngay prompt được cải thiện thế nào và thiếu gì.</div>
-
-      <div class="pr-prompt-area">
-        <label>Prompt của bạn</label>
-        <textarea class="pr-prompt-input" id="promptInput" placeholder="Viết prompt ở đây...">Viết email mời khách hàng tham gia webinar</textarea>
-      </div>
-
-      <div class="pr-ctx-chips" id="ctxChips">
-        <button class="pr-chip" data-type="role" data-example="Tôi là marketer B2B SaaS">+ Role</button>
-        <button class="pr-chip" data-type="project" data-example="SaaS quản lý dự án, khách hàng enterprise VN">+ Project</button>
-        <button class="pr-chip" data-type="tech" data-example="Gửi qua HubSpot, có template sẵn">+ Tech</button>
-        <button class="pr-chip" data-type="goal" data-example="Tỷ lệ mở email > 40%, đăng ký webinar">+ Goal</button>
-        <button class="pr-chip" data-type="constraint" data-example="Không vượt 150 chữ, tiếng Việt, không dùng emoji">+ Constraint</button>
-        <button class="pr-chip" data-type="format" data-example="Định dạng: subject line + body, có placeholder [Tên], [Ngày]">+ Format</button>
-      </div>
-
-      <div class="pr-result-area">
-        <div class="pr-result-head">
-          <span>Phân tích context</span>
-          <span id="ctxCount">0/6 loại context</span>
-        </div>
-        <div class="pr-result-body" id="resultBody">
-          <span class="to">// Viết prompt và chọn context types để phân tích...</span>
-        </div>
-      </div>
-
-      <div class="pr-score" id="scoreArea"></div>
-
-      <button class="rst" id="resetBtn">Reset</button>
-
-      <div class="hint">Thử viết prompt ngắn → không chọn chip nào → thấy "thiếu context". Rồi thêm từng chip → thấy prompt được bổ sung context cụ thể và score tăng dần.</div>
-    </div>
-  </section>
-</div>
-
-<script>
-(function(){
-  var input=document.getElementById('promptInput');
-  var chips=document.querySelectorAll('#ctxChips .pr-chip');
-  var resultBody=document.getElementById('resultBody');
-  var ctxCount=document.getElementById('ctxCount');
-  var scoreArea=document.getElementById('scoreArea');
-  var resetBtn=document.getElementById('resetBtn');
-
-  var activeCtx={};
-  var typeInfo={
-    role:{label:'Role Context',color:'var(--bl)',icon:'👤',desc:'AI biết bạn là ai → điều chỉnh tone, ngôn ngữ, góc nhìn phù hợp.'},
-    project:{label:'Project Context',color:'var(--am)',icon:'📦',desc:'AI biết dự án gì → nội dung phù hợp với sản phẩm và thị trường.'},
-    tech:{label:'Tech Context',color:'var(--gn)',icon:'🛠',desc:'AI biết công nghệ → output tương thích với tool/platform hiện tại.'},
-    goal:{label:'Goal Context',color:'var(--ac)',icon:'🎯',desc:'AI biết mục tiêu → ưu tiên yếu tố tác động trực tiếp đến metric.'},
-    constraint:{label:'Constraint Context',color:'var(--rd)',icon:'⛔',desc:'AI biết giới hạn → không vi phạm rule, không vượt phạm vi.'},
-    format:{label:'Format Context',color:'var(--fm)',icon:'📐',desc:'AI biết output dạng gì → cấu trúc, độ dài, file type đúng yêu cầu.'}
-  };
-
-  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;');}
-
-  function render(){
-    var prompt=input.value.trim();
-    var count=Object.keys(activeCtx).length;
-
-    // Build enhanced prompt
-    var enhancedParts=[];
-    var types=['role','project','tech','goal','constraint','format'];
-    types.forEach(function(type){
-      if(activeCtx[type]){
-        enhancedParts.push('<span style="color:'+typeInfo[type].color+';">['+typeInfo[type].label+']</span> '+esc(activeCtx[type]));
-      }
-    });
-    enhancedParts.push('<span style="color:var(--fg);">'+esc(prompt||'(chưa viết prompt)')+'</span>');
-    var enhancedPrompt=enhancedParts.join('<br>');
-
-    // Build analysis
-    var html='';
-    html+='<div style="margin-bottom:14px;">';
-    html+='<div style="font-family:var(--mn);font-size:10px;color:var(--fm);margin-bottom:6px;">PROMPT CỦA BẠN:</div>';
-    html+='<div style="font-family:var(--mn);font-size:11px;color:var(--fm);padding:8px 10px;border:1px solid var(--bd);background:var(--bgt);line-height:1.6;">'+esc(prompt||'(trống)')+'</div>';
-    html+='</div>';
-
-    if(count>0){
-      html+='<div style="margin-bottom:14px;">';
-      html+='<div style="font-family:var(--mn);font-size:10px;color:var(--gn);margin-bottom:6px;">PROMPT SAU KHI THÊM CONTEXT:</div>';
-      html+='<div style="font-family:var(--mn);font-size:11px;padding:8px 10px;border:1px solid rgba(107,143,94,.3);background:rgba(107,143,94,.04);line-height:1.6;">'+enhancedPrompt+'</div>';
-      html+='</div>';
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Context Practice — Vibecode Glossary</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #101010;
+      --bgc: #16161b;
+      --bgi: #121217;
+      --bd: #282830;
+      --tx: #e8e4dc;
+      --txm: #707070;
+      --txd: #3a3a36;
+      --ac: #E88C2E;
+      --abg: rgba(232, 140, 46, .08);
+      --abg2: rgba(232, 140, 46, .18);
+      --rd: #ef4444;
+      --gn: #22c55e;
+      --gnb: rgba(34, 197, 94, .12);
     }
 
-    // Context analysis
-    html+='<div style="font-family:var(--mn);font-size:10px;color:var(--fm);margin-bottom:8px;">PHÂN TÍCH:</div>';
-    types.forEach(function(type){
-      var info=typeInfo[type];
-      var has=!!activeCtx[type];
-      html+='<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;">';
-      html+='<span style="font-size:12px;flex-shrink:0;margin-top:1px;">'+(has?'<span style="color:var(--gn);">✓</span>':'<span style="color:var(--rd);">✗</span>')+'</span>';
-      html+='<div>';
-      html+='<span style="font-family:var(--mn);font-size:10px;color:'+(has?info.color:'var(--fm)')+';font-weight:600;">'+info.icon+' '+info.label+'</span>';
-      if(has){
-        html+='<div style="font-size:11px;color:var(--fm);margin-top:2px;">'+esc(activeCtx[type])+'</div>';
-      } else {
-        html+='<div style="font-size:11px;color:var(--rd);opacity:.7;margin-top:2px;">Thiếu — '+info.desc+'</div>';
+    *, *::before, *::after {
+      margin: 0; padding: 0; box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background-color: var(--bg);
+      background-image:
+        linear-gradient(rgba(255, 255, 255, .018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, .018) 1px, transparent 1px);
+      background-size: 20px 20px;
+      color: var(--tx);
+      min-height: 100vh;
+      padding: 24px 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .pra {
+      width: 100%;
+      max-width: 900px;
+      background: var(--bgc);
+      border: 1px solid var(--bd);
+      border-radius: 3px;
+      padding: 24px;
+      position: relative;
+    }
+
+    .pra::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--ac);
+    }
+
+    .ch {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .ch .n {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--ac);
+      background: var(--abg);
+      border: 1px solid var(--abg2);
+      padding: 2px 6px;
+      border-radius: 2px;
+    }
+
+    .ch h2 {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+    }
+
+    .pra-goal {
+      font-size: 12.5px;
+      color: var(--txm);
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+
+    .pra-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 700px) {
+      .pra-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Left Side: Prompt Editor */
+    .p-editor {
+      background: #0c0c0c;
+      border: 1px solid var(--bd);
+      border-radius: 3px;
+      padding: 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      line-height: 1.6;
+      min-height: 220px;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .p-editor.robust {
+      border-color: var(--gn);
+      box-shadow: 0 0 15px rgba(34, 197, 94, 0.1);
+    }
+
+    .p-editor-hd {
+      font-size: 9px;
+      color: var(--txd);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .p-line {
+      display: block;
+      margin-bottom: 4px;
+      opacity: 0.4;
+      transition: all 0.3s;
+    }
+
+    .p-line.active {
+      opacity: 1;
+      color: var(--ac);
+    }
+
+    .p-line.base {
+      opacity: 1;
+      color: var(--tx);
+      border-top: 1px solid var(--bd);
+      padding-top: 8px;
+      margin-top: 8px;
+    }
+
+    /* Right Side: Control Panel */
+    .p-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .p-btn {
+      background: var(--bgi);
+      border: 1px solid var(--bd);
+      border-radius: 2px;
+      padding: 12px;
+      color: var(--txm);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transition: all 0.2s;
+      text-align: left;
+    }
+
+    .p-btn:hover {
+      border-color: var(--ac);
+      color: var(--tx);
+      background: var(--abg);
+    }
+
+    .p-btn.active {
+      border-color: var(--ac);
+      color: var(--ac);
+      background: var(--abg2);
+    }
+
+    .p-btn .icon {
+      font-size: 16px;
+      opacity: 0.5;
+    }
+
+    .p-btn.active .icon {
+      opacity: 1;
+    }
+
+    .p-btn-txt {
+      flex: 1;
+    }
+
+    .p-btn-title {
+      font-size: 11px;
+      font-weight: 700;
+      display: block;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+
+    .p-btn-desc {
+      font-size: 10px;
+      opacity: 0.7;
+    }
+
+    .p-status {
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--bd);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .p-score {
+      font-family: 'JetBrains Mono';
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .p-reset {
+      font-family: 'JetBrains Mono';
+      font-size: 10px;
+      color: var(--txd);
+      background: none;
+      border: 1px solid var(--bd);
+      padding: 4px 10px;
+      border-radius: 2px;
+      cursor: pointer;
+    }
+
+    .p-reset:hover {
+      color: var(--ac);
+      border-color: var(--ac);
+    }
+
+    .success-msg {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      background: var(--gn);
+      color: #000;
+      padding: 10px 20px;
+      border-radius: 20px;
+      font-weight: 800;
+      font-size: 12px;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .success-msg.show {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div class="pra">
+    <div class="ch"><span class="n">PR</span>
+      <h2>Context Weaver</h2>
+    </div>
+    <p class="pra-goal">Bạn đang yêu cầu AI viết một bài post Facebook. Hãy "dệt" thêm các lớp <strong>Context</strong> để biến prompt mơ hồ thành một yêu cầu sắc bén.</p>
+
+    <div class="pra-grid">
+      <!-- Left: Prompt Workbench -->
+      <div class="p-editor" id="editor">
+        <div class="p-editor-hd">
+          <span>Prompt Builder</span>
+          <span id="scoreLabel">Quality: Weak</span>
+        </div>
+        
+        <div id="lines">
+          <span class="p-line" data-type="role">[Role] Act as a Senior Social Media Strategist.</span>
+          <span class="p-line" data-type="goal">[Goal] Increase engagement and lead generation.</span>
+          <span class="p-line" data-type="data">[Assets] Use our latest blog post on AI automation as source.</span>
+          <span class="p-line" data-type="rules">[Constraints] Tone: Professional but witty. No emojis. Max 100 words.</span>
+          <span class="p-line base">Viết một bài post Facebook về tự động hóa AI.</span>
+        </div>
+
+        <div class="success-msg" id="successMsg">READY FOR AI ✓</div>
+      </div>
+
+      <!-- Right: Injection Controls -->
+      <div class="p-controls">
+        <button class="p-btn" data-type="role">
+          <span class="icon">👤</span>
+          <div class="p-btn-txt">
+            <span class="p-btn-title">Identity</span>
+            <span class="p-btn-desc">Xác lập vai trò chuyên gia</span>
+          </div>
+        </button>
+
+        <button class="p-btn" data-type="goal">
+          <span class="icon">🎯</span>
+          <div class="p-btn-txt">
+            <span class="p-btn-title">Objective</span>
+            <span class="p-btn-desc">Xác định mục tiêu cuối cùng</span>
+          </div>
+        </button>
+
+        <button class="p-btn" data-type="data">
+          <span class="icon">📂</span>
+          <div class="p-btn-txt">
+            <span class="p-btn-title">Knowledge</span>
+            <span class="p-btn-desc">Cung cấp dữ liệu/tài liệu nguồn</span>
+          </div>
+        </button>
+
+        <button class="p-btn" data-type="rules">
+          <span class="icon">🚫</span>
+          <div class="p-btn-txt">
+            <span class="p-btn-title">Constraints</span>
+            <span class="p-btn-desc">Giới hạn định dạng và phong cách</span>
+          </div>
+        </button>
+
+        <div class="p-status">
+          <div class="p-score" id="scoreValue">0% Complete</div>
+          <button class="p-reset" id="reset">Reset</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      const editor = document.getElementById('editor');
+      const lines = document.querySelectorAll('.p-line');
+      const btns = document.querySelectorAll('.p-btn');
+      const scoreLabel = document.getElementById('scoreLabel');
+      const scoreValue = document.getElementById('scoreValue');
+      const resetBtn = document.getElementById('reset');
+      const successMsg = document.getElementById('successMsg');
+
+      let activeTypes = new Set();
+
+      function update() {
+        lines.forEach(line => {
+          if (line.classList.contains('base')) return;
+          const type = line.getAttribute('data-type');
+          if (activeTypes.has(type)) {
+            line.classList.add('active');
+          } else {
+            line.classList.remove('active');
+          }
+        });
+
+        const percent = (activeTypes.size / 4) * 100;
+        scoreValue.textContent = percent + '% Complete';
+        
+        if (percent === 0) {
+          scoreLabel.textContent = 'Quality: Weak';
+          editor.classList.remove('robust');
+        } else if (percent < 100) {
+          scoreLabel.textContent = 'Quality: Moderate';
+          editor.classList.remove('robust');
+        } else {
+          scoreLabel.textContent = 'Quality: Robust';
+          editor.classList.add('robust');
+          successMsg.classList.add('show');
+        }
+
+        if (percent < 100) successMsg.classList.remove('show');
       }
-      html+='</div></div>';
-    });
 
-    resultBody.innerHTML=html;
-    ctxCount.textContent=count+'/6 loại context';
-    ctxCount.style.color=count>=4?'var(--gn)':count>=2?'var(--am)':'var(--rd)';
+      btns.forEach(btn => {
+        btn.addEventListener('click', function () {
+          const type = this.getAttribute('data-type');
+          if (activeTypes.has(type)) {
+            activeTypes.delete(type);
+            this.classList.remove('active');
+          } else {
+            activeTypes.add(type);
+            this.classList.add('active');
+          }
+          update();
+        });
+      });
 
-    // Score
-    var scores='';
-    if(count===0) scores+='<span class="pr-score-item low">Context: trống</span>';
-    else if(count<=2) scores+='<span class="pr-score-item low">Context: thiếu ('+count+'/6)</span>';
-    else if(count<=4) scores+='<span class="pr-score-item mid">Context: khá ('+count+'/6)</span>';
-    else scores+='<span class="pr-score-item high">Context: đầy đủ ('+count+'/6)</span>';
+      resetBtn.addEventListener('click', function () {
+        activeTypes.clear();
+        btns.forEach(b => b.classList.remove('active'));
+        update();
+      });
 
-    if(prompt.trim().length<10) scores+='<span class="pr-score-item low">Prompt: quá ngắn</span>';
-    else if(prompt.trim().length<30) scores+='<span class="pr-score-item mid">Prompt: ngắn</span>';
-    else scores+='<span class="pr-score-item high">Prompt: OK</span>';
-
-    if(count>=4&&prompt.trim().length>=30) scores+='<span class="pr-score-item high">Sẵn sàng gửi AI</span>';
-    else if(count>=2) scores+='<span class="pr-score-item mid">Cần bổ sung thêm</span>';
-    else scores+='<span class="pr-score-item low">Cần viết lại hoàn toàn</span>';
-
-    scoreArea.innerHTML=scores;
-  }
-
-  // Chips
-  chips.forEach(function(chip){
-    chip.addEventListener('click',function(){
-      var type=this.dataset.type;
-      var example=this.dataset.example;
-      if(activeCtx[type]){
-        delete activeCtx[type];
-        this.classList.remove('chip-on');
-        this.textContent='+'+type.charAt(0).toUpperCase()+type.slice(1);
-      } else {
-        activeCtx[type]=example;
-        this.classList.add('chip-on');
-        this.textContent='✓ '+type.charAt(0).toUpperCase()+type.slice(1);
-      }
-      render();
-    });
-  });
-
-  input.addEventListener('input',render);
-  resetBtn.addEventListener('click',function(){
-    input.value='';
-    activeCtx={};
-    chips.forEach(function(c){c.classList.remove('chip-on');c.textContent='+'+c.dataset.type.charAt(0).toUpperCase()+c.dataset.type.slice(1);});
-    render();
-  });
-
-  render();
-})();
-</script>
+      // Init
+      update();
+    })();
+  </script>
 </body>
+
 </html>
