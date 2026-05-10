@@ -1,657 +1,322 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Divider Demo — Vibecode Glossary</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
-    rel="stylesheet">
-  <style>
-    :root {
-      --bg: #0f0f12;
-      --bg-card: #16161b;
-      --fg: #e8e4dc;
-      --muted: #6e6e7a;
-      --accent: #e88c2e;
-      --accent-soft: rgba(232, 140, 46, 0.12);
-      --accent-border: rgba(232, 140, 46, 0.3);
-      --border: #282830;
-      --surface: #1c1c23;
-      --label: #a89d90;
-      --mono: 'JetBrains Mono', monospace;
-      --sans: 'Space Grotesk', sans-serif;
-    }
-
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--fg);
-      font-family: var(--sans);
-      min-height: auto;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    .entry {
-      max-width: 940px;
-      margin: 0 auto;
-      padding: 16px;
-    }
-
-    .sec-lbl {
-      font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .sec-lbl::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border)
-    }
-
-    /* ═══════ GRID ═══════ */
-    .grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 8px;
-    }
-
-    @media(max-width:600px) {
-      .grid {
-        grid-template-columns: 1fr
-      }
-    }
-
-    /* ═══════ CARD SHELL ═══════ */
-    .card {
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .card-top {
-      padding: 10px 14px;
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .card-dot {
-      width: 6px;
-      height: 6px;
-      background: var(--accent);
-      flex-shrink: 0
-    }
-
-    .card-tag {
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      font-weight: 600
-    }
-
-    .card-stage {
-      padding: 16px 14px;
-      min-height: 140px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      flex: 1;
-    }
-
-    .card-bot {
-      padding: 8px 14px;
-      border-top: 1px solid var(--border);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: rgba(0, 0, 0, 0.1);
-    }
-
-    .card-bot span {
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--muted);
-      letter-spacing: .4px
-    }
-
-    .loop {
-      display: flex;
-      align-items: center;
-      gap: 5px
-    }
-
-    .loop-dot {
-      width: 4px;
-      height: 4px;
-      border-radius: 50%;
-      background: var(--accent);
-      animation: blink 2s ease-in-out infinite
-    }
-
-    @keyframes blink {
-      0%, 100% { opacity: .2 }
-      50% { opacity: 1 }
-    }
-
-    /* ═══════ ANIM 1 — HORIZONTAL ═══════ */
-    .h-rows {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      width: 100%
-    }
-
-    .h-row {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      position: relative;
-      padding-left: 8px;
-      transition: opacity .32s, transform .32s
-    }
-
-    .h-row.dim {
-      opacity: .2;
-      transform: scale(.97)
-    }
-
-    .h-row.on {
-      opacity: 1;
-      transform: scale(1)
-    }
-
-    .h-row.on::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 2px;
-      bottom: 2px;
-      width: 2px;
-      background: var(--accent)
-    }
-
-    .h-lbl {
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--muted);
-      min-width: 50px;
-      text-align: right;
-      transition: color .25s
-    }
-
-    .h-row.on .h-lbl {
-      color: var(--accent)
-    }
-
-    .h-ln {
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-      transition: background .3s
-    }
-
-    .h-row.on .h-ln {
-      background: var(--label)
-    }
-
-    .h-ln.inset {
-      margin: 0 20px
-    }
-
-    .h-ln.thick {
-      height: 3px
-    }
-
-    .h-row.on .h-ln.thick {
-      background: var(--accent)
-    }
-
-    .h-ln.dotted {
-      border-top: 2px dotted var(--border);
-      height: 0;
-      background: none
-    }
-
-    .h-row.on .h-ln.dotted {
-      border-color: var(--label)
-    }
-
-    .h-ln.dashed {
-      border-top: 2px dashed var(--border);
-      height: 0;
-      background: none
-    }
-
-    .h-row.on .h-ln.dashed {
-      border-color: var(--label)
-    }
-
-    /* ═══════ ANIM 2 — VERTICAL ═══════ */
-    .v-box {
-      display: flex;
-      width: 100%;
-      border: 1px solid var(--border);
-      height: 120px;
-      position: relative;
-      overflow: hidden;
-      background: var(--surface);
-    }
-
-    .v-col {
-      flex: 1;
-      padding: 14px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      transition: opacity .45s, transform .45s
-    }
-
-    .v-col.L {
-      opacity: 0;
-      transform: translateX(-12px)
-    }
-
-    .v-col.R {
-      opacity: 0;
-      transform: translateX(12px)
-    }
-
-    .v-col.show {
-      opacity: 1;
-      transform: translateX(0)
-    }
-
-    .v-col-tag {
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      margin-bottom: 6px
-    }
-
-    .v-col-txt {
-      font-size: 10px;
-      color: var(--label);
-      line-height: 1.45
-    }
-
-    .v-line {
-      width: 1px;
-      position: absolute;
-      left: 50%;
-      top: 0;
-      height: 0;
-      background: var(--border);
-      transition: height .55s ease, background .3s, box-shadow .3s
-    }
-
-    .v-line.grow {
-      height: 100%
-    }
-
-    .v-line.glow {
-      background: var(--accent);
-      box-shadow: 0 0 10px var(--accent-soft)
-    }
-
-    /* ═══════ ANIM 3 — WITH TEXT ═══════ */
-    .t-wrap {
-      display: flex;
-      flex-direction: column;
-      gap: 18px;
-      width: 100%;
-      align-items: center
-    }
-
-    .t-row {
-      display: flex;
-      align-items: center;
-      width: 100%;
-      opacity: 0;
-      transition: opacity .35s
-    }
-
-    .t-row.show {
-      opacity: 1
-    }
-
-    .t-ln {
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-      transform: scaleX(0);
-      transition: transform .38s ease
-    }
-
-    .t-row.show .t-ln:first-child {
-      transform: scaleX(1);
-      transform-origin: right;
-      transition-delay: .08s
-    }
-
-    .t-row.show .t-ln:last-child {
-      transform: scaleX(1);
-      transform-origin: left;
-      transition-delay: .08s
-    }
-
-    .t-txt {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--accent);
-      padding: 0 16px;
-      white-space: nowrap;
-      font-weight: 600;
-      letter-spacing: 1px;
-      opacity: 0;
-      transition: opacity .18s
-    }
-
-    .t-row.show .t-txt {
-      opacity: 1
-    }
-
-    .t-ctx {
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--muted);
-      text-align: center;
-      opacity: 0;
-      transition: opacity .25s;
-      margin-top: -6px
-    }
-
-    .t-ctx.show {
-      opacity: 1
-    }
-
-    /* ═══════ ANIM 4 — IN LIST ═══════ */
-    .l-state {
-      font-family: var(--mono);
-      font-size: 10px;
-      letter-spacing: 1.5px;
-      text-transform: uppercase;
-      text-align: center;
-      padding: 6px 0;
-      transition: color .3s;
-      color: var(--muted);
-      width: 100%;
-      background: rgba(0, 0, 0, 0.2);
-    }
-
-    .l-state.on {
-      color: var(--accent)
-    }
-
-    .l-box {
-      width: 100%;
-      border: 1px solid var(--border);
-      border-top: none;
-      border-bottom: none;
-      background: var(--surface);
-    }
-
-    .l-item {
-      display: flex;
-      align-items: center;
-      padding: 12px 16px;
-      gap: 12px
-    }
-
-    .l-ico {
-      width: 24px;
-      height: 24px;
-      border: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      background: var(--bg);
-    }
-
-    .l-ico svg {
-      width: 14px;
-      height: 14px;
-      stroke: var(--muted);
-      fill: none;
-      stroke-width: 1.5;
-      stroke-linecap: round
-    }
-
-    .l-txt {
-      font-size: 10px;
-      color: var(--label)
-    }
-
-    .l-div {
-      height: 1px;
-      margin: 0 16px;
-      transform: scaleX(0);
-      opacity: 0;
-      transition: transform .38s ease, opacity .3s;
-      background: var(--border);
-      transform-origin: left
-    }
-
-    .l-div.show {
-      opacity: 1;
-      transform: scaleX(1)
-    }
-
-    .l-div.glow {
-      background: var(--accent)
-    }
-
-    @media(prefers-reduced-motion:reduce) {
-      *, *::before, *::after {
-        animation: none !important;
-        transition-duration: 0s !important
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Divider Demo — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root {
+  --bg: #0f0f12;
+  --bgc: #16161b;
+  --bgi: #121217;
+  --bd: #282830;
+  --tx: #e8e4dc;
+  --txm: #707070;
+  --ac: #E88C2E;
+  --abg: rgba(232, 140, 46, 0.1);
+  --abg2: rgba(232, 140, 46, 0.2);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--tx);
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.g {
+  width: 100%;
+  max-width: 940px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 600px) {
+  .g { grid-template-columns: 1fr; }
+}
+
+.c {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.c::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--ac);
+}
+
+.c::after {
+  content: '';
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 6px;
+  height: 6px;
+  background: var(--ac);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--ac);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0.3; transform: scale(1); }
+}
+
+.ch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.ch .n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ac);
+  background: var(--abg);
+  border: 1px solid var(--abg2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+.ch h2 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  text-transform: uppercase;
+}
+
+.st {
+  background: var(--bgi);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  flex: 1;
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ins {
+  margin-top: 14px;
+  font-size: 11.5px;
+  color: var(--txm);
+  line-height: 1.6;
+  padding-left: 12px;
+  border-left: 2px solid var(--ac);
+}
+
+.ins strong {
+  color: var(--ac);
+  font-weight: 600;
+}
+
+/* Divider specific styles */
+.div-preview {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.div-item {
+  height: 20px;
+  background: var(--bd);
+  width: 100%;
+  border-radius: 2px;
+  opacity: 0.3;
+}
+
+.div-line-h {
+  width: 100%;
+  height: 1px;
+  background: var(--txm);
+  opacity: 0.2;
+}
+
+.div-line-v {
+  width: 1px;
+  height: 40px;
+  background: var(--txm);
+  opacity: 0.2;
+}
+
+.div-container-v {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+}
+
+.div-box {
+  width: 40px;
+  height: 40px;
+  background: var(--bd);
+  opacity: 0.3;
+}
+
+.div-labelled {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.div-labelled span {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--ac);
+  white-space: nowrap;
+}
+
+.div-dashed {
+  width: 100%;
+  height: 1px;
+  border-top: 1px dashed var(--ac);
+  opacity: 0.5;
+}
+
+</style>
 </head>
-
 <body>
-  <div class="entry" id="app-root">
-    <div class="grid">
-      <!-- 1 · HORIZONTAL -->
-      <div class="card">
-        <div class="card-top">
-          <div class="card-dot"></div><span class="card-tag">Horizontal</span>
-        </div>
-        <div class="card-stage">
-          <div class="h-rows" id="a1">
-            <div class="h-row on"><span class="h-lbl">default</span>
-              <div class="h-ln"></div>
-            </div>
-            <div class="h-row dim"><span class="h-lbl">inset</span>
-              <div class="h-ln inset"></div>
-            </div>
-            <div class="h-row dim"><span class="h-lbl">thick</span>
-              <div class="h-ln thick"></div>
-            </div>
-            <div class="h-row dim"><span class="h-lbl">dotted</span>
-              <div class="h-ln dotted"></div>
-            </div>
-            <div class="h-row dim"><span class="h-lbl">dashed</span>
-              <div class="h-ln dashed"></div>
-            </div>
-          </div>
-        </div>
-        <div class="card-bot"><span>5 biến thể style</span><span class="loop"><span class="loop-dot"></span>loop</span></div>
-      </div>
 
-      <!-- 2 · VERTICAL -->
-      <div class="card">
-        <div class="card-top">
-          <div class="card-dot"></div><span class="card-tag">Vertical</span>
-        </div>
-        <div class="card-stage">
-          <div class="v-box" id="a2">
-            <div class="v-col L">
-              <div class="v-col-tag">Profile</div>
-              <div class="v-col-txt">Avatar, tên,<br>short bio</div>
-            </div>
-            <div class="v-line" id="vl"></div>
-            <div class="v-col R">
-              <div class="v-col-tag">Settings</div>
-              <div class="v-col-txt">Theme,<br>ngôn ngữ, notify</div>
-            </div>
-          </div>
-        </div>
-        <div class="card-bot"><span>tách cột ngang</span><span class="loop"><span class="loop-dot"></span>loop</span></div>
-      </div>
-
-      <!-- 3 · WITH TEXT -->
-      <div class="card">
-        <div class="card-top">
-          <div class="card-dot"></div><span class="card-tag">With Text</span>
-        </div>
-        <div class="card-stage">
-          <div class="t-wrap" id="a3">
-            <div class="t-row">
-              <div class="t-ln"></div><span class="t-txt">OR</span>
-              <div class="t-ln"></div>
-            </div>
-            <div class="t-ctx">login / social login</div>
-            <div class="t-row">
-              <div class="t-ln"></div><span class="t-txt">CONTINUE WITH</span>
-              <div class="t-ln"></div>
-            </div>
-            <div class="t-ctx">form / oauth buttons</div>
-            <div class="t-row">
-              <div class="t-ln"></div><span class="t-txt">RELATED</span>
-              <div class="t-ln"></div>
-            </div>
-            <div class="t-ctx">nối content sections</div>
-          </div>
-        </div>
-        <div class="card-bot"><span>text trên đường phân</span><span class="loop"><span class="loop-dot"></span>loop</span></div>
-      </div>
-
-      <!-- 4 · IN LIST -->
-      <div class="card">
-        <div class="card-top">
-          <div class="card-dot"></div><span class="card-tag">In List</span>
-        </div>
-        <div class="card-stage" style="padding:0;justify-content:stretch">
-          <div class="l-state on" id="ls">không divider</div>
-          <div class="l-box" id="a4">
-            <div class="l-item">
-              <div class="l-ico"><svg viewBox="0 0 24 24">
-                  <path d="M12 5v14M5 12h14" />
-                </svg></div><span class="l-txt">Thêm sản phẩm mới</span>
-            </div>
-            <div class="l-div"></div>
-            <div class="l-item">
-              <div class="l-ico"><svg viewBox="0 0 24 24">
-                  <path d="M4 6h16M4 12h16M4 18h16" />
-                </svg></div><span class="l-txt">Quản lý danh mục</span>
-            </div>
-            <div class="l-div"></div>
-            <div class="l-item">
-              <div class="l-ico"><svg viewBox="0 0 24 24">
-                  <circle cx="12" cy="12" r="9" />
-                  <path d="M12 8v4l3 3" />
-                </svg></div><span class="l-txt">Lịch sử đơn hàng</span>
-            </div>
-            <div class="l-div"></div>
-            <div class="l-item">
-              <div class="l-ico"><svg viewBox="0 0 24 24">
-                  <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
-                  <circle cx="12" cy="7" r="4" />
-                </svg></div><span class="l-txt">Thông tin tài khoản</span>
-            </div>
-          </div>
-          <div class="l-state" id="ls2">có divider</div>
-        </div>
-        <div class="card-bot"><span>trước → sau</span><span class="loop"><span class="loop-dot"></span>loop</span></div>
+<div class="g">
+  <!-- 01: Horizontal -->
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>Horizontal</h2></div>
+    <div class="st">
+      <div class="div-preview">
+        <div class="div-item"></div>
+        <div class="div-line-h" id="lineH"></div>
+        <div class="div-item"></div>
       </div>
     </div>
-  </div>
+    <p class="ins">Phân tách nội dung theo <strong>chiều ngang</strong>. Đây là loại divider phổ biến nhất, giúp tạo khoảng nghỉ thị giác giữa các khối văn bản hoặc thành phần UI.</p>
+  </section>
 
-  <script>
-    /* Anim 1: Cycle horizontal styles */
-    (function () {
-      const rows = document.querySelectorAll('#a1 .h-row');
-      let cur = 0;
-      function tick() {
-        rows.forEach((r, i) => { r.classList.toggle('on', i === cur); r.classList.toggle('dim', i !== cur) });
-        cur = (cur + 1) % rows.length;
-      }
-      tick(); setInterval(tick, 780);
-    })();
+  <!-- 02: Vertical -->
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Vertical</h2></div>
+    <div class="st">
+      <div class="div-container-v">
+        <div class="div-box"></div>
+        <div class="div-line-v" id="lineV"></div>
+        <div class="div-box"></div>
+      </div>
+    </div>
+    <p class="ins">Dùng để chia tách các thành phần theo <strong>chiều dọc</strong>, thường thấy trong thanh điều hướng (navbar), toolbar hoặc chia cột bố cục layout.</p>
+  </section>
 
-    /* Anim 2: Vertical draw */
-    (function () {
-      const L = document.querySelector('#a2 .v-col.L');
-      const R = document.querySelector('#a2 .v-col.R');
-      const vl = document.getElementById('vl');
-      const T = 4200;
-      function play() {
-        L.classList.remove('show'); R.classList.remove('show'); vl.classList.remove('grow', 'glow');
-        setTimeout(() => L.classList.add('show'), 180);
-        setTimeout(() => vl.classList.add('grow'), 480);
-        setTimeout(() => R.classList.add('show'), 850);
-        setTimeout(() => vl.classList.add('glow'), 1150);
-        setTimeout(() => { L.classList.remove('show'); R.classList.remove('show'); vl.classList.remove('glow') }, 3200);
-        setTimeout(() => vl.classList.remove('grow'), 3700);
-      }
-      play(); setInterval(play, T);
-    })();
+  <!-- 03: Labelled -->
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Labelled</h2></div>
+    <div class="st">
+      <div class="div-preview">
+        <div class="div-item" style="height: 10px;"></div>
+        <div class="div-labelled">
+          <div class="div-line-h" style="flex:1"></div>
+          <span id="labelTxt">OR</span>
+          <div class="div-line-h" style="flex:1"></div>
+        </div>
+        <div class="div-item" style="height: 10px;"></div>
+      </div>
+    </div>
+    <p class="ins">Divider kèm theo <strong>nhãn văn bản</strong> hoặc icon ở giữa. Giúp làm rõ ý nghĩa của sự phân tách, ví dụ: phân chia các lựa chọn đăng nhập hoặc ngày tháng trong chat.</p>
+  </section>
 
-    /* Anim 3: Cycle text dividers */
-    (function () {
-      const rows = document.querySelectorAll('#a3 .t-row');
-      const ctxs = document.querySelectorAll('#a3 .t-ctx');
-      let cur = 0;
-      function tick() {
-        rows.forEach((r, i) => r.classList.toggle('show', i === cur));
-        ctxs.forEach((c, i) => c.classList.toggle('show', i === cur));
-        cur = (cur + 1) % rows.length;
-      }
-      tick(); setInterval(tick, 1500);
-    })();
+  <!-- 04: Styled -->
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Styled</h2></div>
+    <div class="st">
+      <div class="div-preview" style="align-items: center;">
+        <div class="div-dashed" id="lineDashed"></div>
+        <div style="font-size: 10px; color: var(--txm); font-family: 'JetBrains Mono', monospace; margin-top: 8px;">DASHED VARIANT</div>
+      </div>
+    </div>
+    <p class="ins">Tùy biến <strong>kiểu dáng</strong> (dashed, dotted, gradient) để phù hợp với ngôn ngữ thiết kế. Divider không chỉ là đường kẻ, nó là một phần của <strong>identity</strong>.</p>
+  </section>
+</div>
 
-    /* Anim 4: Before/after list dividers */
-    (function () {
-      const divs = document.querySelectorAll('#a4 .l-div');
-      const ls = document.getElementById('ls');
-      const ls2 = document.getElementById('ls2');
-      const T = 4200;
-      function play() {
-        divs.forEach(d => { d.classList.remove('show', 'glow') });
-        ls.classList.add('on'); ls2.classList.remove('on');
-        setTimeout(() => { divs[0].classList.add('show', 'glow'); ls.classList.remove('on') }, 1100);
-        setTimeout(() => divs[1].classList.add('show', 'glow'), 1500);
-        setTimeout(() => { divs[2].classList.add('show', 'glow'); ls2.classList.add('on') }, 1900);
-        setTimeout(() => divs.forEach(d => d.classList.remove('glow')), 3100);
-        setTimeout(() => { divs.forEach(d => d.classList.remove('show')); ls2.classList.remove('on'); ls.classList.add('on') }, 3600);
-      }
-      play(); setInterval(play, T);
-    })();
-  </script>
+<script>
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// 01: Horizontal Loop (Pulse opacity)
+(async function() {
+  const line = document.getElementById('lineH');
+  while (true) {
+    line.style.opacity = '0.2';
+    line.style.background = 'var(--txm)';
+    await wait(1000);
+    line.style.opacity = '1';
+    line.style.background = 'var(--ac)';
+    await wait(1000);
+  }
+})();
+
+// 02: Vertical Loop (Expand height)
+(async function() {
+  const line = document.getElementById('lineV');
+  while (true) {
+    line.style.height = '10px';
+    line.style.opacity = '0.2';
+    await wait(1200);
+    line.style.height = '60px';
+    line.style.opacity = '1';
+    line.style.background = 'var(--ac)';
+    await wait(1200);
+    line.style.background = 'var(--txm)';
+  }
+})();
+
+// 03: Labelled Loop (Change label)
+(async function() {
+  const label = document.getElementById('labelTxt');
+  const labels = ['OR', 'AND', 'NEXT', 'DATE'];
+  let i = 0;
+  while (true) {
+    label.style.opacity = '0';
+    await wait(500);
+    label.innerText = labels[i % labels.length];
+    label.style.opacity = '1';
+    await wait(1500);
+    i++;
+  }
+})();
+
+// 04: Styled Loop (Dash movement / animation)
+(async function() {
+  const line = document.getElementById('lineDashed');
+  let offset = 0;
+  while (true) {
+    offset++;
+    line.style.borderTop = `1px dashed var(--ac)`;
+    line.style.opacity = (Math.sin(offset * 0.1) * 0.3 + 0.6).toString();
+    await wait(50);
+  }
+})();
+</script>
 </body>
-
 </html>
