@@ -149,8 +149,8 @@ const rawTerms: GlossaryTerm[] = [
     nameEn: 'Copy repository / Nhân bản kho code',
     letter: 'F',
     groups: ['workflow'],
-    definition: 'Hành động copy một repository của người khác sang tài khoản GitHub của bạn. Điều này tạo ra một bản sao độc lập, cho phép bạn tự do sửa đổi mà không làm ảnh hưởng đến dự án gốc.',
-    example: 'Bạn thấy một template landing page đẹp trên GitHub nhưng không có quyền sửa. Bạn nhấn "Fork" để copy nó về account mình, sau đó tha hồ tùy chỉnh màu sắc và nội dung.',
+    definition: 'Cách "nhân bản" một dự án của người khác về tài khoản của bạn để làm của riêng. Bản copy này hoàn toàn độc lập, giúp bạn tha hồ "vọc vạch", sửa đổi bằng AI mà không sợ làm hỏng hay ảnh hưởng gì đến dự án gốc của họ.',
+    example: 'Bạn thấy một tool AI hay trên GitHub nhưng không có quyền can thiệp vào code của họ. Bạn nhấn "Fork" để đưa nó về "nhà" mình (account GitHub cá nhân), sau đó mở Cursor lên và yêu cầu AI tùy chỉnh tính năng theo ý muốn.',
     related: ['git', 'repository', 'commit', 'pull-request'],
     demo: {
       kind: 'interactive',
@@ -643,10 +643,10 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Nơi bắt lỗi nhanh nhất: Khi web không chạy, CLI sẽ hiện lý do (log). Thay vì ngồi đoán, Vibecoder chỉ cần copy dòng chữ đó hỏi AI: "Lỗi này là gì?" và AI sẽ biết chính xác chỗ cần sửa.'
   ],
   fork: [
-    'Fork là "server-to-server copy". Khác with Clone là "server-to-local copy". Khi bạn fork, dự án vẫn nằm trên cloud của GitHub, chỉ là đổi chủ sở hữu từ người khác sang bạn.',
-    'Dùng Fork khi nào? (1) Khi bạn muốn đóng góp cho dự án mã nguồn mở, (2) Khi bạn muốn dùng code của người khác làm nền tảng cho dự án riêng, (3) Khi team quy định workflow "Forking Model" để đảm bảo an toàn cho nhánh chính.',
-    'Pull Request (PR) là cây cầu nối giữa bản fork và bản gốc. Nếu bạn sửa code trong bản fork và thấy nó tốt, bạn có thể gửi PR để chủ repo gốc xem xét và gộp vào dự án chính thức.',
-    'Fork giúp bạn an tâm thử nghiệm. Dù bạn có xóa hết code trong bản fork, dự án gốc của người khác vẫn hoàn toàn bình an vô sự.'
+    'Fork là "server-to-server copy" (nhân bản từ mây sang mây). Khác với Clone là tải về máy, Fork chỉ là hành động "bốc" dự án từ tài khoản của người khác sang tài khoản của mình trên GitHub.',
+    'Tại sao phải Fork? (1) Khi muốn đóng góp cho dự án cộng đồng, (2) Khi muốn dùng code mẫu của người khác để "xào nấu" lại cho dự án riêng, (3) Khi team muốn bạn làm việc trên một bản sao riêng để đảm bảo an toàn cho dự án chính.',
+    'Pull Request (PR) là "cây cầu" nối bản fork và bản gốc. Nếu bạn sửa bản fork thấy xịn quá, bạn gửi PR mời chủ dự án gốc xem xét. Nếu họ đồng ý, họ sẽ gộp (merge) công sức của bạn vào dự án chính thức.',
+    'An tâm thử sai: Fork là "lá bùa" bảo vệ. Dù bạn có lỡ tay xóa sạch code hay làm lỗi bản fork, thì dự án gốc của người khác vẫn luôn an toàn, không bị mảy may ảnh hưởng.'
   ],
   push: [
     'Push là hành động "xuất bản" code. Khi bạn chưa push, mọi thay đổi dù đã commit vẫn chỉ nằm an toàn trên ổ cứng máy bạn. Push chính là khoảnh khắc code của bạn rời khỏi máy để đến với thế giới.',

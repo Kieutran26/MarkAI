@@ -89,7 +89,58 @@ body{
 .sum{max-width:900px;margin:20px auto 0;padding:16px 18px;border:1px solid var(--bd);border-radius:3px;background:var(--bgc);font-size:12.5px;color:var(--txm);line-height:1.6}
 .sum strong{color:var(--acl);font-weight:600}
 
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+    .btn-hint {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--ac);
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 2px;
+      white-space: nowrap;
+      pointer-events: none;
+      animation: hintPulse 2s infinite;
+      z-index: 999;
+    }
+
+    .btn-hint::after {
+      content: '';
+      position: absolute;
+      top: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 4px solid var(--ac);
+    }
+
+    @keyframes hintPulse {
+      0% {
+        transform: translateX(-50%) scale(1);
+      }
+
+      50% {
+        transform: translateX(-50%) scale(1.05);
+      }
+
+      100% {
+        transform: translateX(-50%) scale(1);
+      }
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important
+      }
+    }
 </style>
 </head>
 <body>
@@ -124,7 +175,10 @@ body{
       <!-- Navigation -->
       <div class="step-nav">
         <button class="btn" id="prevBtn" disabled>Trước</button>
-        <button class="btn primary" id="nextBtn">Tiếp</button>
+        <div style="position: relative; display: inline-block;">
+          <div class="btn-hint" id="hintBadge">Click me!</div>
+          <button class="btn primary" id="nextBtn">Tiếp</button>
+        </div>
       </div>
 
       <div class="hint">Click "Tiếp" để đi qua từng bước. Quan sát bên phải thấy repo thay đổi thế nào.</div>
@@ -190,6 +244,7 @@ body{
   var $prTxt = document.getElementById('prTxt');
   var $prev = document.getElementById('prevBtn');
   var $next = document.getElementById('nextBtn');
+  var $hintBadge = document.getElementById('hintBadge');
   var $dots = document.querySelectorAll('.step-d');
   var $lines = [document.getElementById('sl0'),document.getElementById('sl1'),document.getElementById('sl2'),document.getElementById('sl3')];
 
@@ -228,7 +283,11 @@ body{
   }
 
   $next.addEventListener('click', function(){
-    if(current < steps.length - 1){ current++; render(); }
+    if(current < steps.length - 1){ 
+      current++; 
+      render(); 
+    }
+    if($hintBadge) $hintBadge.style.display = 'none';
   });
   $prev.addEventListener('click', function(){
     if(current > 0){ current--; render(); }
