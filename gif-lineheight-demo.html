@@ -1,344 +1,572 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Line Height — Animated</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<style>
-:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;--accent-dim:rgba(212,113,42,.15);--card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a;--surface:#1c1c23;--teal:#3a8a7a;--teal-dim:rgba(58,138,122,.15)}
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 100%,16px 16px;display:flex;flex-direction:column;align-items:center;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:12px;gap:24px}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Line Height - Amber Brutalist 4-Cell Grid</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --amber: #E88C2E;
+            --bg: #0f0f12;
+            --card-bg: #16161b;
+            --border: #282830;
+            --text: #e8e4dc;
+            --muted: #707070;
+            --gap: 14px;
+            --ease: cubic-bezier(0.65, 0, 0.35, 1);
+            --dark: #0d0d10;
+        }
 
-.aw{width:100%}
-.ab-wrap{width:100%;background:var(--card);border:2px solid var(--border);display:flex;flex-direction:column;overflow:hidden}
-.la-wrap{width:100%;position:relative;overflow:hidden}
-.ab{width:700px;height:250px;transform-origin:top left;background:linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);background-size:30px 30px;position:relative}
-.hd{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
-.hd-t{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:2.5px}
-.hd-f{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
-.fr{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:14px 24px;opacity:0;pointer-events:none;transition:opacity .3s}.fr.show{opacity:1;pointer-events:auto}
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* State 1: Scale sweep */
-.sc-wrap{display:flex;height:100%;gap:32px;align-items:center;width:100%;max-width:560px}
-.sc-left{width:100px;display:flex;flex-direction:column;align-items:center;flex-shrink:0}
-.sc-num{font-family:'JetBrains Mono',monospace;font-size:42px;font-weight:700;color:var(--accent);line-height:1}
-.sc-lbl{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);letter-spacing:.12em;text-transform:uppercase;margin-top:4px}
-.sc-rail{width:4px;height:80px;background:var(--border);position:relative;margin-top:12px}
-.sc-fill{position:absolute;top:0;left:0;width:100%;background:var(--accent);transition:height .3s}
-.sc-right{flex:1;display:flex;align-items:center;border-left:1px solid var(--border);padding-left:32px}
-.sc-txt{width:100%;font-size:14px;color:var(--fg);transition:line-height .3s;line-height:1.0}
+        body {
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(ellipse at 25% 15%, rgba(232, 140, 46, 0.05) 0%, transparent 55%),
+                radial-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 16px 16px;
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-/* State 2: Body comparison */
-.bc-wrap{display:flex;height:100%;gap:12px;width:100%}
-.bc-col{flex:1;display:flex;flex-direction:column;border:1px solid var(--border);background:var(--card-alt)}
-.bc-hdr{padding:8px 12px;background:rgba(255,255,255,.03);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-.bc-val{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--accent)}
-.bc-tag{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase}
-.bc-body{flex:1;padding:10px 12px;font-size:10px;color:var(--muted);overflow:hidden}
-.bc-col.best{border-color:var(--accent);box-shadow:0 0 20px rgba(212,113,42,0.1)}
-.bc-col.best .bc-hdr{background:var(--accent-dim)}
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--gap);
+            width: 100%;
+            max-width: 940px;
+        }
 
-/* State 3: UI Components */
-.uic-wrap{display:flex;flex-direction:column;width:100%;max-width:400px;gap:8px}
-.uic-list{display:flex;flex-direction:column;border:1px solid var(--border);background:var(--card-alt)}
-.uic-li{padding:8px 16px;border-bottom:1px solid var(--border);font-size:11px;color:var(--muted);display:flex;justify-content:space-between;align-items:center;transition:line-height .3s}
-.uic-li:last-child{border-bottom:none}
-.uic-ann{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);margin-bottom:4px;text-align:right}
+        @media (max-width: 600px) {
+            .grid-container { grid-template-columns: 1fr; }
+            .sim-area { height: 140px !important; }
+        }
 
-/* State 4: Responsive */
-.rs-wrap{display:flex;width:100%;gap:20px;align-items:stretch;max-width:600px}
-.rs-col{flex:1;border:1px solid var(--border);background:var(--card-alt);display:flex;flex-direction:column}
-.rs-hdr{padding:6px 10px;background:rgba(255,255,255,.03);border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-.rs-dev{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--fg);text-transform:uppercase}
-.rs-lh{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);font-weight:700}
-.rs-body{padding:12px;font-size:11px;color:var(--muted);line-height:1.6}
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            position: relative;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+        }
 
-.inf{padding:11px 14px;border-top:1px solid var(--border);background:var(--card);min-height:86px}
-.dn{font-size:15px;font-weight:800;line-height:1.15}
-.ds{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);margin-top:2px}
-.dd{font-size:10px;color:var(--muted);margin-top:4px;line-height:1.4}
-.pt{height:2px;background:var(--border)}.pff{height:100%;background:var(--accent);width:0%}
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--amber);
+            z-index: 2;
+        }
 
-/* Controls */
-.ctr{display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 0;background:transparent}
-.ctr-b{padding:6px 12px;background:var(--card-alt);border:1px solid var(--border);color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:1px}
-.ctr-b:hover{border-color:var(--border-hi);color:var(--fg)}
-.ctr-b.act{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+        .indicator {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 6px;
+            height: 6px;
+            background: var(--amber);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--amber);
+            animation: pulse 2s infinite;
+            z-index: 3;
+        }
 
-.pp-b{width:32px;height:32px;border-radius:50%;background:var(--accent);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-left:4px;transition:transform .2s;flex-shrink:0}
-.pp-b:active{transform:scale(.92)}
-.pp-i{width:12px;height:12px;fill:#000}
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
 
-/* Comparison Section (Below) */
-.cmp{width:100%;border-top:1px solid var(--border);padding-top:24px}
-.cmp-hd{display:flex;align-items:center;gap:12px;margin-bottom:16px}
-.stag{font-family:'JetBrains Mono';font-size:10px;color:var(--accent);border:1px solid var(--accent-dim);padding:2px 8px;text-transform:uppercase;letter-spacing:1px}
-.stag-teal{font-family:'JetBrains Mono';font-size:10px;color:var(--teal);border:1px solid var(--teal-dim);padding:2px 8px;text-transform:uppercase;letter-spacing:1px}
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 22px;
+        }
 
-.cmp-box{width:100%;background:var(--card);border:1px solid var(--border);overflow:hidden;position:relative}
-.cmp-toggle{display:flex;border-bottom:1px solid var(--border)}
-.cmp-tbtn{flex:1;padding:10px;font-family:'JetBrains Mono';font-size:9px;background:none;border:none;color:var(--muted);cursor:pointer;transition:all .2s}
-.cmp-tbtn:first-child{border-right:1px solid var(--border)}
-.cmp-tbtn.act-lh{background:var(--accent-dim);color:var(--accent)}
-.cmp-tbtn.act-ls{background:var(--teal-dim);color:var(--teal)}
+        .num-box {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--amber);
+            background: rgba(232, 140, 46, 0.1);
+            border: 1px solid rgba(232, 140, 46, 0.2);
+            padding: 2px 5px;
+            border-radius: 2px;
+        }
 
-.cmp-main{padding:24px;min-height:180px;display:flex;align-items:center;justify-content:center}
-.cmp-content{position:relative;padding-left:44px}
-.cmp-text{font-size:14px;line-height:2;color:var(--fg);position:relative;z-index:3}
-.cmp-meas{position:absolute;left:0;top:0;bottom:0;width:40px;opacity:0;transition:opacity .3s;pointer-events:none}
-.cmp-meas.sh{opacity:1}
+        .card-title {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(232, 228, 220, 0.9);
+        }
 
-.m-brk{position:absolute;left:0;right:0;border-left:1.5px solid var(--accent);transition:all .3s}
-.m-brk::before,.m-brk::after{content:'';position:absolute;left:-4px;width:9px;height:9px;border:1.5px solid var(--accent);background:var(--card)}
-.m-brk::before{top:-4.5px}.m-brk::after{bottom:-4.5px}
-.m-brk-v{position:absolute;left:14px;top:50%;transform:translateY(-50%);font-family:'JetBrains Mono';font-size:10px;font-weight:700;color:var(--accent);white-space:nowrap}
+        .sim-area {
+            height: 175px;
+            background: var(--dark);
+            border: 1px solid rgba(255,255,255,0.03);
+            border-radius: 4px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 16px;
+            overflow: hidden;
+        }
 
-.m-xout{position:absolute;left:0;right:0;background:var(--teal-dim);display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono';font-size:7px;color:var(--teal);opacity:.4;border-top:1px dashed var(--teal);border-bottom:1px dashed var(--teal)}
+        .sim-lh {
+            width: 85%;
+            text-align: left;
+            font-size: 13px;
+            color: rgba(232, 228, 220, 0.85);
+            transition: line-height 0.6s var(--ease);
+        }
 
-.cmp-leg{padding:12px 24px;background:rgba(255,255,255,.01);border-top:1px solid var(--border);display:flex;gap:24px}
-.cmp-leg-i{display:flex;align-items:center;gap:8px;font-family:'JetBrains Mono';font-size:9px;color:var(--muted)}
-.cmp-dot{width:8px;height:8px;background:var(--accent)}
-.cmp-dot.ls{background:var(--teal)}
+        .sim-lh .line-text {
+            display: block;
+        }
 
-@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
-</style>
+        .lh-badge {
+            position: absolute;
+            top: 8px;
+            right: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--amber);
+            background: rgba(232, 140, 46, 0.1);
+            border: 1px solid rgba(232, 140, 46, 0.25);
+            padding: 2px 8px;
+            border-radius: 2px;
+            z-index: 4;
+            transition: all 0.3s var(--ease);
+        }
+
+        .ins {
+            border-left: 2px solid var(--amber);
+            padding-left: 14px;
+            margin-top: auto;
+            color: var(--muted);
+            font-size: 11.5px;
+            line-height: 1.6;
+        }
+
+        .ins strong {
+            color: var(--amber);
+            font-weight: 600;
+        }
+
+        /* Cell 1: sweep scale */
+        .sweep-wrap {
+            display: flex;
+            height: 100%;
+            width: 100%;
+            gap: 24px;
+            align-items: center;
+            padding: 0 20px;
+        }
+        .sweep-num {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--amber);
+            line-height: 1;
+            width: 80px;
+            text-align: center;
+            flex-shrink: 0;
+            transition: all 0.4s var(--ease);
+        }
+        .sweep-rail {
+            width: 4px;
+            height: 70px;
+            background: var(--border);
+            position: relative;
+            flex-shrink: 0;
+            margin: 0 auto;
+        }
+        .sweep-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: var(--amber);
+            height: 0%;
+            transition: height 0.5s var(--ease);
+        }
+        .sweep-text {
+            flex: 1;
+            font-size: 13px;
+            color: rgba(232, 228, 220, 0.85);
+            transition: line-height 0.5s var(--ease);
+            border-left: 1px solid var(--border);
+            padding-left: 20px;
+        }
+
+        /* Cell 3: comparison */
+        .compare-col {
+            flex: 1;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            background: rgba(22, 22, 27, 0.6);
+            overflow: hidden;
+            transition: all 0.5s var(--ease);
+        }
+        .compare-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--amber);
+            letter-spacing: 0.5px;
+            margin-bottom: 6px;
+        }
+        .compare-text {
+            font-size: 11px;
+            color: rgba(232, 228, 220, 0.7);
+            transition: line-height 0.6s var(--ease);
+        }
+
+        /* Cell 4: responsive mock */
+        .mock-frame {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .mock-frame.mobile { max-width: 52%; }
+        .mock-frame.desktop { max-width: 44%; }
+        .mock-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            color: var(--amber);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .mock-lh-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            color: var(--muted);
+            margin-bottom: 6px;
+        }
+        .mock-body {
+            font-size: 10px;
+            color: rgba(232, 228, 220, 0.6);
+            transition: line-height 0.6s var(--ease);
+        }
+
+        /* Cell 2: leading vs line-height visual */
+        .metric-wrap {
+            display: flex;
+            height: 100%;
+            width: 100%;
+            gap: 16px;
+            align-items: center;
+            justify-content: center;
+            padding: 0 14px;
+        }
+        .metric-card {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 10px;
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            background: rgba(22,11,0,0.25);
+            transition: all 0.5s var(--ease);
+            cursor: default;
+        }
+        .metric-card.active {
+            border-color: rgba(232, 140, 46, 0.45);
+            background: rgba(232, 140, 46, 0.06);
+        }
+        .metric-type {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 4px;
+        }
+        .metric-card.active .metric-type { color: var(--amber); }
+        .metric-lines {
+            font-size: 11px;
+            color: rgba(232,228,220,0.8);
+            line-height: 1.5;
+            text-align: center;
+            transition: line-height 0.5s var(--ease);
+            position: relative;
+            padding: 0 2px;
+        }
+        .metric-val {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--amber);
+            margin-top: 8px;
+        }
+        .metric-desc {
+            font-size: 9px;
+            color: var(--muted);
+            margin-top: 2px;
+            text-align: center;
+        }
+        .bracket-mark {
+            position: absolute;
+            right: -10px;
+            width: 6px;
+            border-right: 2px solid var(--amber);
+            transition: all 0.5s var(--ease);
+        }
+        .bracket-mark::before,
+        .bracket-mark::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            width: 6px;
+            height: 2px;
+            background: var(--amber);
+        }
+        .bracket-mark::before { top: 0; }
+        .bracket-mark::after { bottom: 0; }
+    </style>
 </head>
 <body>
 
-<div class="aw">
-<div class="ab-wrap">
-  <div class="hd"><span class="hd-t">LINE HEIGHT</span><span class="hd-f" id="hf">01 / 04</span></div>
-  <div class="la-wrap" id="la-wrap">
-    <div class="ab" id="ab">
-      <!-- State 1: Scale -->
-      <div class="fr" id="f0">
-        <div class="sc-wrap">
-          <div class="sc-left">
-            <div class="sc-num" id="scn">1.0</div>
-            <div class="sc-lbl">line-height</div>
-            <div class="sc-rail"><div class="sc-fill" id="scf"></div></div>
-          </div>
-          <div class="sc-right">
-            <div class="sc-txt" id="sct">Line height là khoảng cách từ đáy một dòng text đến đáy dòng tiếp theo. Giá trị này không phải là pixel — nó là hệ số nhân với font size. Line height 1.5 nghĩa là khoảng cách giữa các dòng bằng 1.5 lần kích thước chữ. Điều này ảnh hưởng trực tiếp đến khả năng đọc hiểu của user.</div>
-          </div>
+    <div class="grid-container">
+        <!-- Cell 1: Line Height Sweep -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">01</div>
+                <div class="card-title">Line Height Sweep</div>
+            </div>
+            <div class="sim-area">
+                <div class="sweep-wrap">
+                    <div class="sweep-num" id="sw-num">1.0</div>
+                    <div class="sweep-rail">
+                        <div class="sweep-fill" id="sw-fill"></div>
+                    </div>
+                    <div class="sweep-text" id="sw-text" style="line-height:1.0">Line height là khoảng cách từ baseline đến baseline kế tiếp. Giá trị này là hệ số nhân với font-size, không phải pixel.</div>
+                </div>
+            </div>
+            <div class="ins">
+                Thuộc tính <strong>line-height</strong> nhân với font-size tạo ra khoảng cách dòng. Giá trị 1.0 là chập nhất — chữ dính nhau, khó đọc.
+            </div>
         </div>
-      </div>
-      <!-- State 2: Comparison -->
-      <div class="fr" id="f1">
-        <div class="bc-wrap">
-          <div class="bc-col">
-            <div class="bc-hdr"><span class="bc-val">1.2</span><span class="bc-tag">Tight</span></div>
-            <div class="bc-body" style="line-height:1.2">Line height là khoảng cách từ đáy một dòng text đến đáy dòng tiếp theo. Giá trị này không phải pixel, nó là hệ số nhân với font size. Dòng quá sát nhau gây khó đọc.</div>
-          </div>
-          <div class="bc-col best">
-            <div class="bc-hdr"><span class="bc-val">1.5</span><span class="bc-tag">Body text</span></div>
-            <div class="bc-body" style="line-height:1.5">Line height là khoảng cách từ đáy một dòng text đến đáy dòng tiếp theo. Giá trị này không phải pixel, nó là hệ số nhân with font size. Dòng này dễ đọc nhất.</div>
-          </div>
-          <div class="bc-col">
-            <div class="bc-hdr"><span class="bc-val">1.8</span><span class="bc-tag">Loose</span></div>
-            <div class="bc-body" style="line-height:1.8">Line height là khoảng cách từ đáy một dòng text đến đáy dòng tiếp theo. Giá trị này không phải pixel, nó là hệ số nhân with font size. Dòng quá rời rạc.</div>
-          </div>
+
+        <!-- Cell 2: Leading vs Line-Height -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">02</div>
+                <div class="card-title">Leading vs Line-Height</div>
+            </div>
+            <div class="sim-area">
+                <div class="metric-wrap" id="metric-wrap">
+                    <div class="metric-card active" id="mc-css">
+                        <div class="metric-type">CSS line-height</div>
+                        <div class="metric-lines" id="ml-css" style="line-height:1.5">Baseline đến<br>baseline kế tiếp</div>
+                        <div class="metric-val" id="mv-css">1.5×</div>
+                        <div class="metric-desc">đo từ baseline</div>
+                    </div>
+                    <div class="metric-card" id="mc-fig">
+                        <div class="metric-type">Figma spacing</div>
+                        <div class="metric-lines" id="ml-fig" style="line-height:1.5">Khoảng hở<br>giữa hai dòng</div>
+                        <div class="metric-val" id="mv-fig">8px</div>
+                        <div class="metric-desc">đo phần hở giữa dòng</div>
+                    </div>
+                </div>
+            </div>
+            <div class="ins">
+                <strong>Line-height</strong> (CSS) đo từ baseline này sang baseline kia — bao gồm cả chữ. <strong>Line spacing</strong> (Figma) chỉ đo phần hở giữa hai dòng.
+            </div>
         </div>
-      </div>
-      <!-- State 3: UI -->
-      <div class="fr" id="f2">
-        <div class="uic-wrap">
-          <div class="uic-ann" id="ua">line-height: 1.0</div>
-          <div class="uic-list" id="uicl">
-            <div class="uic-li"><span>Deploy infrastructure</span><span style="color:var(--accent);font-family:'JetBrains Mono';font-size:9px">2h ago</span></div>
-            <div class="uic-li"><span>Scale database cluster</span><span style="color:var(--accent);font-family:'JetBrains Mono';font-size:9px">5h ago</span></div>
-            <div class="uic-li"><span>Update SSL certificates</span><span style="color:var(--accent);font-family:'JetBrains Mono';font-size:9px">1d ago</span></div>
-          </div>
+
+        <!-- Cell 3: Compact vs Optimal vs Loose -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">03</div>
+                <div class="card-title">Compact vs Optimal</div>
+            </div>
+            <div class="sim-area">
+                <div style="display:flex;gap:8px;width:100%;height:100%;padding:10px;align-items:stretch">
+                    <div class="compare-col" id="col-tight">
+                        <div class="compare-label">1.2 — Tight</div>
+                        <div class="compare-text" id="text-tight" style="line-height:1.2">Typography is the art and technique of arranging type to make text legible.</div>
+                    </div>
+                    <div class="compare-col" id="col-optimal">
+                        <div class="compare-label">1.5 — Optimal</div>
+                        <div class="compare-text" id="text-optimal" style="line-height:1.5">Typography is the art and technique of arranging type to make text legible.</div>
+                    </div>
+                    <div class="compare-col" id="col-loose">
+                        <div class="compare-label">1.8 — Loose</div>
+                        <div class="compare-text" id="text-loose" style="line-height:1.8">Typography is the art and technique of arranging type to make text legible.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="ins">
+                Body text tốt nhất ở khoảng <strong>1.4–1.6</strong>. Quá chặt (1.2) dòng dính nhau, quá rộng (1.8+) tạo khoảng hở lẻp vêp — <strong>cả hai đều giảm đọc</strong>.
+            </div>
         </div>
-      </div>
-      <!-- State 4: Responsive -->
-      <div class="fr" id="f3">
-        <div class="rs-wrap">
-          <div class="rs-col">
-            <div class="rs-hdr"><span class="rs-dev">Mobile</span><span class="rs-lh">1.6</span></div>
-            <div class="rs-body" style="line-height:1.6">Text nhỏ trên màn hình nhỏ cần line-height cao hơn để mắt dễ theo dõi từ dòng này sang dòng khác.</div>
-          </div>
-          <div class="rs-col">
-            <div class="rs-hdr"><span class="rs-dev">Desktop</span><span class="rs-lh">1.4</span></div>
-            <div class="rs-body" style="line-height:1.4">Text lớn trên màn hình rộng cần line-height thấp hơn — đủ khoảng cách, không lãng phí không gian.</div>
-          </div>
+
+        <!-- Cell 4: Context Scaling -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">04</div>
+                <div class="card-title">Context Scaling</div>
+            </div>
+            <div class="sim-area">
+                <div style="display:flex;gap:12px;width:100%;padding:10px;align-items:stretch;justify-content:center">
+                    <div class="mock-frame mobile" id="mock-mobile">
+                        <div class="mock-title" id="mt-m">MOBILE — LH 1.6</div>
+                        <div class="mock-lh-label" id="ml-m">line-height: 1.6</div>
+                        <div class="mock-body" id="mb-m" style="line-height:1.6">Màn hình nhỏ cần line-height cao hơn để mắt dễ nhảy dòng.</div>
+                    </div>
+                    <div class="mock-frame desktop" id="mock-desktop">
+                        <div class="mock-title" id="mt-d">DESKTOP — LH 1.4</div>
+                        <div class="mock-lh-label" id="ml-d">line-height: 1.4</div>
+                        <div class="mock-body" id="mb-d" style="line-height:1.4">Màn hình rộng cho phép line-height thấp hơn mà vẫn đọc dễ.</div>
+                    </div>
+                </div>
+            </div>
+            <div class="ins">
+                <strong>Mobile</strong> cần line-height cao hơn vì màn hình hẹp khiến mắt phải tìm dòng tiếp theo khó hơn. <strong>Desktop</strong> có thể dùng line-height thấp hơn — giữ layout gọn hơn.
+            </div>
         </div>
-      </div>
     </div>
-  </div>
-  <div class="inf">
-    <div class="dn" id="dn">Line Height Scale</div>
-    <div class="ds" id="ds">typography / spacing</div>
-    <div class="dd" id="dd">Kéo line-height từ 1.0 lên 2.0 — thấy text "thở" dần ra.</div>
-  </div>
-  <div class="pt"><div class="pff" id="pff"></div></div>
-</div>
-<div class="ctr">
-    <button class="ctr-b act" data-i="0">SCALE</button>
-    <button class="ctr-b" data-i="1">BODY</button>
-    <button class="ctr-b" data-i="2">UI</button>
-    <button class="ctr-b" data-i="3">RESPONSIVE</button>
-    <button class="pp-b" id="pp" title="Play/Pause">
-        <svg class="pp-i" id="pp-i" viewBox="0 0 24 24"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>
-    </button>
-</div>
-</div>
 
-<div class="cmp">
-  <div class="cmp-hd">
-    <span class="stag">so sánh</span>
-    <span class="stag-teal">thường bị nhầm</span>
-  </div>
-  <div class="cmp-box">
-    <div class="cmp-toggle">
-      <button class="cmp-tbtn act-lh" id="b-lh">LINE-HEIGHT (CSS)</button>
-      <button class="cmp-tbtn" id="b-ls">LINE SPACING (FIGMA)</button>
-    </div>
-    <div class="cmp-main">
-      <div class="cmp-content">
-        <div class="cmp-text">Cùng một đoạn text.<br>Cùng font, cùng size.<br>Khoảng cách nhìn giống nhau.</div>
-        
-        <!-- CSS View -->
-        <div class="cmp-meas sh" id="m-css">
-          <div class="m-brk" style="top:14px;height:28px"><span class="m-brk-v">1.5×</span></div>
-        </div>
+    <script>
+        const sleep = ms => new Promise(r => setTimeout(r, ms));
 
-        <!-- Figma View -->
-        <div class="cmp-meas" id="m-fig">
-          <div class="m-xout" style="top:14px;height:14px"></div>
-          <div class="m-brk" style="top:28px;height:14px;border-color:var(--teal)"><span class="m-brk-v" style="color:var(--teal)">gap</span></div>
-        </div>
-      </div>
-    </div>
-    <div class="cmp-leg">
-      <div class="cmp-leg-i"><div class="cmp-dot"></div><span>CSS: đo từ baseline</span></div>
-      <div class="cmp-leg-i"><div class="cmp-dot ls"></div><span>Figma: đo khoảng hở</span></div>
-    </div>
-  </div>
-</div>
+        // Cell 1: Sweep through line-height values
+        async function runCell1() {
+            const numEl = document.getElementById('sw-num');
+            const fillEl = document.getElementById('sw-fill');
+            const textEl = document.getElementById('sw-text');
+            const vals = [1.0, 1.2, 1.4, 1.5, 1.6, 1.8, 2.0, 1.8, 1.6, 1.4, 1.2];
+            let i = 0;
+            while (true) {
+                const v = vals[i % vals.length];
+                textEl.style.lineHeight = v;
+                numEl.textContent = v.toFixed(1);
+                fillEl.style.height = ((v - 1.0) / 1.0 * 100) + '%';
+                i++;
+                await sleep(1400);
+            }
+        }
 
-<script>
-const INFO=[
-  {nm:'Line Height Scale',sz:'TYPOGRAPHY / SPACING',dc:'Kéo line-height từ 1.0 lên 2.0 — thấy text "thở" dần ra. 1.0 là mức sát nhất, chữ dính nhau.'},
-  {nm:'Body Comparison',sz:'SWEET SPOT 1.5',dc:'Cùng nội dung, 3 giá trị khác nhau — mức 1.5 thường là tỷ lệ vàng cho văn bản dài.'},
-  {nm:'UI Components',sz:'NAV VS LIST',dc:'Nav cần line-height chặt (1.0 - 1.2), list cần line-height thoáng hơn (1.4 - 1.6) để phân biệt các item.'},
-  {nm:'Responsive UI',sz:'MOBILE VS DESKTOP',dc:'Mobile cần line-height cao hơn desktop một chút vì màn hình nhỏ khiến việc tìm dòng tiếp theo khó hơn.'}
-];
+        // Cell 2: Alternate between CSS line-height view and Figma spacing view
+        async function runCell2() {
+            const mcCss = document.getElementById('mc-css');
+            const mcFig = document.getElementById('mc-fig');
+            const mlCss = document.getElementById('ml-css');
+            const mlFig = document.getElementById('ml-fig');
+            const mvCss = document.getElementById('mv-css');
+            const mvFig = document.getElementById('mv-fig');
 
-const el={
-  dn:$('dn'),ds:$('ds'),dd:$('dd'),hf:$('hf'),pff:$('pff'),
-  scn:$('scn'),scf:$('scf'),sct:$('sct'),
-  ua:$('ua'),uicl:$('uicl'),
-  blh:$('b-lh'),bls:$('b-ls'),mcss:$('m-css'),mfig:$('m-fig')
-};
-const frs=[0,1,2,3].map(i=>$('f'+i));
-const ctrBs=document.querySelectorAll('.ctr-b');
-const ppB=$('pp'),ppI=$('pp-i');
+            const phases = [
+                { css: { lh: 1.5, val: '1.5×', act: true }, fig: { lh: 1.5, val: '8px', act: false } },
+                { css: { lh: 2.0, val: '2.0×', act: true }, fig: { lh: 2.0, val: '16px', act: false } },
+                { css: { lh: 1.0, val: '1.0×', act: true }, fig: { lh: 1.0, val: '0px', act: false } },
+                { css: { lh: 1.5, val: '1.5×', act: false }, fig: { lh: 1.5, val: '8px', act: true } },
+                { css: { lh: 2.0, val: '2.0×', act: false }, fig: { lh: 2.0, val: '16px', act: true } },
+                { css: { lh: 1.0, val: '1.0×', act: false }, fig: { lh: 1.0, val: '0px', act: true } },
+            ];
+            let i = 0;
+            while (true) {
+                const p = phases[i % phases.length];
+                mlCss.style.lineHeight = p.css.lh;
+                mvCss.textContent = p.css.val;
+                mcCss.classList.toggle('active', p.css.act);
+                mlFig.style.lineHeight = p.fig.lh;
+                mvFig.textContent = p.fig.val;
+                mcFig.classList.toggle('active', p.fig.act);
+                i++;
+                await sleep(2200);
+            }
+        }
 
-let cur=0,pa=null,t0=0,isPaused=false,sweepT=null;
-const DUR=4500;
+        // Cell 3: Highlight each comparison column in sequence
+        async function runCell3() {
+            const cols = [
+                document.getElementById('col-tight'),
+                document.getElementById('col-optimal'),
+                document.getElementById('col-loose')
+            ];
+            const highs = [
+                [1, 0, 0],
+                [0, 1, 0],
+                [0, 0, 1],
+                [-1, -1, -1],
+            ];
+            let i = 0;
+            while (true) {
+                const h = highs[i % highs.length];
+                cols.forEach((c, ci) => {
+                    if (h[ci] === 1) {
+                        c.style.borderColor = 'rgba(232,140,46,0.5)';
+                        c.style.background = 'rgba(232,140,46,0.07)';
+                        c.style.transform = 'scale(1.03)';
+                    } else {
+                        c.style.borderColor = 'var(--border)';
+                        c.style.background = 'rgba(22,22,27,0.6)';
+                        c.style.transform = 'scale(1)';
+                    }
+                });
+                i++;
+                await sleep(2000);
+            }
+        }
 
-function $(id){return document.getElementById(id)}
+        // Cell 4: Cycle mobile vs desktop line-heights
+        async function runCell4() {
+            const mtM = document.getElementById('mt-m');
+            const mlM = document.getElementById('ml-m');
+            const mbM = document.getElementById('mb-m');
+            const mtD = document.getElementById('mt-d');
+            const mlD = document.getElementById('ml-d');
+            const mbD = document.getElementById('mb-d');
 
-function apply(i){
-  cur=i;
-  const s=INFO[i];el.dn.textContent=s.nm;el.ds.textContent=s.sz;el.dd.textContent=s.dc;
-  el.hf.textContent='0'+(i+1)+' / 04';
-  ctrBs.forEach((b,j)=>b.classList.toggle('act',j===i));
-  frs.forEach((f,j)=>f.classList.toggle('show',j===i));
-  clearTimeout(sweepT);
-  if(i===0) runSweep();
-  if(i===2) runUI();
-}
+            const states = [
+                { m: 1.6, d: 1.4, ms: 'MOBILE — LH 1.6', ds: 'DESKTOP — LH 1.4' },
+                { m: 1.2, d: 1.2, ms: 'MOBILE — LH 1.2', ds: 'DESKTOP — LH 1.2' },
+                { m: 2.0, d: 1.0, ms: 'MOBILE — LH 2.0', ds: 'DESKTOP — LH 1.0' },
+                { m: 1.8, d: 1.3, ms: 'MOBILE — LH 1.8', ds: 'DESKTOP — LH 1.3' },
+            ];
+            let i = 0;
+            while (true) {
+                const s = states[i % states.length];
+                mlM.textContent = 'line-height: ' + s.m.toFixed(1);
+                mbM.style.lineHeight = s.m;
+                mtM.textContent = s.ms;
+                mlD.textContent = 'line-height: ' + s.d.toFixed(1);
+                mbD.style.lineHeight = s.d;
+                mtD.textContent = s.ds;
+                i++;
+                await sleep(2400);
+            }
+        }
 
-function runSweep(){
-  const vals=[1.0,1.2,1.4,1.5,1.6,1.8,2.0];
-  let si=0;
-  function nextV(){
-    if(si>=vals.length || cur!==0) return;
-    const v=vals[si];
-    el.sct.style.lineHeight=v;
-    el.scn.textContent=v.toFixed(1);
-    el.scf.style.height=((v-1.0)/1.0*100)+'%';
-    si++;
-    sweepT=setTimeout(nextV, 500);
-  }
-  nextV();
-}
-
-function runUI(){
-  const lis=el.uicl.querySelectorAll('.uic-li');
-  el.ua.textContent='line-height: 1.0';
-  lis.forEach(l=>l.style.lineHeight='1.0');
-  setTimeout(()=>{
-    if(cur!==2) return;
-    el.ua.textContent='line-height: 2.0';
-    lis.forEach(l=>l.style.lineHeight='2.0');
-    setTimeout(()=>{
-      if(cur!==2) return;
-      el.ua.textContent='line-height: 1.5';
-      lis.forEach(l=>l.style.lineHeight='1.5');
-    }, 1500);
-  }, 1500);
-}
-
-// Comparison Logic
-let cmpV = 'lh';
-function updateCmp(v){
-  cmpV = v;
-  el.blh.classList.toggle('act-lh', v==='lh');
-  el.bls.classList.toggle('act-ls', v==='ls');
-  el.mcss.classList.toggle('sh', v==='lh');
-  el.mfig.classList.toggle('sh', v==='ls');
-}
-el.blh.onclick=()=>updateCmp('lh');
-el.bls.onclick=()=>updateCmp('ls');
-
-// Auto-toggle comparison
-setInterval(()=>{
-  if(document.hidden) return;
-  updateCmp(cmpV==='lh'?'ls':'lh');
-}, 3000);
-
-function tk(n){
-    if(isPaused) return;
-    const p=Math.min(100,(n-t0)/DUR*100);
-    el.pff.style.width=p+'%';
-    if(p<100)pa=requestAnimationFrame(tk);
-    else next();
-}
-
-function startProg(){t0=performance.now();el.pff.style.transition='none';el.pff.style.width='0%';pa=requestAnimationFrame(tk)}
-function next(){if(isPaused)return;cur=(cur+1)%4;apply(cur);startProg()}
-
-function togglePP(){
-    isPaused=!isPaused;
-    ppI.innerHTML=isPaused ? '<path d="M8 5v14l11-7z"/>' : '<path d="M6 4h4v16H6zm8 0h4v16h-4z"/>';
-    if(!isPaused){
-        t0=performance.now() - (parseFloat(el.pff.style.width||0)/100*DUR);
-        pa=requestAnimationFrame(tk);
-    }
-}
-
-ctrBs.forEach(b=>{
-    b.onclick=()=>{
-        isPaused=true;
-        ppI.innerHTML='<path d="M8 5v14l11-7z"/>';
-        apply(parseInt(b.dataset.i));
-        el.pff.style.width='0%';
-    }
-});
-
-ppB.onclick=togglePP;
-
-function scale(){const w=$('la-wrap'),b=$('ab'),s=w.clientWidth/700;b.style.transform='scale('+s+')';w.style.height=Math.ceil(250*s)+'px'}
-window.addEventListener('resize',scale);
-requestAnimationFrame(()=>requestAnimationFrame(scale));
-
-apply(0);
-startProg();
-</script>
+        runCell1(); runCell2(); runCell3(); runCell4();
+    </script>
 </body>
 </html>
