@@ -31,6 +31,7 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
 /* Component palette */
 .palette{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px}
 .pal-item{
+  position:relative;
   padding:8px 14px;border:1px solid var(--border);background:var(--bg-card);
   font-size:12px;font-weight:500;color:var(--muted);cursor:pointer;
   transition:all .25s;display:flex;align-items:center;gap:8px;user-select:none;
@@ -38,6 +39,39 @@ body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(
 .pal-item:hover{border-color:var(--accent-border);color:var(--fg)}
 .pal-item.on{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
 .pal-item i{font-size:11px}
+
+/* Badge Hint */
+.btn-hint {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent);
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  padding: 2px 6px;
+  border-radius: 2px;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: pulseTop 2s infinite;
+  z-index: 10;
+}
+.btn-hint::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid var(--accent);
+}
+@keyframes pulseTop {
+  0% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.1); }
+  100% { transform: translateX(-50%) scale(1); }
+}
 
 /* Canvas area */
 .canvas{background:var(--bg-card);border:1px solid var(--border);min-height:340px;position:relative;overflow:hidden;margin-bottom:16px;transition:border-color .3s}
@@ -141,6 +175,7 @@ function renderPalette(){
   palette.innerHTML = paletteComps.map(c=>`
     <button class="pal-item${activeComps.has(c.id)?' on':''}" data-id="${c.id}" aria-pressed="${activeComps.has(c.id)}">
       <i class="fa-solid ${c.icon}"></i>${c.label}
+      ${c.id === 'navbar' && !activeComps.has('navbar') ? '<div class="btn-hint" id="navbarHint">Thử ngay!</div>' : ''}
     </button>`).join('');
   palette.querySelectorAll('.pal-item').forEach(b=>{
     b.addEventListener('click',()=>{
