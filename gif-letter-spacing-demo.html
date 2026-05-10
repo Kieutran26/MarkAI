@@ -3,292 +3,255 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Letter Spacing — Vibecode Glossary</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<title>Letter Spacing Demo</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
 <style>
   :root {
     --bg: #0f0f12;
-    --bg-card: #17171c;
+    --bg-card: #16161b;
     --fg: #e8e4dc;
-    --muted: #6e6e7a;
-    --accent: #e88c2e;
-    --accent-soft: rgba(232,140,46,0.13);
-    --accent-border: rgba(232,140,46,0.3);
+    --muted: #707070;
+    --accent: #E88C2E;
     --border: #2a2a33;
-    --surface: #1e1e25;
-    --success: #3a9e5c;
-    --success-soft: rgba(58,158,92,0.13);
-    --warning: #c49030;
-    --warning-soft: rgba(196,144,48,0.1);
   }
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{
-    background:var(--bg);    color: var(--fg);
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
     font-family: 'Space Grotesk', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
   }
-  /* Nền dot grid */
-  body::before{
-    content:'';position:fixed;inset:0;
-    background-image:radial-gradient(rgba(255,255,255,0.025) 1px,transparent 1px);
-    background-size:22px 22px;pointer-events:none;z-index:0;
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    width: 100%;
+    max-width: 940px;
   }
-  /* Nền glow */
-  body::after{
-    content:'';position:fixed;top:-20%;right:-10%;
-    width:600px;height:600px;
-    background:radial-gradient(circle,rgba(232,140,46,0.04) 0%,transparent 70%);
-    pointer-events:none;z-index:0;
+  @media (max-width: 768px) {
+    .grid-container {
+      grid-template-columns: 1fr;
+    }
   }
-
-  .entry{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:24px 24px 10px}
-
-  /* === HEADER === */
-  .term-header{margin-bottom:28px}
-  .badge{
-    display:inline-block;font-family:'JetBrains Mono',monospace;
-    font-size:10px;font-weight:600;letter-spacing:2px;text-transform:uppercase;
-    color:var(--accent);background:var(--accent-soft);
-    border:1px solid var(--accent-border);padding:4px 12px;margin-bottom:16px;
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    position: relative;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    min-height: 240px;
   }
-  .term-header h1{
-    font-size:clamp(34px,6vw,54px);font-weight:800;
-    letter-spacing:-2px;line-height:1.08;color:var(--fg);
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent);
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
   }
-  .term-header .sub{
-    font-family:'JetBrains Mono',monospace;
-    font-size:13px;color:var(--muted);margin-top:6px;
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
   }
-
-  /* === ONE-LINER === */
-  .one-liner{
-    font-size:16px;color:var(--fg);opacity:.85;
-    max-width:640px;line-height:1.7;
-    padding:18px 0;border-top:1px solid var(--border);
-    border-bottom:1px solid var(--border);margin-bottom:40px;
+  .c-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    background: var(--border);
+    color: var(--fg);
+    padding: 2px 6px;
+    border-radius: 2px;
+    font-weight: 600;
   }
-  .one-liner strong{color:var(--accent);font-weight:600}
-
-  /* === SECTION LABEL === */
-  .sec-label{
-    font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;
-    letter-spacing:2px;text-transform:uppercase;color:var(--muted);
-    margin-bottom:20px;display:flex;align-items:center;gap:10px;
+  .c-name {
+    font-size: 14px;
+    font-weight: 600;
   }
-  .sec-label::after{content:'';flex:1;height:1px;background:var(--border)}
-
-  /* === SIM CARDS === */
-  .sim-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
-  @media(max-width:700px){.sim-cards{grid-template-columns:repeat(2,1fr)}}
-
-  .sim-card{
-    background:var(--bg-card);border:1px solid var(--border);
-    padding:22px 14px 18px;cursor:pointer;position:relative;
-    overflow:hidden;transition:border-color .3s,background .3s;
+  .indicator {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 1.5s infinite cubic-bezier(0.4, 0, 0.2, 1);
   }
-  .sim-card::before{
-    content:'';position:absolute;top:0;left:0;right:0;height:2px;
-    background:var(--accent);transform:scaleX(0);transform-origin:left;
-    transition:transform .35s ease;
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(232,140,46,0.6); }
+    70% { box-shadow: 0 0 0 6px rgba(232,140,46,0); }
+    100% { box-shadow: 0 0 0 0 rgba(232,140,46,0); }
   }
-  .sim-card:hover{border-color:var(--accent-border)}
-  .sim-card.active{border-color:var(--accent);background:var(--surface)}
-  .sim-card.active::before{transform:scaleX(1)}
-
-  .c-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px;margin-bottom:4px}
-  .c-name{
-    font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;
-    color:var(--muted);margin-bottom:24px;transition:color .3s;
+  .demo-area {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    overflow: hidden;
   }
-  .sim-card.active .c-name{color:var(--accent)}
-
-  /* Chữ */
-  .letters-wrap{position:relative;min-height:56px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
-  .letters-text{font-size:26px;font-weight:700;text-transform:uppercase;white-space:nowrap}
-  .letter{
-    display:inline-block;opacity:0;transform:translateY(14px);
-    animation:ltrIn .35s ease forwards;
+  .demo-text {
+    font-size: 32px;
+    font-weight: 700;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
   }
-  @keyframes ltrIn{to{opacity:1;transform:translateY(0)}}
-
-  /* Gap lines */
-  .gap-lines{position:absolute;inset:0;pointer-events:none}
-  .gap-line{
-    position:absolute;top:50%;width:1px;height:0;
-    background:var(--accent);opacity:0;
-    transition:height .4s cubic-bezier(.4,0,.2,1),opacity .3s ease;
-    transform:translateY(-50%);
+  .ins {
+    border-left: 2px solid var(--accent);
+    padding-left: 12px;
+    color: var(--muted);
+    font-size: 11.5px;
+    line-height: 1.5;
   }
-  .gap-shape{
-    position:absolute;top:0;bottom:0;
-    background:rgba(232,140,46,0.12);
-    border-left: 1px solid rgba(232,140,46,0.2);
-    border-right: 1px solid rgba(232,140,46,0.2);
-    opacity:0;
-    transition:opacity .3s ease;
-    pointer-events:none;
-    z-index: 0;
+  .ins strong {
+    color: var(--accent);
+    font-weight: 600;
   }
-  .sim-card.active .gap-shape{opacity:1}
-
-  .c-val{
-    font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--muted);
-    text-align:center;transition:color .3s,font-weight .3s;
+  
+  /* Specific styling for Kerning */
+  .kerning-demo {
+    font-family: 'Times New Roman', serif;
+    font-size: 48px;
   }
-  .sim-card.active .c-val{color:var(--accent);font-weight:600}
-
-  /* === INSIGHT === */
-  .insight-box{
-    background:var(--surface);border:1px solid var(--border);
-    padding:18px 22px;display:flex;align-items:flex-start;gap:12px;margin-bottom:48px;
-  }
-  .ins-icon{color:var(--accent);font-size:13px;margin-top:3px;flex-shrink:0}
-  .ins-text{
-    font-size:14px;color:var(--fg);opacity:.85;line-height:1.65;
-    transition:opacity .25s,transform .25s;
-  }
-  .ins-text.fading{opacity:0;transform:translateY(6px)}
-
-
-  /* Fade-in */
-  .fu{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
-  .fu.in{opacity:1;transform:translateY(0)}
-
-  @media(prefers-reduced-motion:reduce){
-    *,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}
-  }
-  @media(max-width:480px){
-    .entry{padding:28px 14px 60px}
-    .preview{padding:32px 16px}
-    .insight-box{padding:14px 16px}
-    .ctx-btn{padding:7px 10px;font-size:12px}
+  .k-char {
+    display: inline-block;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
   }
 </style>
 </head>
 <body>
-<div id="app-root">
-<div class="entry">
-  <h1 style="font-size:clamp(30px,5vw,48px); font-weight:800; letter-spacing:-1px; margin-bottom:20px;">Letter Spacing</h1>
 
-  <!-- 01 — MÔ PHỎNG -->
-  <section class="fu" aria-label="Mô phỏng letter spacing">
-    <div class="sec-label">01 — Mô phỏng</div>
-    <div class="sim-cards" id="simCards"></div>
-    <div class="insight-box">
-      <i class="fa-solid fa-lightbulb ins-icon"></i>
-      <p class="ins-text" id="insText">Nhấn vào một kiểu spacing để xem giải thích.</p>
+<div class="grid-container">
+  
+  <!-- Card 1: Tracking -->
+  <div class="card">
+    <div class="indicator"></div>
+    <div class="card-header">
+      <div class="c-num">01</div>
+      <div class="c-name">Tracking (Toàn cục)</div>
     </div>
-  </section>
+    <div class="demo-area">
+      <div class="demo-text" id="demo1">SPACING</div>
+    </div>
+    <div class="ins">
+      <strong>Tracking</strong> điều chỉnh khoảng cách đồng đều giữa tất cả các ký tự trong một từ hoặc một khối văn bản.
+    </div>
+  </div>
 
-</div>
+  <!-- Card 2: Kerning -->
+  <div class="card">
+    <div class="indicator"></div>
+    <div class="card-header">
+      <div class="c-num">02</div>
+      <div class="c-name">Kerning (Cục bộ)</div>
+    </div>
+    <div class="demo-area">
+      <div class="demo-text kerning-demo">
+        <span class="k-char" id="demo2-a">A</span><span class="k-char" id="demo2-v">V</span><span class="k-char">A</span>
+      </div>
+    </div>
+    <div class="ins">
+      <strong>Kerning</strong> tinh chỉnh khoảng cách cục bộ giữa hai ký tự cụ thể (như A và V) để tạo sự cân bằng thị giác.
+    </div>
+  </div>
+
+  <!-- Card 3: Uppercase -->
+  <div class="card">
+    <div class="indicator"></div>
+    <div class="card-header">
+      <div class="c-num">03</div>
+      <div class="c-name">Chữ In Hoa</div>
+    </div>
+    <div class="demo-area">
+      <div class="demo-text" id="demo3">PREMIUM</div>
+    </div>
+    <div class="ins">
+      Chữ in hoa thường cần <strong>letter-spacing rộng hơn</strong> để dễ đọc và tạo cảm giác sang trọng, trang trọng.
+    </div>
+  </div>
+
+  <!-- Card 4: Lowercase -->
+  <div class="card">
+    <div class="indicator"></div>
+    <div class="card-header">
+      <div class="c-num">04</div>
+      <div class="c-name">Chữ Thường</div>
+    </div>
+    <div class="demo-area">
+      <div class="demo-text" id="demo4" style="text-transform: lowercase;">reading</div>
+    </div>
+    <div class="ins">
+      Chữ thường được thiết kế để kết nối liền mạch, việc <strong>tăng letter-spacing quá mức</strong> sẽ phá vỡ liên kết này.
+    </div>
+  </div>
+
 </div>
 
 <script>
-  /* === DỮ LIỆU === */
+  const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
-  const presets = [
-    { num:'01', name:'Tight', val:-1, text:'SPACE',
-      ins:'Chữ khít → gấp gáp, mạnh mẽ. Hay dùng trong headline, poster event. Nhưng text dài sẽ rất khó đọc — mắt bị "ngạt".' },
-    { num:'02', name:'Normal', val:0, text:'SPACE',
-      ins:'Mặc định của font — an toàn, không có cá tính. Đây là baseline. Mọi thay đổi đều so sánh với mức này.' },
-    { num:'03', name:'Wide', val:6, text:'SPACE',
-      ins:'Chữ mở ra → không khí, dễ thở, "breathing room". Thường thấy trong logo luxury, brand identity cao cấp.' },
-    { num:'04', name:'Extra Wide', val:16, text:'SPACE',
-      ins:'Chữ rất rải → nghệ thuật, declaration. Dùng cho hero text, slogan lớn. Tuyệt đối không dùng cho body text — mắt sẽ mệt.' }
-  ];
-
-  /* === DOM === */
-  const simCardsEl = document.getElementById('simCards');
-  const insTextEl = document.getElementById('insText');
-
-  let activeIdx = -1;
-
-  /* === RENDER SIM CARDS === */
-  function renderSim() {
-    simCardsEl.innerHTML = presets.map((p, ci) => {
-      const ltrs = p.text.split('').map((l, li) => {
-        const d = (ci * .12) + (li * .06) + .45;
-        return `<span class="letter" style="animation-delay:${d}s">${l}</span>`;
-      }).join('');
-      return `
-        <div class="sim-card" data-i="${ci}" tabindex="0" role="button"
-             aria-label="${p.name} spacing ${p.val}px">
-          <div class="c-num">${p.num}</div>
-          <div class="c-name">${p.name}</div>
-          <div class="letters-wrap">
-            <div class="letters-text" style="letter-spacing:${p.val}px">${ltrs}</div>
-            <div class="gap-lines"></div>
-          </div>
-          <div class="c-val">${p.val}px</div>
-        </div>`;
-    }).join('');
-
-    simCardsEl.querySelectorAll('.sim-card').forEach(c => {
-      const handler = () => activateCard(+c.dataset.i);
-      c.addEventListener('click', handler);
-      c.addEventListener('keydown', e => {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handler(); }
-      });
-    });
+  // Loop 1: Tracking
+  async function loop1() {
+    const el = document.getElementById('demo1');
+    while(true) {
+      el.style.letterSpacing = '12px';
+      await sleep(1500);
+      el.style.letterSpacing = '-1px';
+      await sleep(1500);
+    }
   }
 
-  /* === KÍCH HOẠT CARD === */
-  function activateCard(i) {
-    simCardsEl.querySelectorAll('.sim-card').forEach(c => c.classList.remove('active'));
-    if (activeIdx === i) { activeIdx = -1; setIns('Nhấn vào một kiểu spacing để xem giải thích.'); return; }
-    activeIdx = i;
-    const card = simCardsEl.querySelector(`[data-i="${i}"]`);
-    card.classList.add('active');
-    drawLines(card);
-    setIns(presets[i].ins);
+  // Loop 2: Kerning
+  async function loop2() {
+    const charA = document.getElementById('demo2-a');
+    const charV = document.getElementById('demo2-v');
+    while(true) {
+      charA.style.transform = 'translateX(4px)';
+      charV.style.transform = 'translateX(-4px)';
+      await sleep(1500);
+      charA.style.transform = 'translateX(0px)';
+      charV.style.transform = 'translateX(0px)';
+      await sleep(1500);
+    }
   }
 
-  /* === VẼ GAP SHAPES === */
-  function drawLines(card) {
-    const cont = card.querySelector('.gap-lines');
-    const ltrs = card.querySelectorAll('.letter');
-    cont.innerHTML = '';
-    requestAnimationFrame(() => requestAnimationFrame(() => {
-      const wrapR = card.querySelector('.letters-wrap').getBoundingClientRect();
-      for (let i = 0; i < ltrs.length - 1; i++) {
-        const r1 = ltrs[i].getBoundingClientRect();
-        const r2 = ltrs[i + 1].getBoundingClientRect();
-        
-        const shape = document.createElement('div');
-        shape.className = 'gap-shape';
-        shape.style.left = (r1.right - wrapR.left) + 'px';
-        shape.style.width = (r2.left - r1.right) + 'px';
-        shape.style.transitionDelay = (i * .05) + 's';
-        cont.appendChild(shape);
-      }
-    }));
+  // Loop 3: Uppercase
+  async function loop3() {
+    const el = document.getElementById('demo3');
+    while(true) {
+      el.style.letterSpacing = '16px';
+      await sleep(1500);
+      el.style.letterSpacing = '2px';
+      await sleep(1500);
+    }
   }
 
-  /* === INSIGHT TEXT === */
-  function setIns(t) {
-    insTextEl.classList.add('fading');
-    setTimeout(() => { insTextEl.textContent = t; insTextEl.classList.remove('fading'); }, 250);
+  // Loop 4: Lowercase
+  async function loop4() {
+    const el = document.getElementById('demo4');
+    while(true) {
+      el.style.letterSpacing = '8px';
+      await sleep(1500);
+      el.style.letterSpacing = '0px';
+      await sleep(1500);
+    }
   }
 
-  /* === RESIZE → redraw lines === */
-  let rto;
-  window.addEventListener('resize', () => {
-    clearTimeout(rto);
-    rto = setTimeout(() => {
-      if (activeIdx >= 0) drawLines(simCardsEl.querySelector(`[data-i="${activeIdx}"]`));
-    }, 200);
-  });
-
-  /* === FADE-IN === */
-  function initFU() {
-    document.querySelectorAll('.fu').forEach((el, i) => {
-      setTimeout(() => el.classList.add('in'), 60 + i * 110);
-    });
-  }
-
-  /* === INIT === */
-  renderSim();
-  initFU();
+  // Khởi chạy các vòng lặp độc lập với độ trễ khác nhau để tạo cảm giác tự nhiên
+  setTimeout(loop1, 0);
+  setTimeout(loop2, 400);
+  setTimeout(loop3, 800);
+  setTimeout(loop4, 1200);
 </script>
 </body>
 </html>
