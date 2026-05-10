@@ -3,273 +3,336 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Font Weight Demo — Animated</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<title>Font weight Demo — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;--card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a;--ok:#4a8a5a;--err:#a03030}
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);display:flex;flex-direction:column;align-items:center;min-height:100vh;font-family:'Space Grotesk',sans-serif;color:var(--fg);overflow:hidden}
-.aw{width:100%;height:500px;display:flex;flex-direction:column}
-.ab{flex:1;background:var(--card);position:relative;overflow:hidden;display:flex;flex-direction:column}
-.hd{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.02)}
-.hd-t{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--accent);letter-spacing:3px}
-.hd-f{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
-.la{position:relative;width:100%;flex:1;background:linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);background-size:40px 40px;overflow:hidden}
-.fr{position:absolute;inset:0;display:flex;flex-direction:column;padding:24px 32px 40px;opacity:0;pointer-events:none;transition:opacity .4s}.fr.show{opacity:1;pointer-events:auto}
-.si{opacity:0;transform:translateY(8px);transition:opacity .3s,transform .3s}.fr.show .si{opacity:1;transform:translateY(0)}
-.fl{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px}
+:root {
+  --bg: #0f0f12;
+  --bgc: #16161b;
+  --bgi: #121217;
+  --bd: #282830;
+  --tx: #e8e4dc;
+  --txm: #707070;
+  --ac: #E88C2E;
+  --abg: rgba(232, 140, 46, 0.1);
+  --abg2: rgba(232, 140, 46, 0.2);
+}
 
-/* Weight table */
-.wt{display:flex;flex-direction:column;gap:4px;flex:1;min-height:0}
-.wr{display:flex;align-items:center;gap:12px;padding:4px 0;border-bottom:1px solid rgba(48,44,40,.3)}
-.wr:last-child{border-bottom:none}
-.wn{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);min-width:64px;letter-spacing:.5px}
-.wv{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);min-width:32px;font-weight:700}
-.ws{flex:1;font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.wu{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);min-width:110px;text-align:right;letter-spacing:.3px;opacity:.7}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* Hierarchy */
-.hi{display:flex;flex-direction:column;gap:8px;flex:1;justify-content:center}
-.hl{display:flex;align-items:baseline;gap:14px;border-left:4px solid var(--accent);padding-left:14px}
-.hl-label{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);min-width:50px;letter-spacing:1.5px;flex-shrink:0}
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--tx);
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+}
 
-/* UI components */
-.uc{display:flex;gap:16px;flex:1;min-height:0}
-.uc-nav{flex:1;border:1px solid var(--border);background:var(--card-alt);padding:14px 18px;display:flex;flex-direction:column;justify-content:center}
-.uc-nav-t{font-size:18px;font-weight:700;margin-bottom:10px}
-.uc-nav-lks{display:flex;gap:12px}
-.uc-nav-lk{font-size:13px;color:var(--muted)}
-.uc-profile{flex:1;border:1px solid var(--border);background:var(--card-alt);padding:14px 18px;display:flex;gap:14px;align-items:center}
-.uc-avatar{width:48px;height:48px;background:var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
-.uc-info{flex:1;display:flex;flex-direction:column;gap:3px}
-.uc-name{font-size:14px}
-.uc-role{font-size:10px;color:var(--muted)}
-.uc-btn{padding:0 14px;height:28px;background:var(--accent);border:none;color:#fff;font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:600;flex-shrink:0}
+.g {
+  width: 100%;
+  max-width: 940px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
 
-/* Pulsing Weight Scale (New Step 4) */
-.ws-wrap{display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;gap:20px;margin-top:-20px}
-.ws-top{text-align:center}
-.ws-char{font-size:100px;line-height:1;transition:font-weight .15s,transform .15s}
-.ws-char.pulse{transform:scale(1.1)}
-.ws-meta{font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--muted);margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px}
-.ws-meta .wsv{color:var(--accent);font-weight:700;font-size:20px}
-.ws-scale{display:flex;gap:6px;width:100%;max-width:600px}
-.ws-it{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 0;border:1px solid transparent;transition:all .2s}
-.ws-it.on{border-color:var(--accent);background:rgba(212,113,42,.1)}
-.ws-it-ch{font-size:14px;line-height:1;color:var(--muted);transition:color .2s}
-.ws-it.on .ws-it-ch{color:var(--fg)}
-.ws-it-nm{font-family:'JetBrains Mono',monospace;font-size:8px;color:rgba(255,255,255,.2);letter-spacing:.5px;text-transform:uppercase}
-.ws-it.on .ws-it-nm{color:var(--accent)}
+@media (max-width: 600px) {
+  .g { grid-template-columns: 1fr; }
+}
 
-.inf{padding:16px 20px;border-top:1px solid var(--border);background:rgba(0,0,0,.2)}
-.dn{font-size:20px;font-weight:800;line-height:1.1}
-.ds{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--accent);margin-top:4px}
-.dd2{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.5}
-.di{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);opacity:.8}
+.c {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
 
-/* Controls - Standardized circular style */
-.ctrl{display:flex;align-items:center;justify-content:center;gap:20px;padding:16px 20px;background:var(--bg);border-top:1px solid var(--border);position:relative}
-.prog-w{position:absolute;top:-1px;left:0;width:100%;height:2px;background:var(--border)}
-.prog-b{height:100%;background:var(--accent);width:0%;transition:width .1s linear}
+.c::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--ac);
+}
 
-.btng{display:flex;background:var(--card-alt);border:1px solid var(--border);padding:2px}
-.btn-s{border:none;background:transparent;color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;padding:6px 12px;cursor:pointer;transition:all .2s;letter-spacing:1px}
-.btn-s.on{background:var(--border);color:var(--accent)}
-.btn-s:hover:not(.on){color:var(--fg)}
+.c::after {
+  content: '';
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 6px;
+  height: 6px;
+  background: var(--ac);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--ac);
+  animation: pulse 2s infinite;
+}
 
-.btn-p{width:36px;height:36px;border-radius:50%;border:none;background:var(--accent);color:var(--bg);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .2s,background .2s}
-.btn-p:hover{transform:scale(1.05);background:#e58a44}
-.btn-p svg{width:18px;height:18px;fill:currentColor}
+@keyframes pulse {
+  0% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0.3; transform: scale(1); }
+}
 
-@media(max-width:600px){.uc{flex-direction:column}.ws-char{font-size:70px}.ws-scale{gap:2px}.ws-it-nm{display:none}.wt{overflow-y:auto}.fr{padding:16px 20px}.ab{height:auto}}
+.ch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.ch .n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ac);
+  background: var(--abg);
+  border: 1px solid var(--abg2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+.ch h2 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  text-transform: uppercase;
+}
+
+.st {
+  background: var(--bgi);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  flex: 1;
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.ins {
+  margin-top: 14px;
+  font-size: 11.5px;
+  color: var(--txm);
+  line-height: 1.6;
+  padding-left: 12px;
+  border-left: 2px solid var(--ac);
+}
+
+.ins strong {
+  color: var(--ac);
+  font-weight: 600;
+}
+
+.pr {
+  margin-top: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: #4ade80;
+  opacity: 0.8;
+}
+
+/* Weight specific */
+.weight-text {
+  font-size: 42px;
+  transition: font-weight 0.3s ease;
+}
+
+.hierarchy-box {
+  text-align: left;
+  width: 100%;
+}
+
+.ui-box {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.btn {
+  padding: 8px 16px;
+  background: var(--ac);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.label {
+  font-size: 12px;
+  color: var(--txm);
+}
+
+.scale-container {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.scale-bar {
+  width: 4px;
+  background: var(--bd);
+  transition: height 0.3s, background 0.3s;
+}
+
+.scale-bar.active {
+  background: var(--ac);
+}
+
 </style>
 </head>
 <body>
 
-<div class="aw">
-  <div class="ab">
-    <div class="hd"><span class="hd-t">FONT WEIGHT</span><span class="hd-f" id="hf">01 / 04</span></div>
-    <div class="la">
-      <div class="prog-w"><div class="prog-b" id="pb"></div></div>
-      
-      <!-- F0: Weight Table -->
-      <div class="fr" id="f0">
-        <div class="fl si">01 FONT WEIGHT SCALE</div>
-        <div class="wt si">
-          <div class="wr"><span class="wn">Thin</span><span class="wv">100</span><span class="ws" style="font-weight:100">The quick brown fox jumps</span><span class="wu">decoration</span></div>
-          <div class="wr"><span class="wn">Light</span><span class="wv">300</span><span class="ws" style="font-weight:300">The quick brown fox jumps</span><span class="wu">subhead</span></div>
-          <div class="wr"><span class="wn">Regular</span><span class="wv">400</span><span class="ws" style="font-weight:400">The quick brown fox jumps</span><span class="wu">body text</span></div>
-          <div class="wr"><span class="wn">Medium</span><span class="wv">500</span><span class="ws" style="font-weight:500">The quick brown fox jumps</span><span class="wu">nav links</span></div>
-          <div class="wr"><span class="wn">Semi</span><span class="wv">600</span><span class="ws" style="font-weight:600">The quick brown fox jumps</span><span class="wu">subheading</span></div>
-          <div class="wr"><span class="wn">Bold</span><span class="wv">700</span><span class="ws" style="font-weight:700">The quick brown fox jumps</span><span class="wu">heading</span></div>
-          <div class="wr"><span class="wn">Extra</span><span class="wv">800</span><span class="ws" style="font-weight:800">The quick brown fox jumps</span><span class="wu">hero</span></div>
-          <div class="wr"><span class="wn">Black</span><span class="wv">900</span><span class="ws" style="font-weight:900">The quick brown fox jumps</span><span class="wu">display</span></div>
-        </div>
-      </div>
+<div class="g">
+  <!-- 01: Sự nhấn mạnh -->
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>Sự nhấn mạnh</h2></div>
+    <div class="st">
+      <div id="basicText" class="weight-text">QUAN TRỌNG</div>
+    </div>
+    <p class="ins"><strong>Gây chú ý:</strong> Giống như dùng <strong>bút dạ quang</strong> tô đậm từ khóa. Chữ càng đậm càng hút mắt, giúp user không bỏ lỡ thông điệp chính.</p>
+    <p class="pr">Prompt: "Làm chữ 'QUAN TRỌNG' đậm lên (700) để nổi bật"</p>
+  </section>
 
-      <!-- F1: Hierarchy -->
-      <div class="fr" id="f1">
-        <div class="fl si">02 TYPOGRAPHY HIERARCHY</div>
-        <div class="hi si">
-          <div class="hl"><span class="hl-label">H1 · 800</span><span class="ws" style="font-size:28px;font-weight:800">Build products that scale</span></div>
-          <div class="hl" style="border-left-color:var(--border-hi)"><span class="hl-label">H2 · 600</span><span class="ws" style="font-size:20px;font-weight:600">Powerful infrastructure for teams</span></div>
-          <div class="hl" style="border-left-color:var(--muted)"><span class="hl-label">H3 · 600</span><span class="ws" style="font-size:16px;font-weight:600">Get started in minutes</span></div>
-          <div class="hl" style="border-left-color:transparent"><span class="hl-label">BODY · 400</span><span class="ws" style="font-size:13px;font-weight:400;color:var(--muted);white-space:normal">Deploy globally with zero configuration. Our platform handles scaling, security, and monitoring automatically.</span></div>
-          <div class="hl" style="border-left-color:transparent"><span class="hl-label">CAPTION · 300</span><span class="ws" style="font-size:10px;font-weight:300;color:var(--muted);letter-spacing:1px;text-transform:uppercase">Last updated 2 hours ago</span></div>
-        </div>
-      </div>
-
-      <!-- F2: UI Components -->
-      <div class="fr" id="f2">
-        <div class="fl si">03 UI COMPONENT EXAMPLES</div>
-        <div class="uc si">
-          <div class="uc-nav">
-            <div class="uc-nav-t" style="font-weight:700">BRAND</div>
-            <div class="uc-nav-lks"><span style="font-weight:500">Home</span><span style="font-weight:500">Product</span><span style="font-weight:500">Pricing</span></div>
-          </div>
-          <div class="uc-profile">
-            <div class="uc-avatar">IMG</div>
-            <div class="uc-info">
-              <div style="font-weight:600">Linh Nguyen</div>
-              <div style="font-weight:400;color:var(--muted);font-size:11px">Product Designer</div>
-            </div>
-            <button class="uc-btn" style="font-weight:600">Follow</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- F3: Weight Scale Pulsing -->
-      <div class="fr" id="f3">
-        <div class="fl si">04 DYNAMIC WEIGHT SCALE</div>
-        <div class="ws-wrap si">
-          <div class="ws-top">
-            <div class="ws-char" id="wsch">Aa</div>
-            <div class="ws-meta"><span class="wsv" id="wsv">400</span><span>·</span><span id="wsn">Regular</span></div>
-          </div>
-          <div class="ws-scale" id="wssc"></div>
-        </div>
+  <!-- 02: Dải độ dày -->
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Dải độ dày</h2></div>
+    <div class="st">
+      <div style="display: flex; flex-direction: column; gap: 12px; align-items: center;">
+        <div id="scaleText" class="weight-text" style="font-size: 64px;">Aa</div>
+        <div class="scale-container" id="scaleBars"></div>
+        <div id="scaleValue" style="font-family: 'JetBrains Mono'; color: var(--ac); font-size: 14px;">400</div>
       </div>
     </div>
+    <p class="ins"><strong>9 nấc dày mỏng:</strong> Từ <strong>100 (siêu mảnh)</strong> đến <strong>900 (siêu đặc)</strong>. Giúp bạn tinh chỉnh độ "nặng" của chữ cho vừa mắt nhất.</p>
+    <p class="pr">Prompt: "Thử font-weight 300 cho tiêu đề nhìn cho thanh thoát"</p>
+  </section>
 
-    <div class="inf">
-      <div class="dn" id="dn">Weight Table</div>
-      <div class="ds" id="ds">THANG ĐỘ NẶNG CHỮ</div>
-      <div class="dd2" id="dd2">Từ 100 (mảnh) đến 900 (đậm) — mỗi số = 1 mức độ đậm, quyết định visual hierarchy</div>
-      <div class="di" id="di">Khi nói "đậm lên" → nói rõ font-weight (600 hay 700), dev mới biết chỉnh đúng</div>
-    </div>
-
-    <div class="ctrl">
-      <div class="btng">
-        <button class="btn-s on" onclick="jump(0)">TABLE</button>
-        <button class="btn-s" onclick="jump(1)">HIERARCHY</button>
-        <button class="btn-s" onclick="jump(2)">UI KIT</button>
-        <button class="btn-s" onclick="jump(3)">SCALE</button>
+  <!-- 03: Thứ tự đọc -->
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Thứ tự đọc</h2></div>
+    <div class="st">
+      <div class="hierarchy-box">
+        <h3 id="hTitle" style="font-size: 22px; margin-bottom: 6px;">Tiêu đề chính</h3>
+        <p id="hBody" style="font-size: 13px; color: var(--txm); line-height: 1.4;">Đây là nội dung chi tiết. Khi tiêu đề đậm hơn nội dung, mắt người dùng sẽ biết nên đọc cái gì trước.</p>
       </div>
-      <button class="btn-p" id="btn-p">
-        <svg id="svg-p" viewBox="0 0 24 24" style="display:none"><path d="M8 5v14l11-7z"/></svg>
-        <svg id="svg-s" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-      </button>
     </div>
-  </div>
+    <p class="ins"><strong>Phân cấp thông tin:</strong> Giúp người dùng <strong>"quét"</strong> trang nhanh hơn. Tiêu đề đậm dẫn dắt, nội dung mỏng cung cấp thông tin.</p>
+    <p class="pr">Prompt: "Heading đậm 800, body 400 để phân cấp rõ ràng"</p>
+  </section>
+
+  <!-- 04: Cảm giác bấm -->
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Cảm giác bấm</h2></div>
+    <div class="st">
+      <div class="ui-box">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--bd); padding-bottom: 8px;">
+          <span class="label">Trạng thái:</span>
+          <span id="uiState" style="font-size: 12px; color: var(--ac); font-weight: 700;">ĐANG CHỜ</span>
+        </div>
+        <button id="uiBtn" class="btn">Xác nhận ngay</button>
+      </div>
+    </div>
+    <p class="ins"><strong>Phản hồi thị giác:</strong> Khi di chuột (hover) hoặc bấm, chữ đậm lên giúp user biết <strong>"ồ, cái này bấm được"</strong> hoặc <strong>"lệnh đã nhận"</strong>.</p>
+    <p class="pr">Prompt: "Khi hover vào nút thì chữ đậm lên 700 để báo hiệu"</p>
+  </section>
 </div>
 
 <script>
-const W=[
-  {v:100,n:'Thin'},{v:200,n:'Extra Light'},{v:300,n:'Light'},
-  {v:400,n:'Regular'},{v:500,n:'Medium'},{v:600,n:'Semi Bold'},
-  {v:700,n:'Bold'},{v:800,n:'Extra Bold'},{v:900,n:'Black'}
-];
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-const INFO=[
-  {nm:'Weight Table',sz:'THANG ĐỘ NẶNG CHỮ',dc:'Từ 100 (mảnh) đến 900 (đậm) — mỗi số = 1 mức độ đậm, quyết định visual hierarchy',ins:'Khi nói "đậm lên" → nói rõ font-weight (600 hay 700), dev mới biết chỉnh đúng'},
-  {nm:'Typography Hierarchy',sz:'CẤP BẬC CHỮ',dc:'Heading 700-800 + Body 400 + Caption 300 — weight tạo thứ tự đọc tự nhiên',ins:'"Thứ tự nhìn sai" → thường là weight không đúng, không phải size sai'},
-  {nm:'UI Components',sz:'THÀNH PHẦN UI',dc:'Brand 700, links 500, body 400, button 600 — mỗi element có weight riêng',ins:'"Nút không nổi" → kiểm tra weight, có thể đang dùng 400 thay vì 600'},
-  {nm:'Dynamic Scale',sz:'MÔ PHỎNG ĐỘ ĐẬM',dc:'Cùng ký tự "Aa" — 9 mức độ dày khác nhau, từ mảnh đến đặc',ins:'Weight là công cụ tạo hierarchy mạnh nhất mà không cần đổi font hay size'}
-];
+// 01: Emphasis Loop
+(async function() {
+  const text = document.getElementById('basicText');
+  while (true) {
+    text.style.fontWeight = '300';
+    text.style.opacity = '0.6';
+    await wait(2000);
+    text.style.fontWeight = '900';
+    text.style.opacity = '1';
+    await wait(2000);
+  }
+})();
 
-/* Tạo weight scale items */
-const wssc=document.getElementById('wssc');
-W.forEach((w,i)=>{
-  const d=document.createElement('div');
-  d.className='ws-it'+(i===3?' on':'');
-  d.innerHTML=`<span class="ws-it-ch" style="font-weight:${w.v}">Aa</span><span class="ws-it-nm">${w.v}</span>`;
-  wssc.appendChild(d);
-});
-const wsItems=wssc.querySelectorAll('.ws-it');
-
-const frs=[0,1,2,3].map(i=>document.getElementById('f'+i));
-const bts=document.querySelectorAll('.btn-s');
-const el={dn:document.getElementById('dn'),ds:document.getElementById('ds'),dd2:document.getElementById('dd2'),di:document.getElementById('di'),hf:document.getElementById('hf'),pb:document.getElementById('pb')};
-const btnP=document.getElementById('btn-p'),svgP=document.getElementById('svg-p'),svgS=document.getElementById('svg-s');
-
-let cur=0,isPlaying=true,t0=0,pa=null, DUR=4000, wi=3, lastWiTime=0;
-
-function updWeight(i){
-  const w=W[i];
-  const ch=document.getElementById('wsch');
-  ch.style.fontWeight=w.v;
-  document.getElementById('wsv').textContent=w.v;
-  document.getElementById('wsn').textContent=w.n;
-  ch.classList.add('pulse');
-  setTimeout(()=>ch.classList.remove('pulse'),120);
-  wsItems.forEach((it,j)=>it.classList.toggle('on',j===i));
-}
-
-function apply(i){
-  cur=i;
-  const s=INFO[i];
-  el.dn.textContent=s.nm;el.ds.textContent=s.sz;el.dd2.textContent=s.dc;el.di.textContent=s.ins;
-  el.hf.textContent='0'+(i+1)+' / 04';
-  bts.forEach((b,j)=>b.classList.toggle('on',j===i));
-  frs.forEach(f=>f.classList.remove('show'));
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{frs[i].classList.add('show')}));
-}
-
-function jump(i){
-  apply(i);
-  t0=performance.now();
-  el.pb.style.width='0%';
-  if(i===3){wi=0;updWeight(0);lastWiTime=t0}
-}
-
-function tick(n){
-  if(!isPlaying)return;
-  if(!t0)t0=n;
-  const p=Math.min(100,(n-t0)/DUR*100);
-  el.pb.style.width=p+'%';
+// 02: Scale Loop
+(async function() {
+  const text = document.getElementById('scaleText');
+  const val = document.getElementById('scaleValue');
+  const barContainer = document.getElementById('scaleBars');
+  const weights = [100, 200, 300, 400, 500, 600, 700, 800, 900];
   
-  if(cur===3){
-    if(n-lastWiTime > 400){
-      wi=(wi+1)%9;
-      updWeight(wi);
-      lastWiTime=n;
-    }
+  // Init bars
+  weights.forEach(w => {
+    const bar = document.createElement('div');
+    bar.className = 'scale-bar';
+    bar.style.height = (w / 20) + 'px';
+    barContainer.appendChild(bar);
+  });
+  const bars = barContainer.querySelectorAll('.scale-bar');
+
+  let i = 0;
+  while (true) {
+    text.style.fontWeight = weights[i];
+    val.textContent = weights[i];
+    bars.forEach((b, idx) => b.classList.toggle('active', idx === i));
+    i = (i + 1) % weights.length;
+    await wait(600);
   }
+})();
 
-  if(p>=100){
-    cur=(cur+1)%4;
-    apply(cur);
-    t0=n;
-    if(cur===3){wi=0;updWeight(0);lastWiTime=n}
+// 03: Hierarchy Loop
+(async function() {
+  const title = document.getElementById('hTitle');
+  const body = document.getElementById('hBody');
+  while (true) {
+    // Standard
+    title.style.fontWeight = '800';
+    body.style.fontWeight = '300';
+    title.style.color = 'var(--tx)';
+    await wait(2500);
+    // Flat
+    title.style.fontWeight = '300';
+    body.style.fontWeight = '300';
+    title.style.color = 'var(--txm)';
+    await wait(2500);
   }
-  pa=requestAnimationFrame(tick);
-}
+})();
 
-function toggle(){
-  isPlaying=!isPlaying;
-  svgP.style.display=isPlaying?'none':'block';
-  svgS.style.display=isPlaying?'block':'none';
-  if(isPlaying){t0=performance.now()-(parseFloat(el.pb.style.width)||0)/100*DUR;lastWiTime=t0;pa=requestAnimationFrame(tick)}
-  else cancelAnimationFrame(pa);
-}
-
-btnP.onclick=toggle;
-apply(0);
-pa=requestAnimationFrame(tick);
-
-document.addEventListener('visibilitychange',()=>{
-  if(document.hidden && isPlaying){isPlaying=false;cancelAnimationFrame(pa);svgP.style.display='block';svgS.style.display='none'}
-});
+// 04: Interaction Loop
+(async function() {
+  const btn = document.getElementById('uiBtn');
+  const state = document.getElementById('uiState');
+  while (true) {
+    // Normal
+    btn.style.fontWeight = '400';
+    btn.style.transform = 'scale(1)';
+    state.style.fontWeight = '400';
+    state.textContent = 'ĐANG CHỜ';
+    state.style.opacity = '0.5';
+    await wait(1500);
+    // Hover/Active
+    btn.style.fontWeight = '800';
+    btn.style.transform = 'scale(1.05)';
+    state.style.fontWeight = '900';
+    state.textContent = 'KÍCH HOẠT';
+    state.style.opacity = '1';
+    await wait(1500);
+  }
+})();
 </script>
 </body>
 </html>
