@@ -902,11 +902,6 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Quy tắc vàng: Element càng nhỏ (button, tag) thì radius nên nhỏ. Element càng lớn (card, modal) thì radius có thể lớn hơn để cân đối thị giác.',
     'Khi dùng AI, thay vì nói "bo góc một chút", hãy thử các mức cụ thể như 4px (subtle), 8px (standard), hoặc 50% (circle) để có kết quả nhất quán.',
   ],
-  responsive: [
-    'Với AI, Responsive không chỉ là "co giãn". Hãy ra lệnh cho AI ưu tiên nội dung: "Trên mobile hãy hiện cái gì quan trọng nhất, cái còn lại thì ẩn đi hoặc đẩy xuống cuối".',
-    'Bạn không cần nhớ thông số, chỉ cần feedback chuẩn: "Ở màn hình nhỏ (dưới 768px) thì ẩn sidebar này đi". AI sẽ tự viết Media Queries chuẩn cho bạn.',
-    'Tư duy Mobile-first: Luôn bảo AI thiết kế cho điện thoại trước, sau đó mới nới rộng ra cho desktop. Đây là "lối tắt" để web luôn gọn gàng và load cực nhanh.',
-  ],
   frontend: [
     'Frontend là "bộ mặt" của sản phẩm. Một frontend tốt không chỉ đẹp mà còn phải nhanh (performance) và dễ dùng (UX).',
     'Khi báo lỗi cho AI, hãy phân biệt: "Nút không bấm được" thường là lỗi frontend. "Bấm nút xong hiện lỗi 500" thường là lỗi backend.',
@@ -1126,6 +1121,13 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     '4 loại Toast kinh điển: Success (xong việc), Error (lỗi gấp), Warning (cảnh báo), và Info (thông tin thêm). Mỗi loại cần màu sắc và icon tương ứng để user nhận diện nhanh qua thị giác.',
     'Quy tắc vàng: Đừng để Toast che mất nội dung quan trọng hoặc nút bấm quan trọng. Vị trí phổ biến là Top-Right (desktop) hoặc Bottom-Center (mobile).',
     'Thời gian hiển thị lý tưởng là 3-5 giây. Nếu chứa thông tin cực kỳ quan trọng, hãy cân nhắc dùng Popup thay vì Toast.',
+  ],
+  'responsive': [
+    'Mobile-First Strategy: Bắt đầu thiết kế từ màn hình nhỏ nhất giúp bạn tập trung vào nội dung cốt lõi, sau đó mới mở rộng cho desktop thay vì làm ngược lại.',
+    'Breakpoints linh hoạt: Thay vì chỉ thiết kế cho "iPhone" hay "iPad", hãy thiết kế để giao diện tự điều chỉnh khi nội dung bị "vỡ" ở bất kỳ kích thước nào (Content-driven breakpoints).',
+    'Hình ảnh thích ứng: Đừng chỉ co nhỏ ảnh; hãy yêu cầu AI sử dụng các phiên bản ảnh nhẹ hơn cho mobile để tiết kiệm dung lượng và tăng tốc độ load trang.',
+    'Touch Targets: Trên mobile, hãy đảm bảo các nút bấm đủ lớn (ít nhất 44x44px) để người dùng dễ dàng thao tác bằng ngón tay thay vì con trỏ chuột chính xác.',
+    'Viewport Meta Tag: Đây là "chìa khóa" kỹ thuật giúp trình duyệt biết cách tỷ lệ hóa (scale) trang web chính xác trên các thiết bị di động khác nhau.',
   ],
   'dark-mode': [
     'Dark mode không phải là "đảo ngược màu" (invert). Đảo ngược màu sẽ làm ảnh và icon trông rất kinh dị. Dark mode là việc định nghĩa một bộ màu mới cho cùng một tên biến.',
