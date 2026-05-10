@@ -1,444 +1,324 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Overflow Demo — Vibecode Glossary</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <title>Overflow Demo — Amber Brutalist</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg: #0f0f12;
-      --bg-card: #16161b;
-      --fg: #e8e4dc;
-      --muted: #6e6e7a;
-      --accent: #e88c2e;
-      --accent-soft: rgba(232, 140, 46, 0.1);
-      --accent-border: rgba(232, 140, 46, 0.3);
+      --card-bg: #16161b;
+      --accent: #E88C2E;
+      --text: #e8e4dc;
+      --muted: #707070;
       --border: #282830;
-      --surface: #1c1c23;
-      --success: #3a9e5c;
-      --warning: #c49030;
-      --error: #ef4444;
-      --error-soft: rgba(239, 68, 68, 0.1);
-      --error-border: rgba(239, 68, 68, 0.3);
+      --mono: 'JetBrains Mono', monospace;
+      --sans: 'Space Grotesk', sans-serif;
     }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box
-    }
-
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       background: var(--bg);
-      color: var(--fg);
-      font-family: 'Space Grotesk', sans-serif;
-      min-height: auto;
-      line-height: 1.6;
-    }
-
-    #app-root {
-      max-width: 940px;
-      margin: 0 auto;
-      padding: 24px 24px 40px
-    }
-
-    .sec-lbl {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 20px;
+      color: var(--text);
+      font-family: var(--sans);
+      padding: 20px;
       display: flex;
-      align-items: center;
-      gap: 10px;
+      justify-content: center;
+      -webkit-font-smoothing: antialiased;
     }
 
-    .sec-lbl::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border)
+    .container {
+      width: 100%;
+      max-width: 940px;
     }
 
-    /* ========== SIM GRID ========== */
-    .sim-grid {
+    .grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-bottom: 20px
+      gap: 14px;
     }
 
-    @media(max-width:640px) {
-      .sim-grid {
-        grid-template-columns: 1fr
-      }
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: 1fr; }
     }
 
-    .sp {
-      background: var(--bg-card);
+    /* --- Card Style --- */
+    .card {
+      background: var(--card-bg);
       border: 1px solid var(--border);
-      display: flex;
-      flex-direction: column;
+      border-radius: 3px;
       position: relative;
       overflow: hidden;
-    }
-
-    .sp-label {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: var(--muted);
-      padding: 12px 16px 8px;
-      border-bottom: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.02);
-    }
-
-    .sp-body {
-      padding: 16px;
-      min-height: 220px;
-      position: relative;
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      padding-top: 2px; /* For Accent Bar */
     }
 
-    .sp-insight {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      color: var(--muted);
-      padding: 10px 16px;
-      border-top: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.01);
-    }
-
-    .sp-insight em {
-      color: var(--accent);
-      font-style: normal;
-      font-weight: 600;
-    }
-
-    /* === OVERFLOW BOX === */
-    .ov-box {
-      border: 1px dashed var(--border);
-      background: var(--surface);
-      position: relative;
-      border-radius: 4px;
-      width: 100%;
-    }
-
-    .ov-content {
-      font-size: 13px;
-      color: var(--fg);
-      opacity: 0.8;
-      line-height: 1.6;
-      padding: 10px 12px;
-    }
-
-    /* Natural spill highlight for Panel 1 */
-    .spill-overlay {
+    .card::before {
+      content: "";
       position: absolute;
-      top: 80px; /* match container height */
-      left: -1px;
-      right: -1px;
-      border: 1px dashed var(--error-border);
-      background: var(--error-soft);
-      pointer-events: none;
-      z-index: 5;
-      display: flex;
-      flex-direction: column;
-      border-radius: 0 0 4px 4px;
-    }
-
-    .spill-tag {
-      position: absolute;
-      top: -10px;
-      right: 12px;
-      background: var(--bg-card);
-      border: 1px solid var(--error-border);
-      color: var(--error);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9px;
-      font-weight: 700;
-      padding: 1px 6px;
-      z-index: 10;
-    }
-
-    .ov-dim {
-      position: absolute;
-      top: 4px;
-      right: 6px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9px;
-      color: var(--muted);
-      z-index: 10;
-    }
-
-    /* Custom scrollbar */
-    .ov-scroll::-webkit-scrollbar {
-      width: 4px;
-    }
-
-    .ov-scroll::-webkit-scrollbar-track {
-      background: var(--surface);
-    }
-
-    .ov-scroll::-webkit-scrollbar-thumb {
+      top: 0; left: 0; right: 0;
+      height: 2px;
       background: var(--accent);
-      border-radius: 10px;
     }
 
-    .ov-scroll {
-      scrollbar-width: thin;
-      scrollbar-color: var(--accent) var(--surface);
-    }
-
-    /* === SPILL ZONE (Panel 1) === */
-    .ov-spill {
-      border-radius: 0 0 4px 4px;
-      padding: 8px 12px;
-      position: relative;
-      border: 1px dashed var(--error-border);
-      background: var(--error-soft);
-    }
-
-    .ov-spill-content {
-      font-size: 13px;
-      color: var(--error);
-      opacity: 0.9;
-      line-height: 1.5;
-    }
-
-    .ov-spill-arrow {
-      position: absolute;
-      top: -10px;
-      right: 16px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9px;
-      color: var(--error);
-      font-weight: 700;
-      background: var(--bg-card);
-      padding: 2px 6px;
-      border: 1px solid var(--error-border);
-    }
-
-    /* Spill pulse animation */
-    @keyframes spillPulse {
-      0%, 100% { border-color: var(--error-border); background: var(--error-soft); }
-      50% { border-color: var(--error); background: rgba(239, 68, 68, 0.15); }
-    }
-    .ov-spill.sp-anim {
-      animation: spillPulse 2.5s ease infinite;
-    }
-
-    /* === CUT LINE (Panel 2) === */
-    .ov-cut {
+    .card-header {
+      padding: 12px 16px;
       display: flex;
       align-items: center;
       gap: 8px;
-      padding: 4px 0;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      color: var(--error);
-      font-weight: 700;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      position: absolute;
-      bottom: -10px;
-      left: 0;
-      right: 0;
-      z-index: 20;
     }
 
-    .ov-cut-line {
-      flex: 1;
-      height: 1px;
-      background: repeating-linear-gradient(90deg, var(--error) 0, var(--error) 4px, transparent 4px, transparent 8px);
-    }
-
-    @keyframes cutFlash {
-      0%, 100% { opacity: .4 }
-      50% { opacity: 1 }
-    }
-    .ov-cut.cc-anim {
-      animation: cutFlash 2s ease infinite;
-    }
-
-    /* === ANIMATED LABELS === */
-    .albl {
-      position: absolute;
-      font-family: 'JetBrains Mono', monospace;
+    .num-box {
+      font-family: var(--mono);
       font-size: 10px;
       font-weight: 600;
-      padding: 3px 8px;
+      color: var(--accent);
+      background: rgba(232, 140, 46, 0.1);
+      border: 1px solid rgba(232, 140, 46, 0.3);
+      padding: 1px 5px;
       border-radius: 2px;
-      pointer-events: none;
-      z-index: 100;
-      white-space: nowrap;
-      line-height: 1;
     }
 
-    .albl-prop {
-      color: var(--bg);
-      background: var(--accent);
-      border: 1px solid var(--accent);
-    }
-
-    .albl-note {
-      color: var(--fg);
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-    }
-
-    .albl-bar {
-      color: var(--accent);
-      background: var(--accent-soft);
-      border: 1px solid var(--accent-border);
-    }
-
-    /* Label animations */
-    .la { animation: lblA 7s ease infinite }
-    .lb { animation: lblB 7s ease infinite }
-    .lc { animation: lblC 7s ease infinite }
-
-    @keyframes lblA { 0%, 14% { opacity: 1 } 20%, 100% { opacity: 0 } }
-    @keyframes lblB { 0%, 18% { opacity: 0 } 24%, 80% { opacity: 1 } 86%, 100% { opacity: 0 } }
-    @keyframes lblC { 0%, 32% { opacity: 0 } 38%, 56% { opacity: 1 } 62%, 100% { opacity: 0 } }
-
-    .ins {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      padding: 18px 22px;
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-    }
-
-    .ins-i {
-      color: var(--accent);
-      font-size: 13px;
-      margin-top: 3px;
-      flex-shrink: 0
-    }
-
-    .ins-t {
+    .card-title {
       font-size: 14px;
-      color: var(--fg);
-      opacity: .85;
-      line-height: 1.65;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .indicator {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--accent);
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.3; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.1); }
+      100% { opacity: 0.3; transform: scale(0.8); }
+    }
+
+    /* --- Simulation Area --- */
+    .sim-area {
+      flex: 1;
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(0,0,0,0.2);
+      position: relative;
+    }
+
+    .overflow-box {
+      width: 160px;
+      height: 100px;
+      border: 1px dashed var(--muted);
+      background: rgba(255,255,255,0.03);
+      padding: 10px;
+      position: relative;
+    }
+
+    .content-text {
+      font-size: 11px;
+      line-height: 1.5;
+      color: var(--text);
+      opacity: 0.8;
+    }
+
+    .spill-label {
+      position: absolute;
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--accent);
+      background: var(--bg);
+      padding: 2px 4px;
+      border: 1px solid var(--accent);
+      opacity: 0;
+      transition: opacity 0.4s;
+    }
+
+    /* --- Note (.ins) --- */
+    .ins {
+      padding: 12px 16px;
+      border-left: 2px solid var(--accent);
+      margin: 14px 16px 16px;
+      color: var(--muted);
+      font-size: 11.5px;
+      line-height: 1.5;
+    }
+
+    .ins strong {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* Scrollbar Styling */
+    .custom-scroll::-webkit-scrollbar { width: 4px; }
+    .custom-scroll::-webkit-scrollbar-track { background: transparent; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+    /* Overlay for visual cues */
+    .dim-label {
+      position: absolute;
+      top: 5px;
+      right: 5px;
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--muted);
     }
   </style>
 </head>
-
 <body>
-  <div id="app-root">
-    <div class="sim-grid">
-        <!-- PANEL 1: Visible -->
-        <div class="sp">
-          <div class="sp-body" style="padding-bottom: 60px;">
-            <div class="ov-box" style="height:80px; overflow: visible;">
-              <span class="ov-dim">80px</span>
-              <div class="ov-content">Đây là nội dung dài dùng để minh họa cách overflow hoạt động trong CSS. Container có chiều cao cố định, đoạn text này dài hơn giới hạn đó. Phần vượt quá được xử lý khác nhau tùy giá trị overflow được thiết lập cho container.</div>
-              <div class="spill-overlay" style="height: 60px;">
-                <span class="spill-tag">tràn ra ngoài</span>
-              </div>
-            </div>
-            <div class="albl albl-prop la" style="bottom:8px;right:8px">overflow: visible</div>
-            <div class="albl albl-note lb" style="top:8px;left:8px">default — không set gì</div>
-            <div class="albl albl-bar lc" style="bottom:40px;right:8px">nội dung lọt ra</div>
-          </div>
-          <div class="sp-insight">Default — nội dung <em>tràn ra ngoài</em> container, không bị cắt</div>
-        </div>
 
-        <!-- PANEL 2: Hidden -->
-        <div class="sp">
-          <div class="sp-body">
-            <div class="ov-box" style="height:80px; overflow: hidden;">
-              <span class="ov-dim">80px</span>
-              <div class="ov-content">Đây là nội dung dài dùng để minh họa cách overflow hoạt động trong CSS. Container có chiều cao cố định, đoạn text này dài hơn giới hạn đó. Phần vượt quá được xử lý khác nhau tùy giá trị overflow. Nội dung bị cắt mất tại ranh giới của box.</div>
-              <div class="ov-cut cc-anim">
-                <span class="ov-cut-line"></span>
-                <span>cắt tại đây</span>
-                <span class="ov-cut-line"></span>
-              </div>
-            </div>
-            <div class="albl albl-prop la" style="bottom:8px;right:8px">overflow: hidden</div>
-            <div class="albl albl-note lb" style="top:8px;left:8px">nội dung bị cắt</div>
-            <div class="albl albl-bar lc" style="top:60px;left:50%;transform:translateX(-50%)">không tràn, mất nội dung</div>
+<div class="container">
+  <div class="grid">
+    <!-- Cell 01: Visible -->
+    <div class="card">
+      <div class="indicator"></div>
+      <div class="card-header">
+        <div class="num-box">#01</div>
+        <div class="card-title">Visible</div>
+      </div>
+      <div class="sim-area">
+        <div class="overflow-box" style="overflow: visible;">
+          <div class="dim-label">100px</div>
+          <div class="content-text">
+            Đây là nội dung rất dài, nó sẽ vượt ra khỏi ranh giới của khung chứa này. Trong CSS, giá trị mặc định là visible, cho phép mọi thứ tràn ra ngoài mà không bị cắt bỏ hay giới hạn.
           </div>
-          <div class="sp-insight">Hidden — nội dung <em>bị cắt ngay</em> tại ranh giới container</div>
-        </div>
-
-        <!-- PANEL 3: Scroll -->
-        <div class="sp">
-          <div class="sp-body">
-            <div class="ov-box ov-scroll" style="height:80px;overflow-y:scroll">
-              <span class="ov-dim">80px</span>
-              <div class="ov-content" id="scrollContent">Đây là nội dung dài dùng để minh họa cách overflow hoạt động trong CSS. Container có chiều cao cố định, đoạn text này dài hơn giới hạn đó. Phần vượt quá được xử lý khác nhau tùy giá trị overflow. Scrollbar luôn xuất hiện dù content có tràn hay không.</div>
-            </div>
-            <div class="albl albl-prop la" style="bottom:8px;right:8px">overflow: scroll</div>
-            <div class="albl albl-note lb" style="top:8px;left:8px">scrollbar luôn hiện</div>
-            <div class="albl albl-bar lc" style="bottom:8px;left:8px">cuộn để xem hết</div>
-          </div>
-          <div class="sp-insight">Scroll — <em>scrollbar luôn hiện</em>, dù nội dung có tràn hay không</div>
-        </div>
-
-        <!-- PANEL 4: Auto -->
-        <div class="sp">
-          <div class="sp-body">
-            <div class="ov-box ov-scroll" id="autoBox" style="height:140px;overflow-y:auto;transition:height .6s ease">
-              <span class="ov-dim" id="autoDim">150px</span>
-              <div class="ov-content">Đây là nội dung dài dùng để minh họa cách overflow hoạt động trong CSS. Container có chiều cao thay đổi. Khi vừa vặn, không cần scroll. Khi thu nhỏ, scrollbar xuất hiện tự động.</div>
-            </div>
-            <div class="albl albl-prop la" style="bottom:8px;right:8px">overflow: auto</div>
-            <div class="albl albl-note lb" id="autoNote1" style="top:8px;left:8px">vừa → không scroll</div>
-            <div class="albl albl-bar lc" id="autoNote2" style="top:8px;left:8px;opacity:0">tràn → hiện scrollbar</div>
-          </div>
-          <div class="sp-insight">Auto — scrollbar <em>chỉ khi cần</em>, thông minh hơn scroll</div>
+          <div id="spill-label-1" class="spill-label" style="bottom: -20px; left: 10px;">tràn ra ngoài</div>
         </div>
       </div>
-
       <div class="ins">
-        <i class="fa-solid fa-lightbulb ins-i"></i>
-        <p class="ins-t">Overflow = <strong>quy định xử lý phần vượt quá</strong>. Mặc định là <em>visible</em> (tràn). Dùng <em>hidden</em> để cắt. Dùng <em>scroll</em> để luôn có thanh cuộn. Dùng <em>auto</em> là cách tối ưu nhất: chỉ hiện thanh cuộn khi thực sự bị tràn.</p>
+        Mặc định, nội dung sẽ <strong>tràn ra ngoài</strong> nếu không được giới hạn bởi thuộc tính overflow.
+      </div>
+    </div>
+
+    <!-- Cell 02: Hidden -->
+    <div class="card">
+      <div class="indicator"></div>
+      <div class="card-header">
+        <div class="num-box">#02</div>
+        <div class="card-title">Hidden</div>
+      </div>
+      <div class="sim-area">
+        <div class="overflow-box" style="overflow: hidden;">
+          <div class="dim-label">100px</div>
+          <div class="content-text">
+            Đây là nội dung rất dài, nhưng nó đã bị cắt mất. Với overflow: hidden, mọi phần tử vượt ra ngoài ranh giới của box sẽ biến mất hoàn toàn khỏi tầm mắt của người dùng.
+          </div>
+          <div id="cut-line-2" style="position: absolute; bottom: 0; left: 0; right: 0; border-top: 1px dashed var(--accent); opacity: 0; transition: opacity 0.4s;"></div>
+        </div>
+      </div>
+      <div class="ins">
+        Nội dung bị <strong>cắt bỏ hoàn toàn</strong> tại ranh giới của phần tử cha, giữ cho giao diện gọn gàng.
+      </div>
+    </div>
+
+    <!-- Cell 03: Scroll -->
+    <div class="card">
+      <div class="indicator"></div>
+      <div class="card-header">
+        <div class="num-box">#03</div>
+        <div class="card-title">Scroll</div>
+      </div>
+      <div class="sim-area">
+        <div id="scroll-box-3" class="overflow-box custom-scroll" style="overflow-y: scroll;">
+          <div class="dim-label">100px</div>
+          <div class="content-text">
+            Sử dụng overflow: scroll để luôn hiển thị thanh cuộn. Người dùng có thể kéo xuống để xem toàn bộ nội dung mà không làm ảnh hưởng đến bố cục chung của trang web. Thanh cuộn này luôn hiện diện ngay cả khi không có nội dung tràn.
+          </div>
+        </div>
+      </div>
+      <div class="ins">
+        Luôn hiển thị <strong>thanh cuộn</strong>, bất kể nội dung có tràn hay không, giúp giữ kích thước cố định.
+      </div>
+    </div>
+
+    <!-- Cell 04: Auto -->
+    <div class="card">
+      <div class="indicator"></div>
+      <div class="card-header">
+        <div class="num-box">#04</div>
+        <div class="card-title">Auto</div>
+      </div>
+      <div class="sim-area">
+        <div id="auto-box-4" class="overflow-box custom-scroll" style="overflow-y: auto; transition: height 0.5s;">
+          <div id="auto-dim-4" class="dim-label">100px</div>
+          <div class="content-text">
+            Đây là lựa chọn tối ưu nhất. Thanh cuộn chỉ xuất hiện khi nội dung thực sự vượt quá kích thước cho phép. Nếu nội dung ngắn, thanh cuộn sẽ tự động biến mất để tiết kiệm không gian.
+          </div>
+        </div>
+        <div id="auto-status-4" class="spill-label" style="top: 10px; left: 10px;">no scroll</div>
+      </div>
+      <div class="ins">
+        Giải pháp <strong>thông minh nhất</strong>, chỉ hiện thanh cuộn <strong>khi thực sự cần thiết</strong> để tối ưu không gian.
       </div>
     </div>
   </div>
+</div>
 
-  <script>
-    /* === PANEL 3: AUTO SCROLL === */
-    var scrollEl = document.querySelector('#scrollContent').parentElement;
-    var scrollDir = 1;
-    var scrollInterval = setInterval(function() {
-      if (!scrollEl) return;
-      scrollEl.scrollTop += scrollDir;
-      if (scrollEl.scrollTop >= scrollEl.scrollHeight - scrollEl.clientHeight - 1) scrollDir = -1;
-      if (scrollEl.scrollTop <= 0) scrollDir = 1;
-    }, 40);
+<script>
+  // Cell 01 Animation: Pulsing label
+  (async () => {
+    const label = document.getElementById('spill-label-1');
+    while (true) {
+      label.style.opacity = '1';
+      await new Promise(r => setTimeout(r, 1000));
+      label.style.opacity = '0';
+      await new Promise(r => setTimeout(r, 1000));
+    }
+  })();
 
-    /* === PANEL 4: AUTO HEIGHT TOGGLE === */
-    var autoBox = document.getElementById('autoBox');
-    var autoDim = document.getElementById('autoDim');
-    var autoNote1 = document.getElementById('autoNote1');
-    var autoNote2 = document.getElementById('autoNote2');
-    var autoSmall = false;
+  // Cell 02 Animation: Flashing cut line
+  (async () => {
+    const line = document.getElementById('cut-line-2');
+    while (true) {
+      line.style.opacity = '1';
+      await new Promise(r => setTimeout(r, 800));
+      line.style.opacity = '0';
+      await new Promise(r => setTimeout(r, 800));
+    }
+  })();
 
-    setInterval(function() {
-      autoSmall = !autoSmall;
-      autoBox.style.height = autoSmall ? '80px' : '140px';
-      autoDim.textContent = autoSmall ? '80px' : '150px';
-      autoNote1.style.opacity = autoSmall ? '0' : '1';
-      autoNote2.style.opacity = autoSmall ? '1' : '0';
-    }, 3200);
-  </script>
+  // Cell 03 Animation: Continuous scroll
+  (async () => {
+    const box = document.getElementById('scroll-box-3');
+    let direction = 1;
+    while (true) {
+      box.scrollTop += direction;
+      if (box.scrollTop >= box.scrollHeight - box.clientHeight || box.scrollTop <= 0) {
+        direction *= -1;
+        await new Promise(r => setTimeout(r, 1000));
+      }
+      await new Promise(r => setTimeout(r, 30));
+    }
+  })();
+
+  // Cell 04 Animation: Changing box height to trigger scroll
+  (async () => {
+    const box = document.getElementById('auto-box-4');
+    const dim = document.getElementById('auto-dim-4');
+    const status = document.getElementById('auto-status-4');
+    let isSmall = false;
+    while (true) {
+      isSmall = !isSmall;
+      box.style.height = isSmall ? '60px' : '100px';
+      dim.innerText = isSmall ? '60px' : '100px';
+      status.innerText = isSmall ? 'active scroll' : 'no scroll';
+      status.style.opacity = '1';
+      await new Promise(r => setTimeout(r, 2000));
+    }
+  })();
+</script>
+
 </body>
-
 </html>
