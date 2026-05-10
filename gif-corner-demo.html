@@ -3,223 +3,353 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Corner Radius Demo — markAI</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<title>Corner Demo — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#0f0f12;--bg-card:#16161b;--fg:#e8e4dc;--muted:#6e6e7a;
-    --accent:#e88c2e;--accent-soft:rgba(232,140,46,.12);
-    --accent-border:rgba(232,140,46,.3);--border:#282830;
-    --surface:#1c1c23;--shape-lt:#33333d;--bar-m:#44444f;
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{
-    background:var(--bg);color:var(--fg);
-    font-family:'Space Grotesk',sans-serif;line-height:1.6;
-    overflow-x:hidden;
-  }
-  body::before{
-    content:'';position:fixed;inset:0;
-    background-image:radial-gradient(rgba(255,255,255,.022) 1px,transparent 1px);
-    background-size:20px 20px;pointer-events:none;z-index:0;
-  }
+:root {
+  --bg: #0f0f12;
+  --bgc: #16161b;
+  --bgi: #121217;
+  --bd: #282830;
+  --tx: #e8e4dc;
+  --txm: #707070;
+  --ac: #E88C2E;
+  --abg: rgba(232, 140, 46, 0.1);
+  --abg2: rgba(232, 140, 46, 0.2);
+}
 
-  #app-root{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:24px}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-  .sim-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
-  @media(max-width:720px){.sim-grid{grid-template-columns:repeat(2,1fr)}}
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--tx);
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+}
 
-  .sc{
-    background:var(--bg-card);border:1px solid var(--border);
-    padding:20px 14px 18px;cursor:pointer;position:relative;overflow:hidden;
-    transition:border-color .3s,background .3s;
-  }
-  .sc::before{
-    content:'';position:absolute;top:0;left:0;right:0;height:2px;
-    background:var(--accent);transform:scaleX(0);transform-origin:left;
-    transition:transform .35s ease;
-  }
-  .sc:hover{border-color:var(--accent-border)}
-  .sc.on{border-color:var(--accent);background:var(--surface)}
-  .sc.on::before{transform:scaleX(1)}
+.g {
+  width: 100%;
+  max-width: 940px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
 
-  .sc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
-  .sc-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px}
-  .sc-tag{
-    font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;
-    text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);transition:color .3s;
-  }
-  .sc.on .sc-tag{color:var(--accent)}
+@media (max-width: 600px) {
+  .g { grid-template-columns: 1fr; }
+}
 
-  .sc-shapes{display:flex;flex-direction:column;gap:10px;margin-bottom:16px;min-height:110px;justify-content:center}
-  .shape-row{display:flex;gap:8px;align-items:center}
+.c {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
 
-  .sh{
-    transition:border-radius .5s cubic-bezier(.4,0,.2,1),background .3s;
-    flex-shrink:0;position:relative;
-  }
-  .sh.btn{width:100%;height:32px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;letter-spacing:1px}
-  .sh.card{width:100%;height:44px;background:var(--bg-card);border:1px solid var(--border)}
-  .sh.input{width:100%;height:28px;background:var(--bg);border:1px solid var(--border)}
-  .sh.av{width:32px;height:32px;background:var(--shape-lt);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:10px;color:var(--muted)}
+.c::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--ac);
+}
 
-  .sc-val{
-    font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--muted);
-    text-align:center;transition:color .3s,font-weight .3s;
-  }
-  .sc.on .sc-val{color:var(--accent);font-weight:600}
+.c::after {
+  content: '';
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 6px;
+  height: 6px;
+  background: var(--ac);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--ac);
+  animation: pulse 2s infinite;
+}
 
-  .ins{
-    background:var(--surface);border:1px solid var(--border);
-    padding:18px 22px;display:flex;align-items:flex-start;gap:12px;min-height:80px;
-  }
-  .ins-i{color:var(--accent);font-size:13px;margin-top:3px;flex-shrink:0}
-  .ins-t{font-size:14px;color:var(--fg);opacity:.85;line-height:1.65;transition:opacity .25s,transform .25s}
-  .ins-t.fading{opacity:0;transform:translateY(6px)}
+@keyframes pulse {
+  0% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0.3; transform: scale(1); }
+}
 
-  /* table */
-  .sec-lbl{
-    font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;
-    letter-spacing:2px;text-transform:uppercase;color:var(--muted);
-    margin-bottom:15px;display:flex;align-items:center;gap:10px;
-  }
-  .sec-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
-  .c-tab{width:100%;border-collapse:collapse;margin-top:10px;background:var(--bg-card);border:1px solid var(--border)}
-  .c-tab th{background:var(--surface);text-align:left;padding:12px 16px;font-family:'JetBrains Mono',monospace;font-size:10px;text-transform:uppercase;color:var(--muted);letter-spacing:1px;border-bottom:1px solid var(--border)}
-  .c-tab td{padding:12px 16px;font-size:13px;border-bottom:1px solid var(--border);color:var(--fg);opacity:.8}
-  .c-tab tr:last-child td{border-bottom:none}
-  .c-tab tr:hover td{background:rgba(255,255,255,.02)}
-  .c-tab td strong{color:var(--accent);font-weight:600}
+.ch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
 
-  @media(max-width:480px){
-    #app-root{padding:14px}
-    .ins{padding:14px 16px}
-  }
+.ch .n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ac);
+  background: var(--abg);
+  border: 1px solid var(--abg2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+.ch h2 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+}
+
+.st {
+  background: var(--bgi);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  flex: 1;
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ins {
+  margin-top: 14px;
+  font-size: 11.5px;
+  color: var(--txm);
+  line-height: 1.6;
+  padding-left: 12px;
+  border-left: 2px solid var(--ac);
+}
+
+.ins strong {
+  color: var(--ac);
+  font-weight: 600;
+}
+
+.val {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--txm);
+  background: rgba(0,0,0,0.2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+/* Visuals */
+.shape-box {
+  width: 100px;
+  height: 100px;
+  background: var(--ac);
+  transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: white;
+}
+
+.spec-box {
+  width: 110px;
+  height: 110px;
+  border: 2px solid var(--ac);
+  background: var(--abg);
+  transition: all 0.5s ease;
+}
+
+.ui-row {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+.ui-item {
+  height: 36px;
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  font-size: 11px;
+  color: var(--tx);
+  transition: border-radius 0.4s;
+}
+.ui-item.btn { background: var(--ac); border: none; color: white; font-weight: 600; width: 80px; justify-content: center; }
+.ui-item.av { width: 36px; height: 36px; background: #333; justify-content: center; padding: 0; }
+
+.nested-box {
+  padding: 16px;
+  background: var(--bd);
+  border: 1px solid var(--ac);
+  transition: border-radius 0.5s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.inner-box {
+  width: 60px;
+  height: 30px;
+  background: var(--ac);
+  transition: border-radius 0.5s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: white;
+  font-weight: 700;
+}
+
 </style>
 </head>
 <body>
 
-<div id="app-root">
-  <section aria-label="Mô phỏng Corner Radius">
-    <div class="sim-grid" id="simGrid"></div>
-    <div class="ins">
-      <i class="fa-solid fa-lightbulb ins-i"></i>
-      <p class="ins-t" id="insT">Đang tải...</p>
+<div class="g">
+  <!-- 01: Scale -->
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>Thang đo Radius</h2></div>
+    <div class="st">
+      <div class="shape-box" id="s1">BOX</div>
+      <div class="val" id="v1">border-radius: 0px</div>
     </div>
+    <p class="ins">Tăng <strong>radius</strong> giúp hình khối chuyển từ sắc cạnh (cứng cáp) sang bo tròn (mềm mại, thân thiện).</p>
+  </section>
 
-    <div class="compare-wrap">
-      <div class="sec-lbl" style="margin-top:40px">So sánh: Radius vs Corner</div>
-      <table class="c-tab">
-        <thead>
-          <tr>
-            <th>Đặc điểm</th>
-            <th>Radius</th>
-            <th>Corner</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><strong>Bản chất</strong></td>
-            <td>Con số cụ thể (px, %)</td>
-            <td>Khái niệm điểm giao nhau</td>
-          </tr>
-          <tr>
-            <td><strong>Phạm vi</strong></td>
-            <td>Toàn bộ khung (Box)</td>
-            <td>Từng góc/đường (Path)</td>
-          </tr>
-          <tr>
-            <td><strong>Kiểu dáng</strong></td>
-            <td>Chỉ bo tròn</td>
-            <td>Tròn, vát, nhọn, mượt</td>
-          </tr>
-          <tr>
-            <td><strong>Giao tiếp</strong></td>
-            <td>"Bo bao nhiêu px?"</td>
-            <td>"Góc này nhìn cứng quá"</td>
-          </tr>
-        </tbody>
-      </table>
+  <!-- 02: Specificity -->
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Góc riêng lẻ</h2></div>
+    <div class="st">
+      <div class="spec-box" id="s2"></div>
+      <div class="val" id="v2">Top-Left</div>
     </div>
+    <p class="ins">Không nhất thiết phải bo mọi góc. Chỉ bo <strong>góc đối xứng</strong> tạo ra những hình khối độc đáo và hiện đại.</p>
+  </section>
+
+  <!-- 03: UI Context -->
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Ngữ cảnh UI</h2></div>
+    <div class="st">
+      <div class="ui-row">
+        <div class="ui-item btn" id="uBtn">Button</div>
+        <div class="ui-item" id="uCard">Card Element</div>
+        <div class="ui-item av" id="uAv">AI</div>
+      </div>
+      <div class="val" id="v3">Contextual Radius</div>
+    </div>
+    <p class="ins"><strong>Radius</strong> nên tỉ lệ thuận với kích thước element. Button bo nhẹ, Card bo vừa, Avatar thường bo tròn.</p>
+  </section>
+
+  <!-- 04: Nested -->
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Bo góc lồng nhau</h2></div>
+    <div class="st">
+      <div class="nested-box" id="s4">
+        <div class="inner-box" id="s4i">INNER</div>
+      </div>
+      <div class="val" id="v4">Outer: 16px | Inner: 8px</div>
+    </div>
+    <p class="ins">Để đẹp mắt, <strong>Outer radius</strong> phải lớn hơn <strong>Inner radius</strong> một khoảng đúng bằng khoảng đệm (padding).</p>
   </section>
 </div>
 
 <script>
-  const presets = [
-    { num:'01', name:'Sharp', val:0,
-      ins:'<strong>0px</strong> — Góc vuông hoàn toàn. Dùng cho: terminal, code editor, data table. Cảm giác: "đây là công cụ, không phải trang trí."' },
-    { num:'02', name:'Small', val:4,
-      ins:'<strong>4px</strong> — Vừa đủ bớt gai góc, vẫn giữ cảm giác "tool thật". Dùng cho: dashboard, admin panel, settings.' },
-    { num:'03', name:'Medium', val:12,
-      ins:'<strong>12px</strong> — Điểm cân bằng phổ biến nhất cho SaaS, app tiêu dùng, landing page. "Thân thiện nhưng chuyên nghiệp."' },
-    { num:'04', name:'Full', val:999,
-      ins:'<strong>999px</strong> — Bo hết cỡ (Pill). Dùng cho chat bubble, avatar, CTA playful. Cảm giác: "nói chuyện, không phải giao dịch."' }
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// 01: Scale Loop
+(async function() {
+  const steps = [
+    { r: '0px', l: 'Sharp (0px)' },
+    { r: '8px', l: 'Small (8px)' },
+    { r: '20px', l: 'Large (20px)' },
+    { r: '50%', l: 'Circle (50%)' }
   ];
-
-  const simGrid = document.getElementById('simGrid');
-  const insT = document.getElementById('insT');
-  let activeI = 0;
-  let autoTimer;
-
-  function renderSim() {
-    simGrid.innerHTML = presets.map((p, ci) => {
-      const r = p.val;
-      const rStr = r + 'px';
-      return `
-        <div class="sc" data-i="${ci}" tabindex="0" role="button">
-          <div class="sc-top">
-            <span class="sc-num">${p.num}</span>
-            <span class="sc-tag">${p.name}</span>
-          </div>
-          <div class="sc-shapes">
-            <div class="shape-row">
-              <div class="sh btn" style="border-radius:${rStr}">BUTTON</div>
-            </div>
-            <div class="shape-row">
-              <div class="sh card" style="border-radius:${rStr}"></div>
-            </div>
-            <div class="shape-row">
-              <div class="sh input" style="border-radius:${rStr}"></div>
-              <div class="sh av" style="border-radius:${rStr}">AV</div>
-            </div>
-          </div>
-          <div class="sc-val">${rStr}</div>
-        </div>`;
-    }).join('');
-
-    simGrid.querySelectorAll('.sc').forEach(c => {
-      c.addEventListener('click', () => {
-        clearInterval(autoTimer);
-        activateCard(+c.dataset.i);
-      });
-    });
+  const s = document.getElementById('s1');
+  const v = document.getElementById('v1');
+  while (true) {
+    for (const step of steps) {
+      s.style.borderRadius = step.r;
+      v.textContent = 'border-radius: ' + step.r;
+      await wait(2000);
+    }
   }
+})();
 
-  function activateCard(i) {
-    activeI = i;
-    simGrid.querySelectorAll('.sc').forEach((c, idx) => c.classList.toggle('on', idx === i));
-    setIns(presets[i].ins);
+// 02: Specificity Loop
+(async function() {
+  const steps = [
+    { r: '24px 0 0 0', l: 'Top-Left' },
+    { r: '0 24px 0 0', l: 'Top-Right' },
+    { r: '0 0 24px 0', l: 'Bottom-Right' },
+    { r: '0 0 0 24px', l: 'Bottom-Left' },
+    { r: '24px 0 24px 0', l: 'Diagonal' }
+  ];
+  const s = document.getElementById('s2');
+  const v = document.getElementById('v2');
+  while (true) {
+    for (const step of steps) {
+      s.style.borderRadius = step.r;
+      v.textContent = step.l;
+      await wait(2000);
+    }
   }
+})();
 
-  function setIns(t) {
-    insT.classList.add('fading');
-    setTimeout(() => { 
-      insT.innerHTML = t; 
-      insT.classList.remove('fading'); 
-    }, 250);
+// 03: UI Context Loop
+(async function() {
+  const btn = document.getElementById('uBtn');
+  const card = document.getElementById('uCard');
+  const av = document.getElementById('uAv');
+  const v = document.getElementById('v3');
+
+  while (true) {
+    // Sharp
+    btn.style.borderRadius = '0';
+    card.style.borderRadius = '0';
+    av.style.borderRadius = '0';
+    v.textContent = 'Style: Sharp';
+    await wait(2000);
+
+    // Rounded
+    btn.style.borderRadius = '4px';
+    card.style.borderRadius = '8px';
+    av.style.borderRadius = '50%';
+    v.textContent = 'Style: Standard';
+    await wait(2000);
+
+    // Pill
+    btn.style.borderRadius = '20px';
+    card.style.borderRadius = '20px';
+    av.style.borderRadius = '50%';
+    v.textContent = 'Style: Playful';
+    await wait(2000);
   }
+})();
 
-  function startAuto() {
-    activateCard(0);
-    autoTimer = setInterval(() => {
-      activeI = (activeI + 1) % presets.length;
-      activateCard(activeI);
-    }, 4500);
+// 04: Nested Loop
+(async function() {
+  const outer = document.getElementById('s4');
+  const inner = document.getElementById('s4i');
+  const v = document.getElementById('v4');
+  const padding = 16;
+
+  while (true) {
+    const rs = [0, 8, 16, 24];
+    for (const r of rs) {
+      outer.style.borderRadius = r + 'px';
+      inner.style.borderRadius = Math.max(0, r - padding/2) + 'px';
+      v.textContent = `Outer: ${r}px | Inner: ${Math.max(0, r - padding/2)}px`;
+      await wait(2000);
+    }
   }
-
-  renderSim();
-  startAuto();
+})();
 </script>
 </body>
 </html>
