@@ -1,361 +1,534 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Thực hành: Hosting Flow — Vibecode Glossary</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #1a1a18;
-    --bg-card: #222220;
-    --bg-elevated: #2a2a27;
-    --fg: #e8e4dd;
-    --fg-muted: #8a877e;
-    --accent: #E88C2E;
-    --accent-dim: #a84e22;
-    --amber: #c9922a;
-    --green: #6b8f5e;
-    --red: #b54a4a;
-    --border: #3a3a36;
-    --border-light: #4a4a45;
-    --mono: 'JetBrains Mono', monospace;
-    --sans: 'Space Grotesk', sans-serif;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    background: var(--bg);
-    color: var(--fg);
-    font-family: var(--sans);
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
-  }
-
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
-    background-size: 24px 24px;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  .page-wrap {
-    position: relative;
-    z-index: 1;
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 16px;
-  }
-
-
-
-  /* Practice section */
-  .practice-section {
-    border: 1px solid var(--border);
-    background: var(--bg-card);
-    margin-top: 20px;
-    overflow: visible;
-  }
-  .practice-section .section-head {
-    border-bottom: 1px solid var(--border);
-    padding: 14px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: rgba(255,255,255,.02);
-  }
-  .practice-section .section-head h2 {
-    font-family: var(--mono);
-    font-size: 13px;
-    font-weight: 700;
-    color: var(--accent);
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-  }
-  .practice-body {
-    padding: 24px 20px 32px;
-  }
-  .practice-goal {
-    font-size: 13px;
-    color: var(--fg-muted);
-    margin-bottom: 20px;
-    line-height: 1.6;
-  }
-  .practice-goal strong { color: var(--fg); }
-
-  /* Flow steps */
-  .flow-steps {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    margin-bottom: 20px;
-  }
-  .flow-step {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px 16px;
-    border: 1px solid var(--border);
-    background: var(--bg);
-    cursor: pointer;
-    transition: border-color .2s, background .2s;
-    user-select: none;
-    -webkit-user-select: none;
-  }
-  .flow-step + .flow-step { border-top: none; }
-  .flow-step:hover {
-    border-color: var(--border-light);
-    background: var(--bg-elevated);
-  }
-  .flow-step.active {
-    border-color: var(--accent);
-    background: rgba(232,140,46,.06);
-  }
-  .flow-step.done {
-    border-color: var(--green);
-    background: rgba(107,143,94,.06);
-  }
-  .flow-step .step-num {
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--accent);
-    font-weight: 700;
-  }
-  .flow-step .step-text {
-    flex: 1;
-    font-size: 13px;
-  }
-  .flow-step .step-status {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--fg-muted);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-  }
-  .flow-step.done .step-status { color: var(--green); }
-
-  /* Result screen */
-  .result-screen {
-    border: 1px solid var(--border);
-    background: var(--bg);
-    padding: 32px 20px;
-    margin-bottom: 20px;
-    min-height: 140px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    transition: border-color .4s;
-  }
-  .result-status {
-    font-family: var(--mono);
-    font-size: 11px;
-    letter-spacing: 2px;
-    margin-bottom: 8px;
-    font-weight: 700;
-  }
-  .result-msg {
-    font-size: 16px;
-    font-weight: 500;
-    margin-bottom: 12px;
-    max-width: 400px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .result-detail {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--fg-muted);
-  }
-
-  .reset-btn {
-    width: 100%;
-    padding: 12px;
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--fg-muted);
-    font-family: var(--mono);
-    font-size: 12px;
-    cursor: pointer;
-    transition: all .2s;
-  }
-  .reset-btn:hover {
-    border-color: var(--fg-muted);
-    color: var(--fg);
-  }
-
-  .hint {
-    margin-top: 24px;
-    font-size: 12px;
-    color: var(--fg-muted);
-    font-style: italic;
-    text-align: center;
-  }
-</style>
-</head>
-<body>
-
-<div class="page-wrap">
-
-
-  <!-- ===== PRACTICE: Chọn bước trong flow ===== -->
-  <section class="practice-section" aria-label="Thực hành">
-    <div class="section-head">
-      <h2>Thực hành</h2>
-    </div>
-    <div class="practice-body">
-      <div class="practice-goal">
-        <strong>Mục tiêu:</strong> Click từng bước theo đúng thứ tự flow deploy → thấy ngay trạng thái thay đổi trên "màn hình user". Nếu click sai thứ tự → không có gì xảy ra.
-      </div>
-
-      <div class="flow-steps" id="flowSteps">
-        <div class="flow-step" data-order="1">
-          <span class="step-num">01</span>
-          <span class="step-text">AI push code lên Git</span>
-          <span class="step-status">chờ</span>
-        </div>
-        <div class="flow-step" data-order="2">
-          <span class="step-num">02</span>
-          <span class="step-text">CI/CD tự động build & test</span>
-          <span class="step-status">chờ</span>
-        </div>
-        <div class="flow-step" data-order="3">
-          <span class="step-num">03</span>
-          <span class="step-text">Deploy lên hosting (server)</span>
-          <span class="step-status">chờ</span>
-        </div>
-        <div class="flow-step" data-order="4">
-          <span class="step-num">04</span>
-          <span class="step-text">DNS trỏ domain về server</span>
-          <span class="step-status">chờ</span>
-        </div>
-        <div class="flow-step" data-order="5">
-          <span class="step-num">05</span>
-          <span class="step-text">User truy cập website qua URL</span>
-          <span class="step-status">chờ</span>
-        </div>
-      </div>
-
-      <div class="result-screen" id="resultScreen">
-        <div class="result-inner">
-          <div class="result-status" id="resultStatus" style="color:var(--fg-muted);">—</div>
-          <div class="result-msg" id="resultMsg">Click bước 1 để bắt đầu flow deploy</div>
-          <div class="result-detail" id="resultDetail"></div>
-        </div>
-      </div>
-
-      <button class="reset-btn" id="resetBtn">Reset flow</button>
-
-      <div class="hint">Thử click bước 3 trước bước 1 — sẽ thấy không có gì xảy ra. Đó là vì hosting không phải bước đầu, nó cần code được build xong trước.</div>
-    </div>
-  </section>
-</div>
-
-<script>
-  (function() {
-    var steps = document.querySelectorAll('#flowSteps .flow-step');
-    var resultStatus = document.getElementById('resultStatus');
-    var resultMsg = document.getElementById('resultMsg');
-    var resultDetail = document.getElementById('resultDetail');
-    var resultScreen = document.getElementById('resultScreen');
-    var resetBtn = document.getElementById('resetBtn');
-    var currentStep = 0;
-
-    var states = [
-      {
-        status: 'LOCAL',
-        color: 'var(--fg-muted)',
-        msg: 'Code vẫn nằm trên máy AI — chưa ai thấy được',
-        detail: 'Git: chưa push | Build: chưa chạy | Hosting: chưa nhận',
-        borderColor: 'var(--border)'
-      },
-      {
-        status: 'GIT',
-        color: 'var(--amber)',
-        msg: 'Code đã lên Git — nhưng chỉ là lưu trữ, chưa chạy được',
-        detail: 'Git: pushed | Build: chưa chạy | Hosting: chưa nhận',
-        borderColor: 'var(--amber)'
-      },
-      {
-        status: 'BUILDING',
-        color: 'var(--amber)',
-        msg: 'CI/CD đang build & test — kiểm tra code có lỗi không',
-        detail: 'Git: pushed | Build: running... | Hosting: chờ',
-        borderColor: 'var(--amber)'
-      },
-      {
-        status: 'DEPLOYED',
-        color: 'var(--accent)',
-        msg: 'Code đã lên hosting — nhưng chưa có domain, chỉ truy cập qua IP',
-        detail: 'Git: pushed | Build: passed | Hosting: có code, chưa có domain',
-        borderColor: 'var(--accent)'
-      },
-      {
-        status: 'DNS READY',
-        color: 'var(--green)',
-        msg: 'Domain đã trỏ về server — nhưng chưa test xong',
-        detail: 'Git: pushed | Build: passed | Hosting: sẵn sàng | DNS: trỏ xong',
-        borderColor: 'var(--green)'
-      },
-      {
-        status: 'LIVE',
-        color: 'var(--green)',
-        msg: 'User truy cập được rồi — flow hoàn tất',
-        detail: 'mywebsite.com → DNS → Hosting (server) → trả về trang web',
-        borderColor: 'var(--green)'
-      }
-    ];
-
-    function updateUI() {
-      steps.forEach(function(step, i) {
-        var order = parseInt(step.dataset.order);
-        if (order <= currentStep) {
-          step.classList.remove('active');
-          step.classList.add('done');
-          step.querySelector('.step-status').textContent = 'xong';
-        } else if (order === currentStep + 1) {
-          step.classList.remove('done');
-          step.classList.add('active');
-          step.querySelector('.step-status').textContent = 'tiếp';
-        } else {
-          step.classList.remove('done', 'active');
-          step.querySelector('.step-status').textContent = 'chờ';
-        }
-      });
-
-      var s = states[currentStep];
-      resultStatus.textContent = s.status;
-      resultStatus.style.color = s.color;
-      resultMsg.textContent = s.msg;
-      resultDetail.textContent = s.detail;
-      resultScreen.style.borderColor = s.borderColor;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hosting Practice — Vibecode Glossary</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #101010;
+      --bgc: #181818;
+      --bgi: #131313;
+      --bd: #272727;
+      --tx: #e0e0e0;
+      --txm: #707070;
+      --txd: #3a3a3a;
+      --ac: #E88C2E;
+      --acl: #f5a65b;
+      --abg: rgba(232, 140, 46, .08);
+      --abg2: rgba(232, 140, 46, .18);
+      --rd: #ef4444;
+      --gn: #22c55e;
+      --gnb: rgba(34, 197, 94, .12);
+      --rdb: rgba(239, 68, 68, .1);
+      --rdb2: rgba(239, 68, 68, .18);
+      --bl: #3b82f6;
+      --blb: rgba(59, 130, 246, .12);
     }
 
-    steps.forEach(function(step) {
-      step.addEventListener('click', function() {
-        var order = parseInt(this.dataset.order);
-        if (order === currentStep + 1) {
-          currentStep = order;
-          updateUI();
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background-color: var(--bg);
+      background-image:
+        linear-gradient(rgba(255, 255, 255, .018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, .018) 1px, transparent 1px);
+      background-size: 20px 20px;
+      color: var(--tx);
+      min-height: 100vh;
+      padding: 20px 16px 48px;
+    }
+
+    .ch {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px
+    }
+
+    .ch .n {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--ac);
+      background: var(--abg);
+      border: 1px solid rgba(232, 140, 46, .2);
+      padding: 1px 6px;
+      border-radius: 2px
+    }
+
+    .ch h2 {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -.3px
+    }
+
+    .pra {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--bgc);
+      border: 1px solid var(--bd);
+      border-radius: 3px;
+      padding: 22px
+    }
+
+    .pra .ch {
+      margin-bottom: 6px
+    }
+
+    .pra-goal {
+      font-size: 12.5px;
+      color: var(--txm);
+      margin-bottom: 18px;
+      line-height: 1.5
+    }
+
+    .pra-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px
+    }
+
+    @media(max-width:660px) {
+      .pra-grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .cfg-l {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--txd);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      display: block;
+      margin-bottom: 8px
+    }
+
+    .pra-ed {
+      background: #0c0c0c;
+      border: 2px solid var(--bd);
+      border-radius: 3px;
+      overflow: hidden;
+      transition: border-color .3s
+    }
+
+    .pra-ed.state-vercel {
+      border-color: var(--tx);
+    }
+
+    .pra-ed.state-domain {
+      border-color: var(--bl);
+    }
+
+    .pra-ed.state-env {
+      border-color: var(--gn);
+    }
+
+    .pra-ed-hd {
+      padding: 3px 8px;
+      background: rgba(255, 255, 255, .03);
+      border-bottom: 1px solid var(--bd);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      color: var(--txd);
+      display: flex;
+      justify-content: space-between
+    }
+
+    .pra-ed-hd .st {
+      font-weight: 700;
+      transition: color .3s;
+    }
+
+    .pra-ed-hd .st.state-vercel {
+      color: var(--tx);
+    }
+
+    .pra-ed-hd .st.state-domain {
+      color: var(--bl);
+    }
+
+    .pra-ed-hd .st.state-env {
+      color: var(--gn);
+    }
+
+    .pra-ed-body {
+      padding: 4px 0;
+      min-height: 120px;
+      position: relative
+    }
+
+    .pra-ln {
+      display: flex;
+      align-items: stretch;
+      transition: opacity .2s, transform .2s
+    }
+
+    .pra-ln.hide {
+      opacity: 0;
+      height: 0;
+      overflow: hidden;
+      padding: 0
+    }
+
+    .pra-ln .mk-n {
+      width: 28px;
+      padding: 2px 6px 2px 0;
+      text-align: right;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      color: var(--txd);
+      border-right: 1px solid var(--bd);
+      flex-shrink: 0;
+      user-select: none
+    }
+
+    .pra-ln .mk-c {
+      flex: 1;
+      padding: 2px 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--tx);
+      white-space: pre;
+      line-height: 1.5
+    }
+
+    .pra-ln.new-ln {
+      animation: praNew .3s ease both
+    }
+
+    @keyframes praNew {
+      from {
+        opacity: 0;
+        transform: translateY(4px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    .pra-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      padding: 1px 5px;
+      border-radius: 2px;
+      margin-left: 6px;
+      align-self: center
+    }
+
+    .pra-tag-v {
+      background: rgba(255, 255, 255, .1);
+      color: #fff;
+    }
+
+    .pra-tag-vps {
+      background: var(--blb);
+      color: var(--bl);
+    }
+
+    .pra-tag-pg {
+      background: var(--gnb);
+      color: var(--gn);
+    }
+
+    .pra-btns {
+      display: flex;
+      gap: 6px;
+      margin-top: 12px;
+      flex-wrap: wrap
+    }
+
+    .btn {
+      padding: 7px 12px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      border: 1px solid var(--bd);
+      background: var(--bgi);
+      color: var(--txm);
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all .15s
+    }
+
+    .btn:hover:not(:disabled) {
+      border-color: var(--ac);
+      color: var(--acl);
+      background: var(--abg)
+    }
+
+    .btn:disabled {
+      opacity: .3;
+      cursor: default
+    }
+
+    .btn.rst {
+      border-color: rgba(239, 68, 68, .2);
+      color: var(--rd);
+      background: var(--rdb)
+    }
+
+    .btn.rst:hover:not(:disabled) {
+      border-color: var(--rd);
+      background: var(--rdb2)
+    }
+
+    .btn.active-vercel {
+      border-color: var(--tx);
+      color: var(--tx);
+      background: rgba(255, 255, 255, .1);
+    }
+
+    .btn.active-domain {
+      border-color: var(--bl);
+      color: var(--bl);
+      background: var(--blb);
+    }
+
+    .btn.active-env {
+      border-color: var(--gn);
+      color: var(--gn);
+      background: var(--gnb);
+    }
+
+    .btn-hint {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--ac);
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 2px;
+      white-space: nowrap;
+      pointer-events: none;
+      animation: hintPulse 2s infinite;
+      z-index: 999;
+    }
+
+    .btn-hint::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 4px solid var(--ac);
+    }
+
+    @keyframes hintPulse {
+      0% {
+        transform: translateX(-50%) scale(1);
+      }
+
+      50% {
+        transform: translateX(-50%) scale(1.05);
+      }
+
+      100% {
+        transform: translateX(-50%) scale(1);
+      }
+    }
+
+    .hint {
+      font-size: 11px;
+      color: var(--txd);
+      line-height: 1.4;
+      padding: 8px 10px;
+      background: var(--bgi);
+      border-radius: 2px;
+      border-left: 2px solid var(--bd);
+      margin-top: 12px
+    }
+
+    .pr-box {
+      background: var(--bgi);
+      border: 1px solid var(--bd);
+      border-radius: 3px;
+      padding: 12px 14px;
+      margin-top: 14px;
+      min-height: 100px;
+    }
+
+    .pr-txt {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--acl);
+      line-height: 1.55;
+      word-break: break-word
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <section class="pra" aria-label="Thực hành">
+    <div class="ch"><span class="n">PRACTICE</span>
+      <h2>Hosting trong Vibecode</h2>
+    </div>
+    <p class="pra-goal">Trong Vibecode, bạn không cần phải cấu hình server hay linux. Mọi thứ được tự động hóa qua Vercel. Bạn chỉ cần tương tác với AI để setup những bước cuối cùng.</p>
+
+    <div class="pra-grid">
+      <div>
+        <span class="cfg-l">Mô phỏng Vercel Workflow</span>
+        <div class="pra-ed" id="praEd">
+          <div class="pra-ed-hd">
+            <span id="praFile">chưa_chọn.txt</span>
+            <span class="st" id="praSt">WAITING</span>
+          </div>
+          <div class="pra-ed-body" id="praBody"></div>
+        </div>
+
+        <div class="pra-btns" id="praBtns">
+          <div style="position: relative; display: inline-block;">
+            <div class="btn-hint" id="hintBadge">Click me!</div>
+            <button class="btn" data-ch="vercel">Liên kết GitHub</button>
+          </div>
+          <button class="btn" data-ch="domain">Thêm Tên miền</button>
+          <button class="btn" data-ch="env">Bảo mật API Key</button>
+          <button class="btn rst" id="praRst" disabled>Reset</button>
+        </div>
+
+        <div class="hint">Hosting kiểu Vibecode là zero-config. Code xong -> Push lên GitHub -> Vercel tự động deploy ra link thật. Bạn chỉ dùng prompt hỏi cách setup trên web!</div>
+      </div>
+
+      <div>
+        <div class="pr-box">
+          <span class="cfg-l">Nói với AI</span>
+          <div class="pr-txt" id="praPr">Chọn 1 công đoạn bên trái để xem prompt...</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      var $body = document.getElementById('praBody');
+      var $ed = document.getElementById('praEd');
+      var $st = document.getElementById('praSt');
+      var $file = document.getElementById('praFile');
+      var $pr = document.getElementById('praPr');
+      var $btns = document.querySelectorAll('#praBtns .btn[data-ch]');
+      var $rst = document.getElementById('praRst');
+      var $hintBadge = document.getElementById('hintBadge');
+
+      /* line builder */
+      function ln(num, code, cls, tag) {
+        var tagHtml = tag ? '<span class="pra-tag ' + tag.cls + '">' + tag.text + '</span>' : '';
+        return '<div class="pra-ln ' + (cls || '') + '">'
+          + '<span class="mk-n">' + num + '</span>'
+          + '<span class="mk-c">' + code + tagHtml + '</span>'
+          + '</div>';
+      }
+
+      function resetView() {
+        $ed.className = 'pra-ed';
+        $st.className = 'st';
+        $st.textContent = 'WAITING';
+        $file.textContent = 'chưa_chọn.txt';
+        $body.innerHTML = ln(1, '// Chọn các công đoạn Hosting thường gặp trong Vibecode', '', '');
+        $pr.textContent = 'Chọn 1 công đoạn bên trái để xem prompt...';
+
+        $btns.forEach(function (b) {
+          b.className = 'btn';
+        });
+        $rst.disabled = true;
+        if ($hintBadge) $hintBadge.style.display = 'block';
+      }
+
+      function setSolution(choice, clickedBtn) {
+        // Reset old states
+        $btns.forEach(function (b) { b.className = 'btn'; });
+        $ed.className = 'pra-ed';
+        $st.className = 'st';
+
+        if ($hintBadge) $hintBadge.style.display = 'none';
+        $rst.disabled = false;
+
+        var lines = '';
+        if (choice === 'vercel') {
+          clickedBtn.className = 'btn active-vercel';
+          $ed.classList.add('state-vercel');
+          $st.className = 'st state-vercel';
+          $st.textContent = 'VERCEL';
+          $file.textContent = 'vercel-dashboard.log';
+          lines = ln(1, 'Project: markai-web', 'new-ln', '')
+            + ln(2, 'Framework: Next.js', 'new-ln', '')
+            + ln(3, 'Source: github.com/user/markai', 'new-ln', { cls: 'pra-tag-v', text: 'Connected' })
+            + ln(4, 'Status: Ready', 'new-ln', '')
+            + ln(5, 'Auto Deploy: Enabled', 'new-ln', { cls: 'pra-tag-pg', text: 'On Push' });
+          $pr.textContent = 'Tôi đang code bằng Cursor và muốn đưa web lên mạng. Hãy hướng dẫn tôi các bước cơ bản để đưa repo này lên GitHub và kết nối với Vercel để web tự động online mỗi khi push code.';
+        } else if (choice === 'domain') {
+          clickedBtn.className = 'btn active-domain';
+          $ed.classList.add('state-domain');
+          $st.className = 'st state-domain';
+          $st.textContent = 'DNS SETTINGS';
+          $file.textContent = 'dns-config.txt';
+          lines = ln(1, 'Domain: markai.vn', 'new-ln', '')
+            + ln(2, '-----------------------', 'new-ln', '')
+            + ln(3, 'Type: A Record', 'new-ln', '')
+            + ln(4, 'Name: @', 'new-ln', '')
+            + ln(5, 'Value: 76.76.21.21', 'new-ln', { cls: 'pra-tag-vps', text: 'Vercel IP' })
+            + ln(6, '-----------------------', 'new-ln', '')
+            + ln(7, 'Status: SSL Generating...', 'new-ln', { cls: 'pra-tag-vps', text: 'Secure' });
+          $pr.textContent = 'Tôi đã deploy thành công trên Vercel nhưng web có đuôi .vercel.app. Tôi vừa mua tên miền trên trang x. Hãy hướng dẫn tôi cách trỏ tên miền tùy chỉnh (custom domain) vào Vercel.';
+        } else if (choice === 'env') {
+          clickedBtn.className = 'btn active-env';
+          $ed.classList.add('state-env');
+          $st.className = 'st state-env';
+          $st.textContent = 'ENVIRONMENT VARIABLES';
+          $file.textContent = '.env.local';
+          lines = ln(1, '# Secret Keys (DO NOT COMMIT)', 'new-ln', '')
+            + ln(2, 'OPENAI_API_KEY=sk-proj-xyz...', 'new-ln', { cls: 'pra-tag-pg', text: 'Secret' })
+            + ln(3, 'DATABASE_URL=postgres://...', 'new-ln', { cls: 'pra-tag-pg', text: 'Secret' })
+            + ln(4, '', 'new-ln', '')
+            + ln(5, '# Public Keys', 'new-ln', '')
+            + ln(6, 'NEXT_PUBLIC_API_URL=/api', 'new-ln', '');
+          $pr.textContent = 'Code của tôi có sử dụng các biến môi trường trong file .env.local (như OpenAI Key, DB URL). Làm sao để tôi cấu hình các biến này trên Vercel Dashboard một cách an toàn để web có thể hoạt động?';
         }
+        $body.innerHTML = lines;
+      }
+
+      /* events */
+      $btns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          setSolution(this.getAttribute('data-ch'), this);
+        });
       });
-    });
+      $rst.addEventListener('click', resetView);
 
-    resetBtn.addEventListener('click', function() {
-      currentStep = 0;
-      updateUI();
-    });
-
-    updateUI();
-  })();
-</script>
-
+      /* init */
+      resetView();
+    })();
+  </script>
 </body>
+
 </html>

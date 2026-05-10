@@ -181,7 +181,8 @@ const rawTerms: GlossaryTerm[] = [
     definition: 'Dịch vụ cung cấp "chỗ ở" cho web của bạn trên internet. Vercel là hosting miễn phí tốt nhất cho Next.js project. Không cần biết server — Vercel lo hết.',
     example: '"Tôi cần hosting cho web campaign" → Dùng Vercel (miễn phí, dễ setup, tự động deploy từ GitHub).',
     related: ['vercel', 'deploy'],
-    demo: { kind: 'interactive', src: 'gif-hosting-demo.html', alt: 'Mô phỏng Hosting và quy trình vận hành' }
+    demo: { kind: 'interactive', src: 'gif-hosting-demo.html', alt: 'Mô phỏng Hosting và quy trình vận hành' },
+    practice: { kind: 'interactive', src: 'gif-hosting-practice.html', alt: 'Thực hành Hosting' }
   },
   { id: 'inference', name: 'Inference', nameEn: 'AI xử lý và trả kết quả', letter: 'I', groups: ['ai'], definition: 'Quá trình AI nhận input (prompt của bạn) và tạo ra output (text, code, ảnh). Mỗi lần bạn hỏi AI và AI trả lời = một lần inference chạy trên server.', example: '"Inference cost" = chi phí mỗi lần gọi AI API. Khi dùng Claude API trong app, mỗi user message = một lần inference = một khoản phí nhỏ.' },
   {
