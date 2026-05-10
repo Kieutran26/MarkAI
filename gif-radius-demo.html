@@ -1,409 +1,329 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Border Radius Demo — Vibecode Glossary</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
-    rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <title>Radius — Amber Brutalist 4-Cell Grid</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #0f0f12;
-      --bg-card: #16161b;
-      --fg: #e8e4dc;
-      --muted: #6e6e7a;
-      --accent: #e88c2e;
-      --accent-soft: rgba(207, 92, 38, .12);
-      --accent-border: rgba(207, 92, 38, .3);
-      --border: #282830;
-      --surface: #1c1c23;
-      --success: #3a9e5c;
-      --success-soft: rgba(58, 158, 92, .12);
-      --warning: #c49030;
-      --warning-soft: rgba(196, 144, 48, .1);
-      --bar-d: #2a2a34;
-      --bar-m: #44444f;
-      --shape-lt: #33333d;
+      --bg: #0a0a0c;
+      --card-bg: #16161b;
+      --amber: #E88C2E;
+      --gray: #707070;
+      --text: #ece8e1;
+      --border: #26262a;
     }
 
     * {
       margin: 0;
       padding: 0;
-      box-sizing: border-box
+      box-sizing: border-box;
     }
 
     body {
-      background: var(--bg);
-      color: var(--fg);
+      background-color: var(--bg);
+      color: var(--text);
       font-family: 'Space Grotesk', sans-serif;
-      min-height: auto;
-      line-height: 1.6;
-    }
-
-    .entry {
-      position: relative;
-      z-index: 1;
-      max-width: 940px;
-      margin: 0 auto;
-      padding: 24px 24px 40px
-    }
-
-    .th {
-      margin-bottom: 28px
-    }
-
-    .badge {
-      display: inline-block;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--accent);
-      background: var(--accent-soft);
-      border: 1px solid var(--accent-border);
-      padding: 4px 12px;
-      margin-bottom: 16px;
-    }
-
-    .th h1 {
-      font-size: clamp(34px, 6vw, 54px);
-      font-weight: 800;
-      letter-spacing: -2px;
-      line-height: 1.08
-    }
-
-    .th .sub {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
-      color: var(--muted);
-      margin-top: 6px
-    }
-
-    .sec-lbl {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-bottom: 20px;
+      padding: 40px 20px;
       display: flex;
-      align-items: center;
-      gap: 10px;
+      justify-content: center;
     }
 
-    .sec-lbl::after {
-      content: '';
-      flex: 1;
-      height: 1px;
-      background: var(--border)
-    }
-
-    /* ========== SIM CARDS ========== */
-    .sim-grid {
+    .grid-container {
       display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 10px;
-      margin-bottom: 20px
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      max-width: 940px;
+      width: 100%;
     }
 
-    @media(max-width:720px) {
-      .sim-grid {
-        grid-template-columns: repeat(2, 1fr)
+    @media (max-width: 640px) {
+      .grid-container {
+        grid-template-columns: 1fr;
       }
     }
 
-    .sc {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      padding: 20px 14px 18px;
-      cursor: pointer;
+    .card {
+      background: var(--card-bg);
+      border-radius: 3px;
       position: relative;
+      padding-top: 2px;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--border);
       overflow: hidden;
-      transition: border-color .3s, background .3s;
     }
 
-    .sc::before {
+    .card::before {
       content: '';
       position: absolute;
       top: 0;
       left: 0;
       right: 0;
       height: 2px;
-      background: var(--accent);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform .35s ease;
+      background: var(--amber);
     }
 
-    .sc:hover {
-      border-color: var(--accent-border)
-    }
-
-    .sc.on {
-      border-color: var(--accent);
-      background: var(--surface)
-    }
-
-    .sc.on::before {
-      transform: scaleX(1)
-    }
-
-    .sc-top {
+    .header {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin-bottom: 18px
+      padding: 12px 16px;
+      gap: 8px; /* Sát nhau */
     }
 
-    .sc-num {
+    .num-box {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      color: var(--muted);
-      letter-spacing: 1px
+      font-size: 11px;
+      border: 1px solid var(--gray);
+      padding: 2px 6px;
+      color: var(--gray);
     }
 
-    .sc-tag {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
+    .title {
+      font-size: 14px;
       font-weight: 600;
+      color: var(--text);
       text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: var(--muted);
-      transition: color .3s;
+      letter-spacing: 0.5px;
     }
 
-    .sc.on .sc-tag {
-      color: var(--accent)
+    .indicator {
+      width: 6px;
+      height: 6px;
+      background: var(--amber);
+      border-radius: 50%;
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      animation: blink 1.2s infinite;
+      box-shadow: 0 0 8px var(--amber);
+      z-index: 10;
     }
 
-    .sc-shapes {
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .sim-area {
+      height: 160px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      margin-bottom: 16px;
-      min-height: 110px;
-      justify-content: center
-    }
-
-    .shape-row {
-      display: flex;
-      gap: 8px;
-      align-items: center
-    }
-
-    .sh {
-      transition: border-radius .5s cubic-bezier(.4, 0, .2, 1), background .3s;
-      flex-shrink: 0;
-      position: relative;
-    }
-
-    .sh.lg {
-      width: 100%;
-      height: 36px;
-      background: var(--shape-lt)
-    }
-
-    .sh.md {
-      width: 52px;
-      height: 36px;
-      background: var(--shape-lt)
-    }
-
-    .sh.ac {
-      width: 36px;
-      height: 36px;
-      background: var(--accent);
-      opacity: .8
-    }
-
-    .sh.sm {
-      width: 28px;
-      height: 28px;
-      background: var(--bar-m);
-      display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 12px;
-      color: var(--muted)
-    }
-
-    .sh.pill {
-      height: 28px;
-      padding: 0 12px;
-      background: var(--accent-soft);
-      border: 1px solid var(--accent-border);
-      display: flex;
-      align-items: center;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      color: var(--accent);
-      letter-spacing: .5px;
-    }
-
-    .arc-wrap {
-      position: absolute;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity .4s ease;
-    }
-
-    .sc.on .arc-wrap {
-      opacity: 1
-    }
-
-    .arc-svg {
-      overflow: visible
-    }
-
-    .sc-val {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 13px;
-      color: var(--muted);
-      text-align: center;
-      transition: color .3s, font-weight .3s;
-    }
-
-    .sc.on .sc-val {
-      color: var(--accent);
-      font-weight: 600
+      padding: 20px;
+      background: rgba(0,0,0,0.2);
+      position: relative;
+      overflow: hidden;
     }
 
     .ins {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      padding: 18px 22px;
+      padding: 12px 16px;
+      border-left: 2px solid var(--amber);
+      font-size: 11.5px;
+      color: var(--gray);
+      background: rgba(232, 140, 46, 0.03);
+      margin: 0 16px 16px 16px;
+      line-height: 1.5;
+    }
+
+    .ins strong {
+      color: var(--amber);
+      font-weight: 700;
+    }
+
+    /* Simulation Elements */
+    .shape-container {
+      width: 80px;
+      height: 80px;
+      background: var(--amber);
+      transition: border-radius 0.6s cubic-bezier(0.4, 0, 0.2, 1);
       display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      margin-bottom: 0;
+      align-items: center;
+      justify-content: center;
+      position: relative;
     }
 
-    .ins-i {
-      color: var(--accent);
-      font-size: 13px;
-      margin-top: 3px;
-      flex-shrink: 0
+    .label-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--gray);
+      margin-top: 15px;
+      background: rgba(0,0,0,0.3);
+      padding: 2px 8px;
+      border-radius: 2px;
     }
 
-    .ins-t {
-      font-size: 14px;
-      color: var(--fg);
-      opacity: .85;
-      line-height: 1.65;
-      transition: opacity .25s, transform .25s
+    /* Cell 01: Uniform */
+    .shape-01 { background: var(--amber); }
+
+    /* Cell 02: Individual Corners */
+    .shape-02 { background: #26262a; border: 2px solid var(--amber); }
+
+    /* Cell 03: Circle/Pill */
+    .shape-03 { background: var(--amber); width: 80px; height: 80px; }
+
+    /* Cell 04: Complex */
+    .shape-04 { 
+      background: transparent; 
+      border: 2px solid var(--amber);
+      width: 90px;
+      height: 90px;
+    }
+    .shape-04-inner {
+      width: 100%;
+      height: 100%;
+      background: rgba(232, 140, 46, 0.2);
+      transition: inherit;
     }
 
-    .ins-t.fading {
-      opacity: 0;
-      transform: translateY(6px)
-    }
   </style>
 </head>
-
 <body>
 
-  <div class="entry" id="app-root">
-
-    <section aria-label="Mô phỏng border radius">
-      <div class="sec-lbl">01 — Mô phỏng</div>
-      <div class="sim-grid" id="simGrid"></div>
-      <div class="ins">
-        <i class="fa-solid fa-lightbulb ins-i"></i>
-        <p class="ins-t" id="insT">Nhấn vào một mức radius để xem giải thích.</p>
+  <div class="grid-container">
+    
+    <!-- Cell 01: Uniform Radius -->
+    <div class="card">
+      <div class="indicator"></div>
+      <div class="header">
+        <div class="num-box">01</div>
+        <div class="title">Uniform Radius</div>
       </div>
-    </section>
+      <div class="sim-area">
+        <div class="shape-container shape-01" id="shape-01"></div>
+        <div class="label-code" id="label-01">border-radius: 0px;</div>
+      </div>
+      <div class="ins">
+        <strong>Uniform Radius</strong> áp dụng cùng một giá trị cho cả <strong>4 góc</strong>, tạo sự cân đối và đồng nhất cho các thành phần như button hoặc card.
+      </div>
+    </div>
+
+    <!-- Cell 02: Individual Corners -->
+    <div class="card">
+      <div class="indicator"></div>
+      <div class="header">
+        <div class="num-box">02</div>
+        <div class="title">Individual Corners</div>
+      </div>
+      <div class="sim-area">
+        <div class="shape-container shape-02" id="shape-02"></div>
+        <div class="label-code" id="label-02">border-radius: 20px 0 20px 0;</div>
+      </div>
+      <div class="ins">
+        Bạn có thể chỉ định <strong>từng góc riêng biệt</strong> (trên-trái, trên-phải, dưới-phải, dưới-trái) để tạo ra các hình khối <strong>đặc thù</strong> và phá cách.
+      </div>
+    </div>
+
+    <!-- Cell 03: Roundness Levels -->
+    <div class="card">
+      <div class="indicator"></div>
+      <div class="header">
+        <div class="num-box">03</div>
+        <div class="title">Max Roundness</div>
+      </div>
+      <div class="sim-area">
+        <div class="shape-container shape-03" id="shape-03"></div>
+        <div class="label-code" id="label-03">border-radius: 50%;</div>
+      </div>
+      <div class="ins">
+        Khi giá trị radius đạt <strong>50%</strong> hoặc lớn hơn một nửa kích thước cạnh, hình vuông sẽ biến thành <strong>hình tròn</strong> hoặc hình viên thuốc (pill).
+      </div>
+    </div>
+
+    <!-- Cell 04: Complex Syntax -->
+    <div class="card">
+      <div class="indicator"></div>
+      <div class="header">
+        <div class="num-box">04</div>
+        <div class="title">8-Point Syntax</div>
+      </div>
+      <div class="sim-area">
+        <div class="shape-container shape-04" id="shape-04">
+          <div class="shape-04-inner" id="shape-04-inner"></div>
+        </div>
+        <div class="label-code" id="label-04">border-radius: 30% 70%...</div>
+      </div>
+      <div class="ins">
+        Cú pháp <strong>8 điểm (slash syntax)</strong> cho phép tùy chỉnh bán kính ngang và dọc khác nhau, tạo ra các hình dạng <strong>hữu cơ (organic)</strong> như giọt nước.
+      </div>
+    </div>
+
   </div>
 
   <script>
-    const presets = [
-      {
-        num: '01', name: 'Sharp', val: 0,
-        ins: 'Góc vuông hoàn toàn — sắc, cứng, "tool". Thường thấy trong dashboard, data table, terminal, code editor. Mang cảm giác control và precision. Không phải là "lỗi" — là lựa chọn có chủ đích.'
-      },
-      {
-        num: '02', name: 'Subtle', val: 4,
-        ins: 'Bo rất nhẹ — vừa đủ để bớt "gai" nhưng vẫn giữ cảm giác technical. Đây là mức default của nhiều design system cho button, input, card. An toàn, không sai vibe.'
-      },
-      {
-        num: '03', name: 'Rounded', val: 8,
-        ins: 'Bo rõ — bắt đầu có cảm giác "friendly". Phổ biến cho button trên mobile, chip/tag, toast notification. Mức này là ranh giới giữa technical và casual.'
-      },
-      {
-        num: '04', name: 'Pill', val: 16,
-        ins: 'Bo lớn — mềm mại, thân thiện, "consumer app". Dùng cho pill button, avatar, badge. Nhưng dùng cho card hoặc modal → nhìn "trẻ con". Context quyết định mọi thứ.'
-      }
+    // Independent Animation Loops
+
+    // 01: Uniform Radius Loop
+    const shape01 = document.getElementById('shape-01');
+    const label01 = document.getElementById('label-01');
+    const values01 = [0, 8, 20, 40];
+    let step01 = 0;
+
+    setInterval(() => {
+      step01 = (step01 + 1) % values01.length;
+      const v = values01[step01];
+      shape01.style.borderRadius = v + 'px';
+      label01.textContent = `border-radius: ${v}px;`;
+    }, 2000);
+
+    // 02: Individual Corners Loop
+    const shape02 = document.getElementById('shape-02');
+    const label02 = document.getElementById('label-02');
+    const values02 = [
+      '20px 0 20px 0',
+      '0 20px 0 20px',
+      '20px 20px 0 0',
+      '0 0 20px 20px'
     ];
+    let step02 = 0;
 
-    const simGrid = document.getElementById('simGrid');
-    const insT = document.getElementById('insT');
+    setInterval(() => {
+      step02 = (step02 + 1) % values02.length;
+      const v = values02[step02];
+      shape02.style.borderRadius = v;
+      label02.textContent = `border-radius: ${v};`;
+    }, 2200);
 
-    function arcSVG(size) {
-      if (size < 1) return '';
-      const s = Math.min(size, 20);
-      return `<svg width="${s + 2}" height="${s + 2}" viewBox="0 0 ${s + 2} ${s + 2}" class="arc-svg">
-      <line x1="1" y1="${s + 1}" x2="${s + 1}" y2="${s + 1}" stroke="rgba(207,92,38,0.3)" stroke-width="1"/>
-      <line x1="${s + 1}" y1="1" x2="${s + 1}" y2="${s + 1}" stroke="rgba(207,92,38,0.3)" stroke-width="1"/>
-      <path d="M 1 ${s + 1} A ${s} ${s} 0 0 1 ${s + 1} 1" fill="none" stroke="rgba(207,92,38,0.6)" stroke-width="1"/>
-      <circle cx="1" cy="${s + 1}" r="2" fill="rgba(207,92,38,0.5)"/>
-    </svg>`;
-    }
+    // 03: Roundness (Circle/Pill) Loop
+    const shape03 = document.getElementById('shape-03');
+    const label03 = document.getElementById('label-03');
+    let isCircle = false;
 
-    function renderSim() {
-      simGrid.innerHTML = presets.map((p, ci) => {
-        const r = p.val;
-        return `
-        <div class="sc" data-i="${ci}" tabindex="0" role="button">
-          <div class="sc-top">
-            <span class="sc-num">${p.num}</span>
-            <span class="sc-tag">Radius ${r}</span>
-          </div>
-          <div class="sc-shapes">
-            <div class="shape-row">
-              <div class="sh lg" style="border-radius:${r}px;position:relative">
-                ${r > 0 ? `<div class="arc-wrap" style="top:-2px;left:-2px">${arcSVG(r)}</div>` : ''}
-              </div>
-            </div>
-            <div class="shape-row">
-              <div class="sh md" style="border-radius:${r}px;position:relative">
-                ${r > 0 ? `<div class="arc-wrap" style="top:-2px;left:-2px">${arcSVG(Math.min(r, 14))}</div>` : ''}
-              </div>
-              <div class="sh ac" style="border-radius:${r}px"></div>
-              <div class="sh sm" style="border-radius:${r}px">+</div>
-            </div>
-            <div class="shape-row">
-              <div class="sh pill" style="border-radius:${r}px">LABEL</div>
-            </div>
-          </div>
-          <div class="sc-val">${r}px</div>
-        </div>`;
-      }).join('');
+    setInterval(() => {
+      isCircle = !isCircle;
+      if (isCircle) {
+        shape03.style.width = '80px';
+        shape03.style.borderRadius = '50%';
+        label03.textContent = 'border-radius: 50%; (Circle)';
+      } else {
+        shape03.style.width = '120px';
+        shape03.style.borderRadius = '30px';
+        label03.textContent = 'border-radius: 30px; (Pill)';
+      }
+    }, 2500);
 
-      simGrid.querySelectorAll('.sc').forEach(c => {
-        c.onclick = () => activateCard(+c.dataset.i);
-      });
-    }
+    // 04: Complex Syntax Loop
+    const shape04 = document.getElementById('shape-04');
+    const shape04Inner = document.getElementById('shape-04-inner');
+    const label04 = document.getElementById('label-04');
+    const values04 = [
+      '30% 70% 70% 30% / 30% 30% 70% 70%',
+      '50% 50% 50% 50% / 50% 50% 50% 50%',
+      '70% 30% 30% 70% / 70% 70% 30% 30%',
+      '40% 60% 40% 60% / 60% 40% 60% 40%'
+    ];
+    let step04 = 0;
 
-    let activeI = -1;
-    function activateCard(i) {
-      simGrid.querySelectorAll('.sc').forEach(c => c.classList.remove('on'));
-      if (activeI === i) { activeI = -1; setIns('Nhấn vào một mức radius để xem giải thích.'); return; }
-      activeI = i;
-      simGrid.querySelector(`[data-i="${i}"]`).classList.add('on');
-      setIns(presets[i].ins);
-    }
+    setInterval(() => {
+      step04 = (step04 + 1) % values04.length;
+      const v = values04[step04];
+      shape04.style.borderRadius = v;
+      shape04Inner.style.borderRadius = v;
+      label04.textContent = `border-radius: ${v.split('/')[0].trim()}...`;
+    }, 2800);
 
-    function setIns(t) {
-      insT.classList.add('fading');
-      setTimeout(() => { insT.textContent = t; insT.classList.remove('fading'); }, 250);
-    }
-
-    renderSim();
   </script>
 </body>
-
 </html>
