@@ -394,6 +394,18 @@ const rawTerms: GlossaryTerm[] = [
     demo: { kind: 'interactive', src: 'gif-gitignore-demo.html', alt: 'Mô phỏng 4 khía cạnh của .gitignore: Bộ lọc, Cái gì nên ignore, Trước/Sau và Pattern syntax' },
     practice: { kind: 'interactive', src: 'gif-gitignore-practice.html', alt: 'Thực hành cấu hình .gitignore bằng Prompt Builder: chọn nhóm file và tạo lệnh cho AI' }
   },
+  {
+    id: 'hierarchy',
+    name: 'Hierarchy',
+    nameEn: 'Phân cấp thị giác / Visual Hierarchy',
+    letter: 'H',
+    groups: ['design'],
+    definition: 'Visual Hierarchy (Phân cấp thị giác) là "la bàn" dẫn dắt mắt người dùng. Nó giúp người dùng biết phần nào quan trọng nhất cần xem trước, phần nào xem sau. Nếu mọi thứ đều nổi bật thì không có gì nổi bật cả.',
+    example: 'Dùng font size lớn và màu đậm cho Tiêu đề chính, dùng font size nhỏ hơn và màu xám cho văn bản phụ (meta text) để tạo sự phân cấp rõ ràng.',
+    related: ['fontweight', 'contrast', 'spacing', 'color-palette'],
+    demo: { kind: 'interactive', src: 'gif-hierarchy-demo.html', alt: 'Mô phỏng 4 công cụ tạo Hierarchy: Size, Weight, Color và Spatial' },
+    practice: { kind: 'interactive', src: 'gif-hierarchy-practice.html', alt: 'Thực hành phân cấp thị giác bằng Prompt Builder: Size, Weight, Color, Spacing' }
+  },
 ];
 
 const removedGlossaryTermIds = new Set([
