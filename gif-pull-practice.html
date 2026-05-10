@@ -67,6 +67,38 @@ body{
 .btn.pri:hover:not(:disabled){background:var(--acl);border-color:var(--acl)}
 .btn.resolve{background:rgba(34,197,94,.1);border-color:rgba(34,197,94,.3);color:var(--gn)}
 .btn.resolve:hover:not(:disabled){background:rgba(34,197,94,.2)}
+.btn-hint {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ac);
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 2px;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: hintPulse 2s infinite;
+  z-index: 999;
+}
+.btn-hint::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid var(--ac);
+}
+@keyframes hintPulse {
+  0% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.05); }
+  100% { transform: translateX(-50%) scale(1); }
+}
 .pv-stage{background:var(--bgi);border:1px solid var(--bd);border-radius:3px;padding:18px 14px;min-height:180px;display:flex;flex-direction:column;align-items:center;gap:8px;position:relative}
 .pv-tag{position:absolute;top:8px;right:10px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--txd);padding:2px 6px;background:var(--bgc);border:1px solid var(--bd);border-radius:2px}
 .pv-arrow{width:2px;height:0;background:repeating-linear-gradient(to bottom,var(--ac) 0 3px,transparent 3px 6px);position:relative;transition:height .3s}
@@ -102,7 +134,10 @@ body{
       <div class="step-nav">
         <button class="btn" id="prevB" disabled>Trước</button>
         <button class="btn resolve" id="resolveB" style="display:none">Resolve conflict</button>
-        <button class="btn pri" id="nextB">Tiếp</button>
+        <div style="position: relative; display: inline-block;">
+          <div class="btn-hint" id="hintBadge">Click me!</div>
+          <button class="btn pri" id="nextB">Tiếp</button>
+        </div>
       </div>
       <div class="hint">Click qua 5 bước. Ở bước 4 sẽ xuất hiện conflict — click "Resolve conflict" để xử lý.</div>
     </div>
@@ -167,6 +202,7 @@ body{
   var $prev=document.getElementById('prevB');
   var $next=document.getElementById('nextB');
   var $resolve=document.getElementById('resolveB');
+  var $hintBadge=document.getElementById('hintBadge');
   var $dots=document.querySelectorAll('.sd');
   var $lines=[document.getElementById('sf0'),document.getElementById('sf1'),document.getElementById('sf2'),document.getElementById('sf3')];
 
@@ -204,6 +240,7 @@ body{
   }
 
   $next.addEventListener('click',function(){
+    if($hintBadge) $hintBadge.style.display='none';
     if(cur<4){cur++;resolved=false;render();}
   });
   $prev.addEventListener('click',function(){

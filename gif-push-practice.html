@@ -79,6 +79,38 @@ body{
 .hint em{color:var(--acl);font-style:normal;font-weight:600}
 
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+.btn-hint {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ac);
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 2px;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: hintPulse 2s infinite;
+  z-index: 999;
+}
+.btn-hint::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid var(--ac);
+}
+@keyframes hintPulse {
+  0% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.05); }
+  100% { transform: translateX(-50%) scale(1); }
+}
 </style>
 </head>
 <body>
@@ -91,7 +123,10 @@ body{
     <!-- ── LEFT: ACTIONS + LOG ── -->
     <div>
       <div class="acts">
-        <button class="ab" id="btnEdit">Sửa file</button>
+        <div style="position: relative; display: inline-block;">
+          <div class="btn-hint" id="hintBadge">Click me!</div>
+          <button class="ab" id="btnEdit">Sửa file</button>
+        </div>
         <button class="ab" id="btnCommit" disabled>Commit</button>
         <button class="ab" id="btnPush" disabled>Push</button>
         <button class="ab" id="btnPull" disabled>Pull</button>
@@ -145,6 +180,7 @@ body{
   var $local = document.getElementById('pvLocal');
   var $remote = document.getElementById('pvRemote');
   var $pr = document.getElementById('prTxt');
+  var $hintBadge = document.getElementById('hintBadge');
 
   /* ── RENDER ── */
   function render(){
@@ -205,6 +241,7 @@ body{
 
   /* ── ACTIONS ── */
   $edit.addEventListener('click', function(){
+    if($hintBadge) $hintBadge.style.display = 'none';
     if(modified) return;
     modified = true;
     log('edit index.html', 'File modified (uncommitted)', 'warn');
