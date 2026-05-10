@@ -1,147 +1,456 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Interface Practice — Vibecode Glossary</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#1a1a18;--bgc:#222220;--bge:#2a2a27;--bgt:#161614;--fg:#e8e4dd;--fm:#8a877e;--ac:#E88C2E;--acd:#a84e22;--am:#c9922a;--gn:#6b8f5e;--rd:#b54a4a;--bl:#5e7a8f;--bd:#3a3a36;--bdl:#4a4a45;--mn:'JetBrains Mono',monospace;--sn:'Space Grotesk',sans-serif;}
-*{margin:0;padding:0;box-sizing:border-box;}
-body{background:var(--bg);color:var(--fg);font-family:var(--sn);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
-.pw{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:16px 16px 40px;}
-.ss{border:1px solid var(--bd);background:var(--bgc);margin-bottom:28px;overflow:hidden;}
-.ss .sh{border-bottom:1px solid var(--bd);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;}
-.ss .sh h2{font-family:var(--mn);font-size:13px;font-weight:600;color:var(--ac);text-transform:uppercase;letter-spacing:1.5px;}
-.sb{padding:28px 20px;}
-.ins{background:var(--bge);border-left:3px solid var(--ac);padding:12px 16px;margin-top:20px;font-size:13px;color:var(--fm);line-height:1.6;}
 
-/* Practice styles */
-.pt{border:1.5px dashed var(--bdl);background:rgba(212,98,43,.03);padding:24px;display:flex;flex-direction:column;gap:16px;}
-.pt-title{font-size:14px;font-weight:600;color:var(--fg);}
-.pt-area{display:flex;flex-direction:column;gap:12px;padding:20px;background:var(--bg);border:1px solid var(--bd);}
-.pt-row{display:flex;align-items:center;gap:12px;margin-bottom:8px;}
-.pt-label{font-family:var(--mn);font-size:11px;color:var(--fm);min-width:120px;}
-.pt-select{flex:1;height:32px;background:var(--bge);border:1px solid var(--bd);color:var(--fg);font-family:var(--sn);font-size:12px;padding:0 8px;outline:none;}
-.pt-select:focus{border-color:var(--ac);}
-.pt-preview{display:flex;gap:12px;margin-top:10px;min-height:120px;}
-.pt-prev-box{flex:1;border:1px solid var(--bd);background:var(--bge);padding:12px;display:flex;flex-direction:column;gap:8px;}
-.pt-prev-box.bad{border-color:rgba(181,74,74,.3);}
-.pt-prev-box.good{border-color:rgba(107,143,94,.3);}
-.pt-prev-label{font-family:var(--mn);font-size:10px;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
-.pt-prev-label.bad{color:var(--rd);}.pt-prev-label.good{color:var(--gn);}
-.pt-mock-btn{height:28px;background:var(--bdl);display:flex;align-items:center;justify-content:center;font-size:11px;color:var(--bg);font-weight:600;}
-.pt-feed{font-size:11px;color:var(--fm);line-height:1.4;margin-top:auto;}
-.pt-reset{margin-top:16px;align-self:flex-end;padding:8px 16px;background:var(--bg);border:1px solid var(--bd);color:var(--fm);font-family:var(--mn);font-size:10px;cursor:pointer;transition:all .2s;}
-.pt-reset:hover{color:var(--ac);border-color:var(--ac);}
-</style>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interface Practice — Vibecode Glossary</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #101010;
+      --bgc: #181818;
+      --bgi: #131313;
+      --bd: #272727;
+      --tx: #e0e0e0;
+      --txm: #707070;
+      --txd: #3a3a3a;
+      --ac: #E88C2E;
+      --acl: #f5a65b;
+      --abg: rgba(232, 140, 46, .08);
+      --abg2: rgba(232, 140, 46, .18);
+      --rd: #ef4444;
+      --gn: #22c55e;
+      --gnb: rgba(34, 197, 94, .12);
+      --rdb: rgba(239, 68, 68, .1);
+      --rdb2: rgba(239, 68, 68, .18);
+      --bl: #3b82f6;
+      --blb: rgba(59, 130, 246, .12);
+    }
+
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background-color: var(--bg);
+      background-image:
+        linear-gradient(rgba(255, 255, 255, .018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, .018) 1px, transparent 1px);
+      background-size: 20px 20px;
+      color: var(--tx);
+      min-height: 100vh;
+      padding: 20px 16px 48px;
+    }
+
+    .ch {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px
+    }
+
+    .ch .n {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--ac);
+      background: var(--abg);
+      border: 1px solid rgba(232, 140, 46, .2);
+      padding: 1px 6px;
+      border-radius: 2px
+    }
+
+    .ch h2 {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -.3px
+    }
+
+    .pra {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--bgc);
+      border: 1px solid var(--bd);
+      border-radius: 3px;
+      padding: 22px
+    }
+
+    .pra .ch {
+      margin-bottom: 6px
+    }
+
+    .pra-goal {
+      font-size: 12.5px;
+      color: var(--txm);
+      margin-bottom: 18px;
+      line-height: 1.5
+    }
+
+    .pra-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px
+    }
+
+    @media(max-width:660px) {
+      .pra-grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .cfg-l {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--txd);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      display: block;
+      margin-bottom: 8px
+    }
+
+    .pra-ed {
+      background: #151312;
+      border: 2px solid var(--bd);
+      border-radius: 3px;
+      overflow: hidden;
+      transition: border-color .3s
+    }
+
+    .pra-ed.state-input { border-color: var(--tx); }
+    .pra-ed.state-layout { border-color: var(--bl); }
+    .pra-ed.state-state { border-color: var(--ac); }
+    .pra-ed.state-data { border-color: var(--gn); }
+
+    .pra-ed-hd {
+      padding: 6px 12px;
+      background: rgba(255, 255, 255, .03);
+      border-bottom: 1px solid var(--bd);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px;
+      color: var(--txm);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .pra-ed-hd .st {
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      transition: color .3s;
+    }
+
+    .pra-ed-hd .st.state-input { color: var(--tx); }
+    .pra-ed-hd .st.state-layout { color: var(--bl); }
+    .pra-ed-hd .st.state-state { color: var(--ac); }
+    .pra-ed-hd .st.state-data { color: var(--gn); }
+
+    .pra-ed-body {
+      padding: 24px;
+      min-height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* MOCK WIDGET UI */
+    .mock-widget {
+      background: #1c1a18;
+      border: 1px solid var(--bd);
+      border-radius: 6px;
+      padding: 16px;
+      width: 100%;
+      max-width: 360px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .mw-header { font-size: 14px; font-weight: 600; color: #fff; padding-bottom: 8px; border-bottom: 1px solid var(--bd); transition: all 0.3s; }
+    .mw-content { display: flex; flex-direction: column; gap: 12px; transition: all 0.3s; }
+    
+    .mw-form { display: flex; gap: 8px; transition: all 0.3s; }
+    .mw-input { flex: 1; height: 32px; background: #2a2a2a; border: 1px solid transparent; border-radius: 4px; color: #999; padding: 0 10px; font-size: 12px; transition: all 0.3s; outline: none; }
+    .mw-btn { height: 32px; padding: 0 16px; background: #333; color: #999; border: none; border-radius: 4px; font-size: 12px; cursor: default; transition: all 0.3s; display: flex; align-items: center; justify-content: center; gap: 6px;}
+    
+    .mw-list { display: flex; flex-direction: column; gap: 6px; transition: all 0.3s; }
+    .mw-item { background: #2a2a2a; padding: 6px 10px; border-radius: 4px; font-size: 12px; color: #999; transition: all 0.3s; display: flex; align-items: center; gap: 8px; }
+    .mw-icon { width: 14px; height: 14px; background: #444; border-radius: 2px; transition: all 0.3s; flex-shrink: 0; }
+
+    /* STATES */
+    /* INPUTS & CONTROLS */
+    .state-input .mw-input { background: #111; border-color: var(--tx); color: #fff; }
+    .state-input .mw-btn { background: #fff; color: #000; font-weight: 600; cursor: pointer; }
+    
+    /* LAYOUT STRUCTURE */
+    .state-layout .mw-content { flex-direction: row; }
+    .state-layout .mw-form { flex-direction: column; flex: 1; }
+    .state-layout .mw-list { flex: 1; }
+    
+    /* STATE & FEEDBACK */
+    .state-state .mw-btn { background: var(--ac); color: #000; font-weight: 600; }
+    .state-state .mw-btn::before { content: ''; display: inline-block; width: 12px; height: 12px; border: 2px solid rgba(0,0,0,0.3); border-top-color: #000; border-radius: 50%; animation: spin 1s linear infinite; }
+    .state-state .mw-input { opacity: 0.5; pointer-events: none; }
+    
+    /* DATA DISPLAY */
+    .state-data .mw-list { flex-direction: row; flex-wrap: wrap; }
+    .state-data .mw-item { flex: 1; min-width: 40%; flex-direction: column; align-items: flex-start; background: rgba(255,255,255,0.05); padding: 12px; border: 1px solid var(--bd); }
+    .state-data .mw-icon { width: 24px; height: 24px; border-radius: 50%; background: var(--gn); }
+    .state-data .mw-item span { color: #fff; font-weight: 500; font-size: 13px; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .pra-btns {
+      display: flex;
+      gap: 6px;
+      margin-top: 12px;
+      flex-wrap: wrap
+    }
+
+    .btn {
+      padding: 7px 12px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      border: 1px solid var(--bd);
+      background: var(--bgi);
+      color: var(--txm);
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all .15s
+    }
+
+    .btn:hover:not(:disabled) {
+      border-color: var(--ac);
+      color: var(--acl);
+      background: var(--abg)
+    }
+
+    .btn:disabled {
+      opacity: .3;
+      cursor: default
+    }
+
+    .btn.rst {
+      border-color: rgba(239, 68, 68, .2);
+      color: var(--rd);
+      background: var(--rdb)
+    }
+
+    .btn.rst:hover:not(:disabled) {
+      border-color: var(--rd);
+      background: var(--rdb2)
+    }
+
+    .btn.active-input { border-color: var(--tx); color: var(--tx); background: rgba(255, 255, 255, .1); }
+    .btn.active-layout { border-color: var(--bl); color: var(--bl); background: var(--blb); }
+    .btn.active-state { border-color: var(--ac); color: var(--ac); background: var(--abg); }
+    .btn.active-data { border-color: var(--gn); color: var(--gn); background: var(--gnb); }
+
+    .btn-hint {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--ac);
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 2px;
+      white-space: nowrap;
+      pointer-events: none;
+      animation: hintPulse 2s infinite;
+      z-index: 999;
+    }
+
+    .btn-hint::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 4px solid var(--ac);
+    }
+
+    @keyframes hintPulse {
+      0% { transform: translateX(-50%) scale(1); }
+      50% { transform: translateX(-50%) scale(1.05); }
+      100% { transform: translateX(-50%) scale(1); }
+    }
+
+    .hint {
+      font-size: 11px;
+      color: var(--txd);
+      line-height: 1.4;
+      padding: 8px 10px;
+      background: var(--bgi);
+      border-radius: 2px;
+      border-left: 2px solid var(--bd);
+      margin-top: 12px
+    }
+
+    .pr-box {
+      background: var(--bgi);
+      border: 1px solid var(--bd);
+      border-radius: 3px;
+      padding: 12px 14px;
+      margin-top: 14px;
+      min-height: 100px;
+    }
+
+    .pr-txt {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--acl);
+      line-height: 1.55;
+      word-break: break-word
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important
+      }
+    }
+  </style>
 </head>
+
 <body>
-<div class="pw">
-  <section class="ss pt-section">
-    <div class="sh"><h2>Thực hành: Tư duy Interface</h2></div>
-    <div class="sb">
-      <div class="pt">
-        <div class="pt-title">Tình huống: Thiết kế nút hành động chính</div>
-        <div class="pt-area">
-          <div class="pt-row">
-            <div class="pt-label">Element:</div>
-            <select class="pt-select" id="elemSelect">
-              <option value="btn">Button (Nút bấm)</option>
-              <option value="link">Link (Liên kết)</option>
-              <option value="icon">Icon (Biểu tượng)</option>
-            </select>
+
+  <section class="pra" aria-label="Thực hành">
+    <div class="ch"><span class="n">PRACTICE</span>
+      <h2>Interface (Giao diện)</h2>
+    </div>
+    <p class="pra-goal">Một interface tốt không chỉ là hình ảnh, nó là cách người dùng giao tiếp với ứng dụng. Hãy chọn một khái niệm để xem cách yêu cầu AI xây dựng giao diện hoàn thiện.</p>
+
+    <div class="pra-grid">
+      <div>
+        <span class="cfg-l">Giao diện xem trước (UI Preview)</span>
+        <div class="pra-ed" id="praEd">
+          <div class="pra-ed-hd">
+            <span id="praFile"><i class="fa-solid fa-layer-group"></i> Widget Component</span>
+            <span class="st" id="praSt">BASIC</span>
           </div>
-          <div class="pt-row">
-            <div class="pt-label">Principle:</div>
-            <select class="pt-select" id="princSelect">
-              <option value="clarity">Clarity (Rõ ràng)</option>
-              <option value="consistency">Consistency (Nhất quán)</option>
-            </select>
-          </div>
-          <div class="pt-preview">
-            <div class="pt-prev-box bad">
-              <div class="pt-prev-label bad">Bad Interface</div>
-              <div id="prevBad"></div>
-              <div class="pt-feed" id="feedBad"></div>
-            </div>
-            <div class="pt-prev-box good">
-              <div class="pt-prev-label good">Good Interface</div>
-              <div id="prevGood"></div>
-              <div class="pt-feed" id="feedGood"></div>
+          <div class="pra-ed-body">
+            <div class="mock-widget" id="mockWidget">
+              <div class="mw-header">Dashboard Panel</div>
+              <div class="mw-content">
+                <div class="mw-form">
+                  <input type="text" value="Search items..." class="mw-input" readonly>
+                  <button class="mw-btn">Action</button>
+                </div>
+                <div class="mw-list">
+                  <div class="mw-item"><div class="mw-icon"></div><span>Item Data A</span></div>
+                  <div class="mw-item"><div class="mw-icon"></div><span>Item Data B</span></div>
+                </div>
+              </div>
             </div>
           </div>
-          <button class="pt-reset" id="resetBtn">RESET SIMULATION</button>
         </div>
-        <div class="ins"><strong>Thử thay đổi Option để thấy sự khác biệt giữa Bad vs Good Interface.</strong> Interface tốt không chỉ là hình ảnh, mà là cách nó truyền đạt mục đích.</div>
+
+        <div class="pra-btns" id="praBtns">
+          <div style="position: relative; display: inline-block;">
+            <div class="btn-hint" id="hintBadge">Click me!</div>
+            <button class="btn" data-ch="input">Inputs & Controls</button>
+          </div>
+          <button class="btn" data-ch="layout">Layout Structure</button>
+          <button class="btn" data-ch="state">State & Feedback</button>
+          <button class="btn" data-ch="data">Data Display</button>
+          <button class="btn rst" id="praRst" disabled>Reset</button>
+        </div>
+
+        <div class="hint">Trong Vibecode, hãy chỉ ra rõ phần bạn muốn cải thiện (ví dụ: công cụ nhập liệu, bố cục, trạng thái) để AI có thể hoàn thiện trải nghiệm UI/UX!</div>
+      </div>
+
+      <div>
+        <div class="pr-box">
+          <span class="cfg-l">Nói với AI</span>
+          <div class="pr-txt" id="praPr">Chọn một nút bên trái để xem prompt mẫu...</div>
+        </div>
       </div>
     </div>
   </section>
-</div>
 
-<script>
-const data = {
-  btn: {
-    clarity: {
-      bad: { label: 'Click', style: 'background:#3a3a36;color:#8a877e;', feed: 'Nút ghi "Click" rất mơ hồ. User không biết click xong chuyện gì xảy ra (Mua hàng? Xóa? Đóng?).' },
-      good: { label: 'Mua ngay', style: 'background:#E88C2E;color:#fff;', feed: 'Nút ghi rõ hành động (Mua ngay) + màu sắc nổi bật. User hiểu ngay kết quả khi bấm.' }
-    },
-    consistency: {
-      bad: { label: 'Submit', style: 'background:#5e7a8f;color:#fff;border-radius:20px;', feed: 'Nếu mọi nút khác trong app là hình vuông màu cam, nút này màu xanh bo góc sẽ làm user bối rối.' },
-      good: { label: 'Gửi tin', style: 'background:#E88C2E;color:#fff;border-radius:0;', feed: 'Giữ nguyên style chung (màu cam, góc vuông). Tạo thói quen nhận diện hành động cho user.' }
-    }
-  },
-  link: {
-    clarity: {
-      bad: { label: 'Tại đây', style: 'color:#8a877e;text-decoration:none;', feed: 'Link "Tại đây" bắt user phải đọc cả đoạn văn mới biết nó dẫn đi đâu. Không tối ưu cho việc quét nội dung.' },
-      good: { label: 'Xem bảng giá', style: 'color:#E88C2E;text-decoration:underline;', feed: 'Nội dung link tự thân nó đã giải thích điểm đến. Gạch chân giúp nhận diện đây là link.' }
-    },
-    consistency: {
-      bad: { label: 'Profile', style: 'color:#fff;background:#3a3a36;padding:2px 4px;', feed: 'Link trông giống Label hoặc Button nhỏ. User không biết đây là thứ có thể click được.' },
-      good: { label: 'Trang cá nhân', style: 'color:#E88C2E;', feed: 'Sử dụng màu Brand cho link xuyên suốt các trang giúp user tin tưởng vào tương tác.' }
-    }
-  },
-  icon: {
-    clarity: {
-      bad: { label: '⚙', style: 'font-size:20px;opacity:.4;', feed: 'Icon quá mờ hoặc đặt ở vị trí khó tìm khiến user không nhận ra đây là khu vực cài đặt.' },
-      good: { label: '⚙ Cài đặt', style: 'font-size:16px;color:#E88C2E;', feed: 'Icon đi kèm text nhãn là cách an toàn nhất để đảm bảo tính Rõ ràng cho Interface.' }
-    },
-    consistency: {
-      bad: { label: '☰', style: 'font-size:20px;', feed: 'Dùng icon menu khác lạ (ví dụ dấu chấm) thay vì Hamburger icon phổ biến sẽ làm tăng gánh nặng nhận thức.' },
-      good: { label: '☰ Menu', style: 'font-size:16px;', feed: 'Sử dụng các biểu tượng đã trở thành tiêu chuẩn ngành giúp interface dễ học, dễ dùng.' }
-    }
-  }
-};
+  <script>
+    (function () {
+      var $ed = document.getElementById('praEd');
+      var $st = document.getElementById('praSt');
+      var $pr = document.getElementById('praPr');
+      var $btns = document.querySelectorAll('#praBtns .btn[data-ch]');
+      var $rst = document.getElementById('praRst');
+      var $hintBadge = document.getElementById('hintBadge');
 
-const elemSelect = document.getElementById('elemSelect');
-const princSelect = document.getElementById('princSelect');
-const prevBad = document.getElementById('prevBad');
-const prevGood = document.getElementById('prevGood');
-const feedBad = document.getElementById('feedBad');
-const feedGood = document.getElementById('feedGood');
-const resetBtn = document.getElementById('resetBtn');
+      function resetView() {
+        $ed.className = 'pra-ed';
+        $st.className = 'st';
+        $st.textContent = 'BASIC (CHƯA HOÀN THIỆN)';
+        
+        $pr.innerHTML = 'Chọn một nút bên trái để xem cách UI thay đổi và prompt mẫu...';
 
-function update() {
-  const e = elemSelect.value;
-  const p = princSelect.value;
-  const item = data[e][p];
+        $btns.forEach(function (b) { b.className = 'btn'; });
+        $rst.disabled = true;
+        if ($hintBadge) $hintBadge.style.display = 'block';
+      }
 
-  prevBad.innerHTML = `<div class="pt-mock-btn" style="${item.bad.style}">${item.bad.label}</div>`;
-  prevGood.innerHTML = `<div class="pt-mock-btn" style="${item.good.style}">${item.good.label}</div>`;
-  
-  feedBad.textContent = item.bad.feed;
-  feedGood.textContent = item.good.good || item.good.feed; // Fix fallback
-}
+      function setSolution(choice, clickedBtn) {
+        $btns.forEach(function (b) { b.className = 'btn'; });
+        $ed.className = 'pra-ed';
+        $st.className = 'st';
 
-elemSelect.onchange = update;
-princSelect.onchange = update;
-resetBtn.onclick = () => {
-  elemSelect.value = 'btn';
-  princSelect.value = 'clarity';
-  update();
-};
+        if ($hintBadge) $hintBadge.style.display = 'none';
+        $rst.disabled = false;
 
-update();
-</script>
+        if (choice === 'input') {
+          clickedBtn.className = 'btn active-input';
+          $ed.classList.add('state-input');
+          $st.className = 'st state-input';
+          $st.textContent = 'INPUTS & CONTROLS';
+          $pr.innerHTML = '<strong>Prompt gợi ý:</strong><br><br>"Làm rõ các công cụ tương tác: Thêm border nổi bật cho ô Input khi focus, và đổi màu Nút bấm thành trắng để người dùng nhận diện ngay nơi cần nhập liệu."';
+        } else if (choice === 'layout') {
+          clickedBtn.className = 'btn active-layout';
+          $ed.classList.add('state-layout');
+          $st.className = 'st state-layout';
+          $st.textContent = 'LAYOUT STRUCTURE';
+          $pr.innerHTML = '<strong>Prompt gợi ý:</strong><br><br>"Thay đổi bố cục (layout): Chuyển thiết kế từ dạng xếp dọc (Stack) sang 2 cột với Form nhập liệu bên trái và Danh sách kết quả bên phải để tận dụng tốt không gian ngang."';
+        } else if (choice === 'state') {
+          clickedBtn.className = 'btn active-state';
+          $ed.classList.add('state-state');
+          $st.className = 'st state-state';
+          $st.textContent = 'STATE & FEEDBACK';
+          $pr.innerHTML = '<strong>Prompt gợi ý:</strong><br><br>"Thêm trạng thái phản hồi: Khi đang xử lý, đổi màu nút thành màu Amber, hiển thị vòng xoay Loading (Spinner) và làm mờ ô Input để ngăn người dùng bấm nhiều lần."';
+        } else if (choice === 'data') {
+          clickedBtn.className = 'btn active-data';
+          $ed.classList.add('state-data');
+          $st.className = 'st state-data';
+          $st.textContent = 'DATA DISPLAY';
+          $pr.innerHTML = '<strong>Prompt gợi ý:</strong><br><br>"Cải thiện cách trình bày dữ liệu: Chuyển danh sách (List) đơn điệu thành dạng lưới Card (Grid 2 cột) với icon to, màu xanh lá và chữ rõ ràng để thông tin trực quan, dễ đọc lướt hơn."';
+        }
+      }
+
+      /* events */
+      $btns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          setSolution(this.getAttribute('data-ch'), this);
+        });
+      });
+      $rst.addEventListener('click', resetView);
+
+      /* init */
+      resetView();
+    })();
+  </script>
 </body>
+
 </html>
