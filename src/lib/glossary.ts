@@ -1134,6 +1134,13 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Cách tốt nhất để tránh Conflict là Pull code mới nhất thường xuyên. Càng để lâu không sync với team, xác suất đụng hàng càng cao.',
     'Trong Cursor/VS Code, bạn có các nút bấm nhanh như "Accept Current Change", "Accept Incoming Change" để fix conflict trong 1 giây mà không cần xóa marker thủ công.',
   ],
+  contrast: [
+    'Độ tương phản không chỉ là màu sắc. Nó còn là sự khác biệt về kích thước (Size), độ dày (Weight) và khoảng cách (Spacing) để tạo ra sự phân cấp rõ rệt.',
+    'Tiêu chuẩn WCAG 2.1: Đây là "luật chơi" toàn cầu. Mức AA yêu cầu tỉ lệ 4.5:1 cho chữ thường. Nếu không đạt, người khiếm thị hoặc người dùng trong môi trường chói sáng sẽ không đọc được web của bạn.',
+    'Tương phản nội dung: Đừng để mọi thứ đều nổi bật. Nếu bạn dùng màu cam cho tất cả các nút, thì không có nút nào thực sự "tương phản" với phần còn lại. Hãy dùng tương phản để dẫn dắt hành động (CTA).',
+    'Kiểm tra bằng công cụ: AI có thể giúp bạn tính toán ratio chính xác. Chỉ cần hỏi "Màu #E88C2E trên nền #16161b có đạt chuẩn AA không?" và AI sẽ trả lời ngay kết quả ratio.',
+    'Mô phỏng 4 ô bên dưới giúp bạn hình dung các khía cạnh khác nhau: từ tính đọc hiểu (Legibility) đến việc tạo ra thứ tự ưu tiên (Hierarchy) và nhận diện trạng thái (State).',
+  ],
 };
 
 export function getTermById(id: string) {
