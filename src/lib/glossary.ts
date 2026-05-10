@@ -465,9 +465,10 @@ const removedGlossaryTermIds = new Set([
   'websocket',
   'wireframe',
   'context-window',
+  'repository',
 ]);
 
-const removedGlossaryTextPattern = /\b(async|build|framework|github|json|jsx|loop|node\.js|npm|prompt|request|response|state|supabase|tailwind|typescript|ui\/ux|url|vector|vercel|webhook|websocket)\b/i;
+const removedGlossaryTextPattern = /\b(async|build|framework|github|json|jsx|loop|node\.js|npm|prompt|request|response|state|supabase|tailwind|typescript|ui\/ux|url|vector|vercel|webhook|websocket|repository)\b/i;
 
 export const terms: GlossaryTerm[] = rawTerms
   .filter((term) => !removedGlossaryTermIds.has(term.id))
