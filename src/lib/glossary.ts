@@ -312,7 +312,7 @@ const rawTerms: GlossaryTerm[] = [
     example: '"Error: port 3000 is already in use" → Tắt terminal khác hoặc dùng port khác: "npm run dev -- --port 3001".',
     related: ['localhost', 'deploy', 'hosting', 'environment'],
     demo: { kind: 'interactive', src: 'gif-port-demo.html', alt: 'Mô phỏng 4 khía cạnh của Port: Port là gì, Port quy ước, Xung đột Port và Localhost:Port' },
-    practice: { kind: 'interactive', src: 'gif-port-practice.html', alt: 'Thực hành Port Explorer: kiểm tra các port phổ biến và giả lập xung đột' }
+    practice: { kind: 'interactive', src: 'gif-port-practice.html', alt: 'Thực hành Port Hotel: mô phỏng việc phân chia phòng (port) cho các dịch vụ để hiểu về quy ước và xung đột cổng.' }
   },
   {
     id: 'pull',

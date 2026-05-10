@@ -3,295 +3,468 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Port — Animated Glossary</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>Port Practice — Digital Hotel</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#101010;--bgc:#181818;--bgi:#131313;
-  --bd:#272727;--tx:#e0e0e0;--txm:#707070;--txd:#3a3a3a;
-  --ac:#E88C2E;--acl:#ffad5c;
-  --abg:rgba(232,140,46,.08);--abg2:rgba(232,140,46,.18);
-  --rd:#ef4444;--gn:#22c55e;
+:root {
+  --bg: #0a0a0c;
+  --card-bg: #16161b;
+  --amber: #E88C2E;
+  --text-main: #e0e0e0;
+  --text-muted: #707070;
+  --border: #272727;
+  --success: #22c55e;
+  --error: #ef4444;
 }
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-body{
-  font-family:'Space Grotesk',sans-serif;
-  background-color:var(--bg);
-  background-image:
-    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
-  background-size:20px 20px;
-  color:var(--tx);min-height:100vh;padding:20px 16px 40px;
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  color: var(--text-main);
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
 }
-.mono{font-family:'JetBrains Mono',monospace}
 
-.ch{display:flex;align-items:center;gap:10px;margin-bottom:16px}
-.ch .n{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--ac);background:var(--abg);border:1px solid rgba(217,119,6,.2);padding:1px 6px;border-radius:2px}
-.ch h2{font-size:14px;font-weight:600;letter-spacing:-.3px}
+.container {
+  width: 100%;
+  max-width: 940px;
+}
 
-/* ═══════════════════════════════════════
-   PRACTICE
-   ═══════════════════════════════════════ */
-.pra{max-width:900px;margin:0 auto;background:var(--bgc);border:1px solid var(--bd);border-radius:3px;padding:22px}
-.pra .ch{margin-bottom:6px}
-.pra-goal{font-size:12.5px;color:var(--txm);margin-bottom:18px;line-height:1.5}
-.pra-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-@media(max-width:660px){.pra-grid{grid-template-columns:1fr}}
-.cfg{display:flex;flex-direction:column;gap:14px}
-.cfg-g{display:flex;flex-direction:column;gap:6px}
-.cfg-l{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txm);text-transform:uppercase;letter-spacing:.5px}
-.port-grid{display:flex;flex-wrap:wrap;gap:4px}
-.pg-b{padding:6px 10px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;background:var(--bgi);border:1px solid var(--bd);color:var(--txm);cursor:pointer;border-radius:2px;transition:all .15s}
-.pg-b:hover{border-color:var(--ac);color:var(--acl)}
-.pg-b.on{background:var(--abg2);border-color:var(--ac);color:var(--acl)}
-.pg-b .pg-cat{font-weight:400;font-size:8px;color:var(--txd);display:block;margin-top:1px}
-.pg-b.on .pg-cat{color:var(--txm)}
-.cfg-in{background:var(--bgi);border:1px solid var(--bd);border-radius:2px;padding:8px 10px;font-family:'Space Grotesk',sans-serif;font-size:13px;color:var(--tx);outline:none;transition:border-color .2s;width:100%}
-.cfg-in:focus{border-color:var(--ac)}
-.cfg-in::placeholder{color:var(--txd)}
-.tog{display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none}
-.tog-t{width:36px;height:20px;background:var(--bd);border-radius:2px;position:relative;transition:background .2s;flex-shrink:0}
-.tog-t.on{background:var(--rd)}
-.tog-k{width:16px;height:16px;background:#fff;border-radius:2px;position:absolute;top:2px;left:2px;transition:left .2s}
-.tog-t.on .tog-k{left:18px}
-.tog-x{font-size:12px;color:var(--txm)}
-.hint{font-size:11px;color:var(--txd);line-height:1.4;padding:8px 10px;background:var(--bgi);border-radius:2px;border-left:2px solid var(--bd)}
+/* ════════ HEADER ════════ */
+.header-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+.header-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--amber);
+  background: rgba(232, 140, 46, 0.1);
+  padding: 2px 8px;
+  border: 1px solid rgba(232, 140, 46, 0.2);
+  border-radius: 2px;
+}
+.header-title {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
 
-/* ── PREVIEW ── */
-.pv{display:flex;flex-direction:column;gap:14px}
-.svc-card{background:var(--bgi);border:1px solid var(--bd);border-radius:3px;padding:12px 14px;display:flex;align-items:center;gap:12px}
-.svc-badge{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;padding:3px 8px;border-radius:2px;flex-shrink:0}
-.svc-badge.web{background:rgba(217,119,6,.12);color:var(--acl);border:1px solid rgba(217,119,6,.2)}
-.svc-badge.db{background:rgba(34,197,94,.1);color:var(--gn);border:1px solid rgba(34,197,94,.15)}
-.svc-badge.cache{background:rgba(239,68,68,.1);color:var(--rd);border:1px solid rgba(239,68,68,.15)}
-.svc-badge.dev{background:rgba(251,191,36,.1);color:#fbbf24;border:1px solid rgba(251,191,36,.15)}
-.svc-badge.unk{background:var(--bd);color:var(--txd);border:1px solid var(--bd)}
-.svc-name{font-size:13px;font-weight:600}
-.svc-desc{font-size:11px;color:var(--txm);margin-top:1px}
-.conn-box{background:var(--bgi);border:1px solid var(--bd);border-radius:2px;padding:8px 10px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txm)}
-.conn-box b{color:var(--acl)}
-.term{background:#0a0a0a;border:1px solid var(--bd);border-radius:3px;padding:12px;min-height:80px}
-.term-line{font-family:'JetBrains Mono',monospace;font-size:11px;line-height:1.7}
-.term-p{color:var(--gn)}
-.term-c{color:var(--tx)}
-.term-o{color:var(--txm)}
-.term-err{color:var(--rd)}
-  .status-badge{display:inline-flex;align-items:center;gap:5px;font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;padding:3px 8px;border-radius:2px}
-.status-badge.ok{background:rgba(34,197,94,.1);color:var(--gn);border:1px solid rgba(34,197,94,.15)}
-.status-badge.err{background:rgba(239,68,68,.1);color:var(--rd);border:1px solid rgba(239,68,68,.15)}
-.status-badge.idle{background:var(--bd);color:var(--txd);border:1px solid var(--bd)}
-.status-dot{width:5px;height:5px;border-radius:50%;background:currentColor}
-.pr-box{background:var(--bgi);border:1px solid var(--bd);border-radius:3px;padding:12px 14px}
-.pr-box .cfg-l{display:block;margin-bottom:8px}
-.pr-txt{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--acl);line-height:1.55;word-break:break-word}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+/* ════════ ANALOGY BOX ════════ */
+.analogy-intro {
+  background: rgba(232, 140, 46, 0.05);
+  border: 1px dashed rgba(232, 140, 46, 0.3);
+  padding: 16px;
+  border-radius: 4px;
+  margin-bottom: 24px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--text-main);
+}
+.analogy-intro strong { color: var(--amber); }
+
+/* ════════ MAIN GRID ════════ */
+.game-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 600px) {
+  .game-grid { grid-template-columns: 1fr; }
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  min-height: 220px;
+}
+
+.card::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--amber);
+}
+
+.card-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--amber);
+  margin-bottom: 5px;
+  display: block;
+}
+
+.card-title {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+/* ════════ STEP 1: VISITORS ════════ */
+.visitor-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.visitor-item {
+  background: #1c1c22;
+  border: 1px solid var(--border);
+  padding: 12px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.visitor-item:hover {
+  border-color: var(--amber);
+  transform: translateX(5px);
+}
+
+.visitor-item.selected {
+  background: rgba(232, 140, 46, 0.1);
+  border-color: var(--amber);
+}
+
+.visitor-icon {
+  width: 32px;
+  height: 32px;
+  background: #2a2a35;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+}
+
+.visitor-info h4 {
+  font-size: 13px;
+  font-weight: 600;
+}
+.visitor-info p {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* ════════ STEP 2: ROOMS (PORTS) ════════ */
+.hotel-building {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.room {
+  background: #0d0d11;
+  border: 1px solid var(--border);
+  padding: 15px;
+  border-radius: 3px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+  min-height: 80px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.room:hover {
+  border-color: var(--amber);
+}
+
+.room-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.room.occupied {
+  border-color: var(--success);
+  background: rgba(34, 197, 94, 0.05);
+}
+.room.occupied .room-num { color: var(--success); }
+
+.room.conflict {
+  border-color: var(--error);
+  animation: shake 0.4s;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+.guest-tag {
+  font-size: 10px;
+  color: var(--text-main);
+  margin-top: 5px;
+  background: rgba(255,255,255,0.1);
+  padding: 2px 4px;
+  border-radius: 2px;
+}
+
+/* ════════ STEP 3: LOG ════════ */
+.log-box {
+  background: #0d0d11;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  height: 100px;
+  overflow-y: auto;
+  color: var(--text-muted);
+}
+
+.log-entry { margin-bottom: 5px; }
+.log-entry.success { color: var(--success); }
+.log-entry.error { color: var(--error); }
+
+/* ════════ STEP 4: CONCLUSION ════════ */
+.status-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.status-icon {
+  font-size: 40px;
+  margin-bottom: 10px;
+}
+
+.status-text {
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-main);
+}
+
+.ins {
+  margin-top: 20px;
+  border-left: 2px solid var(--amber);
+  padding-left: 12px;
+}
+.ins p {
+  color: var(--text-muted);
+  font-size: 11.5px;
+  line-height: 1.6;
+}
+.ins strong { color: var(--amber); font-weight: 600; }
+
+.btn-reset {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  padding: 5px 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  cursor: pointer;
+  border-radius: 2px;
+  margin-top: 10px;
+}
+.btn-reset:hover { color: var(--amber); border-color: var(--amber); }
+
 </style>
 </head>
 <body>
 
-<!-- ═══ PRACTICE ═══ -->
-<section class="pra" aria-label="Thực hành">
-  <div class="ch"><span class="n">PRACTICE</span><h2>Port Explorer</h2></div>
-  <p class="pra-goal">Chọn port → xem service nào chạy ở đó. Bật xung đột → xem lỗi xuất hiện trong terminal như thế nào.</p>
-  <div class="pra-grid">
-    <div class="cfg">
-      <div class="cfg-g">
-        <span class="cfg-l">Chọn port</span>
-        <div class="port-grid" id="portGrid">
-          <button class="pg-b" data-p="80">:80<span class="pg-cat">web</span></button>
-          <button class="pg-b" data-p="443">:443<span class="pg-cat">web</span></button>
-          <button class="pg-b" data-p="3000">:3000<span class="pg-cat">dev</span></button>
-          <button class="pg-b" data-p="5432">:5432<span class="pg-cat">db</span></button>
-          <button class="pg-b" data-p="8080">:8080<span class="pg-cat">proxy</span></button>
-          <button class="pg-b" data-p="3306">:3306<span class="pg-cat">db</span></button>
-          <button class="pg-b" data-p="6379">:6379<span class="pg-cat">cache</span></button>
-          <button class="pg-b" data-p="27017">:27017<span class="pg-cat">db</span></button>
+<div class="container">
+  <div class="header-box">
+    <span class="header-tag">PRACTICE</span>
+    <h1 class="header-title">The Port Hotel — Ai đang ở phòng nào?</h1>
+  </div>
+
+  <div class="analogy-intro">
+    Hãy tưởng tượng <strong>IP</strong> là địa chỉ của khách sạn. Các <strong>Port</strong> chính là số phòng bên trong. 
+    Mỗi dịch vụ (Web, Database) cần một phòng riêng để hoạt động. Nếu hai người cùng vào một phòng, khách sạn sẽ bị <strong>Xung đột (Conflict)</strong>.
+  </div>
+
+  <div class="game-grid">
+    <!-- CELL 01: LOBBY -->
+    <div class="card">
+      <span class="card-num">01</span>
+      <h3 class="card-title">Sảnh chờ: Chọn khách hàng</h3>
+      <div class="visitor-list" id="lobby">
+        <div class="visitor-item" onclick="selectGuest('web', '🌐')" data-guest="web">
+          <div class="visitor-icon">🌐</div>
+          <div class="visitor-info">
+            <h4>Website thường</h4>
+            <p>Thích ở phòng 80</p>
+          </div>
+        </div>
+        <div class="visitor-item" onclick="selectGuest('secure', '🔒')" data-guest="secure">
+          <div class="visitor-icon">🔒</div>
+          <div class="visitor-info">
+            <h4>Website bảo mật</h4>
+            <p>Thích ở phòng 443</p>
+          </div>
+        </div>
+        <div class="visitor-item" onclick="selectGuest('database', '🗄️')" data-guest="database">
+          <div class="visitor-icon">🗄️</div>
+          <div class="visitor-info">
+            <h4>Dữ liệu (Database)</h4>
+            <p>Thích ở phòng 5432</p>
+          </div>
         </div>
       </div>
-      <div class="cfg-g">
-        <label class="cfg-l" for="customPort">Hoặc nhập port bất kỳ</label>
-        <input class="cfg-in" id="customPort" type="number" min="1" max="65535" placeholder="VD: 4000, 9000...">
-      </div>
-      <div class="cfg-g">
-        <div class="tog" id="conflictToggle" role="switch" aria-checked="false" tabindex="0" aria-label="Giả lập xung đột">
-          <div class="tog-t" id="togTrack"><div class="tog-k"></div></div>
-          <span class="tog-x">Giả lập xung đột port</span>
-        </div>
-      </div>
-      <div class="hint">Thử: chọn port 3000, bật xung đột — xem lỗi EADDRINUSE trong terminal. Rồi nhập port 9999 để xem phản hồi với port không phổ biến.</div>
     </div>
-    <div class="pv">
-      <div id="svcCard" class="svc-card">
-        <span class="svc-badge unk">?</span>
-        <div>
-          <div class="svc-name" id="svcName">Chọn port</div>
-          <div class="svc-desc" id="svcDesc">Nhấn một port để xem thông tin</div>
+
+    <!-- CELL 02: BUILDING -->
+    <div class="card">
+      <span class="card-num">02</span>
+      <h3 class="card-title">Tòa nhà: Chọn phòng (Port)</h3>
+      <div class="hotel-building">
+        <div class="room" id="room-80" onclick="assignToRoom('80')">
+          <span class="room-num">P: 80</span>
+        </div>
+        <div class="room" id="room-443" onclick="assignToRoom('443')">
+          <span class="room-num">P: 443</span>
+        </div>
+        <div class="room" id="room-3000" onclick="assignToRoom('3000')">
+          <span class="room-num">P: 3000</span>
+        </div>
+        <div class="room" id="room-5432" onclick="assignToRoom('5432')">
+          <span class="room-num">P: 5432</span>
         </div>
       </div>
-      <div>
-        <span class="cfg-l">Chuỗi kết nối</span>
-        <div class="conn-box" id="connBox">localhost:<b>?</b></div>
+      <button class="btn-reset" onclick="resetGame()">Xóa hết khách (Reset)</button>
+    </div>
+
+    <!-- CELL 03: LOG -->
+    <div class="card">
+      <span class="card-num">03</span>
+      <h3 class="card-title">Lịch sử lễ tân</h3>
+      <div class="log-box" id="logBox">
+        <div class="log-entry">Chào mừng bạn đến với Port Hotel! Hãy phân phòng cho các khách ở sảnh.</div>
       </div>
-      <div>
-        <span class="cfg-l">Terminal</span>
-        <div class="term" id="termBox">
-          <div class="term-line"><span class="term-p">$</span> <span class="term-c">chờ lựa chọn...</span></div>
+    </div>
+
+    <!-- CELL 04: STATUS -->
+    <div class="card status-card">
+      <span class="card-num">04</span>
+      <h3 class="card-title">Kết luận cho Marketer</h3>
+      <div id="statusContent">
+        <div class="status-icon">👨‍💼</div>
+        <div class="status-text">
+          Chọn một vị khách ở sảnh trước, sau đó chỉ định họ vào một phòng trống.
         </div>
       </div>
-      <div id="statusBadge" class="status-badge idle"><span class="status-dot"></span>IDLE</div>
-      <div class="pr-box">
-        <span class="cfg-l">Nói với dev</span>
-        <div class="pr-txt" id="prTxt">Chọn port để xem gợi ý...</div>
+      <div class="ins" style="margin-top: auto; text-align: left;">
+        <p>Ghi chú: <strong>Conflict</strong> xảy ra khi bạn cố nhét 2 service vào 1 port. Website thường và bảo mật luôn dùng <strong>80</strong> và <strong>443</strong>.</p>
       </div>
     </div>
   </div>
-</section>
-
+</div>
 
 <script>
-(function(){
-  var DATA={
-    80:{name:'HTTP',cat:'web',desc:'Web server mặc định, không mã hóa',url:'http://example.com',cmd:'nginx',badgeCls:'web'},
-    443:{name:'HTTPS',cat:'web',desc:'Web server với SSL/TLS bảo mật',url:'https://example.com',cmd:'nginx --ssl',badgeCls:'web'},
-    3000:{name:'Dev Server',cat:'dev',desc:'React, Next.js, Express, Vue dev server',url:'http://localhost:3000',cmd:'npm run dev',badgeCls:'dev'},
-    5432:{name:'PostgreSQL',cat:'db',desc:'Hệ quản trị cơ sở dữ liệu quan hệ',url:'postgresql://localhost:5432',cmd:'pg_ctl start',badgeCls:'db'},
-    8080:{name:'HTTP Alt / Proxy',cat:'web',desc:'Nginx proxy, Tomcat, alternate HTTP',url:'http://localhost:8080',cmd:'nginx -p 8080',badgeCls:'web'},
-    3306:{name:'MySQL',cat:'db',desc:'Hệ quản trị cơ sở dữ liệu MySQL',url:'mysql://localhost:3306',cmd:'mysqld',badgeCls:'db'},
-    6379:{name:'Redis',cat:'cache',desc:'In-memory cache, message queue',url:'redis://localhost:6379',cmd:'redis-server',badgeCls:'cache'},
-    27017:{name:'MongoDB',cat:'db',desc:'Database NoSQL document-oriented',url:'mongodb://localhost:27017',cmd:'mongod',badgeCls:'db'}
-  };
+let selectedGuest = null;
+let rooms = {
+  '80': null,
+  '443': null,
+  '3000': null,
+  '5432': null
+};
 
-  var selectedPort=null;
-  var conflict=false;
+function selectGuest(id, icon) {
+  selectedGuest = { id, icon };
+  document.querySelectorAll('.visitor-item').forEach(item => {
+    item.classList.remove('selected');
+    if (item.getAttribute('data-guest') === id) item.classList.add('selected');
+  });
+  addLog(`Bạn vừa chọn khách: ${id.toUpperCase()}. Hãy chọn phòng cho họ.`);
+}
 
-  var $grid=document.getElementById('portGrid');
-  var $custom=document.getElementById('customPort');
-  var $toggle=document.getElementById('conflictToggle');
-  var $track=document.getElementById('togTrack');
-  var $svcCard=document.getElementById('svcCard');
-  var $svcName=document.getElementById('svcName');
-  var $svcDesc=document.getElementById('svcDesc');
-  var $conn=document.getElementById('connBox');
-  var $term=document.getElementById('termBox');
-  var $status=document.getElementById('statusBadge');
-  var $pr=document.getElementById('prTxt');
-  var $btns=$grid.querySelectorAll('.pg-b');
-
-  function esc(s){return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
-
-  function render(){
-    if(selectedPort===null){
-      $svcCard.innerHTML='<span class="svc-badge unk">?</span><div><div class="svc-name">Chọn port</div><div class="svc-desc">Nhấn một port để xem thông tin</div></div>';
-      $conn.innerHTML='localhost:<b>?</b>';
-      $term.innerHTML='<div class="term-line"><span class="term-p">$</span> <span class="term-c">chờ lựa chọn...</span></div>';
-      $status.className='status-badge idle';
-      $status.innerHTML='<span class="status-dot"></span>IDLE';
-      $pr.textContent='Chọn port để xem gợi ý...';
-      return;
-    }
-
-    var p=selectedPort;
-    var info=DATA[p];
-    var catLabel={web:'WEB',db:'DATABASE',dev:'DEV',cache:'CACHE'};
-
-    if(info){
-      /* service card */
-      $svcCard.innerHTML='<span class="svc-badge '+info.badgeCls+'">'+catLabel[info.cat]+'</span><div><div class="svc-name">'+esc(info.name)+'</div><div class="svc-desc">'+esc(info.desc)+'</div></div>';
-
-      /* connection */
-      $conn.innerHTML=esc(info.url);
-
-      /* terminal */
-      if(conflict){
-        $term.innerHTML=
-          '<div class="term-line"><span class="term-p">$</span> <span class="term-c">'+esc(info.cmd)+'</span></div>'+
-          '<div class="term-line"><span class="term-err">Error: listen EADDRINUSE: address already in use :::'+p+'</span></div>'+
-          '<div class="term-line"><span class="term-err">  at Server.setupListenHandle [as _listen2]</span></div>'+
-          '<div class="term-line"><span class="term-o" style="margin-top:4px">→ Port '+p+' đang bị process khác chiếm.</span></div>'+
-          '<div class="term-line"><span class="term-o">→ Kill process hoặc đổi sang port khác.</span></div>';
-        $status.className='status-badge err';
-        $status.innerHTML='<span class="status-dot"></span>EADDRINUSE';
-        $pr.textContent='Port '+p+' bị chiếm rồi. Kill process đang dùng port '+p+' hoặc đổi sang port khác (VD: '+(p+1)+'). Lỗi EADDRINUSE.';
-      } else {
-        $term.innerHTML=
-          '<div class="term-line"><span class="term-p">$</span> <span class="term-c">'+esc(info.cmd)+'</span></div>'+
-          '<div class="term-line"><span class="term-o">  '+esc(info.name)+' starting...</span></div>'+
-          '<div class="term-line"><span class="term-o">  Ready on '+esc(info.url)+'</span></div>'+
-          '<div class="term-line"><span style="color:var(--gn)">  ✓ Port '+p+' — available</span></div>';
-        $status.className='status-badge ok';
-        $status.innerHTML='<span class="status-dot"></span>LISTENING :'+p;
-        $pr.textContent='App chạy port '+p+' ('+info.name+'). Truy cập qua '+info.url+'. Port này đang available.';
-      }
-    } else {
-      /* unknown port */
-      $svcCard.innerHTML='<span class="svc-badge unk">?</span><div><div class="svc-name">Port '+p+'</div><div class="svc-desc">Không phải port quy ước phổ biến</div></div>';
-      $conn.innerHTML='localhost:<b>'+p+'</b>';
-
-      if(conflict){
-        $term.innerHTML=
-          '<div class="term-line"><span class="term-p">$</span> <span class="term-c">node server.js --port '+p+'</span></div>'+
-          '<div class="term-line"><span class="term-err">Error: listen EADDRINUSE: address already in use :::'+p+'</span></div>'+
-          '<div class="term-line"><span class="term-o" style="margin-top:4px">→ Port '+p+' bị chiếm. Đổi port hoặc kill process.</span></div>';
-        $status.className='status-badge err';
-        $status.innerHTML='<span class="status-dot"></span>EADDRINUSE';
-        $pr.textContent='Port '+p+' không phổ biến nhưng vẫn bị chiếm. Lỗi giống nhau: EADDRINUSE. Kill process hoặc đổi port.';
-      } else {
-        $term.innerHTML=
-          '<div class="term-line"><span class="term-p">$</span> <span class="term-c">node server.js --port '+p+'</span></div>'+
-          '<div class="term-line"><span class="term-o">  Server running on port '+p+'</span></div>'+
-          '<div class="term-line"><span style="color:var(--gn)">  ✓ Port '+p+' — available</span></div>'+
-          '<div class="term-line"><span class="term-o" style="margin-top:4px">⚠ Port '+p+' không phải quy ước — xác nhận đúng chưa?</span></div>';
-        $status.className='status-badge ok';
-        $status.innerHTML='<span class="status-dot"></span>LISTENING :'+p;
-        $pr.textContent='Port '+p+' không phổ biến. App vẫn chạy được, nhưng team khác có thể không biết port này dùng cho gì. Xem lại quy ước.';
-      }
-    }
+function assignToRoom(roomNum) {
+  if (!selectedGuest) {
+    addLog(`Lỗi: Bạn chưa chọn khách ở sảnh!`, 'error');
+    return;
   }
 
-  function selectPort(p){
-    selectedPort=p;
-    $btns.forEach(function(b){
-      b.classList.toggle('on',parseInt(b.getAttribute('data-p'))===p);
-    });
-    $custom.value='';
-    render();
+  const roomEl = document.getElementById(`room-${roomNum}`);
+
+  if (rooms[roomNum]) {
+    // Conflict
+    roomEl.classList.add('conflict');
+    setTimeout(() => roomEl.classList.remove('conflict'), 400);
+    addLog(`XUNG ĐỘT! Phòng ${roomNum} đã có ${rooms[roomNum].id} đang ở rồi.`, 'error');
+    updateStatus('❌', `<strong>Xung đột Port!</strong><br>Bạn không thể chạy 2 dịch vụ trên cùng một port ${roomNum}. Đây là lỗi EADDRINUSE mà các lập trình viên thường nhắc tới.`);
+    return;
   }
 
-  /* preset buttons */
-  $btns.forEach(function(b){
-    b.addEventListener('click',function(){
-      selectPort(parseInt(this.getAttribute('data-p')));
-    });
-  });
-
-  /* custom input */
-  $custom.addEventListener('input',function(){
-    var v=parseInt(this.value);
-    if(v>=1&&v<=65535){
-      selectedPort=v;
-      $btns.forEach(function(b){b.classList.remove('on')});
-      render();
-    } else if(this.value===''){
-      selectedPort=null;
-      $btns.forEach(function(b){b.classList.remove('on')});
-      render();
-    }
-  });
-
-  /* conflict toggle */
-  function toggleConflict(){
-    conflict=!conflict;
-    $track.classList.toggle('on',conflict);
-    $toggle.setAttribute('aria-checked',String(conflict));
-    render();
+  // Success assignment
+  rooms[roomNum] = selectedGuest;
+  roomEl.classList.add('occupied');
+  roomEl.innerHTML += `<div class="guest-tag">${selectedGuest.icon} ${selectedGuest.id}</div>`;
+  
+  addLog(`Thành công: Đã đưa khách ${selectedGuest.id} vào phòng ${roomNum}.`, 'success');
+  
+  // Logic feedback
+  let feedback = '';
+  if ((selectedGuest.id === 'web' && roomNum === '80') || 
+      (selectedGuest.id === 'secure' && roomNum === '443') ||
+      (selectedGuest.id === 'database' && roomNum === '5432')) {
+    feedback = `<strong>Đúng quy ước!</strong><br>Dịch vụ này thường mặc định ở port ${roomNum}. Khách hàng sẽ truy cập rất thuận tiện.`;
+  } else {
+    feedback = `<strong>Vẫn hoạt động, nhưng...</strong><br>Dịch vụ ${selectedGuest.id} đang ở port ${roomNum}. App vẫn chạy được nhưng đây là cổng "không chính thức", bạn sẽ phải khai báo rõ port khi truy cập.`;
   }
-  $toggle.addEventListener('click',toggleConflict);
-  $toggle.addEventListener('keydown',function(e){
-    if(e.key===' '||e.key==='Enter'){e.preventDefault();toggleConflict();}
-  });
+  
+  updateStatus('✅', feedback);
+  
+  // Clear selection
+  selectedGuest = null;
+  document.querySelectorAll('.visitor-item').forEach(item => item.classList.remove('selected'));
+}
 
-  render();
-})();
+function addLog(msg, type = '') {
+  const logBox = document.getElementById('logBox');
+  const entry = document.createElement('div');
+  entry.className = `log-entry ${type}`;
+  entry.innerText = `> ${msg}`;
+  logBox.appendChild(entry);
+  logBox.scrollTop = logBox.scrollHeight;
+}
+
+function updateStatus(icon, text) {
+  const content = document.getElementById('statusContent');
+  content.innerHTML = `
+    <div class="status-icon">${icon}</div>
+    <div class="status-text">${text}</div>
+  `;
+}
+
+function resetGame() {
+  rooms = { '80': null, '443': null, '3000': null, '5432': null };
+  document.querySelectorAll('.room').forEach(r => {
+    r.classList.remove('occupied', 'conflict');
+    const num = r.id.split('-')[1];
+    r.innerHTML = `<span class="room-num">P: ${num}</span>`;
+  });
+  selectedGuest = null;
+  document.querySelectorAll('.visitor-item').forEach(item => item.classList.remove('selected'));
+  addLog('Đã dọn dẹp khách sạn. Tất cả các port đã trống.');
+  updateStatus('👨‍💼', 'Khách sạn đã trống. Hãy bắt đầu phân phòng lại.');
+}
 </script>
+
 </body>
 </html>
