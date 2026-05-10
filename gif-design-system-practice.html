@@ -77,9 +77,42 @@ body{
 .with-ds .pp-card{padding:12px 16px;border:1px solid var(--border);border-radius:2px}
 .with-ds .pp-input{height:32px;border:1px solid var(--border);border-radius:2px}
 
-.prac-hint{font-family:var(--mono);font-size:9px;color:var(--muted);margin-top:10px;opacity:.7;letter-spacing:.02em}
+    .prac-hint{font-family:var(--mono);font-size:9px;color:var(--muted);margin-top:10px;opacity:.7;letter-spacing:.02em}
 
-@media(max-width:640px){
+    /* === GLOSSARY HINT === */
+    .btn-hint {
+        position: absolute;
+        bottom: calc(100% + 8px);
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--accent);
+        color: #fff;
+        font-family: var(--mono);
+        font-size: 8px;
+        padding: 2px 6px;
+        border-radius: 2px;
+        white-space: nowrap;
+        pointer-events: none;
+        animation: pulseTop 2s infinite;
+        z-index: 99;
+    }
+    .btn-hint::after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 50%;
+        transform: translateX(-50%);
+        border-left: 4px solid transparent;
+        border-right: 4px solid transparent;
+        border-top: 4px solid var(--accent);
+    }
+    @keyframes pulseTop {
+        0% { transform: translateX(-50%) scale(1); }
+        50% { transform: translateX(-50%) scale(1.1); }
+        100% { transform: translateX(-50%) scale(1); }
+    }
+
+    @media(max-width:640px){
     .pp-input{width:100%}
     .pp-btns{gap:6px}
 }
@@ -92,7 +125,10 @@ body{
 
     <div class="prac-goal">Bật Design System lên — xem cách mọi "mảnh ghép" tự động khớp vào khuôn khổ nhất quán.</div>
 
-    <button class="prac-toggle" id="toggleBtn">BẬT DESIGN SYSTEM</button>
+    <button class="prac-toggle" id="toggleBtn" style="position: relative;">
+        BẬT DESIGN SYSTEM
+        <div class="btn-hint">Click me!</div>
+    </button>
 
     <div class="prac-preview" id="pracPreview">
         <div class="pp-h">Thanh toán hoàn tất</div>
@@ -118,6 +154,10 @@ toggleBtn.addEventListener('click', () => {
     pracPreview.classList.toggle('with-ds', dsOn);
     toggleBtn.textContent = dsOn ? 'TẮT DESIGN SYSTEM' : 'BẬT DESIGN SYSTEM';
     toggleBtn.classList.toggle('off', dsOn);
+
+    // Hide hint after first click
+    const hint = toggleBtn.querySelector('.btn-hint');
+    if (hint) hint.remove();
 });
 </script>
 </body>
