@@ -277,7 +277,26 @@ const rawTerms: GlossaryTerm[] = [
     demo: { kind: 'interactive', src: 'gif-merge-demo.html', alt: 'Mô phỏng 4 khía cạnh của Merge: Gộp nhánh, Merge sạch, Merge Conflict và Cách giải quyết' },
     practice: { kind: 'interactive', src: 'gif-merge-practice.html', alt: 'Thực hành Gộp (Merge) trực quan: Mô phỏng cách đưa tính năng mới vào web an toàn bằng AI' }
   },
-  { id: 'navbar', name: 'Nav bar', nameEn: 'Thanh điều hướng / Navigation Bar', letter: 'N', groups: ['design', 'code'], definition: 'Thanh điều hướng nằm ở đầu (hoặc cạnh) mỗi trang — chứa logo, menu links, và nút hành động. Navbar giúp người dùng biết mình đang ở đâu và có thể đi đâu tiếp theo.', example: 'Prompt: "Thêm mục \'Pricing\' vào navbar, khi scroll xuống thì navbar nên có thêm bóng đổ và đổi màu nền."', related: ['component', 'sticky', 'link'], demo: { kind: 'interactive', src: 'gif-navbar-demo.html', alt: 'Mô phỏng các trạng thái của navbar: mặc định, scrolled, mobile và active' } },
+  {
+    id: 'navbar',
+    name: 'Nav bar',
+    nameEn: 'Thanh điều hướng / Navigation Bar',
+    letter: 'N',
+    groups: ['design', 'code'],
+    definition: 'Thanh điều hướng nằm ở đầu (hoặc cạnh) mỗi trang — chứa logo, menu links, và nút hành động. Navbar giúp người dùng biết mình đang ở đâu và có thể đi đâu tiếp theo.',
+    example: 'Prompt: "Thêm mục \'Pricing\' vào navbar, khi scroll xuống thì navbar nên có thêm bóng đổ và đổi màu nền."',
+    related: ['component', 'sticky', 'link'],
+    demo: { 
+      kind: 'interactive', 
+      src: 'gif-navbar-demo.html', 
+      alt: 'Mô phỏng 4 khía cạnh của Nav bar: Cấu trúc chuẩn, Hiệu ứng Sticky, Trạng thái tương tác và Mobile Responsive' 
+    },
+    practice: { 
+      kind: 'interactive', 
+      src: 'gif-navbar-practice.html', 
+      alt: 'Thực hành tự xây dựng Nav bar: Tùy chỉnh layout, thành phần và tạo prompt cho AI' 
+    }
+  },
   { id: 'npm', name: 'npm', nameEn: 'Node Package Manager', letter: 'N', groups: ['infra'], definition: 'Công cụ cài và quản lý thư viện code. Giống App Store nhưng cho code — gõ "npm install tên-thư-viện" là cài xong.', example: '"npm install" trong terminal = cài tất cả dependency của project. "npm run dev" = chạy server local. 2 lệnh này dùng hàng ngày khi vibecode.' },
   { id: 'nodejs', name: 'Node.js', nameEn: 'Môi trường chạy JavaScript', letter: 'N', groups: ['infra'], definition: 'Phần mềm cho phép chạy JavaScript ngoài trình duyệt — trên server, terminal. Next.js cần Node.js để chạy. Cài một lần, không cần hiểu sâu.', example: 'Lần đầu setup project: tải và cài Node.js từ nodejs.org → sau đó mọi lệnh npm đều dùng được.' },
   { id: 'padding', name: 'Padding', nameEn: 'Khoảng cách trong — không gian giữa nội dung và viền', letter: 'P', groups: ['design'], definition: 'Padding là khoảng trống nằm BÊN TRONG một element, tạo ra sự ngăn cách giữa nội dung (text, ảnh) và đường viền (border). Padding giúp nội dung "thở" được và dễ đọc hơn, không bị dính sát vào cạnh.', example: '"Nội dung dính sát vào viền card" → thiếu padding. Khi nói "thêm padding 16px" là yêu cầu nới rộng khoảng trống bên trong card để text trông thoáng hơn.', related: ['margin', 'spacing', 'css'], demo: { kind: 'interactive', src: 'gif-padding-demo.html', alt: 'Mô phỏng 4 mức padding từ không padding đến padding đều 4 cạnh' } },
