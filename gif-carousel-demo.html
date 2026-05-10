@@ -3,240 +3,373 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Carousel / Slider — Animated</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<title>Carousel Demo — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#0f0f12;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;--accent-dim:rgba(212,113,42,.15);--card:#16161b;--card-alt:#1c1c22;--border:#282830;--border-hi:#44403a}
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{height:auto;overflow:hidden}
-body{background:var(--bg);background-image:radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:16px 16px;display:flex;flex-direction:column;align-items:center;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:12px 16px 4px}
+:root {
+  --bg: #0f0f12;
+  --bgc: #16161b;
+  --bgi: #121217;
+  --bd: #282830;
+  --tx: #e8e4dc;
+  --txm: #707070;
+  --ac: #E88C2E;
+  --abg: rgba(232, 140, 46, 0.1);
+  --abg2: rgba(232, 140, 46, 0.2);
+}
 
-.aw{width:100%}
-.ab{width:100%;height:320px;background:var(--card);border:1px solid var(--border);overflow:hidden;display:flex;flex-direction:column;position:relative}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-.hd{display:flex;align-items:center;justify-content:space-between;padding:7px 14px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
-.hd-t{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:2.5px}
-.hd-f{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
-.la{position:relative;flex:1;background:linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);background-size:30px 30px;overflow:hidden}
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--tx);
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+}
 
-.fr{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .3s}.fr.show{opacity:1;pointer-events:auto}
-.cw{flex:1;display:flex;flex-direction:column;padding:10px 24px 0;min-height:0}
-.cv{position:relative;flex:1;overflow:hidden;border:1px solid var(--border);background:var(--card-alt);min-height:0}
-.ct{display:flex;height:100%;transition:transform .5s cubic-bezier(.4,0,.2,1)}
-.cs{height:100%;display:flex;flex-direction:column;justify-content:center;padding:14px 18px;position:relative;overflow:hidden;flex-shrink:0;transition:transform .5s cubic-bezier(.4,0,.2,1),opacity .45s}
-.cs .sa{position:absolute;top:0;left:0;width:3px;height:100%}
-.cs .sl{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--muted);margin-bottom:3px}
-.cs .st{font-size:18px;font-weight:800;line-height:1.1}
-.cs .sd2{font-size:9px;color:var(--muted);margin-top:5px}
+.g {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 14px;
+}
 
-.ca{position:absolute;top:50%;transform:translateY(-50%);width:26px;height:26px;background:rgba(19,17,16,.8);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--muted);z-index:5;cursor:default;transition:color .25s,border-color .25s}
-.ca.l{left:5px}.ca.r{right:5px}.ca.flash{color:var(--accent);border-color:var(--accent)}
+@media (max-width: 660px) {
+  .g { grid-template-columns: 1fr; }
+}
 
-.cd{display:flex;gap:4px;justify-content:center;padding:7px 0 0}
-.cdot{width:16px;height:2px;background:var(--border);transition:background .3s,width .3s}
-.cdot.on{background:var(--accent);width:24px}
+.c {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
 
-.cfl{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:1.5px;padding:5px 0 0;text-align:center;opacity:.55}
+.c::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--ac);
+}
 
-.cprog{height:2px;background:var(--border);margin-top:5px;overflow:hidden}
-.cprog-f{height:100%;width:0%;background:var(--accent)}
-@keyframes pf{from{width:0}to{width:100%}}
-.cprog-f.anim{animation:pf 1.4s linear forwards}
+.c::after {
+  content: '';
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 6px;
+  height: 6px;
+  background: var(--ac);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--ac);
+  animation: pulse 2s infinite;
+}
 
-/* Info */
-.inf{padding:8px 14px;background:var(--card);border-top:1px solid var(--border);min-height:72px}
-.dn{font-size:14px;font-weight:800;line-height:1.1;color:var(--fg)}
-.ds{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);margin-top:2px;text-transform:uppercase;letter-spacing:1px}
-.dd{font-size:10px;color:var(--muted);margin-top:4px;line-height:1.4}
+@keyframes pulse {
+  0% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0.3; transform: scale(1); }
+}
 
-.pt{height:2px;background:var(--border)}.pf{height:100%;background:var(--accent);width:0%}
+.ch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
 
-/* Controls */
-.ctr{display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 16px 4px;background:transparent}
-.ctr-b{padding:6px 12px;background:var(--card-alt);border:1px solid var(--border);color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:1px}
-.ctr-b:hover{border-color:var(--border-hi);color:var(--fg)}
-.ctr-b.act{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+.ch .n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ac);
+  background: var(--abg);
+  border: 1px solid var(--abg2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
 
-.pp-b{width:32px;height:32px;border-radius:50%;background:var(--accent);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-left:4px;transition:transform .2s;flex-shrink:0}
-.pp-b:active{transform:scale(.92)}
-.pp-i{width:12px;height:12px;fill:#000}
+.ch h2 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+}
 
-@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+.st {
+  background: var(--bgi);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  flex: 1;
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  min-width: 0;
+}
+
+.ins {
+  margin-top: 14px;
+  font-size: 11.5px;
+  color: var(--txm);
+  line-height: 1.6;
+  padding-left: 12px;
+  border-left: 2px solid var(--ac);
+}
+
+.ins strong {
+  color: var(--ac);
+  font-weight: 600;
+}
+
+.val {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--txm);
+  background: rgba(0,0,0,0.2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+/* Visuals */
+.track {
+  display: flex;
+  width: 100%;
+  height: 100px;
+  transition: transform 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.slide {
+  flex-shrink: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--bd);
+  border: 1px dashed var(--ac);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--ac);
+}
+
+.dots {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--bd);
+  transition: all 0.3s ease;
+}
+
+.dot.active {
+  background: var(--ac);
+  box-shadow: 0 0 5px var(--ac);
+  transform: scale(1.2);
+}
+
+.infinite-container {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.infinite-track {
+  display: flex;
+  width: fit-content;
+  gap: 10px;
+  animation: scroll 10s linear infinite;
+}
+
+@keyframes scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(calc(-100px * 4 - 10px * 4)); }
+}
+
+.mini-slide {
+  width: 100px;
+  height: 60px;
+  background: var(--abg);
+  border: 1px solid var(--abg2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  color: var(--ac);
+}
+
+.type-box {
+  width: 100%;
+  height: 80px;
+  background: var(--bd);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+}
+
+.card-item {
+  width: 60px;
+  height: 50px;
+  background: var(--ac);
+  margin-right: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
 </style>
 </head>
 <body>
 
-<div class="aw">
-<div class="ab" id="ab">
-  <div class="hd"><span class="hd-t">CAROUSEL / SLIDER</span><span class="hd-f" id="hf">01 / 04</span></div>
-  <div class="la" id="la">
-    <!-- F0: Single -->
-    <div class="fr" id="f0">
-      <div class="cw"><div class="cv"><div class="ct" id="at0"></div><div class="ca l" id="a0l">&#8249;</div><div class="ca r" id="a0r">&#8250;</div></div><div class="cd" id="ad0"></div></div>
-      <div class="cfl">SINGLE ITEM &middot; 1 VISIBLE AT A TIME</div>
+<div class="g">
+  <!-- 01: Slide Axis -->
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>Trục chuyển động</h2></div>
+    <div class="st">
+      <div class="track" id="t1">
+        <div class="slide">SLIDE 01</div>
+        <div class="slide">SLIDE 02</div>
+        <div class="slide">SLIDE 03</div>
+      </div>
+      <div class="val" id="v1">transform: translateX(0%)</div>
     </div>
-    <!-- F1: Multi -->
-    <div class="fr" id="f1">
-      <div class="cw"><div class="cv"><div class="ct" id="at1"></div><div class="ca l" id="a1l">&#8249;</div><div class="ca r" id="a1r">&#8250;</div></div><div class="cd" id="ad1"></div></div>
-      <div class="cfl">MULTIPLE ITEMS &middot; 3 VISIBLE AT A TIME</div>
+    <p class="ins"><strong>Carousel</strong> trượt các nội dung theo trục ngang (hoặc dọc) để tiết kiệm không gian hiển thị.</p>
+  </section>
+
+  <!-- 02: Pagination Dot -->
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Chỉ số (Indicators)</h2></div>
+    <div class="st" style="flex-direction: column;">
+      <div class="track" id="t2">
+        <div class="slide" style="background: var(--abg);">PAGE A</div>
+        <div class="slide" style="background: var(--abg);">PAGE B</div>
+        <div class="slide" style="background: var(--abg);">PAGE C</div>
+      </div>
+      <div class="dots" id="d2">
+        <div class="dot active"></div>
+        <div class="dot"></div>
+        <div class="dot"></div>
+      </div>
+      <div class="val" id="v2">Active Index: 0</div>
     </div>
-    <!-- F2: Center -->
-    <div class="fr" id="f2">
-      <div class="cw"><div class="cv"><div class="ct" id="at2"></div><div class="ca l" id="a2l">&#8249;</div><div class="ca r" id="a2r">&#8250;</div></div><div class="cd" id="ad2"></div></div>
-      <div class="cfl">CENTER MODE &middot; FOCUS ON ACTIVE ITEM</div>
+    <p class="ins">Các <strong>dấu chấm</strong> giúp người dùng biết mình đang ở đâu và còn bao nhiêu nội dung phía sau.</p>
+  </section>
+
+  <!-- 03: Infinite Loop -->
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Vòng lặp vô tận</h2></div>
+    <div class="st">
+      <div class="infinite-container">
+        <div class="infinite-track">
+          <div class="mini-slide">A</div>
+          <div class="mini-slide">B</div>
+          <div class="mini-slide">C</div>
+          <div class="mini-slide">D</div>
+          <!-- Clone for seamless loop -->
+          <div class="mini-slide">A</div>
+          <div class="mini-slide">B</div>
+          <div class="mini-slide">C</div>
+          <div class="mini-slide">D</div>
+        </div>
+      </div>
+      <div class="val">Infinite Loop: ON</div>
     </div>
-    <!-- F3: Autoplay -->
-    <div class="fr" id="f3">
-      <div class="cw"><div class="cv"><div class="ct" id="at3"></div><div class="ca l" id="a3l">&#8249;</div><div class="ca r" id="a3r">&#8250;</div></div><div class="cd" id="ad3"></div><div class="cprog"><div class="cprog-f" id="ap3"></div></div></div>
-      <div class="cfl">AUTOPLAY &middot; AUTO-ADVANCE WITH PROGRESS</div>
+    <p class="ins">Cơ chế <strong>loop</strong> tạo cảm giác nội dung không bao giờ kết thúc bằng cách nối đuôi slide đầu và cuối.</p>
+  </section>
+
+  <!-- 04: Content Mode -->
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Chế độ hiển thị</h2></div>
+    <div class="st">
+      <div class="type-box" id="t4">
+        <div class="card-item"></div>
+        <div class="card-item"></div>
+        <div class="card-item"></div>
+        <div class="card-item"></div>
+      </div>
+      <div class="val" id="v4">Mode: Multi-Card</div>
     </div>
-  </div>
-  <div class="inf">
-    <div class="dn" id="dn">Single Item</div>
-    <div class="ds" id="ds">MỖI LẦN 1 SLIDE</div>
-    <div class="dd" id="dd">Chỉ hiển thị 1 slide tại một thời điểm — user phải bấm để xem tiếp</div>
-  </div>
-  <div class="pt"><div class="pf" id="pf"></div></div>
-</div>
-<div class="ctr">
-    <button class="ctr-b act" data-i="0">SINGLE</button>
-    <button class="ctr-b" data-i="1">MULTIPLE</button>
-    <button class="ctr-b" data-i="2">CENTER</button>
-    <button class="ctr-b" data-i="3">AUTOPLAY</button>
-    <button class="pp-b" id="pp" title="Play/Pause">
-        <svg class="pp-i" id="pp-i" viewBox="0 0 24 24"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>
-    </button>
-</div>
+    <p class="ins">Tùy vào <strong>context</strong>, carousel có thể hiển thị 1 hình ảnh lớn hoặc một dải nhiều card nhỏ hơn.</p>
+  </section>
 </div>
 
 <script>
-/* ===== DATA ===== */
-const SD=[
-  {l:'TRAVEL',t:'Swiss Alps',d:'Discover mountain landscapes',bg:'#252018',ac:'#d4712a'},
-  {l:'ROAD TRIP',t:'Coastal Roads',d:'Scenic drives along the coast',bg:'#182220',ac:'#2a9a7a'},
-  {l:'NATURE',t:'Forest Escape',d:'Immerse in ancient forests',bg:'#1a2018',ac:'#4a9a3a'},
-  {l:'EXPERIENCE',t:'Northern Lights',d:'Witness the aurora borealis',bg:'#1a1815',ac:'#d4a12a'}
-];
-const INFO=[
-  {nm:'Single Item',sz:'MỖI LẦN 1 SLIDE',dc:'Chỉ hiển thị 1 slide tại một thời điểm — user phải bấm để xem tiếp. Khi nói "carousel", dev thường mặc định hiểu dạng này.'},
-  {nm:'Multiple Items',sz:'NHIỀU SLIDE CÙNG LÚC',dc:'Hiển thị nhiều slide cùng lúc, trượt dần để xem thêm. Thường dùng cho product grid hoặc testimonial row.'},
-  {nm:'Center Mode',sz:'TRUNG TÂM NHẤN MẠNH',dc:'Slide giữa to hơn, 2 bên nhỏ hơn — focus attention vào item chính. Hay dùng cho feature highlight.'},
-  {nm:'Autoplay',sz:'TỰ ĐỘNG CHẠY',dc:'Slide tự chuyển sau mỗi N giây — có progress bar hiển thị tiến trình. Phổ biến ở Hero banner.'}
-];
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-/* ===== HELPERS ===== */
-function mkS(s,tiny){
-  return `<div class="cs" style="background:${s.bg}"><div class="sa" style="background:${s.ac}"></div><span class="sl">${s.l}</span><span class="st" style="color:${s.ac}">${s.t}</span>${tiny?'':`<span class="sd2">${s.d}</span>`}</div>`;
-}
-function dots(n,on){let h='';for(let i=0;i<n;i++)h+=`<span class="cdot${i===on?' on':''}"></span>`;return h;}
-
-/* ===== BUILD ANIMATION FRAMES ===== */
-document.getElementById('at0').innerHTML=SD.map(s=>mkS(s,1)).join('');
-document.getElementById('at0').querySelectorAll('.cs').forEach(s=>s.style.flex='0 0 100%');
-document.getElementById('ad0').innerHTML=dots(4,0);
-
-document.getElementById('at1').innerHTML=SD.map(s=>mkS(s,1)).join('');
-document.getElementById('at1').querySelectorAll('.cs').forEach(s=>s.style.flex='0 0 33.333%');
-document.getElementById('ad1').innerHTML=dots(2,0);
-
-document.getElementById('at2').innerHTML=SD.slice(0,3).map(s=>mkS(s,1)).join('');
-document.getElementById('at2').querySelectorAll('.cs').forEach(s=>s.style.flex='0 0 42%');
-document.getElementById('ad2').innerHTML=dots(3,1);
-
-document.getElementById('at3').innerHTML=SD.map(s=>mkS(s,1)).join('');
-document.getElementById('at3').querySelectorAll('.cs').forEach(s=>s.style.flex='0 0 100%');
-document.getElementById('ad3').innerHTML=dots(4,0);
-
-/* ===== ANIMATION CONTROL ===== */
-const frs=[0,1,2,3].map(i=>document.getElementById('f'+i));
-const el={dn:document.getElementById('dn'),ds:document.getElementById('ds'),dd:document.getElementById('dd'),hf:document.getElementById('hf'),pf:document.getElementById('pf')};
-const ctrBs=document.querySelectorAll('.ctr-b');
-const ppB=document.getElementById('pp');
-const ppI=document.getElementById('pp-i');
-
-let cur=0,ft=null,pa=null,t0=0,ftimers=[],isPaused=false;
-const DUR=3500;
-
-function setTrack(fi,si){
-  const t=document.getElementById('at'+fi);
-  if(fi===0||fi===3)t.style.transform='translateX(-'+si*100+'%)';
-  else if(fi===1)t.style.transform='translateX(-'+si*33.333+'%)';
-  else t.style.transform='translateX('+(29-si*42)+'%)';
-}
-function setDots(fi,si){document.getElementById('ad'+fi).innerHTML=dots(fi===1?2:fi===2?3:4,si);}
-function setCenter(fi,si){
-  const slides=document.getElementById('at'+fi).children;
-  for(let i=0;i<slides.length;i++){
-    if(i===si){slides[i].style.transform='scale(1.06)';slides[i].style.opacity='1';slides[i].style.zIndex='3';}
-    else{slides[i].style.transform='scale(0.88)';slides[i].style.opacity='0.35';slides[i].style.zIndex='1';}
+// 01: Slide Axis Loop
+(async function() {
+  const t = document.getElementById('t1');
+  const v = document.getElementById('v1');
+  while (true) {
+    for (let i = 0; i < 3; i++) {
+      t.style.transform = `translateX(calc(-${i * 100}% - ${i * 10}px))`;
+      v.textContent = `translateX(-${i * 100}%)`;
+      await wait(2400);
+    }
   }
-}
-function flash(fi,dir){const a=document.getElementById('a'+fi+dir);if(a) {a.classList.add('flash');setTimeout(()=>a.classList.remove('flash'),400);}}
-function startProg(){const b=document.getElementById('ap3');if(b){b.classList.remove('anim');void b.offsetWidth;b.classList.add('anim');}}
+})();
 
-function runFrame(fi){
-  ftimers.forEach(t=>clearTimeout(t));ftimers=[];
-  if(isPaused) return;
-  if(fi===0){setTrack(0,0);setDots(0,0);ftimers.push(setTimeout(()=>{flash(0,'r');setTrack(0,1);setDots(0,1)},800));ftimers.push(setTimeout(()=>{flash(0,'r');setTrack(0,2);setDots(0,2)},2100));}
-  else if(fi===1){setTrack(1,0);setDots(1,0);ftimers.push(setTimeout(()=>{flash(1,'r');setTrack(1,1);setDots(1,1)},1000));}
-  else if(fi===2){setTrack(2,1);setCenter(2,1);setDots(2,1);ftimers.push(setTimeout(()=>{flash(2,'r');setTrack(2,2);setCenter(2,2);setDots(2,2)},1200));}
-  else{setTrack(3,0);setDots(3,0);startProg();ftimers.push(setTimeout(()=>{setTrack(3,1);setDots(3,1);startProg()},1500));ftimers.push(setTimeout(()=>{setTrack(3,2);setDots(3,2);startProg()},3000));}
-}
+// 02: Pagination Loop
+(async function() {
+  const t = document.getElementById('t2');
+  const dots = document.getElementById('d2').children;
+  const v = document.getElementById('v2');
+  let idx = 0;
+  while (true) {
+    t.style.transform = `translateX(calc(-${idx * 100}% - ${idx * 10}px))`;
+    v.textContent = `Active Index: ${idx}`;
+    for(let j=0; j<dots.length; j++) dots[j].classList.toggle('active', j === idx);
+    idx = (idx + 1) % 3;
+    await wait(2000);
+  }
+})();
 
-function apply(i){
-  cur=i;
-  const s=INFO[i];el.dn.textContent=s.nm;el.ds.textContent=s.sz;el.dd.textContent=s.dc;
-  el.hf.textContent='0'+(i+1)+' / 04';
-  ctrBs.forEach((b,j)=>b.classList.toggle('act',j===i));
-  
-  frs.forEach(f=>f.classList.remove('show'));
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{
-    frs[i].classList.add('show');
-    if(i===2)setCenter(2,1);
-    runFrame(i);
-  }));
-}
-
-function tk(n){
-    if(isPaused) return;
-    const p=Math.min(100,(n-t0)/DUR*100);
-    el.pf.style.width=p+'%';
-    if(p<100)pa=requestAnimationFrame(tk);
-    else next();
-}
-function startProg2(){t0=performance.now();el.pf.style.transition='none';el.pf.style.width='0%';pa=requestAnimationFrame(tk)}
-function next(){if(isPaused)return;cur=(cur+1)%4;apply(cur);startProg2()}
-
-function togglePP(){
-    isPaused=!isPaused;
-    ppI.innerHTML=isPaused ? '<path d="M8 5v14l11-7z"/>' : '<path d="M6 4h4v16H6zm8 0h4v16h-4z"/>';
-    if(!isPaused){
-        t0=performance.now() - (parseFloat(el.pf.style.width||0)/100*DUR);
-        pa=requestAnimationFrame(tk);
-        runFrame(cur);
-    } else {
-        ftimers.forEach(t=>clearTimeout(t));
-    }
-}
-
-ctrBs.forEach(b=>{
-    b.onclick=()=>{
-        isPaused=true;
-        ppI.innerHTML='<path d="M8 5v14l11-7z"/>';
-        apply(parseInt(b.dataset.i));
-        el.pf.style.width='0%';
-    }
-});
-
-ppB.onclick=togglePP;
-
-apply(0);
-startProg2();
-
-document.addEventListener('visibilitychange',()=>{
-    if(document.hidden){cancelAnimationFrame(pa);ftimers.forEach(t=>clearTimeout(t));}
-    else if(!isPaused){t0=performance.now() - (parseFloat(el.pf.style.width||0)/100*DUR);pa=requestAnimationFrame(tk);runFrame(cur);}
-});
+// 04: Mode Loop
+(async function() {
+  const t = document.getElementById('t4');
+  const v = document.getElementById('v4');
+  while (true) {
+    // Card Mode
+    t.style.justifyContent = 'flex-start';
+    t.innerHTML = '<div class="card-item"></div>'.repeat(5);
+    v.textContent = 'Mode: Multi-Card';
+    await wait(3000);
+    
+    // Full Mode
+    t.style.justifyContent = 'center';
+    t.innerHTML = '<div class="card-item" style="width: 100%; height: 60px;"></div>';
+    v.textContent = 'Mode: Hero Banner';
+    await wait(3000);
+  }
+})();
 </script>
 </body>
 </html>
