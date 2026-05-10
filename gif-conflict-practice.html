@@ -1,194 +1,506 @@
 <!DOCTYPE html>
 <html lang="vi">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Conflict Practice — Vibecode Glossary</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-:root{
-  --bg:#101010;--bgc:#181818;--bgi:#131313;
-  --bd:#272727;--tx:#e0e0e0;--txm:#707070;--txd:#3a3a3a;
-  --ac:#d97706;--acl:#f59e0b;
-  --abg:rgba(217,119,6,.08);--abg2:rgba(217,119,6,.18);
-  --rd:#ef4444;--gn:#22c55e;--gnb:rgba(34,197,94,.12);
-  --rdb:rgba(239,68,68,.1);--rdb2:rgba(239,68,68,.18);
-}
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-body{
-  font-family:'Space Grotesk',sans-serif;
-  background-color:var(--bg);
-  background-image:
-    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
-  background-size:20px 20px;
-  color:var(--tx);min-height:100vh;padding:20px 16px 48px;
-}
-.ch{display:flex;align-items:center;gap:10px;margin-bottom:16px}
-.ch .n{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--ac);background:var(--abg);border:1px solid rgba(217,119,6,.2);padding:1px 6px;border-radius:2px}
-.ch h2{font-size:14px;font-weight:600;letter-spacing:-.3px}
 
-/* ═══════════════════════════════════════
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Conflict Practice — Vibecode Glossary</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #101010;
+      --bgc: #181818;
+      --bgi: #131313;
+      --bd: #272727;
+      --tx: #e0e0e0;
+      --txm: #707070;
+      --txd: #3a3a3a;
+      --ac: #d97706;
+      --acl: #f59e0b;
+      --abg: rgba(217, 119, 6, .08);
+      --abg2: rgba(217, 119, 6, .18);
+      --rd: #ef4444;
+      --gn: #22c55e;
+      --gnb: rgba(34, 197, 94, .12);
+      --rdb: rgba(239, 68, 68, .1);
+      --rdb2: rgba(239, 68, 68, .18);
+    }
+
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background-color: var(--bg);
+      background-image:
+        linear-gradient(rgba(255, 255, 255, .018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, .018) 1px, transparent 1px);
+      background-size: 20px 20px;
+      color: var(--tx);
+      min-height: 100vh;
+      padding: 20px 16px 48px;
+    }
+
+    .ch {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px
+    }
+
+    .ch .n {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--ac);
+      background: var(--abg);
+      border: 1px solid rgba(217, 119, 6, .2);
+      padding: 1px 6px;
+      border-radius: 2px
+    }
+
+    .ch h2 {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -.3px
+    }
+
+    /* ═══════════════════════════════════════
    PRACTICE
    ═══════════════════════════════════════ */
-.pra{max-width:900px;margin:0 auto;background:var(--bgc);border:1px solid var(--bd);border-radius:3px;padding:22px}
-.pra .ch{margin-bottom:6px}
-.pra-goal{font-size:12.5px;color:var(--txm);margin-bottom:18px;line-height:1.5}
-.pra-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
-@media(max-width:660px){.pra-grid{grid-template-columns:1fr}}
-.cfg-l{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txd);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:8px}
+    .pra {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--bgc);
+      border: 1px solid var(--bd);
+      border-radius: 3px;
+      padding: 22px
+    }
 
-/* editor */
-.pra-ed{background:#0c0c0c;border:2px solid var(--rd);border-radius:3px;overflow:hidden;transition:border-color .3s}
-.pra-ed.ok{border-color:var(--gn)}
-.pra-ed-hd{padding:3px 8px;background:rgba(255,255,255,.03);border-bottom:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--txd);display:flex;justify-content:space-between}
-.pra-ed-hd .st{font-weight:700}
-.pra-ed-hd .st.conf{color:var(--rd)}
-.pra-ed-hd .st.res{color:var(--gn)}
-.pra-ed-body{padding:4px 0;min-height:120px;position:relative}
-.pra-ln{display:flex;align-items:stretch;transition:opacity .2s,transform .2s}
-.pra-ln.hide{opacity:0;height:0;overflow:hidden;padding:0}
-.pra-ln .mk-n{width:28px;padding:2px 6px 2px 0;text-align:right;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--txd);border-right:1px solid var(--bd);flex-shrink:0;user-select:none}
-.pra-ln .mk-c{flex:1;padding:2px 8px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--tx);white-space:pre;line-height:1.5}
-.pra-ln.mk-mk .mk-c{background:var(--rdb);color:var(--rd);font-weight:700}
-.pra-ln.mk-yr{border-left:3px solid var(--ac)}
-.pra-ln.mk-tr{border-left:3px solid #64748b}
-.pra-ln.new-ln{animation:praNew .3s ease both}
-@keyframes praNew{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
-.pra-tag{font-family:'JetBrains Mono',monospace;font-size:8px;padding:1px 5px;border-radius:2px;margin-left:6px;align-self:center}
-.pra-tag-ty{background:var(--abg2);color:var(--acl)}
-.pra-tag-tt{background:rgba(100,116,139,.1);color:#94a3b8}
-.pra-tag-ok{background:var(--gnb);color:var(--gn)}
+    .pra .ch {
+      margin-bottom: 6px
+    }
 
-/* buttons */
-.pra-btns{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
-.btn{padding:7px 12px;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;border:1px solid var(--bd);background:var(--bgi);color:var(--txm);border-radius:2px;cursor:pointer;transition:all .15s}
-.btn:hover:not(:disabled){border-color:var(--ac);color:var(--acl);background:var(--abg)}
-.btn:disabled{opacity:.3;cursor:default}
-.btn.rst{border-color:rgba(239,68,68,.2);color:var(--rd);background:var(--rdb)}
-.btn.rst:hover:not(:disabled){border-color:var(--rd);background:var(--rdb2)}
-.hint{font-size:11px;color:var(--txd);line-height:1.4;padding:8px 10px;background:var(--bgi);border-radius:2px;border-left:2px solid var(--bd);margin-top:12px}
+    .pra-goal {
+      font-size: 12.5px;
+      color: var(--txm);
+      margin-bottom: 18px;
+      line-height: 1.5
+    }
 
-/* prompt */
-.pr-box{background:var(--bgi);border:1px solid var(--bd);border-radius:3px;padding:12px 14px;margin-top:14px}
-.pr-box .cl{display:block;margin-bottom:8px}
-.pr-txt{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--acl);line-height:1.55;word-break:break-word}
+    .pra-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px
+    }
 
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
-</style>
+    @media(max-width:660px) {
+      .pra-grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .cfg-l {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--txd);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      display: block;
+      margin-bottom: 8px
+    }
+
+    /* editor */
+    .pra-ed {
+      background: #0c0c0c;
+      border: 2px solid var(--rd);
+      border-radius: 3px;
+      overflow: hidden;
+      transition: border-color .3s
+    }
+
+    .pra-ed.ok {
+      border-color: var(--gn)
+    }
+
+    .pra-ed-hd {
+      padding: 3px 8px;
+      background: rgba(255, 255, 255, .03);
+      border-bottom: 1px solid var(--bd);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      color: var(--txd);
+      display: flex;
+      justify-content: space-between
+    }
+
+    .pra-ed-hd .st {
+      font-weight: 700
+    }
+
+    .pra-ed-hd .st.conf {
+      color: var(--rd)
+    }
+
+    .pra-ed-hd .st.res {
+      color: var(--gn)
+    }
+
+    .pra-ed-body {
+      padding: 4px 0;
+      min-height: 120px;
+      position: relative
+    }
+
+    .pra-ln {
+      display: flex;
+      align-items: stretch;
+      transition: opacity .2s, transform .2s
+    }
+
+    .pra-ln.hide {
+      opacity: 0;
+      height: 0;
+      overflow: hidden;
+      padding: 0
+    }
+
+    .pra-ln .mk-n {
+      width: 28px;
+      padding: 2px 6px 2px 0;
+      text-align: right;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      color: var(--txd);
+      border-right: 1px solid var(--bd);
+      flex-shrink: 0;
+      user-select: none
+    }
+
+    .pra-ln .mk-c {
+      flex: 1;
+      padding: 2px 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--tx);
+      white-space: pre;
+      line-height: 1.5
+    }
+
+    .pra-ln.mk-mk .mk-c {
+      background: var(--rdb);
+      color: var(--rd);
+      font-weight: 700
+    }
+
+    .pra-ln.mk-yr {
+      border-left: 3px solid var(--ac)
+    }
+
+    .pra-ln.mk-tr {
+      border-left: 3px solid #64748b
+    }
+
+    .pra-ln.new-ln {
+      animation: praNew .3s ease both
+    }
+
+    @keyframes praNew {
+      from {
+        opacity: 0;
+        transform: translateY(4px)
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0)
+      }
+    }
+
+    .pra-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      padding: 1px 5px;
+      border-radius: 2px;
+      margin-left: 6px;
+      align-self: center
+    }
+
+    .pra-tag-ty {
+      background: var(--abg2);
+      color: var(--acl)
+    }
+
+    .pra-tag-tt {
+      background: rgba(100, 116, 139, .1);
+      color: #94a3b8
+    }
+
+    .pra-tag-ok {
+      background: var(--gnb);
+      color: var(--gn)
+    }
+
+    /* buttons */
+    .pra-btns {
+      display: flex;
+      gap: 6px;
+      margin-top: 12px;
+      flex-wrap: wrap
+    }
+
+    .btn {
+      padding: 7px 12px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      border: 1px solid var(--bd);
+      background: var(--bgi);
+      color: var(--txm);
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all .15s
+    }
+
+    .btn:hover:not(:disabled) {
+      border-color: var(--ac);
+      color: var(--acl);
+      background: var(--abg)
+    }
+
+    .btn:disabled {
+      opacity: .3;
+      cursor: default
+    }
+
+    .btn.rst {
+      border-color: rgba(239, 68, 68, .2);
+      color: var(--rd);
+      background: var(--rdb)
+    }
+
+    .btn.rst:hover:not(:disabled) {
+      border-color: var(--rd);
+      background: var(--rdb2)
+    }
+
+    .btn-hint {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--ac);
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 2px;
+      white-space: nowrap;
+      pointer-events: none;
+      animation: hintPulse 2s infinite;
+      z-index: 999;
+    }
+
+    .btn-hint::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 4px solid var(--ac);
+    }
+
+    @keyframes hintPulse {
+      0% {
+        transform: translateX(-50%) scale(1);
+      }
+
+      50% {
+        transform: translateX(-50%) scale(1.05);
+      }
+
+      100% {
+        transform: translateX(-50%) scale(1);
+      }
+    }
+
+    .hint {
+      font-size: 11px;
+      color: var(--txd);
+      line-height: 1.4;
+      padding: 8px 10px;
+      background: var(--bgi);
+      border-radius: 2px;
+      border-left: 2px solid var(--bd);
+      margin-top: 12px
+    }
+
+    /* prompt */
+    .pr-box {
+      background: var(--bgi);
+      border: 1px solid var(--bd);
+      border-radius: 3px;
+      padding: 12px 14px;
+      margin-top: 14px
+    }
+
+    .pr-box .cl {
+      display: block;
+      margin-bottom: 8px
+    }
+
+    .pr-txt {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--acl);
+      line-height: 1.55;
+      word-break: break-word
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+
+      *,
+      *::before,
+      *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-<section class="pra" aria-label="Thực hành">
-  <div class="ch"><span class="n">PRACTICE</span><h2>Resolve conflict</h2></div>
-  <p class="pra-goal">Thấy conflict marker trong file — chọn cách xử lý để thấy kết quả thay đổi realtime.</p>
-  <div class="pra-grid">
-    <div>
-      <span class="cfg-l">File đang bị conflict</span>
-      <div class="pra-ed" id="praEd">
-        <div class="pra-ed-hd">
-          <span>index.html</span>
-          <span class="st conf" id="praSt">CONFLICT</span>
+  <section class="pra" aria-label="Thực hành">
+    <div class="ch"><span class="n">PRACTICE</span>
+      <h2>Resolve conflict</h2>
+    </div>
+    <p class="pra-goal">Thấy conflict marker trong file — chọn cách xử lý để thấy kết quả thay đổi realtime.</p>
+    <div class="pra-grid">
+      <div>
+        <span class="cfg-l">File đang bị conflict</span>
+        <div class="pra-ed" id="praEd">
+          <div class="pra-ed-hd">
+            <span>index.html</span>
+            <span class="st conf" id="praSt">CONFLICT</span>
+          </div>
+          <div class="pra-ed-body" id="praBody"></div>
         </div>
-        <div class="pra-ed-body" id="praBody"></div>
+        <div class="pra-btns" id="praBtns">
+          <div style="position: relative; display: inline-block;">
+            <div class="btn-hint" id="hintBadge">Click me!</div>
+            <button class="btn" data-ch="yours">Giữ của bạn</button>
+          </div>
+          <button class="btn" data-ch="theirs">Giữ của team</button>
+          <button class="btn" data-ch="both">Gộp cả hai</button>
+          <button class="btn rst" id="praRst" disabled>Reset</button>
+        </div>
+        <div class="hint">Click một trong ba cách resolve. Quan sát: marker biến mất, border chuyển xanh, code sạch lại.
+          Click Reset để thử cách khác.</div>
       </div>
-      <div class="pra-btns" id="praBtns">
-        <button class="btn" data-ch="yours">Giữ của bạn</button>
-        <button class="btn" data-ch="theirs">Giữ của team</button>
-        <button class="btn" data-ch="both">Gộp cả hai</button>
-        <button class="btn rst" id="praRst" disabled>Reset</button>
+      <div>
+        <div class="pr-box">
+          <span class="cl">Nói với AI</span>
+          <div class="pr-txt" id="praPr">Chọn cách resolve để xem prompt phù hợp...</div>
+        </div>
       </div>
-      <div class="hint">Click một trong ba cách resolve. Quan sát: marker biến mất, border chuyển xanh, code sạch lại. Click Reset để thử cách khác.</div>
     </div>
-    <div>
-      <div class="pr-box">
-        <span class="cl">Nói với dev</span>
-        <div class="pr-txt" id="praPr">Chọn cách resolve để xem prompt phù hợp...</div>
-      </div>
-    </div>
-  </div>
-</section>
+  </section>
 
-<script>
-(function(){
-  var $body = document.getElementById('praBody');
-  var $ed = document.getElementById('praEd');
-  var $st = document.getElementById('praSt');
-  var $pr = document.getElementById('praPr');
-  var $btns = document.querySelectorAll('#praBtns .btn[data-ch]');
-  var $rst = document.getElementById('praRst');
-  var resolved = false;
+  <script>
+    (function () {
+      var $body = document.getElementById('praBody');
+      var $ed = document.getElementById('praEd');
+      var $st = document.getElementById('praSt');
+      var $pr = document.getElementById('praPr');
+      var $btns = document.querySelectorAll('#praBtns .btn[data-ch]');
+      var $rst = document.getElementById('praRst');
+      var $hintBadge = document.getElementById('hintBadge');
+      var resolved = false;
 
-  /* line builder */
-  function ln(num, code, cls, tag){
-    var tagHtml = tag ? '<span class="pra-tag ' + tag.cls + '">' + tag.text + '</span>' : '';
-    return '<div class="pra-ln ' + (cls||'') + '">'
-      + '<span class="mk-n">' + num + '</span>'
-      + '<span class="mk-c">' + code + tagHtml + '</span>'
-      + '</div>';
-  }
+      /* line builder */
+      function ln(num, code, cls, tag) {
+        var tagHtml = tag ? '<span class="pra-tag ' + tag.cls + '">' + tag.text + '</span>' : '';
+        return '<div class="pra-ln ' + (cls || '') + '">'
+          + '<span class="mk-n">' + num + '</span>'
+          + '<span class="mk-c">' + code + tagHtml + '</span>'
+          + '</div>';
+      }
 
-  /* conflicted state */
-  function showConflict(){
-    resolved = false;
-    $ed.classList.remove('ok');
-    $st.className = 'st conf';
-    $st.textContent = 'CONFLICT';
-    $body.innerHTML =
-      ln(1,'.hero {','','')
-      + ln(2,'<<<<<<< HEAD','mk-mk','')
-      + ln(3,'  color: #fff;','mk-yr mk-mk',{cls:'pra-tag-ty',text:'của bạn'})
-      + ln(4,'=======','mk-mk','')
-      + ln(5,'  color: #000;','mk-tr mk-mk',{cls:'pra-tag-tt',text:'của team'})
-      + ln(6,'>>>>>>> main','mk-mk','')
-      + ln(7,'}','','');
-    $pr.textContent = 'Chọn cách resolve để xem prompt phù hợp...';
-    $btns.forEach(function(b){b.disabled=false});
-    $rst.disabled = true;
-  }
+      /* conflicted state */
+      function showConflict() {
+        resolved = false;
+        $ed.classList.remove('ok');
+        $st.className = 'st conf';
+        $st.textContent = 'CONFLICT';
+        $body.innerHTML =
+          ln(1, '.hero {', '', '')
+          + ln(2, '<<<<<<< HEAD', 'mk-mk', '')
+          + ln(3, '  color: #fff;', 'mk-yr mk-mk', { cls: 'pra-tag-ty', text: 'của bạn' })
+          + ln(4, '=======', 'mk-mk', '')
+          + ln(5, '  color: #000;', 'mk-tr mk-mk', { cls: 'pra-tag-tt', text: 'của team' })
+          + ln(6, '>>>>>>> main', 'mk-mk', '')
+          + ln(7, '}', '', '');
+        $pr.textContent = 'Chọn cách resolve để xem prompt phù hợp...';
+        $btns.forEach(function (b) { b.disabled = false });
+        $rst.disabled = true;
+        if ($hintBadge) $hintBadge.style.display = 'block';
+      }
 
-  /* resolve */
-  function resolve(choice){
-    resolved = true;
-    $ed.classList.add('ok');
-    $st.className = 'st res';
-    $st.textContent = 'RESOLVED';
-    $btns.forEach(function(b){b.disabled=true});
-    $rst.disabled = false;
+      /* resolve */
+      function resolve(choice) {
+        resolved = true;
+        $ed.classList.add('ok');
+        $st.className = 'st res';
+        $st.textContent = 'RESOLVED';
+        $btns.forEach(function (b) { b.disabled = true });
+        $rst.disabled = false;
+        if ($hintBadge) $hintBadge.style.display = 'none';
 
-    var lines = '';
-    if(choice === 'yours'){
-      lines = ln(1,'.hero {','','')
-        + ln(2,'  color: #fff;','new-ln','')
-        + ln(3,'}','new-ln',{cls:'pra-tag-ok',text:'kept yours'});
-      $pr.textContent = 'Conflict ở index.html dòng color — giữ version của mình (color: #fff), xóa marker, commit.';
-    } else if(choice === 'theirs'){
-      lines = ln(1,'.hero {','','')
-        + ln(2,'  color: #000;','new-ln','')
-        + ln(3,'}','new-ln',{cls:'pra-tag-ok',text:'kept theirs'});
-      $pr.textContent = 'Conflict ở index.html dòng color — giữ version của team (color: #000), xóa marker, commit.';
-    } else {
-      lines = ln(1,'.hero {','','')
-        + ln(2,'  color: #fff;','new-ln','')
-        + ln(3,'  /* fallback: #000 */','new-ln','')
-        + ln(4,'}','new-ln',{cls:'pra-tag-ok',text:'merged both'});
-      $pr.textContent = 'Conflict ở index.html dòng color — gộp cả hai version, thêm fallback comment, commit.';
-    }
-    $body.innerHTML = lines;
-  }
+        var lines = '';
+        if (choice === 'yours') {
+          lines = ln(1, '.hero {', '', '')
+            + ln(2, '  color: #fff;', 'new-ln', '')
+            + ln(3, '}', 'new-ln', { cls: 'pra-tag-ok', text: 'kept yours' });
+          $pr.textContent = 'Conflict ở index.html dòng color — giữ version của mình (color: #fff), xóa marker, commit.';
+        } else if (choice === 'theirs') {
+          lines = ln(1, '.hero {', '', '')
+            + ln(2, '  color: #000;', 'new-ln', '')
+            + ln(3, '}', 'new-ln', { cls: 'pra-tag-ok', text: 'kept theirs' });
+          $pr.textContent = 'Conflict ở index.html dòng color — giữ version của team (color: #000), xóa marker, commit.';
+        } else {
+          lines = ln(1, '.hero {', '', '')
+            + ln(2, '  color: #fff;', 'new-ln', '')
+            + ln(3, '  /* fallback: #000 */', 'new-ln', '')
+            + ln(4, '}', 'new-ln', { cls: 'pra-tag-ok', text: 'merged both' });
+          $pr.textContent = 'Conflict ở index.html dòng color — gộp cả hai version, thêm fallback comment, commit.';
+        }
+        $body.innerHTML = lines;
+      }
 
-  /* events */
-  $btns.forEach(function(btn){
-    btn.addEventListener('click',function(){
-      if(resolved) return;
-      resolve(this.getAttribute('data-ch'));
-    });
-  });
-  $rst.addEventListener('click', showConflict);
+      /* events */
+      $btns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          if (resolved) return;
+          resolve(this.getAttribute('data-ch'));
+        });
+      });
+      $rst.addEventListener('click', showConflict);
 
-  /* init */
-  showConflict();
-})();
-</script>
+      /* init */
+      showConflict();
+    })();
+  </script>
 </body>
+
 </html>
