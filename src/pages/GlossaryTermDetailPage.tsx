@@ -8,8 +8,11 @@ import { getTermById, getTermDeepDiveNotes, GlossaryTerm } from '../lib/glossary
 import apiDemoHtml from '../../gif-api-demo.html?raw';
 import apiPracticeHtml from '../../gif-api-practice.html?raw';
 import authDemoHtml from '../../gif-auth-demo.html?raw';
+import authPracticeHtml from '../../gif-auth-practice.html?raw';
 import spacingDemoHtml from '../../gif-spacing-demo.html?raw';
+import spacingPracticeHtml from '../../gif-spacing-practice.html?raw';
 import letterSpacingDemoHtml from '../../gif-letter-spacing-demo.html?raw';
+import letterSpacingPracticeHtml from '../../gif-letter-spacing-practice.html?raw';
 import lineSpacingDemoHtml from '../../gif-line-spacing-demo.html?raw';
 import lineSpacingPracticeHtml from '../../gif-line-spacing-practice.html?raw';
 import lineheightDemoHtml from '../../gif-lineheight-demo.html?raw';
@@ -350,6 +353,9 @@ export default function GlossaryTermDetailPage() {
     const cleanId = id.trim().toLowerCase();
     switch (cleanId) {
       case 'api': return apiPracticeHtml;
+      case 'auth': return authPracticeHtml;
+      case 'spacing': return spacingPracticeHtml;
+      case 'letter-spacing': return letterSpacingPracticeHtml;
       case 'margin': return marginPracticeHtml;
       case 'padding': return paddingPracticeHtml;
       case 'line-spacing': return lineSpacingPracticeHtml;
@@ -709,9 +715,7 @@ function TermDisplaySection({
               />
             </div>
           ) : null}
-          {term.id === 'auth' ? <AuthPracticePanel /> : null}
-          {term.id === 'spacing' ? <SpacingPracticePanel /> : null}
-          {term.id === 'letter-spacing' ? <LetterSpacingPracticePanel /> : null}
+          {/* Practices are now handled via InteractiveFrame if HTML exists */}
         </div>
       </div>
     </section>

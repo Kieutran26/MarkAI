@@ -1,310 +1,417 @@
 <!DOCTYPE html>
 <html lang="vi">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Letter Spacing Practice — Vibecode Glossary</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<style>
-  :root {
-    --bg: #0f0f12;
-    --bg-card: #17171c;
-    --fg: #e8e4dc;
-    --muted: #6e6e7a;
-    --accent: #e88c2e;
-    --accent-soft: rgba(232,140,46,0.13);
-    --accent-border: rgba(232,140,46,0.3);
-    --border: #2a2a33;
-    --surface: #1e1e25;
-    --success: #3a9e5c;
-    --success-soft: rgba(58,158,92,0.13);
-    --warning: #c49030;
-    --warning-soft: rgba(196,144,48,0.1);
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{
-    background:var(--bg);color:var(--fg);
-    font-family:'Space Grotesk',sans-serif;
-    min-height: auto; line-height:1.6;
-  }
-  .entry{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:24px}
-
-  /* === SECTION LABEL === */
-  .sec-label{
-    font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;
-    letter-spacing:2px;text-transform:uppercase;color:var(--muted);
-    margin-bottom:20px;display:flex;align-items:center;gap:10px;
-  }
-  .sec-label::after{content:'';flex:1;height:1px;background:var(--border)}
-
-  /* === PRACTICE === */
-  .p-goal{font-size:15px;color:var(--fg);opacity:.8;margin-bottom:22px;line-height:1.6}
-  .p-goal span{color:var(--accent);font-weight:600}
-
-  /* Context buttons */
-  .ctx-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:26px}
-  .ctx-btn{
-    font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:500;
-    padding:8px 14px;border:1px solid var(--border);background:transparent;
-    color:var(--muted);cursor:pointer;transition:all .25s;
-    display:flex;align-items:center;gap:8px;
-  }
-  .ctx-btn:hover{border-color:var(--accent-border);color:var(--fg)}
-  .ctx-btn.active{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
-  .ctx-btn .ctx-d{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);opacity:.65}
-  .ctx-btn.active .ctx-d{opacity:1;color:var(--accent)}
-
-  /* Slider */
-  .slider-sec{margin-bottom:28px}
-  .slider-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
-  .slider-lbl{font-size:12px;color:var(--muted)}
-  .slider-val{
-    font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:600;
-    color:var(--accent);transition:color .3s;
-  }
-  .slider-val.ok{color:var(--success)}
-
-  .slider-wrap{position:relative;height:34px}
-  .s-track{
-    position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);
-    height:4px;background:var(--border);z-index:0;
-  }
-  .s-zone{
-    position:absolute;top:50%;transform:translateY(-50%);
-    height:4px;background:var(--accent-soft);border:1px solid var(--accent-border);
-    z-index:1;pointer-events:none;transition:left .4s ease,width .4s ease,background .3s,border-color .3s;
-  }
-  .s-zone.hit{background:var(--success-soft);border-color:rgba(58,158,92,.35)}
-
-  input[type=range]{
-    -webkit-appearance:none;appearance:none;
-    width:100%;height:34px;background:transparent;
-    outline:none;cursor:pointer;position:absolute;top:0;left:0;z-index:2;
-  }
-  input[type=range]::-webkit-slider-runnable-track{height:4px;background:transparent}
-  input[type=range]::-webkit-slider-thumb{
-    -webkit-appearance:none;width:18px;height:18px;
-    background:var(--accent);border:2px solid var(--bg);margin-top:-7px;cursor:grab;
-    transition:box-shadow .2s,background .2s;
-  }
-  input[type=range]::-moz-range-track{height:4px;background:transparent;border:none}
-  input[type=range]::-moz-range-thumb{
-    width:18px;height:18px;background:var(--accent);
-    border:2px solid var(--bg);cursor:grab;border-radius:0;
-  }
-  input[type=range].ok::-webkit-slider-thumb{background:var(--success);box-shadow:0 0 14px rgba(58,158,92,.3)}
-  input[type=range].ok::-moz-range-thumb{background:var(--success);box-shadow:0 0 14px rgba(58,158,92,.3)}
-  input[type=range]:active::-webkit-slider-thumb{cursor:grabbing}
-
-  .s-ticks{display:flex;justify-content:space-between;padding:5px 0 0}
-  .s-ticks span{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);opacity:.45}
-
-  /* Preview */
-  .preview{
-    background:var(--bg-card);border:1px solid var(--border);
-    padding:44px 28px;margin-bottom:18px;min-height:130px;
-    display:flex;align-items:center;justify-content:center;text-align:center;
-    transition:border-color .3s;position:relative;overflow:hidden;
-  }
-  .preview::before{
-    content:'';position:absolute;inset:0;
-    background-image:linear-gradient(rgba(255,255,255,.008) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(255,255,255,.008) 1px,transparent 1px);
-    background-size:18px 18px;pointer-events:none;
-  }
-  .preview.ok-border{border-color:rgba(58,158,92,.25)}
-  .prev-label{
-    position:absolute;top:10px;left:14px;
-    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;
-    text-transform:uppercase;color:var(--muted);opacity:.4;
-  }
-  .prev-text{
-    font-weight:700;text-transform:uppercase;transition:letter-spacing .12s ease;
-    position:relative;z-index:1;line-height:1.4;
-  }
-  .prev-text.sz-h{font-size:clamp(24px,5vw,34px)}
-  .prev-text.sz-b{font-size:15px;font-weight:400;text-transform:none;max-width:520px;line-height:1.7}
-  .prev-text.sz-l{font-size:clamp(28px,6vw,44px)}
-  .prev-text.sz-c{font-size:12px;font-weight:400;text-transform:none;opacity:.8}
-
-  /* Feedback */
-  .fb{
-    display:inline-flex;align-items:center;gap:8px;
-    padding:8px 16px;font-size:13px;font-weight:500;
-    border:1px solid var(--border);background:var(--bg-card);transition:all .3s;
-  }
-  .fb.ok{border-color:rgba(58,158,92,.4);color:var(--success);background:var(--success-soft)}
-  .fb.no{border-color:rgba(196,144,48,.3);color:var(--warning);background:var(--warning-soft)}
-  .fb i{font-size:11px}
-
-  .hint{
-    font-size:12px;color:var(--muted);opacity:.55;margin-top:10px;
-    display:flex;align-items:center;gap:6px;
-  }
-  .hint i{font-size:10px;color:var(--accent)}
-
-  /* Tại sao quan trọng */
-  .why-box{
-    margin-top:36px;border:1px solid var(--border);padding:20px 22px;
-    background:var(--surface);
-  }
-  .why-box h3{
-    font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:1px;
-    color:var(--accent);margin-bottom:10px;
-  }
-  .why-box p{font-size:14px;color:var(--fg);opacity:.75;line-height:1.65}
-  .why-box code{
-    font-family:'JetBrains Mono',monospace;font-size:12px;
-    background:var(--bg-card);padding:2px 6px;border:1px solid var(--border);
-    color:var(--accent);
-  }
-
-  /* Fade-in */
-  .fu{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
-  .fu.in{opacity:1;transform:translateY(0)}
-
-</style>
-</head>
-<body>
-<div id="app-root">
-<div class="entry">
-  
-  <section class="fu" aria-label="Thực hành letter spacing">
-    <p class="p-goal">
-      <span>Mục tiêu:</span> Kéo slider vào vùng cam — đó là khoảng cách phù hợp cho ngữ cảnh đã chọn. Thử từng ngữ cảnh để thấy pattern.
-    </p>
-
-    <div class="ctx-row" id="ctxRow"></div>
-
-    <div class="slider-sec">
-      <div class="slider-head">
-        <span class="slider-lbl">letter-spacing</span>
-        <span class="slider-val" id="sVal">0px</span>
-      </div>
-      <div class="slider-wrap">
-        <div class="s-track"></div>
-        <div class="s-zone" id="sZone"></div>
-        <input type="range" id="sSlider" min="-2" max="20" step="0.5" value="0" aria-label="Điều chỉnh letter-spacing">
-      </div>
-      <div class="s-ticks">
-        <span>-2</span><span>0</span><span>5</span><span>10</span><span>15</span><span>20</span>
-      </div>
-    </div>
-
-    <div class="preview" id="prevBox">
-      <span class="prev-label" id="prevLbl">HEADLINE</span>
-      <div class="prev-text sz-h" id="prevText">MỌI THỨ BẮT ĐẦU TỪ ĐÂU</div>
-    </div>
-
-    <div class="fb" id="fb">
-      <i class="fa-solid fa-circle-info"></i>
-      <span>Chọn ngữ cảnh rồi kéo slider</span>
-    </div>
-    <p class="hint" id="hintEl">
-      <i class="fa-solid fa-arrow-up-right"></i>
-      Vùng cam trên slider là khoảng cách khuyến nghị cho ngữ cảnh hiện tại
-    </p>
-
-  </section>
-</div>
-</div>
-
-<script>
-  const ctxs = [
-    { id:'headline', name:'Headline', desc:'Tiêu đề lớn', range:[-1,2],
-      text:'MỌI THỨ BẮT ĐẦU TỪ ĐÂU', sz:'sz-h',
-      hint:'Tiêu đề to cần khít để mắt đọc nhanh qua một dòng' },
-    { id:'body', name:'Body', desc:'Nội dung dài', range:[0,1],
-      text:'Letter spacing ảnh hưởng đến tốc độ đọc và cảm giác tổng thể của đoạn text. Khi khoảng cách quá rộng, mắt phải nhảy xa hơn giữa các chữ cái, gây mệt mỏi nhanh chóng.',
-      sz:'sz-b',
-      hint:'Text dài gần như luôn dùng mặc định — đừng đụng vào nó' },
-    { id:'logo', name:'Logo', desc:'Thương hiệu', range:[4,14],
-      text:'ATELIER', sz:'sz-l',
-      hint:'Logo luxury luôn rải chữ — đó là "visual code" của đắt tiền' },
-    { id:'caption', name:'Caption', desc:'Chú thích nhỏ', range:[0.5,3],
-      text:'Photo by @studio — Hanoi, 2024', sz:'sz-c',
-      hint:'Chữ nhỏ rải một chút sẽ dễ đọc hơn, không bị "dính"' }
-  ];
-
-  const ctxRowEl = document.getElementById('ctxRow');
-  const sSlider = document.getElementById('sSlider');
-  const sValEl = document.getElementById('sVal');
-  const sZoneEl = document.getElementById('sZone');
-  const prevText = document.getElementById('prevText');
-  const prevLbl = document.getElementById('prevLbl');
-  const prevBox = document.getElementById('prevBox');
-  const fbEl = document.getElementById('fb');
-  const hintEl = document.getElementById('hintEl');
-
-  let curCtx = ctxs[0];
-
-  function renderCtx() {
-    ctxRowEl.innerHTML = ctxs.map((c, i) => `
-      <button class="ctx-btn${i === 0 ? ' active' : ''}" data-id="${c.id}"
-              aria-pressed="${i === 0}">
-        ${c.name}<span class="ctx-d">${c.desc}</span>
-      </button>`).join('');
-    ctxRowEl.querySelectorAll('.ctx-btn').forEach(b => {
-      b.addEventListener('click', () => pickCtx(b.dataset.id));
-    });
-  }
-
-  function pickCtx(id) {
-    curCtx = ctxs.find(c => c.id === id);
-    ctxRowEl.querySelectorAll('.ctx-btn').forEach(b => {
-      const on = b.dataset.id === id;
-      b.classList.toggle('active', on);
-      b.setAttribute('aria-pressed', on);
-    });
-    prevText.textContent = curCtx.text;
-    prevText.className = 'prev-text ' + curCtx.sz;
-    prevLbl.textContent = curCtx.id.toUpperCase();
-    updateZone();
-    checkZone();
-    hintEl.innerHTML = `<i class="fa-solid fa-arrow-up-right"></i> ${curCtx.hint}`;
-  }
-
-  function updateZone() {
-    const lo = -2, hi = 20, span = hi - lo;
-    const zl = curCtx.range[0], zh = curCtx.range[1];
-    sZoneEl.style.left = ((zl - lo) / span * 100) + '%';
-    sZoneEl.style.width = ((zh - zl) / span * 100) + '%';
-    sZoneEl.classList.remove('hit');
-  }
-
-  function checkZone() {
-    const v = parseFloat(sSlider.value);
-    const inZ = v >= curCtx.range[0] && v <= curCtx.range[1];
-    sSlider.classList.toggle('ok', inZ);
-    sValEl.classList.toggle('ok', inZ);
-    sZoneEl.classList.toggle('hit', inZ);
-    prevBox.classList.toggle('ok-border', inZ);
-    if (inZ) {
-      fbEl.className = 'fb ok';
-      fbEl.innerHTML = `<i class="fa-solid fa-check"></i><span>Phù hợp với ${curCtx.name.toLowerCase()} — đúng vibe rồi</span>`;
-    } else {
-      fbEl.className = 'fb no';
-      fbEl.innerHTML = `<i class="fa-solid fa-xmark"></i><span>Spacing này thường không dùng cho ${curCtx.name.toLowerCase()}</span>`;
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Letter Spacing Practice — Vibecode Glossary</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    :root {
+      --bg: #101010;
+      --bgc: #181818;
+      --bgi: #131313;
+      --bd: #272727;
+      --tx: #e0e0e0;
+      --txm: #707070;
+      --txd: #3a3a3a;
+      --ac: #E88C2E;
+      --acl: #f59e0b;
+      --abg: rgba(232, 140, 46, .08);
+      --abg2: rgba(232, 140, 46, .18);
+      --success: #3a9e5c;
+      --success-soft: rgba(58, 158, 92, .12);
+      --warning: #c49030;
+      --warning-soft: rgba(196, 144, 48, .1);
     }
-  }
 
-  sSlider.addEventListener('input', () => {
-    const v = parseFloat(sSlider.value);
-    sValEl.textContent = v + 'px';
-    prevText.style.letterSpacing = v + 'px';
-    checkZone();
-  });
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
 
-  function initFU() {
-    document.querySelectorAll('.fu').forEach((el, i) => {
-      setTimeout(() => el.classList.add('in'), 60 + i * 110);
-    });
-  }
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background-color: var(--bg);
+      background-image:
+        linear-gradient(rgba(255, 255, 255, .018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, .018) 1px, transparent 1px);
+      background-size: 20px 20px;
+      color: var(--tx);
+      padding: 20px 16px;
+    }
 
-  renderCtx();
-  pickCtx('headline');
-  initFU();
-</script>
+    .pra {
+      max-width: 940px;
+      margin: 0 auto;
+      background: var(--bgc);
+      border: 1px solid var(--bd);
+      border-radius: 3px;
+      padding: 22px;
+    }
+
+    .ch {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .ch .n {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--ac);
+      background: var(--abg);
+      border: 1px solid var(--abg2);
+      padding: 1px 6px;
+      border-radius: 2px;
+    }
+
+    .ch h2 {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -.3px;
+      text-transform: uppercase;
+    }
+
+    .pra-goal {
+      font-size: 12.5px;
+      color: var(--txm);
+      margin-bottom: 22px;
+      line-height: 1.5;
+    }
+
+    .pra-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.2fr;
+      gap: 24px;
+    }
+
+    @media(max-width: 800px) {
+      .pra-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Control Panel */
+    .ctrl-group {
+      margin-bottom: 24px;
+    }
+
+    .ctrl-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--txd);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .ctx-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .btn {
+      padding: 10px 14px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      border: 1px solid var(--bd);
+      background: var(--bgi);
+      color: var(--txm);
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all .2s;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .btn:hover {
+      border-color: var(--ac);
+      color: var(--tx);
+    }
+
+    .btn.active {
+      border-color: var(--ac);
+      background: var(--abg);
+      color: var(--ac);
+      font-weight: 600;
+    }
+
+    /* Slider */
+    .sl-wrap {
+      position: relative;
+      height: 32px;
+      margin-bottom: 10px;
+    }
+
+    .sl-track {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 3px;
+      background: var(--bd);
+    }
+
+    .sl-zone {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      height: 3px;
+      background: var(--abg2);
+      border: 1px solid var(--ac);
+      transition: all 0.3s ease;
+      pointer-events: none;
+    }
+
+    .sl-zone.hit {
+      background: var(--success-soft);
+      border-color: var(--success);
+    }
+
+    input[type=range] {
+      -webkit-appearance: none;
+      width: 100%;
+      height: 32px;
+      background: transparent;
+      outline: none;
+      cursor: pointer;
+      position: relative;
+      z-index: 2;
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      background: var(--ac);
+      border: 2px solid var(--bg);
+      cursor: grab;
+    }
+
+    .sl-info {
+      display: flex;
+      justify-content: space-between;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--txm);
+    }
+
+    .val-cur {
+      color: var(--ac);
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    /* Preview Area */
+    .preview-box {
+      background: #000;
+      border: 1px solid var(--bd);
+      border-radius: 3px;
+      min-height: 240px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .prev-lbl {
+      position: absolute;
+      top: 10px;
+      left: 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      color: var(--txd);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .prev-text {
+      font-weight: 700;
+      text-transform: uppercase;
+      transition: letter-spacing .12s ease;
+      position: relative;
+      z-index: 1;
+      line-height: 1.4;
+      text-align: center;
+    }
+
+    .prev-text.sz-h { font-size: clamp(24px, 5vw, 34px); }
+    .prev-text.sz-b { font-size: 15px; font-weight: 400; text-transform: none; max-width: 520px; line-height: 1.7; }
+    .prev-text.sz-l { font-size: clamp(28px, 6vw, 44px); color: var(--ac); }
+    .prev-text.sz-c { font-size: 12px; font-weight: 400; text-transform: none; opacity: .8; }
+
+    /* Prompt Box */
+    .pr-box {
+      background: var(--bgi);
+      border: 1px solid var(--bd);
+      border-radius: 3px;
+      padding: 14px;
+      margin-top: 18px;
+    }
+
+    .pr-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--txd);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+      display: block;
+    }
+
+    .pr-txt {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--ac);
+      line-height: 1.6;
+    }
+
+    .fb {
+      margin-top: 12px;
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .fb.ok { color: var(--success); }
+    .fb.no { color: var(--warning); }
+  </style>
+</head>
+
+<body>
+
+  <section class="pra">
+    <div class="ch"><span class="n">PRACTICE</span>
+      <h2>Typography Spacing</h2>
+    </div>
+    <p class="pra-goal">Thực hành tinh chỉnh Letter Spacing cho các ngữ cảnh khác nhau. Vùng cam là giá trị khuyến nghị.</p>
+
+    <div class="pra-grid">
+      <!-- Controls -->
+      <div>
+        <div class="ctrl-group">
+          <span class="ctrl-label">Ngữ cảnh (Context)</span>
+          <div class="ctx-list" id="ctxList"></div>
+        </div>
+
+        <div class="ctrl-group">
+          <div class="sl-info">
+            <span class="ctrl-label">letter-spacing</span>
+            <span class="val-cur" id="valCur">0px</span>
+          </div>
+          <div class="sl-wrap">
+            <div class="sl-track"></div>
+            <div class="sl-zone" id="slZone"></div>
+            <input type="range" id="slRange" min="-2" max="20" step="0.5" value="0">
+          </div>
+          <div class="sl-info">
+            <span>-2px</span>
+            <span>0px</span>
+            <span>20px</span>
+          </div>
+        </div>
+
+        <div class="fb" id="fb"></div>
+      </div>
+
+      <!-- Preview -->
+      <div>
+        <div class="preview-box">
+          <span class="prev-lbl" id="prevLbl">HEADLINE</span>
+          <div class="prev-text sz-h" id="prevText">MỌI THỨ BẮT ĐẦU TỪ ĐÂU</div>
+        </div>
+
+        <div class="pr-box">
+          <span class="pr-label">Prompt cho AI</span>
+          <div class="pr-txt" id="promptTxt"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const ctxs = [
+      { id: 'headline', name: 'Headline', range: [-1, 1], text: 'MỌI THỨ BẮT ĐẦU TỪ ĐÂU', sz: 'sz-h', hint: 'Tiêu đề lớn cần khít hơn' },
+      { id: 'body', name: 'Body Text', range: [0, 0.5], text: 'Letter spacing ảnh hưởng đến tốc độ đọc. Khi khoảng cách quá rộng, mắt phải nhảy xa hơn.', sz: 'sz-b', hint: 'Text dài nên giữ mặc định' },
+      { id: 'luxury', name: 'Luxury Logo', range: [8, 16], text: 'ATELIER', sz: 'sz-l', hint: 'Logo sang trọng thường rải chữ rộng' },
+      { id: 'caption', name: 'Caption', range: [0.5, 2], text: 'Photo by @studio — Hanoi, 2024', sz: 'sz-c', hint: 'Chữ nhỏ cần thoáng một chút' }
+    ];
+
+    const ctxList = document.getElementById('ctxList');
+    const slRange = document.getElementById('slRange');
+    const slZone = document.getElementById('slZone');
+    const valCur = document.getElementById('valCur');
+    const prevText = document.getElementById('prevText');
+    const prevLbl = document.getElementById('prevLbl');
+    const promptTxt = document.getElementById('promptTxt');
+    const fb = document.getElementById('fb');
+
+    let cur = ctxs[0];
+
+    function renderCtx() {
+      ctxList.innerHTML = ctxs.map(c => `
+        <button class="btn ${c.id === cur.id ? 'active' : ''}" data-id="${c.id}">
+          ${c.name}
+        </button>
+      `).join('');
+      
+      ctxList.querySelectorAll('.btn').forEach(b => {
+        b.addEventListener('click', () => {
+          cur = ctxs.find(x => x.id === b.dataset.id);
+          renderCtx();
+          update();
+        });
+      });
+    }
+
+    function update() {
+      const v = parseFloat(slRange.value);
+      valCur.innerText = v + 'px';
+      prevLbl.innerText = cur.id.toUpperCase();
+      prevText.innerText = cur.text;
+      prevText.className = 'prev-text ' + cur.sz;
+      prevText.style.letterSpacing = v + 'px';
+      
+      // Update Zone
+      const min = -2, max = 20, span = max - min;
+      const left = ((cur.range[0] - min) / span) * 100;
+      const width = ((cur.range[1] - cur.range[0]) / span) * 100;
+      slZone.style.left = left + '%';
+      slZone.style.width = width + '%';
+      
+      const isOk = v >= cur.range[0] && v <= cur.range[1];
+      slZone.classList.toggle('hit', isOk);
+      
+      // Feedback
+      if (isOk) {
+        fb.innerHTML = `<i class="fa-solid fa-check-circle"></i> Vibe chuẩn cho ${cur.name.toLowerCase()}`;
+        fb.className = 'fb ok';
+      } else {
+        fb.innerHTML = `<i class="fa-solid fa-circle-info"></i> ${v < cur.range[0] ? 'Hơi chật' : 'Hơi loãng'}`;
+        fb.className = 'fb no';
+      }
+
+      promptTxt.innerText = `Chỉnh letter-spacing của ${cur.name.toLowerCase()} thành ${v}px để ${cur.hint.toLowerCase()}.`;
+    }
+
+    slRange.addEventListener('input', update);
+    renderCtx();
+    update();
+  </script>
 </body>
+
 </html>
