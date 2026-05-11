@@ -1,828 +1,372 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Shape — Vibecode Glossary</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #1a1a18;
-    --bg-card: #222220;
-    --bg-elevated: #2a2a27;
-    --fg: #e8e4dd;
-    --fg-muted: #8a877e;
-    --accent: #E88C2E;
-    --accent-dim: #c97522;
-    --amber: #c9922a;
-    --border: #3a3a36;
-    --border-light: #4a4a45;
-    --mono: 'JetBrains Mono', monospace;
-    --sans: 'Space Grotesk', sans-serif;
-    --radius: 2px;
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shape - Amber Brutalist 4-Cell Grid</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --amber: #E88C2E;
+            --bg: #0f0f12;
+            --card-bg: #16161b;
+            --border: #282830;
+            --text: #e8e4dc;
+            --muted: #707070;
+            --gap: 14px;
+            --ease: cubic-bezier(0.65, 0, 0.35, 1);
+        }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  body {
-    background: var(--bg);
-    color: var(--fg);
-    font-family: var(--sans);
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
-  }
+        body {
+            background-color: var(--bg);
+            background-image: 
+                radial-gradient(ellipse at 25% 15%, rgba(232, 140, 46, 0.05) 0%, transparent 55%),
+                radial-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 16px 16px;
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-  /* Grid texture nền */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(255,255,255,.02) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
-    background-size: 24px 24px;
-    pointer-events: none;
-    z-index: 0;
-  }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--gap);
+            width: 100%;
+            max-width: 940px;
+        }
 
-  .page-wrap {
-    position: relative;
-    z-index: 1;
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 32px 20px 20px;
-  }
+        @media (max-width: 600px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+        }
 
-  /* Header */
-  .term-header {
-    border-bottom: 2px solid var(--border);
-    padding-bottom: 24px;
-    margin-bottom: 40px;
-  }
-  .term-header .label {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--accent);
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    margin-bottom: 8px;
-  }
-  .term-header h1 {
-    font-size: clamp(36px, 6vw, 56px);
-    font-weight: 700;
-    letter-spacing: -2px;
-    line-height: 1;
-    color: var(--fg);
-  }
-  .term-header .group-tag {
-    display: inline-block;
-    margin-top: 12px;
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--fg-muted);
-    border: 1px solid var(--border);
-    padding: 3px 8px;
-  }
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            position: relative;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            height: 320px;
+        }
 
-  /* Section block */
-  .shape-section {
-    border: 1px solid var(--border);
-    background: var(--bg-card);
-    margin-bottom: 28px;
-    overflow: hidden;
-  }
-  .shape-section .section-head {
-    border-bottom: 1px solid var(--border);
-    padding: 14px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-  .shape-section .section-head h2 {
-    font-family: var(--mono);
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--accent);
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-  }
-  .shape-section .section-head .num {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--fg-muted);
-  }
-  .section-body {
-    padding: 28px 20px;
-  }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--amber);
+            z-index: 2;
+        }
 
-  /* Insight bar */
-  .insight {
-    background: var(--bg-elevated);
-    border-left: 3px solid var(--accent);
-    padding: 12px 16px;
-    margin-top: 20px;
-    font-size: 13px;
-    color: var(--fg-muted);
-    line-height: 1.6;
-  }
-  .insight strong {
-    color: var(--fg);
-  }
+        .indicator {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 6px;
+            height: 6px;
+            background: var(--amber);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--amber);
+            animation: pulse 2s infinite;
+            z-index: 3;
+        }
 
-  /* ===== SECTION 1: BASIC SHAPES ===== */
-  .basic-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-  }
-  @media (max-width: 600px) {
-    .basic-grid { grid-template-columns: repeat(2, 1fr); }
-  }
-  .basic-item {
-    text-align: center;
-    padding: 20px 8px 16px;
-    border: 1px solid var(--border);
-    background: var(--bg);
-    transition: border-color .3s, background .3s;
-    cursor: default;
-  }
-  .basic-item:hover {
-    border-color: var(--accent);
-    background: var(--bg-elevated);
-  }
-  .basic-item .shape-draw {
-    width: 60px;
-    height: 60px;
-    margin: 0 auto 14px;
-    position: relative;
-  }
-  .basic-item .shape-label {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--fg-muted);
-    margin-bottom: 4px;
-  }
-  .basic-item .shape-desc {
-    font-size: 12px;
-    color: var(--fg);
-    opacity: .8;
-  }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
 
-  /* SVG draw animation */
-  .draw-anim {
-    stroke-dasharray: 400;
-    stroke-dashoffset: 400;
-    animation: drawIn 1.2s ease forwards;
-  }
-  .draw-anim.delay1 { animation-delay: .15s; }
-  .draw-anim.delay2 { animation-delay: .3s; }
-  .draw-anim.delay3 { animation-delay: .45s; }
-  @keyframes drawIn {
-    to { stroke-dashoffset: 0; }
-  }
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 22px;
+        }
 
-  /* Fill after draw */
-  .fill-after {
-    opacity: 0;
-    animation: fillFade .6s ease forwards;
-    animation-delay: 1.3s;
-  }
-  .fill-after.d1 { animation-delay: 1.45s; }
-  .fill-after.d2 { animation-delay: 1.6s; }
-  .fill-after.d3 { animation-delay: 1.75s; }
-  @keyframes fillFade {
-    to { opacity: 1; }
-  }
+        .num-box {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--amber);
+            background: rgba(232, 140, 46, 0.1);
+            border: 1px solid rgba(232, 140, 46, 0.2);
+            padding: 2px 5px;
+            border-radius: 2px;
+        }
 
-  /* ===== SECTION 2: BORDER RADIUS ===== */
-  .radius-demo {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-  }
-  @media (max-width: 768px) {
-    .radius-demo { grid-template-columns: repeat(2, 1fr); }
-  }
-  @media (max-width: 480px) {
-    .radius-demo { grid-template-columns: 1fr; }
-  }
-  .radius-row {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    gap: 12px;
-    padding: 24px 16px;
-    border: 1px solid var(--border);
-    background: var(--bg);
-    transition: border-color .3s;
-  }
-  .radius-row:hover {
-    border-color: var(--accent);
-  }
-  .radius-row .val {
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--accent);
-    flex-shrink: 0;
-  }
-  .radius-box {
-    width: 48px;
-    height: 48px;
-    flex-shrink: 0;
-    background: var(--accent);
-    transition: border-radius .8s cubic-bezier(.4,0,.2,1), transform .3s;
-  }
-  .radius-row:hover .radius-box {
-    transform: scale(1.1);
-  }
-  .radius-row .note {
-    font-size: 12px;
-    color: var(--fg-muted);
-  }
+        .card-title {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(232, 228, 220, 0.9);
+        }
 
-  /* Loop animation cho radius */
-  .radius-row .radius-box {
-    animation: radiusPulse 4s ease-in-out infinite;
-  }
-  .radius-row:nth-child(2) .radius-box { animation-delay: 0s; }
-  .radius-row:nth-child(3) .radius-box { animation-delay: .5s; }
-  .radius-row:nth-child(4) .radius-box { animation-delay: 1s; }
-  .radius-row:nth-child(5) .radius-box { animation-delay: 1.5s; }
-  @keyframes radiusPulse {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.08); }
-  }
+        .sim-area {
+            height: 160px;
+            background: #0d0d10;
+            border: 1px solid rgba(255,255,255,0.03);
+            border-radius: 4px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 16px;
+            overflow: hidden;
+            padding: 20px;
+        }
 
-  /* ===== SECTION 3: SHAPE VARIANTS ===== */
-  .variants-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
-  }
-  @media (max-width: 500px) {
-    .variants-grid { grid-template-columns: repeat(2, 1fr); }
-  }
-  .variant-card {
-    border: 1px solid var(--border);
-    background: var(--bg);
-    padding: 20px 12px 14px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    cursor: default;
-    transition: border-color .3s;
-  }
-  .variant-card:hover {
-    border-color: var(--accent);
-  }
-  .variant-card .shape-show {
-    width: 52px;
-    height: 52px;
-    margin: 0 auto 12px;
-    position: relative;
-  }
-  .variant-card .v-label {
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--fg-muted);
-    margin-bottom: 3px;
-  }
-  .variant-card .v-desc {
-    font-size: 11px;
-    color: var(--fg);
-    opacity: .75;
-  }
+        .ins {
+            border-left: 2px solid var(--amber);
+            padding-left: 14px;
+            margin-top: auto;
+            color: var(--muted);
+            font-size: 11.5px;
+            line-height: 1.6;
+            padding-top: 2px;
+            padding-bottom: 2px;
+            display: block;
+        }
 
-  /* Dashed draw animation */
-  .dash-draw {
-    stroke-dasharray: 8 6;
-    stroke-dashoffset: 200;
-    animation: dashDraw 2s linear infinite;
-  }
-  @keyframes dashDraw {
-    to { stroke-dashoffset: 0; }
-  }
+        .ins strong {
+            color: var(--amber);
+            font-weight: 600;
+        }
 
-  /* Gradient shift */
-  .grad-shift {
-    animation: gradMove 3s ease-in-out infinite alternate;
-  }
-  @keyframes gradMove {
-    0% { stop-color: #E88C2E; }
-    100% { stop-color: #c9922a; }
-  }
+        /* --- Cell 1: Basic Shapes --- */
+        .shape-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+        .shape-item {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--amber);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .circle { border-radius: 50%; }
+        .rect { width: 60px; }
+        .ellipse { width: 60px; border-radius: 50%; }
 
-  /* Soft shadow pulse */
-  .shadow-pulse {
-    animation: shadowPulse 2s ease-in-out infinite;
-  }
-  @keyframes shadowPulse {
-    0%, 100% { filter: drop-shadow(0 0 2px rgba(232,140,46,.3)); }
-    50% { filter: drop-shadow(0 4px 12px rgba(232,140,46,.5)); }
-  }
+        /* --- Cell 2: Radius --- */
+        .radius-box {
+            width: 80px;
+            height: 80px;
+            background: var(--amber);
+            transition: border-radius 0.8s var(--ease);
+        }
 
-  /* ===== SECTION 4: SHAPES IN UI COMPONENTS ===== */
-  .ui-components {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
-  .ui-row {
-    display: flex;
-    align-items: flex-start;
-    gap: 20px;
-    padding: 16px;
-    border: 1px solid var(--border);
-    background: var(--bg);
-    transition: border-color .3s;
-  }
-  .ui-row:hover { border-color: var(--accent); }
-  .ui-row .preview-area {
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    min-width: 140px;
-  }
-  .ui-row .info-area {
-    flex: 1;
-  }
-  .ui-row .info-area .ui-name {
-    font-family: var(--mono);
-    font-size: 12px;
-    color: var(--accent);
-    margin-bottom: 4px;
-  }
-  .ui-row .info-area .ui-detail {
-    font-size: 12px;
-    color: var(--fg-muted);
-    line-height: 1.5;
-  }
+        /* --- Cell 3: Variants --- */
+        .variant-demo {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            width: 100%;
+            align-items: center;
+        }
+        .v-btn {
+            padding: 8px 24px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 12px;
+            border-radius: 4px;
+            width: 120px;
+            text-align: center;
+            transition: all 0.3s var(--ease);
+        }
+        .v-btn.filled { background: var(--amber); color: #000; border: none; }
+        .v-btn.outline { background: transparent; color: var(--amber); border: 2px solid var(--amber); }
+        .v-btn.ghost { background: transparent; color: var(--muted); border: none; }
 
-  /* Fake UI button */
-  .fake-btn {
-    padding: 8px 20px;
-    font-family: var(--sans);
-    font-size: 13px;
-    font-weight: 600;
-    border: none;
-    cursor: default;
-    transition: transform .3s, box-shadow .3s;
-  }
-  .ui-row:hover .fake-btn { transform: translateY(-1px); }
+        /* --- Cell 4: Morphing --- */
+        .morph-container {
+            width: 80px;
+            height: 80px;
+            position: relative;
+        }
+        .morph-box {
+            width: 100%;
+            height: 100%;
+            background: rgba(232, 140, 46, 0.2);
+            border: 2px solid var(--amber);
+            transition: all 1s var(--ease);
+        }
 
-  .fake-btn.primary {
-    background: var(--accent);
-    color: #fff;
-    box-shadow: 0 2px 0 #c97522;
-  }
-  .fake-btn.outline {
-    background: transparent;
-    color: var(--fg);
-    border: 1.5px solid var(--border-light);
-  }
-  .fake-btn.pill {
-    background: var(--accent);
-    color: #fff;
-    border-radius: 100px;
-  }
-  .fake-btn.ghost {
-    background: transparent;
-    color: var(--accent);
-    border: 1.5px solid var(--accent);
-    border-radius: 100px;
-  }
-
-  /* Fake card */
-  .fake-card {
-    width: 80px;
-    height: 56px;
-    border: 1px solid var(--border);
-    background: var(--bg-elevated);
-    transition: border-radius .6s ease, box-shadow .3s;
-    position: relative;
-    overflow: hidden;
-  }
-  .fake-card::before {
-    content: '';
-    position: absolute;
-    top: 8px; left: 8px;
-    width: 28px; height: 4px;
-    background: var(--border-light);
-    border-radius: 1px;
-  }
-  .fake-card::after {
-    content: '';
-    position: absolute;
-    top: 18px; left: 8px;
-    width: 40px; height: 3px;
-    background: var(--border);
-    border-radius: 1px;
-  }
-
-  /* Fake avatar */
-  .fake-avatar {
-    width: 36px;
-    height: 36px;
-    background: var(--accent-dim);
-    transition: border-radius .6s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--mono);
-    font-size: 13px;
-    color: var(--fg);
-    font-weight: 600;
-  }
-
-  /* Fake badge */
-  .fake-badge {
-    padding: 4px 12px;
-    font-family: var(--mono);
-    font-size: 11px;
-    border: 1px solid;
-    transition: border-radius .5s ease;
-  }
-  .fake-badge.success {
-    background: rgba(76,175,80,.1);
-    color: #66bb6a;
-    border-color: rgba(76,175,80,.3);
-  }
-  .fake-badge.warn {
-    background: rgba(201,146,42,.1);
-    color: var(--amber);
-    border-color: rgba(201,146,42,.3);
-  }
-
-  /* Fake input */
-  .fake-input {
-    width: 120px;
-    height: 32px;
-    border: 1px solid var(--border);
-    background: var(--bg);
-    padding: 0 10px;
-    display: flex;
-    align-items: center;
-    font-family: var(--mono);
-    font-size: 11px;
-    color: var(--fg-muted);
-    transition: border-radius .5s ease, border-color .3s;
-  }
-  .ui-row:hover .fake-input {
-    border-color: var(--accent);
-  }
-
-  /* Shape morph animation cho card */
-  .morph-shape {
-    animation: morphCard 6s ease-in-out infinite;
-  }
-  @keyframes morphCard {
-    0%, 100% { border-radius: 2px; }
-    25% { border-radius: 8px; }
-    50% { border-radius: 16px; }
-    75% { border-radius: 8px; }
-  }
-
-  /* Avatar morph */
-  .morph-avatar {
-    animation: morphAvatar 6s ease-in-out infinite;
-    animation-delay: .5s;
-  }
-  @keyframes morphAvatar {
-    0%, 100% { border-radius: 2px; }
-    30% { border-radius: 6px; }
-    60% { border-radius: 50%; }
-    80% { border-radius: 6px; }
-  }
-
-  /* Badge morph */
-  .morph-badge {
-    animation: morphBadge 6s ease-in-out infinite;
-    animation-delay: 1s;
-  }
-  @keyframes morphBadge {
-    0%, 100% { border-radius: 2px; }
-    50% { border-radius: 100px; }
-  }
-
-  /* Input morph */
-  .morph-input {
-    animation: morphInput 6s ease-in-out infinite;
-    animation-delay: 1.5s;
-  }
-  @keyframes morphInput {
-    0%, 100% { border-radius: 2px; }
-    50% { border-radius: 8px; }
-  }
-
-  /* Blink cursor */
-  .cursor-blink::after {
-    content: '|';
-    animation: blink 1s step-end infinite;
-    color: var(--accent);
-  }
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0; }
-  }
-
-  /* Divider line */
-  .divider {
-    height: 1px;
-    background: var(--border);
-    margin: 40px 0;
-    position: relative;
-  }
-  .divider::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 60px;
-    height: 1px;
-    background: var(--accent);
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      transition-duration: 0.01ms !important;
-    }
-  }
-</style>
+    </style>
 </head>
 <body>
 
-<div class="page-wrap">
+    <div class="grid-container">
+        <!-- Cell 1: Geometric Foundations -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">01</div>
+                <div class="card-title">Hình học cơ bản</div>
+            </div>
+            <div class="sim-area">
+                <div class="shape-grid">
+                    <div class="shape-item"></div>
+                    <div class="shape-item circle"></div>
+                    <div class="shape-item rect"></div>
+                    <div class="shape-item ellipse"></div>
+                </div>
+            </div>
+            <div class="ins">
+                Mọi hình phức tạp đều bắt đầu từ 4 <strong>Geometric Shapes</strong> cơ bản: Hình vuông, chữ nhật, tròn và oval.
+            </div>
+        </div>
 
+        <!-- Cell 2: Border Radius Vibe -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">02</div>
+                <div class="card-title">Bo góc (Radius)</div>
+            </div>
+            <div class="sim-area">
+                <div class="radius-box" id="radius-box"></div>
+                <div id="radius-label" style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--amber); margin-top: 10px;">RADIUS: 0px</div>
+            </div>
+            <div class="ins">
+                <strong>Border-radius</strong> là yếu tố then chốt quyết định <strong>"vibe"</strong> của sản phẩm (Sắc sảo vs Thân thiện).
+            </div>
+        </div>
 
-  <!-- ====== SECTION 1: BASIC SHAPES ====== -->
-  <section class="shape-section" aria-label="Basic Shapes">
-    <div class="section-head">
-      <h2>Basic Shapes</h2>
-      <span class="num">01 / 04</span>
-    </div>
-    <div class="section-body">
-      <div class="basic-grid">
-        <!-- Square -->
-        <div class="basic-item">
-          <div class="shape-draw">
-            <svg viewBox="0 0 60 60" width="60" height="60" fill="none">
-              <rect class="draw-anim" x="8" y="8" width="44" height="44" stroke="#E88C2E" stroke-width="2"/>
-              <rect class="fill-after" x="8" y="8" width="44" height="44" fill="#E88C2E" opacity="0"/>
-            </svg>
-          </div>
-          <div class="shape-label">square</div>
-          <div class="shape-desc">Cạnh bằng nhau</div>
+        <!-- Cell 3: Visual Weight -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">03</div>
+                <div class="card-title">Phân cấp hình khối</div>
+            </div>
+            <div class="sim-area">
+                <div class="variant-demo">
+                    <div class="v-btn filled" id="v-filled">FILLED</div>
+                    <div class="v-btn outline" id="v-outline">OUTLINE</div>
+                    <div class="v-btn ghost" id="v-ghost">GHOST</div>
+                </div>
+            </div>
+            <div class="ins">
+                Khác biệt về <strong>Visual Weight</strong> (độ đậm nhạt của khối) giúp phân cấp hành động <strong>chính và phụ</strong>.
+            </div>
         </div>
-        <!-- Rectangle -->
-        <div class="basic-item">
-          <div class="shape-draw">
-            <svg viewBox="0 0 60 60" width="60" height="60" fill="none">
-              <rect class="draw-anim delay1" x="4" y="14" width="52" height="32" stroke="#E88C2E" stroke-width="2"/>
-              <rect class="fill-after d1" x="4" y="14" width="52" height="32" fill="#E88C2E" opacity="0"/>
-            </svg>
-          </div>
-          <div class="shape-label">rectangle</div>
-          <div class="shape-desc">Rộng hơn cao</div>
-        </div>
-        <!-- Circle -->
-        <div class="basic-item">
-          <div class="shape-draw">
-            <svg viewBox="0 0 60 60" width="60" height="60" fill="none">
-              <circle class="draw-anim delay2" cx="30" cy="30" r="22" stroke="#E88C2E" stroke-width="2"/>
-              <circle class="fill-after d2" cx="30" cy="30" r="22" fill="#E88C2E" opacity="0"/>
-            </svg>
-          </div>
-          <div class="shape-label">circle</div>
-          <div class="shape-desc">Đường kính bằng nhau</div>
-        </div>
-        <!-- Ellipse -->
-        <div class="basic-item">
-          <div class="shape-draw">
-            <svg viewBox="0 0 60 60" width="60" height="60" fill="none">
-              <ellipse class="draw-anim delay3" cx="30" cy="30" rx="26" ry="16" stroke="#E88C2E" stroke-width="2"/>
-              <ellipse class="fill-after d3" cx="30" cy="30" rx="26" ry="16" fill="#E88C2E" opacity="0"/>
-            </svg>
-          </div>
-          <div class="shape-label">ellipse</div>
-          <div class="shape-desc">Oval — kéo dài</div>
-        </div>
-      </div>
-      <div class="insight">
-        <strong>4 shape gốc</strong> — mọi hình phức tạp trong UI đều xây từ 4 cái này. Khi prompt AI, nói đúng tên shape sẽ ra đúng hình, thay vì mô tả vòng vo "cái hình tròn dài dài".
-      </div>
-    </div>
-  </section>
 
-  <!-- ====== SECTION 2: BORDER RADIUS ====== -->
-  <section class="shape-section" aria-label="Border Radius">
-    <div class="section-head">
-      <h2>Border Radius</h2>
-      <span class="num">02 / 04</span>
+        <!-- Cell 4: State Transitions -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">04</div>
+                <div class="card-title">Biến hình (Morphing)</div>
+            </div>
+            <div class="sim-area">
+                <div class="morph-container">
+                    <div class="morph-box" id="morph-box"></div>
+                </div>
+            </div>
+            <div class="ins">
+                <strong>Morphing</strong> (biến đổi hình dạng) tạo cảm giác mượt mà khi chuyển đổi trạng thái giữa các <strong>thành phần UI</strong>.
+            </div>
+        </div>
     </div>
-    <div class="section-body">
-      <div class="radius-demo">
-        <div class="radius-row">
-          <span class="val">0px</span>
-          <div class="radius-box" style="border-radius: 0px;"></div>
-          <span class="note">Góc vuông — sharp, kỹ thuật, brutalist</span>
-        </div>
-        <div class="radius-row">
-          <span class="val">4px</span>
-          <div class="radius-box" style="border-radius: 4px;"></div>
-          <span class="note">Vuông nhẹ — tool UI, dashboard, data-heavy</span>
-        </div>
-        <div class="radius-row">
-          <span class="val">8px</span>
-          <div class="radius-box" style="border-radius: 8px;"></div>
-          <span class="note">Bo vừa — SaaS phổ biến, "an toàn"</span>
-        </div>
-        <div class="radius-row">
-          <span class="val">16px</span>
-          <div class="radius-box" style="border-radius: 16px;"></div>
-          <span class="note">Bo mềm — consumer app, thân thiện</span>
-        </div>
-        <div class="radius-row">
-          <span class="val">50%</span>
-          <div class="radius-box" style="border-radius: 50%;"></div>
-          <span class="note">Tròn hoàn toàn — avatar, icon, badge</span>
-        </div>
-      </div>
-      <div class="insight">
-        <strong>Border-radius quyết định "vibe" của toàn bộ sản phẩm.</strong> Cùng một nút, đổi từ 0px → 16px là đổi từ "công cụ kỹ thuật" sang "app sinh viên". Prompt AI mà thiếu giá trị này → ra phong cách loạn.
-      </div>
-    </div>
-  </section>
 
-  <!-- ====== SECTION 3: SHAPE VARIANTS ====== -->
-  <section class="shape-section" aria-label="Shape Variants">
-    <div class="section-head">
-      <h2>Shape Variants</h2>
-      <span class="num">03 / 04</span>
-    </div>
-    <div class="section-body">
-      <div class="variants-grid">
-        <!-- Filled -->
-        <div class="variant-card">
-          <div class="shape-show">
-            <svg viewBox="0 0 52 52" width="52" height="52">
-              <defs>
-                <linearGradient id="gFill" x1="0" y1="0" x2="1" y2="1">
-                  <stop class="grad-shift" offset="0%" stop-color="#E88C2E"/>
-                  <stop class="grad-shift" offset="100%" stop-color="#c9922a" style="animation-delay:.5s"/>
-                </linearGradient>
-              </defs>
-              <rect x="6" y="10" width="40" height="32" rx="4" fill="url(#gFill)"/>
-            </svg>
-          </div>
-          <div class="v-label">filled</div>
-          <div class="v-desc">Nhồi màu — trọng tâm cao</div>
-        </div>
-        <!-- Outline -->
-        <div class="variant-card">
-          <div class="shape-show">
-            <svg viewBox="0 0 52 52" width="52" height="52" fill="none">
-              <rect x="6" y="10" width="40" height="32" rx="4" stroke="#E88C2E" stroke-width="2"/>
-            </svg>
-          </div>
-          <div class="v-label">outline</div>
-          <div class="v-desc">Chỉ viền — nhẹ, phụ</div>
-        </div>
-        <!-- Ghost -->
-        <div class="variant-card">
-          <div class="shape-show">
-            <svg viewBox="0 0 52 52" width="52" height="52">
-              <rect x="6" y="10" width="40" height="32" rx="4" fill="rgba(232,140,46,0.2)"/>
-            </svg>
-          </div>
-          <div class="v-label">ghost</div>
-          <div class="v-desc">Trong suốt — tầng 3</div>
-        </div>
-        <!-- Soft shadow -->
-        <div class="variant-card">
-          <div class="shape-show">
-            <svg viewBox="0 0 52 52" width="52" height="52">
-              <rect class="shadow-pulse" x="6" y="10" width="40" height="32" rx="4" fill="#2a2a27" stroke="#3a3a36" stroke-width="1"/>
-            </svg>
-          </div>
-          <div class="v-label">elevated</div>
-          <div class="v-desc">Nổi lên — shadow tạo tầng</div>
-        </div>
-        <!-- Dotted -->
-        <div class="variant-card">
-          <div class="shape-show">
-            <svg viewBox="0 0 52 52" width="52" height="52" fill="none">
-              <rect x="6" y="10" width="40" height="32" rx="4" stroke="#E88C2E" stroke-width="2" stroke-dasharray="3 4" stroke-dashoffset="0">
-                <animateTransform attributeName="transform" type="rotate" values="0 26 26;360 26 26" dur="20s" repeatCount="indefinite"/>
-              </rect>
-            </svg>
-          </div>
-          <div class="v-label">dashed</div>
-          <div class="v-desc">Chấm đứt — placeholder, upload zone</div>
-        </div>
-        <!-- Gradient -->
-        <div class="variant-card">
-          <div class="shape-show">
-            <svg viewBox="0 0 52 52" width="52" height="52">
-              <defs>
-                <linearGradient id="gGrad" x1="0" y1="0" x2="1" y2="0">
-                  <stop offset="0%" stop-color="#E88C2E">
-                    <animate attributeName="stop-color" values="#E88C2E;#c9922a;#E88C2E" dur="3s" repeatCount="indefinite"/>
-                  </stop>
-                  <stop offset="100%" stop-color="#c9922a">
-                    <animate attributeName="stop-color" values="#c9922a;#E88C2E;#c9922a" dur="3s" repeatCount="indefinite"/>
-                  </stop>
-                </linearGradient>
-              </defs>
-              <rect x="6" y="10" width="40" height="32" rx="4" fill="url(#gGrad)"/>
-            </svg>
-          </div>
-          <div class="v-label">gradient</div>
-          <div class="v-desc">Nhiều màu — nổi bật, CTA</div>
-        </div>
-      </div>
-      <div class="insight">
-        <strong>Cùng shape, khác variant = khác mức độ chú ý.</strong> Filled = "nhấn vào đây". Outline = "tùy chọn". Ghost = "thông tin phụ". Khi prompt, nói rõ variant thay vì chỉ nói "nút màu cam".
-      </div>
-    </div>
-  </section>
+    <script>
+        const sleep = ms => new Promise(res => setTimeout(res, ms));
 
-  <!-- ====== SECTION 4: SHAPES IN UI COMPONENTS ====== -->
-  <section class="shape-section" aria-label="Shapes in UI Components">
-    <div class="section-head">
-      <h2>Shapes in UI Components</h2>
-      <span class="num">04 / 04</span>
-    </div>
-    <div class="section-body">
-      <div class="ui-components">
-        <!-- Buttons -->
-        <div class="ui-row">
-          <div class="preview-area">
-            <button class="fake-btn primary">Primary</button>
-            <button class="fake-btn outline">Outline</button>
-            <button class="fake-btn pill">Pill</button>
-            <button class="fake-btn ghost">Ghost</button>
-          </div>
-          <div class="info-area">
-            <div class="ui-name">Button</div>
-            <div class="ui-detail">Shape chữ nhật + border-radius quyết định style nút. Pill = bo tròn hai đầu. Ghost = bỏ fill, chỉ giữ viền hoặc không.</div>
-          </div>
-        </div>
-        <!-- Card -->
-        <div class="ui-row">
-          <div class="preview-area">
-            <div class="fake-card morph-shape"></div>
-            <div style="font-family:var(--mono);font-size:10px;color:var(--fg-muted);max-width:60px;line-height:1.4;">xem border-radius đang tự động thay đổi</div>
-          </div>
-          <div class="info-area">
-            <div class="ui-name">Card</div>
-            <div class="ui-detail">Rectangle lớn chứa nội dung. Radius 0–4px → dashboard. 12–16px → landing page. 24px+ → mobile consumer app. Sai radius = sai hoàn toàn vibe sản phẩm.</div>
-          </div>
-        </div>
-        <!-- Avatar -->
-        <div class="ui-row">
-          <div class="preview-area">
-            <div class="fake-avatar morph-avatar">M</div>
-            <div style="font-family:var(--mono);font-size:10px;color:var(--fg-muted);max-width:60px;line-height:1.4;">đang morph vuông → tròn</div>
-          </div>
-          <div class="info-area">
-            <div class="ui-name">Avatar</div>
-            <div class="ui-detail">Square với radius thay đổi: 0px (GitHub style), 6px (Slack), 50% (Facebook, Instagram). Cùng ảnh, khác shape = khác brand identity.</div>
-          </div>
-        </div>
-        <!-- Badge -->
-        <div class="ui-row">
-          <div class="preview-area">
-            <span class="fake-badge success morph-badge">Active</span>
-            <span class="fake-badge warn morph-badge" style="animation-delay:1.5s">Pending</span>
-          </div>
-          <div class="info-area">
-            <div class="ui-name">Badge / Tag</div>
-            <div class="ui-detail">Nhỏ, gắn vào nội dung khác. Bo góc thấp = tag kỹ thuật. Pill = status label. Dashed border = draft/chưa xác nhận.</div>
-          </div>
-        </div>
-        <!-- Input -->
-        <div class="ui-row">
-          <div class="preview-area">
-            <div class="fake-input morph-input cursor-blink">email...</div>
-          </div>
-          <div class="info-area">
-            <div class="ui-name">Input Field</div>
-            <div class="ui-detail">Rectangle chứa text người dùng nhập. Radius gần như luôn match với button đi kèm. Nếu nút bo 16px mà input bo 0px → mất tính nhất quán ngay.</div>
-          </div>
-        </div>
-      </div>
-      <div class="insight">
-        <strong>Shape không tồn tại độc lập — nó sống trong component.</strong> Khi báo dev "sửa nút này", nói rõ: rectangle, radius bao nhiêu, filled hay outline. Đó mới là spec đủ để dev không hỏi lại.
-      </div>
-    </div>
-  </section>
+        // Cell 2: Radius Loop
+        async function runSim2() {
+            const box = document.getElementById('radius-box');
+            const label = document.getElementById('radius-label');
+            const states = [
+                { r: '0px', l: 'RADIUS: 0px (Brutalist)' },
+                { r: '12px', l: 'RADIUS: 12px (Modern)' },
+                { r: '50%', l: 'RADIUS: 50% (Circle)' }
+            ];
+            let i = 0;
+            while(true) {
+                const state = states[i % states.length];
+                box.style.borderRadius = state.r;
+                label.innerText = state.l;
+                await sleep(2000);
+                i++;
+            }
+        }
 
-</div>
+        // Cell 3: Weight Hierarchy Loop
+        async function runSim3() {
+            const f = document.getElementById('v-filled');
+            const o = document.getElementById('v-outline');
+            const g = document.getElementById('v-ghost');
+            
+            while(true) {
+                f.style.transform = 'scale(1.1)';
+                f.style.boxShadow = '0 0 20px rgba(232, 140, 46, 0.3)';
+                o.style.opacity = '0.3';
+                g.style.opacity = '0.3';
+                await sleep(1500);
+                
+                f.style.transform = 'scale(1)';
+                f.style.boxShadow = 'none';
+                f.style.opacity = '0.3';
+                o.style.opacity = '1';
+                o.style.transform = 'scale(1.1)';
+                await sleep(1500);
+                
+                o.style.transform = 'scale(1)';
+                o.style.opacity = '0.3';
+                g.style.opacity = '1';
+                g.style.transform = 'scale(1.1)';
+                await sleep(1500);
+                
+                g.style.transform = 'scale(1)';
+                g.style.opacity = '0.3';
+            }
+        }
 
+        // Cell 4: Morphing Loop
+        async function runSim4() {
+            const box = document.getElementById('morph-box');
+            const shapes = [
+                { radius: '4px', rotate: '0deg', scale: '1' },
+                { radius: '50%', rotate: '180deg', scale: '0.8' },
+                { radius: '50% 0 50% 0', rotate: '45deg', scale: '1.2' },
+                { radius: '4px', rotate: '360deg', scale: '1' }
+            ];
+            let i = 0;
+            while(true) {
+                const s = shapes[i % shapes.length];
+                box.style.borderRadius = s.radius;
+                box.style.transform = `rotate(${s.rotate}) scale(${s.scale})`;
+                await sleep(2000);
+                i++;
+            }
+        }
+
+        runSim2();
+        runSim3();
+        runSim4();
+    </script>
 </body>
 </html>

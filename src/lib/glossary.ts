@@ -1161,9 +1161,11 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Quy tắc vàng: Đừng để menu quá dài mà không có sự phân cấp. Dùng Divider và Group Header để giúp mắt người dùng "nghỉ ngơi" và scan thông tin nhanh hơn.',
   ],
   'shape': [
-    'Shape là ngôn ngữ đầu tiên của não bộ trước khi đọc chữ. Một khối đặc (Solid) luôn thu hút sự chú ý hơn một khối viền (Stroke).',
-    'Sử dụng hình khối nhất quán giúp người dùng nhận diện nhanh chức năng: ví dụ hình tròn luôn là Profile, hình tam giác luôn là Play hoặc Warning.',
-    'Sự kết hợp giữa Shape và Corner Radius tạo ra "Personality" cho giao diện: Góc nhọn (Sharp) cho cảm giác kỹ thuật, Góc tròn (Rounded) cho cảm giác thân thiện.',
+    'Shape là "ngôn ngữ thị giác" mạnh mẽ nhất, tác động đến não bộ người dùng trước cả khi họ kịp đọc chữ. Hiểu về Shape giúp bạn ra lệnh cho AI tạo ra giao diện có cấu trúc và ý nghĩa.',
+    '4 Geometric Foundations: Mọi component phức tạp đều bắt đầu từ Hình vuông (Square), Chữ nhật (Rectangle), Tròn (Circle) và Oval. Khi prompt, hãy gọi tên chính xác loại hình bạn muốn thay vì mô tả chung chung.',
+    'Vibe & Personality: Border Radius (bo góc) quyết định cảm xúc của sản phẩm. Góc nhọn (0px) tạo cảm giác kỹ thuật, Brutalist, chuyên nghiệp. Góc bo (8px-16px) tạo cảm giác hiện đại, thân thiện, dễ gần.',
+    'Visual Hierarchy qua Shape: Khác biệt về độ đậm nhạt (Filled vs Outline vs Ghost) giúp người dùng biết đâu là hành động chính (Primary CTA) và đâu là thông tin phụ.',
+    'Morphing & State: Việc biến đổi hình dạng (ví dụ từ nút sang vòng quay loading) tạo ra trải nghiệm mượt mà, giúp người dùng hiểu được sự thay đổi trạng thái của hệ thống mà không bị gián đoạn.',
   ],
   'split-buttons': [
     'Split button là giải pháp hoàn hảo khi bạn có một hành động chiếm 80% nhu cầu người dùng, nhưng vẫn muốn cung cấp các lựa chọn thay thế mà không làm rối UI.',
