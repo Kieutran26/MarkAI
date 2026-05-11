@@ -139,6 +139,8 @@ import listDemoHtml from '../../gif-list-demo.html?raw';
 import listPracticeHtml from '../../gif-list-practice.html?raw';
 import toastDemoHtml from '../../gif-toast-demo.html?raw';
 import toastPracticeHtml from '../../gif-toast-practice.html?raw';
+import placeholderDemoHtml from '../../gif-placeholder-demo.html?raw';
+import placeholderPracticeHtml from '../../gif-placeholder-practice.html?raw';
 import darkmodeDemoHtml from '../../gif-darkmode-demo.html?raw';
 import darkmodePracticeHtml from '../../gif-darkmode-practice.html?raw';
 import whitespaceDemoHtml from '../../gif-whitespace-demo.html?raw';
@@ -280,6 +282,7 @@ export default function GlossaryTermDetailPage() {
       case 'carousel': return carouselDemoHtml;
       case 'sticky': return stickyDemoHtml;
       case 'pagination': return paginationDemoHtml;
+      case 'placeholder': return placeholderDemoHtml;
       case 'popup': return popupDemoHtml;
       case 'design-system': return designSystemDemoHtml;
       case 'skeleton': return skeletonDemoHtml;
@@ -393,6 +396,7 @@ export default function GlossaryTermDetailPage() {
       case 'carousel': return carouselPracticeHtml;
       case 'sticky': return stickyPracticeHtml;
       case 'pagination': return paginationPracticeHtml;
+      case 'placeholder': return placeholderPracticeHtml;
       case 'popup': return popupPracticeHtml;
       case 'design-system': return designSystemPracticeHtml;
       case 'skeleton': return skeletonPracticeHtml;
