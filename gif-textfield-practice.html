@@ -3,219 +3,559 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Text Fields Practice — Vibecode Glossary</title>
+<title>Text Field Architect — Vibecode Glossary</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
-:root{
-    --bg:#141413;--bg-card:#1c1c1a;--fg:#e8e0d4;--muted:#6e6a63;
-    --accent:#d97706;--accent-dim:rgba(217,119,6,.12);
-    --border:#2e2c28;--border-hi:#3e3b35;--slate:#33312d;--cream:#f5f0e8;
-    --green:#22c55e;--red:#ef4444;--fi-bg:#0e0e0d;
-    --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
-}
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--fg);font-family:var(--sans);min-height:100vh;-webkit-font-smoothing:antialiased;background-image:linear-gradient(rgba(255,255,255,.016) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.016) 1px,transparent 1px);background-size:20px 20px}
+    :root {
+        --bg: #0f0f12;
+        --bg-card: #16161b;
+        --bg-panel: #1a1a20;
+        --fg: #e8e4df;
+        --fg-muted: #8a8580;
+        --fg-dim: #5a5550;
+        --amber: #E88C2E;
+        --amber-dim: rgba(232, 140, 46, 0.1);
+        --border: #2a2a30;
+        --border-hi: #3a3a45;
+        --success: #22c55e;
+        --error: #ef4444;
+        --mono: 'JetBrains Mono', monospace;
+        --sans: 'Space Grotesk', sans-serif;
+    }
 
-/* === Practice === */
-.pr{padding:18px 16px 48px;max-width:920px;margin:0 auto}
-.pr-h{margin-bottom:16px}
-.pr-g{font-family:var(--mono);font-size:11px;color:var(--accent);margin-bottom:4px}
-.pr-d{font-size:12px;color:var(--muted)}
-.pr-form{flex:1;min-width:0;display:flex;flex-direction:column;gap:18px}
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-.pf{position:relative;border:1px solid var(--border);background:var(--fi-bg);display:flex;align-items:center;transition:border-color .3s}
-.pf.focused{border-color:var(--accent)}
-.pf.valid{border-color:var(--green)}
-.pf.invalid{border-color:var(--red)}
-.pf-icon{padding:0 10px;font-size:12px;color:var(--muted);transition:color .3s;flex-shrink:0}
-.pf.focused .pf-icon{color:var(--accent)}
-.pf.valid .pf-icon{color:var(--green)}
-.pf.invalid .pf-icon{color:var(--red)}
-.pf-wrap{flex:1;position:relative;padding:12px 0}
-.pf-input{width:100%;background:transparent;border:none;outline:none;font-family:var(--mono);font-size:11px;color:var(--fg);padding:0 10px}
-.pf-input::placeholder{color:transparent}
-.pf-label{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:11px;font-family:var(--mono);color:var(--muted);transition:all .25s ease;pointer-events:none}
-.pf.focused .pf-label,.pf.filled .pf-label,.pf.valid .pf-label,.pf.invalid .pf-label{top:-1px;transform:translateY(-50%);font-size:8px;background:var(--fi-bg);padding:0 4px}
-.pf.focused .pf-label{color:var(--accent)}
-.pf.filled .pf-label{color:var(--accent)}
-.pf.valid .pf-label{color:var(--green)}
-.pf.invalid .pf-label{color:var(--red)}
-.pf-check,.pf-err{display:none;padding:0 10px;font-size:11px;flex-shrink:0}
-.pf.valid .pf-check{display:block;color:var(--green)}
-.pf.invalid .pf-err{display:block;color:var(--red)}
-.pf-state{font-family:var(--mono);font-size:8px;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:1px 6px;position:absolute;top:-8px;right:8px;z-index:3;transition:color .3s,border-color .3s}
-.pf.focused .pf-state{color:var(--accent);border-color:rgba(217,119,6,.2)}
-.pf.valid .pf-state{color:var(--green);border-color:rgba(34,197,94,.2)}
-.pf.invalid .pf-state{color:var(--red);border-color:rgba(239,68,68,.2)}
-.pf-helper{font-family:var(--mono);font-size:8px;padding:4px 10px 0;min-height:16px;color:var(--muted);transition:color .3s}
-.pf.invalid .pf-helper{color:var(--red)}
-.pf.valid .pf-helper{color:var(--green)}
+    body {
+        background: var(--bg);
+        color: var(--fg);
+        font-family: var(--sans);
+        min-height: 100vh;
+        padding: 20px;
+        background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.03) 1px, transparent 0);
+        background-size: 24px 24px;
+    }
 
-/* Textarea practice */
-.pf-ta{align-items:flex-start}
-.pf-ta .pf-wrap{padding:18px 0}
-.pf-ta .pf-label{top:18px;transform:translateY(0)}
-.pf-ta.focused .pf-label,.pf-ta.filled .pf-label,.pf-ta.valid .pf-label,.pf-ta.invalid .pf-label{top:-1px;transform:translateY(-50%)}
-.pf-ta .pf-input{resize:none;line-height:1.5}
+    .container {
+        max-width: 940px;
+        margin: 0 auto;
+    }
 
-.pr-f{font-family:var(--mono);font-size:11px;color:var(--fg);padding:14px 16px;margin-top:14px;background:var(--bg-card);border:1px solid var(--border);border-left:3px solid var(--accent);line-height:1.7;min-height:44px;transition:border-color .3s}
-.pr-f.dim{border-left-color:var(--border-hi)}
-.pr-f em{color:var(--accent);font-style:normal}
-.pr-hint{font-family:var(--mono);font-size:10px;color:var(--muted);margin-top:10px;padding-left:4px}
-.pr-hint i{color:var(--accent);margin-right:6px}
+    .header {
+        margin-bottom: 24px;
+        border-left: 3px solid var(--amber);
+        padding-left: 16px;
+    }
 
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+    .header h1 {
+        font-size: 20px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--fg);
+    }
+
+    .header p {
+        font-family: var(--mono);
+        font-size: 12px;
+        color: var(--fg-muted);
+        margin-top: 4px;
+    }
+
+    .architect-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    @media (max-width: 768px) {
+        .architect-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Panels */
+    .panel {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 4px;
+        padding: 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        position: relative;
+    }
+
+    .panel-title {
+        font-family: var(--mono);
+        font-size: 10px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: var(--fg-dim);
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .panel-title::after {
+        content: '';
+        flex: 1;
+        height: 1px;
+        background: var(--border);
+    }
+
+    /* Controls */
+    .control-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .control-label {
+        font-family: var(--mono);
+        font-size: 11px;
+        color: var(--fg-muted);
+    }
+
+    .option-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+        gap: 8px;
+    }
+
+    .opt-btn {
+        background: var(--bg-panel);
+        border: 1px solid var(--border);
+        color: var(--fg-muted);
+        padding: 8px 12px;
+        font-family: var(--mono);
+        font-size: 10px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-align: center;
+        border-radius: 2px;
+    }
+
+    .opt-btn:hover {
+        border-color: var(--fg-dim);
+        color: var(--fg);
+    }
+
+    .opt-btn.active {
+        background: var(--amber-dim);
+        border-color: var(--amber);
+        color: var(--amber);
+    }
+
+    .toggle-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .toggle-chip {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        background: var(--bg-panel);
+        border: 1px solid var(--border);
+        padding: 6px 10px;
+        border-radius: 20px;
+        font-family: var(--mono);
+        font-size: 10px;
+        color: var(--fg-muted);
+        cursor: pointer;
+        transition: all 0.2s;
+    }
+
+    .toggle-chip.active {
+        border-color: var(--amber);
+        color: var(--fg);
+        background: rgba(232, 140, 46, 0.05);
+    }
+
+    .toggle-chip i {
+        font-size: 8px;
+        color: var(--fg-dim);
+    }
+
+    .toggle-chip.active i {
+        color: var(--amber);
+    }
+
+    /* Preview Area */
+    .preview-box {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 180px;
+        border: 1px dashed var(--border-hi);
+        background: rgba(0,0,0,0.2);
+        border-radius: 4px;
+        padding: 40px;
+    }
+
+    /* TextField Implementation in Preview */
+    .tf-wrapper {
+        width: 100%;
+        max-width: 320px;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    .tf-label {
+        font-family: var(--mono);
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--fg-muted);
+        transition: color 0.2s;
+    }
+
+    .tf-container {
+        position: relative;
+        display: flex;
+        align-items: center;
+        background: var(--bg-panel);
+        border: 1px solid var(--border);
+        min-height: 48px;
+        transition: all 0.2s;
+        border-radius: 2px;
+    }
+
+    /* Variants */
+    .tf-container.outlined { border-width: 1px; }
+    .tf-container.filled { background: rgba(255,255,255,0.05); border-bottom: 2px solid var(--border); border-top: 0; border-left: 0; border-right: 0; border-radius: 4px 4px 0 0; }
+    .tf-container.standard { background: transparent; border-bottom: 1px solid var(--border); border-top: 0; border-left: 0; border-right: 0; border-radius: 0; min-height: 40px; }
+
+    .tf-container:hover { border-color: var(--fg-dim); }
+    .tf-container.focused { border-color: var(--amber); background: rgba(232, 140, 46, 0.02); }
+
+    /* Icons */
+    .tf-icon {
+        width: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--fg-dim);
+        font-size: 14px;
+    }
+
+    .tf-container.focused .tf-icon { color: var(--amber); }
+
+    .tf-input {
+        flex: 1;
+        background: transparent;
+        border: none;
+        outline: none;
+        color: var(--fg);
+        font-family: var(--sans);
+        font-size: 14px;
+        padding: 12px;
+        width: 100%;
+    }
+
+    .tf-input::placeholder { color: var(--fg-dim); }
+
+    /* Floating Label Logic */
+    .tf-container.floating { padding-top: 16px; }
+    .tf-container.floating .tf-label-float {
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        transform: translateY(-50%);
+        font-family: var(--mono);
+        font-size: 14px;
+        color: var(--fg-dim);
+        pointer-events: none;
+        transition: all 0.2s ease;
+    }
+    .tf-container.floating.has-prefix .tf-label-float { left: 40px; }
+
+    .tf-container.floating.focused .tf-label-float,
+    .tf-container.floating.filled .tf-label-float {
+        top: 12px;
+        font-size: 9px;
+        color: var(--amber);
+    }
+
+    /* States */
+    .tf-container.error { border-color: var(--error) !important; }
+    .tf-wrapper.error .tf-label, .tf-wrapper.error .tf-helper { color: var(--error); }
+    
+    .tf-container.success { border-color: var(--success) !important; }
+    .tf-wrapper.success .tf-label, .tf-wrapper.success .tf-helper { color: var(--success); }
+
+    .tf-container.disabled { opacity: 0.4; cursor: not-allowed; }
+    .tf-container.disabled .tf-input { cursor: not-allowed; }
+
+    /* Footer elements */
+    .tf-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .tf-helper {
+        font-family: var(--mono);
+        font-size: 10px;
+        color: var(--fg-dim);
+        line-height: 1.4;
+    }
+
+    .tf-counter {
+        font-family: var(--mono);
+        font-size: 10px;
+        color: var(--fg-dim);
+        white-space: nowrap;
+    }
+
+    /* Code Output */
+    .code-block {
+        background: #08080a;
+        padding: 16px;
+        border-radius: 4px;
+        font-family: var(--mono);
+        font-size: 11px;
+        line-height: 1.6;
+        color: #a9b1d6;
+        border: 1px solid var(--border);
+        overflow-x: auto;
+    }
+
+    .code-keyword { color: #bb9af7; }
+    .code-attr { color: #7ccdfd; }
+    .code-string { color: #9ece6a; }
+    .code-comment { color: #565f89; font-style: italic; }
+
+    /* Utils */
+    .hint {
+        font-family: var(--mono);
+        font-size: 10px;
+        color: var(--fg-dim);
+        margin-top: 12px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .hint i { color: var(--amber); }
+
 </style>
 </head>
 <body>
 
-<main id="app-root">
-<section class="pr" aria-label="Text Fields practice">
-    <div class="pr-h">
-        <div class="pr-g">Mục tiêu: Cảm nhận đầy đủ lifecycle của một text field</div>
-        <p class="pr-d">Click vào, nhập liệu, rồi click ra ngoài — quan sát mỗi trạng thái chuyển đổi.</p>
-    </div>
+<div class="container">
+    <header class="header">
+        <h1>Text Field Architect</h1>
+        <p>Thử nghiệm và cấu hình ô nhập liệu hoàn hảo cho UI của bạn.</p>
+    </header>
 
-    <div class="pr-form">
-        <!-- Name -->
-        <div class="pf" id="pf-name">
-            <span class="pf-state" id="ps-name">default</span>
-            <span class="pf-icon"><i class="fas fa-user"></i></span>
-            <div class="pf-wrap">
-                <input type="text" id="pi-name" class="pf-input" autocomplete="off" aria-describedby="pph-name">
-                <label class="pf-label" for="pi-name">Full Name</label>
+    <div class="architect-grid">
+        <!-- Configuration Panel -->
+        <div class="panel">
+            <div class="panel-title">Cấu hình Component</div>
+
+            <div class="control-group">
+                <label class="control-label">Kiểu hiển thị (Variant)</label>
+                <div class="option-grid" id="variant-opts">
+                    <div class="opt-btn active" data-value="outlined">Outlined</div>
+                    <div class="opt-btn" data-value="filled">Filled</div>
+                    <div class="opt-btn" data-value="standard">Standard</div>
+                </div>
             </div>
-            <span class="pf-check"><i class="fas fa-check"></i></span>
-            <span class="pf-err"><i class="fas fa-xmark"></i></span>
-            <div class="pf-helper" id="pph-name">Required</div>
+
+            <div class="control-group">
+                <label class="control-label">Nhãn (Label Style)</label>
+                <div class="option-grid" id="label-opts">
+                    <div class="opt-btn active" data-value="top">Cố định trên</div>
+                    <div class="opt-btn" data-value="floating">Floating</div>
+                    <div class="opt-btn" data-value="hidden">Ẩn (Chỉ placeholder)</div>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Thành phần bổ trợ</label>
+                <div class="toggle-group" id="addon-opts">
+                    <div class="toggle-chip" data-id="prefix"><i class="fas fa-plus"></i> Prefix Icon</div>
+                    <div class="toggle-chip" data-id="suffix"><i class="fas fa-plus"></i> Suffix Icon</div>
+                    <div class="toggle-chip active" data-id="helper"><i class="fas fa-plus"></i> Helper Text</div>
+                    <div class="toggle-chip" data-id="counter"><i class="fas fa-plus"></i> Char Counter</div>
+                </div>
+            </div>
+
+            <div class="control-group">
+                <label class="control-label">Trạng thái hệ thống</label>
+                <div class="option-grid" id="state-opts">
+                    <div class="opt-btn active" data-value="default">Default</div>
+                    <div class="opt-btn" data-value="error">Error</div>
+                    <div class="opt-btn" data-value="success">Success</div>
+                    <div class="opt-btn" data-value="disabled">Disabled</div>
+                </div>
+            </div>
+            
+            <div class="hint">
+                <i class="fas fa-info-circle"></i>
+                <span>Thay đổi các tùy chọn để thấy sự biến đổi của component.</span>
+            </div>
         </div>
-        <!-- Email -->
-        <div class="pf" id="pf-email">
-            <span class="pf-state" id="ps-email">default</span>
-            <span class="pf-icon"><i class="fas fa-envelope"></i></span>
-            <div class="pf-wrap">
-                <input type="email" id="pi-email" class="pf-input" autocomplete="off" aria-describedby="pph-email">
-                <label class="pf-label" for="pi-email">Email Address</label>
+
+        <!-- Preview Panel -->
+        <div class="panel">
+            <div class="panel-title">Live Preview & Code</div>
+            
+            <div class="preview-box">
+                <div class="tf-wrapper" id="preview-wrapper">
+                    <label class="tf-label" id="preview-label-top">Username</label>
+                    <div class="tf-container outlined" id="preview-container">
+                        <span class="tf-icon" id="preview-prefix" style="display:none"><i class="fas fa-user"></i></span>
+                        <div style="position:relative; flex:1; display:flex;">
+                            <span class="tf-label-float" id="preview-label-float" style="display:none">Username</span>
+                            <input type="text" class="tf-input" id="preview-input" placeholder="Nhập tên đăng nhập..." maxlength="20">
+                        </div>
+                        <span class="tf-icon" id="preview-suffix" style="display:none"><i class="fas fa-circle-info"></i></span>
+                    </div>
+                    <div class="tf-footer">
+                        <span class="tf-helper" id="preview-helper">Tên đăng nhập viết liền không dấu.</span>
+                        <span class="tf-counter" id="preview-counter" style="display:none">0/20</span>
+                    </div>
+                </div>
             </div>
-            <span class="pf-check"><i class="fas fa-check"></i></span>
-            <span class="pf-err"><i class="fas fa-xmark"></i></span>
-            <div class="pf-helper" id="pph-email">Required</div>
-        </div>
-        <!-- Message -->
-        <div class="pf pf-ta" id="pf-msg">
-            <span class="pf-state" id="ps-msg">default</span>
-            <div class="pf-wrap">
-                <textarea id="pi-msg" class="pf-input" rows="3" aria-describedby="pph-msg"></textarea>
-                <label class="pf-label" for="pi-msg">Message</label>
+
+            <div class="code-block" id="code-output">
+                <!-- Code injected here -->
             </div>
-            <div class="pf-helper" id="pph-msg">Optional</div>
         </div>
     </div>
-
-    <div class="pr-f dim" id="pf" role="status" aria-live="polite">Click vào bất kỳ field để bắt đầu. <em>Để ý label, border, và icon thay đổi thế nào.</em></div>
-    <div class="pr-hint"><i class="fas fa-lightbulb"></i>Thử: nhập email không có "@" rồi click ra ngoài — để ý cách validation phản hồi.</div>
-</section>
-</main>
+</div>
 
 <script>
-/* ======== PRACTICE ======== */
-(function(){
-    var fields={
-        name:{wrap:document.getElementById('pf-name'),input:document.getElementById('pi-name'),state:document.getElementById('ps-name'),helper:document.getElementById('pph-name'),required:true},
-        email:{wrap:document.getElementById('pf-email'),input:document.getElementById('pi-email'),state:document.getElementById('ps-email'),helper:document.getElementById('pph-email'),required:true},
-        msg:{wrap:document.getElementById('pf-msg'),input:document.getElementById('pi-msg'),state:document.getElementById('ps-msg'),helper:document.getElementById('pph-msg'),required:false}
+    const config = {
+        variant: 'outlined',
+        labelStyle: 'top',
+        addons: ['helper'],
+        state: 'default'
     };
-    var fb=document.getElementById('pf');
-    var defaultFb='Click vào bất kỳ field để bắt đầu. <em>Để ý label, border, và icon thay đổi thế nào.</em>';
 
-    function setState(key,cls){
-        var f=fields[key],w=f.wrap;
-        w.classList.remove('focused','filled','valid','invalid');
-        if(cls)w.classList.add(cls);
-        f.state.textContent=cls||'default';
+    // Elements
+    const previewWrapper = document.getElementById('preview-wrapper');
+    const previewContainer = document.getElementById('preview-container');
+    const previewInput = document.getElementById('preview-input');
+    const previewLabelTop = document.getElementById('preview-label-top');
+    const previewLabelFloat = document.getElementById('preview-label-float');
+    const previewPrefix = document.getElementById('preview-prefix');
+    const previewSuffix = document.getElementById('preview-suffix');
+    const previewHelper = document.getElementById('preview-helper');
+    const previewCounter = document.getElementById('preview-counter');
+    const codeOutput = document.getElementById('code-output');
+
+    function updateArchitect() {
+        // 1. Update Classes
+        previewContainer.className = `tf-container ${config.variant} ${config.state}`;
+        previewWrapper.className = `tf-wrapper ${config.state}`;
+
+        if (config.labelStyle === 'floating') {
+            previewContainer.classList.add('floating');
+        }
+
+        // 2. Label Visibility
+        previewLabelTop.style.display = config.labelStyle === 'top' ? 'block' : 'none';
+        previewLabelFloat.style.display = config.labelStyle === 'floating' ? 'block' : 'none';
+        previewInput.placeholder = config.labelStyle === 'hidden' ? 'Nhập tên đăng nhập...' : '';
+
+        // 3. Addons Visibility
+        const hasPrefix = config.addons.includes('prefix');
+        previewPrefix.style.display = hasPrefix ? 'flex' : 'none';
+        previewContainer.classList.toggle('has-prefix', hasPrefix);
+
+        previewSuffix.style.display = config.addons.includes('suffix') ? 'flex' : 'none';
+        previewHelper.style.display = config.addons.includes('helper') ? 'block' : 'none';
+        previewCounter.style.display = config.addons.includes('counter') ? 'block' : 'none';
+
+        // 4. Input state
+        previewInput.disabled = config.state === 'disabled';
+
+        // 5. Update Code
+        generateCode();
     }
 
-    function validate(key){
-        var f=fields[key],val=f.input.value.trim();
-        if(key==='name'){
-            if(!val&&f.required){setState(key,'invalid');f.helper.textContent='Name is required';return 'invalid'}
-            if(val){setState(key,'valid');f.helper.textContent='Looks good';return 'valid'}
-            setState(key,'');f.helper.textContent='Required';return 'default';
+    function generateCode() {
+        let code = `<span class="code-comment">// TextField Component Config</span>\n`;
+        code += `<span class="code-keyword">&lt;TextField</span>\n`;
+        code += `  <span class="code-attr">label</span>=<span class="code-string">"Username"</span>\n`;
+        code += `  <span class="code-attr">variant</span>=<span class="code-string">"${config.variant}"</span>\n`;
+        
+        if (config.labelStyle === 'floating') {
+            code += `  <span class="code-attr">floatingLabel</span>\n`;
+        } else if (config.labelStyle === 'hidden') {
+            code += `  <span class="code-attr">hideLabel</span>\n`;
         }
-        if(key==='email'){
-            if(!val&&f.required){setState(key,'invalid');f.helper.textContent='Email is required';return 'invalid'}
-            if(val&&!val.includes('@')){setState(key,'invalid');f.helper.textContent='Please include "@" in email';return 'invalid'}
-            if(val){setState(key,'valid');f.helper.textContent='Looks good';return 'valid'}
-            setState(key,'');f.helper.textContent='Required';return 'default';
+
+        if (config.addons.includes('prefix')) code += `  <span class="code-attr">prefixIcon</span>={<span class="code-keyword">&lt;UserIcon /&gt;</span>}\n`;
+        if (config.addons.includes('suffix')) code += `  <span class="code-attr">suffixIcon</span>={<span class="code-keyword">&lt;InfoIcon /&gt;</span>}\n`;
+        if (config.addons.includes('helper')) code += `  <span class="code-attr">helperText</span>=<span class="code-string">"Required field"</span>\n`;
+        if (config.addons.includes('counter')) code += `  <span class="code-attr">showCounter</span>\n`;
+        
+        if (config.state !== 'default') {
+            code += `  <span class="code-attr">state</span>=<span class="code-string">"${config.state}"</span>\n`;
         }
-        if(key==='msg'){
-            if(val){setState(key,'filled');f.helper.textContent='Optional';return 'filled'}
-            setState(key,'');f.helper.textContent='Optional';return 'default';
-        }
+
+        code += `<span class="code-keyword">/&gt;</span>`;
+        codeOutput.innerHTML = code;
     }
 
-    function updateFeedback(key,event,result){
-        var msgs={
-            'focus-name':   'Border đổi sang accent = <em>focus state</em>. Label "bay lên" — đây là "floating label", thay thế placeholder.',
-            'focus-email':  'Icon <i class="fas fa-envelope" style="color:var(--accent)"></i> đổi màu = <em>visual hint</em>. User biết ngay đây là trường email.',
-            'focus-msg':    'Textarea = text field nhiều dòng. Cùng <em>cùng logic state</em> (focus, filled) nhưng tỷ lệ chiều rộng:cao khác.',
-            'input-name':   'Có nội dung = <em>filled state</em>. Label giữ nguyên trên, không bị text che.',
-            'input-email':  'Đang nhập... validation sẽ chạy khi bạn <em>blur</em> (click ra ngoài field).',
-            'input-msg':    'Đang nhập nội dung. Textarea có thể <em>tự tăng chiều cao</em> khi nhiều dòng.',
-            'blur-name-valid':   'Blur = mất focus. Validation: có nội dung = <em>valid</em>. Border xanh + checkmark xác nhận.',
-            'blur-name-invalid': 'Blur mà trống = <em>invalid</em>. Error message xuất hiện dưới field — giúp user biết cần sửa gì.',
-            'blur-email-valid':  'Email đúng format (có "@") = <em>valid</em>. Checkmark là tín hiệu visual nhanh nhất.',
-            'blur-email-invalid':'Email thiếu "@" = <em>invalid</em>. Error message nói rõ lỗi — không chỉ là "lỗi".',
-            'blur-msg-filled':   'Textarea có nội dung = filled. Không lỗi vì trường này <em>optional</em> — không validation.',
-            'blur-msg-empty':    'Textarea trống — nhưng không báo lỗi vì trường này <em>không bắt buộc</em>.'
-        };
-        var k=key+'-'+event;
-        if(result)k+='-'+result;
-        var msg=msgs[k]||defaultFb;
-        fb.innerHTML=msg;
-        fb.classList.toggle('dim',k===Object.keys(msgs)[0]||false);
-    }
-
-    /* Bind events */
-    Object.keys(fields).forEach(function(key){
-        var f=fields[key];
-
-        f.input.addEventListener('focus',function(){
-            setState(key,'focused');
-            updateFeedback(key,'focus');
-        });
-
-        f.input.addEventListener('input',function(){
-            if(f.input.value.length>0&&!f.wrap.classList.contains('focused')){
-                setState(key,'filled');
-            }else if(f.input.value.length>0){
-                /* focused + has value — keep focused state, but mark as filled too */
-                f.wrap.classList.add('filled');
-            }
-            updateFeedback(key,'input');
-        });
-
-        f.input.addEventListener('blur',function(){
-            var result=validate(key);
-            updateFeedback(key,'blur',result);
-        });
+    // Interaction handling
+    previewInput.addEventListener('focus', () => {
+        if (config.state === 'disabled') return;
+        previewContainer.classList.add('focused');
     });
 
-    /* Reset feedback when clicking outside all fields */
-    document.addEventListener('click',function(e){
-        var inField=false;
-        Object.keys(fields).forEach(function(k){if(fields[k].wrap.contains(e.target))inField=true});
-        if(!inField){
-            var allDefault=true;
-            Object.keys(fields).forEach(function(k){
-                if(fields[k].wrap.classList.contains('valid')||fields[k].wrap.classList.contains('invalid'))allDefault=false;
+    previewInput.addEventListener('blur', () => {
+        previewContainer.classList.remove('focused');
+        previewContainer.classList.toggle('filled', previewInput.value.length > 0);
+    });
+
+    previewInput.addEventListener('input', (e) => {
+        previewCounter.textContent = `${e.target.value.length}/20`;
+        previewContainer.classList.toggle('filled', e.target.value.length > 0);
+    });
+
+    // Control Group Event Listeners
+    function setupOptions(id, configKey) {
+        const container = document.getElementById(id);
+        container.querySelectorAll('.opt-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                container.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                config[configKey] = btn.dataset.value;
+                updateArchitect();
             });
-            if(allDefault){fb.innerHTML=defaultFb;fb.classList.add('dim')}
-        }
+        });
+    }
+
+    setupOptions('variant-opts', 'variant');
+    setupOptions('label-opts', 'labelStyle');
+    setupOptions('state-opts', 'state');
+
+    const addonContainer = document.getElementById('addon-opts');
+    addonContainer.querySelectorAll('.toggle-chip').forEach(chip => {
+        chip.addEventListener('click', () => {
+            const id = chip.dataset.id;
+            chip.classList.toggle('active');
+            if (chip.classList.contains('active')) {
+                config.addons.push(id);
+            } else {
+                config.addons = config.addons.filter(a => a !== id);
+            }
+            updateArchitect();
+        });
     });
-})();
+
+    // Init
+    updateArchitect();
+
 </script>
 </body>
 </html>

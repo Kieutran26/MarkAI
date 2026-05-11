@@ -1159,8 +1159,11 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Sức mạnh của Negative Space: Trong nghệ thuật và logo (như mũi tên ẩn trong logo FedEx), negative space còn được dùng để tạo ra các hình khối ẩn ý, giúp thiết kế trở nên thông minh và đáng nhớ hơn.',
   ],
   'text-fields': [
-    'Text field không chỉ là cái hộp. Nó là một thực thể có trạng thái (state). Người dùng cần biết mình đang ở đâu, đã làm đúng chưa, và nếu sai thì sai ở đâu.',
-    'Validation nên diễn ra ở trạng thái "Blur" (khi người dùng chuyển sang field khác) để tránh làm phiền khi họ đang gõ, nhưng vẫn cung cấp phản hồi kịp thời.',
+    'Trạng thái là chìa khóa: Mỗi text field cần thể hiện rõ ít nhất 4 trạng thái: Default (mặc định), Hover (di chuột), Focus (đang nhập) và Error (lỗi). Trạng thái Focus đặc biệt quan trọng để người dùng biết chính xác con trỏ đang ở đâu.',
+    'Anatomy (Cấu trúc): Một ô nhập liệu chuẩn gồm Label (nhãn), Placeholder (gợi ý), Input Box (khung nhập), và Helper Text (hướng dẫn/báo lỗi). Đừng bao giờ dùng Placeholder để thay thế Label vì nó sẽ biến mất khi người dùng bắt đầu gõ.',
+    'Xác thực thời gian thực (Inline Validation): Thay vì đợi người dùng nhấn Submit mới báo lỗi, hãy phản hồi ngay khi họ vừa nhập xong (trạng thái blur). Điều này giúp giảm friction và tăng tỷ lệ hoàn thành form đáng kể.',
+    'Accessibility & UX: Đảm bảo kích thước ô nhập đủ lớn cho thiết bị cảm ứng (chiều cao tối thiểu 44px) và cung cấp micro-copy nhân văn. Thay vì nói "Dữ liệu sai", hãy hướng dẫn cụ thể: "Vui lòng nhập đúng định dạng email (ví dụ: name@company.com)".',
+    'Mô phỏng 4 ô bên dưới giúp bạn hình dung các khía cạnh khác nhau: từ các định dạng dữ liệu (Content Types), các trạng thái tương tác (Interaction States), cấu trúc chuẩn (Visual Anatomy) đến logic xác thực (Validation Logic).',
   ],
   'menus': [
     'Menu là "bản đồ" của giao diện. Chọn sai kiểu menu sẽ làm user bị lạc hoặc tốn nhiều click hơn cần thiết.',
