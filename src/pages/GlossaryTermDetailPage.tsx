@@ -87,7 +87,7 @@ import popupDemoHtml from '../../gif-popup-demo.html?raw';
 import popupPracticeHtml from '../../gif-popup-practice.html?raw';
 import designSystemDemoHtml from '../../gif-design-system-demo.html?raw';
 import designSystemPracticeHtml from '../../gif-design-system-practice.html?raw';
-import skeletonDemoHtml from '../../gif-skeleton-demo.html?raw';
+import skeletonDemoHtml from '../../gif-skeleton-screen-demo.html?raw';
 import skeletonPracticeHtml from '../../gif-skeleton-practice.html?raw';
 import viewportDemoHtml from '../../gif-viewport-demo.html?raw';
 import viewportPracticeHtml from '../../gif-viewport-practice.html?raw';

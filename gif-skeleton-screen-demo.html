@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skeleton Screen - Amber Brutalist 4-Cell Grid</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --amber: #E88C2E;
+            --bg: #0f0f12;
+            --card-bg: #16161b;
+            --border: #282830;
+            --text: #e8e4dc;
+            --muted: #707070;
+            --gap: 14px;
+            --ease: cubic-bezier(0.65, 0, 0.35, 1);
+            --sk-base: #24242b;
+            --sk-shimmer: #2d2d35;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg);
+            background-image: 
+                radial-gradient(ellipse at 25% 15%, rgba(232, 140, 46, 0.05) 0%, transparent 55%),
+                radial-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 16px 16px;
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--gap);
+            width: 100%;
+            max-width: 940px;
+        }
+
+        @media (max-width: 600px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            position: relative;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            height: 320px;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--amber);
+            z-index: 2;
+        }
+
+        .indicator {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 6px;
+            height: 6px;
+            background: var(--amber);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--amber);
+            animation: pulse 2s infinite;
+            z-index: 3;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 22px;
+        }
+
+        .num-box {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--amber);
+            background: rgba(232, 140, 46, 0.1);
+            border: 1px solid rgba(232, 140, 46, 0.2);
+            padding: 2px 5px;
+            border-radius: 2px;
+        }
+
+        .card-title {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(232, 228, 220, 0.9);
+        }
+
+        .sim-area {
+            height: 160px;
+            background: #0d0d10;
+            border: 1px solid rgba(255,255,255,0.03);
+            border-radius: 4px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 16px;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        .ins {
+            border-left: 2px solid var(--amber);
+            padding-left: 14px;
+            margin-top: auto;
+            color: var(--muted);
+            font-size: 11.5px;
+            line-height: 1.6;
+            min-height: 52px;
+            display: flex;
+            align-items: center;
+        }
+
+        .ins strong {
+            color: var(--amber);
+            font-weight: 600;
+        }
+
+        /* --- Global Skeleton Styles --- */
+        .sk-item {
+            background: var(--sk-base);
+            border-radius: 2px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .shimmer::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent 0%,
+                rgba(255, 255, 255, 0.03) 50%,
+                transparent 100%
+            );
+            animation: shimmer-anim 1.5s infinite;
+            transform: translateX(-100%);
+        }
+
+        @keyframes shimmer-anim {
+            100% { transform: translateX(100%); }
+        }
+
+        /* --- Cell 1: Shimmer Mechanic --- */
+        .mechanic-box {
+            width: 100%;
+            height: 60px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .mechanic-line {
+            height: 12px;
+            width: 100%;
+        }
+
+        /* --- Cell 2: Hierarchy Mapping --- */
+        .mapping-card {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .mapping-header {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        .mapping-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+        }
+        .mapping-title {
+            height: 14px;
+            width: 60%;
+        }
+        .mapping-body {
+            height: 8px;
+            width: 100%;
+            margin-top: 4px;
+        }
+
+        /* --- Cell 3: Adaptive Shapes --- */
+        .shapes-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            width: 100%;
+        }
+        .shape-box {
+            height: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .circle-sk { width: 30px; height: 30px; border-radius: 50%; }
+        .rect-sk { width: 40px; height: 10px; }
+
+        /* --- Cell 4: Layout Stability --- */
+        .stability-table {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .table-row {
+            display: grid;
+            grid-template-columns: 30px 1fr 60px;
+            gap: 10px;
+            align-items: center;
+        }
+        .cell { height: 10px; }
+
+        .real-content {
+            display: none;
+            width: 100%;
+            animation: fadeIn 0.5s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="grid-container">
+        <!-- Cell 1: Shimmer Animation -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">01</div>
+                <div class="card-title">Shimmer Effect</div>
+            </div>
+            <div class="sim-area">
+                <div class="mechanic-box">
+                    <div class="sk-item shimmer mechanic-line" style="width: 80%"></div>
+                    <div class="sk-item shimmer mechanic-line" style="width: 100%"></div>
+                    <div class="sk-item shimmer mechanic-line" style="width: 60%"></div>
+                </div>
+            </div>
+            <div class="ins">
+                Hiệu ứng <strong>Shimmer</strong> (vùng sáng quét qua) tạo cảm giác ứng dụng đang <strong>hoạt động</strong> tích cực để tải dữ liệu.
+            </div>
+        </div>
+
+        <!-- Cell 2: Hierarchy Mapping -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">02</div>
+                <div class="card-title">Hierarchy Mapping</div>
+            </div>
+            <div class="sim-area" id="area-2">
+                <div class="mapping-card" id="sk-2">
+                    <div class="mapping-header">
+                        <div class="sk-item shimmer mapping-avatar"></div>
+                        <div class="sk-item shimmer mapping-title"></div>
+                    </div>
+                    <div class="sk-item shimmer mapping-body"></div>
+                    <div class="sk-item shimmer mapping-body" style="width: 90%"></div>
+                </div>
+                <div class="real-content" id="real-2" style="display: none; flex-direction: column; gap: 10px;">
+                    <div style="display: flex; gap: 12px; align-items: center;">
+                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" style="width: 40px; height: 40px; border-radius: 50%; background: #222;">
+                        <div style="font-weight: 600; font-size: 14px;">Product Designer</div>
+                    </div>
+                    <div style="font-size: 12px; color: var(--muted); line-height: 1.4;">Đang xây dựng hệ thống thiết kế Amber Brutalist cho tương lai.</div>
+                </div>
+            </div>
+            <div class="ins">
+                Skeleton phải <strong>mô phỏng chính xác</strong> cấu trúc thật để giảm bớt <strong>gánh nặng nhận thức</strong> khi nội dung xuất hiện.
+            </div>
+        </div>
+
+        <!-- Cell 3: Shape Semantics -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">03</div>
+                <div class="card-title">Shape Semantics</div>
+            </div>
+            <div class="sim-area">
+                <div class="shapes-grid">
+                    <div class="shape-box">
+                        <div class="sk-item shimmer circle-sk"></div>
+                        <div style="font-size: 8px; color: var(--muted); font-family: 'JetBrains Mono';">AVATAR</div>
+                    </div>
+                    <div class="shape-box">
+                        <div class="sk-item shimmer rect-sk"></div>
+                        <div style="font-size: 8px; color: var(--muted); font-family: 'JetBrains Mono';">TEXT</div>
+                    </div>
+                    <div class="shape-box">
+                        <div class="sk-item shimmer rect-sk" style="width: 30px; height: 30px;"></div>
+                        <div style="font-size: 8px; color: var(--muted); font-family: 'JetBrains Mono';">MEDIA</div>
+                    </div>
+                </div>
+            </div>
+            <div class="ins">
+                Sử dụng các <strong>hình khối cơ bản</strong> để đại diện cho các loại dữ liệu khác nhau (hình tròn cho ảnh đại diện, hình chữ nhật cho văn bản).
+            </div>
+        </div>
+
+        <!-- Cell 4: Layout Stability -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">04</div>
+                <div class="card-title">Layout Stability</div>
+            </div>
+            <div class="sim-area">
+                <div class="stability-table" id="sk-4">
+                    <div class="table-row"><div class="sk-item shimmer cell"></div><div class="sk-item shimmer cell"></div><div class="sk-item shimmer cell"></div></div>
+                    <div class="table-row"><div class="sk-item shimmer cell"></div><div class="sk-item shimmer cell"></div><div class="sk-item shimmer cell"></div></div>
+                    <div class="table-row"><div class="sk-item shimmer cell"></div><div class="sk-item shimmer cell"></div><div class="sk-item shimmer cell"></div></div>
+                </div>
+                <div class="real-content" id="real-4">
+                     <div class="stability-table" style="font-size: 10px; font-family: 'JetBrains Mono'; color: var(--amber);">
+                        <div class="table-row"><span>ID</span><span>ITEM</span><span>STATUS</span></div>
+                        <div class="table-row" style="color: var(--text)"><span>01</span><span>CORE API</span><span style="color: #4ade80">OK</span></div>
+                        <div class="table-row" style="color: var(--text)"><span>02</span><span>UI KIT</span><span style="color: #4ade80">OK</span></div>
+                     </div>
+                </div>
+            </div>
+            <div class="ins">
+                Ngăn chặn tình trạng <strong>Layout Shift</strong> (nhảy bố cục) bằng cách giữ chỗ sẵn cho dữ liệu sắp được hiển thị.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const sleep = ms => new Promise(res => setTimeout(res, ms));
+
+        // Cell 2: Hierarchy Mapping Loop
+        async function runSim2() {
+            const sk = document.getElementById('sk-2');
+            const real = document.getElementById('real-2');
+            while(true) {
+                sk.style.display = 'flex';
+                real.style.display = 'none';
+                await sleep(3000);
+                sk.style.display = 'none';
+                real.style.display = 'flex';
+                await sleep(2000);
+            }
+        }
+
+        // Cell 4: Stability Loop
+        async function runSim4() {
+            const sk = document.getElementById('sk-4');
+            const real = document.getElementById('real-4');
+            while(true) {
+                sk.style.display = 'flex';
+                real.style.display = 'none';
+                await sleep(3500);
+                sk.style.display = 'none';
+                real.style.display = 'block';
+                await sleep(2500);
+            }
+        }
+
+        runSim2();
+        runSim4();
+    </script>
+</body>
+</html>
