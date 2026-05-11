@@ -1,208 +1,367 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Stroke Demo — markAI</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<style>
-  :root{
-    --bg:#0f0f12;--bg-card:#16161b;--fg:#e8e4dc;--muted:#6e6e7a;
-    --accent:#e88c2e;--accent-soft:rgba(232,140,46,.12);
-    --accent-border:rgba(232,140,46,.3);--border:#282830;
-    --surface:#1c1c23;--shape-lt:#33333d;--bar-m:#44444f;
-    --strk-fill:rgba(232,140,46,.06);--strk-stroke:rgba(232,140,46,.5);
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{
-    background:var(--bg);color:var(--fg);
-    font-family:'Space Grotesk',sans-serif;line-height:1.6;
-    overflow-x:hidden;
-  }
-  body::before{
-    content:'';position:fixed;inset:0;
-    background-image:radial-gradient(rgba(255,255,255,.022) 1px,transparent 1px);
-    background-size:20px 20px;pointer-events:none;z-index:0;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stroke — Amber Brutalist 4-Cell Grid</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0c;
+      --card-bg: #16161b;
+      --amber: #E88C2E;
+      --gray: #707070;
+      --text: #ece8e1;
+      --border: #26262a;
+    }
 
-  #app-root{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:24px}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-  .sim-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
-  @media(max-width:720px){.sim-grid{grid-template-columns:repeat(2,1fr)}}
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Space Grotesk', sans-serif;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+    }
 
-  .sc{
-    background:var(--bg-card);border:1px solid var(--border);
-    padding:20px 14px 18px;cursor:pointer;position:relative;overflow:hidden;
-    transition:border-color .3s,background .3s;
-    display:flex;flex-direction:column;
-  }
-  .sc::before{
-    content:'';position:absolute;top:0;left:0;right:0;height:2px;
-    background:var(--accent);transform:scaleX(0);transform-origin:left;
-    transition:transform .35s ease;
-  }
-  .sc:hover{border-color:var(--accent-border)}
-  .sc.on{border-color:var(--accent);background:var(--surface)}
-  .sc.on::before{transform:scaleX(1)}
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      max-width: 940px;
+      width: 100%;
+    }
 
-  .sc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
-  .sc-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px}
-  .sc-tag{
-    font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;
-    text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);transition:color .3s;
-  }
-  .sc.on .sc-tag{color:var(--accent)}
+    @media (max-width: 640px) {
+      .grid-container {
+        grid-template-columns: 1fr;
+      }
+    }
 
-  .sc-demo{padding:0 14px 10px;display:flex;flex-direction:column;align-items:center;gap:8px;min-height:110px;justify-content:center}
-  
-  /* SVG shapes */
-  .sk-svg{overflow:visible}
-  .sk-shape{fill:var(--strk-fill);stroke:var(--accent);transition:all .4s ease;opacity:0.6}
-  .sc.on .sk-shape{opacity:1}
-  .sk-label{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);opacity:0;transition:opacity .3s;text-align:center}
-  .sc.on .sk-label{opacity:.7}
+    .card {
+      background: var(--card-bg);
+      border-radius: 3px;
+      position: relative;
+      padding-top: 2px;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
 
-  .ins{
-    background:var(--surface);border:1px solid var(--border);
-    padding:18px 22px;display:flex;align-items:flex-start;gap:12px;min-height:80px;
-  }
-  .ins-i{color:var(--accent);font-size:13px;margin-top:3px;flex-shrink:0}
-  .ins-t{font-size:14px;color:var(--fg);opacity:.85;line-height:1.65;transition:opacity .25s,transform .25s}
-  .ins-t.fading{opacity:0;transform:translateY(6px)}
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--amber);
+    }
 
-  @media(max-width:480px){
-    #app-root{padding:14px}
-    .ins{padding:14px 16px}
-  }
-</style>
+    .header {
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .num-box {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      border: 1px solid rgba(232, 140, 46, 0.4);
+      padding: 3px 8px;
+      color: var(--amber);
+      background: rgba(232, 140, 46, 0.05);
+      border-radius: 2px;
+      line-height: 1;
+    }
+
+    .title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+    }
+
+    .indicator {
+      width: 6px;
+      height: 6px;
+      background: var(--amber);
+      border-radius: 50%;
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      animation: blink 1.2s infinite;
+      box-shadow: 0 0 8px var(--amber);
+      z-index: 10;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .sim-area {
+      height: 180px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(0,0,0,0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ins {
+      padding: 12px 16px;
+      border-left: 2px solid var(--amber);
+      font-size: 11.5px;
+      color: var(--gray);
+      background: rgba(232, 140, 46, 0.03);
+      margin: 0 16px 16px 16px;
+      line-height: 1.5;
+    }
+
+    .ins strong {
+      color: var(--amber);
+      font-weight: 700;
+    }
+
+    /* Simulation Elements */
+    .label-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--gray);
+      margin-top: 15px;
+      background: rgba(0,0,0,0.3);
+      padding: 2px 8px;
+      border-radius: 2px;
+      z-index: 5;
+    }
+
+    svg {
+      overflow: visible;
+    }
+
+    .shape-demo {
+      fill: rgba(232, 140, 46, 0.1);
+      stroke: var(--amber);
+      transition: all 0.5s ease;
+    }
+
+    /* Cell 01: Weight */
+    #weight-shape {
+      stroke-width: 2px;
+    }
+
+    /* Cell 02: Style */
+    #style-shape {
+      stroke-width: 3px;
+      stroke-dasharray: none;
+    }
+
+    /* Cell 03: Alignment simulation */
+    .align-wrap {
+      position: relative;
+      width: 100px;
+      height: 100px;
+    }
+    .base-path {
+      position: absolute;
+      inset: 0;
+      border: 1px dashed rgba(255,255,255,0.4);
+      z-index: 2;
+    }
+    .base-path::after {
+      content: 'PATH';
+      position: absolute;
+      top: -15px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 8px;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 1px;
+    }
+    .stroke-sim {
+      position: absolute;
+      border: 10px solid var(--amber);
+      opacity: 0.7;
+      transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      z-index: 1;
+    }
+
+    /* Cell 04: Caps & Joins */
+    .cap-join-svg {
+      width: 120px;
+      height: 60px;
+    }
+    .line-demo {
+      stroke: var(--amber);
+      stroke-width: 12px;
+      fill: none;
+      transition: all 0.5s ease;
+    }
+
+  </style>
 </head>
 <body>
 
-<div id="app-root">
-  <section aria-label="Mô phỏng stroke">
-    <div class="sim-grid" id="simGrid"></div>
-    <div class="ins">
-      <i class="fa-solid fa-lightbulb ins-i"></i>
-      <p class="ins-t" id="insT">Đang tải...</p>
+  <div class="grid-container">
+    
+    <!-- Cell 01: Stroke Weight -->
+    <div class="card">
+      <div class="indicator"></div>
+      <div class="header">
+        <div class="num-box">01</div>
+        <div class="title">Stroke Weight</div>
+      </div>
+      <div class="sim-area">
+        <svg width="80" height="80">
+          <rect x="10" y="10" width="60" height="60" rx="4" class="shape-demo" id="weight-shape" />
+        </svg>
+        <div class="label-code" id="label-01">stroke-width: 2px;</div>
+      </div>
+      <div class="ins">
+        <strong>Stroke Weight</strong> xác định độ dày của đường viền. Một <strong>weight</strong> quá lớn có thể làm icon bị "thô", trong khi quá mảnh sẽ khó nhìn trên màn hình nhỏ.
+      </div>
     </div>
-  </section>
-</div>
 
-<script>
-  const sims = [
-    {
-      num:'01', tag:'Weight',
-      ins:'Weight là độ dày của nét stroke. 0.5px = siêu mảnh, 1-2px = tiêu chuẩn, 3-4px = đậm. Sai weight sẽ làm icon nhìn mất cân đối so với text xung quanh.',
-      build(el){
-        const weights=[0.5,1.5,3];
-        el.innerHTML = weights.map(w=>`
-          <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
-            <svg width="32" height="32" class="sk-svg">
-              <rect x="4" y="4" width="24" height="24" rx="2"
-                class="sk-shape" stroke-width="${w}"/>
-            </svg>
-            <span class="sk-label">${w}px</span>
-          </div>`).join('');
-      }
-    },
-    {
-      num:'02', tag:'Style',
-      ins:'Style quyết định kiểu nét: liền (solid), đứt (dashed), hoặc chấm (dotted). Thường dùng dashed để thể hiện các vùng "placeholder" hoặc trạng thái chưa hoàn tất.',
-      build(el){
-        const styles=[{s:'solid',d:''},{s:'dashed',d:'stroke-dasharray:5 3'},{s:'dotted',d:'stroke-dasharray:1 3'}];
-        el.innerHTML = styles.map(st=>`
-          <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
-            <svg width="32" height="32" class="sk-svg">
-              <rect x="4" y="4" width="24" height="24" rx="2"
-                class="sk-shape" stroke-width="1.5" style="${st.d}"/>
-            </svg>
-            <span class="sk-label">${st.s}</span>
-          </div>`).join('');
-      }
-    },
-    {
-      num:'03', tag:'Corner',
-      ins:'Corner (stroke-linejoin) quyết định cách xử lý các góc nối. Miter: góc nhọn hoắt, sắc cạnh; Round: bo tròn mềm mại; Bevel: cắt phẳng (vát góc) tại điểm nối. Stroke dày càng dễ thấy sự khác biệt này.',
-      build(el){
-        const corners=[{s:'Miter',j:'miter'},{s:'Round',j:'round'},{s:'Bevel',j:'bevel'}];
-        el.innerHTML = corners.map(c=>`
-          <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
-            <svg width="32" height="32" class="sk-svg">
-              <polygon points="6,26 16,6 26,26"
-                class="sk-shape" stroke-width="4" stroke-linejoin="${c.j}"/>
-            </svg>
-            <span class="sk-label">${c.s}</span>
-          </div>`).join('');
-      }
-    },
-    {
-      num:'04', tag:'Cap',
-      ins:'Line Cap xử lý 2 đầu mút của đường hở. Butt: cắt ngay tại điểm kết thúc; Round: bo tròn đầu (làm đường dài thêm 1 chút); Square: cắt vuông nhưng kéo dài thêm một khoảng bằng nửa độ dày nét.',
-      build(el){
-        const caps=[{s:'Butt',c:'butt'},{s:'Round',c:'round'},{s:'Square',c:'square'}];
-        el.innerHTML = caps.map(cp=>`
-          <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
-            <svg width="32" height="32" class="sk-svg">
-              <line x1="10" y1="10" x2="22" y2="22" stroke="var(--muted)" stroke-width="1" opacity="0.3"/>
-              <line x1="10" y1="10" x2="22" y2="22"
-                class="sk-shape" stroke-width="6" stroke-linecap="${cp.c}"/>
-            </svg>
-            <span class="sk-label">${cp.s}</span>
-          </div>`).join('');
-      }
-    }
-  ];
+    <!-- Cell 02: Stroke Style -->
+    <div class="card">
+      <div class="indicator"></div>
+      <div class="header">
+        <div class="num-box">02</div>
+        <div class="title">Stroke Style</div>
+      </div>
+      <div class="sim-area">
+        <svg width="80" height="80">
+          <circle cx="40" cy="40" r="30" class="shape-demo" id="style-shape" />
+        </svg>
+        <div class="label-code" id="label-02">stroke-style: solid;</div>
+      </div>
+      <div class="ins">
+        <strong>Stroke Style</strong> cho phép tạo các đường <strong>Solid</strong> (liền), <strong>Dashed</strong> (đứt đoạn) hoặc <strong>Dotted</strong> (chấm), thường dùng để biểu thị trạng thái "nháp" hoặc "vùng chọn".
+      </div>
+    </div>
 
-  const simGrid = document.getElementById('simGrid');
-  const insT = document.getElementById('insT');
-  let activeI = 0;
-  let autoTimer;
-
-  function renderSim() {
-    simGrid.innerHTML = sims.map((s, i) => `
-      <div class="sc" data-i="${i}" tabindex="0" role="button">
-        <div class="sc-top">
-          <span class="sc-num">${s.num}</span>
-          <span class="sc-tag">${s.tag}</span>
+    <!-- Cell 03: Stroke Alignment -->
+    <div class="card">
+      <div class="indicator"></div>
+      <div class="header">
+        <div class="num-box">03</div>
+        <div class="title">Stroke Alignment</div>
+      </div>
+      <div class="sim-area">
+        <div class="align-wrap">
+          <div class="base-path"></div>
+          <div class="stroke-sim" id="align-sim" style="inset: -5px; border-width: 10px;"></div>
         </div>
-        <div class="sc-demo" id="sd${i}"></div>
-      </div>`).join('');
+        <div class="label-code" id="label-03">stroke-align: center;</div>
+      </div>
+      <div class="ins">
+        <strong>Alignment</strong> quyết định vị trí viền so với đường biên: <strong>Center</strong> (nằm giữa), <strong>Inside</strong> (nằm trong), hoặc <strong>Outside</strong> (nằm ngoài), ảnh hưởng trực tiếp đến kích thước thực tế của vật thể.
+      </div>
+    </div>
 
-    sims.forEach((s, i) => s.build(document.getElementById('sd'+i)));
+    <!-- Cell 04: Caps & Joins -->
+    <div class="card">
+      <div class="indicator"></div>
+      <div class="header">
+        <div class="num-box">04</div>
+        <div class="title">Caps & Joins</div>
+      </div>
+      <div class="sim-area">
+        <svg class="cap-join-svg">
+          <path d="M 20 50 L 60 10 L 100 50" class="line-demo" id="cap-join-shape" stroke-linecap="butt" stroke-linejoin="miter" />
+        </svg>
+        <div class="label-code" id="label-04">cap: butt / join: miter;</div>
+      </div>
+      <div class="ins">
+        <strong>Caps</strong> xử lý hai đầu mút (Round, Butt, Square), còn <strong>Joins</strong> xử lý các góc nối (Miter, Round, Bevel). Chi tiết này giúp tạo nên phong cách <strong>mềm mại</strong> hoặc <strong>sắc sảo</strong>.
+      </div>
+    </div>
 
-    simGrid.querySelectorAll('.sc').forEach(c => {
-      c.addEventListener('click', () => {
-        clearInterval(autoTimer);
-        activateCard(+c.dataset.i);
-      });
-    });
-  }
+  </div>
 
-  function activateCard(i) {
-    activeI = i;
-    simGrid.querySelectorAll('.sc').forEach((c, idx) => c.classList.toggle('on', idx === i));
-    setIns(sims[i].ins);
-  }
+  <script>
+    // Independent Animation Loops
 
-  function setIns(t) {
-    insT.classList.add('fading');
-    setTimeout(() => { 
-      insT.textContent = t; 
-      insT.classList.remove('fading'); 
-    }, 250);
-  }
+    // 01: Weight Loop
+    const weightShape = document.getElementById('weight-shape');
+    const label01 = document.getElementById('label-01');
+    const weights = [1, 2, 4, 8, 12, 2];
+    let wStep = 0;
 
-  function startAuto() {
-    activateCard(0);
-    autoTimer = setInterval(() => {
-      activeI = (activeI + 1) % sims.length;
-      activateCard(activeI);
-    }, 4500);
-  }
+    setInterval(() => {
+      wStep = (wStep + 1) % weights.length;
+      const v = weights[wStep];
+      weightShape.style.strokeWidth = v + 'px';
+      label01.textContent = `stroke-width: ${v}px;`;
+    }, 2000);
 
-  renderSim();
-  startAuto();
-</script>
+    // 02: Style Loop
+    const styleShape = document.getElementById('style-shape');
+    const label02 = document.getElementById('label-02');
+    const styles = [
+      { name: 'solid', dash: 'none' },
+      { name: 'dashed', dash: '10, 5' },
+      { name: 'dotted', dash: '2, 4' },
+      { name: 'dash-dot', dash: '15, 5, 2, 5' }
+    ];
+    let sStep = 0;
+
+    setInterval(() => {
+      sStep = (sStep + 1) % styles.length;
+      const v = styles[sStep];
+      styleShape.style.strokeDasharray = v.dash;
+      label02.textContent = `stroke-style: ${v.name};`;
+    }, 2500);
+
+    // 03: Alignment Loop
+    const alignSim = document.getElementById('align-sim');
+    const label03 = document.getElementById('label-03');
+    const alignments = [
+      { name: 'center', inset: '-5px', border: '10px' },
+      { name: 'inside', inset: '0', border: '10px' },
+      { name: 'outside', inset: '-10px', border: '10px' }
+    ];
+    let aStep = 0;
+
+    setInterval(() => {
+      aStep = (aStep + 1) % alignments.length;
+      const v = alignments[aStep];
+      alignSim.style.inset = v.inset;
+      alignSim.style.borderWidth = v.border;
+      label03.textContent = `stroke-align: ${v.name};`;
+    }, 3000);
+
+    // 04: Caps & Joins Loop
+    const capJoinShape = document.getElementById('cap-join-shape');
+    const label04 = document.getElementById('label-04');
+    const capJoins = [
+      { cap: 'butt', join: 'miter' },
+      { cap: 'round', join: 'round' },
+      { cap: 'square', join: 'bevel' }
+    ];
+    let cStep = 0;
+
+    setInterval(() => {
+      cStep = (cStep + 1) % capJoins.length;
+      const v = capJoins[cStep];
+      capJoinShape.setAttribute('stroke-linecap', v.cap);
+      capJoinShape.setAttribute('stroke-linejoin', v.join);
+      label04.textContent = `cap: ${v.cap} / join: ${v.join};`;
+    }, 3000);
+
+  </script>
 </body>
 </html>
