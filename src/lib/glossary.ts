@@ -1232,6 +1232,13 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Visual Hierarchy: Vì Segmented Button chiếm khá nhiều diện tích ngang và có màu nổi bật, hãy chỉ dùng nó cho các lựa chọn thực sự quan trọng, tránh làm loãng giao diện.',
     'Khi prompt AI, hãy nói rõ số lượng segment và nội dung từng segment. Ví dụ: "Tạo segmented button 3 tùy chọn: List, Grid, Map".',
   ],
+  transition: [
+    'Transition là "sợi dây liên kết" giữa các trạng thái của giao diện. Nếu không có transition, người dùng sẽ cảm thấy giao diện bị nhảy giật và khó theo dõi sự thay đổi.',
+    '3 yếu tố cốt lõi: Property (chọn thuộc tính để đổi), Duration (thời gian chuyển đổi), và Easing (nhịp điệu chuyển động). Thiếu một trong ba, hiệu ứng sẽ không còn mượt mà.',
+    'Hiệu năng tối ưu: Hãy ưu tiên transition các thuộc tính như opacity và transform thay vì width, height hay margin để tránh tình trạng "giật lag" trên các máy yếu.',
+    'Nguyên tắc 0.3s: Đây là "con số vàng" cho các hiệu ứng UI thông thường. Nhanh hơn sẽ khó nhận biết, chậm hơn sẽ gây cảm giác trì trệ cho người dùng.',
+    'Mô phỏng 4 ô bên dưới giúp bạn hình dung các loại transition phổ biến: từ làm mờ (Fade) đến dịch chuyển (Slide), phóng to (Scale) và thay đổi màu sắc (Color).',
+  ],
 };
 
 export function getTermById(id: string) {
