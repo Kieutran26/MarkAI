@@ -97,7 +97,7 @@ import primaryColorDemoHtml from '../../gif-primary-color-demo.html?raw';
 import primaryColorPracticeHtml from '../../gif-primary-color-practice.html?raw';
 import colorPaletteDemoHtml from '../../gif-colorpalette-demo.html?raw';
 import colorPalettePracticeHtml from '../../gif-colorpalette-practice.html?raw';
-import heroSectionDemoHtml from '../../gif-hero-demo.html?raw';
+import heroSectionDemoHtml from '../../gif-hero-section-demo.html?raw';
 import heroSectionPracticeHtml from '../../gif-hero-practice.html?raw';
 import fontWeightDemoHtml from '../../gif-fontweight-demo.html?raw';
 import fontWeightPracticeHtml from '../../gif-fontweight-practice.html?raw';
