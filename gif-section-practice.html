@@ -3,198 +3,328 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Section — Practice</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<title>Section Practice — Conversion Mixer</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;--card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a;--success:#3a9e5c;--success-soft:rgba(58,158,92,.12);--warning:#c49030;--warning-soft:rgba(196,144,48,.1);--bg2:#131315}
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 100%,16px 16px;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:12px;gap:16px}
-
-.pw{width:100%;background:var(--card);border:2px solid var(--border);padding:20px 24px}
-.pw-h{font-size:15px;font-weight:700;margin-bottom:2px}.pw-h span{color:var(--accent)}
-.pw-s{font-size:11px;color:var(--muted);margin-bottom:14px;line-height:1.5}
-
-.clist{display:flex;flex-direction:column;gap:6px;margin-bottom:20px}
-.cd{display:flex;align-items:center;gap:12px;padding:12px 16px;background:var(--card-alt);border:1px solid var(--border);cursor:grab;user-select:none;transition:border-color .2s,background .2s,opacity .2s}
-.cd:hover{border-color:rgba(212,113,42,.3);background:rgba(212,113,42,.03)}
-.cd.dragging{opacity:.4;border-color:var(--accent)}
-.cd.dragover{border-color:var(--accent);border-style:dashed}
-
-.cd-grip{font-size:14px;color:var(--muted);line-height:1;letter-spacing:2px;flex-shrink:0}
-.cd-idx{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);letter-spacing:1px;flex-shrink:0;min-width:20px;font-weight:700}
-.cd-info{flex:1;min-width:0}
-.cd-name{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--fg);letter-spacing:1px;text-transform:uppercase}
-.cd-desc{font-size:8px;color:var(--muted);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-
-.cd-arr{display:flex;flex-direction:column;gap:4px;flex-shrink:0}
-.cd-btn{background:none;border:1px solid var(--border);color:var(--muted);width:24px;height:18px;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:border-color .2s,color .2s;font-family:'JetBrains Mono',monospace}
-.cd-btn:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
-.cd-btn:disabled{opacity:.2;cursor:default}
-
-.pp{position:relative;width:100%;height:210px;background:var(--bg2);border:1px solid var(--border);overflow:hidden;margin-bottom:16px}
-.pp::before{content:'';position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:20px 20px}
-
-.pb{position:absolute;left:8%;right:8%;height:calc(25% - 8px);border:1px solid var(--border);display:flex;align-items:center;padding:0 12px;gap:12px;overflow:hidden;transition:top .4s cubic-bezier(.4,0,.2,1)}
-.pl{font-family:'JetBrains Mono',monospace;font-size:7px;letter-spacing:1px;text-transform:uppercase;color:var(--accent);flex-shrink:0;background:rgba(212,113,42,.1);padding:2px 5px;border:1px solid rgba(212,113,42,.2);font-weight:700}
-.pv{flex:1;height:40%}
-.pv-h{background:var(--accent);opacity:.7;width:60%}
-.pv-f{display:flex;gap:4px}.pv-f>div{flex:1;background:rgba(255,255,255,.08)}
-.pv-a{background:rgba(255,255,255,.06);width:70%}
-.pv-c{background:var(--accent);opacity:.5;width:40%}
-
-.pbg-h{background:rgba(212,113,42,.04)}
-.pbg-f{background:rgba(255,255,255,.015)}
-.pbg-a{background:transparent}
-.pbg-c{background:rgba(212,113,42,.06)}
-
-.flow-arrow{position:absolute;left:50%;transform:translateX(-50%);font-family:'JetBrains Mono',monospace;font-size:10px;color:rgba(255,255,255,.1);z-index:5;pointer-events:none}
-
-.fb{display:flex;align-items:flex-start;gap:10px;padding:12px 16px;font-size:12px;border:1px solid var(--border);background:var(--card-alt);line-height:1.5}
-.fb.ok{border-color:var(--success);background:var(--success-soft);color:var(--success)}
-.fb.no{border-color:var(--warning);background:var(--warning-soft);color:var(--warning)}
-
-.pht{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:16px;padding-top:12px;border-top:1px dashed var(--border);opacity:.8;line-height:1.5}
-
-@media(max-width:520px){
-  .pw{padding:16px}
-  .cd-desc{display:none}
-  .pp{height:220px}
+:root {
+  --bg: #0f0f12;
+  --bgc: #16161b;
+  --bd: #282830;
+  --tx: #e8e4dc;
+  --txm: #707070;
+  --txd: #3a3a3a;
+  --ac: #E88C2E;
+  --abg: rgba(232, 140, 46, 0.1);
+  --gn: #22c55e;
+  --gnb: rgba(34, 197, 94, .12);
+  --rd: #ef4444;
+  --rdb: rgba(239, 68, 68, .1);
 }
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  color: var(--tx);
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.pra {
+  width: 100%;
+  max-width: 940px;
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 4px;
+  padding: 32px;
+  position: relative;
+}
+
+.pra::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 3px;
+  background: var(--ac);
+}
+
+.ch { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.ch .n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; font-weight: 700;
+  color: var(--ac); background: var(--abg);
+  padding: 2px 8px; border-radius: 2px;
+}
+.ch h2 { font-size: 15px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+
+.pra-goal { font-size: 13px; color: var(--txm); margin-bottom: 24px; line-height: 1.6; }
+
+.mixer-grid { display: grid; grid-template-columns: 1fr 320px; gap: 32px; }
+@media (max-width: 850px) { .mixer-grid { grid-template-columns: 1fr; } }
+
+/* Section Library */
+.library { display: flex; flex-direction: column; gap: 12px; }
+.lib-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--txd); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; margin-bottom: 4px; }
+
+.item-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+.sec-item {
+  background: var(--bg);
+  border: 1px solid var(--bd);
+  padding: 12px;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  opacity: 0.8;
+}
+.sec-item:hover { border-color: var(--ac); transform: translateY(-2px); opacity: 1; }
+.sec-item.selected { border-color: var(--ac); background: var(--abg); opacity: 1; }
+
+.si-name { font-size: 12px; font-weight: 700; }
+.si-cat { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: var(--ac); opacity: 0.7; }
+
+/* Result / Score */
+.result { display: flex; flex-direction: column; gap: 20px; }
+.score-box { background: #121217; border: 1px solid var(--bd); padding: 24px; border-radius: 4px; text-align: center; }
+.score-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--txm); text-transform: uppercase; margin-bottom: 12px; }
+.score-val { font-size: 48px; font-weight: 800; color: var(--ac); line-height: 1; margin-bottom: 8px; }
+.score-rank { font-size: 12px; font-weight: 600; color: var(--tx); }
+
+.feedback-box { background: var(--bg); border: 1px solid var(--bd); padding: 16px; border-radius: 3px; min-height: 100px; }
+.fb-title { font-size: 11px; font-weight: 700; color: var(--txd); text-transform: uppercase; margin-bottom: 10px; }
+.fb-text { font-size: 12px; line-height: 1.6; color: var(--txm); }
+.fb-text em { color: var(--ac); font-style: normal; font-weight: 600; }
+
+/* Visual Stack */
+.stack-preview { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+.stack-item {
+  height: 40px;
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-left: 3px solid var(--ac);
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-10px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.empty-stack { border: 1px dashed var(--bd); height: 100px; display: flex; align-items: center; justify-content: center; color: var(--txd); font-size: 11px; font-style: italic; }
+
+.btn-reset {
+  margin-top: 12px;
+  background: none;
+  border: 1px solid var(--bd);
+  color: var(--txd);
+  padding: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-reset:hover { color: var(--tx); border-color: var(--txm); }
+
 </style>
 </head>
 <body>
 
-<div class="pw">
-  <div class="pw-h">Thực hành — <span>Page Flow</span></div>
-  <div class="pw-s">Kéo thả hoặc dùng mũi tên để sắp xếp lại thứ tự section — xem cách flow thông tin ảnh hưởng đến trải nghiệm người dùng.</div>
+<section class="pra">
+  <div class="ch"><span class="n">PRACTICE</span><h2>Section Mixer: Tối ưu chuyển đổi</h2></div>
+  <p class="pra-goal">Chọn tối đa 5 section để xây dựng Landing Page. Thứ tự và loại section bạn chọn sẽ quyết định "Điểm chuyển đổi" của trang web.</p>
 
-  <div class="clist" id="cl"></div>
+  <div class="mixer-grid">
+    <!-- Left: Library -->
+    <div class="library">
+      <span class="lib-label">Thư viện Sections (Chọn theo thứ tự)</span>
+      <div class="item-grid" id="libGrid">
+        <!-- Items will be injected -->
+      </div>
+      
+      <div class="stack-preview" id="stackPreview">
+        <div class="empty-stack">Chưa có section nào được chọn...</div>
+      </div>
+      <button class="btn-reset" id="btnReset">BẮT ĐẦU LẠI</button>
+    </div>
 
-  <div class="pp" id="pp"></div>
+    <!-- Right: Feedback -->
+    <div class="result">
+      <div class="score-box">
+        <div class="score-label">Conversion Score</div>
+        <div class="score-val" id="scoreVal">0</div>
+        <div class="score-rank" id="scoreRank">Waiting...</div>
+      </div>
 
-  <div class="fb" id="fb"></div>
-  <div class="pht">Hint: Thử đưa CTA lên đầu — bạn sẽ thấy ngay tại sao thứ tự thuyết phục (persuasion flow) quan trọng.</div>
-</div>
+      <div class="feedback-box">
+        <div class="fb-title">Phân tích từ Expert</div>
+        <div class="fb-text" id="fbText">Hãy chọn các section để xem phân tích chiến thuật Marketing của bạn.</div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <script>
-const SEC = [
-  { id: 'hero', name: 'HERO SECTION', desc: 'First impression — hook user ngay lập tức', bg: 'pbg-h', vis: 'pv-h', lbl: 'HERO' },
-  { id: 'feat', name: 'FEATURES SECTION', desc: 'Liệt kê giá trị — user thấy được lợi ích gì', bg: 'pbg-f', vis: 'pv-f', lbl: 'FEATURES' },
-  { id: 'about', name: 'ABOUT SECTION', desc: 'Xây niềm tin — ai bạn là, làm gì, cho ai', bg: 'pbg-a', vis: 'pv-a', lbl: 'ABOUT' },
-  { id: 'cta', name: 'CTA SECTION', desc: 'Chốt chuyển đổi — một câu hỏi + một nút', bg: 'pbg-c', vis: 'pv-c', lbl: 'CTA' }
+const SECTIONS = [
+  { id: 'hero', name: 'Hero Banner', cat: 'Essential', impact: 30 },
+  { id: 'feat', name: 'Features', cat: 'Value', impact: 20 },
+  { id: 'testi', name: 'Testimonials', cat: 'Trust', impact: 15 },
+  { id: 'price', name: 'Pricing', cat: 'Action', impact: 20 },
+  { id: 'cta', name: 'Final CTA', cat: 'Action', impact: 25 },
+  { id: 'about', name: 'About Us', cat: 'Story', impact: 5 },
+  { id: 'faq', name: 'FAQ', cat: 'Support', impact: 10 },
+  { id: 'news', name: 'Newsletter', cat: 'Lead', impact: 5 }
 ];
 
-let order = [0, 1, 2, 3];
-let dragFrom = null;
+let selectedOrder = [];
+const libGrid = document.getElementById('libGrid');
+const stackPreview = document.getElementById('stackPreview');
+const scoreVal = document.getElementById('scoreVal');
+const scoreRank = document.getElementById('scoreRank');
+const fbText = document.getElementById('fbText');
+const btnReset = document.getElementById('btnReset');
 
-const $ = id => document.getElementById(id);
-
-function renderCards() {
-  const cl = $('cl'); cl.innerHTML = '';
-  order.forEach((si, pos) => {
-    const s = SEC[si];
-    const c = document.createElement('div');
-    c.className = 'cd'; c.draggable = true; c.dataset.pos = pos;
-    c.innerHTML = `
-      <span class="cd-grip" aria-hidden="true">⋮⋮</span>
-      <span class="cd-idx">${String(pos + 1).padStart(2, '0')}</span>
-      <div class="cd-info">
-        <div class="cd-name">${s.name}</div>
-        <div class="cd-desc">${s.desc}</div>
-      </div>
-      <div class="cd-arr">
-        <button class="cd-btn" data-d="u" ${pos === 0 ? 'disabled' : ''} aria-label="Lên">▲</button>
-        <button class="cd-btn" data-d="d" ${pos === 3 ? 'disabled' : ''} aria-label="Xuống">▼</button>
-      </div>`;
-
-    c.addEventListener('dragstart', e => { dragFrom = pos; c.classList.add('dragging'); e.dataTransfer.effectAllowed = 'move' });
-    c.addEventListener('dragend', () => { dragFrom = null; c.classList.remove('dragging'); cl.querySelectorAll('.cd').forEach(x => x.classList.remove('dragover')) });
-    c.addEventListener('dragover', e => { e.preventDefault(); e.dataTransfer.dropEffect = 'move'; if (dragFrom !== null && dragFrom !== pos) c.classList.add('dragover') });
-    c.addEventListener('dragleave', () => c.classList.remove('dragover'));
-    c.addEventListener('drop', e => { e.preventDefault(); c.classList.remove('dragover'); if (dragFrom !== null && dragFrom !== pos) { swap(dragFrom, pos) } });
-
-    c.querySelectorAll('.cd-btn').forEach(b => b.addEventListener('click', () => {
-      const np = b.dataset.d === 'u' ? pos - 1 : pos + 1;
-      if (np >= 0 && np < order.length) swap(pos, np);
-    }));
-
-    let ty = null, tp = null;
-    c.addEventListener('touchstart', e => { ty = e.touches[0].clientY; tp = pos; c.classList.add('dragging') }, { passive: true });
-    c.addEventListener('touchmove', e => {
-      if (tp === null) return;
-      const dy = e.touches[0].clientY - ty;
-      const ch = c.offsetHeight + 6;
-      if (Math.abs(dy) > ch * 0.4) {
-        const np = dy < 0 ? tp - 1 : tp + 1;
-        if (np >= 0 && np < order.length && np !== tp) { swap(tp, np); tp = np; ty = e.touches[0].clientY }
-      }
-    }, { passive: true });
-    c.addEventListener('touchend', () => { tp = null; cl.querySelectorAll('.cd').forEach(x => x.classList.remove('dragging')) });
-
-    cl.appendChild(c);
+function init() {
+  libGrid.innerHTML = '';
+  SECTIONS.forEach(s => {
+    const div = document.createElement('div');
+    div.className = 'sec-item';
+    div.innerHTML = `
+      <span class="si-cat">${s.cat}</span>
+      <span class="si-name">${s.name}</span>
+    `;
+    div.onclick = () => selectSection(s.id);
+    div.id = `item-${s.id}`;
+    libGrid.appendChild(div);
   });
+  updateUI();
 }
 
-function swap(a, b) {
-  [order[a], order[b]] = [order[b], order[a]];
-  renderCards(); renderPrev(); renderFB();
-}
-
-function renderPrev() {
-  const pp = $('pp'); pp.innerHTML = '';
-  order.forEach((si, pos) => {
-    const s = SEC[si];
-    const b = document.createElement('div');
-    b.className = 'pb ' + s.bg;
-    b.style.top = 'calc(' + pos * 25 + '% + 4px)';
-    
-    let vh = '';
-    if (s.id === 'hero') vh = '<div class="pv pv-h"></div>';
-    else if (s.id === 'feat') vh = '<div class="pv pv-f"><div></div><div></div><div></div></div>';
-    else if (s.id === 'about') vh = '<div class="pv pv-a"></div>';
-    else vh = '<div class="pv pv-c"></div>';
-    
-    b.innerHTML = '<span class="pl">' + s.lbl + '</span>' + vh;
-    pp.appendChild(b);
-  });
+function selectSection(id) {
+  if (selectedOrder.includes(id)) return;
+  if (selectedOrder.length >= 5) return;
   
-  for (let i = 0; i < 3; i++) {
-    const a = document.createElement('div');
-    a.className = 'flow-arrow';
-    a.style.top = 'calc(' + (i + 1) * 25 + '% - 7px)';
-    a.textContent = '↓';
-    pp.appendChild(a);
+  selectedOrder.push(id);
+  document.getElementById(`item-${id}`).classList.add('selected');
+  updateUI();
+}
+
+function updateUI() {
+  // Update Stack
+  if (selectedOrder.length === 0) {
+    stackPreview.innerHTML = '<div class="empty-stack">Chưa có section nào được chọn...</div>';
+  } else {
+    stackPreview.innerHTML = '';
+    selectedOrder.forEach((id, idx) => {
+      const s = SECTIONS.find(x => x.id === id);
+      const div = document.createElement('div');
+      div.className = 'stack-item';
+      div.textContent = `${idx + 1}. ${s.name.toUpperCase()}`;
+      stackPreview.appendChild(div);
+    });
   }
+
+  // Calculate Score
+  calculateScore();
 }
 
-function renderFB() {
-  const n = order.map(i => SEC[i].id);
-  const fb = $('fb');
-  const msgs = [];
-  
-  const hi = n.indexOf('hero'), fi = n.indexOf('feat'), ai = n.indexOf('about'), cti = n.indexOf('cta');
-
-  if (n[0] !== 'hero') msgs.push('<strong>Hero không ở đầu</strong> — user mở trang không biết đây là trang gì, thoát ngay lập tức.');
-  if (n[0] === 'cta') msgs.push('<strong>CTA lên đầu tiên</strong> — như chưa chào hỏi đã xin số điện thoại, gây phản cảm.');
-  else if (cti < fi && cti < ai && cti > 0) msgs.push('<strong>CTA quá sớm</strong> — user chưa thấy đủ giá trị để bị hỏi hành động chuyển đổi.');
-  if (ai !== -1 && fi !== -1 && ai < fi) msgs.push('<strong>About trước Features</strong> — user chưa biết sản phẩm mang lại lợi ích gì đã phải đọc về lịch sử của bạn.');
-
-  if (n.join() === ['hero', 'feat', 'about', 'cta'].join()) {
-    fb.className = 'fb ok';
-    fb.innerHTML = '<i class="fa-solid fa-check" style="margin-top:2px"></i> <div><strong>Chuẩn flow persuasion!</strong> Hook (Hero) → Value (Features) → Trust (About) → Action (CTA).</div>';
+function calculateScore() {
+  if (selectedOrder.length === 0) {
+    scoreVal.textContent = '0';
+    scoreRank.textContent = 'Waiting...';
+    fbText.textContent = 'Hãy chọn các section để xem phân tích chiến thuật Marketing của bạn.';
     return;
   }
-  
-  if (n.join() === ['cta', 'about', 'feat', 'hero'].join()) {
-    msgs.push('<strong>Ngược hoàn toàn</strong> — user bị bối rối từ giây đầu tiên và flow hoàn toàn đứt gãy.');
+
+  let score = 0;
+  let messages = [];
+
+  // 1. Hero check
+  if (selectedOrder[0] === 'hero') {
+    score += 30;
+    messages.push('✅ <em>Hero ở đầu</em> là lựa chọn xuất sắc để giữ chân người dùng.');
+  } else {
+    messages.push('❌ <em>Thiếu Hero ở đầu</em> khiến trang web mất đi "móc câu" (hook) quan trọng nhất.');
   }
 
-  fb.className = 'fb no';
-  fb.innerHTML = '<i class="fa-solid fa-xmark" style="margin-top:2px"></i> <div>' + msgs.join('<br><br>') + '</div>';
+  // 2. CTA check
+  if (selectedOrder.includes('cta')) {
+    const ctaIdx = selectedOrder.indexOf('cta');
+    if (ctaIdx === selectedOrder.length - 1) {
+      score += 25;
+      messages.push('✅ <em>CTA ở cuối</em> giúp người dùng có điểm đến sau khi đã được thuyết phục.');
+    } else {
+      score += 10;
+      messages.push('⚠️ <em>CTA nằm giữa</em> có thể hơi sớm nếu người dùng chưa đọc hết giá trị sản phẩm.');
+    }
+  } else {
+    messages.push('❌ <em>Thiếu CTA</em> là lỗi chí mạng, người dùng sẽ không biết phải làm gì tiếp theo.');
+  }
+
+  // 3. Flow logic
+  if (selectedOrder.includes('feat') && selectedOrder.includes('hero')) {
+    if (selectedOrder.indexOf('feat') > selectedOrder.indexOf('hero')) {
+      score += 15;
+    }
+  }
+
+  if (selectedOrder.includes('testi') && selectedOrder.includes('price')) {
+    if (selectedOrder.indexOf('testi') < selectedOrder.indexOf('price')) {
+      score += 10;
+      messages.push('✅ <em>Testimonials trước Pricing</em> giúp xây dựng niềm tin trước khi đưa ra mức giá.');
+    }
+  }
+
+  // 4. Overload
+  if (selectedOrder.length === 5) {
+    score += 5;
+  } else if (selectedOrder.length < 3) {
+    score -= 10;
+    messages.push('⚠️ <em>Quá ít thông tin</em> khiến khách hàng chưa đủ tin tưởng để hành động.');
+  }
+
+  score = Math.min(100, Math.max(0, score));
+  
+  // Update UI
+  animateValue(scoreVal, parseInt(scoreVal.textContent), score, 500);
+  
+  if (score >= 90) scoreRank.textContent = 'MASTER CONVERTER';
+  else if (score >= 70) scoreRank.textContent = 'GOOD STRATEGY';
+  else if (score >= 40) scoreRank.textContent = 'NEED IMPROVEMENT';
+  else scoreRank.textContent = 'CONVERSION KILLER';
+
+  fbText.innerHTML = messages.join('<br><br>');
 }
 
-renderCards(); renderPrev(); renderFB();
+function animateValue(obj, start, end, duration) {
+  let startTimestamp = null;
+  const step = (timestamp) => {
+    if (!startTimestamp) startTimestamp = timestamp;
+    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+    obj.innerHTML = Math.floor(progress * (end - start) + start);
+    if (progress < 1) {
+      window.requestAnimationFrame(step);
+    }
+  };
+  window.requestAnimationFrame(step);
+}
+
+btnReset.onclick = () => {
+  selectedOrder = [];
+  document.querySelectorAll('.sec-item').forEach(x => x.classList.remove('selected'));
+  updateUI();
+};
+
+init();
 </script>
 </body>
 </html>
