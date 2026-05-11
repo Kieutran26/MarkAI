@@ -1,764 +1,333 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hover Demo — Vibecode Glossary</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
-    rel="stylesheet">
+  <title>Hover Demo — Amber Brutalist</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #131313;
-      --bg-card: #1a1a1a;
-      --bg-el: #222;
-      --fg: #ede8df;
-      --fg-dim: #9a9590;
-      --fg-muted: #5c5752;
-      --accent: #d97706;
-      --accent-br: #f59e0b;
-      --accent-dm: #92400e;
-      --border: #2e2e2e;
-      --radius: 2px;
-      --sans: 'Space Grotesk', sans-serif;
-      --mono: 'IBM Plex Mono', monospace;
+      --bg: #0a0a0c;
+      --card-bg: #16161b;
+      --accent: #E88C2E;
+      --text-main: #FFFFFF;
+      --text-dim: #707070;
+      --border: #2a2a2e;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-sans: 'Space Grotesk', sans-serif;
+      --font-body: 'Inter', sans-serif;
     }
 
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0
-    }
-
-    html {
-      font-size: 16px;
-      -webkit-font-smoothing: antialiased
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: var(--sans);
-      color: var(--fg);
-      line-height: 1.5;
-      background-color: var(--bg);
-      background-image:
-        radial-gradient(ellipse at 15% 0%, rgba(217, 119, 6, .03) 0%, transparent 55%),
-        radial-gradient(ellipse at 85% 100%, rgba(217, 119, 6, .02) 0%, transparent 55%),
-        linear-gradient(rgba(255, 255, 255, .015) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 255, 255, .015) 1px, transparent 1px);
-      background-size: 100% 100%, 100% 100%, 22px 22px, 22px 22px;
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
     }
 
-    #app-root {
-      padding: 20px
-    }
-
-    /* === GRID & PANEL === */
-    .sim-grid {
+    .demo-container {
+      width: 100%;
+      max-width: 940px;
       display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-      margin-bottom: 28px
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
     }
 
-    @media(min-width:640px) {
-      .sim-grid {
-        grid-template-columns: 1fr 1fr;
-        gap: 14px
+    @media (max-width: 600px) {
+      .demo-container {
+        grid-template-columns: 1fr;
       }
     }
 
-    .sp {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden
-    }
-
-    .sp-label {
-      font-family: var(--mono);
-      font-size: .6rem;
-      font-weight: 500;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      color: var(--fg-muted);
-      padding: 10px 14px 6px;
-      border-bottom: 1px solid var(--border);
-      background: rgba(255, 255, 255, .01)
-    }
-
-    .sp-body {
-      padding: 20px 16px;
-      min-height: 195px;
+    .card {
+      background: var(--card-bg);
+      border-radius: 3px;
       position: relative;
       display: flex;
-      align-items: center;
-      justify-content: center
-    }
-
-    .sp-insight {
-      font-family: var(--mono);
-      font-size: .65rem;
-      color: var(--fg-muted);
-      padding: 8px 14px;
-      border-top: 1px solid var(--border);
-      background: rgba(255, 255, 255, .01)
-    }
-
-    .sp-insight em {
-      color: var(--accent);
-      font-style: normal
-    }
-
-    /* === HOVER HIGHLIGHT BORDER === */
-    .hover-hl {
-      position: absolute;
-      border: 2px dashed var(--accent);
-      pointer-events: none;
-      z-index: 10;
-      opacity: 0;
-      transition: opacity .15s
-    }
-
-    /* === SIMULATED CURSOR === */
-    .sim-cur {
-      position: absolute;
-      z-index: 15;
-      pointer-events: none;
-      opacity: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center
-    }
-
-    .sim-cur svg {
-      width: 18px;
-      height: 18px;
-      filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.4))
-    }
-
-    /* === ANIMATED LABELS === */
-    .albl {
-      position: absolute;
-      font-family: var(--mono);
-      font-size: .46rem;
-      font-weight: 600;
-      letter-spacing: .03em;
-      padding: 2px 6px;
-      border-radius: var(--radius);
-      pointer-events: none;
-      z-index: 12;
-      white-space: nowrap;
-      line-height: 1.4
-    }
-
-    .albl-st {
-      color: var(--fg-muted);
-      background: rgba(255, 255, 255, .05);
-      border: 1px solid var(--border)
-    }
-
-    .albl-hv {
-      color: var(--accent-br);
-      background: rgba(217, 119, 6, .15);
-      border: 1px solid rgba(217, 119, 6, .3);
-      font-weight: 700
-    }
-
-    .albl-pr {
-      color: var(--accent);
-      background: rgba(217, 119, 6, .1);
-      border: 1px solid rgba(217, 119, 6, .2)
-    }
-
-    /* Shared label animations */
-    .ld {
-      animation: lblDef var(--dur) ease infinite
-    }
-
-    .lh {
-      animation: lblHov var(--dur) ease infinite
-    }
-
-    .lp {
-      animation: lblProp var(--dur) ease infinite
-    }
-
-    .lc {
-      animation: lblCur var(--dur) ease infinite
-    }
-
-    @keyframes lblDef {
-
-      0%,
-      18% {
-        opacity: 1
-      }
-
-      24%,
-      100% {
-        opacity: 0
-      }
-    }
-
-    @keyframes lblHov {
-
-      0%,
-      28% {
-        opacity: 0
-      }
-
-      34%,
-      60% {
-        opacity: 1
-      }
-
-      66%,
-      100% {
-        opacity: 0
-      }
-    }
-
-    @keyframes lblProp {
-
-      0%,
-      36% {
-        opacity: 0
-      }
-
-      42%,
-      56% {
-        opacity: 1
-      }
-
-      62%,
-      100% {
-        opacity: 0
-      }
-    }
-
-    @keyframes lblCur {
-      0% {
-        opacity: 0;
-        transform: translate(-30px, -30px)
-      }
-
-      22% {
-        opacity: 0;
-        transform: translate(-30px, -30px)
-      }
-
-      32%,
-      64% {
-        opacity: 1;
-        transform: translate(0, 0)
-      }
-
-      72% {
-        opacity: 0;
-        transform: translate(10px, 10px)
-      }
-
-      100% {
-        opacity: 0
-      }
-    }
-
-    /* Shared highlight animation */
-    .hla {
-      animation: hlOn var(--dur) ease infinite
-    }
-
-    @keyframes hlOn {
-
-      0%,
-      24% {
-        opacity: 0
-      }
-
-      32%,
-      58% {
-        opacity: 1
-      }
-
-      66%,
-      100% {
-        opacity: 0
-      }
-    }
-
-    /* === PANEL DURATIONS === */
-    .d1 {
-      --dur: 7.2s
-    }
-
-    .d2 {
-      --dur: 8.4s
-    }
-
-    .d3 {
-      --dur: 7.8s
-    }
-
-    .d4 {
-      --dur: 9s
-    }
-
-    /* === PANEL 1: BUTTON HOVER === */
-    .dem-btn {
-      font-family: var(--mono);
-      font-size: .6rem;
-      font-weight: 600;
-      padding: 9px 22px;
-      border: none;
-      border-radius: 3px;
-      color: #fff;
-      background: var(--accent);
-      cursor: default;
-      transition: none
-    }
-
-    .d1 .dem-btn {
-      animation: btnHov var(--dur) ease infinite
-    }
-
-    @keyframes btnHov {
-
-      0%,
-      26% {
-        background-color: var(--accent);
-        box-shadow: none
-      }
-
-      36%,
-      54% {
-        background-color: var(--accent-dm);
-        box-shadow: 0 4px 14px rgba(0, 0, 0, .35)
-      }
-
-      64%,
-      100% {
-        background-color: var(--accent);
-        box-shadow: none
-      }
-    }
-
-    /* === PANEL 2: NAV LINK HOVER === */
-    .dem-nav {
-      display: flex;
-      gap: 16px;
-      align-items: center;
-      padding: 8px 12px;
-      background: var(--bg-el);
+      flex-direction: column;
+      overflow: hidden;
       border: 1px solid var(--border);
-      border-radius: 3px;
-      width: 100%
     }
 
-    .dem-nav-logo {
-      font-family: var(--mono);
-      font-size: .52rem;
-      font-weight: 700;
-      color: var(--fg);
-      letter-spacing: .06em
-    }
-
-    .dem-nav-link {
-      font-size: .56rem;
-      color: var(--fg-dim);
-      position: relative;
-      padding-bottom: 2px;
-      cursor: default
-    }
-
-    .dem-nav-link-svc .dem-nav-text {
-      animation: navClr var(--dur) ease infinite
-    }
-
-    .dem-nav-link-svc .dem-nav-line {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
+    .accent-bar {
       height: 2px;
       background: var(--accent);
-      border-radius: 1px;
-      transform: scaleX(0);
-      transform-origin: left;
-      animation: navLine var(--dur) ease infinite
+      width: 100%;
     }
 
-    @keyframes navClr {
-
-      0%,
-      26% {
-        color: var(--fg-dim)
-      }
-
-      36%,
-      54% {
-        color: var(--accent-br)
-      }
-
-      64%,
-      100% {
-        color: var(--fg-dim)
-      }
-    }
-
-    @keyframes navLine {
-
-      0%,
-      26% {
-        transform: scaleX(0)
-      }
-
-      36%,
-      54% {
-        transform: scaleX(1)
-      }
-
-      64%,
-      100% {
-        transform: scaleX(0)
-      }
-    }
-
-    /* === PANEL 3: CARD HOVER === */
-    .dem-card {
-      width: 85%;
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      background: var(--bg-el);
-      overflow: hidden;
-      cursor: default;
-      transition: none
-    }
-
-    .dem-card-h {
-      height: 36px;
-      background: linear-gradient(135deg, #92400e, #d97706);
+    .card-header {
+      padding: 12px 16px;
       display: flex;
       align-items: center;
-      justify-content: center
+      gap: 8px;
+      position: relative;
     }
 
-    .dem-card-h span {
-      font-size: .5rem;
-      color: rgba(255, 255, 255, .6);
-      font-family: var(--mono)
+    .num-box {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 2px 5px;
+      line-height: 1;
+      border-radius: 2px;
     }
 
-    .dem-card-bd {
-      padding: 10px 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 3px
-    }
-
-    .dem-card-t {
-      font-size: .68rem;
-      font-weight: 700;
-      color: var(--fg)
-    }
-
-    .dem-card-s {
-      font-size: .5rem;
-      color: var(--fg-dim);
-      line-height: 1.4
-    }
-
-    .dem-card-btn {
-      font-family: var(--mono);
-      font-size: .46rem;
+    .card-title {
+      font-family: var(--font-sans);
+      font-size: 14px;
       font-weight: 600;
-      padding: 4px 10px;
-      background: rgba(255, 255, 255, .06);
-      border: 1px solid rgba(255, 255, 255, .1);
-      border-radius: 3px;
-      color: var(--fg-dim);
-      align-self: flex-start;
-      margin-top: 6px
+      color: var(--text-main);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
-    .d3 .dem-card {
-      animation: cardHov var(--dur) ease infinite
+    .indicator {
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      position: absolute;
+      top: 15px;
+      right: 16px;
+      box-shadow: 0 0 8px var(--accent);
+      animation: blink 1.5s infinite;
     }
 
-    @keyframes cardHov {
-
-      0%,
-      26% {
-        transform: translateY(0);
-        box-shadow: none
-      }
-
-      36%,
-      54% {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, .3)
-      }
-
-      64%,
-      100% {
-        transform: translateY(0);
-        box-shadow: none
-      }
+    @keyframes blink {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(0.8); }
     }
 
-    /* === PANEL 4: ICON HOVER === */
-    .dem-icon {
-      cursor: default;
-      transition: none;
+    .sim-area {
+      height: 180px;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      gap: 6px
+      justify-content: center;
+      position: relative;
+      background: radial-gradient(circle at center, #1c1c24 0%, #16161b 100%);
+      padding: 20px;
     }
 
-    .dem-icon svg {
-      transition: none
+    .ins {
+      padding: 12px 16px;
+      border-left: 2px solid var(--accent);
+      font-size: 11.5px;
+      color: var(--text-dim);
+      background: rgba(232, 140, 46, 0.03);
+      line-height: 1.6;
     }
 
-    .dem-icon-label {
-      font-family: var(--mono);
-      font-size: .48rem;
-      color: var(--fg-muted)
+    .ins strong {
+      color: var(--accent);
+      font-weight: 600;
     }
 
-    .d4 .dem-icon {
-      animation: iconHov var(--dur) ease infinite
+    /* Simulation Elements */
+    .btn-hover {
+      padding: 10px 24px;
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-size: 13px;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      cursor: default;
     }
 
-    .d4 .dem-icon svg {
-      animation: iconSvg var(--dur) ease infinite
+    .card-lift {
+      width: 140px;
+      height: 100px;
+      background: #2a2a35;
+      border-radius: 8px;
+      border: 1px solid #3a3a45;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: #888;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
 
-    @keyframes iconHov {
-
-      0%,
-      26% {
-        transform: scale(1)
-      }
-
-      36%,
-      54% {
-        transform: scale(1.2)
-      }
-
-      64%,
-      100% {
-        transform: scale(1)
-      }
+    .detail-reveal {
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 13px;
+      position: relative;
     }
 
-    @keyframes iconSvg {
-
-      0%,
-      26% {
-        stroke: var(--fg-muted);
-        fill: none
-      }
-
-      36%,
-      54% {
-        stroke: #ef4444;
-        fill: rgba(239, 68, 68, .15)
-      }
-
-      64%,
-      100% {
-        stroke: var(--fg-muted);
-        fill: none
-      }
+    .tooltip {
+      position: absolute;
+      bottom: 120%;
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      background: var(--accent);
+      color: #000;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      white-space: nowrap;
+      opacity: 0;
+      transition: all 0.3s ease;
     }
 
-    /* === INSIGHT BAR === */
-    .insight-bar {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-left: 3px solid var(--accent);
-      padding: 14px 18px;
-      margin-bottom: 0;
-      border-radius: 0 var(--radius) var(--radius) 0
+    .icon-scale {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-dim);
+      transition: all 0.3s ease;
     }
 
-    .insight-bar p {
-      font-size: .88rem;
-      color: var(--fg);
-      line-height: 1.5;
-      font-weight: 500
+    .cursor {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      pointer-events: none;
+      z-index: 100;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
     }
 
-    .insight-bar p span {
-      color: var(--accent-br);
-      font-weight: 700
+    /* Loop Animations */
+    @keyframes moveCursor1 {
+      0%, 10% { transform: translate(-40px, 40px); opacity: 0; }
+      20% { opacity: 1; }
+      40%, 60% { transform: translate(0, 0); opacity: 1; }
+      80% { transform: translate(40px, -40px); opacity: 0; }
+      100% { transform: translate(40px, -40px); opacity: 0; }
     }
 
-    @media(prefers-reduced-motion:reduce) {
-
-      .d1 .dem-btn,
-      .d2 .dem-nav-link-svc .dem-nav-text,
-      .d2 .dem-nav-link-svc .dem-nav-line,
-      .d3 .dem-card,
-      .d4 .dem-icon,
-      .d4 .dem-icon svg,
-      .ld,
-      .lh,
-      .lp,
-      .lc,
-      .hla {
-        animation: none !important
-      }
-
-      .d1 .dem-btn {
-        background-color: var(--accent-dm);
-        box-shadow: 0 4px 14px rgba(0, 0, 0, .35)
-      }
-
-      .d2 .dem-nav-link-svc .dem-nav-text {
-        color: var(--accent-br)
-      }
-
-      .d2 .dem-nav-link-svc .dem-nav-line {
-        transform: scaleX(1)
-      }
-
-      .d3 .dem-card {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, .3)
-      }
-
-      .d4 .dem-icon {
-        transform: scale(1.2)
-      }
-
-      .d4 .dem-icon svg {
-        stroke: #ef4444;
-        fill: rgba(239, 68, 68, .15)
-      }
-
-      .ld,
-      .lh,
-      .lp,
-      .lc {
-        display: none !important
-      }
-
-      .hla {
-        opacity: 1 !important
-      }
+    @keyframes buttonState {
+      0%, 40% { background: transparent; color: var(--accent); box-shadow: none; }
+      45%, 60% { background: var(--accent); color: #000; box-shadow: 0 0 20px rgba(232, 140, 46, 0.4); }
+      65%, 100% { background: transparent; color: var(--accent); box-shadow: none; }
     }
+
+    @keyframes liftState {
+      0%, 40% { transform: translateY(0); box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-color: #3a3a45; }
+      45%, 60% { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.5); border-color: var(--accent); }
+      65%, 100% { transform: translateY(0); box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-color: #3a3a45; }
+    }
+
+    @keyframes revealState {
+      0%, 40% { opacity: 0; transform: translateX(-50%) translateY(10px); }
+      45%, 60% { opacity: 1; transform: translateX(-50%) translateY(0); }
+      65%, 100% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+    }
+
+    @keyframes scaleState {
+      0%, 40% { transform: scale(1); color: var(--text-dim); }
+      45%, 60% { transform: scale(1.4) rotate(5deg); color: var(--accent); }
+      65%, 100% { transform: scale(1); color: var(--text-dim); }
+    }
+
+    .card:nth-child(1) .cursor { animation: moveCursor1 3s infinite; }
+    .card:nth-child(1) .btn-hover { animation: buttonState 3s infinite; }
+
+    .card:nth-child(2) .cursor { animation: moveCursor1 3.5s infinite; }
+    .card:nth-child(2) .card-lift { animation: liftState 3.5s infinite; }
+
+    .card:nth-child(3) .cursor { animation: moveCursor1 4s infinite; }
+    .card:nth-child(3) .tooltip { animation: revealState 4s infinite; }
+
+    .card:nth-child(4) .cursor { animation: moveCursor1 2.5s infinite; }
+    .card:nth-child(4) .icon-scale { animation: scaleState 2.5s infinite; }
+
   </style>
 </head>
-
 <body>
-  <div id="app-root">
-    <div class="sim-grid">
-      <!-- PANEL 1: Button Hover -->
-      <div class="sp d1">
-        <div class="sp-label">01 — Button Hover</div>
-        <div class="sp-body">
-          <div class="hover-hl hla" style="inset:8px 20px;border-radius:5px"></div>
-          <div class="sim-cur lc" style="top:25px;left:35%">
-            <svg viewBox="0 0 24 24">
-              <path d="M4 4l7.07 16.97 2.51-7.39 7.39-2.51L4 4z" fill="white" stroke="black" stroke-width="1.5" />
-            </svg>
-          </div>
-          <button class="dem-btn">Get Started</button>
-          <div class="albl albl-st ld" style="bottom:10px;left:50%;transform:translateX(-50%)">default</div>
-          <div class="albl albl-hv lh" style="bottom:10px;left:50%;transform:translateX(-50%)">:hover active</div>
-          <div class="albl albl-pr lp" style="top:10px;right:10px">bg darkens + shadow</div>
-        </div>
-        <div class="sp-insight">Button hover = <em>background + shadow</em> thay đổi khi chuột vào</div>
+  <div class="demo-container">
+    <!-- CELL 1: FEEDBACK -->
+    <div class="card">
+      <div class="accent-bar"></div>
+      <div class="card-header">
+        <div class="num-box">01</div>
+        <div class="card-title">Interaction Feedback</div>
+        <div class="indicator"></div>
       </div>
-
-      <!-- PANEL 2: Nav Link Hover -->
-      <div class="sp d2">
-        <div class="sp-label">02 — Nav Link Hover</div>
-        <div class="sp-body" style="flex-direction:column;align-items:stretch;justify-content:center">
-          <div class="dem-nav">
-            <span class="dem-nav-logo">NOVA</span>
-            <span class="dem-nav-link">Home</span>
-            <span class="dem-nav-link">About</span>
-            <span class="dem-nav-link dem-nav-link-svc">
-              <span class="dem-nav-text">Services</span>
-              <span class="dem-nav-line"></span>
-            </span>
-            <span class="dem-nav-link">Contact</span>
-          </div>
-          <div class="hover-hl hla" style="top:4px;height:28px;border-radius:3px" id="navHl"></div>
-          <div class="sim-cur lc" style="top:20px;right:40%">
-            <svg viewBox="0 0 24 24">
-              <path d="M4 4l7.07 16.97 2.51-7.39 7.39-2.51L4 4z" fill="white" stroke="black" stroke-width="1.5" />
-            </svg>
-          </div>
-          <div class="albl albl-st ld" style="bottom:10px;left:10px">default</div>
-          <div class="albl albl-hv lh" style="bottom:10px;left:10px">:hover active</div>
-          <div class="albl albl-pr lp" style="bottom:10px;right:10px">color + underline</div>
-        </div>
-        <div class="sp-insight">Link hover = <em>màu + gạch chân</em>, cho biết link có thể bấm</div>
+      <div class="sim-area">
+        <svg class="cursor" viewBox="0 0 24 24" fill="white" stroke="black" stroke-width="1.5">
+          <path d="M4.5 3l15 11-7 1.5L16 21l-3 1.5-3.5-6.5L4.5 3z"/>
+        </svg>
+        <button class="btn-hover">HOVER ME</button>
       </div>
-
-      <!-- PANEL 3: Card Hover -->
-      <div class="sp d3">
-        <div class="sp-label">03 — Card Hover</div>
-        <div class="sp-body">
-          <div class="hover-hl hla" style="inset:6px;border-radius:6px"></div>
-          <div class="sim-cur lc" style="top:40px;right:25%">
-            <svg viewBox="0 0 24 24">
-              <path d="M4 4l7.07 16.97 2.51-7.39 7.39-2.51L4 4z" fill="white" stroke="black" stroke-width="1.5" />
-            </svg>
-          </div>
-          <div class="dem-card">
-            <div class="dem-card-h"><span>CARD</span></div>
-            <div class="dem-card-bd">
-              <div class="dem-card-t">Mountain Retreat</div>
-              <div class="dem-card-s">Escape to the mountains for a weekend of peace</div>
-              <span class="dem-card-btn">View Details</span>
-            </div>
-          </div>
-          <div class="albl albl-st ld" style="bottom:10px;left:10px">default</div>
-          <div class="albl albl-hv lh" style="bottom:10px;left:10px">:hover active</div>
-          <div class="albl albl-pr lp" style="top:10px;right:10px">lift + shadow grows</div>
-        </div>
-        <div class="sp-insight">Card hover = <em>nâng lên + bóng đổ</em>, tạo cảm giác "sẵn sàng bấm"</div>
-      </div>
-
-      <!-- PANEL 4: Icon Hover -->
-      <div class="sp d4">
-        <div class="sp-label">04 — Icon Hover</div>
-        <div class="sp-body">
-          <div class="hover-hl hla" style="inset:14px 30px;border-radius:8px"></div>
-          <div class="sim-cur lc" style="top:30px;left:40%">
-            <svg viewBox="0 0 24 24">
-              <path d="M4 4l7.07 16.97 2.51-7.39 7.39-2.51L4 4z" fill="white" stroke="black" stroke-width="1.5" />
-            </svg>
-          </div>
-          <div class="dem-icon">
-            <svg viewBox="0 0 24 24" width="52" height="52" stroke="currentColor" stroke-width="1.5" fill="none"
-              stroke-linecap="round" stroke-linejoin="round">
-              <path
-                d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z" />
-            </svg>
-            <span class="dem-icon-label">Add to favorites</span>
-          </div>
-          <div class="albl albl-st ld" style="bottom:10px;left:50%;transform:translateX(-50%)">default</div>
-          <div class="albl albl-hv lh" style="bottom:10px;left:50%;transform:translateX(-50%)">:hover active</div>
-          <div class="albl albl-pr lp" style="top:10px;right:10px">scale up + fill color</div>
-        </div>
-        <div class="sp-insight">Icon hover = <em>phóng to + đổi màu</em>, phản hồi tức thì cho action nhỏ</div>
+      <div class="ins">
+        Khi chuột di vào, element thay đổi <strong>background</strong> và <strong>box-shadow</strong> để xác nhận khả năng tương tác (Feedback).
       </div>
     </div>
 
-    <!-- INSIGHT BAR -->
-    <div class="insight-bar">
-      <p>Hover = <span>chỉ hoạt động khi chuột TRÊN element</span>. Rút ra = quay về cũ. Không cần click, không cần
-        load.</p>
+    <!-- CELL 2: ELEVATION -->
+    <div class="card">
+      <div class="accent-bar"></div>
+      <div class="card-header">
+        <div class="num-box">02</div>
+        <div class="card-title">Depth & Elevation</div>
+        <div class="indicator"></div>
+      </div>
+      <div class="sim-area">
+        <svg class="cursor" viewBox="0 0 24 24" fill="white" stroke="black" stroke-width="1.5">
+          <path d="M4.5 3l15 11-7 1.5L16 21l-3 1.5-3.5-6.5L4.5 3z"/>
+        </svg>
+        <div class="card-lift">Product Card</div>
+      </div>
+      <div class="ins">
+        Hiệu ứng <strong>Lift (nâng lên)</strong> kết hợp bóng đổ giúp element nổi bật trên mặt phẳng, tạo cảm giác <strong>sẵn sàng để click</strong>.
+      </div>
+    </div>
+
+    <!-- CELL 3: REVEAL -->
+    <div class="card">
+      <div class="accent-bar"></div>
+      <div class="card-header">
+        <div class="num-box">03</div>
+        <div class="card-title">Detail Discovery</div>
+        <div class="indicator"></div>
+      </div>
+      <div class="sim-area">
+        <svg class="cursor" viewBox="0 0 24 24" fill="white" stroke="black" stroke-width="1.5">
+          <path d="M4.5 3l15 11-7 1.5L16 21l-3 1.5-3.5-6.5L4.5 3z"/>
+        </svg>
+        <div class="detail-reveal">
+          <div class="tooltip">Price: $99.00</div>
+          <span>Hover to see price</span>
+        </div>
+      </div>
+      <div class="ins">
+        Hover được dùng để <strong>tiết lộ thông tin phụ</strong> (như Tooltip hoặc Menu) giúp giao diện gọn gàng hơn khi ở trạng thái nghỉ.
+      </div>
+    </div>
+
+    <!-- CELL 4: EMPHASIS -->
+    <div class="card">
+      <div class="accent-bar"></div>
+      <div class="card-header">
+        <div class="num-box">04</div>
+        <div class="card-title">Visual Emphasis</div>
+        <div class="indicator"></div>
+      </div>
+      <div class="sim-area">
+        <svg class="cursor" viewBox="0 0 24 24" fill="white" stroke="black" stroke-width="1.5">
+          <path d="M4.5 3l15 11-7 1.5L16 21l-3 1.5-3.5-6.5L4.5 3z"/>
+        </svg>
+        <div class="icon-scale">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"></path>
+          </svg>
+        </div>
+      </div>
+      <div class="ins">
+        Sử dụng <strong>Scale (phóng to)</strong> và thay đổi màu sắc mạnh để <strong>nhấn mạnh hành động</strong> nhỏ như Icon Buttons hoặc Links.
+      </div>
     </div>
   </div>
 </body>
-
 </html>

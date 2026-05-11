@@ -1,318 +1,423 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hover Practice — Vibecode Glossary</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-:root{
-  --bg:#131313;--bg-card:#1a1a1a;--bg-el:#222;
-  --fg:#ede8df;--fg-dim:#9a9590;--fg-muted:#5c5752;
-  --accent:#d97706;--accent-br:#f59e0b;--accent-dm:#92400e;
-  --border:#2e2e2e;--radius:2px;
-  --sans:'Space Grotesk',sans-serif;--mono:'IBM Plex Mono',monospace;
-}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{font-size:16px;-webkit-font-smoothing:antialiased}
-body{
-  font-family:var(--sans);color:var(--fg);line-height:1.5;
-  background-color:var(--bg);
-}
-#app-root{padding:20px}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hover Strategy Lab — Amber Brutalist</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --amber: #E88C2E;
+            --bg: #0f0f12;
+            --card-bg: #16161b;
+            --border: #282830;
+            --text: #e8e4dc;
+            --muted: #707070;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #F44336;
+        }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-/* === PRACTICE === */
-.practice{margin-bottom:40px}
-.practice-hdr{margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:18px}
-.practice-hdr .badge{margin-bottom:10px}
-.practice-hdr h2{margin-bottom:6px;font-size:clamp(1.1rem,2.5vw,1.35rem);font-weight:600;letter-spacing:-.02em;line-height:1.2}
-.practice-desc{font-size:.85rem;color:var(--fg-dim)}
-.practice-hint{font-family:var(--mono);font-size:.68rem;color:var(--fg-muted);margin-top:8px}
-.practice-body{display:grid;grid-template-columns:1fr;gap:20px;margin-bottom:16px}
-@media(min-width:640px){.practice-body{grid-template-columns:240px 1fr}}
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            padding: 16px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
 
-/* Toggle rows */
-.ctrl-section{font-family:var(--mono);font-size:.52rem;color:var(--fg-muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
-.ctrl-toggles{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
-.ctrl-toggle{display:flex;align-items:center;justify-content:space-between;padding:6px 0}
-.ctrl-toggle-name{font-size:.78rem;color:var(--fg);font-weight:500}
-.ctrl-toggle-sub{font-family:var(--mono);font-size:.48rem;color:var(--fg-muted);display:block;margin-top:1px}
-.toggle-sw{position:relative;width:38px;height:20px;flex-shrink:0;cursor:pointer}
-.toggle-sw input{opacity:0;width:0;height:0;position:absolute}
-.toggle-track{position:absolute;inset:0;background:var(--bg-el);border:1px solid var(--border);border-radius:10px;transition:background .2s,border-color .2s}
-.toggle-sw input:checked+.toggle-track{background:var(--accent);border-color:var(--accent)}
-.toggle-knob{position:absolute;top:2px;left:2px;width:16px;height:16px;background:var(--fg-dim);border-radius:50%;transition:transform .2s,background .2s;pointer-events:none}
-.toggle-sw input:checked~.toggle-knob{transform:translateX(18px);background:var(--bg)}
-.toggle-sw:focus-within .toggle-track{outline:2px solid var(--accent);outline-offset:2px}
+        .lab-container {
+            width: 100%;
+            max-width: 900px;
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 16px;
+        }
 
-/* Slider */
-.ctrl-slider{margin-bottom:14px}
-.ctrl-slider-hdr{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px}
-.ctrl-slider-lbl{font-family:var(--mono);font-size:.56rem;color:var(--fg-muted);text-transform:uppercase;letter-spacing:.08em}
-.ctrl-slider-val{font-family:var(--mono);font-size:.78rem;font-weight:700;color:var(--accent-br);min-width:36px;text-align:right}
-.ctrl-slider input[type=range]{width:100%;height:6px;-webkit-appearance:none;appearance:none;background:var(--bg-el);border:1px solid var(--border);border-radius:3px;outline:none;cursor:pointer}
-.ctrl-slider input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;background:var(--accent);border-radius:50%;border:2px solid var(--bg);cursor:pointer}
-.ctrl-slider input[type=range]::-moz-range-thumb{width:16px;height:16px;background:var(--accent);border-radius:50%;border:2px solid var(--bg);cursor:pointer}
+        @media (max-width: 800px) {
+            .lab-container { grid-template-columns: 1fr; }
+        }
 
-.ctrl-note{font-family:var(--mono);font-size:.52rem;color:var(--fg-muted);line-height:1.5;padding:8px 0;border-top:1px solid var(--border)}
-.ctrl-note strong{color:var(--fg-dim);font-weight:600}
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
 
-/* Preview */
-.prev-wrap{display:flex;flex-direction:column;gap:12px}
-.prev-label{font-family:var(--mono);font-size:.56rem;color:var(--fg-muted);text-transform:uppercase;letter-spacing:.1em}
-.prev-scene{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;align-items:center;gap:14px}
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--amber);
+            z-index: 10;
+        }
 
-/* Practice card */
-.prac-card{width:100%;max-width:320px;border:1px solid var(--border);border-radius:4px;background:var(--bg-el);overflow:hidden}
-.prac-card-h{height:48px;background:linear-gradient(135deg,#92400e,#d97706);display:flex;align-items:center;justify-content:center}
-.prac-card-h span{font-size:.6rem;color:rgba(255,255,255,.65);font-family:var(--mono);font-weight:500}
-.prac-card-bd{padding:14px 16px;display:flex;flex-direction:column;gap:4px}
-.prac-card-t{font-size:.82rem;font-weight:700;color:var(--fg);line-height:1.2}
-.prac-card-s{font-size:.58rem;color:var(--fg-dim);line-height:1.5}
-.prac-card-btn{font-family:var(--mono);font-size:.52rem;font-weight:600;padding:7px 14px;border:1px solid rgba(255,255,255,.1);border-radius:3px;color:var(--fg-dim);align-self:flex-start;margin-top:8px;display:inline-block}
+        .card-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255,255,255,0.02);
+        }
 
-/* Practice button */
-.prac-btn{font-family:var(--mono);font-size:.58rem;font-weight:600;padding:9px 22px;border:none;border-radius:3px;color:#fff;background:var(--accent);cursor:default}
+        .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--amber);
+        }
 
-/* State indicator */
-.prac-state{font-family:var(--mono);font-size:.56rem;color:var(--fg-muted);text-align:center;transition:color .2s}
-.prac-state span{font-weight:600}
-.prac-state .s-def{color:var(--fg-muted)}
-.prac-state .s-hov{color:var(--accent-br)}
+        /* --- Preview Area --- */
+        .preview-area {
+            height: 320px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
 
-/* CSS Output */
-.css-out{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;width:100%}
-.css-out-hdr{display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
-.css-out-lbl{font-family:var(--mono);font-size:.52rem;color:var(--fg-muted);text-transform:uppercase;letter-spacing:.08em}
-.css-copy{font-family:var(--mono);font-size:.52rem;font-weight:600;color:var(--accent);background:none;border:1px solid var(--accent-dm);padding:2px 8px;border-radius:var(--radius);cursor:pointer;transition:all .15s}
-.css-copy:hover{background:rgba(217,119,6,.1);border-color:var(--accent)}
-.css-code{padding:10px 12px;font-family:var(--mono);font-size:.56rem;color:var(--fg-dim);line-height:1.7;white-space:pre-wrap}
-.css-code .cv{color:var(--accent-br)}
-.css-code .cm{color:var(--fg-muted)}
-.css-copy-msg{font-family:var(--mono);font-size:.5rem;color:#4ade80;opacity:0;transition:opacity .2s}
-.css-copy-msg.show{opacity:1}
+        /* Test Subjects */
+        .test-btn {
+            padding: 12px 32px;
+            background: transparent;
+            border: 1.5px solid var(--amber);
+            color: var(--amber);
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 14px;
+        }
 
-</style>
+        .test-card {
+            width: 200px;
+            padding: 20px;
+            background: #24242c;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .test-icon {
+            width: 64px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #24242c;
+            border-radius: 50%;
+            color: var(--muted);
+            cursor: pointer;
+        }
+
+        /* Strategy Panel */
+        .strategy-panel {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .config-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .config-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+
+        .option-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+        }
+
+        .option-btn {
+            background: #1a1a20;
+            border: 1px solid var(--border);
+            padding: 8px;
+            font-size: 11px;
+            color: var(--muted);
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+        }
+
+        .option-btn:hover { border-color: var(--amber); }
+        .option-btn.active {
+            border-color: var(--amber);
+            background: rgba(232, 140, 46, 0.1);
+            color: var(--amber);
+        }
+
+        /* Audit Results */
+        .audit-results {
+            padding: 16px;
+            background: #0d0d10;
+            border-top: 1px solid var(--border);
+        }
+
+        .score-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .gauge-container {
+            height: 4px;
+            background: #222;
+            width: 100%;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        #score-gauge {
+            height: 100%;
+            width: 0%;
+            background: var(--danger);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .feedback-box {
+            margin-top: 12px;
+            font-size: 11px;
+            line-height: 1.5;
+            color: var(--muted);
+            min-height: 33px;
+        }
+        .feedback-box span { color: var(--amber); }
+
+        .ins-box {
+            border-left: 2px solid var(--amber);
+            padding-left: 12px;
+            margin-top: 16px;
+            font-size: 11px;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        /* Dynamic Classes Applied via JS */
+        .hover-active-bg:hover { background: var(--amber) !important; color: #000 !important; }
+        .hover-active-shadow:hover { box-shadow: 0 10px 30px rgba(0,0,0,0.6) !important; border-color: var(--amber) !important; }
+        .hover-active-lift:hover { transform: translateY(-8px) !important; }
+        .hover-active-scale:hover { transform: scale(1.1) !important; }
+        .hover-active-color:hover { color: var(--amber) !important; border-color: var(--amber) !important; }
+
+    </style>
 </head>
 <body>
-<div id="app-root">
-  <!-- PRACTICE -->
-  <section class="practice" aria-label="Thực hành">
-    <div class="practice-hdr">
-      <h2>Bật/tắt property hover, rồi di chuột vào để thấy</h2>
-      <p class="practice-desc">Chọn property → điều chỉnh thời gian → hover trực tiếp lên element phía dưới.</p>
-      <p class="practice-hint">&#9889; Tắt tất cả property rồi hover — không có gì thay đổi. Bật lại từng cái để thấy khác biệt.</p>
+
+<div class="lab-container">
+    <!-- Left: Preview -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">Strategy Lab: Hover UX Audit</div>
+            <div style="font-family: 'JetBrains Mono'; font-size: 9px; color: var(--muted);">v1.0.4</div>
+        </div>
+        
+        <div class="preview-area" id="preview-canvas">
+            <!-- Subject will be injected here -->
+            <button id="subject-btn" class="test-btn">HOVER ACTION</button>
+            <div id="subject-card" class="test-card" style="display:none;">
+                <div style="font-size: 24px; margin-bottom: 8px;">📦</div>
+                <div style="font-weight: 700; font-size: 14px;">Product Card</div>
+                <div style="font-size: 10px; color: var(--muted); margin-top: 4px;">Tactile Response Test</div>
+            </div>
+            <div id="subject-icon" class="test-icon" style="display:none;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"></path><path d="M18 20V4"></path><path d="M6 20v-4"></path></svg>
+            </div>
+        </div>
+
+        <div class="audit-results">
+            <div class="score-header">
+                <span class="config-label">UX Feeling Score</span>
+                <span id="score-text" style="font-family: 'JetBrains Mono'; font-size: 11px; font-weight: 700;">0/100</span>
+            </div>
+            <div class="gauge-container">
+                <div id="score-gauge"></div>
+            </div>
+            <div class="feedback-box" id="feedback">
+                <span>Nhận xét:</span> Di chuột vào element để kiểm tra cảm giác tương tác.
+            </div>
+        </div>
     </div>
 
-    <div class="practice-body">
-      <!-- Controls -->
-      <div>
-        <div class="ctrl-section">Hover Properties</div>
-        <div class="ctrl-toggles">
-          <label class="ctrl-toggle">
-            <div>
-              <span class="ctrl-toggle-name">Background Color</span>
-              <span class="ctrl-toggle-sub">background-color thay đổi</span>
+    <!-- Right: Controls -->
+    <div class="card">
+        <div class="strategy-panel">
+            <div class="config-group">
+                <span class="config-label">1. Element Type</span>
+                <div class="option-grid">
+                    <button class="option-btn active" data-type="target" data-val="button">Button</button>
+                    <button class="option-btn" data-type="target" data-val="card">Card</button>
+                    <button class="option-btn" data-type="target" data-val="icon">Icon</button>
+                </div>
             </div>
-            <span class="toggle-sw"><input type="checkbox" data-prop="bg" checked><span class="toggle-track"></span><span class="toggle-knob"></span></span>
-          </label>
-          <label class="ctrl-toggle">
-            <div>
-              <span class="ctrl-toggle-name">Box Shadow</span>
-              <span class="ctrl-toggle-sub">bóng đổ xuất hiện</span>
-            </div>
-            <span class="toggle-sw"><input type="checkbox" data-prop="shadow" checked><span class="toggle-track"></span><span class="toggle-knob"></span></span>
-          </label>
-          <label class="ctrl-toggle">
-            <div>
-              <span class="ctrl-toggle-name">Lift Up</span>
-              <span class="ctrl-toggle-sub">translateY(-4px)</span>
-            </div>
-            <span class="toggle-sw"><input type="checkbox" data-prop="lift"><span class="toggle-track"></span><span class="toggle-knob"></span></span>
-          </label>
-          <label class="ctrl-toggle">
-            <div>
-              <span class="ctrl-toggle-name">Scale Up</span>
-              <span class="ctrl-toggle-sub">scale(1.03)</span>
-            </div>
-            <span class="toggle-sw"><input type="checkbox" data-prop="scale"><span class="toggle-track"></span><span class="toggle-knob"></span></span>
-          </label>
-        </div>
 
-        <div class="ctrl-section">Transition Duration</div>
-        <div class="ctrl-slider">
-          <div class="ctrl-slider-hdr">
-            <span class="ctrl-slider-lbl">Thời gian</span>
-            <span class="ctrl-slider-val" id="durVal">0.2s</span>
-          </div>
-          <input type="range" min="0" max="15" value="2" id="durSlider" aria-label="Thời gian transition">
-        </div>
-
-        <div class="ctrl-note">
-          <strong>Lưu ý:</strong> Duration = 0 → hover thay đổi ngay lập tức (giật). Duration lớn → chuyển đổi chậm mượt.
-        </div>
-      </div>
-
-      <!-- Preview -->
-      <div class="prev-wrap">
-        <div class="prev-label">Di chuột vào element bên dưới</div>
-        <div class="prev-scene">
-          <div class="prac-card" id="pracCard">
-            <div class="prac-card-h"><span>CARD</span></div>
-            <div class="prac-card-bd">
-              <div class="prac-card-t">Summer Campaign 2025</div>
-              <div class="prac-card-s">Quản lý toàn bộ chiến dịch quảng cáo cho mùa hè — budget, creatives, performance.</div>
-              <span class="prac-card-btn">View Details</span>
+            <div class="config-group">
+                <span class="config-label">2. Response Strategy</span>
+                <div class="option-grid">
+                    <button class="option-btn active" data-type="effect" data-val="feedback">Feedback</button>
+                    <button class="option-btn" data-type="effect" data-val="elevation">Elevation</button>
+                    <button class="option-btn" data-type="effect" data-val="emphasis">Emphasis</button>
+                </div>
             </div>
-          </div>
-          <button class="prac-btn" id="pracBtn">Submit</button>
-          <div class="prac-state" id="pracState">Trạng thái: <span class="s-def">default</span></div>
-        </div>
-        <div class="css-out">
-          <div class="css-out-hdr">
-            <span class="css-out-lbl">CSS Output</span>
-            <div style="display:flex;align-items:center;gap:6px">
-              <span class="css-copy-msg" id="copyMsg">Copied!</span>
-              <button class="css-copy" id="copyBtn">Copy</button>
+
+            <div class="config-group">
+                <span class="config-label">3. Timing (Duration)</span>
+                <div class="option-grid">
+                    <button class="option-btn" data-type="speed" data-val="0">Instant (0s)</button>
+                    <button class="option-btn active" data-type="speed" data-val="0.2">Fast (0.2s)</button>
+                    <button class="option-btn" data-type="speed" data-val="0.6">Smooth (0.6s)</button>
+                    <button class="option-btn" data-type="speed" data-val="1.5">Slow (1.5s)</button>
+                </div>
             </div>
-          </div>
-          <div class="css-code" id="cssCode"></div>
+
+            <div class="config-group">
+                <span class="config-label">4. Easing Function</span>
+                <div class="option-grid">
+                    <button class="option-btn active" data-type="easing" data-val="ease-out">Ease Out</button>
+                    <button class="option-btn" data-type="easing" data-val="linear">Linear</button>
+                    <button class="option-btn" data-type="easing" data-val="cubic-bezier(0.34, 1.56, 0.64, 1)">Bounce</button>
+                </div>
+            </div>
+
+            <div class="ins-box">
+                <strong>Gợi ý:</strong> Hover không có transition (Instant) thường gây cảm giác <strong>giật cục</strong> và rẻ tiền. Transition quá lâu (>0.5s) khiến giao diện có vẻ <strong>lag</strong>. 0.2s Ease-Out là "tỷ lệ vàng" cho UX.
+            </div>
         </div>
-      </div>
     </div>
-  </section>
-
 </div>
 
-<!-- Dynamic hover styles — updated by JS -->
-<style id="dynStyles"></style>
-
 <script>
-  /* === STATE === */
-  var props = { bg: true, shadow: true, lift: false, scale: false };
-  var dur = 0.2;
+    const state = {
+        target: 'button',
+        effect: 'feedback',
+        speed: '0.2',
+        easing: 'ease-out'
+    };
 
-  /* === DOM === */
-  var toggles = document.querySelectorAll('.ctrl-toggles input[type=checkbox]');
-  var durSlider = document.getElementById('durSlider');
-  var durVal = document.getElementById('durVal');
-  var pracCard = document.getElementById('pracCard');
-  var pracBtn = document.getElementById('pracBtn');
-  var pracState = document.getElementById('pracState');
-  var dynStyles = document.getElementById('dynStyles');
-  var cssCode = document.getElementById('cssCode');
-  var copyBtn = document.getElementById('copyBtn');
-  var copyMsg = document.getElementById('copyMsg');
+    const subjects = {
+        button: document.getElementById('subject-btn'),
+        card: document.getElementById('subject-card'),
+        icon: document.getElementById('subject-icon')
+    };
 
-  /* === BUILD HOVER CSS === */
-  function buildHoverCSS() {
-    var rules = [];
+    function updateLab() {
+        const scoreGauge = document.getElementById('score-gauge');
+        const scoreText = document.getElementById('score-text');
+        const feedback = document.getElementById('feedback');
 
-    /* Build transform value */
-    var tParts = [];
-    if (props.lift) tParts.push('translateY(-4px)');
-    if (props.scale) tParts.push('scale(1.03)');
-    var transformVal = tParts.length > 0 ? tParts.join(' ') : 'none';
+        // Hide all subjects
+        Object.values(subjects).forEach(s => s.style.display = 'none');
+        
+        // Show current subject
+        const el = subjects[state.target];
+        el.style.display = (state.target === 'icon') ? 'flex' : (state.target === 'button' ? 'block' : 'block');
+        
+        // Clean classes
+        el.className = state.target === 'button' ? 'test-btn' : (state.target === 'card' ? 'test-card' : 'test-icon');
+        
+        // Apply effect class
+        if (state.effect === 'feedback') {
+            if (state.target === 'button') el.classList.add('hover-active-bg');
+            else el.classList.add('hover-active-color');
+        } else if (state.effect === 'elevation') {
+            el.classList.add('hover-active-shadow');
+            el.classList.add('hover-active-lift');
+        } else if (state.effect === 'emphasis') {
+            el.classList.add('hover-active-scale');
+            if (state.target === 'icon') el.classList.add('hover-active-color');
+        }
 
-    /* Card hover */
-    var cardProps = [];
-    if (props.bg) cardProps.push('background-color: #292524');
-    if (props.shadow) cardProps.push('box-shadow: 0 8px 24px rgba(0,0,0,.35)');
-    if (tParts.length > 0) cardProps.push('transform: ' + transformVal);
-    var cardHover = cardProps.length > 0 ? cardProps.join(';\n  ') : '/* không có property */';
+        // Apply Transition
+        el.style.transition = `all ${state.speed}s ${state.easing}`;
 
-    /* Button hover */
-    var btnProps = [];
-    if (props.bg) btnProps.push('background-color: #92400e');
-    if (props.shadow) btnProps.push('box-shadow: 0 4px 12px rgba(0,0,0,.3)');
-    if (tParts.length > 0) btnProps.push('transform: ' + transformVal);
-    var btnHover = btnProps.length > 0 ? btnProps.join(';\n  ') : '/* không có property */';
+        // Calculate Score
+        let score = 0;
+        let tips = "";
 
-    /* Transition line */
-    var transLine = dur > 0
-      ? 'transition: all ' + dur.toFixed(1) + 's ease;'
-      : 'transition: none; /* không mượt */';
+        // Speed Score
+        if (state.speed === '0.2') score += 40;
+        else if (state.speed === '0') { score += 10; tips = "Phản hồi tức thì nhưng thiếu sự mượt mà (jarring)."; }
+        else if (state.speed === '0.6') { score += 25; tips = "Hơi chậm, có thể gây cảm giác nặng nề cho user chuyên nghiệp."; }
+        else { score += 5; tips = "Quá chậm! Tạo cảm giác giao diện bị lag và thiếu phản ứng."; }
 
-    /* Write to dynamic style */
-    dynStyles.textContent =
-      '.prac-card{' + transLine + '}\n' +
-      '.prac-card:hover{' + (cardProps.length > 0 ? '\n  ' + cardHover + ';\n}' : ' /* no hover */ }') + '\n\n' +
-      '.prac-btn{' + transLine + '}\n' +
-      '.prac-btn:hover{' + (btnProps.length > 0 ? '\n  ' + btnHover + ';\n}' : ' /* no hover */ }');
+        // Easing Score
+        if (state.easing === 'ease-out') score += 30;
+        else if (state.easing === 'linear') { score += 15; tips += " Linear tạo cảm giác máy móc, thiếu tự nhiên."; }
+        else { score += 25; tips += " Hiệu ứng Bounce tạo cá tính nhưng nên dùng hạn chế."; }
 
-    /* Update CSS output display */
-    var outputLines = [];
-    outputLines.push('<span class="cm">/* Card */</span>');
-    outputLines.push('<span class="cv">.card { ' + transLine + ' }</span>');
-    outputLines.push('<span class="cv">.card:hover {</span>');
-    if (cardProps.length > 0) {
-      cardProps.forEach(function(p) { outputLines.push('<span class="cv">  ' + p + ';</span>'); });
-    } else {
-      outputLines.push('<span class="cm">  /* không có property */</span>');
+        // Strategy Match
+        if (state.target === 'card' && state.effect === 'elevation') score += 30;
+        else if (state.target === 'button' && state.effect === 'feedback') score += 30;
+        else if (state.target === 'icon' && state.effect === 'emphasis') score += 30;
+        else { score += 20; }
+
+        // Update UI
+        scoreText.textContent = `${score}/100`;
+        scoreGauge.style.width = `${score}%`;
+        
+        if (score < 50) {
+            scoreGauge.style.background = 'var(--danger)';
+            scoreText.style.color = 'var(--danger)';
+        } else if (score < 80) {
+            scoreGauge.style.background = 'var(--warning)';
+            scoreText.style.color = 'var(--warning)';
+        } else {
+            scoreGauge.style.background = 'var(--success)';
+            scoreText.style.color = 'var(--success)';
+        }
+
+        if (tips) {
+            feedback.innerHTML = `<span>Phân tích:</span> ${tips}`;
+        } else {
+            feedback.innerHTML = `<span>Tuyệt vời:</span> Sự kết hợp hoàn hảo giữa tốc độ và hiệu ứng thị giác.`;
+        }
     }
-    outputLines.push('<span class="cv">}</span>');
-    outputLines.push('');
-    outputLines.push('<span class="cm">/* Button — tương tự */</span>');
-    cssCode.innerHTML = outputLines.join('\n');
-  }
 
-  /* === TOGGLE EVENTS === */
-  toggles.forEach(function(tog) {
-    tog.addEventListener('change', function() {
-      props[this.getAttribute('data-prop')] = this.checked;
-      buildHoverCSS();
+    // Event Listeners
+    document.querySelectorAll('.option-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const type = btn.dataset.type;
+            const val = btn.dataset.val;
+
+            state[type] = val;
+            
+            // UI Toggle
+            document.querySelectorAll(`.option-btn[data-type="${type}"]`).forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            updateLab();
+        });
     });
-  });
 
-  /* === DURATION SLIDER === */
-  durSlider.addEventListener('input', function() {
-    dur = parseInt(this.value, 10) / 10;
-    durVal.textContent = dur.toFixed(1) + 's';
-    buildHoverCSS();
-  });
-
-  /* === HOVER STATE DETECTION === */
-  function onEnter() {
-    pracState.innerHTML = 'Trạng thái: <span class="s-hov">:hover active</span>';
-  }
-  function onLeave() {
-    pracState.innerHTML = 'Trạng thái: <span class="s-def">default</span>';
-  }
-  pracCard.addEventListener('mouseenter', onEnter);
-  pracCard.addEventListener('mouseleave', onLeave);
-  pracBtn.addEventListener('mouseenter', onEnter);
-  pracBtn.addEventListener('mouseleave', onLeave);
-
-  /* Touch support — toggle hover state on tap */
-  var isHovered = false;
-  function toggleHover() {
-    isHovered = !isHovered;
-    if (isHovered) { onEnter(); } else { onLeave(); }
-  }
-  pracCard.addEventListener('touchstart', function(e) { e.preventDefault(); toggleHover(); }, { passive: false });
-  pracBtn.addEventListener('touchstart', function(e) { e.preventDefault(); toggleHover(); }, { passive: false });
-
-  /* === COPY === */
-  copyBtn.addEventListener('click', function() {
-    var text = dynStyles.textContent;
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(text).then(showCopy);
-    } else {
-      var ta = document.createElement('textarea');
-      ta.value = text; ta.style.position = 'fixed'; ta.style.left = '-9999px';
-      document.body.appendChild(ta); ta.select(); document.execCommand('copy');
-      document.body.removeChild(ta); showCopy();
-    }
-  });
-
-  function showCopy() {
-    copyMsg.classList.add('show');
-    setTimeout(function() { copyMsg.classList.remove('show'); }, 1500);
-  }
-
-  /* === INIT === */
-  buildHoverCSS();
+    // Initial State
+    updateLab();
 </script>
+
 </body>
 </html>
