@@ -1,743 +1,415 @@
 <!DOCTYPE html>
 <html lang="vi">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Spinner — Animated</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&family=Space+Mono:wght@400;700&display=swap"
-    rel="stylesheet">
-  <style>
-    :root {
-      --bg: #131110;
-      --fg: #e8e0d4;
-      --muted: #706b64;
-      --accent: #e88c2e;
-      --accent-dim: rgba(207, 92, 39, .15);
-      --card: #1c1a18;
-      --card-alt: #242120;
-      --border: #302c28;
-      --border-hi: #44403a;
-      --surface: #1c1c23;
-      --bg2: #131315;
-      --mono: 'Space Mono', monospace;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spinner - Amber Brutalist 4-Cell Grid</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --amber: #E88C2E;
+            --bg: #0f0f12;
+            --card-bg: #16161b;
+            --border: #282830;
+            --text: #e8e4dc;
+            --muted: #707070;
+            --gap: 14px;
+            --ease: cubic-bezier(0.65, 0, 0.35, 1);
+        }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-      background: var(--bg);
-      background-image: radial-gradient(ellipse at 25% 15%, rgba(207, 92, 39, .035) 0%, transparent 55%), radial-gradient(rgba(255, 255, 255, .018) 1px, transparent 1px);
-      background-size: 100% 100%, 16px 16px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      font-family: 'Space Grotesk', sans-serif;
-      color: var(--fg);
-      padding: 20px;
-      gap: 8px
-    }
+        body {
+            background-color: var(--bg);
+            background-image: 
+                radial-gradient(ellipse at 25% 15%, rgba(232, 140, 46, 0.05) 0%, transparent 55%),
+                radial-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 16px 16px;
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-    .aw {
-      width: 100%
-    }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--gap);
+            width: 100%;
+            max-width: 940px;
+        }
 
-    .ab-wrap {
-      width: 100%;
-      background: var(--card);
-      border: 2px solid var(--border);
-      display: flex;
-      flex-direction: column;
-      overflow: hidden
-    }
+        @media (max-width: 600px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+        }
 
-    .la-wrap {
-      width: 100%;
-      position: relative;
-      overflow: hidden;
-      background: var(--bg2)
-    }
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            position: relative;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            height: 320px;
+        }
 
-    .ab {
-      width: 700px;
-      height: 280px;
-      transform-origin: top left;
-      position: relative;
-      overflow: hidden
-    }
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--amber);
+            z-index: 2;
+        }
 
-    .ab::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      z-index: 1;
-      background-image: linear-gradient(rgba(255, 255, 255, .008) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, .008) 1px, transparent 1px);
-      background-size: 20px 20px
-    }
+        .indicator {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 6px;
+            height: 6px;
+            background: var(--amber);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--amber);
+            animation: pulse 2s infinite;
+            z-index: 3;
+        }
 
-    .hd {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 9px 14px;
-      border-bottom: 1px solid var(--border);
-      background: rgba(255, 255, 255, .01)
-    }
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
 
-    .hd-t {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--accent);
-      letter-spacing: 2.5px
-    }
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 22px;
+        }
 
-    .hd-f {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      color: var(--muted)
-    }
+        .num-box {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--amber);
+            background: rgba(232, 140, 46, 0.1);
+            border: 1px solid rgba(232, 140, 46, 0.2);
+            padding: 2px 5px;
+            border-radius: 2px;
+        }
 
-    /* Spinner animation */
-    @keyframes spin {
-      to {
-        transform: rotate(360deg)
-      }
-    }
+        .card-title {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(232, 228, 220, 0.9);
+        }
 
-    .sp {
-      border-radius: 50%;
-      animation: spin .8s linear infinite;
-      border-style: solid;
-      border-color: rgba(255, 255, 255, .1);
-      border-top-color: var(--accent);
-      flex-shrink: 0
-    }
+        .sim-area {
+            height: 160px;
+            background: #0d0d10;
+            border: 1px solid rgba(255,255,255,0.03);
+            border-radius: 4px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 16px;
+            overflow: hidden;
+            padding: 20px;
+        }
 
-    .sp-sm {
-      width: 16px;
-      height: 16px;
-      border-width: 2px
-    }
+        .ins {
+            border-left: 2px solid var(--amber);
+            padding-left: 14px;
+            margin-top: auto;
+            color: var(--muted);
+            font-size: 11.5px;
+            line-height: 1.6;
+            padding-top: 8px;
+            padding-bottom: 8px;
+            display: block;
+        }
 
-    .sp-md {
-      width: 24px;
-      height: 24px;
-      border-width: 2.5px
-    }
+        .ins strong {
+            color: var(--amber);
+            font-weight: 600;
+        }
 
-    .sp-lg {
-      width: 32px;
-      height: 32px;
-      border-width: 3px
-    }
+        /* --- Global Spinner Styles --- */
+        .spinner {
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--amber);
+            animation: spin 0.8s linear infinite;
+        }
 
-    .sp-xl {
-      width: 40px;
-      height: 40px;
-      border-width: 3.5px
-    }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
 
-    /* Sim states */
-    .ss {
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      transition: opacity .45s;
-      pointer-events: none;
-      z-index: 5
-    }
+        /* --- Cell 1: Size Standard --- */
+        .size-grid {
+            display: flex;
+            align-items: flex-end;
+            gap: 24px;
+        }
+        .size-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        .size-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 8px;
+            color: var(--muted);
+        }
 
-    .ss.on {
-      opacity: 1;
-      pointer-events: auto
-    }
+        /* --- Cell 2: In-Element Context --- */
+        .context-box {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .demo-btn {
+            background: var(--amber);
+            color: #000;
+            border: none;
+            padding: 8px 16px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border-radius: 2px;
+            width: 120px;
+            margin: 0 auto;
+        }
+        .demo-input {
+            background: #1a1a20;
+            border: 1px solid var(--border);
+            padding: 8px 12px;
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            color: var(--muted);
+            font-size: 11px;
+        }
 
-    /* Annotation */
-    .apin {
-      position: absolute;
-      z-index: 25;
-      font-family: var(--mono);
-      font-size: 7px;
-      letter-spacing: .1em;
-      text-transform: uppercase;
-      color: var(--accent);
-      opacity: 0;
-      transform: translate(-50%, 4px);
-      transition: opacity .3s, transform .3s;
-      white-space: nowrap;
-      pointer-events: none;
-      background: rgba(12, 12, 14, .85);
-      padding: 1px 6px;
-      border: 0.5px solid rgba(207, 92, 39, .15)
-    }
+        /* --- Cell 3: Loading States --- */
+        .state-card {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+        }
+        .content-placeholder {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .line {
+            height: 8px;
+            background: #24242b;
+            border-radius: 2px;
+        }
 
-    .apin.sh {
-      opacity: 1;
-      transform: translate(-50%, 0)
-    }
+        /* --- Cell 4: Overlay Block --- */
+        .overlay-demo {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: #1a1a20;
+            border-radius: 2px;
+            overflow: hidden;
+            padding: 12px;
+        }
+        .overlay-layer {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            z-index: 10;
+        }
+        .overlay-text {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            color: var(--amber);
+            letter-spacing: 1px;
+        }
 
-    /* STATE 0: Basic Spinner */
-    .bs-c {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 48px
-    }
-
-    .bs-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 8px
-    }
-
-    .bs-size {
-      font-family: var(--mono);
-      font-size: 9px;
-      color: var(--muted);
-      letter-spacing: .08em
-    }
-
-    .bs-use {
-      font-family: var(--mono);
-      font-size: 7px;
-      color: rgba(255, 255, 255, .2);
-      letter-spacing: .06em;
-      text-transform: uppercase;
-      text-align: center;
-      max-width: 80px
-    }
-
-    /* STATE 1: Spinner with Text */
-    .st-c {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 16px
-    }
-
-    .st-row {
-      display: flex;
-      align-items: center;
-      gap: 14px
-    }
-
-    .st-txt {
-      font-size: 14px;
-      color: var(--fg);
-      line-height: 1.4
-    }
-
-    .st-sub {
-      font-family: var(--mono);
-      font-size: 9px;
-      color: rgba(255, 255, 255, .2);
-      letter-spacing: .06em;
-      margin-top: 12px;
-      text-align: center;
-      max-width: 70%
-    }
-
-    /* STATE 2: Spinner Overlay */
-    .so-c {
-      width: 100%;
-      height: 100%;
-      position: relative
-    }
-
-    .so-content {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      padding: 20px;
-      gap: 6px
-    }
-
-    .so-nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding-bottom: 6px;
-      border-bottom: 1px solid var(--border)
-    }
-
-    .so-brand {
-      font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .1em;
-      color: var(--fg)
-    }
-
-    .so-nav-links {
-      display: flex;
-      gap: 12px
-    }
-
-    .so-nav-links span {
-      font-size: 9px;
-      color: var(--muted)
-    }
-
-    .so-row {
-      display: flex;
-      gap: 10px;
-      flex: 1;
-      min-height: 0
-    }
-
-    .so-card {
-      flex: 1;
-      border: 1px solid var(--border);
-      padding: 10px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 2px;
-      background: rgba(255, 255, 255, .02)
-    }
-
-    .so-card-n {
-      font-family: var(--mono);
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--fg)
-    }
-
-    .so-card-l {
-      font-size: 9px;
-      color: var(--muted)
-    }
-
-    .so-overlay {
-      position: absolute;
-      inset: 0;
-      background: rgba(12, 12, 14, .7);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      z-index: 10
-    }
-
-    .so-overlay-txt {
-      font-size: 12px;
-      color: var(--muted)
-    }
-
-    /* STATE 3: Inline Spinner */
-    .il-c {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 28px
-    }
-
-    .il-row {
-      display: flex;
-      align-items: center;
-      gap: 28px
-    }
-
-    .il-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px
-    }
-
-    .il-lbl {
-      font-family: var(--mono);
-      font-size: 7px;
-      color: rgba(255, 255, 255, .2);
-      letter-spacing: .06em;
-      text-transform: uppercase;
-      text-align: center
-    }
-
-    .il-btn {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 8px 20px;
-      background: var(--accent);
-      color: #000;
-      font-family: var(--mono);
-      font-size: 9px;
-      font-weight: 700;
-      letter-spacing: .08em;
-      border: none
-    }
-
-    .il-input {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 14px;
-      background: rgba(255, 255, 255, .04);
-      border: 1px solid var(--border);
-      font-size: 10px;
-      color: var(--muted);
-      min-width: 160px
-    }
-
-    .il-dd {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 6px 14px;
-      border: 1px solid var(--border);
-      min-width: 160px
-    }
-
-    .il-dd-txt {
-      font-size: 10px;
-      color: var(--fg)
-    }
-
-    .inf {
-      padding: 11px 14px;
-      border-top: 1px solid var(--border);
-      background: var(--card);
-      min-height: 86px
-    }
-
-    .dn {
-      font-size: 13px;
-      font-weight: 800;
-      line-height: 1.15;
-      color: var(--fg)
-    }
-
-    .ds {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9px;
-      color: var(--accent);
-      margin-top: 2px;
-      text-transform: uppercase;
-      letter-spacing: 1px
-    }
-
-    .dd {
-      font-size: 9px;
-      color: var(--muted);
-      margin-top: 4px;
-      line-height: 1.4
-    }
-
-    .pt {
-      height: 2px;
-      background: var(--border)
-    }
-
-    .pff {
-      height: 100%;
-      background: var(--accent);
-      width: 0%
-    }
-
-    /* Controls */
-    .ctr {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      padding: 12px 0;
-      background: transparent
-    }
-
-    .ctr-b {
-      padding: 6px 12px;
-      background: var(--card-alt);
-      border: 1px solid var(--border);
-      color: var(--muted);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all .2s;
-      letter-spacing: 1px
-    }
-
-    .ctr-b:hover {
-      border-color: var(--border-hi);
-      color: var(--fg)
-    }
-
-    .ctr-b.act {
-      border-color: var(--accent);
-      color: var(--accent);
-      background: var(--accent-dim)
-    }
-
-    .pp-b {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: var(--accent);
-      border: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      margin-left: 4px;
-      transition: transform .2s;
-      flex-shrink: 0
-    }
-
-    .pp-b:active {
-      transform: scale(.92)
-    }
-
-    .pp-i {
-      width: 12px;
-      height: 12px;
-      fill: #000
-    }
-
-    @media(prefers-reduced-motion:reduce) {
-      * {
-        transition: none !important;
-        animation: none !important
-      }
-
-      .sp {
-        animation: none !important
-      }
-    }
-  </style>
+    </style>
 </head>
-
 <body>
 
-  <div class="aw">
-    <div class="ab-wrap">
-      <div class="hd"><span class="hd-t">SPINNER</span><span class="hd-f" id="hf">01 / 04</span></div>
-      <div class="la-wrap" id="la-wrap">
-        <div class="ab" id="ab">
-
-          <!-- Annotations -->
-          <div class="apin" id="ap0" style="top:65%;left:24%">16px — inline, button</div>
-          <div class="apin" id="ap1" style="top:65%;left:41%">24px — beside text</div>
-          <div class="apin" id="ap2" style="top:65%;left:59%">32px — section load</div>
-          <div class="apin" id="ap3" style="top:65%;left:76%">40px — page load</div>
-          <div class="apin" id="ap4" style="top:42%;left:70%">spinner + context text</div>
-          <div class="apin" id="ap5" style="top:75%;left:50%">overlay chặn tương tác</div>
-          <div class="apin" id="ap6" style="top:32%;left:34%">trong button</div>
-          <div class="apin" id="ap7" style="top:52%;left:66%">trong dropdown</div>
-
-          <!-- State 0: Basic Spinner -->
-          <div class="ss on" id="ss0">
-            <div class="bs-c">
-              <div class="bs-item">
-                <div class="sp sp-sm"></div>
-                <div class="bs-size">16px</div>
-              </div>
-              <div class="bs-item">
-                <div class="sp sp-md"></div>
-                <div class="bs-size">24px</div>
-              </div>
-              <div class="bs-item">
-                <div class="sp sp-lg"></div>
-                <div class="bs-size">32px</div>
-              </div>
-              <div class="bs-item">
-                <div class="sp sp-xl"></div>
-                <div class="bs-size">40px</div>
-              </div>
+    <div class="grid-container">
+        <!-- Cell 1: Visual Hierarchy -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">01</div>
+                <div class="card-title">Kích thước chuẩn</div>
             </div>
-          </div>
-
-          <!-- State 1: Spinner with Text -->
-          <div class="ss" id="ss1">
-            <div class="st-c">
-              <div class="st-row">
-                <div class="sp sp-lg"></div>
-                <div class="st-txt">Loading your data...</div>
-              </div>
-              <div class="st-row">
-                <div class="sp sp-md"></div>
-                <div class="st-txt" style="color:rgba(236,232,225,.3)">Saving changes...</div>
-              </div>
+            <div class="sim-area">
+                <div class="size-grid">
+                    <div class="size-item">
+                        <div class="spinner" style="width: 16px; height: 16px; border-width: 2px;"></div>
+                        <div class="size-label">16px</div>
+                    </div>
+                    <div class="size-item">
+                        <div class="spinner" style="width: 24px; height: 24px; border-width: 2.5px;"></div>
+                        <div class="size-label">24px</div>
+                    </div>
+                    <div class="size-item">
+                        <div class="spinner" style="width: 32px; height: 32px; border-width: 3px;"></div>
+                        <div class="size-label">32px</div>
+                    </div>
+                    <div class="size-item">
+                        <div class="spinner" style="width: 48px; height: 48px; border-width: 4px;"></div>
+                        <div class="size-label">48px</div>
+                    </div>
+                </div>
             </div>
-          </div>
-
-          <!-- State 2: Spinner Overlay -->
-          <div class="ss" id="ss2">
-            <div class="so-c">
-              <div class="so-content">
-                <div class="so-nav"><span class="so-brand">DASHBOARD</span>
-                  <div class="so-nav-links"><span>Overview</span><span>Reports</span><span>Settings</span></div>
-                </div>
-                <div class="so-row">
-                  <div class="so-card">
-                    <div class="so-card-n">1,245</div>
-                    <div class="so-card-l">Users</div>
-                  </div>
-                  <div class="so-card">
-                    <div class="so-card-n">$8.4k</div>
-                    <div class="so-card-l">Revenue</div>
-                  </div>
-                  <div class="so-card">
-                    <div class="so-card-n">94%</div>
-                    <div class="so-card-l">Uptime</div>
-                  </div>
-                </div>
-              </div>
-              <div class="so-overlay">
-                <div class="sp sp-xl"></div>
-                <div class="so-overlay-txt">Loading dashboard...</div>
-              </div>
+            <div class="ins">
+                Chọn <strong>kích thước</strong> phù hợp giúp duy trì <strong>Visual Hierarchy</strong>. Spinner quá lớn sẽ gây mất tập trung không cần thiết.
             </div>
-          </div>
-
-          <!-- State 3: Inline Spinner -->
-          <div class="ss" id="ss3">
-            <div class="il-c">
-              <div class="il-row">
-                <div class="il-item">
-                  <div class="il-btn">
-                    <div class="sp sp-sm"></div>SAVE
-                  </div>
-                </div>
-                <div class="il-item">
-                  <div class="il-input">
-                    <div class="sp sp-sm"></div>Fetching...
-                  </div>
-                </div>
-                <div class="il-item">
-                  <div class="il-dd"><span class="il-dd-txt">Select option</span>
-                    <div class="sp sp-sm"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
         </div>
-      </div>
-      <div class="inf">
-        <div class="dn" id="dn">Basic Spinner</div>
-        <div class="ds" id="ds">4 KÍCH THƯỚC PHỔ BIẾN</div>
-        <div class="dd" id="dd">4 kích thước tương ứng với 4 ngữ cảnh sử dụng khác nhau trên giao diện.</div>
-      </div>
-      <div class="pt">
-        <div class="pff" id="pff"></div>
-      </div>
+
+        <!-- Cell 2: Contextual Placement -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">02</div>
+                <div class="card-title">Ngữ cảnh sử dụng</div>
+            </div>
+            <div class="sim-area">
+                <div class="context-box">
+                    <button class="demo-btn">
+                        <div class="spinner" style="width: 14px; height: 14px; border-width: 2px; border-top-color: #000; border-color: rgba(0,0,0,0.1);"></div>
+                        GỬI ĐI...
+                    </button>
+                    <div class="demo-input">
+                        <span>Đang kiểm tra email...</span>
+                        <div class="spinner" style="width: 14px; height: 14px; border-width: 2px;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="ins">
+                Spinner nên đặt <strong>trực tiếp</strong> bên cạnh hành động đang xử lý để người dùng biết <strong>chính xác</strong> phần nào đang tải.
+            </div>
+        </div>
+
+        <!-- Cell 3: Action States -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">03</div>
+                <div class="card-title">Trạng thái xử lý</div>
+            </div>
+            <div class="sim-area">
+                <div class="state-card" id="state-card">
+                    <div class="spinner" id="state-spinner" style="width: 28px; height: 28px; border-width: 3px;"></div>
+                    <div class="content-placeholder" id="state-content" style="display: none;">
+                        <div class="line" style="width: 100%;"></div>
+                        <div class="line" style="width: 85%;"></div>
+                        <div class="line" style="width: 40%;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="ins">
+                Sử dụng spinner để thông báo <strong>tiến độ</strong> (Progress indication) thay vì để màn hình <strong>trống rỗng</strong> gây hoang mang.
+            </div>
+        </div>
+
+        <!-- Cell 4: Interaction Block -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">04</div>
+                <div class="card-title">Chặn tương tác</div>
+            </div>
+            <div class="sim-area">
+                <div class="overlay-demo">
+                    <div style="display: flex; flex-direction: column; gap: 6px;">
+                        <div class="line" style="width: 40%; background: #333;"></div>
+                        <div class="line" style="width: 100%; background: #333;"></div>
+                        <div class="line" style="width: 90%; background: #333;"></div>
+                    </div>
+                    <div class="overlay-layer" id="overlay-layer">
+                        <div class="spinner" style="width: 36px; height: 36px; border-width: 3.5px;"></div>
+                        <div class="overlay-text">SAVING...</div>
+                    </div>
+                </div>
+            </div>
+            <div class="ins">
+                Kết hợp với <strong>Overlay</strong> để chặn tương tác tạm thời, ngăn người dùng click <strong>trùng lặp</strong> trong khi chờ đợi.
+            </div>
+        </div>
     </div>
 
-    <div class="ctr">
-      <button class="ctr-b act" data-i="0">BASIC</button>
-      <button class="ctr-b" data-i="1">WITH TEXT</button>
-      <button class="ctr-b" data-i="2">OVERLAY</button>
-      <button class="ctr-b" data-i="3">INLINE</button>
-      <button class="pp-b" id="pp" title="Play/Pause">
-        <svg class="pp-i" id="pp-i" viewBox="0 0 24 24">
-          <path d="M6 4h4v16H6zm8 0h4v16h-4z" />
-        </svg>
-      </button>
-    </div>
-  </div>
+    <script>
+        const sleep = ms => new Promise(res => setTimeout(res, ms));
 
-  <script>
-    const INFO = [
-      { nm: 'Basic Spinner', sz: '4 KÍCH THƯỚC PHỔ BIẾN', dc: 'Mỗi kích thước spinner phục vụ một mục đích: 16px cho button, 24px cạnh text, 32px cho section và 40px cho toàn trang.', pins: [0, 1, 2, 3] },
-      { nm: 'Spinner with Text', sz: 'CUNG CẤP NGỮ CẢNH', dc: 'Spinner không tự giải thích — cần có text đi kèm để người dùng biết họ đang chờ đợi điều gì cụ thể.', pins: [4] },
-      { nm: 'Spinner Overlay', sz: 'CHẶN TƯƠNG TÁC', dc: 'Lớp phủ (Overlay) kết hợp spinner giúp chặn người dùng click nhầm vào các thành phần khác khi hệ thống đang xử lý tác vụ quan trọng.', pins: [5] },
-      { nm: 'Inline Spinner', sz: 'NẰM TRONG ELEMENT', dc: 'Spinner nhỏ gọn nằm trực tiếp trong button, input hoặc dropdown giúp thông báo trạng thái mà không làm xê dịch bố cục.', pins: [6, 7] }
-    ];
+        // Cell 3: Loading Sequence Loop
+        async function runSim3() {
+            const spinner = document.getElementById('state-spinner');
+            const content = document.getElementById('state-content');
+            while(true) {
+                spinner.style.display = 'block';
+                content.style.display = 'none';
+                await sleep(2500);
+                spinner.style.display = 'none';
+                content.style.display = 'flex';
+                await sleep(2000);
+            }
+        }
 
-    const el = { dn: document.getElementById('dn'), ds: document.getElementById('ds'), dd: document.getElementById('dd'), hf: document.getElementById('hf'), pff: document.getElementById('pff') };
-    const states = [0, 1, 2, 3].map(i => document.getElementById('ss' + i));
-    const allPins = [0, 1, 2, 3, 4, 5, 6, 7].map(i => document.getElementById('ap' + i));
-    const ctrBs = document.querySelectorAll('.ctr-b');
-    const ppB = document.getElementById('pp');
-    const ppI = document.getElementById('pp-i');
+        // Cell 4: Overlay Toggle Loop
+        async function runSim4() {
+            const overlay = document.getElementById('overlay-layer');
+            while(true) {
+                overlay.style.display = 'flex';
+                overlay.style.opacity = '1';
+                await sleep(3000);
+                overlay.style.opacity = '0';
+                await sleep(100);
+                overlay.style.display = 'none';
+                await sleep(2000);
+            }
+        }
 
-    let cur = 0, pa = null, t0 = 0, isPaused = false;
-    const DUR = 4000;
-
-    function apply(i) {
-      cur = i;
-      const s = INFO[i]; el.dn.textContent = s.nm; el.ds.textContent = s.sz; el.dd.textContent = s.dc;
-      el.hf.textContent = '0' + (i + 1) + ' / 04';
-      ctrBs.forEach((b, j) => b.classList.toggle('act', j === i));
-      states.forEach((st, j) => st.classList.toggle('on', j === i));
-
-      allPins.forEach(p => p.classList.remove('sh'));
-      setTimeout(() => {
-        s.pins.forEach((pid, idx) => {
-          setTimeout(() => allPins[pid].classList.add('sh'), idx * 250);
-        });
-      }, 300);
-    }
-
-    function tk(n) {
-      if (isPaused) return;
-      const p = Math.min(100, (n - t0) / DUR * 100);
-      el.pff.style.width = p + '%';
-      if (p < 100) pa = requestAnimationFrame(tk);
-      else next();
-    }
-
-    function startProg() { t0 = performance.now(); el.pff.style.transition = 'none'; el.pff.style.width = '0%'; pa = requestAnimationFrame(tk) }
-    function next() { if (isPaused) return; cur = (cur + 1) % 4; apply(cur); startProg() }
-
-    function togglePP() {
-      isPaused = !isPaused;
-      ppI.innerHTML = isPaused ? '<path d="M8 5v14l11-7z"/>' : '<path d="M6 4h4v16H6zm8 0h4v16h-4z"/>';
-      if (!isPaused) {
-        t0 = performance.now() - (parseFloat(el.pff.style.width || 0) / 100 * DUR);
-        pa = requestAnimationFrame(tk);
-      }
-    }
-
-    ctrBs.forEach(b => {
-      b.onclick = () => {
-        isPaused = true;
-        ppI.innerHTML = '<path d="M8 5v14l11-7z"/>';
-        apply(parseInt(b.dataset.i));
-        el.pff.style.width = '0%';
-      }
-    });
-
-    ppB.onclick = togglePP;
-
-    function scale() {
-      const w = document.getElementById('la-wrap'), b = document.getElementById('ab');
-      const s = w.clientWidth / 700;
-      b.style.transform = 'scale(' + s + ')';
-      w.style.height = Math.ceil(280 * s) + 'px';
-    }
-    window.addEventListener('resize', scale);
-    requestAnimationFrame(() => requestAnimationFrame(scale));
-
-    apply(0);
-    startProg();
-
-    document.addEventListener('visibilitychange', () => {
-      if (document.hidden) { cancelAnimationFrame(pa) }
-      else if (!isPaused) { t0 = performance.now() - (parseFloat(el.pff.style.width || 0) / 100 * DUR); pa = requestAnimationFrame(tk); }
-    });
-  </script>
+        runSim3();
+        runSim4();
+    </script>
 </body>
-
 </html>
