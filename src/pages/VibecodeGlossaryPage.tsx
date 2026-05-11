@@ -6,7 +6,7 @@ import GlossaryContent from '../components/glossary/GlossaryContent';
 import GlossaryCta from '../components/glossary/GlossaryCta';
 import GlossaryHero from '../components/glossary/GlossaryHero';
 import GlossaryTermModal from '../components/glossary/GlossaryTermModal';
-import QuickRef from '../components/glossary/QuickRef';
+
 import { terms, type GlossaryTerm, type TermGroup } from '../lib/glossary';
 
 export default function VibecodeGlossaryPage() {
@@ -84,7 +84,7 @@ export default function VibecodeGlossaryPage() {
         <GlossaryContent grouped={grouped} onOpenTerm={setActiveModalTerm} />
       </div>
 
-      <QuickRef />
+
       <GlossaryCta />
 
       <button

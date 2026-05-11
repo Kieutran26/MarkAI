@@ -475,20 +475,7 @@ export const terms: GlossaryTerm[] = rawTerms
     related: term.related?.filter((relatedId) => !removedGlossaryTermIds.has(relatedId)),
   }));
 
-const rawQuickRefItems = [
-  ['Push lên main', 'Upload code mới nhất lên GitHub nhánh chính → Vercel tự deploy.'],
-  ['Cần refactor', 'Viết lại code cho gọn hơn, không thêm tính năng. AI làm được.'],
-  ['Build failed', 'Code có lỗi, không deploy được. Paste log lỗi cho AI để fix.'],
-  ['Cần API key', 'Mã bí mật để dùng service bên ngoài. Lấy từ dashboard, paste vào .env.'],
-  ['Schema database', 'Cấu trúc bảng trong database — có những cột gì, kiểu dữ liệu gì.'],
-  ['Hydration error', 'Server render khác client render. Paste lỗi cho AI, thường fix được nhanh.'],
-  ['500 error', 'Server bị lỗi. Xem log trên Vercel dashboard hoặc terminal.'],
-  ['CORS error', 'API không cho phép domain của bạn gọi. Cần config whitelist hoặc dùng proxy.'],
-] as const;
 
-export const quickRefItems = rawQuickRefItems.filter(
-  ([label, description]) => !removedGlossaryTextPattern.test(label) && !removedGlossaryTextPattern.test(description),
-);
 
 export const ctaLessons = [
   { num: '03', title: 'Cài gì vào máy để bắt đầu vibecode?', to: '/vibecode/cai-dat-moi-truong', arrow: '→' },
