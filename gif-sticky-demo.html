@@ -1,282 +1,487 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sticky — Animated</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;--accent-dim:rgba(212,113,42,.15);--card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a}
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{height:auto;overflow:hidden}
-body{background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 100%,16px 16px;display:flex;flex-direction:column;align-items:center;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:12px 16px 4px}
-.aw{width:100%}
-.ab{width:100%;height:320px;background:var(--card);border:1px solid var(--border);display:flex;flex-direction:column;position:relative;overflow:hidden}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sticky — Amber Brutalist 4-Cell Grid</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0c;
+      --card-bg: #16161b;
+      --amber: #E88C2E;
+      --gray: #707070;
+      --text: #ece8e1;
+      --border: #26262a;
+    }
 
-.hd{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
-.hd-t{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:2.5px}
-.hd-f{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
-.la{position:relative;flex:1;background:linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);background-size:30px 30px;overflow:hidden}
-.fr{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:0 20px;opacity:0;pointer-events:none;transition:opacity .3s}.fr.show{opacity:1;pointer-events:auto}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-/* Viewport */
-.vp{position:relative;width:100%;height:200px;overflow:hidden;border:1px solid var(--border);background:var(--bg)}
-.bc{position:relative;z-index:100;height:14px;background:var(--card-alt);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 8px;gap:4px;flex-shrink:0}
-.bc-d{width:5px;height:5px;border-radius:50%;background:var(--border-hi)}
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Space Grotesk', sans-serif;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+    }
 
-/* Sticky elements */
-.sk{position:absolute;z-index:5;font-family:'Space Grotesk',sans-serif;transition:transform .8s cubic-bezier(.4,0,.2,1),top .8s cubic-bezier(.4,0,.2,1)}
-.sk-nav{top:14px;left:0;right:0;height:22px;background:var(--card-alt);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 10px;gap:10px}
-.sk-b{font-size:9px;font-weight:800;letter-spacing:1px;color:var(--accent)}
-.sk-l{font-size:8px;color:var(--muted)}
-.sk-hdr{top:14px;left:0;right:0;height:22px;background:var(--card-alt);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 10px;font-size:9px;font-weight:700;color:var(--muted);letter-spacing:2px;transition:transform .8s cubic-bezier(.4,0,.2,1)}
-.sk-sub{top:36px;left:0;right:0;height:18px;background:rgba(212,113,42,.1);border-bottom:1px solid rgba(212,113,42,.25);display:flex;align-items:center;padding:0 10px;gap:8px;font-size:8px;color:var(--accent);font-family:'JetBrains Mono',monospace;font-weight:600}
-.sk-sub.stuck{top:14px}
-.sk-side{top:14px;right:0;width:110px;bottom:0;background:var(--card-alt);border-left:1px solid var(--border);padding:8px 8px;display:flex;flex-direction:column;gap:6px;transition:transform .8s cubic-bezier(.4,0,.2,1)}
-.sk-side-t{font-family:'JetBrains Mono',monospace;font-size:7px;font-weight:700;color:var(--accent);letter-spacing:1.5px;margin-bottom:2px}
-.sk-side-i{font-size:8px;color:var(--muted);padding:3px 5px;border:1px solid var(--border);background:rgba(255,255,255,.01)}
-.sk-act{bottom:0;left:0;right:0;height:26px;background:var(--card-alt);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 10px;transition:transform .8s cubic-bezier(.4,0,.2,1)}
-.sk-act-l{font-size:8px;color:var(--muted)}
-.sk-act-b{padding:2px 10px;background:var(--accent);border:none;color:#fff;font-family:'Space Grotesk',sans-serif;font-size:8px;font-weight:600}
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      max-width: 940px;
+      width: 100%;
+    }
 
-/* Page (scrolls) */
-.pg{position:absolute;left:0;right:0;top:36px;transition:transform .8s cubic-bezier(.4,0,.2,1)}
-.pg-side{position:absolute;left:0;top:14px;right:110px;bottom:0;transition:transform .8s cubic-bezier(.4,0,.2,1)}
-.pg-act{position:absolute;left:0;right:0;top:14px;bottom:26px;transition:transform .8s cubic-bezier(.4,0,.2,1)}
-.pg-sub{position:absolute;left:0;right:0;top:54px;transition:transform .8s cubic-bezier(.4,0,.2,1)}
+    @media (max-width: 640px) {
+      .grid-container {
+        grid-template-columns: 1fr;
+      }
+    }
 
-/* Content blocks */
-.blk{background:var(--card-alt);border:1px solid var(--border);border-left:3px solid var(--border-hi);padding:4px 8px;margin:0 8px 4px;height:44px;display:flex;flex-direction:column;justify-content:center}
-.blk-h{border-left-color:var(--accent)}
-.blk-l{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);letter-spacing:1px}
-.blk-t{font-size:9px;font-weight:600;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .card {
+      background: var(--card-bg);
+      border-radius: 3px;
+      position: relative;
+      padding-top: 2px;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
 
-/* Annotation */
-.ann{position:absolute;font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;color:var(--accent);background:rgba(19,17,16,.9);border:1px solid var(--border);padding:2px 7px;z-index:10;opacity:0;transition:opacity .35s;pointer-events:none;letter-spacing:.5px}
-.ann.show{opacity:1}
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--amber);
+    }
 
-.inf{padding:8px 14px;background:var(--card);border-top:1px solid var(--border);min-height:72px}
-.dn{font-size:14px;font-weight:800;line-height:1.1;color:var(--fg)}
-.ds{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);margin-top:2px;text-transform:uppercase;letter-spacing:1px}
-.dd{font-size:10px;color:var(--muted);margin-top:4px;line-height:1.4}
-.di{display:none}
-.pt{height:2px;background:var(--border)}.pf{height:100%;background:var(--accent);width:0%}
+    .header {
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-/* Controls */
-.ctr{display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 16px 4px;background:transparent}
-.ctr-b{padding:6px 12px;background:var(--card-alt);border:1px solid var(--border);color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:1px}
-.ctr-b:hover{border-color:var(--border-hi);color:var(--fg)}
-.ctr-b.act{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+    .num-box {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      border: 1px solid rgba(232, 140, 46, 0.4);
+      padding: 3px 8px;
+      color: var(--amber);
+      background: rgba(232, 140, 46, 0.05);
+      border-radius: 2px;
+      line-height: 1;
+    }
 
-.pp-b{width:32px;height:32px;border-radius:50%;background:var(--accent);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-left:4px;transition:transform .2s;flex-shrink:0}
-.pp-b:active{transform:scale(.92)}
-.pp-i{width:12px;height:12px;fill:#000}
+    .title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+    }
 
-@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
-</style>
+    .indicator {
+      width: 6px;
+      height: 6px;
+      background: var(--amber);
+      border-radius: 50%;
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      animation: blink 1.2s infinite;
+      box-shadow: 0 0 8px var(--amber);
+      z-index: 10;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .sim-area {
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(0,0,0,0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ins {
+      padding: 12px 16px;
+      border-left: 2px solid var(--amber);
+      font-size: 11.5px;
+      color: var(--gray);
+      background: rgba(232, 140, 46, 0.03);
+      margin: 0 16px 16px 16px;
+      line-height: 1.5;
+    }
+
+    .ins strong {
+      color: var(--amber);
+      font-weight: 700;
+    }
+
+    .badge-logic {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      color: var(--gray);
+      background: rgba(0,0,0,0.4);
+      padding: 2px 6px;
+      border-radius: 2px;
+      z-index: 5;
+    }
+
+    /* Simulation Elements */
+    .viewport {
+      width: 100%;
+      height: 100%;
+      background: #0f0f12;
+      border: 1px solid #222;
+      border-radius: 2px;
+      overflow-y: auto;
+      scrollbar-width: none; /* Hide scrollbar for clean look */
+      position: relative;
+    }
+    .viewport::-webkit-scrollbar { display: none; }
+
+    .content-mock {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .box {
+      height: 40px;
+      background: #2a2a30;
+      border-radius: 2px;
+      width: 100%;
+    }
+
+    /* Cell 1: Sticky Header */
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: var(--amber);
+      color: #000;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      font-size: 10px;
+      font-weight: 700;
+      z-index: 10;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    /* Cell 2: Sticky Sidebar */
+    .flex-layout {
+      display: flex;
+      gap: 10px;
+      padding: 10px;
+      min-height: 300px;
+    }
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .sidebar-sticky {
+      position: sticky;
+      top: 10px;
+      width: 50px;
+      height: 100px;
+      background: rgba(232, 140, 46, 0.2);
+      border: 1px solid var(--amber);
+      border-radius: 4px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .sb-line {
+      height: 4px;
+      background: var(--amber);
+      opacity: 0.5;
+      width: 100%;
+      border-radius: 2px;
+    }
+
+    /* Cell 3: Sticky Footer */
+    .sticky-footer {
+      position: sticky;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #1a1a20;
+      border-top: 1px solid var(--amber);
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 10px;
+      z-index: 10;
+    }
+    .cta-btn {
+      width: 100%;
+      height: 24px;
+      background: var(--amber);
+      border-radius: 2px;
+    }
+
+    /* Cell 4: Stacking Headers */
+    .section {
+      position: relative;
+    }
+    .section-header {
+      position: sticky;
+      top: 0;
+      background: #2a2a30;
+      border-bottom: 1px solid #444;
+      padding: 4px 10px;
+      font-size: 9px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--amber);
+      z-index: 5;
+    }
+    .section-content {
+      height: 80px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .line {
+      height: 6px;
+      background: #1a1a20;
+      width: 100%;
+      border-radius: 2px;
+    }
+
+  </style>
 </head>
 <body>
 
-<div class="aw">
-<div class="ab" id="ab">
-  <div class="hd"><span class="hd-t">STICKY</span><span class="hd-f" id="hf">01 / 04</span></div>
-  <div class="la" id="la">
-
-    <!-- F0: Sticky Navbar -->
-    <div class="fr" id="f0">
-      <div class="vp">
-        <div class="bc"><span class="bc-d"></span><span class="bc-d"></span><span class="bc-d"></span></div>
-        <div class="sk sk-nav" id="sk0"><span class="sk-b">BRAND</span><span class="sk-l">Home</span><span class="sk-l">About</span><span class="sk-l">Contact</span></div>
-        <div class="pg" id="pg0">
-          <div class="blk blk-h"><span class="blk-l">HERO</span><span class="blk-t">Welcome to our platform</span></div>
-          <div class="blk"><span class="blk-l">FEATURE</span><span class="blk-t">Analytics Dashboard</span></div>
-          <div class="blk"><span class="blk-l">FEATURE</span><span class="blk-t">Team Collaboration</span></div>
-          <div class="blk"><span class="blk-l">FEATURE</span><span class="blk-t">API Integration</span></div>
+  <div class="grid-container">
+    
+    <!-- Cell 01: Sticky Header -->
+    <div class="card">
+      <div class="indicator"></div>
+      <div class="header">
+        <div class="num-box">01</div>
+        <div class="title">Sticky Header</div>
+      </div>
+      <div class="sim-area">
+        <div class="badge-logic" id="logic-1">SCROLLING</div>
+        <div class="viewport" id="vp-1">
+          <div class="sticky-header">NAVIGATION BAR</div>
+          <div class="content-mock">
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+          </div>
         </div>
-        <div class="ann" id="an0" style="right:6px;top:40px">STAYS</div>
+      </div>
+      <div class="ins">
+        <strong>Sticky Header</strong> giúp thanh điều hướng luôn dính chặt ở trên cùng khi người dùng cuộn trang, giúp họ <strong>luôn tìm thấy menu</strong> mà không cần cuộn ngược lên.
       </div>
     </div>
 
-    <!-- F1: Sub-navigation -->
-    <div class="fr" id="f1">
-      <div class="vp">
-        <div class="bc"><span class="bc-d"></span><span class="bc-d"></span><span class="bc-d"></span></div>
-        <div class="sk sk-hdr" id="sk1h">MAIN HEADER</div>
-        <div class="sk sk-sub" id="sk1s">All &nbsp; Active &nbsp; Archived &nbsp; Drafts</div>
-        <div class="pg pg-sub" id="pg1">
-          <div class="blk"><span class="blk-l">ITEM</span><span class="blk-t">Project Alpha — In Progress</span></div>
-          <div class="blk"><span class="blk-l">ITEM</span><span class="blk-t">Campaign Q1 — Review</span></div>
-          <div class="blk"><span class="blk-l">ITEM</span><span class="blk-t">Blog Post — Draft</span></div>
-          <div class="blk"><span class="blk-l">ITEM</span><span class="blk-t">Landing Page — Published</span></div>
+    <!-- Cell 02: Sticky Sidebar -->
+    <div class="card">
+      <div class="indicator"></div>
+      <div class="header">
+        <div class="num-box">02</div>
+        <div class="title">Sticky Sidebar</div>
+      </div>
+      <div class="sim-area">
+        <div class="badge-logic" id="logic-2">SCROLLING</div>
+        <div class="viewport" id="vp-2">
+          <div class="flex-layout">
+            <div class="main-content">
+              <div class="box"></div>
+              <div class="box"></div>
+              <div class="box"></div>
+              <div class="box"></div>
+              <div class="box"></div>
+              <div class="box"></div>
+            </div>
+            <div class="sidebar-sticky">
+              <div class="sb-line"></div>
+              <div class="sb-line" style="width: 70%"></div>
+              <div class="sb-line" style="width: 85%"></div>
+            </div>
+          </div>
         </div>
-        <div class="ann" id="an1" style="right:6px;top:36px">TAKES OVER</div>
+      </div>
+      <div class="ins">
+        Khi nội dung chính quá dài, <strong>Sticky Sidebar</strong> giữ cho các công cụ (như bộ lọc hoặc mục lục) <strong>luôn trong tầm mắt</strong>, tăng hiệu quả tương tác.
       </div>
     </div>
 
-    <!-- F2: Sidebar -->
-    <div class="fr" id="f2">
-      <div class="vp">
-        <div class="bc"><span class="bc-d"></span><span class="bc-d"></span><span class="bc-d"></span></div>
-        <div class="sk sk-side" id="sk2">
-          <span class="sk-side-t">FILTERS</span>
-          <span class="sk-side-i">Category</span>
-          <span class="sk-side-i">Price Range</span>
-          <span class="sk-side-i">Rating</span>
-          <span class="sk-side-i">Availability</span>
+    <!-- Cell 03: Sticky Footer / CTA -->
+    <div class="card">
+      <div class="indicator"></div>
+      <div class="header">
+        <div class="num-box">03</div>
+        <div class="title">Sticky Footer (CTA)</div>
+      </div>
+      <div class="sim-area">
+        <div class="badge-logic" id="logic-3">SCROLLING</div>
+        <div class="viewport" id="vp-3">
+          <div class="content-mock" style="padding-bottom: 0;">
+            <div class="box" style="height: 60px"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box" style="height: 60px"></div>
+          </div>
+          <div class="sticky-footer">
+            <div class="cta-btn"></div>
+          </div>
         </div>
-        <div class="pg pg-side" id="pg2">
-          <div class="blk blk-h" style="margin-right:4px"><span class="blk-l">PRODUCT</span><span class="blk-t">Wireless Headphones Pro</span></div>
-          <div class="blk" style="margin-right:4px"><span class="blk-l">PRODUCT</span><span class="blk-t">Mechanical Keyboard</span></div>
-          <div class="blk" style="margin-right:4px"><span class="blk-l">PRODUCT</span><span class="blk-t">USB-C Hub Adapter</span></div>
-          <div class="blk" style="margin-right:4px"><span class="blk-l">PRODUCT</span><span class="blk-t">4K Monitor Stand</span></div>
-        </div>
-        <div class="ann" id="an2" style="left:6px;bottom:10px">IN VIEW</div>
+      </div>
+      <div class="ins">
+        <strong>Sticky Footer</strong> (hoặc Action Bar) thường được dùng cho các nút quan trọng như "Mua ngay" hoặc "Lưu lại", đảm bảo <strong>tỉ lệ chuyển đổi</strong> tối đa.
       </div>
     </div>
 
-    <!-- F3: Action Bar -->
-    <div class="fr" id="f3">
-      <div class="vp">
-        <div class="bc"><span class="bc-d"></span><span class="bc-d"></span><span class="bc-d"></span></div>
-        <div class="sk sk-act" id="sk3">
-          <span class="sk-act-l">3 changes unsaved</span>
-          <span class="sk-act-b">Save Changes</span>
+    <!-- Cell 04: Stacking Sections -->
+    <div class="card">
+      <div class="indicator"></div>
+      <div class="header">
+        <div class="num-box">04</div>
+        <div class="title">Stacking Sections</div>
+      </div>
+      <div class="sim-area">
+        <div class="badge-logic" id="logic-4">SCROLLING</div>
+        <div class="viewport" id="vp-4">
+          <div class="section">
+            <div class="section-header">SECTION A</div>
+            <div class="section-content" style="height: 120px;">
+              <div class="line"></div>
+              <div class="line" style="width: 80%"></div>
+              <div class="line"></div>
+              <div class="line" style="width: 60%"></div>
+            </div>
+          </div>
+          <div class="section">
+            <div class="section-header">SECTION B</div>
+            <div class="section-content" style="height: 120px;">
+              <div class="line"></div>
+              <div class="line"></div>
+              <div class="line" style="width: 60%"></div>
+              <div class="line" style="width: 90%"></div>
+            </div>
+          </div>
+          <div class="section">
+            <div class="section-header">SECTION C</div>
+            <div class="section-content" style="height: 120px;">
+              <div class="line"></div>
+              <div class="line" style="width: 70%"></div>
+              <div class="line"></div>
+              <div class="line" style="width: 40%"></div>
+            </div>
+          </div>
+          <div class="section">
+            <div class="section-header">SECTION D</div>
+            <div class="section-content" style="height: 120px;">
+              <div class="line"></div>
+              <div class="line"></div>
+              <div class="line"></div>
+            </div>
+          </div>
         </div>
-        <div class="pg pg-act" id="pg3">
-          <div class="blk blk-h"><span class="blk-l">FORM</span><span class="blk-t">Edit Campaign Settings</span></div>
-          <div class="blk"><span class="blk-l">FIELD</span><span class="blk-t">Campaign Name & Budget</span></div>
-          <div class="blk"><span class="blk-l">FIELD</span><span class="blk-t">Target Audience & Schedule</span></div>
-          <div class="blk"><span class="blk-l">FIELD</span><span class="blk-t">Creative Assets & Tracking</span></div>
-        </div>
-        <div class="ann" id="an3" style="right:6px;bottom:32px">ALWAYS HERE</div>
+      </div>
+      <div class="ins">
+        Kỹ thuật <strong>Section Stacking</strong> tạo hiệu ứng các tiêu đề nhóm "đẩy" nhau đi khi cuộn, giúp người dùng dễ dàng nhận biết <strong>vị trí hiện tại</strong> trong danh sách dài.
       </div>
     </div>
 
   </div>
-  <div class="inf">
-    <div class="dn" id="dn">Sticky Navbar</div>
-    <div class="ds" id="ds">THANH ĐIỀU HƯỚNG DÍNH</div>
-    <div class="dd" id="dd">Scroll xuống bao nhiêu — navbar vẫn ở trên, luôn có đường dẫn</div>
-  </div>
-  <div class="pt"><div class="pf" id="pf"></div></div>
-</div>
-<div class="ctr">
-    <button class="ctr-b act" data-i="0">NAVBAR</button>
-    <button class="ctr-b" data-i="1">SUB-NAV</button>
-    <button class="ctr-b" data-i="2">SIDEBAR</button>
-    <button class="ctr-b" data-i="3">ACTION BAR</button>
-    <button class="pp-b" id="pp" title="Play/Pause">
-        <svg class="pp-i" id="pp-i" viewBox="0 0 24 24"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>
-    </button>
-</div>
-</div>
 
-<script>
-/* ===== DATA ===== */
-const INFO=[
-  {nm:'Sticky Navbar',sz:'THANH ĐIỀU HƯỚNG DÍNH',dc:'Scroll xuống bao nhiêu — navbar vẫn ở trên, luôn có đường dẫn',ins:'Khi nói "cho cái này sticky" → dev hiểu là element dính lại khi cuộn'},
-  {nm:'Sub-navigation',sz:'ĐIỀU HƯỚNG CẤP 2',dc:'Header chính scroll đi, sub-nav dính lại thay thế — user vẫn có tab điều hướng',ins:'Trang dài có phân tab → cần nói rõ "sticky sub-nav" thay vì chỉ "sticky header"'},
-  {nm:'Sidebar',sz:'THANH BÊN DÍNH',dc:'Content bên trái cuộn thoải mái — sidebar phải luôn visible để filter/navigate',ins:'Báo "sidebar bị mất" khi scroll → dev cần biết là thiếu sticky, không phải thiếu element'},
-  {nm:'Action Bar',sz:'THANH HÀNH ĐỘNG DÍNH',dc:'Nút Save/Submit/Cart luôn ở dưới — không cần scroll lên đầu hay xuống cuối',ins:'Form dài, table nhiều dòng → "sticky action bar" giúp user thao tác bất cứ lúc nào'}
-];
+  <script>
+    // Independent Animation Loops
+    
+    function setupScrollLoop(vpId, logicId) {
+      const vp = document.getElementById(vpId);
+      const lg = document.getElementById(logicId);
+      let direction = 1;
+      let currentPos = 0;
+      
+      function animate() {
+        const maxScroll = vp.scrollHeight - vp.clientHeight;
+        
+        if (maxScroll <= 0) {
+          requestAnimationFrame(animate);
+          return;
+        }
 
-const frs=[0,1,2,3].map(i=>document.getElementById('f'+i));
-const el={dn:document.getElementById('dn'),ds:document.getElementById('ds'),dd:document.getElementById('dd'),hf:document.getElementById('hf'),pf:document.getElementById('pf')};
-const ctrBs=document.querySelectorAll('.ctr-b');
-const ppB=document.getElementById('pp');
-const ppI=document.getElementById('pp-i');
-let cur=0,ft=null,pa=null,t0=0,ftimers=[],isPaused=false;
-const DUR=3500;
-
-/* ===== ANIMATION ===== */
-function scrollFrame(fi){
-  ftimers.forEach(t=>clearTimeout(t));ftimers=[];
-  if(isPaused) return;
-  /* Reset */
-  const ann=document.getElementById('an'+fi);
-  ann.classList.remove('show');
-
-  if(fi===0){
-    const pg=document.getElementById('pg0');
-    pg.style.transform='translateY(0)';
-    ftimers.push(setTimeout(()=>{pg.style.transform='translateY(-72px)';},500));
-    ftimers.push(setTimeout(()=>{ann.classList.add('show')},1400));
-  }else if(fi===1){
-    const pg=document.getElementById('pg1');
-    const hdr=document.getElementById('sk1h');
-    const sub=document.getElementById('sk1s');
-    pg.style.transform='translateY(0)';hdr.style.transform='translateY(0)';
-    sub.classList.remove('stuck');sub.style.top='36px';
-    ftimers.push(setTimeout(()=>{
-      pg.style.transform='translateY(-72px)';hdr.style.transform='translateY(-72px)';
-      sub.classList.add('stuck');
-    },500));
-    ftimers.push(setTimeout(()=>{ann.classList.add('show')},1400));
-  }else if(fi===2){
-    const pg=document.getElementById('pg2');
-    pg.style.transform='translateY(0)';
-    ftimers.push(setTimeout(()=>{pg.style.transform='translateY(-72px)';},500));
-    ftimers.push(setTimeout(()=>{ann.classList.add('show')},1400));
-  }else{
-    const pg=document.getElementById('pg3');
-    pg.style.transform='translateY(0)';
-    ftimers.push(setTimeout(()=>{pg.style.transform='translateY(-72px)';},500));
-    ftimers.push(setTimeout(()=>{ann.classList.add('show')},1400));
-  }
-}
-
-function apply(i){
-  cur=i;
-  const s=INFO[i];el.dn.textContent=s.nm;el.ds.textContent=s.sz;el.dd.textContent=s.dc;
-  el.hf.textContent='0'+(i+1)+' / 04';
-  ctrBs.forEach((b,j)=>b.classList.toggle('act',j===i));
-  frs.forEach(f=>f.classList.remove('show'));
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{
-    frs[i].classList.add('show');
-    if(!isPaused) scrollFrame(i);
-  }));
-}
-
-function tk(n){
-    if(isPaused) return;
-    const p=Math.min(100,(n-t0)/DUR*100);
-    el.pf.style.width=p+'%';
-    if(p<100)pa=requestAnimationFrame(tk);
-    else next();
-}
-function startProg(){t0=performance.now();el.pf.style.transition='none';el.pf.style.width='0%';pa=requestAnimationFrame(tk)}
-function next(){if(isPaused)return;cur=(cur+1)%4;apply(cur);startProg()}
-
-function togglePP(){
-    isPaused=!isPaused;
-    ppI.innerHTML=isPaused ? '<path d="M8 5v14l11-7z"/>' : '<path d="M6 4h4v16H6zm8 0h4v16h-4z"/>';
-    if(!isPaused){
-        t0=performance.now() - (parseFloat(el.pf.style.width||0)/100*DUR);
-        pa=requestAnimationFrame(tk);
-        scrollFrame(cur);
-    } else {
-        ftimers.forEach(t=>clearTimeout(t));
+        if (direction === 1) {
+          currentPos += 0.8;
+          vp.scrollTop = currentPos;
+          
+          if (currentPos >= maxScroll) {
+            currentPos = maxScroll;
+            vp.scrollTop = currentPos;
+            direction = 0;
+            lg.textContent = 'REACHED END';
+            setTimeout(() => {
+              direction = -1;
+              lg.textContent = 'RETURNING';
+            }, 1500);
+          }
+        } else if (direction === -1) {
+          currentPos -= 2;
+          vp.scrollTop = currentPos;
+          
+          if (currentPos <= 0) {
+            currentPos = 0;
+            vp.scrollTop = currentPos;
+            direction = 0;
+            lg.textContent = 'RESTARTING';
+            setTimeout(() => {
+              direction = 1;
+              lg.textContent = 'SCROLLING';
+            }, 1000);
+          }
+        }
+        requestAnimationFrame(animate);
+      }
+      
+      animate();
     }
-}
 
-ctrBs.forEach(b=>{
-    b.onclick=()=>{
-        isPaused=true;
-        ppI.innerHTML='<path d="M8 5v14l11-7z"/>';
-        apply(parseInt(b.dataset.i));
-        el.pf.style.width='0%';
-    }
-});
+    // Start all loops with slight delays for organic feel
+    setTimeout(() => setupScrollLoop('vp-1', 'logic-1'), 0);
+    setTimeout(() => setupScrollLoop('vp-2', 'logic-2'), 400);
+    setTimeout(() => setupScrollLoop('vp-3', 'logic-3'), 800);
+    setTimeout(() => setupScrollLoop('vp-4', 'logic-4'), 1200);
 
-ppB.onclick=togglePP;
-
-/* ===== INIT ===== */
-apply(0);
-startProg();
-document.addEventListener('visibilitychange',()=>{
-  if(document.hidden){cancelAnimationFrame(pa);ftimers.forEach(t=>clearTimeout(t));}
-  else if(!isPaused){t0=performance.now() - (parseFloat(el.pf.style.width||0)/100*DUR);pa=requestAnimationFrame(tk);scrollFrame(cur);}
-});
-</script>
+  </script>
 </body>
 </html>
