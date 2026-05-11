@@ -1,342 +1,312 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SSL Certificate Demo — Vibecode Glossary</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #1a1a18;
-    --bg-card: #222220;
-    --bg-elevated: #2a2a27;
-    --fg: #e8e4dd;
-    --fg-muted: #8a877e;
-    --accent: #e88c2e;
-    --accent-dim: #b97025;
-    --amber: #c9922a;
-    --green: #6b8f5e;
-    --red: #b54a4a;
-    --border: #3a3a36;
-    --border-light: #4a4a45;
-    --mono: 'JetBrains Mono', monospace;
-    --sans: 'Space Grotesk', sans-serif;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SSL Certificate Demo - Amber Brutalist</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --amber: #E88C2E;
+      --bg: #0a0a0c;
+      --card-bg: #16161b;
+      --text-main: #e0e0e0;
+      --text-muted: #707070;
+      --accent-bar: #E88C2E;
+    }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  body {
-    background: var(--bg);
-    color: var(--fg);
-    font-family: var(--sans);
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
-  }
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: 'Space Grotesk', sans-serif;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
 
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
-    background-size: 24px 24px;
-    pointer-events: none;
-    z-index: 0;
-  }
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      width: 100%;
+      max-width: 940px;
+    }
 
-  .page-wrap {
-    position: relative;
-    z-index: 1;
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 32px 20px;
-  }
+    @media (max-width: 600px) {
+      .demo-grid {
+        grid-template-columns: 1fr;
+      }
+    }
 
-  .grid-container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
-  }
+    .card {
+      background: var(--card-bg);
+      border-radius: 3px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid #25252a;
+    }
 
-  @media (max-width: 768px) {
-    .grid-container { grid-template-columns: 1fr; }
-  }
+    .accent-bar {
+      height: 2px;
+      background: var(--accent-bar);
+      width: 100%;
+    }
 
-  .ssl-card {
-    border: 1px solid var(--border);
-    background: var(--bg-card);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  .ssl-card:hover {
-    border-color: var(--accent-dim);
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.2);
-  }
+    .card-header {
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid #25252a;
+    }
 
-  .card-head {
-    border-bottom: 1px solid var(--border);
-    padding: 14px 18px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background: rgba(255,255,255,0.02);
-  }
-  .card-head h2 {
-    font-family: var(--mono);
-    font-size: 11px;
-    font-weight: 700;
-    color: var(--accent);
-    text-transform: uppercase;
-    letter-spacing: 1.5px;
-  }
-  .card-head .status {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--fg-muted);
-    background: var(--bg);
-    padding: 2px 6px;
-    border: 1px solid var(--border);
-  }
+    .num-box {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--amber);
+      background: rgba(232, 140, 46, 0.1);
+      padding: 2px 6px;
+      border: 1px solid rgba(232, 140, 46, 0.3);
+      border-radius: 2px;
+    }
 
-  .card-body {
-    padding: 20px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-  }
+    .card-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-main);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
 
-  .preview-box {
-    height: 240px;
-    background: var(--bg-elevated);
-    border: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    overflow: hidden;
-    padding: 20px;
-  }
+    .indicator {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      width: 6px;
+      height: 6px;
+      background: var(--amber);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--amber);
+      animation: blink 1.5s infinite;
+    }
 
-  /* SSL Logic Visuals */
-  .connection-line {
-    position: absolute;
-    height: 2px;
-    background: var(--border);
-    width: 60%;
-    z-index: 1;
-  }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
 
-  .entity {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-    z-index: 2;
-    background: var(--bg-elevated);
-    padding: 10px;
-  }
-  .entity svg { width: 32px; height: 32px; fill: var(--fg-muted); }
-  .entity span { font-family: var(--mono); font-size: 9px; text-transform: uppercase; color: var(--fg-muted); }
+    .simulation-area {
+      height: 160px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      background: rgba(0,0,0,0.2);
+      padding: 20px;
+    }
 
-  .packet {
-    position: absolute;
-    padding: 4px 8px;
-    background: var(--accent);
-    color: white;
-    font-family: var(--mono);
-    font-size: 10px;
-    border-radius: 4px;
-    z-index: 3;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-  }
+    .ins {
+      padding: 12px 16px;
+      border-left: 2px solid var(--amber);
+      font-size: 11.5px;
+      color: var(--text-muted);
+      background: rgba(232, 140, 46, 0.02);
+      line-height: 1.5;
+    }
 
-  /* Unsecure Animation */
-  .animate-unsecure .packet {
-    animation: moveUnsecure 3s infinite linear;
-  }
-  @keyframes moveUnsecure {
-    0% { left: 20%; opacity: 0; transform: scale(0.8); }
-    10% { opacity: 1; transform: scale(1); }
-    90% { left: 70%; opacity: 1; transform: scale(1); }
-    100% { left: 80%; opacity: 0; transform: scale(0.8); }
-  }
+    .ins strong {
+      color: var(--amber);
+      font-weight: 600;
+    }
 
-  /* Secure Animation */
-  .animate-secure .packet {
-    animation: moveSecure 3s infinite linear;
-    background: var(--green);
-  }
-  .animate-secure .packet::before {
-    content: '🔒';
-    margin-right: 4px;
-  }
-  @keyframes moveSecure {
-    0% { left: 20%; opacity: 0; filter: blur(0); }
-    10% { opacity: 1; }
-    30% { filter: blur(4px); content: 'S$#@!*'; }
-    70% { filter: blur(4px); }
-    90% { left: 70%; opacity: 1; filter: blur(0); }
-    100% { left: 80%; opacity: 0; }
-  }
+    /* Animation Styles */
+    .flow-container {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      width: 100%;
+      justify-content: center;
+    }
 
-  .card-desc {
-    font-size: 13px;
-    color: var(--fg-muted);
-    line-height: 1.6;
-    margin-top: auto;
-  }
+    .node {
+      width: 40px;
+      height: 40px;
+      border: 1px solid #333;
+      border-radius: 4px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 18px;
+      background: #1a1a20;
+    }
 
-  .info-row {
-    font-family: var(--mono);
-    font-size: 11px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 8px 12px;
-    background: var(--bg);
-    border: 1px solid var(--border);
-  }
-  .label-safe { color: var(--green); }
-  .label-danger { color: var(--red); }
+    .pipe {
+      flex: 1;
+      height: 2px;
+      background: #333;
+      position: relative;
+      max-width: 100px;
+    }
 
-  .cert-badge {
-    border: 2px solid var(--green);
-    padding: 16px;
-    text-align: center;
-    border-radius: 8px;
-    position: relative;
-    background: rgba(107, 143, 94, 0.05);
-  }
-  .cert-badge::after {
-    content: 'VERIFIED';
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    background: var(--green);
-    color: white;
-    font-size: 8px;
-    font-weight: 900;
-    padding: 2px 6px;
-    transform: rotate(15deg);
-  }
+    .packet {
+      position: absolute;
+      top: -10px;
+      left: 0;
+      padding: 2px 6px;
+      background: #222;
+      border: 1px solid #444;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
 
-</style>
+    /* Encryption Loop */
+    .packet::after {
+      content: '';
+      animation: flowEnc 3s infinite linear;
+    }
+    @keyframes flowEnc {
+      0% { opacity: 0; transform: translateX(-20px); }
+      10% { opacity: 1; content: 'PASS'; }
+      30% { content: '123456'; }
+      50% { content: '$#@!&%'; color: var(--amber); }
+      70% { content: '*^%@#$'; color: var(--amber); }
+      90% { opacity: 1; transform: translateX(80px); }
+      100% { opacity: 0; transform: translateX(100px); }
+    }
+
+    /* Auth Loop */
+    .cert-seal {
+      font-size: 40px;
+      position: relative;
+      animation: pulseCert 2s infinite ease-in-out;
+    }
+    @keyframes pulseCert {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0px var(--amber)); }
+      50% { transform: scale(1.05); filter: drop-shadow(0 0 10px rgba(232, 140, 46, 0.4)); }
+    }
+
+    /* Integrity Loop */
+    .check-mark {
+      color: #4CAF50;
+      font-size: 24px;
+      animation: checkFade 2s infinite;
+    }
+    @keyframes checkFade {
+      0%, 100% { opacity: 0; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.1); }
+    }
+
+    /* Trust Loop */
+    .url-bar {
+      background: #000;
+      border: 1px solid #333;
+      border-radius: 20px;
+      padding: 6px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+    }
+    .lock-icon { color: #4CAF50; animation: lockBlink 2s infinite; }
+    @keyframes lockBlink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .https-text { color: #4CAF50; font-weight: 600; }
+  </style>
 </head>
 <body>
+  <div class="demo-grid">
+    <!-- Cell 1: Encryption -->
+    <div class="card">
+      <div class="accent-bar"></div>
+      <div class="indicator"></div>
+      <div class="card-header">
+        <div class="num-box">01</div>
+        <div class="card-title">Mã hóa (Encryption)</div>
+      </div>
+      <div class="simulation-area">
+        <div class="flow-container">
+          <div class="node">👤</div>
+          <div class="pipe">
+            <div class="packet"></div>
+          </div>
+          <div class="node">🖥️</div>
+        </div>
+      </div>
+      <div class="ins">
+        SSL mã hóa dữ liệu thành các <strong>ký tự vô nghĩa</strong> trong khi truyền, khiến kẻ xấu không thể đọc trộm thông tin nhạy cảm.
+      </div>
+    </div>
 
-<div class="page-wrap">
-  <div class="grid-container">
-    
-    <!-- Concept 1: HTTP (No SSL) -->
-    <article class="ssl-card">
-      <div class="card-head">
-        <h2>01. HTTP (Không có SSL)</h2>
-        <span class="status" style="color: var(--red)">RỦI RO</span>
+    <!-- Cell 2: Xác thực (Authentication) -->
+    <div class="card">
+      <div class="accent-bar"></div>
+      <div class="indicator"></div>
+      <div class="card-header">
+        <div class="num-box">02</div>
+        <div class="card-title">Xác thực danh tính</div>
       </div>
-      <div class="card-body">
-        <div class="preview-box animate-unsecure">
-          <div class="connection-line"></div>
-          <div class="entity" style="position: absolute; left: 10%;">
-            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
-            <span>Trình duyệt</span>
-          </div>
-          <div class="packet">Pass: 123456</div>
-          <div class="entity" style="position: absolute; right: 10%;">
-            <svg viewBox="0 0 24 24"><path d="M20 13c0 1.1-.9 2-2 2H6c-1.1 0-2-.9-2-2V5c0-1.1.9-2 2-2h12c1.1 0 2 .9 2 2v8zM6 17c-1.1 0-2 .9-2 2v2h16v-2c0-1.1-.9-2-2-2H6z"/></svg>
-            <span>Website</span>
-          </div>
-          <div style="position: absolute; bottom: 20px; font-size: 24px; filter: grayscale(1);">🕵️‍♂️</div>
-        </div>
-        <div class="info-row">
-          <span>Trạng thái: Dữ liệu truyền dạng văn bản thuần</span>
-          <span class="label-danger">DỄ BỊ ĐỌC TRỘM</span>
-        </div>
-        <p class="card-desc">Giống như gửi một bức thư không dán kín. Bất kỳ ai trên đường vận chuyển đều có thể mở ra xem mật khẩu hoặc số thẻ tín dụng của bạn.</p>
+      <div class="simulation-area">
+        <div class="cert-seal">📜</div>
+        <div style="position: absolute; bottom: 30px; font-family: 'JetBrains Mono', sans-serif; font-size: 10px; color: #4CAF50;">VERIFIED BY CA</div>
       </div>
-    </article>
+      <div class="ins">
+        Như một <strong>hộ chiếu số</strong>, SSL chứng minh website là "chính chủ", giúp người dùng tránh sập bẫy các trang web giả mạo.
+      </div>
+    </div>
 
-    <!-- Concept 2: HTTPS (With SSL) -->
-    <article class="ssl-card">
-      <div class="card-head">
-        <h2>02. HTTPS (Có SSL)</h2>
-        <span class="status" style="color: var(--green)">AN TOÀN</span>
+    <!-- Cell 3: Toàn vẹn dữ liệu -->
+    <div class="card">
+      <div class="accent-bar"></div>
+      <div class="indicator"></div>
+      <div class="card-header">
+        <div class="num-box">03</div>
+        <div class="card-title">Toàn vẹn dữ liệu</div>
       </div>
-      <div class="card-body">
-        <div class="preview-box animate-secure">
-          <div class="connection-line" style="background: var(--green)"></div>
-          <div class="entity" style="position: absolute; left: 10%;">
-            <svg viewBox="0 0 24 24" style="fill: var(--green)"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/></svg>
-            <span>Trình duyệt</span>
-          </div>
-          <div class="packet">A8f#2k!Lp</div>
-          <div class="entity" style="position: absolute; right: 10%;">
-            <svg viewBox="0 0 24 24" style="fill: var(--green)"><path d="M20 13c0 1.1-.9 2-2 2H6c-1.1 0-2-.9-2-2V5c0-1.1.9-2 2-2h12c1.1 0 2 .9 2 2v8zM6 17c-1.1 0-2 .9-2 2v2h16v-2c0-1.1-.9-2-2-2H6z"/></svg>
-            <span>Website</span>
-          </div>
-          <div style="position: absolute; bottom: 20px; font-size: 24px;">🚫🕵️‍♂️</div>
+      <div class="simulation-area">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; background: #222; padding: 5px 10px; border-radius: 4px;">Data Package</div>
+          <div class="check-mark">✓ VALID</div>
         </div>
-        <div class="info-row">
-          <span>Trạng thái: Dữ liệu đã được mã hóa</span>
-          <span class="label-safe">BẢO MẬT</span>
-        </div>
-        <p class="card-desc">Dữ liệu được bỏ vào một "hòm khóa" trước khi gửi. Chỉ có Website đích mới có chìa khóa để mở, kẻ xấu có lấy được cũng không đọc được gì.</p>
       </div>
-    </article>
+      <div class="ins">
+        Đảm bảo dữ liệu <strong>không bị thay đổi</strong> hoặc hư hỏng trong quá trình truyền tải từ trình duyệt đến máy chủ.
+      </div>
+    </div>
 
-    <!-- Concept 3: Digital Certificate -->
-    <article class="ssl-card">
-      <div class="card-head">
-        <h2>03. Chứng chỉ số là gì?</h2>
-        <span class="status">ĐỊNH DANH</span>
+    <!-- Cell 4: Nhận diện tin cậy -->
+    <div class="card">
+      <div class="accent-bar"></div>
+      <div class="indicator"></div>
+      <div class="card-header">
+        <div class="num-box">04</div>
+        <div class="card-title">Dấu hiệu nhận biết</div>
       </div>
-      <div class="card-body">
-        <div class="preview-box">
-          <div class="cert-badge">
-            <div style="font-size: 40px; margin-bottom: 10px;">📜</div>
-            <div style="font-family: var(--mono); font-size: 14px; font-weight: 700; color: var(--fg);">SSL CERTIFICATE</div>
-            <div style="font-size: 10px; color: var(--fg-muted); margin-top: 4px;">Issued to: <b>vibecode.io</b></div>
-            <div style="font-size: 10px; color: var(--fg-muted);">Verified by: <b>GlobalSign CA</b></div>
-          </div>
+      <div class="simulation-area">
+        <div class="url-bar">
+          <span class="lock-icon">🔒</span>
+          <span><span class="https-text">https</span>://yourbrand.com</span>
         </div>
-        <div class="info-row">
-          <span>Mục đích: Xác thực danh tính chủ sở hữu</span>
-        </div>
-        <p class="card-desc">Như một tấm "Hộ chiếu" của website. Nó giúp trình duyệt xác nhận rằng bạn đang vào đúng trang web thật, không phải một trang giả mạo lừa đảo.</p>
       </div>
-    </article>
-
-    <!-- Concept 4: How to identify? -->
-    <article class="ssl-card">
-      <div class="card-head">
-        <h2>04. Nhận biết SSL</h2>
-        <span class="status">KIỂM TRA</span>
+      <div class="ins">
+        Biểu tượng <strong>ổ khóa xanh</strong> và giao thức <strong>HTTPS</strong> là bằng chứng trực quan nhất cho một kết nối an toàn.
       </div>
-      <div class="card-body">
-        <div class="preview-box" style="flex-direction: column; gap: 20px;">
-          <div style="background: var(--bg); border: 1px solid var(--border); padding: 8px 16px; border-radius: 20px; display: flex; align-items: center; gap: 8px; width: 80%;">
-            <span style="color: var(--green)">🔒</span>
-            <span style="font-family: var(--mono); font-size: 12px;"><span style="color: var(--green)">https</span>://google.com</span>
-          </div>
-          <div style="background: var(--bg); border: 1px solid var(--border); padding: 8px 16px; border-radius: 20px; display: flex; align-items: center; gap: 8px; width: 80%; opacity: 0.5;">
-            <span style="color: var(--red)">⚠️</span>
-            <span style="font-family: var(--mono); font-size: 12px;"><span style="color: var(--red)">http</span>://unsafe-site.com</span>
-          </div>
-        </div>
-        <div class="info-row">
-          <span>Dấu hiệu: Ổ khóa xanh + "S" trong HTTPS</span>
-        </div>
-        <p class="card-desc">Chữ "S" là viết tắt của <b>Secure</b> (An toàn). Luôn kiểm tra ổ khóa trước khi nhập bất kỳ thông tin cá nhân nào lên một trang web.</p>
-      </div>
-    </article>
-
+    </div>
   </div>
-</div>
 
 </body>
 </html>

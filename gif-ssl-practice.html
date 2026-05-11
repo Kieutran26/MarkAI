@@ -1,308 +1,332 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SSL Practice — Vibecode Glossary</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #1a1a18;
-    --bg-card: #222220;
-    --bg-elevated: #2a2a27;
-    --fg: #e8e4dd;
-    --fg-muted: #8a877e;
-    --accent: #e88c2e;
-    --accent-dim: #b97025;
-    --amber: #c9922a;
-    --green: #6b8f5e;
-    --red: #b54a4a;
-    --border: #3a3a36;
-    --border-light: #4a4a45;
-    --mono: 'JetBrains Mono', monospace;
-    --sans: 'Space Grotesk', sans-serif;
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SSL Security Lab - Amber Brutalist</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --amber: #E88C2E;
+      --bg: #0a0a0c;
+      --card-bg: #16161b;
+      --text-main: #e0e0e0;
+      --text-muted: #707070;
+      --border: #25252a;
+      --green: #4CAF50;
+      --red: #F44336;
+    }
 
-  * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  body {
-    background: var(--bg);
-    color: var(--fg);
-    font-family: var(--sans);
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
-    overflow-x: hidden;
-  }
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: 'Space Grotesk', sans-serif;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
 
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
-    background-size: 24px 24px;
-    pointer-events: none;
-    z-index: 0;
-  }
+    .lab-card {
+      background: var(--card-bg);
+      width: 100%;
+      max-width: 940px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      position: relative;
+    }
 
-  .page-wrap {
-    position: relative;
-    z-index: 1;
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 24px 20px;
-  }
+    .accent-bar {
+      height: 3px;
+      background: var(--amber);
+    }
 
-  .practice-container {
-    width: 100%;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    padding: 24px;
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    position: relative;
-    transition: all .3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
+    .card-content {
+      padding: 24px;
+    }
 
-  .browser-mockup {
-    background: var(--bg-elevated);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-  }
+    .header {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-  .browser-header {
-    background: var(--bg);
-    padding: 10px 16px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    border-bottom: 1px solid var(--border);
-  }
+    .header h1 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--amber);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
 
-  .dots { display: flex; gap: 6px; }
-  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--border-light); }
+    .score-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--red);
+      border: 2px solid var(--red);
+      width: 50px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 3px;
+      background: rgba(244, 67, 54, 0.05);
+      transition: all 0.3s;
+    }
 
-  .address-bar {
-    flex: 1;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 4px 12px;
-    font-family: var(--mono);
-    font-size: 12px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
+    .score-badge.secure {
+      color: var(--green);
+      border-color: var(--green);
+      background: rgba(76, 175, 80, 0.05);
+      box-shadow: 0 0 15px rgba(76, 175, 80, 0.2);
+    }
 
-  .status-icon { font-size: 14px; }
-  .protocol-unsafe { color: var(--red); font-weight: 700; }
-  .protocol-safe { color: var(--green); font-weight: 700; display: none; }
+    .status-panel {
+      background: #000;
+      border: 1px solid var(--border);
+      padding: 20px;
+      margin-bottom: 24px;
+      border-radius: 2px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
 
-  .browser-content {
-    padding: 24px;
-    min-height: 200px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    gap: 12px;
-  }
+    .status-line {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+    }
 
-  .warning-banner {
-    background: rgba(181, 74, 74, 0.1);
-    border: 1px solid var(--red);
-    color: var(--red);
-    padding: 12px;
-    font-size: 12px;
-    border-radius: 4px;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
+    .status-line:last-child { margin-bottom: 0; }
+    .status-label { color: var(--text-muted); text-transform: uppercase; font-size: 10px; }
+    .status-val { font-weight: 600; font-size: 14px; }
+    .val-warn { color: var(--red); }
+    .val-ok { color: var(--green); }
 
-  .secure-banner {
-    background: rgba(107, 143, 94, 0.1);
-    border: 1px solid var(--green);
-    color: var(--green);
-    padding: 12px;
-    font-size: 12px;
-    border-radius: 4px;
-    width: 100%;
-    display: none;
-    align-items: center;
-    gap: 10px;
-  }
+    .control-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
 
-  .input-field {
-    width: 100%;
-    background: var(--bg);
-    border: 1px solid var(--border);
-    padding: 12px;
-    color: var(--fg);
-    font-family: var(--mono);
-    font-size: 14px;
-    outline: none;
-  }
+    @media (max-width: 600px) {
+      .control-list { grid-template-columns: 1fr; }
+      .status-panel { grid-template-columns: 1fr; }
+    }
 
-  .controls {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-  }
+    .toggle-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
 
-  .btn {
-    background: var(--accent);
-    color: var(--bg);
-    border: none;
-    padding: 12px;
-    font-family: var(--sans);
-    font-weight: 700;
-    cursor: pointer;
-    transition: all 0.2s;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    font-size: 13px;
-  }
-  .btn:hover { background: var(--fg); transform: translateY(-2px); }
-  .btn:active { transform: translateY(0); }
-  .btn:disabled { background: var(--border); cursor: not-allowed; }
+    .toggle-item:hover {
+      border-color: var(--amber);
+      background: rgba(232, 140, 46, 0.03);
+    }
 
-  .btn-secondary {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--fg-muted);
-  }
+    .toggle-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
 
-  /* Success State */
-  .is-secure .protocol-unsafe { display: none; }
-  .is-secure .protocol-safe { display: inline; }
-  .is-secure .warning-banner { display: none; }
-  .is-secure .secure-banner { display: flex; }
-  .is-secure .status-icon { color: var(--green); }
+    .toggle-title {
+      font-size: 13px;
+      font-weight: 500;
+    }
 
-  /* Animation for data transmission */
-  .data-log {
-    font-family: var(--mono);
-    font-size: 10px;
-    color: var(--fg-muted);
-    background: var(--bg);
-    padding: 10px;
-    border: 1px solid var(--border);
-    min-height: 40px;
-    height: auto;
-    overflow: visible;
-  }
+    .toggle-desc {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
 
-  .log-entry { margin-bottom: 4px; border-left: 2px solid var(--accent); padding-left: 8px; }
-  .log-entry.secure { border-left-color: var(--green); }
+    .switch {
+      width: 32px;
+      height: 18px;
+      background: #333;
+      border-radius: 10px;
+      position: relative;
+      transition: background 0.3s;
+    }
 
-</style>
+    .switch::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 14px;
+      height: 14px;
+      background: #eee;
+      border-radius: 50%;
+      transition: transform 0.3s;
+    }
+
+    .toggle-item.active .switch {
+      background: var(--green);
+    }
+
+    .toggle-item.active .switch::after {
+      transform: translateX(14px);
+    }
+
+    .hint-box {
+      margin-top: 20px;
+      padding: 12px;
+      border-left: 2px solid var(--amber);
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .hint-box strong { color: var(--amber); }
+
+  </style>
 </head>
 <body>
-
-<div class="page-wrap">
-  <div class="practice-container" id="app">
-    <div style="text-align: center; margin-bottom: 0;">
-      <h1 style="font-size: 18px; color: var(--accent);">Thực hành: Cài đặt SSL</h1>
-      <p style="font-size: 13px; color: var(--fg-muted);">Bảo mật trang web của bạn bằng cách chuyển sang HTTPS</p>
-    </div>
-
-    <div class="browser-mockup" id="browser">
-      <div class="browser-header">
-        <div class="dots">
-          <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+  <div class="lab-card">
+    <div class="accent-bar"></div>
+    <div class="card-content">
+      <div class="header">
+        <div>
+          <h1>SSL Security Lab</h1>
+          <p style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Cấu hình để đạt chứng chỉ A+</p>
         </div>
-        <div class="address-bar">
-          <span class="status-icon" id="statusIcon">⚠️</span>
-          <span>
-            <span class="protocol-unsafe">http://</span><span class="protocol-safe">https://</span>shop-demo.com
-          </span>
+        <div class="score-badge" id="rating">F</div>
+      </div>
+
+      <div class="status-panel">
+        <div class="status-line">
+          <span class="status-label">Protocol:</span>
+          <span class="status-val" id="protocol">HTTP</span>
+        </div>
+        <div class="status-line">
+          <span class="status-label">Encryption:</span>
+          <span class="status-val val-warn" id="encryption">NONE</span>
+        </div>
+        <div class="status-line">
+          <span class="status-label">Trust Score:</span>
+          <span class="status-val" id="score">0%</span>
         </div>
       </div>
-      <div class="browser-content">
-        <div class="warning-banner">
-          <span>⚠️</span>
-          <span>Kết nối không an toàn. Thông tin cá nhân có thể bị đánh cắp.</span>
+
+      <div class="control-list">
+        <div class="toggle-item" onclick="toggleOption('cert', this)">
+          <div class="toggle-info">
+            <span class="toggle-title">Install SSL Certificate</span>
+            <span class="toggle-desc">Mở khóa giao thức HTTPS an toàn.</span>
+          </div>
+          <div class="switch"></div>
         </div>
-        <div class="secure-banner">
-          <span>🔒</span>
-          <span>Kết nối an toàn. Dữ liệu của bạn đã được mã hóa.</span>
+
+        <div class="toggle-item" onclick="toggleOption('redirect', this)">
+          <div class="toggle-info">
+            <span class="toggle-title">Force HTTPS Redirect</span>
+            <span class="toggle-desc">Tự động chuyển HTTP sang HTTPS.</span>
+          </div>
+          <div class="switch"></div>
         </div>
-        
-        <div style="width: 100%; display: flex; flex-direction: column; gap: 10px; margin-top: 10px;">
-          <input type="password" class="input-field" placeholder="Nhập mật khẩu thử nghiệm..." id="passInput">
-          <button class="btn btn-secondary" style="padding: 8px; font-size: 11px;" id="sendBtn">Gửi dữ liệu</button>
+
+        <div class="toggle-item" onclick="toggleOption('hsts', this)">
+          <div class="toggle-info">
+            <span class="toggle-title">Enable HSTS</span>
+            <span class="toggle-desc">Bắt buộc trình duyệt chỉ dùng HTTPS.</span>
+          </div>
+          <div class="switch"></div>
+        </div>
+
+        <div class="toggle-item" onclick="toggleOption('tls', this)">
+          <div class="toggle-info">
+            <span class="toggle-title">TLS 1.3 Protocol</span>
+            <span class="toggle-desc">Sử dụng chuẩn mã hóa mới nhất.</span>
+          </div>
+          <div class="switch"></div>
         </div>
       </div>
-    </div>
 
-    <div class="controls">
-      <button class="btn" id="installBtn">🛡️ Cài đặt Chứng chỉ SSL</button>
-      <div class="data-log" id="log">
-        <div style="color: var(--fg-muted); font-style: italic;">Nhật ký truyền dữ liệu sẽ hiển thị ở đây...</div>
+      <div class="hint-box" id="hint">
+        🛡️ Website hiện đang <strong>không an toàn</strong>. Hãy bắt đầu bằng cách cài đặt Chứng chỉ SSL.
       </div>
     </div>
-
-    <p style="font-size: 11px; color: var(--fg-muted); text-align: center; margin-top: 10px;">
-      * Trong thực tế, bạn cần mua SSL từ nhà cung cấp (CA) và cấu hình trên server.
-    </p>
   </div>
-</div>
 
-<script>
-  const installBtn = document.getElementById('installBtn');
-  const sendBtn = document.getElementById('sendBtn');
-  const app = document.getElementById('app');
-  const browser = document.getElementById('browser');
-  const statusIcon = document.getElementById('statusIcon');
-  const passInput = document.getElementById('passInput');
-  const log = document.getElementById('log');
+  <script>
+    const options = {
+      cert: false,
+      redirect: false,
+      hsts: false,
+      tls: false
+    };
 
-  let isSecure = false;
+    function toggleOption(id, el) {
+      // Logic: must have cert before others
+      if (id !== 'cert' && !options.cert) {
+        alert("Bạn cần cài đặt Chứng chỉ SSL trước!");
+        return;
+      }
 
-  installBtn.addEventListener('click', () => {
-    installBtn.disabled = true;
-    installBtn.innerText = '⌛ Đang xác thực danh tính...';
-    
-    setTimeout(() => {
-      isSecure = true;
-      browser.classList.add('is-secure');
-      statusIcon.innerText = '🔒';
-      installBtn.innerText = '✅ Đã cài đặt SSL thành công';
-      installBtn.style.background = 'var(--green)';
+      options[id] = !options[id];
+      el.classList.toggle('active');
       
-      const entry = document.createElement('div');
-      entry.className = 'log-entry secure';
-      entry.innerText = '[SYSTEM]: Chứng chỉ SSL đã được kích hoạt cho shop-demo.com';
-      log.prepend(entry);
-    }, 1500);
-  });
-
-  sendBtn.addEventListener('click', () => {
-    const val = passInput.value || 'password123';
-    const entry = document.createElement('div');
-    entry.className = isSecure ? 'log-entry secure' : 'log-entry';
-    
-    if (isSecure) {
-      // Simple scramble for visual effect
-      const encrypted = btoa(val).substring(0, 10) + '...';
-      entry.innerHTML = `[SENDING]: <span style="color:var(--green)">${encrypted}</span> (Dữ liệu đã mã hóa)`;
-    } else {
-      entry.innerHTML = `[SENDING]: <span style="color:var(--red)">${val}</span> (Dữ liệu văn bản thuần!)`;
+      updateUI();
     }
-    
-    if (log.firstChild && log.firstChild.style.fontStyle) log.innerHTML = '';
-    log.prepend(entry);
-    passInput.value = '';
-  });
-</script>
 
+    function updateUI() {
+      const rating = document.getElementById('rating');
+      const protocol = document.getElementById('protocol');
+      const encryption = document.getElementById('encryption');
+      const scoreText = document.getElementById('score');
+      const hint = document.getElementById('hint');
+
+      let score = 0;
+      if (options.cert) score += 40;
+      if (options.redirect) score += 20;
+      if (options.hsts) score += 20;
+      if (options.tls) score += 20;
+
+      scoreText.innerText = score + '%';
+
+      if (score === 0) {
+        rating.innerText = 'F';
+        rating.className = 'score-badge';
+        protocol.innerText = 'HTTP';
+        protocol.className = 'status-val val-warn';
+        encryption.innerText = 'NONE';
+        encryption.className = 'status-val val-warn';
+        hint.innerHTML = '🛡️ Website hiện đang <strong>không an toàn</strong>. Hãy bắt đầu bằng cách cài đặt Chứng chỉ SSL.';
+      } else if (score < 60) {
+        rating.innerText = 'C';
+        rating.className = 'score-badge';
+        protocol.innerText = 'HTTPS';
+        protocol.className = 'status-val val-ok';
+        encryption.innerText = 'AES-128';
+        encryption.className = 'status-val val-ok';
+        hint.innerHTML = '👌 Đã có HTTPS! Nhưng hãy bật <strong>Redirect</strong> để đảm bảo mọi user đều vào bản an toàn.';
+      } else if (score < 100) {
+        rating.innerText = 'B';
+        rating.className = 'score-badge';
+        hint.innerHTML = '⚡ Rất tốt! Bật thêm <strong>HSTS</strong> và <strong>TLS 1.3</strong> để đạt điểm bảo mật tối đa.';
+      } else {
+        rating.innerText = 'A+';
+        rating.className = 'score-badge secure';
+        encryption.innerText = 'TLS 1.3 (STRONG)';
+        hint.innerHTML = '🏆 <strong>Tuyệt vời!</strong> Website của bạn đã đạt chuẩn bảo mật cao nhất hiện nay.';
+      }
+    }
+  </script>
 </body>
 </html>
