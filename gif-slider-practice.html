@@ -3,288 +3,483 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Slider Practice — markAI</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<title>Slider Strategy Lab — Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#0f0f12;--bg-card:#16161b;--fg:#e8e4dc;--muted:#6e6e7a;
-    --accent:#e88c2e;--accent-soft:rgba(232,140,46,.12);
-    --accent-border:rgba(232,140,46,.3);--border:#282830;
-    --surface:#1c1c23;--success:#3a9e5c;--success-soft:rgba(58,158,92,.12);
-    --warning:#c49030;--warning-soft:rgba(196,144,48,.1);
-    --bar-d:#2a2a34;--bar-m:#44444f;--shape-lt:#33333d;
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{
-    background:var(--bg);color:var(--fg);
-    font-family:'Space Grotesk',sans-serif;line-height:1.6;
-    overflow-x:hidden;
-  }
-  body::before{
-    content:'';position:fixed;inset:0;
-    background-image:radial-gradient(rgba(255,255,255,.022) 1px,transparent 1px);
-    background-size:20px 20px;pointer-events:none;z-index:0;
-  }
+:root {
+  --bg: #0f0f12;
+  --bg-card: #16161b;
+  --bg-el: #1c1c23;
+  --fg: #e8e4dc;
+  --muted: #707070;
+  --accent: #E88C2E;
+  --accent-soft: rgba(232, 140, 46, 0.1);
+  --accent-border: rgba(232, 140, 46, 0.3);
+  --border: #282830;
+  --error: #ef4444;
+  --success: #22c55e;
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Space Grotesk', sans-serif;
+}
 
-  #app-root{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:24px}
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-  .sec-lbl{
-    font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;
-    letter-spacing:2px;text-transform:uppercase;color:var(--muted);
-    margin-bottom:20px;display:flex;align-items:center;gap:10px;
-  }
-  .sec-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+body {
+  font-family: var(--sans);
+  background-color: var(--bg);
+  background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.02) 1px, transparent 0);
+  background-size: 24px 24px;
+  color: var(--fg);
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
 
-  .pg{font-size:15px;color:var(--fg);opacity:.8;margin-bottom:12px;line-height:1.6}
-  .pg span{color:var(--accent);font-weight:600}
-  .phint{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:24px}
-  .phint b{color:var(--accent)}
+.pra-wrap {
+  width: 100%;
+  max-width: 900px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 28px;
+  position: relative;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+}
 
-  .cfg-row{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:32px;align-items:center}
-  
-  .step-group{display:flex;gap:8px;flex-wrap:wrap}
-  .step-btn{
-    font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;
-    padding:6px 12px;border:1px solid var(--border);background:transparent;
-    color:var(--muted);cursor:pointer;transition:all .25s;
-  }
-  .step-btn:hover{border-color:var(--accent-border);color:var(--fg)}
-  .step-btn.on{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.pra-wrap::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 3px;
+  background: var(--accent);
+}
 
-  .tog-group{display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none}
-  .tog-track{width:36px;height:20px;background:var(--border);position:relative;transition:background .2s}
-  .tog-knob{position:absolute;top:2px;left:2px;width:16px;height:16px;background:var(--fg);transition:left .2s}
-  .tog-group.on .tog-track{background:var(--accent)}
-  .tog-group.on .tog-knob{left:18px}
-  .tog-lbl{font-family:'JetBrains Mono',monospace;font-size:11px;text-transform:uppercase;color:var(--muted)}
+/* Header */
+.ch { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.ch .n {
+  font-family: var(--mono);
+  font-size: 11px; font-weight: 700;
+  color: var(--accent); background: var(--accent-soft);
+  padding: 2px 8px; border-radius: 2px;
+  border: 1px solid var(--accent-border);
+}
+.ch h2 { font-size: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
 
-  .sl-sec{margin-bottom:32px}
-  .sl-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px}
-  .sl-lbl{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
-  .sl-val{
-    font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:700;
-    color:var(--accent);transition:color .3s;
-  }
-  .sl-val.dis{color:#555}
+.pra-goal { font-size: 13px; color: var(--muted); margin-bottom: 24px; line-height: 1.6; max-width: 600px; }
 
-  .sl-wrap{position:relative;height:34px}
-  .sl-track{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);height:4px;background:var(--border);z-index:0}
-  .sl-fill{position:absolute;left:0;top:50%;transform:translateY(-50%);height:4px;background:var(--accent);z-index:1;pointer-events:none}
-  
-  input[type=range]{
-    -webkit-appearance:none;appearance:none;
-    width:100%;height:34px;background:transparent;
-    outline:none;cursor:pointer;position:absolute;top:0;left:0;z-index:2;
-  }
-  input[type=range]::-webkit-slider-runnable-track{height:4px;background:transparent}
-  input[type=range]::-webkit-slider-thumb{
-    -webkit-appearance:none;width:20px;height:20px;
-    background:var(--accent);border:2px solid var(--bg);margin-top:-8px;cursor:grab;
-    transition:box-shadow .2s,background .2s;
-  }
-  input[type=range]:active::-webkit-slider-thumb{cursor:grabbing}
-  input[type=range].dis::-webkit-slider-thumb{background:#555;cursor:default}
-  .sl-wrap.dis .sl-fill{background:#555}
+/* Grid */
+.pra-grid { display: grid; grid-template-columns: 320px 1fr; gap: 28px; }
+@media (max-width: 800px) { .pra-grid { grid-template-columns: 1fr; } }
 
-  .sl-ticks{display:flex;justify-content:space-between;padding:8px 0 0;position:relative}
-  .sl-ticks span{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);opacity:.4}
-  
-  .sl-marks{position:absolute;inset:0;pointer-events:none}
-  .sl-marks b{position:absolute;top:-4px;width:1px;height:8px;background:var(--border);transform:translateX(-50%)}
-  .sl-marks b.hit{background:var(--accent)}
+/* Lab Controls */
+.controls { display: flex; flex-direction: column; gap: 20px; }
+.ctrl-item { display: flex; flex-direction: column; gap: 10px; }
+.ctrl-label { font-family: var(--mono); font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; }
 
-  .pout-info{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--muted);margin-top:12px}
-  .pout-info span{color:var(--fg)}
+.btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.btn-group.triple { grid-template-columns: 1fr 1fr 1fr; }
 
-  .prev{
-    background:var(--bg-card);border:1px solid var(--border);
-    padding:44px 28px;margin-bottom:20px;min-height:200px;
-    transition:border-color .3s;position:relative;overflow:visible;
-  }
-  .prev::before{
-    content:'';position:absolute;inset:0;
-    background-image:linear-gradient(rgba(255,255,255,.007) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(255,255,255,.007) 1px,transparent 1px);
-    background-size:16px 16px;pointer-events:none;z-index:0;
-  }
-  .prev-lbl{
-    position:absolute;top:10px;left:14px;z-index:2;
-    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;
-    text-transform:uppercase;color:var(--muted);opacity:.4;
-  }
+.opt-btn {
+  font-family: var(--mono);
+  font-size: 9px;
+  padding: 8px 4px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  border-radius: 2px;
+  text-transform: uppercase;
+}
+.opt-btn:hover { color: var(--fg); border-color: var(--muted); }
+.opt-btn.active { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); font-weight: 700; }
 
-  .prev-content{position:relative;z-index:1;display:flex;flex-direction:column;align-items:center}
-  .pv-box{width:220px;height:100px;background:var(--accent);transition:opacity .1s ease}
-  .pv-code{margin-top:24px;font-family:'JetBrains Mono',monospace;font-size:14px;color:var(--muted)}
-  .pv-code b{font-weight:600;color:var(--fg)}
-  .pv-code span{color:var(--accent)}
+/* Prompt Box */
+.prompt-box {
+  margin-top: 20px;
+  background: var(--bg);
+  border: 1px dashed var(--border);
+  padding: 16px;
+  border-radius: 4px;
+  position: relative;
+}
+.prompt-box::after {
+  content: 'PROMPT GENERATED';
+  position: absolute;
+  top: -8px; right: 12px;
+  font-family: var(--mono);
+  font-size: 8px; color: var(--muted);
+  background: var(--bg); padding: 0 6px;
+}
+.prompt-text {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--accent);
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
 
-  .fb{
-    display:inline-flex;align-items:center;gap:8px;
-    padding:10px 18px;font-size:13px;font-weight:500;
-    border:1px solid var(--border);background:var(--bg-card);transition:all .3s;
-  }
-  
-  .hint{font-size:12px;color:var(--muted);opacity:.5;margin-top:12px;display:flex;align-items:center;gap:6px}
-  .hint i{font-size:10px;color:var(--accent)}
+/* Preview Area */
+.preview { display: flex; flex-direction: column; gap: 16px; position: sticky; top: 20px; }
+.mock-stage {
+  background: #000;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  position: relative;
+  overflow: hidden;
+}
+.mock-stage::before {
+  content: 'INTERACTIVE PREVIEW';
+  position: absolute;
+  top: 12px; left: 16px;
+  font-family: var(--mono);
+  font-size: 8px; color: var(--muted);
+  letter-spacing: 2px;
+}
 
-  @media(max-width:480px){
-    #app-root{padding:14px}
-    .prev{padding:32px 16px}
-    .sl-val{font-size:24px}
-    .pv-box{width:180px}
-  }
+/* Slider UI Component */
+.slider-comp {
+  width: 100%;
+  max-width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.s-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.s-title { font-family: var(--sans); font-size: 12px; color: var(--muted); font-weight: 500; }
+.s-value { font-family: var(--mono); font-size: 14px; color: var(--accent); font-weight: 700; }
+
+.s-track-area {
+  position: relative;
+  height: 24px;
+  display: flex;
+  align-items: center;
+}
+.s-track {
+  width: 100%;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  position: relative;
+}
+.s-fill {
+  position: absolute;
+  left: 0; top: 0; height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  width: 50%;
+}
+.s-thumb {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  background: var(--accent);
+  border: 2px solid #000;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+.s-thumb.range2 { left: 80%; }
+
+.s-ticks {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 2px;
+}
+.s-tick {
+  width: 1px;
+  height: 4px;
+  background: var(--border);
+}
+.s-tick.active { background: var(--accent); }
+
+.s-labels {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--muted);
+}
+
+/* Feedback Box */
+.fb-box {
+  background: var(--bg-card);
+  border-left: 3px solid var(--border);
+  padding: 16px;
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.fb-box strong { color: var(--accent); font-weight: 700; }
+
 </style>
 </head>
 <body>
 
-<div id="app-root">
-  <section aria-label="Thực hành slider">
-    <p class="pg">
-      <span>Mục tiêu:</span> Kéo slider để cảm nhận sự khác biệt giữa "trượt mượt" và "nhảy bậc".
-    </p>
-    <p class="phint"><b>Hint:</b> Thử bật <b>Step 25</b> rồi kéo chậm để thấy nút snap vào từng mốc.</p>
+<div class="pra-wrap">
+  <div class="ch"><span class="n">LAB</span><h2>Slider Strategy Builder</h2></div>
+  <p class="pra-goal">Thiết kế thanh trượt phù hợp cho từng ngữ cảnh ứng dụng. Lựa chọn các thông số để tạo ra AI Prompt chuẩn xác nhất.</p>
 
-    <div class="cfg-row">
-      <div class="step-group" id="stepGroup">
-        <button class="step-btn on" data-step="1">Liên tục</button>
-        <button class="step-btn" data-step="10">10</button>
-        <button class="step-btn" data-step="25">25</button>
-        <button class="step-btn" data-step="50">50</button>
-      </div>
-      
-      <div class="tog-group" id="disTog">
-        <div class="tog-track"><div class="tog-knob"></div></div>
-        <span class="tog-lbl">Disabled</span>
-      </div>
-    </div>
-
-    <div class="sl-sec">
-      <div class="sl-head">
-        <span class="sl-lbl">Opacity Value</span>
-        <span class="sl-val" id="sV">50</span>
-      </div>
-      <div class="sl-wrap" id="slWrap">
-        <div class="sl-track"></div>
-        <div class="sl-fill" id="slFill" style="width:50%"></div>
-        <input type="range" id="sR" min="0" max="100" step="1" value="50" aria-label="Điều chỉnh giá trị">
-      </div>
-      <div class="sl-ticks">
-        <span>0</span><span>25</span><span>50</span><span>75</span><span>100</span>
-        <div class="sl-marks" id="slMarks"></div>
-      </div>
-      <div class="pout-info" id="poutInfo">Trạng thái: <span>Liên tục — giá trị bất kỳ</span></div>
-    </div>
-
-    <div class="prev" id="prevBox">
-      <span class="prev-lbl">Preview element</span>
-      <div class="prev-content">
-        <div class="pv-box" id="pvBox" style="opacity:0.5"></div>
-        <div class="pv-code">
-          opacity: <b><span id="pvOp">0.50</span></b>;<br>
-          slider-value: <span><span id="pvSl">50</span></span>;
+  <div class="pra-grid">
+    <div class="controls">
+      <div class="ctrl-item">
+        <span class="ctrl-label">Ngữ cảnh (Scenario)</span>
+        <div class="btn-group triple" data-group="scenario">
+          <button class="opt-btn active" data-val="audio">Audio Player</button>
+          <button class="opt-btn" data-val="photo">Photo Editor</button>
+          <button class="opt-btn" data-val="price">Price Filter</button>
         </div>
       </div>
+
+      <div class="ctrl-item">
+        <span class="ctrl-label">Loại Slider (Type)</span>
+        <div class="btn-group triple" data-group="type">
+          <button class="opt-btn active" data-val="smooth">Smooth</button>
+          <button class="opt-btn" data-val="stepped">Stepped</button>
+          <button class="opt-btn" data-val="range">Range</button>
+        </div>
+      </div>
+
+      <div id="stepCtrl" class="ctrl-item" style="display: none;">
+        <span class="ctrl-label">Bước nhảy (Steps)</span>
+        <div class="btn-group triple" data-group="step">
+          <button class="opt-btn active" data-val="10">10 đơn vị</button>
+          <button class="opt-btn" data-val="25">25 đơn vị</button>
+          <button class="opt-btn" data-val="50">50 đơn vị</button>
+        </div>
+      </div>
+
+      <div class="ctrl-item">
+        <span class="ctrl-label">Nhãn hiển thị (Labeling)</span>
+        <div class="btn-group" data-group="label">
+          <button class="opt-btn active" data-val="value">Current Value</button>
+          <button class="opt-btn" data-val="minmax">Min / Max</button>
+        </div>
+      </div>
+
+      <div class="prompt-box">
+        <div class="prompt-text" id="promptText">...</div>
+      </div>
     </div>
 
-    <div class="fb" id="fb">
-      <i class="fa-solid fa-lightbulb"></i>
-      <span id="fbText">Kéo để điều chỉnh độ trong suốt của khối phía trên</span>
+    <div class="preview">
+      <div class="mock-stage">
+        <div class="slider-comp" id="previewComp">
+          <div class="s-header">
+            <span class="s-title" id="previewTitle">Volume Control</span>
+            <span class="s-value" id="previewVal">50</span>
+          </div>
+          <div class="s-track-area">
+            <div class="s-track">
+              <div class="s-fill" id="previewFill"></div>
+            </div>
+            <div class="s-thumb" id="thumb1"></div>
+            <div class="s-thumb range2" id="thumb2" style="display: none;"></div>
+          </div>
+          <div id="previewTicks" class="s-ticks" style="display: none;"></div>
+          <div class="s-labels" id="previewLabels" style="display: none;">
+            <span>0</span>
+            <span>100</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="fb-box" id="fbBox">
+        <strong>Expert Tip:</strong> Dùng <strong>Continuous Slider</strong> cho các thông số cần cảm nhận mượt mà (như volume). Dùng <strong>Stepped</strong> khi muốn giới hạn lựa chọn (như số lượng item).
+      </div>
     </div>
-    <p class="hint">
-      <i class="fa-solid fa-arrow-up-right"></i>
-      Step là cách tốt nhất để giới hạn lựa chọn của người dùng trong các dải giá trị lớn.
-    </p>
-  </section>
+  </div>
 </div>
 
 <script>
-  const sR = document.getElementById('sR');
-  const sV = document.getElementById('sV');
-  const slFill = document.getElementById('slFill');
-  const pvBox = document.getElementById('pvBox');
-  const pvOp = document.getElementById('pvOp');
-  const pvSl = document.getElementById('pvSl');
-  const poutInfo = document.getElementById('poutInfo');
-  const slMarks = document.getElementById('slMarks');
-  const stepGroup = document.getElementById('stepGroup');
-  const disTog = document.getElementById('disTog');
-  const slWrap = document.getElementById('slWrap');
-  const fbText = document.getElementById('fbText');
+const state = {
+  scenario: 'audio',
+  type: 'smooth',
+  step: '10',
+  label: 'value',
+  val1: 50, // Value for thumb1 (0-100)
+  val2: 80  // Value for thumb2 (0-100)
+};
 
-  let curStep = 1;
-  let isDis = false;
+const scenarios = {
+  audio: { title: 'Volume Control', prompt: 'nghe nhạc (chỉnh Volume)', unit: '' },
+  photo: { title: 'Brightness', prompt: 'chỉnh sửa ảnh (độ sáng Brightness)', unit: '' },
+  price: { title: 'Price Range', prompt: 'lọc giá sản phẩm (Price Range)', unit: '$' }
+};
 
-  function updateValue() {
-    const v = parseInt(sR.value);
-    const op = (v / 100).toFixed(2);
+const pTitle = document.getElementById('previewTitle');
+const pVal = document.getElementById('previewVal');
+const pFill = document.getElementById('previewFill');
+const pTicks = document.getElementById('previewTicks');
+const pLabels = document.getElementById('previewLabels');
+const thumb1 = document.getElementById('thumb1');
+const thumb2 = document.getElementById('thumb2');
+const stepCtrl = document.getElementById('stepCtrl');
+const promptText = document.getElementById('promptText');
+const fbBox = document.getElementById('fbBox');
+const trackArea = document.querySelector('.s-track-area');
+
+function update(fromDrag = false) {
+  // Update Preview UI
+  pTitle.textContent = scenarios[state.scenario].title;
+  
+  // Type logic
+  if (state.type === 'stepped') {
+    stepCtrl.style.display = 'flex';
+    pTicks.style.display = 'flex';
+    pTicks.innerHTML = '';
+    const stepVal = parseInt(state.step);
     
-    sV.textContent = v;
-    slFill.style.width = v + '%';
-    pvBox.style.opacity = op;
-    pvOp.textContent = op;
-    pvSl.textContent = v;
+    // Snap value if not from drag or if needed
+    if (!fromDrag) {
+      state.val1 = Math.round(state.val1 / stepVal) * stepVal;
+    }
+
+    for (let i = 0; i <= 100; i += stepVal) {
+      const t = document.createElement('div');
+      t.className = 's-tick' + (i <= state.val1 ? ' active' : '');
+      pTicks.appendChild(t);
+    }
+    thumb2.style.display = 'none';
+    pVal.textContent = state.val1;
+    thumb1.style.left = state.val1 + '%';
+    pFill.style.left = '0';
+    pFill.style.width = state.val1 + '%';
+  } else if (state.type === 'range') {
+    stepCtrl.style.display = 'none';
+    pTicks.style.display = 'none';
+    thumb2.style.display = 'block';
     
-    // update marks hit state
-    slMarks.querySelectorAll('b').forEach(b => {
-      const mv = parseInt(b.style.left);
-      b.classList.toggle('hit', mv <= v);
-    });
+    // Ensure val1 < val2
+    if (state.val1 > state.val2) {
+      const temp = state.val1;
+      state.val1 = state.val2;
+      state.val2 = temp;
+    }
+
+    const unit = scenarios[state.scenario].unit;
+    pVal.textContent = `${unit}${state.val1} - ${unit}${state.val2}`;
+    
+    thumb1.style.left = state.val1 + '%';
+    thumb2.style.left = state.val2 + '%';
+    pFill.style.left = state.val1 + '%';
+    pFill.style.width = (state.val2 - state.val1) + '%';
+  } else {
+    stepCtrl.style.display = 'none';
+    pTicks.style.display = 'none';
+    thumb2.style.display = 'none';
+    pVal.textContent = state.val1;
+    thumb1.style.left = state.val1 + '%';
+    pFill.style.left = '0';
+    pFill.style.width = state.val1 + '%';
   }
 
-  function setStep(s) {
-    curStep = s;
-    sR.step = s;
-    const v = Math.round(sR.value / s) * s;
-    sR.value = v;
-    
-    // update marks
-    slMarks.innerHTML = '';
-    if (s > 1) {
-      for (let i = 0; i <= 100; i += s) {
-        const b = document.createElement('b');
-        b.style.left = i + '%';
-        slMarks.appendChild(b);
-      }
-    }
-    
-    const label = s === 1 ? 'Liên tục — giá trị bất kỳ' : `Step ${s} — snap đến từng mốc ${s} đơn vị`;
-    poutInfo.innerHTML = `Trạng thái: <span>${label}</span>`;
-    fbText.textContent = s === 1 ? 'Kéo để điều chỉnh tự do' : `Đang giới hạn bước nhảy ${s} đơn vị`;
-    
-    updateValue();
+  // Label logic
+  if (state.label === 'value') {
+    pVal.style.display = 'block';
+    pLabels.style.display = 'none';
+  } else {
+    pVal.style.display = 'none';
+    pLabels.style.display = 'flex';
   }
 
-  stepGroup.querySelectorAll('.step-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      if(isDis) return;
-      stepGroup.querySelectorAll('.step-btn').forEach(b => b.classList.remove('on'));
-      btn.classList.add('on');
-      setStep(parseInt(btn.dataset.step));
-    });
-  });
+  // Generate Prompt
+  let prompt = `Tạo một Slider component cho ứng dụng ${scenarios[state.scenario].prompt}.
+Yêu cầu kỹ thuật:
+- Loại: ${state.type === 'smooth' ? 'Liên tục (Continuous)' : state.type === 'stepped' ? 'Nhảy bậc (Stepped) với bước nhảy ' + state.step : 'Chọn khoảng (Range Slider)'}.
+- Hiển thị: ${state.label === 'value' ? 'Hiện giá trị hiện tại' : 'Hiện mốc Min/Max ở hai đầu'}.
+- Style: Amber Brutalist (#E88C2E), nền tối, thumb có viền tương phản.
+- Framework: React + Tailwind CSS.`;
 
-  disTog.addEventListener('click', () => {
-    isDis = !isDis;
-    disTog.classList.toggle('on', isDis);
-    sR.disabled = isDis;
-    sR.classList.toggle('dis', isDis);
-    slWrap.classList.toggle('dis', isDis);
-    sV.classList.toggle('dis', isDis);
-    
-    if(isDis) {
-      poutInfo.innerHTML = 'Trạng thái: <span>Bị khóa (Disabled)</span>';
-      fbText.textContent = 'Mở khóa để tiếp tục tương tác';
-    } else {
-      setStep(curStep);
-    }
-  });
+  promptText.textContent = prompt;
 
-  sR.addEventListener('input', updateValue);
+  // Feedback
+  if (state.scenario === 'price' && state.type !== 'range') {
+    fbBox.innerHTML = '💡 <strong>Gợi ý:</strong> Với lọc giá (Price Filter), dùng <strong>Range Slider</strong> (2 nút kéo) là lựa chọn chuẩn UX nhất để user chọn khoảng Min-Max.';
+  } else if (state.scenario === 'audio' && state.type === 'stepped') {
+    fbBox.innerHTML = '⚠️ <strong>Lưu ý:</strong> Chỉnh âm lượng bằng <strong>Stepped</strong> có thể gây cảm giác bị "giật" tiếng. <strong>Smooth</strong> thường được ưu tiên hơn.';
+  } else {
+    fbBox.innerHTML = '<strong>Expert Tip:</strong> Slider giúp giao diện sạch hơn so với việc dùng ô nhập số, nhưng đừng dùng slider nếu user cần nhập con số cực kỳ chính xác (như mã PIN).';
+  }
+}
 
-  // init
-  setStep(1);
+// Drag Interaction Logic
+let activeThumb = null;
+
+function handleStart(e) {
+  if (e.target.classList.contains('s-thumb')) {
+    activeThumb = e.target;
+    document.addEventListener('mousemove', handleMove);
+    document.addEventListener('mouseup', handleEnd);
+    document.addEventListener('touchmove', handleMove);
+    document.addEventListener('touchend', handleEnd);
+    e.preventDefault();
+  }
+}
+
+function handleMove(e) {
+  if (!activeThumb) return;
+  
+  const rect = trackArea.getBoundingClientRect();
+  const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+  let pos = ((clientX - rect.left) / rect.width) * 100;
+  pos = Math.max(0, Math.min(100, pos));
+
+  if (state.type === 'stepped') {
+    const stepVal = parseInt(state.step);
+    pos = Math.round(pos / stepVal) * stepVal;
+  }
+
+  if (activeThumb.id === 'thumb1') {
+    state.val1 = Math.round(pos);
+    if (state.type === 'range' && state.val1 > state.val2) state.val1 = state.val2;
+  } else {
+    state.val2 = Math.round(pos);
+    if (state.val1 > state.val2) state.val2 = state.val1;
+  }
+
+  update(true);
+}
+
+function handleEnd() {
+  activeThumb = null;
+  document.removeEventListener('mousemove', handleMove);
+  document.removeEventListener('mouseup', handleEnd);
+  document.removeEventListener('touchmove', handleMove);
+  document.removeEventListener('touchend', handleEnd);
+}
+
+thumb1.addEventListener('mousedown', handleStart);
+thumb2.addEventListener('mousedown', handleStart);
+thumb1.addEventListener('touchstart', handleStart);
+thumb2.addEventListener('touchstart', handleStart);
+
+document.querySelectorAll('.opt-btn').forEach(btn => {
+  btn.onclick = function() {
+    const group = this.parentElement.dataset.group;
+    state[group] = this.dataset.val;
+    this.parentElement.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    update();
+  };
+});
+
+update();
 </script>
+
 </body>
 </html>

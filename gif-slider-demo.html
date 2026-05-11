@@ -1,241 +1,402 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Slider Demo — markAI</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<style>
-  :root{
-    --bg:#0f0f12;--bg-card:#16161b;--fg:#e8e4dc;--muted:#6e6e7a;
-    --accent:#e88c2e;--accent-soft:rgba(232,140,46,.12);
-    --accent-border:rgba(232,140,46,.3);--border:#282830;
-    --surface:#1c1c23;--shape-lt:#33333d;--bar-m:#44444f;
-  }
-  *{margin:0;padding:0;box-sizing:border-box}
-  body{
-    background:var(--bg);color:var(--fg);
-    font-family:'Space Grotesk',sans-serif;line-height:1.6;
-    overflow-x:hidden;
-  }
-  body::before{
-    content:'';position:fixed;inset:0;
-    background-image:radial-gradient(rgba(255,255,255,.022) 1px,transparent 1px);
-    background-size:20px 20px;pointer-events:none;z-index:0;
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slider Demo - Amber Brutalist</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --amber: #E88C2E;
+            --bg: #0a0a0c;
+            --card-bg: #16161b;
+            --text: #e0e0e6;
+            --text-muted: #707070;
+            --border: #2a2a30;
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-sans: 'Space Grotesk', sans-serif;
+        }
 
-  #app-root{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:24px}
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
-  .sec-lbl{
-    font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;
-    letter-spacing:2px;text-transform:uppercase;color:var(--muted);
-    margin-bottom:20px;display:flex;align-items:center;gap:10px;
-  }
-  .sec-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font-sans);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
 
-  .sim-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px}
-  @media(max-width:720px){.sim-grid{grid-template-columns:repeat(2,1fr)}}
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            width: 100%;
+            max-width: 940px;
+        }
 
-  .sc{
-    background:var(--bg-card);border:1px solid var(--border);
-    padding:18px 14px 16px;cursor:pointer;position:relative;overflow:hidden;
-    transition:border-color .3s,background .3s,opacity .5s;
-  }
-  .sc::before{
-    content:'';position:absolute;top:0;left:0;right:0;height:2px;
-    background:var(--accent);transform:scaleX(0);transform-origin:left;
-    transition:transform .35s ease;
-  }
-  .sc.on{border-color:var(--accent);background:var(--surface);opacity:1}
-  .sc:not(.on){opacity:0.4}
-  .sc.on::before{transform:scaleX(1)}
+        @media (max-width: 600px) {
+            .grid { grid-template-columns: 1fr; }
+        }
 
-  .sc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
-  .sc-num{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:1px}
-  .sc-tag{
-    font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;
-    text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);transition:color .3s;
-  }
-  .sc.on .sc-tag{color:var(--accent)}
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            position: relative;
+            padding-top: 2px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
 
-  .sc-visual{height:60px;display:flex;flex-direction:column;justify-content:center;gap:8px;margin-bottom:12px}
-  
-  .sl-area{display:flex;align-items:center;gap:8px}
-  .sl-bound{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);min-width:14px;text-align:center}
-  .sl-tw{flex:1;position:relative;height:20px;display:flex;align-items:center}
-  .sl-track{width:100%;height:4px;background:var(--border);position:relative}
-  .sl-fill{position:absolute;left:0;top:0;height:100%;background:var(--accent);pointer-events:none}
-  .sl-thumb{position:absolute;top:50%;left:50%;width:14px;height:14px;background:var(--accent);border:2px solid var(--bg);transform:translate(-50%,-50%);z-index:2}
-  .sc.on .sl-thumb{box-shadow:0 0 10px var(--accent-border)}
-  
-  .sl-marks{position:absolute;top:50%;left:0;right:0;transform:translateY(-50%);height:0;pointer-events:none}
-  .sl-marks span{position:absolute;width:4px;height:4px;background:var(--bg);border:1px solid var(--border);transform:translate(-50%,-50%)}
-  
-  .sl-out{display:flex;justify-content:space-between;align-items:baseline;margin-top:8px}
-  .sl-val{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700;color:var(--muted);transition:color .3s}
-  .sc.on .sl-val{color:var(--accent)}
-  .sl-sub{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+        .accent-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--amber);
+        }
 
-  .ins{
-    background:var(--surface);border:1px solid var(--border);
-    padding:18px 22px;display:flex;align-items:flex-start;gap:12px;min-height:90px;
-  }
-  .ins-i{color:var(--accent);font-size:13px;margin-top:3px;flex-shrink:0}
-  .ins-t{font-size:14px;color:var(--fg);opacity:.85;line-height:1.65;transition:opacity .25s,transform .25s}
-  .ins-t.fading{opacity:0;transform:translateY(6px)}
-  .ins-t strong{color:var(--accent);font-weight:600}
+        .header {
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
 
-  /* loop progress */
-  .pbar{display:flex;gap:4px;margin-top:12px}
-  .pseg{flex:1;height:2px;background:var(--border);transition:background .3s}
-  .pseg.on{background:var(--accent)}
+        .num-box {
+            font-family: var(--font-mono);
+            font-size: 12px;
+            border: 1px solid rgba(232, 140, 46, 0.4);
+            padding: 3px 8px;
+            color: var(--amber);
+            background: rgba(232, 140, 46, 0.05);
+            border-radius: 2px;
+            line-height: 1;
+        }
 
-  @media(max-width:480px){
-    #app-root{padding:14px}
-    .ins{padding:14px 16px}
-    .sim-grid{grid-template-columns:1fr 1fr}
-  }
-</style>
+        .title {
+            font-family: var(--font-sans);
+            font-size: 14px;
+            font-weight: 600;
+            color: #ffffff;
+            letter-spacing: -0.01em;
+        }
+
+        .indicator {
+            position: absolute;
+            top: 14px;
+            right: 16px;
+            width: 8px;
+            height: 8px;
+            background: var(--amber);
+            border-radius: 50%;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; box-shadow: 0 0 5px var(--amber); }
+            50% { opacity: 0.3; }
+        }
+
+        .simulation {
+            height: 160px;
+            position: relative;
+            background: #0f0f13;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: 40px;
+        }
+
+        .ins {
+            padding: 12px 16px;
+            font-size: 11.5px;
+            color: var(--text-muted);
+            border-left: 2px solid var(--amber);
+            line-height: 1.5;
+            background: rgba(232, 140, 46, 0.03);
+            min-height: 64px;
+        }
+
+        .ins strong {
+            color: var(--amber);
+            font-weight: 600;
+        }
+
+        /* Slider Styles */
+        .slider-track {
+            width: 100%;
+            height: 4px;
+            background: #2a2a30;
+            border-radius: 2px;
+            position: relative;
+        }
+
+        .slider-fill {
+            position: absolute;
+            height: 100%;
+            background: var(--amber);
+            border-radius: 2px;
+            left: 0;
+            top: 0;
+        }
+
+        .slider-thumb {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: #ffffff;
+            border: 2px solid var(--amber);
+            border-radius: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            z-index: 2;
+        }
+
+        /* Range Slider Styles */
+        .range-fill {
+            position: absolute;
+            height: 100%;
+            background: var(--amber);
+            border-radius: 2px;
+        }
+
+        /* Vertical Slider Styles */
+        .vertical-container {
+            height: 100px;
+            width: 4px;
+            background: #2a2a30;
+            border-radius: 2px;
+            position: relative;
+        }
+
+        .vertical-fill {
+            position: absolute;
+            width: 100%;
+            background: var(--amber);
+            border-radius: 2px;
+            bottom: 0;
+            left: 0;
+        }
+
+        .vertical-thumb {
+            position: absolute;
+            width: 16px;
+            height: 16px;
+            background: #ffffff;
+            border: 2px solid var(--amber);
+            border-radius: 50%;
+            left: 50%;
+            transform: translate(-50%, 50%);
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            z-index: 2;
+        }
+
+        /* Step Marks */
+        .step-marks {
+            position: absolute;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            top: 10px;
+        }
+
+        .mark {
+            width: 2px;
+            height: 6px;
+            background: #444;
+        }
+
+        .val-display {
+            position: absolute;
+            top: -25px;
+            font-family: var(--font-mono);
+            font-size: 10px;
+            color: var(--amber);
+            width: 100%;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-
-<div id="app-root">
-  <section aria-label="Mô phỏng slider states">
-    <div class="sim-grid" id="simGrid"></div>
-    <div class="ins">
-      <i class="fa-solid fa-lightbulb ins-i"></i>
-      <p class="ins-t" id="insT">Đang tải...</p>
-    </div>
-    <div class="pbar" id="pbar"></div>
-  </section>
-</div>
-
-<script>
-  const S = [
-    { num:'01', name:'Default', sub:'initial', val:50, 
-      ins:'<strong>Slider ngồi yên</strong> ở giá trị mặc định. Đây là trạng thái khi chưa ai chạm vào, nó chỉ hiển thị thông tin mà chưa có phản hồi tương tác.' },
-    { num:'02', name:'Active', sub:'dragging', val:75, 
-      ins:'<strong>Đang kéo (Dragging) → giá trị thay đổi realtime.</strong> Bản chất: vị trí của nút (thumb) luôn phản ánh chính xác giá trị hiện tại của hệ thống.' },
-    { num:'03', name:'Stepped', sub:'step: 25', val:25, step:25, 
-      ins:'<strong>Bước nhảy (Step) = 25</strong> → nút chỉ nhảy đến 0, 25, 50, 75, 100. Nó không bao giờ dừng ở giữa, giống như các bậc thang.' },
-    { num:'04', name:'Disabled', sub:'readonly', val:50, dis:true,
-      ins:'<strong>Slider bị khóa.</strong> Người dùng thấy giá trị nhưng không thể kéo. Dùng khi điều kiện chưa đủ (ví dụ chưa bật công tắc chính).' }
-  ];
-
-  const simGrid = document.getElementById('simGrid');
-  const insT = document.getElementById('insT');
-  const pbar = document.getElementById('pbar');
-  let activeI = 0;
-  let stateStart = performance.now();
-  const DURATION = 3500;
-  const refs = [];
-
-  function renderSim() {
-    simGrid.innerHTML = S.map((s, i) => {
-      let marks = '';
-      if(s.step){
-        marks = '<div class="sl-marks">';
-        for(let v=0; v<=100; v+=s.step) marks += `<span style="left:${v}%"></span>`;
-        marks += '</div>';
-      }
-      const isDis = s.dis ? 'style="filter:grayscale(1);opacity:0.4"' : '';
-      const fillStyle = s.dis ? 'background:#555' : '';
-      const thumbStyle = s.dis ? 'background:#555' : '';
-
-      return `
-        <div class="sc" data-i="${i}">
-          <div class="sc-top">
-            <span class="sc-num">${s.num}</span>
-            <span class="sc-tag">${s.name}</span>
-          </div>
-          <div class="sc-visual" ${isDis}>
-            <div class="sl-area">
-              <span class="sl-bound">0</span>
-              <div class="sl-tw">
-                <div class="sl-track">
-                  <div class="sl-fill" id="fill${i}" style="width:${s.val}%;${fillStyle}"></div>
-                  <div class="sl-thumb" id="thumb${i}" style="left:${s.val}%;${thumbStyle}"></div>
-                  ${marks}
-                </div>
-              </div>
-              <span class="sl-bound">100</span>
+    <div class="grid">
+        <!-- 01: Continuous Slider -->
+        <div class="card">
+            <div class="accent-bar"></div>
+            <div class="indicator"></div>
+            <div class="header">
+                <div class="num-box">01</div>
+                <div class="title">Continuous Slider</div>
             </div>
-          </div>
-          <div class="sl-out">
-            <span class="sl-val" id="val${i}">${s.val}</span>
-            <span class="sl-sub">${s.sub}</span>
-          </div>
-        </div>`;
-    }).join('');
+            <div class="simulation">
+                <div class="val-display" id="val1">50%</div>
+                <div class="slider-track">
+                    <div class="slider-fill" id="fill1" style="width: 50%;"></div>
+                    <div class="slider-thumb" id="thumb1" style="left: 50%;"></div>
+                </div>
+            </div>
+            <div class="ins">
+                <strong>Continuous Slider</strong> cho phép chọn giá trị <strong>bất kỳ</strong> trong một dải từ Min đến Max, thường dùng cho âm lượng hoặc độ sáng.
+            </div>
+        </div>
 
-    // progress bar segments
-    pbar.innerHTML = S.map(() => `<div class="pseg"></div>`).join('');
+        <!-- 02: Range Slider -->
+        <div class="card">
+            <div class="accent-bar"></div>
+            <div class="indicator"></div>
+            <div class="header">
+                <div class="num-box">02</div>
+                <div class="title">Range Slider</div>
+            </div>
+            <div class="simulation">
+                <div class="val-display" id="val2">$200 - $800</div>
+                <div class="slider-track">
+                    <div class="range-fill" id="fill2" style="left: 20%; width: 60%;"></div>
+                    <div class="slider-thumb" id="thumb2a" style="left: 20%;"></div>
+                    <div class="slider-thumb" id="thumb2b" style="left: 80%;"></div>
+                </div>
+            </div>
+            <div class="ins">
+                <strong>Range Slider</strong> sử dụng <strong>hai nút kéo</strong> để xác định một khoảng giá trị (ví dụ: khoảng giá từ $200 đến $800).
+            </div>
+        </div>
 
-    S.forEach((_, i) => {
-      refs.push({
-        fill: document.getElementById(`fill${i}`),
-        thumb: document.getElementById(`thumb${i}`),
-        val: document.getElementById(`val${i}`)
-      });
-    });
-  }
+        <!-- 03: Stepped Slider -->
+        <div class="card">
+            <div class="accent-bar"></div>
+            <div class="indicator"></div>
+            <div class="header">
+                <div class="num-box">03</div>
+                <div class="title">Stepped Slider</div>
+            </div>
+            <div class="simulation">
+                <div class="val-display" id="val3">Step: 2</div>
+                <div style="width: 100%; position: relative;">
+                    <div class="slider-track">
+                        <div class="slider-fill" id="fill3" style="width: 40%;"></div>
+                        <div class="slider-thumb" id="thumb3" style="left: 40%;"></div>
+                    </div>
+                    <div class="step-marks">
+                        <div class="mark"></div>
+                        <div class="mark"></div>
+                        <div class="mark"></div>
+                        <div class="mark"></div>
+                        <div class="mark"></div>
+                        <div class="mark"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="ins">
+                <strong>Stepped Slider</strong> giới hạn các giá trị theo các <strong>bước nhảy</strong> cố định. Người dùng không thể chọn các giá trị nằm giữa hai bước.
+            </div>
+        </div>
 
-  function activateCard(i) {
-    activeI = i;
-    simGrid.querySelectorAll('.sc').forEach((c, idx) => c.classList.toggle('on', idx === i));
-    pbar.querySelectorAll('.pseg').forEach((s, idx) => s.classList.toggle('on', idx <= i));
-    
-    // reset others to default 50
-    S.forEach((s, idx) => {
-      if(idx !== i) {
-        updateSim(idx, s.val);
-      }
-    });
+        <!-- 04: Vertical Slider -->
+        <div class="card">
+            <div class="accent-bar"></div>
+            <div class="indicator"></div>
+            <div class="header">
+                <div class="num-box">04</div>
+                <div class="title">Vertical Slider</div>
+            </div>
+            <div class="simulation">
+                <div class="val-display" id="val4" style="top: 10px;">70%</div>
+                <div class="vertical-container">
+                    <div class="vertical-fill" id="fill4" style="height: 70%;"></div>
+                    <div class="vertical-thumb" id="thumb4" style="bottom: 70%;"></div>
+                </div>
+            </div>
+            <div class="ins">
+                <strong>Vertical Slider</strong> thay đổi hướng kéo theo <strong>chiều dọc</strong>. Thường thấy trong các bảng điều khiển âm thanh chuyên nghiệp (Mixer).
+            </div>
+        </div>
+    </div>
 
-    setIns(S[i].ins);
-    stateStart = performance.now();
-  }
+    <script>
+        const wait = ms => new Promise(r => setTimeout(r, ms));
 
-  function updateSim(idx, val) {
-    const pct = val + '%';
-    refs[idx].fill.style.width = pct;
-    refs[idx].thumb.style.left = pct;
-    refs[idx].val.textContent = Math.round(val);
-  }
+        // Loop 1: Continuous
+        async function loop1() {
+            const fill = document.getElementById('fill1');
+            const thumb = document.getElementById('thumb1');
+            const display = document.getElementById('val1');
+            let t = 0;
+            while (true) {
+                t += 0.02;
+                const val = 50 + 40 * Math.sin(t);
+                fill.style.width = val + '%';
+                thumb.style.left = val + '%';
+                display.innerText = Math.round(val) + '%';
+                await wait(16);
+            }
+        }
 
-  function setIns(t) {
-    insT.classList.add('fading');
-    setTimeout(() => { 
-      insT.innerHTML = t; 
-      insT.classList.remove('fading'); 
-    }, 250);
-  }
+        // Loop 2: Range
+        async function loop2() {
+            const fill = document.getElementById('fill2');
+            const thumbA = document.getElementById('thumb2a');
+            const thumbB = document.getElementById('thumb2b');
+            const display = document.getElementById('val2');
+            let t = 0;
+            while (true) {
+                t += 0.015;
+                const low = 20 + 15 * Math.sin(t);
+                const high = 80 + 15 * Math.cos(t);
+                
+                fill.style.left = low + '%';
+                fill.style.width = (high - low) + '%';
+                thumbA.style.left = low + '%';
+                thumbB.style.left = high + '%';
+                
+                display.innerText = `$${Math.round(low * 10)} - $${Math.round(high * 10)}`;
+                await wait(16);
+            }
+        }
 
-  function tick(now) {
-    const elapsed = now - stateStart;
-    const t = Math.min(elapsed / DURATION, 1);
+        // Loop 3: Stepped
+        async function loop3() {
+            const fill = document.getElementById('fill3');
+            const thumb = document.getElementById('thumb3');
+            const display = document.getElementById('val3');
+            const steps = [0, 20, 40, 60, 80, 100, 80, 60, 40, 20];
+            let i = 0;
+            while (true) {
+                const val = steps[i];
+                fill.style.width = val + '%';
+                thumb.style.left = val + '%';
+                display.innerText = `Step: ${i % 6}`;
+                
+                i = (i + 1) % steps.length;
+                await wait(800);
+            }
+        }
 
-    if (activeI === 1) { // ACTIVE
-      // smooth ping-pong 15 -> 90
-      const val = 15 + 75 * (0.5 - 0.5 * Math.cos(t * 2 * Math.PI));
-      updateSim(1, val);
-    } else if (activeI === 2) { // STEPPED
-      const steps = [50, 75, 100, 75, 50, 25, 0];
-      const si = Math.min(Math.floor(t * steps.length), steps.length - 1);
-      updateSim(2, steps[si]);
-    }
+        // Loop 4: Vertical
+        async function loop4() {
+            const fill = document.getElementById('fill4');
+            const thumb = document.getElementById('thumb4');
+            const display = document.getElementById('val4');
+            let t = 0;
+            while (true) {
+                t += 0.025;
+                const val = 50 + 45 * Math.cos(t);
+                fill.style.height = val + '%';
+                thumb.style.bottom = val + '%';
+                display.innerText = Math.round(val) + '%';
+                await wait(16);
+            }
+        }
 
-    if (elapsed >= DURATION) {
-      activateCard((activeI + 1) % S.length);
-    }
-
-    requestAnimationFrame(tick);
-  }
-
-  renderSim();
-  activateCard(0);
-  requestAnimationFrame(tick);
-</script>
+        loop1();
+        loop2();
+        loop3();
+        loop4();
+    </script>
 </body>
 </html>
