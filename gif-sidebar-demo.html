@@ -1,184 +1,493 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sidebar Demo — markAI</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-:root{
-  --bg:#0f0f12;--bg-card:#16161b;--bg-el:#222;--border:#282830;
-  --border-active:#e88c2e;--accent:#e88c2e;
-  --accent-glow:rgba(232,140,46,.18);--accent-soft:rgba(232,140,46,.07);
-  --cream:#EDE4D8;--text:#D8D0C8;--muted:#777770;
-  --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
-}
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--text);font-family:var(--sans);overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;
-  background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
-  background-size:48px 48px;pointer-events:none;z-index:0}
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sidebar — Amber Brutalist 4-Cell Grid</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0c;
+      --card-bg: #16161b;
+      --amber: #E88C2E;
+      --gray: #707070;
+      --text: #ece8e1;
+      --border: #26262a;
+    }
 
-#app-root{position:relative;z-index:1;padding:20px 16px}
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-/* sim grid */
-.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
-.sp{
-  border:1px solid var(--border);
-  background:var(--bg-card);
-  padding:14px 10px 12px;
-  transition:all .4s cubic-bezier(0.23, 1, 0.32, 1);
-  min-height:180px;
-  position:relative;
-  cursor:pointer;
-}
-.sp:hover{border-color:rgba(232,140,46,0.3);background:rgba(255,255,255,0.02)}
-.sp.active{
-  border-color:var(--border-active);
-  background:var(--accent-soft);
-  transform:scale(1.02);
-  box-shadow:0 10px 30px -10px var(--accent-glow);
-  z-index:10;
-}
-.sp:not(.active){opacity:.4}
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Space Grotesk', sans-serif;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+    }
 
-.sh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
-.sn{font-family:var(--mono);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--muted);transition:color .4s}
-.sp.active .sn{color:var(--accent)}
-.ssub{font-size:8px;color:var(--muted);text-transform:uppercase}
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      max-width: 940px;
+      width: 100%;
+    }
 
-/* mini layout */
-.ml{display:flex;border:1px solid var(--border);height:72px;overflow:hidden;margin-bottom:10px;transition:border-color .5s;position:relative}
-.sp.active .ml{border-color:rgba(232,140,46,.3)}
-.ml-sb{background:var(--bg-el);border-right:1px solid var(--border);display:flex;flex-direction:column;padding:4px 3px;gap:2px;transition:width .4s;flex-shrink:0;overflow:hidden}
-.ml-sb.right{border-right:none;border-left:1px solid var(--border)}
-.ml-sb-i{width:100%;height:3px;background:var(--border);transition:background .4s}
-.sp.active .ml-sb-i{background:var(--muted)}
-.ml-sb-i.active-i{background:var(--accent)!important}
-.ml-ct{flex:1;padding:6px;display:flex;flex-direction:column;gap:4px;min-width:0}
-.ml-ct-b{width:60%;height:4px;background:var(--border);transition:background .4s}
-.sp.active .ml-ct-b{background:var(--muted)}
-.ml-ct-b.w80{width:80%}
-.ml-ct-b.w40{width:40%}
-.ml-ct-chart{flex:1;background:var(--bg-el);border:1px solid var(--border);position:relative;overflow:hidden}
-.ml-ct-chart::after{content:'';position:absolute;bottom:0;left:0;right:0;height:60%;background:linear-gradient(transparent,var(--accent-glow));opacity:.4}
+    @media (max-width: 640px) {
+      .grid-container {
+        grid-template-columns: 1fr;
+      }
+    }
 
-/* overlay specific */
-.ml-overlay .ml-sb{position:absolute;left:0;top:0;bottom:0;z-index:2;width:35%!important;box-shadow:4px 0 8px rgba(0,0,0,.4)}
+    .card {
+      background: var(--card-bg);
+      border-radius: 3px;
+      position: relative;
+      padding-top: 2px;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
 
-/* spec */
-.sspec{display:flex;flex-direction:column;gap:3px}
-.ssr{display:flex;justify-content:space-between;font-family:var(--mono);font-size:8px}
-.ssk{color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
-.ssv{font-weight:600;color:var(--cream)}
-.ssv.ac{color:var(--accent)}
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--amber);
+    }
 
-/* insight */
-.ibar{margin-top:16px;padding:12px 14px;background:var(--bg-card);border:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.6;min-height:48px;transition:opacity .3s}
-.ibar.fading{opacity:0}
-.ibar strong{color:var(--cream);font-weight:600}
+    .header {
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-.ptrack{display:flex;gap:4px;padding:12px 0 10px}
-.pseg{flex:1;height:3px;background:var(--border);transition:background .4s}
-.pseg.on{background:var(--accent)}
+    .num-box {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      border: 1px solid rgba(232, 140, 46, 0.4);
+      padding: 3px 8px;
+      color: var(--amber);
+      background: rgba(232, 140, 46, 0.05);
+      border-radius: 2px;
+      line-height: 1;
+    }
 
-@media(max-width:768px){ .sg{grid-template-columns:repeat(2,1fr)} }
-@media(max-width:420px){ .sg{gap:6px} }
-</style>
+    .title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+    }
+
+    .indicator {
+      width: 6px;
+      height: 6px;
+      background: var(--amber);
+      border-radius: 50%;
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      animation: blink 1.2s infinite;
+      box-shadow: 0 0 8px var(--amber);
+      z-index: 10;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .sim-area {
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(0,0,0,0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ins {
+      padding: 12px 16px;
+      border-left: 2px solid var(--amber);
+      font-size: 11.5px;
+      color: var(--gray);
+      background: rgba(232, 140, 46, 0.03);
+      margin: 0 16px 16px 16px;
+      line-height: 1.5;
+    }
+
+    .ins strong {
+      color: var(--amber);
+      font-weight: 700;
+    }
+
+    .badge-logic {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      color: var(--gray);
+      background: rgba(0,0,0,0.4);
+      padding: 2px 6px;
+      border-radius: 2px;
+      z-index: 5;
+    }
+
+    /* Sidebar Specific Styles */
+    .mock-page {
+      width: 100%;
+      height: 100%;
+      background: #0f0f12;
+      border: 1px solid #222;
+      border-radius: 2px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+    }
+
+    .sidebar {
+      background: #1a1a20;
+      border-right: 1px solid #333;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding: 10px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 2;
+    }
+
+    .content {
+      flex: 1;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .content-line {
+      height: 6px;
+      background: #2a2a30;
+      border-radius: 2px;
+      width: 100%;
+    }
+
+    .sb-item {
+      height: 20px;
+      width: 100%;
+      background: #2a2a30;
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      padding: 0 6px;
+      gap: 6px;
+    }
+
+    .sb-icon {
+      width: 10px;
+      height: 10px;
+      background: #444;
+      border-radius: 1px;
+      flex-shrink: 0;
+    }
+
+    .sb-text-mock {
+      height: 4px;
+      background: #555;
+      width: 30px;
+      border-radius: 1px;
+    }
+
+    /* Cell 1: Drawer */
+    #sidebar-1 {
+      position: absolute;
+      left: -80px;
+      width: 60px;
+    }
+    #sidebar-1.active {
+      left: 0;
+    }
+    .overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      opacity: 0;
+      transition: opacity 0.4s;
+      z-index: 1;
+    }
+    .overlay.active {
+      opacity: 1;
+    }
+
+    /* Cell 2: Collapse */
+    #sidebar-2 {
+      width: 60px;
+    }
+    #sidebar-2.collapsed {
+      width: 30px;
+    }
+    #sidebar-2.collapsed .sb-text-mock {
+      display: none;
+    }
+
+    /* Cell 3: Active State */
+    .sb-item.active {
+      background: rgba(232, 140, 46, 0.2);
+      border: 1px solid var(--amber);
+    }
+    .sb-item.active .sb-icon {
+      background: var(--amber);
+    }
+
+    /* Cell 4: Layout Mode */
+    .mock-page.floating {
+      padding: 10px;
+      background: #000;
+    }
+    .sidebar.floating {
+      border-radius: 6px;
+      height: calc(100% - 20px);
+      margin: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+
+  </style>
 </head>
 <body>
-<div id="app-root">
-    <div class="sg" id="sg"></div>
-    <div class="ibar" id="ibar"></div>
-    <div class="ptrack" id="ptrack"></div>
-</div>
 
-<script>
-var D=[
-  {name:'STATIC',sub:'always visible',
-   sbW:28,sbRight:false,overlay:false,collapse:false,
-   behavior:'Always visible',width:'240px',use:'Dashboard, admin',
-   ins:'<strong>Static sidebar = luôn hiện, không ẩn.</strong> Content area bị sidebar "ăn" một phần width cố định. Phổ biến nhất cho dashboard, nơi user cần nav mọi lúc.'},
-  {name:'COLLAPSIBLE',sub:'icon + expand',
-   sbW:12,sbRight:false,overlay:false,collapse:true,
-   behavior:'Icon → expand',width:'60px → 240px',use:'IDE, email, tools',
-   ins:'<strong>Collapsible = mặc định chỉ hiện icon, hover/phím mở rộng.</strong> Tiết kiệm không gian nhưng vẫn giữ nav reachable. Dùng cho tool cần maximize content area.'},
-  {name:'OVERLAY',sub:'off-canvas',
-   sbW:35,sbRight:false,overlay:true,collapse:false,
-   behavior:'Slide over content',width:'280px (overlay)',use:'Mobile, settings',
-   ins:'<strong>Overlay = sidebar trượt che content, không đẩy layout.</strong> Content không đổi width, sidebar "nằm trên". Dùng cho mobile hoặc drawer tạm thời.'},
-  {name:'RIGHT',sub:'contextual',
-   sbW:30,sbRight:true,overlay:false,collapse:false,
-   behavior:'Right side detail',width:'320px',use:'Order info, properties',
-   ins:'<strong>Right sidebar = hiển thị chi tiết của item đang chọn.</strong> Không phải navigation — mà là context. Dùng cho master-detail pattern.'}
-];
+  <div class="grid-container">
+    
+    <!-- Cell 01: Drawer Behavior -->
+    <div class="card">
+      <div class="indicator"></div>
+      <div class="header">
+        <div class="num-box">01</div>
+        <div class="title">Drawer / Overlay Mode</div>
+      </div>
+      <div class="sim-area">
+        <div class="badge-logic" id="logic-1">HIDDEN</div>
+        <div class="mock-page">
+          <div class="overlay" id="overlay-1"></div>
+          <div class="sidebar" id="sidebar-1">
+            <div class="sb-item"><div class="sb-icon"></div><div class="sb-text-mock"></div></div>
+            <div class="sb-item"><div class="sb-icon"></div><div class="sb-text-mock"></div></div>
+            <div class="sb-item"><div class="sb-icon"></div><div class="sb-text-mock"></div></div>
+          </div>
+          <div class="content">
+            <div class="content-line" style="width: 40%"></div>
+            <div class="content-line"></div>
+            <div class="content-line" style="width: 70%"></div>
+          </div>
+        </div>
+      </div>
+      <div class="ins">
+        <strong>Drawer Sidebar</strong> thường ẩn đi để tiết không gian. Khi kích hoạt, nó trượt ra và đi kèm một lớp <strong>Overlay (Backdrop)</strong> làm mờ nền để người dùng tập trung vào menu.
+      </div>
+    </div>
 
-var sg=document.getElementById('sg');
-D.forEach(function(d,i){
-  var el=document.createElement('div');
-  el.className='sp';el.dataset.i=i;
+    <!-- Cell 02: Expansion & Collapse -->
+    <div class="card">
+      <div class="indicator"></div>
+      <div class="header">
+        <div class="num-box">02</div>
+        <div class="title">Expand & Collapse</div>
+      </div>
+      <div class="sim-area">
+        <div class="badge-logic" id="logic-2">EXPANDED</div>
+        <div class="mock-page">
+          <div class="sidebar" id="sidebar-2">
+            <div class="sb-item"><div class="sb-icon"></div><div class="sb-text-mock"></div></div>
+            <div class="sb-item"><div class="sb-icon"></div><div class="sb-text-mock"></div></div>
+            <div class="sb-item"><div class="sb-icon"></div><div class="sb-text-mock"></div></div>
+          </div>
+          <div class="content">
+            <div class="content-line"></div>
+            <div class="content-line" style="width: 60%"></div>
+          </div>
+        </div>
+      </div>
+      <div class="ins">
+        Chế độ <strong>Collapsible</strong> cho phép thu nhỏ Sidebar thành các <strong>Icon-only</strong>. Điều này giúp tối ưu diện tích cho nội dung chính mà vẫn giữ được khả năng điều hướng nhanh.
+      </div>
+    </div>
 
-  var cls=d.overlay?'ml-overlay':'';
-  var sbCls=d.sbRight?'ml-sb right':'ml-sb';
-  var sbStyle='width:'+d.sbW+'%';
+    <!-- Cell 03: Navigation States -->
+    <div class="card">
+      <div class="indicator"></div>
+      <div class="header">
+        <div class="num-box">03</div>
+        <div class="title">Active & Navigation States</div>
+      </div>
+      <div class="sim-area">
+        <div class="badge-logic" id="logic-3">NAVIGATING</div>
+        <div class="mock-page">
+          <div class="sidebar" style="width: 60px">
+            <div class="sb-item" id="item-3-1"><div class="sb-icon"></div><div class="sb-text-mock"></div></div>
+            <div class="sb-item" id="item-3-2"><div class="sb-icon"></div><div class="sb-text-mock"></div></div>
+            <div class="sb-item" id="item-3-3"><div class="sb-icon"></div><div class="sb-text-mock"></div></div>
+          </div>
+          <div class="content">
+            <div class="content-line" style="background: #333"></div>
+            <div class="content-line" style="width: 80%; background: #333"></div>
+          </div>
+        </div>
+      </div>
+      <div class="ins">
+        <strong>Active State</strong> cực kỳ quan trọng để người dùng biết mình đang ở đâu. Sidebar cần có các <strong>Visual Clues</strong> rõ ràng như highlight màu sắc hoặc thanh chỉ hướng.
+      </div>
+    </div>
 
-  var items='';
-  for(var j=0;j<5;j++){
-    var ac=j===0?'active-i':'';
-    items+='<div class="ml-sb-i '+ac+'"></div>';
-  }
+    <!-- Cell 04: Docked vs Floating -->
+    <div class="card">
+      <div class="indicator"></div>
+      <div class="header">
+        <div class="num-box">04</div>
+        <div class="title">Docked vs Floating</div>
+      </div>
+      <div class="sim-area">
+        <div class="badge-logic" id="logic-4">DOCKED</div>
+        <div class="mock-page" id="page-4">
+          <div class="sidebar" id="sidebar-4" style="width: 50px">
+            <div class="sb-item"><div class="sb-icon"></div><div class="sb-text-mock"></div></div>
+            <div class="sb-item"><div class="sb-icon"></div><div class="sb-text-mock"></div></div>
+          </div>
+          <div class="content">
+            <div class="content-line"></div>
+            <div class="content-line"></div>
+          </div>
+        </div>
+      </div>
+      <div class="ins">
+        <strong>Sidebar Layout</strong> có thể là <strong>Docked</strong> (dính liền vào cạnh màn hình) hoặc <strong>Floating</strong> (nổi trên nền). Sidebar nổi thường mang lại cảm giác hiện đại và thoáng hơn.
+      </div>
+    </div>
 
-  el.innerHTML=
-    '<div class="sh"><span class="sn">'+d.name+'</span><span class="ssub">'+d.sub+'</span></div>'+
-    '<div class="ml '+cls+'">'+
-      '<div class="'+sbCls+'" style="'+sbStyle+'">'+items+'</div>'+
-      '<div class="ml-ct">'+
-        '<div class="ml-ct-b w80"></div>'+
-        '<div class="ml-ct-b w40"></div>'+
-        '<div class="ml-ct-chart"></div>'+
-      '</div>'+
-    '</div>'+
-    '<div class="sspec">'+
-      '<div class="ssr"><span class="ssk">Behavior</span><span class="ssv">'+d.behavior+'</span></div>'+
-      '<div class="ssr"><span class="ssk">Width</span><span class="ssv ac">'+d.width+'</span></div>'+
-      '<div class="ssr"><span class="ssk">Use case</span><span class="ssv">'+d.use+'</span></div>'+
-    '</div>';
-  sg.appendChild(el);
-});
+  </div>
 
-var pt=document.getElementById('ptrack');
-for(var i=0;i<4;i++){var s=document.createElement('div');s.className='pseg';pt.appendChild(s)}
+  <script>
+    // Independent Animation Loops
 
-var cur=0,timer=null;
-var ibar=document.getElementById('ibar');
-var panels=sg.querySelectorAll('.sp');
-var segs=pt.querySelectorAll('.pseg');
+    // 01: Drawer Loop
+    function loop1() {
+      const sb = document.getElementById('sidebar-1');
+      const ov = document.getElementById('overlay-1');
+      const lg = document.getElementById('logic-1');
 
-function setAct(idx){
-  cur=idx;
-  for(var i=0;i<panels.length;i++){
-    panels[i].classList.toggle('active',i===idx);
-    segs[i].classList.toggle('on',i<=idx);
-  }
-  ibar.classList.add('fading');
-  setTimeout(function(){ibar.innerHTML=D[idx].ins;ibar.classList.remove('fading')},280);
-}
+      setTimeout(() => {
+        lg.textContent = 'OPENING';
+        sb.classList.add('active');
+        ov.classList.add('active');
+      }, 1000);
 
-function startLoop(){
-  if(timer) clearInterval(timer);
-  timer=setInterval(function(){setAct((cur+1)%4)},4000);
-}
+      setTimeout(() => {
+        lg.textContent = 'OPEN';
+      }, 1500);
 
-panels.forEach(function(p, i){
-  p.onclick=function(){
-    setAct(i);
-    clearInterval(timer);
-    timer=setInterval(function(){setAct((cur+1)%4)},6000); // Resume after manual click
-  };
-});
+      setTimeout(() => {
+        lg.textContent = 'CLOSING';
+        sb.classList.remove('active');
+        ov.classList.remove('active');
+      }, 4000);
 
-setAct(0);
-startLoop();
-</script>
+      setTimeout(() => {
+        lg.textContent = 'HIDDEN';
+        setTimeout(loop1, 1000);
+      }, 4500);
+    }
+    loop1();
+
+    // 02: Collapse Loop
+    function loop2() {
+      const sb = document.getElementById('sidebar-2');
+      const lg = document.getElementById('logic-2');
+
+      setTimeout(() => {
+        lg.textContent = 'COLLAPSING';
+        sb.classList.add('collapsed');
+      }, 1500);
+
+      setTimeout(() => {
+        lg.textContent = 'MINI_MODE';
+      }, 2000);
+
+      setTimeout(() => {
+        lg.textContent = 'EXPANDING';
+        sb.classList.remove('collapsed');
+      }, 4000);
+
+      setTimeout(() => {
+        lg.textContent = 'EXPANDED';
+        setTimeout(loop2, 1000);
+      }, 4500);
+    }
+    loop2();
+
+    // 03: Active State Loop
+    function loop3() {
+      const items = [
+        document.getElementById('item-3-1'),
+        document.getElementById('item-3-2'),
+        document.getElementById('item-3-3')
+      ];
+      const lg = document.getElementById('logic-3');
+      let current = 0;
+
+      function next() {
+        items.forEach(i => i.classList.remove('active'));
+        items[current].classList.add('active');
+        lg.textContent = `PAGE_${current + 1}_ACTIVE`;
+        
+        current = (current + 1) % items.length;
+        setTimeout(next, 2000);
+      }
+      next();
+    }
+    loop3();
+
+    // 04: Docked vs Floating Loop
+    function loop4() {
+      const pg = document.getElementById('page-4');
+      const sb = document.getElementById('sidebar-4');
+      const lg = document.getElementById('logic-4');
+
+      setTimeout(() => {
+        lg.textContent = 'TRANSITIONING';
+        pg.classList.add('floating');
+        sb.classList.add('floating');
+      }, 2000);
+
+      setTimeout(() => {
+        lg.textContent = 'FLOATING';
+      }, 2500);
+
+      setTimeout(() => {
+        lg.textContent = 'TRANSITIONING';
+        pg.classList.remove('floating');
+        sb.classList.remove('floating');
+      }, 5000);
+
+      setTimeout(() => {
+        lg.textContent = 'DOCKED';
+        setTimeout(loop4, 1000);
+      }, 5500);
+    }
+    loop4();
+
+  </script>
 </body>
 </html>
