@@ -1,152 +1,380 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Z-index — Practice</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;--card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a;--ok:#4a8a5a;--warn:#b89a2a;--info:#4a6a7a}
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 100%,16px 16px;display:flex;flex-direction:column;align-items:center;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:12px;gap:16px}
-.pw{width:100%;background:var(--card);border:2px solid var(--border);padding:20px 24px}
-.pw-h{font-size:15px;font-weight:700;margin-bottom:2px}.pw-h span{color:var(--accent)}
-.pw-s{font-size:11px;color:var(--muted);margin-bottom:14px}
-.pc{position:relative;height:150px;border:1px solid var(--border);background:var(--card-alt);margin-bottom:14px;overflow:hidden}
-.pc-bg{position:absolute;inset:0;background:linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);background-size:20px 20px;pointer-events:none}
-.pc-inner{position:absolute;top:0;left:50%;width:380px;height:100%;transform-origin:top center}
-.pc-blk{position:absolute;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:box-shadow .2s;user-select:none}
-.pc-blk .pc-l{font-size:9px;font-weight:600;pointer-events:none;text-shadow:0 1px 2px rgba(0,0,0,.5)}
-.pc-blk .pc-z{position:absolute;top:3px;right:4px;font-family:'JetBrains Mono',monospace;font-size:7px;pointer-events:none;transition:color .2s}
-.pc-blk.sel{box-shadow:0 0 0 2px var(--accent)!important}
-.pc-blk.sel .pc-z{color:var(--accent)!important}
-.pc-blk.top{box-shadow:0 3px 12px rgba(0,0,0,.4)}
-.sr{display:flex;align-items:center;gap:12px;margin-bottom:10px}
-.sl{font-size:12px;min-width:80px}.sl span{color:var(--accent);font-weight:700}
-.sv{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);min-width:28px;text-align:right}
-input[type=range]{flex:1;-webkit-appearance:none;appearance:none;height:4px;background:var(--border);outline:none;border:none;cursor:pointer}
-input[type=range]:disabled{opacity:.3;cursor:default}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;background:var(--accent);border:2px solid var(--bg);cursor:pointer}
-input[type=range]::-moz-range-thumb{width:16px;height:16px;background:var(--accent);border:2px solid var(--bg);cursor:pointer;border-radius:0}
-.po{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px;align-items:center}
-.po-i{font-family:'JetBrains Mono',monospace;font-size:9px;padding:3px 8px;border:1px solid var(--border);background:var(--card-alt);display:flex;align-items:center;gap:5px}
-.po-dot{width:6px;height:6px;flex-shrink:0;border-radius:1px}
-.po-n{color:var(--fg)}.po-z{color:var(--accent)}
-.po-arrow{color:var(--muted);font-size:8px}
-.pfb{font-family:'JetBrains Mono',monospace;font-size:11px;min-height:18px;color:var(--muted);transition:color .2s;line-height:1.4}.pfb.w{color:var(--accent)}
-.pht{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);opacity:.65}
-@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
-@media(max-width:520px){.pw{padding:16px}.pc{height:120px}.sr{gap:8px}.sl{min-width:60px;font-size:11px}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Z-index Practice — Layer Audit Lab</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f0f12;
+            --card-bg: #16161b;
+            --amber: #E88C2E;
+            --border: #2a2a32;
+            --text: #e0e0e6;
+            --muted: #707070;
+            --ease: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .practice-container {
+            width: 100%;
+            max-width: 800px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-top: 2px solid var(--amber);
+            border-radius: 4px;
+            padding: 24px;
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 24px;
+            position: relative;
+        }
+
+        @media (max-width: 700px) {
+            .practice-container {
+                grid-template-columns: 1fr;
+                max-height: 90vh;
+                overflow-y: auto;
+            }
+        }
+
+        .header {
+            grid-column: 1 / -1;
+            margin-bottom: 8px;
+        }
+
+        .header h2 {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--amber);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header p {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        /* Control Panel */
+        .control-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .layer-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border);
+            padding: 12px 16px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s var(--ease);
+        }
+
+        .layer-card:hover {
+            border-color: #444;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .layer-info {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .layer-name {
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .layer-desc {
+            font-size: 10px;
+            color: var(--muted);
+        }
+
+        .z-input-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: #000;
+            border: 1px solid var(--border);
+            padding: 4px 8px;
+            border-radius: 3px;
+        }
+
+        .z-input-group span {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--muted);
+        }
+
+        .z-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            color: var(--amber);
+            width: 40px;
+            text-align: center;
+            background: transparent;
+            border: none;
+        }
+
+        .btn-step {
+            background: transparent;
+            border: none;
+            color: var(--text);
+            cursor: pointer;
+            padding: 2px;
+            opacity: 0.5;
+            transition: 0.2s;
+        }
+
+        .btn-step:hover {
+            opacity: 1;
+            color: var(--amber);
+        }
+
+        /* Preview Area */
+        .preview-area {
+            background: #0a0a0c;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            height: 320px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            perspective: 1000px;
+        }
+
+        .stack-visual {
+            position: relative;
+            width: 180px;
+            height: 120px;
+            transform: rotateX(50deg) rotateZ(-30deg);
+            transform-style: preserve-3d;
+            transition: all 0.8s var(--ease);
+        }
+
+        .visual-layer {
+            position: absolute;
+            inset: 0;
+            border: 1.5px solid rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            transition: all 0.5s var(--ease);
+            pointer-events: none;
+            border-radius: 2px;
+        }
+
+        .visual-layer::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: currentColor;
+            opacity: 0.1;
+        }
+
+        /* Status Board */
+        .status-board {
+            grid-column: 1 / -1;
+            background: rgba(232, 140, 46, 0.05);
+            border-left: 2px solid var(--amber);
+            padding: 12px 16px;
+            margin-top: 8px;
+        }
+
+        .status-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--amber);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .status-msg {
+            font-size: 12px;
+            line-height: 1.5;
+            color: var(--text);
+        }
+
+        .status-msg strong {
+            color: var(--amber);
+        }
+
+        .audit-badge {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            padding: 4px 10px;
+            border: 1px solid var(--amber);
+            color: var(--amber);
+            border-radius: 100px;
+            text-transform: uppercase;
+        }
+
+        .hint {
+            font-size: 10px;
+            color: var(--muted);
+            margin-top: 12px;
+            font-style: italic;
+        }
+    </style>
 </head>
 <body>
 
-<div class="pw">
-  <div class="pw-h">Thực hành — <span>Đấu z-index</span></div>
-  <div class="pw-s">Click chọn 1 lớp → kéo slider đổi z-index → xem thứ tự stack thay đổi</div>
-  <div class="pc" id="pc">
-    <div class="pc-bg"></div>
-    <div class="pc-inner" id="pc-inner"></div>
-  </div>
-  <div class="sr">
-    <span class="sl">z-index: <span id="selN">—</span></span>
-    <input type="range" id="zsl" min="0" max="50" value="0" disabled>
-    <span class="sv" id="zsv">0</span>
-  </div>
-  <div class="po" id="po"></div>
-  <div class="pfb" id="pfb">Click vào 1 lớp để bắt đầu</div>
-  <div class="pht">Hint: Thử đặt Tooltip z:50, Modal z:1 → thấy "bug z-index" phổ biến</div>
+<div class="practice-container">
+    <div id="audit-status" class="audit-badge">Checking...</div>
+
+    <div class="header">
+        <h2><span style="font-family: 'JetBrains Mono'; font-weight: 400; opacity: 0.5;">{ }</span> Z-INDEX AUDIT LAB</h2>
+        <p>Phòng thí nghiệm kiểm định thứ tự lớp. Hãy sắp xếp để các thành phần không che lấp nhau sai logic.</p>
+    </div>
+
+    <div class="control-panel" id="layers-list">
+        <!-- Dynamic layers -->
+    </div>
+
+    <div class="preview-area">
+        <div class="stack-visual" id="stack-visual">
+            <!-- Dynamic visual layers -->
+        </div>
+    </div>
+
+    <div class="status-board">
+        <div class="status-title">System Audit Log</div>
+        <div id="audit-log" class="status-msg">Khởi tạo hệ thống... Đang chờ cấu hình z-index.</div>
+    </div>
+
+    <div class="hint">
+        * Mẹo: Modal phải luôn trên Navbar, và Toast thông báo phải ở lớp cao nhất (Top-most).
+    </div>
 </div>
 
 <script>
-const LY=[
-  {name:'Tooltip', color:'var(--accent)', bg:'rgba(212,113,42,.18)', z:1, x:15, y:25, w:125, h:55},
-  {name:'Dropdown',color:'var(--info)',   bg:'rgba(74,106,122,.18)', z:5, x:75, y:50, w:145, h:70},
-  {name:'Modal',   color:'var(--fg)',     bg:'rgba(232,224,212,.12)',z:10,x:140,y:20, w:170, h:90},
-  {name:'Toast',   color:'var(--ok)',     bg:'rgba(74,138,90,.18)',  z:20,x:250,y:65, w:115, h:45}
-];
-const pc=document.getElementById('pc');
-const pcInner=document.getElementById('pc-inner');
-const zsl=document.getElementById('zsl');
-const zsv=document.getElementById('zsv');
-const selN=document.getElementById('selN');
-const po=document.getElementById('po');
-const pfb=document.getElementById('pfb');
-let sel=-1;
-const bEls=[];
+    const layers = [
+        { id: 'content', name: 'Base Content', desc: 'Nội dung trang web', z: 0, color: '#444' },
+        { id: 'navbar', name: 'Sticky Navbar', desc: 'Thanh điều hướng', z: 10, color: '#3498db' },
+        { id: 'modal', name: 'Modal UI', desc: 'Cửa sổ bật lên', z: 5, color: '#9b59b6' },
+        { id: 'toast', name: 'Toast Notif', desc: 'Thông báo nhanh', z: 20, color: '#2ecc71' }
+    ];
 
-LY.forEach((l,i)=>{
-  const d=document.createElement('div');
-  d.className='pc-blk';
-  d.style.cssText='left:'+l.x+'px;top:'+l.y+'px;width:'+l.w+'px;height:'+l.h+'px;background:'+l.bg+';border:1px solid var(--border);border-left:3px solid '+l.color+';z-index:'+(l.z+1);
-  d.innerHTML='<span class="pc-l">'+l.name+'</span><span class="pc-z" style="color:var(--muted)">z:'+l.z+'</span>';
-  d.addEventListener('click',()=>selLayer(i));
-  pcInner.appendChild(d);
-  bEls.push(d);
-});
+    function render() {
+        const list = document.getElementById('layers-list');
+        const visual = document.getElementById('stack-visual');
+        
+        list.innerHTML = '';
+        visual.innerHTML = '';
 
-function selLayer(i){
-  sel=i;
-  bEls.forEach((b,j)=>b.classList.toggle('sel',j===i));
-  zsl.disabled=false;
-  zsl.value=LY[i].z;
-  zsv.textContent=LY[i].z;
-  selN.textContent=LY[i].name;
-  updOrder();
-}
+        // Sort layers for visual stacking (CSS z-index)
+        const sorted = [...layers].sort((a, b) => a.z - b.z);
 
-zsl.addEventListener('input',()=>{
-  if(sel<0)return;
-  const v=+zsl.value;
-  LY[sel].z=v;
-  zsv.textContent=v;
-  bEls[sel].querySelector('.pc-z').textContent='z:'+v;
-  updOrder();
-});
+        layers.forEach((layer, index) => {
+            // Render Control Card
+            const card = document.createElement('div');
+            card.className = 'layer-card';
+            card.innerHTML = `
+                <div class="layer-info">
+                    <span class="layer-name">${layer.name}</span>
+                    <span class="layer-desc">${layer.desc}</span>
+                </div>
+                <div class="z-input-group">
+                    <button class="btn-step" onclick="changeZ(${index}, -10)">-</button>
+                    <input type="text" class="z-value" value="${layer.z}" readonly>
+                    <button class="btn-step" onclick="changeZ(${index}, 10)">+</button>
+                    <span>z-index</span>
+                </div>
+            `;
+            list.appendChild(card);
 
-function updOrder(){
-  const sorted=[...LY].map((l,i)=>({...l,i})).sort((a,b)=>a.z-b.z);
-  sorted.forEach((l)=>{bEls[l.i].style.zIndex=l.z+1});
-  bEls.forEach(b=>b.classList.remove('top'));
-  bEls[sorted[sorted.length-1].i].classList.add('top');
-  po.innerHTML=sorted.map((l,k)=>{
-    const c=LY[l.i].color;
-    let h='<span class="po-i"><span class="po-dot" style="background:'+c+'"></span><span class="po-n">'+l.name+'</span><span class="po-z">z:'+l.z+'</span></span>';
-    if(k<sorted.length-1)h+='<span class="po-arrow">&#8594;</span>';
-    return h;
-  }).join('');
+            // Render Visual Layer
+            const vLayer = document.createElement('div');
+            vLayer.className = 'visual-layer';
+            // Scale z value for visual height (0 to 100px)
+            const visualHeight = (layer.z / 100) * 150; 
+            vLayer.style.transform = `translateZ(${visualHeight}px)`;
+            vLayer.style.color = layer.color;
+            vLayer.style.borderColor = layer.color;
+            vLayer.style.zIndex = layer.z;
+            vLayer.innerHTML = `<span>${layer.name}</span>`;
+            visual.appendChild(vLayer);
+        });
 
-  const tip=LY.find(l=>l.name==='Tooltip');
-  const mdl=LY.find(l=>l.name==='Modal');
-  const drp=LY.find(l=>l.name==='Dropdown');
-  const tst=LY.find(l=>l.name==='Toast');
+        audit();
+    }
 
-  if(tip.z>mdl.z){
-    pfb.textContent='Bug: Tooltip (z:'+tip.z+') trên Modal (z:'+mdl.z+') — sai thứ tự chuẩn';
-    pfb.className='pfb w';
-  }else if(drp.z>mdl.z){
-    pfb.textContent='Bug: Dropdown (z:'+drp.z+') trên Modal (z:'+mdl.z+') — modal nên luôn trên dropdown';
-    pfb.className='pfb w';
-  }else if(tip.z===mdl.z&&tip.z>0){
-    pfb.textContent='Tooltip = Modal cùng z:'+tip.z+' → document order quyết định, dễ gây bug';
-    pfb.className='pfb w';
-  }else if(tst.z<=mdl.z&&tst.z>0){
-    pfb.textContent='Bug: Toast (z:'+tst.z+') không trên Modal (z:'+mdl.z+') — toast phải cao nhất';
-    pfb.className='pfb w';
-  }else{
-    pfb.textContent='Stack OK: '+sorted.map(l=>l.name+'(z:'+l.z+')').join(' → ');
-    pfb.className='pfb';
-  }
-}
-updOrder();
+    function changeZ(index, delta) {
+        layers[index].z = Math.max(0, Math.min(9999, layers[index].z + delta));
+        render();
+    }
 
-function rs(){
-  const w=pc.clientWidth;
-  const s=Math.min(1,w/380);
-  pcInner.style.transform=`translateX(-50%) scale(${s})`;
-}
-window.addEventListener('resize',rs);
-rs();
+    function audit() {
+        const log = document.getElementById('audit-log');
+        const badge = document.getElementById('audit-status');
+        
+        const navbar = layers.find(l => l.id === 'navbar');
+        const modal = layers.find(l => l.id === 'modal');
+        const toast = layers.find(l => l.id === 'toast');
+        const content = layers.find(l => l.id === 'content');
+
+        let issues = [];
+
+        if (modal.z <= navbar.z) {
+            issues.push("<strong>Navbar</strong> đang che mất <strong>Modal</strong>. Người dùng sẽ không thể tương tác với cửa sổ.");
+        }
+        if (toast.z <= modal.z) {
+            issues.push("<strong>Toast</strong> thông báo nằm dưới <strong>Modal</strong>. Thông báo quan trọng sẽ bị ẩn.");
+        }
+        if (content.z >= navbar.z && navbar.z > 0) {
+            issues.push("<strong>Content</strong> đè lên <strong>Navbar</strong>. Menu bị biến mất khi cuộn.");
+        }
+
+        if (issues.length === 0) {
+            log.innerHTML = "Cấu trúc phân lớp hoàn hảo. Hệ thống đạt chuẩn <strong>Production Ready</strong>.";
+            badge.innerText = "Verified";
+            badge.style.color = "#2ecc71";
+            badge.style.borderColor = "#2ecc71";
+        } else {
+            log.innerHTML = issues[0]; // Show first issue
+            badge.innerText = "Issue Found";
+            badge.style.color = "#e74c3c";
+            badge.style.borderColor = "#e74c3c";
+        }
+    }
+
+    render();
 </script>
+
 </body>
 </html>
