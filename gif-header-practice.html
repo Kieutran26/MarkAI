@@ -1,197 +1,510 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Header Practice — markAI</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-<style>
-:root{
-  --bg:#0f0f12;--bg-card:#16161b;--bg-el:#222;--border:#282830;
-  --border-active:#e88c2e;--accent:#e88c2e;
-  --accent-glow:rgba(232,140,46,.18);--accent-soft:rgba(232,140,46,.07);
-  --cream:#EDE4D8;--text:#D8D0C8;--muted:#777770;
-  --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
-}
-*{margin:0;padding:0;box-sizing:border-box}
-body{background:var(--bg);color:var(--text);font-family:var(--sans);overflow-x:hidden}
-body::before{content:'';position:fixed;inset:0;
-  background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
-  background-size:48px 48px;pointer-events:none;z-index:0}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Header Practice — Strategy Lab</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0f0f12;
+            --card-bg: #16161b;
+            --amber: #E88C2E;
+            --border: #2a2a32;
+            --text: #e0e0e6;
+            --muted: #707070;
+            --ease: cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-#app-root{position:relative;z-index:1;padding:24px 16px}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            outline: none;
+        }
 
-.slbl{font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:8px}
-.slbl::before{content:'';width:7px;height:7px;background:var(--accent)}
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
 
-/* ═══ PRACTICE ═══ */
-.pbox{border:1px solid var(--border);background:var(--bg-card)}
-.phd{padding:18px 18px 14px;border-bottom:1px solid var(--border)}
-.pgoal{font-size:13px;color:var(--text);line-height:1.5;margin-bottom:5px}
-.phint{font-family:var(--mono);font-size:10px;color:var(--muted)}
-.phint span{color:var(--accent)}
-.pbd{padding:22px 18px}
+        .practice-container {
+            width: 100%;
+            max-width: 900px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-top: 2px solid var(--amber);
+            border-radius: 4px;
+            padding: 24px;
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 24px;
+            position: relative;
+        }
 
-/* toggles */
-.tog-row{display:flex;gap:20px;margin-bottom:20px;flex-wrap:wrap}
-.tog{display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
-.tog-track{width:36px;height:20px;background:var(--border);position:relative;transition:background .25s;flex-shrink:0}
-.tog-track.on{background:var(--accent)}
-.tog-knob{position:absolute;top:2px;left:2px;width:16px;height:16px;background:var(--cream);transition:left .25s}
-.tog-track.on .tog-knob{left:18px}
-.tog-lbl{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;transition:color .25s;white-space:nowrap}
-.tog-track.on~.tog-lbl{color:var(--accent)}
+        @media (max-width: 850px) {
+            .practice-container {
+                grid-template-columns: 1fr;
+            }
+        }
 
-/* practice preview */
-.ph-prev{border:1px solid var(--border);background:var(--bg);overflow:hidden;margin-bottom:16px;transition:box-shadow .3s}
-.ph-header{display:flex;align-items:center;padding:14px 20px;gap:16px;border-bottom:1px solid var(--border);background:var(--bg);transition:box-shadow .35s,background .35s,border-color .35s}
-.ph-header.scrolled{box-shadow:0 6px 16px rgba(0,0,0,.5);background:var(--bg-card);border-bottom-color:var(--accent)}
-.ph-brand{font-family:var(--mono);font-size:13px;font-weight:700;color:var(--cream);letter-spacing:.06em}
-.ph-nav{display:flex;gap:20px;flex:1;justify-content:center;transition:opacity .3s,max-width .3s;max-width:400px;overflow:hidden}
-.ph-nav.hide{opacity:0;max-width:0;gap:0;pointer-events:none}
-.ph-ni{font-family:var(--sans);font-size:12px;color:var(--muted);cursor:default;transition:color .2s;white-space:nowrap}
-.ph-cta{font-family:var(--mono);font-size:11px;font-weight:600;padding:7px 16px;border:1px solid var(--border);color:var(--muted);cursor:default;transition:background .3s,color .3s,border-color .3s;white-space:nowrap}
-.ph-cta.fill{background:var(--accent);color:#fff;border-color:var(--accent)}
-.ph-ham{display:none;width:20px;height:14px;flex-direction:column;justify-content:space-between;cursor:default;flex-shrink:0}
-.ph-ham.show{display:flex}
-.ph-ham span{width:100%;height:2px;background:var(--cream);display:block}
+        .header-top {
+            grid-column: 1 / -1;
+            margin-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
 
-/* practice menu */
-.ph-menu{display:none;border-bottom:1px solid var(--border);background:var(--bg);padding:0 20px}
-.ph-menu.show{display:block}
-.ph-mi{font-family:var(--sans);font-size:13px;color:var(--muted);padding:11px 0;border-bottom:1px solid var(--border);transition:color .2s}
-.ph-mi:last-child{border-bottom:none}
-.ph-mi-cta{color:var(--accent);font-weight:600;font-family:var(--mono);font-size:12px}
+        .header-top h2 {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: var(--amber);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
 
-/* fake content */
-.ph-content{padding:20px}
-.ph-block{background:var(--bg-el);opacity:.5;height:10px;margin-bottom:8px}
+        .header-top p {
+            font-size: 12px;
+            color: var(--muted);
+            margin-top: 4px;
+        }
 
-/* prompt output */
-.p-prompt{border:1px solid var(--border);background:var(--bg);padding:12px 14px;display:flex;align-items:flex-start;gap:10px}
-.p-prompt-lbl{font-family:var(--mono);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);background:var(--accent-soft);border:1px solid rgba(232,140,46,.22);padding:3px 8px;white-space:nowrap;flex-shrink:0;margin-top:1px}
-.p-prompt-txt{font-family:var(--mono);font-size:12px;color:var(--cream);line-height:1.5;transition:opacity .25s}
-.p-prompt-txt.fading{opacity:0}
+        /* Control Panel */
+        .control-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
 
-@media(max-width:768px){
-  .pbd{padding:18px 12px}
-  .ph-nav{gap:12px}
-  .ph-ni{font-size:11px}
-  .tog-row{gap:14px}
-}
-@media(max-width:420px){
-  .ph-header{padding:10px 12px;gap:10px}
-  .ph-brand{font-size:11px}
-  .ph-nav{gap:10px}
-  .ph-ni{font-size:10px}
-  .ph-cta{font-size:10px;padding:5px 10px}
-  .tog-row{flex-direction:column;gap:10px}
-}
-</style>
+        .config-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            padding: 14px 16px;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: all 0.3s var(--ease);
+        }
+
+        .config-card:hover {
+            border-color: #444;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .config-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .config-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .config-desc {
+            font-size: 10px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        .option-group {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .opt-btn {
+            background: #000;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            padding: 6px 12px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-transform: uppercase;
+        }
+
+        .opt-btn:hover {
+            border-color: #555;
+            color: var(--text);
+        }
+
+        .opt-btn.active {
+            border-color: var(--amber);
+            color: var(--amber);
+            background: rgba(232, 140, 46, 0.05);
+        }
+
+        /* Preview Area */
+        .preview-area {
+            background: #0a0a0c;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+            height: 400px;
+        }
+
+        .browser-top {
+            height: 24px;
+            background: #1c1c22;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            padding: 0 10px;
+            gap: 4px;
+        }
+
+        .dot { width: 6px; height: 6px; border-radius: 50%; background: #333; }
+
+        .browser-content {
+            flex: 1;
+            overflow-y: auto;
+            position: relative;
+            scrollbar-width: thin;
+            scrollbar-color: var(--border) transparent;
+        }
+
+        /* Simulated Header */
+        .sim-header {
+            width: 100%;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 100;
+            transition: all 0.4s var(--ease);
+            border-bottom: 1px solid transparent;
+        }
+
+        .sim-header.sticky { position: sticky; top: 0; }
+        .sim-header.scrolled { 
+            background: rgba(22, 22, 27, 0.95); 
+            backdrop-filter: blur(10px);
+            border-bottom-color: var(--border);
+            height: 54px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .sim-logo {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--amber);
+        }
+
+        .sim-nav {
+            display: flex;
+            gap: 16px;
+        }
+
+        .sim-nav span {
+            font-size: 11px;
+            color: var(--muted);
+            font-weight: 500;
+        }
+
+        .sim-cta {
+            padding: 6px 14px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: 600;
+            font-family: 'JetBrains Mono', monospace;
+            transition: all 0.3s;
+        }
+
+        .sim-cta.default { border: 1px solid var(--border); color: var(--muted); }
+        .sim-cta.high { background: var(--amber); color: #fff; }
+
+        .sim-hamburger {
+            display: none;
+            width: 20px;
+            height: 12px;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .sim-hamburger span { height: 2px; background: var(--text); width: 100%; }
+
+        /* Fake Content */
+        .fake-hero {
+            height: 200px;
+            background: linear-gradient(135deg, #1a1a20 0%, #0f0f12 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 40px 20px;
+            gap: 10px;
+        }
+
+        .line { height: 8px; background: rgba(255,255,255,0.05); border-radius: 4px; }
+        .line.title { width: 60%; height: 20px; background: rgba(255,255,255,0.1); }
+        .line.sub { width: 40%; }
+
+        .fake-sections { padding: 20px; display: flex; flex-direction: column; gap: 15px; }
+        .fake-card { height: 80px; border: 1px solid var(--border); border-radius: 4px; padding: 15px; display: flex; gap: 10px; }
+        .fake-sq { width: 50px; height: 50px; background: rgba(255,255,255,0.03); border-radius: 3px; flex-shrink: 0; }
+        .fake-lines { flex: 1; display: flex; flex-direction: column; gap: 8px; justify-content: center; }
+
+        /* Status Board */
+        .status-board {
+            grid-column: 1 / -1;
+            background: rgba(232, 140, 46, 0.05);
+            border-left: 2px solid var(--amber);
+            padding: 12px 16px;
+            margin-top: 8px;
+        }
+
+        .status-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--amber);
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .status-msg {
+            font-size: 12px;
+            line-height: 1.5;
+            color: var(--text);
+        }
+
+        .status-msg strong { color: var(--amber); }
+
+        .audit-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            padding: 4px 10px;
+            border: 1px solid var(--amber);
+            color: var(--amber);
+            border-radius: 100px;
+            text-transform: uppercase;
+        }
+
+        /* Mobile specific styles in preview */
+        .preview-area.mobile-view { width: 280px; margin: 0 auto; }
+        .mobile-view .sim-nav { display: none; }
+        .mobile-view .sim-hamburger { display: flex; }
+    </style>
 </head>
 <body>
-<div id="app-root">
-  <div class="slbl">Thực hành</div>
-  <div class="pbox">
-    <div class="phd">
-      <p class="pgoal">Bật/tắt từng thuộc tính để thấy header thay đổi realtime trên cùng một preview.</p>
-      <p class="phint"><span>Hint:</span> Bật cả 3 cùng lúc để thấy kết hợp mobile + scrolled + CTA.</p>
+
+<div class="practice-container">
+    <div class="header-top">
+        <div>
+            <h2><span style="font-family: 'JetBrains Mono'; font-weight: 400; opacity: 0.5;">{ }</span> HEADER STRATEGY LAB</h2>
+            <p>Phòng thí nghiệm cấu trúc đầu trang. Tối ưu hóa khả năng điều hướng và chuyển đổi.</p>
+        </div>
+        <div id="audit-status" class="audit-badge">Analysis...</div>
     </div>
-    <div class="pbd">
-      <div class="tog-row">
-        <div class="tog" id="togScroll">
-          <div class="tog-track"><div class="tog-knob"></div></div>
-          <span class="tog-lbl">Scrolled</span>
+
+    <div class="control-panel">
+        <div class="config-card">
+            <div class="config-info">
+                <span class="config-name">Positioning</span>
+                <span class="config-desc">Cách header xuất hiện khi cuộn</span>
+            </div>
+            <div class="option-group">
+                <button class="opt-btn active" data-type="pos" data-val="default">Default</button>
+                <button class="opt-btn" data-type="pos" data-val="sticky">Sticky</button>
+            </div>
         </div>
-        <div class="tog" id="togCTA">
-          <div class="tog-track"><div class="tog-knob"></div></div>
-          <span class="tog-lbl">CTA Emphasis</span>
+
+        <div class="config-card">
+            <div class="config-info">
+                <span class="config-name">Viewport Context</span>
+                <span class="config-desc">Giả lập thiết bị truy cập</span>
+            </div>
+            <div class="option-group">
+                <button class="opt-btn active" data-type="view" data-val="desktop">Desktop</button>
+                <button class="opt-btn" data-type="view" data-val="mobile">Mobile</button>
+            </div>
         </div>
-        <div class="tog" id="togMobile">
-          <div class="tog-track"><div class="tog-knob"></div></div>
-          <span class="tog-lbl">Mobile</span>
+
+        <div class="config-card">
+            <div class="config-info">
+                <span class="config-name">CTA Hierarchy</span>
+                <span class="config-desc">Độ ưu tiên của nút hành động</span>
+            </div>
+            <div class="option-group">
+                <button class="opt-btn active" data-type="cta" data-val="low">Ghost</button>
+                <button class="opt-btn" data-type="cta" data-val="high">Solid</button>
+            </div>
         </div>
-      </div>
-      <div class="ph-prev" id="phPrev">
-        <div class="ph-header" id="phHeader">
-          <div class="ph-ham" id="phHam"><span></span><span></span><span></span></div>
-          <span class="ph-brand">BRAND</span>
-          <div class="ph-nav" id="phNav">
-            <span class="ph-ni">Products</span>
-            <span class="ph-ni">Features</span>
-            <span class="ph-ni">Pricing</span>
-          </div>
-          <span class="ph-cta" id="phCta">Get Started</span>
+
+        <div class="config-card">
+            <div class="config-info">
+                <span class="config-name">Visual State</span>
+                <span class="config-desc">Hiệu ứng hòa trộn với Hero</span>
+            </div>
+            <div class="option-group">
+                <button class="opt-btn active" data-type="state" data-val="solid">Always Solid</button>
+                <button class="opt-btn" data-type="state" data-val="transparent">Trans to Solid</button>
+            </div>
         </div>
-        <div class="ph-menu" id="phMenu">
-          <div class="ph-mi">Products</div>
-          <div class="ph-mi">Features</div>
-          <div class="ph-mi">Pricing</div>
-          <div class="ph-mi ph-mi-cta" id="phMiCta">Get Started</div>
-        </div>
-        <div class="ph-content">
-          <div class="ph-block" style="width:75%"></div>
-          <div class="ph-block" style="width:55%"></div>
-          <div class="ph-block" style="width:88%;height:36px"></div>
-          <div class="ph-block" style="width:65%;height:36px"></div>
-          <div class="ph-block" style="width:40%"></div>
-        </div>
-      </div>
-      <div class="p-prompt">
-        <span class="p-prompt-lbl">Prompt</span>
-        <span class="p-prompt-txt" id="pPrompt">Header mặc định, clean minimal</span>
-      </div>
     </div>
-  </div>
+
+    <div class="preview-area" id="preview-area">
+        <div class="browser-top">
+            <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+        </div>
+        <div class="browser-content" id="browser-scroll">
+            <header class="sim-header" id="sim-header">
+                <div class="sim-logo">VIBE.</div>
+                <nav class="sim-nav">
+                    <span>Products</span>
+                    <span>Pricing</span>
+                    <span>Docs</span>
+                </nav>
+                <div class="sim-hamburger"><span></span><span></span><span></span></div>
+                <div class="sim-cta default" id="sim-cta">Sign Up</div>
+            </header>
+
+            <div class="fake-hero">
+                <div class="line title"></div>
+                <div class="line sub"></div>
+                <div class="line sub" style="width: 30%"></div>
+            </div>
+
+            <div class="fake-sections">
+                <div class="fake-card">
+                    <div class="fake-sq"></div>
+                    <div class="fake-lines"><div class="line"></div><div class="line" style="width:60%"></div></div>
+                </div>
+                <div class="fake-card">
+                    <div class="fake-sq"></div>
+                    <div class="fake-lines"><div class="line"></div><div class="line" style="width:60%"></div></div>
+                </div>
+                <div class="fake-card">
+                    <div class="fake-sq"></div>
+                    <div class="fake-lines"><div class="line"></div><div class="line" style="width:60%"></div></div>
+                </div>
+                <div class="fake-card">
+                    <div class="fake-sq"></div>
+                    <div class="fake-lines"><div class="line"></div><div class="line" style="width:60%"></div></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="status-board">
+        <div class="status-title">Strategy Insight</div>
+        <div id="audit-log" class="status-msg">Đang phân tích cấu trúc...</div>
+    </div>
 </div>
 
 <script>
-var pScroll=false,pCTA=false,pMobile=false;
-var phHeader=document.getElementById('phHeader');
-var phNav=document.getElementById('phNav');
-var phCta=document.getElementById('phCta');
-var phHam=document.getElementById('phHam');
-var phMenu=document.getElementById('phMenu');
-var phMiCta=document.getElementById('phMiCta');
-var pPrompt=document.getElementById('pPrompt');
+    const state = {
+        pos: 'default',
+        view: 'desktop',
+        cta: 'low',
+        visual: 'solid'
+    };
 
-function updPreview(){
-  /* scrolled */
-  phHeader.classList.toggle('scrolled',pScroll);
-  /* cta */
-  phCta.classList.toggle('fill',pCTA);
-  if(pCTA){phMiCta.style.color='var(--accent)';phMiCta.style.fontWeight='600'}
-  else{phMiCta.style.color='';phMiCta.style.fontWeight=''}
-  /* mobile */
-  phNav.classList.toggle('hide',pMobile);
-  phHam.classList.toggle('show',pMobile);
-  phMenu.classList.toggle('show',pMobile);
-  /* prompt */
-  var parts=[];
-  if(pMobile) parts.push('responsive hamburger menu');
-  if(pScroll) parts.push('scroll effect với shadow');
-  if(pCTA) parts.push('CTA emphasis, nút nổi bật');
-  var txt=parts.length===0?'Header mặc định, clean minimal':'Header '+parts.join(', ');
-  pPrompt.classList.add('fading');
-  setTimeout(function(){pPrompt.textContent=txt;pPrompt.classList.remove('fading')},200);
-}
+    const header = document.getElementById('sim-header');
+    const preview = document.getElementById('preview-area');
+    const cta = document.getElementById('sim-cta');
+    const scrollArea = document.getElementById('browser-scroll');
+    const log = document.getElementById('audit-log');
+    const badge = document.getElementById('audit-status');
 
-document.getElementById('togScroll').onclick=function(){
-  pScroll=!pScroll;
-  this.querySelector('.tog-track').classList.toggle('on',pScroll);
-  updPreview();
-};
-document.getElementById('togCTA').onclick=function(){
-  pCTA=!pCTA;
-  this.querySelector('.tog-track').classList.toggle('on',pCTA);
-  updPreview();
-};
-document.getElementById('togMobile').onclick=function(){
-  pMobile=!pMobile;
-  this.querySelector('.tog-track').classList.toggle('on',pMobile);
-  updPreview();
-};
-updPreview();
+    function update() {
+        // Positioning
+        header.classList.toggle('sticky', state.pos === 'sticky');
+        
+        // Viewport
+        preview.classList.toggle('mobile-view', state.view === 'mobile');
+        
+        // CTA
+        cta.className = 'sim-cta ' + (state.cta === 'high' ? 'high' : 'default');
+        
+        // Visual State Initial
+        if (state.visual === 'transparent') {
+            header.style.background = 'transparent';
+            header.style.borderBottomColor = 'transparent';
+        } else {
+            header.style.background = 'var(--card-bg)';
+            header.style.borderBottomColor = 'var(--border)';
+        }
+
+        audit();
+    }
+
+    scrollArea.onscroll = () => {
+        const isScrolled = scrollArea.scrollTop > 20;
+        header.classList.toggle('scrolled', isScrolled);
+        
+        if (state.visual === 'transparent') {
+            if (isScrolled) {
+                header.style.background = 'rgba(22, 22, 27, 0.95)';
+                header.style.borderBottomColor = 'var(--border)';
+            } else {
+                header.style.background = 'transparent';
+                header.style.borderBottomColor = 'transparent';
+            }
+        }
+    };
+
+    function audit() {
+        let msg = "";
+        let status = "OPTIMIZED";
+        let color = "#2ecc71";
+
+        if (state.pos === 'default') {
+            msg = "Header <strong>Default</strong>: Điều hướng sẽ biến mất khi cuộn. Phù hợp cho trang ngắn, nhưng Landing Page dài sẽ gây khó khăn cho user.";
+            status = "CONVENTIONAL";
+            color = "#3498db";
+        } else if (state.cta === 'low') {
+            msg = "Header <strong>Sticky</strong> nhưng CTA yếu: User có thể điều hướng nhưng mục tiêu chuyển đổi không nổi bật. Nên dùng <strong>Solid CTA</strong>.";
+            status = "UX WARNING";
+            color = "#f39c12";
+        } else if (state.view === 'mobile' && state.pos === 'sticky') {
+            msg = "Header <strong>Sticky + Mobile</strong>: Cực kỳ tiện lợi. User có thể mở menu bất cứ lúc nào mà không cần cuộn ngược lên đầu.";
+            status = "MOBILE READY";
+            color = "#2ecc71";
+        } else {
+            msg = "Cấu trúc Header <strong>Chiến lược</strong>: Kết hợp Sticky và CTA nổi bật giúp tối ưu hóa cả trải nghiệm người dùng và tỷ lệ chuyển đổi.";
+        }
+
+        log.innerHTML = msg;
+        badge.innerText = status;
+        badge.style.color = color;
+        badge.style.borderColor = color;
+    }
+
+    document.querySelectorAll('.opt-btn').forEach(btn => {
+        btn.onclick = () => {
+            const type = btn.dataset.type;
+            const val = btn.dataset.val;
+            
+            document.querySelectorAll(`.opt-btn[data-type="${type}"]`).forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            state[type] = val;
+            update();
+        };
+    });
+
+    update();
 </script>
+
 </body>
 </html>

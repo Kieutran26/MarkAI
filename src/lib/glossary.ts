@@ -991,8 +991,12 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Với AI, việc nhắc đến "section" giúp giới hạn phạm vi công việc. Thay vì bảo "sửa lại trang này", hãy nói "sửa lại hero section" để AI làm nhanh và chính xác hơn.'
   ],
   header: [
-    'Header là "vùng chứa" (container), còn Navbar là "thành phần" (component) nằm bên trong. Marketer nên phân biệt rõ để feedback chính xác: sửa menu là sửa navbar, còn thêm banner/ảnh nền là sửa header.',
-    'Trạng thái "Scrolled" rất quan trọng: thường header sẽ thu nhỏ lại hoặc thêm shadow để tiết kiệm diện tích nhưng vẫn giữ được các nút điều hướng quan trọng nhất.',
+    'Header là "vùng chứa" chiến lược ở đầu trang, bao gồm logo, menu (Navbar), và thường tích hợp các yếu tố chuyển đổi như nút CTA hoặc thanh thông báo.',
+    'Sticky Persistence: Việc giữ Header cố định khi cuộn trang giúp người dùng luôn tiếp cận được các công cụ điều hướng mà không cần phải cuộn ngược lên đầu. Điều này đặc biệt quan trọng đối với các Landing Page dài.',
+    'Responsive Adaptability: Header chuyên nghiệp phải tự động chuyển đổi từ dạng menu trải ngang trên Desktop sang Hamburger Menu trên Mobile để tối ưu không gian và khả năng thao tác.',
+    'CTA Hierarchy: Một Header tốt luôn có sự phân cấp rõ ràng cho nút kêu gọi hành động (Primary CTA). Nút này thường có màu sắc nổi bật nhất để dẫn dắt người dùng thực hiện hành động mục tiêu.',
+    'Scroll States: Để tăng tính thẩm mỹ, Header thường bắt đầu ở trạng thái trong suốt (khi ở Hero section) và chuyển sang trạng thái có màu nền (Solid) khi người dùng cuộn xuống, giúp phân tách rõ ràng với nội dung.',
+    'Khi làm việc với AI, hãy phân biệt: "sửa menu" là sửa Navbar, còn "thêm banner/thông báo đầu trang" là sửa Header. Việc mô tả đúng phạm vi giúp AI build cấu trúc layout chính xác ngay từ đầu.',
   ],
   'hero-section': [
     'Hero Section là "điểm chạm" quan trọng nhất trên landing page. Nó phải trả lời được 3 câu hỏi trong 3 giây: Bạn là ai? Bạn giải quyết vấn đề gì? Tôi phải làm gì tiếp theo?',
