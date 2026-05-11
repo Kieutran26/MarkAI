@@ -780,11 +780,11 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Với marketer, MCP cực kỳ quyền lực: Bạn có thể bảo AI "Hãy đọc báo cáo doanh thu tháng trước trong Sheets, đối chiếu với các campaign trong Notion và tạo một Issue trên GitHub cho team dev fix các link lỗi". Tất cả trong 1 câu lệnh.'
   ],
   ssl: [
-    'SSL (Secure Sockets Layer) là tiêu chuẩn bảo mật cho phép truyền dữ liệu mã hóa giữa trình duyệt và máy chủ. Ngày nay, nó thường được hiểu là TLS (Transport Layer Security) - phiên bản kế nhiệm an toàn hơn.',
-    'HTTPS = HTTP + SSL/TLS. Chữ "S" trong HTTPS là viết tắt của Secure (An toàn).',
-    'Mã hóa: SSL biến dữ liệu của bạn thành một dãy ký tự vô nghĩa trong suốt quá trình vận chuyển. Kẻ xấu có thể chặn được gói tin nhưng không thể đọc được nội dung bên trong.',
-    'Xác thực: Ngoài việc mã hóa, SSL còn xác thực rằng website bạn đang truy cập thực sự thuộc về chủ sở hữu hợp pháp, giúp chống lại các trang web giả mạo (phishing).',
-    'Lợi ích SEO: Google ưu tiên các trang web có HTTPS. Một trang web không có SSL sẽ bị trình duyệt cảnh báo "Không an toàn", gây mất niềm tin nơi khách hàng.',
+    'SSL là viết tắt của Secure Sockets Layer. Nó tạo ra một "đường ống" an toàn và riêng tư giữa trình duyệt của bạn và máy chủ website, đảm bảo không ai có thể "nghe lén" dữ liệu.',
+    'Mã hóa (Encryption): Đây là chức năng cốt lõi. Mọi thông tin bạn nhập (mật khẩu, số thẻ) sẽ được mã hóa thành các ký tự vô nghĩa trước khi gửi đi. Chỉ máy chủ có chìa khóa mới giải mã được.',
+    'Xác thực (Authentication): Chứng chỉ SSL do các tổ chức uy tín (CA) cấp, giúp xác nhận rằng website bạn đang truy cập là thật, không phải trang giả mạo được dựng lên để lừa đảo.',
+    'HTTPS vs HTTP: Khi có SSL, website sẽ dùng giao thức HTTPS (S = Secure). Trình duyệt sẽ hiện biểu tượng ổ khóa xanh để thông báo cho người dùng biết trang web này đáng tin cậy.',
+    'Tầm quan trọng với Marketing: Ngoài bảo mật, SSL còn là yếu tố quan trọng để Google xếp hạng SEO. Một website "Không an toàn" sẽ làm khách hàng rời đi ngay lập tức khi vừa truy cập.',
   ],
   auth: [
     'Authentication là quá trình xác minh "Bạn là ai?" (VD: Đăng nhập bằng Email/Password).',
@@ -1231,13 +1231,6 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Quy tắc "Mutually Exclusive": Chỉ có duy nhất một đoạn được active tại một thời điểm. Việc chọn đoạn mới sẽ tự động hủy chọn đoạn cũ.',
     'Visual Hierarchy: Vì Segmented Button chiếm khá nhiều diện tích ngang và có màu nổi bật, hãy chỉ dùng nó cho các lựa chọn thực sự quan trọng, tránh làm loãng giao diện.',
     'Khi prompt AI, hãy nói rõ số lượng segment và nội dung từng segment. Ví dụ: "Tạo segmented button 3 tùy chọn: List, Grid, Map".',
-  ],
-  ssl: [
-    'SSL là viết tắt của Secure Sockets Layer. Nó tạo ra một "đường ống" an toàn và riêng tư giữa trình duyệt của bạn và máy chủ website, đảm bảo không ai có thể "nghe lén" dữ liệu.',
-    'Mã hóa (Encryption): Đây là chức năng cốt lõi. Mọi thông tin bạn nhập (mật khẩu, số thẻ) sẽ được mã hóa thành các ký tự vô nghĩa trước khi gửi đi. Chỉ máy chủ có chìa khóa mới giải mã được.',
-    'Xác thực (Authentication): Chứng chỉ SSL do các tổ chức uy tín (CA) cấp, giúp xác nhận rằng website bạn đang truy cập là thật, không phải trang giả mạo được dựng lên để lừa đảo.',
-    'HTTPS vs HTTP: Khi có SSL, website sẽ dùng giao thức HTTPS (S = Secure). Trình duyệt sẽ hiện biểu tượng ổ khóa xanh để thông báo cho người dùng biết trang web này đáng tin cậy.',
-    'Tầm quan trọng với Marketing: Ngoài bảo mật, SSL còn là yếu tố quan trọng để Google xếp hạng SEO. Một website "Không an toàn" sẽ làm khách hàng rời đi ngay lập tức khi vừa truy cập.',
   ],
 };
 
