@@ -3,228 +3,295 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tab Bar Practice — Vibecode Glossary</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<title>Tabbar Architect — Vibecode</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{
-  --bg:#131313;--bg-card:#1a1a1a;--bg-el:#222;
-  --fg:#ede8df;--fg-dim:#9a9590;--fg-muted:#5c5752;
-  --accent:#d97706;--accent-br:#f59e0b;--accent-dm:#92400e;
-  --border:#2e2e2e;--radius:2px;
-  --sans:'Space Grotesk',sans-serif;--mono:'IBM Plex Mono',monospace;
-}
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{font-size:16px;-webkit-font-smoothing:antialiased}
-body{
-  font-family:var(--sans);color:var(--fg);line-height:1.5;min-height:auto;
-  background-color:var(--bg);
+:root{
+  --bg:#0f0f12;--bg-card:#16161b;--accent:#E88C2E;--accent-dim:#92400e;
+  --accent-glow:rgba(232,140,46,.12);--fg:#e8e4df;--fg-muted:#8a8580;
+  --fg-dim:#5a5550;--border:#282830;--border-accent:#E88C2E;
+  --success:#50fa7b;--font-mono:'JetBrains Mono',monospace;--font-sans:'Space Grotesk',sans-serif;--radius:4px;
 }
-.entry{max-width:900px;margin:0 auto;padding:24px 20px 40px}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-sans);line-height:1.5;min-height:100vh;padding:24px;display:flex;justify-content:center;}
+.page-wrapper{width:100%;max-width:940px;}
 
-.sec-lbl {
-  font-family: var(--mono);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: var(--fg-dim);
-  margin-bottom: 20px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.sec-lbl::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--border);
-}
+.header { border-left: 2px solid var(--accent); padding-left: 16px; margin-bottom: 24px; }
+.header h1 { font-family: var(--font-mono); font-size: 13px; color: var(--accent); text-transform: uppercase; letter-spacing: 2px; font-weight: 700; }
+.header p { font-size: 14px; color: var(--fg-muted); margin-top: 6px; }
 
-/* === PRACTICE === */
-.practice{margin-bottom:0}
-.practice-hdr{margin-bottom:20px;border-bottom:1px solid var(--border);padding-bottom:18px}
-.practice-hdr .badge{display:inline-block;font-family:var(--mono);font-size:.65rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent-dm);padding:3px 8px;border-radius:var(--radius);background:rgba(217,119,6,.08);margin-bottom:10px}
-.practice-hdr h2{margin-bottom:6px;font-size:clamp(1.1rem,2.5vw,1.35rem);font-weight:600;letter-spacing:-.02em;line-height:1.2}
-.practice-desc{font-size:.85rem;color:var(--fg-dim)}
-.practice-hint{font-family:var(--mono);font-size:.68rem;color:var(--fg-muted);margin-top:8px}
-.practice-body{display:flex;flex-direction:column;gap:16px;margin-bottom:16px}
+/* ===== WORKSPACE ===== */
+.ws-workspace{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:750px){.ws-workspace{grid-template-columns:1fr}}
 
-/* Practice tab bar */
-.prac-tabs{display:flex;border-bottom:1px solid var(--border);position:relative;background:var(--bg-card);border:1px solid var(--border);border-bottom:none;border-radius:var(--radius) var(--radius) 0 0}
-.prac-tab{padding:10px 18px;font-size:.68rem;font-weight:500;color:var(--fg-muted);cursor:pointer;position:relative;transition:color .15s;user-select:none;-webkit-tap-highlight-color:transparent;border:none;background:none;font-family:var(--sans)}
-.prac-tab:hover{color:var(--fg)}
-.prac-tab.active{color:var(--fg);font-weight:600}
-.prac-tab:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
-.prac-tab-ind{position:absolute;bottom:-1px;height:2px;background:var(--accent);border-radius:1px 1px 0 0;transition:left .25s ease,width .25s ease}
+.ws-panel{background:var(--bg-card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;display:flex;flex-direction:column;gap:16px}
+.ws-panel-title{font-family:var(--font-mono);font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--fg-dim);margin-bottom:4px}
 
-/* Practice content */
-.prac-content{background:var(--bg-card);border:1px solid var(--border);border-radius:0 0 var(--radius) var(--radius);padding:20px;min-height:200px;position:relative;overflow:hidden}
-.prac-panel{position:absolute;inset:20px;display:flex;flex-direction:column;gap:8px;opacity:0;transition:opacity .2s ease;pointer-events:none}
-.prac-panel.active{opacity:1;pointer-events:auto;position:relative;inset:0}
-.prac-panel-title{font-size:.88rem;font-weight:700;color:var(--fg);line-height:1.2}
-.prac-panel-desc{font-size:.64rem;color:var(--fg-dim);line-height:1.5}
-.prac-panel-meta{display:flex;gap:12px;margin-top:4px}
-.prac-panel-meta span{font-family:var(--mono);font-size:.5rem;color:var(--fg-muted)}
-.prac-panel-chart{display:flex;align-items:flex-end;gap:4px;height:50px;margin-top:6px}
-.prac-panel-chart .bar{flex:1;border-radius:1px 1px 0 0;background:var(--accent-dm);min-height:4px}
-.prac-panel-chart .bar.hi{background:var(--accent)}
-.prac-panel-rows{display:flex;flex-direction:column;gap:4px;margin-top:8px}
-.prac-panel-row{display:flex;justify-content:space-between;font-family:var(--mono);font-size:.52rem;color:var(--fg-muted);padding:4px 0;border-bottom:1px solid rgba(255,255,255,.03)}
-.prac-panel-row span:last-child{color:var(--fg-dim);font-weight:500}
-.prac-panel-val{font-family:var(--mono);font-size:1.1rem;font-weight:700;color:var(--accent-br)}
-.prac-panel-chg{font-family:var(--mono);font-size:.52rem;color:#4ade80;font-weight:600}
-.prac-state{font-family:var(--mono);font-size:.56rem;color:var(--fg-muted);text-align:center;margin-top:4px}
-.prac-state span{color:var(--accent-br);font-weight:600}
+/* Controls */
+.control-group { display: flex; flex-direction: column; gap: 8px; }
+.style-picker{display:flex;gap:6px;flex-wrap:wrap;}
+.style-opt{font-family:var(--font-mono);font-size:9px;font-weight:600;letter-spacing:.5px;color:var(--fg-dim);background:transparent;border:1px solid var(--border);padding:6px 12px;border-radius:2px;cursor:pointer;transition:all .25s}
+.style-opt:hover{border-color:var(--fg-muted);color:var(--fg-muted)}
+.style-opt.active{border-color:var(--border-accent);background:var(--accent-glow);color:var(--accent)}
+
+.item-list{display:flex;flex-direction:column;gap:6px;max-height:160px;overflow-y:auto;padding-right:4px;}
+.item-list::-webkit-scrollbar { width: 4px; }
+.item-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+.item-row{display:flex;align-items:center;gap:8px;padding:6px 10px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:2px;}
+.item-row-input{font-family:var(--font-mono);font-size:10px;color:var(--fg);background:transparent;border:none;outline:none;flex:1;min-width:0}
+.item-row-del{font-family:var(--font-mono);font-size:11px;color:var(--fg-dim);cursor:pointer;border:none;background:none;transition:color .2s}
+.item-row-del:hover{color:var(--accent)}
+
+.add-btn{font-family:var(--font-mono);font-size:9px;font-weight:600;color:var(--fg-dim);background:transparent;border:1px dashed var(--border);padding:8px;border-radius:2px;cursor:pointer;width:100%;text-align:center;transition:all .2s}
+.add-btn:hover{border-color:var(--fg-muted);color:var(--fg-muted)}
+
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:4px 0}
+.toggle-label{font-family:var(--font-mono);font-size:10px;color:var(--fg-muted)}
+.toggle-switch{width:32px;height:16px;background:var(--border);border-radius:8px;cursor:pointer;position:relative;transition:background .3s;border:none;padding:0}
+.toggle-switch::after{content:'';position:absolute;top:3px;left:3px;width:10px;height:10px;background:var(--fg-dim);border-radius:50%;transition:all .3s}
+.toggle-switch.on{background:var(--accent-dim)}
+.toggle-switch.on::after{left:19px;background:var(--accent)}
+
+/* Preview */
+.preview-stage { flex: 1; background: #0d0d10; border: 1px solid var(--border); border-radius: 2px; position: relative; min-height: 240px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.preview-device { width: 220px; height: 200px; background: #000; border: 1px solid #222; border-radius: 8px; display: flex; flex-direction: column; position: relative; overflow: hidden; }
+.mock-content { flex: 1; padding: 12px; display: flex; flex-direction: column; gap: 8px; }
+.mock-box { height: 40px; background: #1a1a20; border-radius: 4px; }
+.mock-line { height: 6px; background: #222; border-radius: 3px; width: 70%; }
+
+/* Tabbar CSS */
+.tabbar { display: flex; background: #16161b; border-top: 1px solid #282830; }
+.tab-item { flex: 1; height: 44px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; font-size: 7px; color: #555; cursor: pointer; transition: all 0.2s; }
+.tab-item.active { color: var(--accent); }
+.tab-item i { width: 14px; height: 14px; background: #333; border-radius: 2px; display: block; position: relative; }
+.tab-item.active i { background: var(--accent); }
+.badge { position: absolute; top: -4px; right: -4px; width: 6px; height: 6px; background: #ff5555; border-radius: 50%; border: 1px solid #000; }
+
+.tabbar.scrollable { overflow-x: auto; justify-content: flex-start; }
+.tabbar.scrollable .tab-item { flex: 0 0 60px; border-right: 1px solid #222; }
+
+.segmented { margin: 12px; background: #111; border: 1px solid #222; border-radius: 6px; padding: 2px; display: flex; }
+.seg-item { flex: 1; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 8px; color: #666; border-radius: 4px; cursor: pointer; }
+.seg-item.active { background: #222; color: #fff; border: 1px solid #333; }
+
+.prompt-output { background: rgba(0,0,0,0.4); border: 1px solid var(--border); border-radius: 2px; padding: 12px; font-family: var(--font-mono); font-size: 10px; color: var(--fg-muted); white-space: pre-wrap; line-height: 1.6; }
+.prompt-output strong { color: var(--accent); }
+
+.hint-bar { font-size: 11px; color: var(--fg-dim); font-style: italic; margin-top: 12px; text-align: center; }
 
 </style>
 </head>
 <body>
-<div class="entry" id="app-root">
 
-    <div class="practice-body">
-      <!-- Tab Bar -->
-      <div class="prac-tabs" id="pracTabs">
-        <button class="prac-tab active" data-tab="0">Overview</button>
-        <button class="prac-tab" data-tab="1">Analytics</button>
-        <button class="prac-tab" data-tab="2">Reports</button>
-        <button class="prac-tab" data-tab="3">Settings</button>
-        <div class="prac-tab-ind" id="pracInd"></div>
-      </div>
+<div class="page-wrapper">
+  <div class="header">
+    <h1>Tabbar Architect</h1>
+    <p>Cấu hình và tạo Prompt mẫu cho các loại Tab Bar khác nhau.</p>
+  </div>
 
-      <!-- Content -->
-      <div class="prac-content" id="pracContent">
-        <div class="prac-panel active" data-panel="0">
-          <div class="prac-panel-title">Sales Overview</div>
-          <div class="prac-panel-desc">Tổng quan doanh số ngày hôm nay. Đây là trang đầu tiên người dùng nhìn thấy khi mở dashboard.</div>
-          <div style="display:flex;align-items:baseline;gap:12px;margin-top:4px">
-            <span class="prac-panel-val">$12,430</span>
-            <span class="prac-panel-chg">+8.6% ↑</span>
-          </div>
-          <div class="prac-panel-meta"><span>Orders: 247</span><span>Avg: $50.3</span><span>Conv: 3.2%</span></div>
-          <div class="prac-panel-chart">
-            <div class="bar" style="height:30%"></div><div class="bar" style="height:55%"></div>
-            <div class="bar hi" style="height:80%"></div><div class="bar" style="height:45%"></div>
-            <div class="bar" style="height:65%"></div><div class="bar hi" style="height:100%"></div>
-            <div class="bar" style="height:70%"></div>
-          </div>
-        </div>
-        <div class="prac-panel" data-panel="1">
-          <div class="prac-panel-title">Analytics</div>
-          <div class="prac-panel-desc">Dữ liệu phân tiết về traffic, conversion rate, và user behavior trong khoảng thời gian đã chọn.</div>
-          <div style="display:flex;align-items:baseline;gap:12px;margin-top:4px">
-            <span class="prac-panel-val">8,241</span>
-            <span class="prac-panel-chg">+15.2% ↑</span>
-          </div>
-          <div class="prac-panel-meta"><span>PV: 42.1K</span><span>Bounce: 34%</span><span>Session: 4.2m</span></div>
-          <div class="prac-panel-chart">
-            <div class="bar" style="height:50%"></div><div class="bar hi" style="height:90%"></div>
-            <div class="bar" style="height:40%"></div><div class="bar hi" style="height:75%"></div>
-            <div class="bar" style="height:60%"></div><div class="bar" style="height:85%"></div>
-            <div class="bar" style="height:55%"></div>
-          </div>
-        </div>
-        <div class="prac-panel" data-panel="2">
-          <div class="prac-panel-title">Reports</div>
-          <div class="prac-panel-desc">Danh sách các báo cáo đã generate. Có thể xuất PDF hoặc chia sẻ link cho team.</div>
-          <div class="prac-panel-rows">
-            <div class="prac-panel-row"><span>Sales Report — Jun 2025</span><span>PDF</span></div>
-            <div class="prac-panel-row"><span>Marketing Spend — Q2</span><span>PDF</span></div>
-            <div class="prac-panel-row"><span>User Acquisition — May</span><span>Excel</span></div>
-            <div class="prac-panel-row"><span>Revenue Breakdown — Q1</span><span>PDF</span></div>
-          </div>
-        </div>
-        <div class="prac-panel" data-panel="3">
-          <div class="prac-panel-title">Settings</div>
-          <div class="prac-panel-desc">Cấu hình dashboard: theme, timezone, notifications, và các tùy chọn hiển thị.</div>
-          <div class="prac-panel-rows">
-            <div class="prac-panel-row"><span>Theme</span><span>Dark</span></div>
-            <div class="prac-panel-row"><span>Timezone</span><span>UTC+7</span></div>
-            <div class="prac-panel-row"><span>Notifications</span><span>On</span></div>
-            <div class="prac-panel-row"><span>Language</span><span>Tiếng Việt</span></div>
-          </div>
+  <div class="ws-workspace">
+    <!-- Config Panel -->
+    <div class="ws-panel">
+      <div class="control-group">
+        <div class="ws-panel-title">Loại Tab Bar</div>
+        <div class="style-picker" id="type-picker">
+          <button class="style-opt active" data-type="bottom">Bottom</button>
+          <button class="style-opt" data-type="top">Top</button>
+          <button class="style-opt" data-type="scrollable">Scrollable</button>
+          <button class="style-opt" data-type="segmented">Segmented</button>
         </div>
       </div>
 
-      <div class="prac-state" id="pracState">Tab active: <span>Overview</span></div>
+      <div class="control-group">
+        <div class="ws-panel-title">Danh sách Tab</div>
+        <div class="item-list" id="item-list"></div>
+        <button class="add-btn" id="add-btn">+ Thêm Tab mới</button>
+      </div>
+
+      <div class="control-group">
+        <div class="ws-panel-title">Tùy chọn hiển thị</div>
+        <div class="toggle-row">
+          <span class="toggle-label">Hiện Icons (Chỉ Mobile)</span>
+          <button class="toggle-switch on" id="toggle-icons"></button>
+        </div>
+        <div class="toggle-row">
+          <span class="toggle-label">Hiện Thông báo (Badges)</span>
+          <button class="toggle-switch" id="toggle-badges"></button>
+        </div>
+      </div>
     </div>
 
-  </section>
+    <!-- Preview Panel -->
+    <div style="display:flex; flex-direction:column; gap:20px;">
+      <div class="ws-panel">
+        <div class="ws-panel-title">Xem trước</div>
+        <div class="preview-stage">
+          <div class="preview-device" id="preview-device"></div>
+        </div>
+        <div class="hint-bar" id="type-hint">Bottom Tab Bar: Tối ưu cho thao tác một tay trên mobile.</div>
+      </div>
+
+      <div class="ws-panel">
+        <div class="ws-panel-title">AI Prompt Builder</div>
+        <div class="prompt-output" id="prompt-output"></div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
-  /* === PRACTICE TAB LOGIC === */
-  var tabs = document.querySelectorAll('.prac-tab');
-  var panels = document.querySelectorAll('.prac-panel');
-  var indicator = document.getElementById('pracInd');
-  var pracState = document.getElementById('pracState');
-  var tabNames = ['Overview', 'Analytics', 'Reports', 'Settings'];
-  var activeTab = 0;
+  const state = {
+    type: 'bottom',
+    items: ['Trang chủ', 'Tìm kiếm', 'Giỏ hàng', 'Cá nhân'],
+    showIcons: true,
+    showBadges: false,
+    activeIdx: 0
+  };
 
-  function setTab(index) {
-    activeTab = index;
+  const itemContainer = document.getElementById('item-list');
+  const typePicker = document.getElementById('type-picker');
+  const device = document.getElementById('preview-device');
+  const promptOutput = document.getElementById('prompt-output');
+  const typeHint = document.getElementById('type-hint');
 
-    /* Update tab styles */
-    tabs.forEach(function(t, i) {
-      if (i === index) {
-        t.classList.add('active');
-      } else {
-        t.classList.remove('active');
-      }
+  const hints = {
+    bottom: "Bottom Tab Bar: Tối ưu cho thao tác một tay trên mobile. Thường dùng 3-5 mục chính.",
+    top: "Top Tab Bar: Nằm dưới Header, dùng để phân loại nội dung trong cùng một bối cảnh.",
+    scrollable: "Scrollable Tabs: Dành cho danh sách category dài, cho phép người dùng vuốt ngang.",
+    segmented: "Segmented Control: Dùng để chuyển đổi các View nội bộ trong một component nhỏ."
+  };
+
+  function renderItems() {
+    itemContainer.innerHTML = state.items.map((item, i) => `
+      <div class="item-row">
+        <input type="text" class="item-row-input" value="${item}" data-idx="${i}">
+        <button class="item-row-del" data-idx="${i}">&times;</button>
+      </div>
+    `).join('');
+
+    itemContainer.querySelectorAll('.item-row-input').forEach(input => {
+      input.oninput = (e) => {
+        state.items[e.target.dataset.idx] = e.target.value;
+        updateAll();
+      };
     });
 
-    /* Update panels */
-    panels.forEach(function(p, i) {
-      if (i === index) {
-        p.classList.add('active');
-      } else {
-        p.classList.remove('active');
-      }
+    itemContainer.querySelectorAll('.item-row-del').forEach(btn => {
+      btn.onclick = (e) => {
+        if (state.items.length > 2) {
+          state.items.splice(e.target.dataset.idx, 1);
+          renderItems();
+          updateAll();
+        }
+      };
     });
-
-    /* Update indicator position */
-    var tab = tabs[index];
-    indicator.style.left = tab.offsetLeft + 'px';
-    indicator.style.width = tab.offsetWidth + 'px';
-
-    /* Update state label */
-    pracState.innerHTML = 'Tab active: <span>' + tabNames[index] + '</span>';
   }
 
-  /* Tab click events */
-  tabs.forEach(function(tab) {
-    tab.addEventListener('click', function() {
-      var idx = parseInt(this.getAttribute('data-tab'), 10);
-      setTab(idx);
-    });
+  function renderPreview() {
+    let html = `
+      <div class="mock-content">
+        <div class="mock-box"></div>
+        <div class="mock-line"></div>
+        <div class="mock-line"></div>
+      </div>
+    `;
+
+    const tabsHtml = state.items.map((item, i) => {
+      const activeClass = i === state.activeIdx ? 'active' : '';
+      const icon = state.showIcons ? `<i>${state.showBadges && i === 2 ? '<span class="badge"></span>' : ''}</i>` : '';
+      return `<div class="tab-item ${activeClass}" onclick="setActive(${i})">${icon}<span>${item}</span></div>`;
+    }).join('');
+
+    if (state.type === 'bottom') {
+      html += `<div class="tabbar">${tabsHtml}</div>`;
+    } else if (state.type === 'top') {
+      html = `
+        <div class="tabbar" style="border-top:none; border-bottom:1px solid #282830">${tabsHtml}</div>
+        <div class="mock-content"><div class="mock-box"></div><div class="mock-line"></div></div>
+      `;
+    } else if (state.type === 'scrollable') {
+      html = `
+        <div class="tabbar scrollable" style="border-top:none; border-bottom:1px solid #282830">${tabsHtml}</div>
+        <div class="mock-content"><div class="mock-box"></div><div class="mock-line"></div></div>
+      `;
+    } else if (state.type === 'segmented') {
+      const segHtml = state.items.map((item, i) => {
+        const activeClass = i === state.activeIdx ? 'active' : '';
+        return `<div class="seg-item ${activeClass}" onclick="setActive(${i})">${item}</div>`;
+      }).join('');
+      html = `
+        <div class="mock-content">
+          <div class="mock-box" style="height:30px"></div>
+          <div class="segmented">${segHtml}</div>
+          <div class="mock-box"></div>
+        </div>
+      `;
+    }
+
+    device.innerHTML = html;
+  }
+
+  function renderPrompt() {
+    const listStr = state.items.join(', ');
+    let prompt = `<strong>Prompt:</strong> "Tạo một <strong>${state.type.toUpperCase()} Tab Bar</strong> với ${state.items.length} mục: <strong>${listStr}</strong>. `;
+    
+    if (state.type === 'bottom') prompt += `Mỗi mục bao gồm icon và text label bên dưới. `;
+    if (state.showBadges) prompt += `Thêm badge thông báo (chấm đỏ) cho mục thứ 3. `;
+    if (state.type === 'scrollable') prompt += `Cấu hình cho phép scroll ngang nếu danh sách tab dài vượt quá màn hình. `;
+    if (state.type === 'segmented') prompt += `Thiết kế dạng Segmented Control nằm gọn trong card nội dung. `;
+    
+    prompt += `Sử dụng theme dark với màu accent hổ phách #E88C2E cho trạng thái Active."`;
+    
+    promptOutput.innerHTML = prompt;
+  }
+
+  window.setActive = (idx) => {
+    state.activeIdx = idx;
+    renderPreview();
+  };
+
+  function updateAll() {
+    renderPreview();
+    renderPrompt();
+    typeHint.textContent = hints[state.type];
+  }
+
+  // Bind Type Picker
+  typePicker.querySelectorAll('.style-opt').forEach(btn => {
+    btn.onclick = (e) => {
+      state.type = e.target.dataset.type;
+      typePicker.querySelectorAll('.style-opt').forEach(b => b.classList.remove('active'));
+      e.target.classList.add('active');
+      updateAll();
+    };
   });
 
-  /* Keyboard navigation */
-  document.getElementById('pracTabs').addEventListener('keydown', function(e) {
-    if (e.key === 'ArrowRight') {
-      e.preventDefault();
-      setTab(Math.min(activeTab + 1, tabs.length - 1));
-      tabs[activeTab].focus();
-    } else if (e.key === 'ArrowLeft') {
-      e.preventDefault();
-      setTab(Math.max(activeTab - 1, 0));
-      tabs[activeTab].focus();
+  // Bind Add Button
+  document.getElementById('add-btn').onclick = () => {
+    if (state.items.length < 10) {
+      state.items.push('Tab ' + (state.items.length + 1));
+      renderItems();
+      updateAll();
     }
-  });
+  };
 
-  /* === INIT — set indicator after layout === */
-  function initIndicator() {
-    if (activeTab >= 0 && tabs[activeTab]) {
-      indicator.style.left = tabs[activeTab].offsetLeft + 'px';
-      indicator.style.width = tabs[activeTab].offsetWidth + 'px';
-    }
-  }
-  if (document.fonts && document.fonts.ready) {
-    document.fonts.ready.then(initIndicator);
-  } else {
-    window.addEventListener('load', initIndicator);
-  }
-  window.addEventListener('resize', initIndicator);
+  // Bind Toggles
+  document.getElementById('toggle-icons').onclick = function() {
+    state.showIcons = !state.showIcons;
+    this.classList.toggle('on');
+    updateAll();
+  };
+  document.getElementById('toggle-badges').onclick = function() {
+    state.showBadges = !state.showBadges;
+    this.classList.toggle('on');
+    updateAll();
+  };
 
+  // Init
+  renderItems();
+  updateAll();
 </script>
+
 </body>
 </html>

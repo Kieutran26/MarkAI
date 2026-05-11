@@ -1108,6 +1108,10 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     '4 loại tab bar phổ biến: Bottom Tab (cho mobile app), Top Tab (cho web dashboard), Scrollable Tab (khi có quá nhiều tab), và Segmented Control (cho các lựa chọn ngắn, gọn).',
     'Quy tắc vàng: Tab bar không phải là menu điều hướng toàn trang (như Navbar). Nó chỉ dùng để đổi nội dung trong MỘT vùng nhất định. Nếu bấm tab mà URL thay đổi hoàn toàn, đó thường là Navbar trá hình.',
     'Khi prompt AI, hãy chỉ định rõ loại tab bar bạn muốn. Ví dụ: "Dùng segmented control cho phần filter thời gian" hoặc "Dùng scrollable tabs cho danh sách categories dài".',
+    'Chỉ báo trực quan (Visual Indicator): Luôn phải có một dấu hiệu rõ ràng (như thanh gạch dưới, màu nền khác, hoặc icon nổi bật) để người dùng biết mình đang ở tab nào.',
+    'Số lượng lý tưởng: Tab Bar hoạt động tốt nhất với 2 đến 5 mục. Nếu có quá nhiều mục, hãy cân nhắc sử dụng Scrollable Tab Bar hoặc chuyển sang Menu Dropdown để tránh chật chội.',
+    'Badges & Notifications: Tab Bar là nơi tuyệt vời để đặt các chỉ báo số lượng (badge), giúp người dùng nhận biết có nội dung mới ở các phân vùng khác mà không cần phải click vào.',
+    'Phản hồi tức thì: Việc chuyển tab phải diễn ra ngay lập tức hoặc kèm theo micro-interaction mượt mà để tạo cảm giác ứng dụng phản ứng nhanh nhạy.',
   ],
   'chips': [
     'Chip là công cụ "nén" thông tin cực tốt. Thay vì dùng một danh sách dài dằng dặc, chip gom các nhãn (labels) vào không gian hẹp, giúp giao diện trông hiện đại và chuyên nghiệp hơn.',
