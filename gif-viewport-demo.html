@@ -1,226 +1,469 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Viewport — Animated</title>
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
-<style>
-:root{--bg:#131110;--fg:#ece8e1;--muted:#706b64;--accent:#d4712a;--accent-dim:rgba(212,113,42,.15);--card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a}
-*{margin:0;padding:0;box-sizing:border-box}
-html,body{height:auto;overflow:hidden}
-body{background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 100%,16px 16px;display:flex;flex-direction:column;align-items:center;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:12px 16px 4px}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Viewport - Amber Brutalist 4-Cell Grid</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --amber: #E88C2E;
+            --bg: #0f0f12;
+            --card-bg: #16161b;
+            --border: #282830;
+            --text: #e8e4dc;
+            --muted: #707070;
+            --gap: 14px;
+            --ease: cubic-bezier(0.65, 0, 0.35, 1);
+        }
 
-.aw{width:100%}
-.ab{width:100%;height:320px;background:var(--card);border:1px solid var(--border);overflow:hidden;display:flex;flex-direction:column;position:relative}
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-.hd{display:flex;align-items:center;justify-content:space-between;padding:7px 14px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
-.hd-t{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:2.5px}
-.hd-f{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
+        body {
+            background-color: var(--bg);
+            background-image: 
+                radial-gradient(ellipse at 25% 15%, rgba(232, 140, 46, 0.05) 0%, transparent 55%),
+                radial-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 16px 16px;
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
 
-.la{position:relative;flex:1;background:var(--card-alt);overflow:hidden;display:flex;align-items:center;justify-content:center}
-.la::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);background-size:20px 20px;pointer-events:none}
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--gap);
+            width: 100%;
+            max-width: 940px;
+        }
 
-/* Device frame from user code */
-.df{
-  border:1.5px solid var(--accent);background:#0f0f11;overflow:hidden;
-  box-shadow:0 0 0 9999px rgba(12,12,14,.45);
-  transition:width .7s cubic-bezier(.4,0,.2,1),height .7s cubic-bezier(.4,0,.2,1);
-  container-type:inline-size;container-name:dev;
-}
-.dim-txt{
-  position:absolute;bottom:10px;left:14px;
-  font-family:'JetBrains Mono',monospace;font-size:9px;color:rgba(212,113,42,.6);
-  letter-spacing:.08em;z-index:15;white-space:nowrap;
-}
+        @media (max-width: 600px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+        }
 
-/* Inner page content */
-.ip{width:100%;height:100%;padding:clamp(3px,1.2cqw,8px);display:flex;flex-direction:column;gap:clamp(2px,.6cqw,5px)}
-.in{
-  display:flex;align-items:center;justify-content:space-between;
-  padding:clamp(2px,.5cqw,4px) clamp(3px,.8cqw,6px);
-  background:rgba(212,113,42,.08);border:1px solid rgba(212,113,42,.15);flex-shrink:0;
-}
-.inb{font-family:'JetBrains Mono',monospace;font-size:clamp(4px,1.4cqw,8px);color:var(--accent);font-weight:700;letter-spacing:.08em}
-.inl{display:flex;gap:clamp(3px,.8cqw,6px)}
-.inlk{width:clamp(10px,2.8cqw,28px);height:clamp(2px,.4cqw,3px);background:rgba(255,255,255,.15);transition:all .4s}
-.inlk.off{width:0!important;opacity:0;overflow:hidden}
-.ib{display:flex;gap:clamp(2px,.6cqw,5px);flex:1;min-height:0}
-.im{flex:1;display:flex;flex-direction:column;gap:clamp(2px,.5cqw,4px);min-width:0}
-.ih{height:clamp(6px,7cqw,18px);background:var(--fg);width:70%;flex-shrink:0;transition:height .7s}
-.il{height:clamp(2px,1.8cqw,4px);background:rgba(255,255,255,.1);flex-shrink:0;transition:height .7s}
-.il.w85{width:85%}.il.w65{width:65%}.il.w45{width:45%}
-.ibtn{
-  width:clamp(22px,16cqw,80px);height:clamp(5px,4.5cqw,18px);
-  background:var(--accent);flex-shrink:0;margin-top:clamp(1px,.3cqw,3px);transition:all .7s;
-}
-.isb{
-  width:clamp(25px,10cqw,100px);background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.06);flex-shrink:0;
-  display:flex;flex-direction:column;gap:clamp(2px,.5cqw,4px);
-  padding:clamp(2px,.6cqw,5px);
-  transition:width .5s cubic-bezier(.4,0,.2,1),opacity .4s,padding .5s;
-}
-.isb.off{width:0!important;opacity:0;padding:0;overflow:hidden;border:none}
-.sb{height:clamp(4px,5cqw,14px);background:rgba(255,255,255,.07);transition:height .7s}
-.sb.w80{width:80%}.sb.w60{width:60%}
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            position: relative;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            height: 320px;
+        }
 
-/* Info */
-.inf{padding:8px 14px;background:var(--card);border-top:1px solid var(--border);min-height:72px}
-.dn{font-size:14px;font-weight:800;line-height:1.1;color:var(--fg)}
-.ds{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);margin-top:2px;text-transform:uppercase;letter-spacing:1px}
-.dd{font-size:10px;color:var(--muted);margin-top:4px;line-height:1.4}
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--amber);
+            z-index: 2;
+        }
 
-.pt{height:2px;background:var(--border)}.pf{height:100%;background:var(--accent);width:0%}
+        .indicator {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 6px;
+            height: 6px;
+            background: var(--amber);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--amber);
+            animation: pulse 2s infinite;
+            z-index: 3;
+        }
 
-/* Controls */
-.ctr{display:flex;align-items:center;justify-content:center;gap:8px;padding:10px 16px 4px;background:transparent}
-.ctr-b{padding:6px 12px;background:var(--card-alt);border:1px solid var(--border);color:var(--muted);font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;cursor:pointer;transition:all .2s;letter-spacing:1px}
-.ctr-b:hover{border-color:var(--border-hi);color:var(--fg)}
-.ctr-b.act{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
 
-.pp-b{width:32px;height:32px;border-radius:50%;background:var(--accent);border:none;display:flex;align-items:center;justify-content:center;cursor:pointer;margin-left:4px;transition:transform .2s;flex-shrink:0}
-.pp-b:active{transform:scale(.92)}
-.pp-i{width:12px;height:12px;fill:#000}
-</style>
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 22px;
+        }
+
+        .num-box {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--amber);
+            background: rgba(232, 140, 46, 0.1);
+            border: 1px solid rgba(232, 140, 46, 0.2);
+            padding: 2px 5px;
+            border-radius: 2px;
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(232, 228, 220, 0.9);
+        }
+
+        .sim-area {
+            height: 160px;
+            background: #0d0d10;
+            border: 1px solid rgba(255,255,255,0.03);
+            border-radius: 4px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 16px;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        .ins {
+            border-left: 2px solid var(--amber);
+            padding-left: 14px;
+            margin-top: auto;
+            color: var(--muted);
+            font-size: 11.5px;
+            line-height: 1.6;
+            padding-top: 2px;
+            padding-bottom: 2px;
+        }
+
+        .ins strong {
+            color: var(--amber);
+            font-weight: 600;
+        }
+
+        /* --- Viewport Simulation Styles --- */
+        .device-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .browser-window {
+            border: 1px solid #333;
+            border-radius: 4px;
+            background: #1a1a20;
+            position: relative;
+            transition: all 0.8s var(--ease);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .browser-bar {
+            height: 12px;
+            background: #25252b;
+            border-bottom: 1px solid #333;
+            display: flex;
+            align-items: center;
+            padding: 0 6px;
+            gap: 3px;
+        }
+
+        .dot { width: 4px; height: 4px; border-radius: 50%; background: #444; }
+
+        .content-wrap {
+            flex: 1;
+            padding: 8px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .block {
+            background: rgba(255,255,255,0.05);
+            border-radius: 2px;
+            height: 10px;
+            width: 100%;
+        }
+
+        .block.amber { background: var(--amber); opacity: 0.6; }
+        
+        .viewport-label {
+            position: absolute;
+            bottom: -18px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            color: var(--amber);
+            white-space: nowrap;
+        }
+
+        /* Viewport vs Layout */
+        .layout-area {
+            width: 200px;
+            height: 120px;
+            border: 1px dashed #444;
+            position: relative;
+        }
+
+        .visual-vp {
+            position: absolute;
+            border: 2px solid var(--amber);
+            background: rgba(232, 140, 46, 0.1);
+            transition: all 1s var(--ease);
+            z-index: 2;
+        }
+
+        /* Media Queries */
+        .mq-card {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            padding: 10px;
+            transition: all 0.5s var(--ease);
+        }
+
+        .mq-grid {
+            display: grid;
+            gap: 6px;
+            transition: all 0.5s var(--ease);
+        }
+
+        .mq-item {
+            height: 30px;
+            background: rgba(232, 140, 46, 0.15);
+            border: 1px solid rgba(232, 140, 46, 0.3);
+            border-radius: 2px;
+        }
+
+    </style>
 </head>
 <body>
 
-<div class="aw">
-<div class="ab" id="ab">
-  <div class="hd"><span class="hd-t">VIEWPORT DYNAMICS</span><span class="hd-f" id="hf">01 / 04</span></div>
-  <div class="la" id="la">
-    <div class="df" id="simDev" style="width:24%; height:78%">
-      <div class="ip">
-        <div class="in">
-          <div class="inb">BRAND</div>
-          <div class="inl" id="simNL">
-            <div class="inlk"></div><div class="inlk off"></div><div class="inlk off"></div><div class="inlk off"></div>
-          </div>
+    <div class="grid-container">
+        <!-- Cell 1: Multi-Device Scaling -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">01</div>
+                <div class="card-title">Device Scaling</div>
+            </div>
+            <div class="sim-area">
+                <div class="device-container">
+                    <div id="browser-1" class="browser-window" style="width: 160px; height: 100px;">
+                        <div class="browser-bar">
+                            <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                        </div>
+                        <div class="content-wrap">
+                            <div class="block amber" style="width: 40%"></div>
+                            <div class="block"></div>
+                            <div class="block"></div>
+                            <div class="block" style="width: 70%"></div>
+                        </div>
+                    </div>
+                    <div id="vp-size-1" class="viewport-label">DESKTOP: 1280px</div>
+                </div>
+            </div>
+            <div class="ins">
+                Viewport là <strong>khu vực hiển thị</strong> của trình duyệt. Trên di động, viewport thường nhỏ hơn <strong>kích thước thật</strong> của website.
+            </div>
         </div>
-        <div class="ib">
-          <div class="im">
-            <div class="ih"></div>
-            <div class="il w85"></div><div class="il w65"></div><div class="il w45"></div>
-            <div class="ibtn"></div>
-          </div>
-          <div class="isb off" id="simSB">
-            <div class="sb"></div><div class="sb w80"></div><div class="sb w60"></div>
-          </div>
+
+        <!-- Cell 2: Layout vs Visual -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">02</div>
+                <div class="card-title">Visual Viewport</div>
+            </div>
+            <div class="sim-area">
+                <div class="layout-area">
+                    <div class="content-wrap" style="opacity: 0.3">
+                        <div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div><div class="block"></div>
+                    </div>
+                    <div id="visual-vp" class="visual-vp" style="inset: 0;"></div>
+                    <div id="vp-mode-2" class="viewport-label" style="bottom: -22px">FULL VIEW</div>
+                </div>
+            </div>
+            <div class="ins">
+                Visual Viewport là phần người dùng <strong>thực sự nhìn thấy</strong>, có thể thay đổi khi <strong>zoom</strong> hoặc bàn phím ảo xuất hiện.
+            </div>
         </div>
-      </div>
+
+        <!-- Cell 3: Media Query Triggers -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">03</div>
+                <div class="card-title">Media Queries</div>
+            </div>
+            <div class="sim-area">
+                <div id="browser-3" class="browser-window" style="width: 180px; height: 110px;">
+                    <div class="browser-bar">
+                        <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+                    </div>
+                    <div id="mq-container" class="mq-grid" style="grid-template-columns: repeat(3, 1fr); padding: 8px;">
+                        <div class="mq-item"></div><div class="mq-item"></div><div class="mq-item"></div>
+                        <div class="mq-item"></div><div class="mq-item"></div><div class="mq-item"></div>
+                    </div>
+                </div>
+                <div id="vp-size-3" class="viewport-label">WIDTH: 1024px (Desktop)</div>
+            </div>
+            <div class="ins">
+                Media Queries sử dụng <strong>chiều rộng viewport</strong> để thay đổi bố cục, giúp website <strong>thích ứng</strong> (Responsive) linh hoạt.
+            </div>
+        </div>
+
+        <!-- Cell 4: Orientation & Ratio -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">04</div>
+                <div class="card-title">Orientation</div>
+            </div>
+            <div class="sim-area">
+                <div id="browser-4" class="browser-window" style="width: 60px; height: 110px; border-radius: 12px;">
+                    <div class="browser-bar" style="justify-content: center; height: 8px; border: none; background: transparent;">
+                        <div style="width: 15px; height: 2px; background: #333; border-radius: 1px;"></div>
+                    </div>
+                    <div class="content-wrap" style="align-items: center; justify-content: center;">
+                        <div class="block amber" style="width: 30px; height: 30px; border-radius: 50%;"></div>
+                        <div class="block" style="width: 80%"></div>
+                        <div class="block" style="width: 60%"></div>
+                    </div>
+                </div>
+                <div id="vp-orient-4" class="viewport-label">PORTRAIT</div>
+            </div>
+            <div class="ins">
+                Thiết kế hiện đại ưu tiên <strong>Mobile-First</strong>, tối ưu trải nghiệm dựa trên <strong>dải kích thước</strong> viewport đa dạng.
+            </div>
+        </div>
     </div>
-    <div class="dim-txt" id="simDim">375 × 667 px · PORTRAIT</div>
-  </div>
-  <div class="inf">
-    <div class="dn" id="dn">Mobile</div>
-    <div class="ds" id="ds">375PX WIDTH</div>
-    <div class="dd" id="dd">Viewport hẹp, nội dung xếp theo một cột dọc. Layout được tối ưu cho việc dùng một tay.</div>
-  </div>
-  <div class="pt"><div class="pf" id="pf"></div></div>
-</div>
 
-<div class="ctr">
-    <button class="ctr-b act" data-i="0">MOBILE</button>
-    <button class="ctr-b" data-i="1">TABLET</button>
-    <button class="ctr-b" data-i="2">LAPTOP</button>
-    <button class="ctr-b" data-i="3">DESKTOP</button>
-    <button class="pp-b" id="pp" title="Play/Pause">
-        <svg class="pp-i" id="pp-i" viewBox="0 0 24 24"><path d="M6 4h4v16H6zm8 0h4v16h-4z"/></svg>
-    </button>
-</div>
-</div>
+    <script>
+        const sleep = ms => new Promise(res => setTimeout(res, ms));
 
-<script>
-const V = [
-  {
-    nm:'Mobile', sz:'375PX WIDTH', 
-    dc:'Viewport hẹp → content xếp dọc, nội dung được tối ưu cho việc dùng một tay và cuộn dọc.',
-    w:'24%', h:'82%', dims:'375 × 667 px', orient:'PORTRAIT', nav:1, sb:false
-  },
-  {
-    nm:'Tablet', sz:'768PX WIDTH', 
-    dc:'Viewport trung bình → sidebar xuất hiện, layout bắt đầu chia thành 2 cột để tận dụng diện tích.',
-    w:'56%', h:'72%', dims:'1024 × 768 px', orient:'LANDSCAPE', nav:3, sb:true
-  },
-  {
-    nm:'Laptop', sz:'1280PX WIDTH', 
-    dc:'Viewport rộng → layout thoáng đãng, nội dung chính chiếm ưu thế với các khoảng trắng hợp lý.',
-    w:'78%', h:'70%', dims:'1366 × 768 px', orient:'LANDSCAPE', nav:4, sb:true
-  },
-  {
-    nm:'Desktop', sz:'1920PX WIDTH', 
-    dc:'Viewport lớn nhất → nhiều cột, sidebar chiếm tỷ trọng lớn, nội dung dàn trải thoải mái.',
-    w:'94%', h:'80%', dims:'1920 × 1080 px', orient:'LANDSCAPE', nav:4, sb:true
-  }
-];
+        // Cell 1: Device Scaling
+        async function runSim1() {
+            const browser = document.getElementById('browser-1');
+            const label = document.getElementById('vp-size-1');
+            
+            while(true) {
+                // Desktop
+                browser.style.width = '180px';
+                browser.style.height = '100px';
+                label.innerText = 'DESKTOP: 1440px';
+                await sleep(2000);
 
-const simDev=document.getElementById('simDev'), simDim=document.getElementById('simDim');
-const el={dn:document.getElementById('dn'),ds:document.getElementById('ds'),dd:document.getElementById('dd'),hf:document.getElementById('hf'),pf:document.getElementById('pf')};
-const simNL=document.getElementById('simNL'), simSB=document.getElementById('simSB');
-const ctrBs=document.querySelectorAll('.ctr-b'), ppB=document.getElementById('pp'), ppI=document.getElementById('pp-i');
+                // Tablet
+                browser.style.width = '100px';
+                browser.style.height = '120px';
+                label.innerText = 'TABLET: 768px';
+                await sleep(2000);
 
-let cur=0,pa=null,t0=0,isPaused=false;
-const DUR=3500;
+                // Mobile
+                browser.style.width = '60px';
+                browser.style.height = '110px';
+                label.innerText = 'MOBILE: 375px';
+                await sleep(2000);
+            }
+        }
 
-function setNav(count){
-  const links=simNL.querySelectorAll('.inlk');
-  links.forEach((l,i)=>l.classList.toggle('off', i>=count));
-}
+        // Cell 2: Visual Viewport (Zoom)
+        async function runSim2() {
+            const vp = document.getElementById('visual-vp');
+            const label = document.getElementById('vp-mode-2');
 
-function apply(i){
-  cur=i;
-  const v=V[i];
-  el.dn.textContent=v.nm; el.ds.textContent=v.sz; el.dd.textContent=v.dc;
-  el.hf.textContent='0'+(i+1)+' / 04';
-  
-  simDev.style.width=v.w;
-  simDev.style.height=v.h;
-  simDim.textContent=v.dims+' · '+v.orient;
-  
-  setNav(v.nav);
-  simSB.classList.toggle('off',!v.sb);
+            while(true) {
+                // Full view
+                vp.style.inset = '0';
+                label.innerText = 'FULL VIEW';
+                await sleep(2000);
 
-  ctrBs.forEach((b,j)=>b.classList.toggle('act',j===i));
-}
+                // Zoom in
+                vp.style.inset = '20px 40px 50px 10px';
+                label.innerText = 'ZOOMED (Pinch)';
+                await sleep(2000);
 
-function tk(n){
-    if(isPaused) return;
-    const p=Math.min(100,(n-t0)/DUR*100);
-    el.pf.style.width=p+'%';
-    if(p<100)pa=requestAnimationFrame(tk);
-    else next();
-}
-function startProg(){t0=performance.now();el.pf.style.width='0%';pa=requestAnimationFrame(tk)}
-function next(){if(isPaused)return;cur=(cur+1)%4;apply(cur);startProg()}
+                // Pan
+                vp.style.inset = '40px 10px 30px 40px';
+                label.innerText = 'PANNING';
+                await sleep(2000);
 
-function togglePP(){
-    isPaused=!isPaused;
-    ppI.innerHTML=isPaused ? '<path d="M8 5v14l11-7z"/>' : '<path d="M6 4h4v16H6zm8 0h4v16h-4z"/>';
-    if(!isPaused){
-        t0=performance.now() - (parseFloat(el.pf.style.width||0)/100*DUR);
-        pa=requestAnimationFrame(tk);
-    }
-}
+                // Keyboard
+                vp.style.inset = '0 0 50px 0';
+                label.innerText = 'KEYBOARD OPEN';
+                await sleep(2000);
+            }
+        }
 
-ctrBs.forEach(b=>{
-    b.onclick=()=>{
-        isPaused=true;
-        ppI.innerHTML='<path d="M8 5v14l11-7z"/>';
-        apply(parseInt(b.dataset.i));
-        el.pf.style.width='0%';
-    }
-});
+        // Cell 3: Media Queries
+        async function runSim3() {
+            const browser = document.getElementById('browser-3');
+            const grid = document.getElementById('mq-container');
+            const label = document.getElementById('vp-size-3');
 
-ppB.onclick=togglePP;
+            while(true) {
+                // Desktop
+                browser.style.width = '180px';
+                grid.style.gridTemplateColumns = 'repeat(3, 1fr)';
+                label.innerText = 'WIDTH: 1024px (3 Columns)';
+                await sleep(2000);
 
-apply(0);
-startProg();
+                // Tablet
+                browser.style.width = '110px';
+                grid.style.gridTemplateColumns = 'repeat(2, 1fr)';
+                label.innerText = 'WIDTH: 768px (2 Columns)';
+                await sleep(2000);
 
-document.addEventListener('visibilitychange',()=>{
-    if(document.hidden){cancelAnimationFrame(pa);}
-    else if(!isPaused){t0=performance.now() - (parseFloat(el.pf.style.width||0)/100*DUR);pa=requestAnimationFrame(tk);}
-});
-</script>
+                // Mobile
+                browser.style.width = '70px';
+                grid.style.gridTemplateColumns = 'repeat(1, 1fr)';
+                label.innerText = 'WIDTH: 480px (Stack)';
+                await sleep(2000);
+            }
+        }
+
+        // Cell 4: Orientation
+        async function runSim4() {
+            const browser = document.getElementById('browser-4');
+            const label = document.getElementById('vp-orient-4');
+
+            while(true) {
+                // Portrait
+                browser.style.width = '60px';
+                browser.style.height = '110px';
+                browser.style.transform = 'rotate(0deg)';
+                label.innerText = 'PORTRAIT (Vertical)';
+                await sleep(2500);
+
+                // Rotate to Landscape
+                browser.style.transform = 'rotate(-90deg)';
+                browser.style.width = '60px'; // Dimensions swap visually via rotation
+                browser.style.height = '110px';
+                label.innerText = 'LANDSCAPE (Horizontal)';
+                await sleep(2500);
+            }
+        }
+
+        runSim1();
+        runSim2();
+        runSim3();
+        runSim4();
+    </script>
 </body>
 </html>
