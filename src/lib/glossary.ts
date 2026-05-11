@@ -966,9 +966,12 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Khi bạn bảo AI "làm footer" mà không chỉ định sections → nó tự đoán. Chỉ định rõ (ví dụ: "footer có 3 cột, newsletter bên phải") → ra đúng ngay, không cần rounds sửa.',
   ],
   toggle: [
-    'Toggle không chỉ là "cái nút gạt" — nó là hiện thân của kiểu dữ liệu Boolean (True/False). Khi bạn bảo AI "thêm toggle", AI sẽ tạo ra một biến state để theo dõi trạng thái này.',
-    'Khác với Checkbox (dùng cho danh sách nhiều lựa chọn), Toggle thường dùng cho các thiết lập có hiệu lực ngay lập tức. Nếu thay đổi cần nút "Lưu" mới có tác dụng, hãy cân nhắc dùng Checkbox hoặc Switch có xác nhận.',
-    'Trong mô phỏng, bạn sẽ thấy trạng thái "Disabled" rất quan trọng: dùng để khóa các lựa chọn khi user chưa đủ quyền hoặc hệ thống đang trong trạng thái bảo trì (Maintenance).',
+    'Toggle (Switch) là đại diện trực quan nhất của kiểu dữ liệu Boolean (True/False). Nó được thiết kế để thay thế cho Checkbox trong các trường hợp cần thay đổi thiết lập ngay lập tức mà không cần nhấn nút "Save".',
+    'Trạng thái rõ ràng: Luôn đảm bảo sự khác biệt lớn về màu sắc và vị trí giữa On và Off. Thường thì màu xám đại diện cho Off và màu thương hiệu (Accent) đại diện cho On.',
+    'Phản hồi tức thì: Một trong những ưu điểm lớn nhất của Toggle là tính tức thời. Người dùng kỳ vọng kết quả sẽ thay đổi ngay khi họ gạt công tắc, ví dụ: bật Dark Mode hay tắt Thông báo.',
+    'Đừng lạm dụng: Nếu một hành động cần bước xác nhận hoặc có thể gây ra hậu quả lớn nếu bấm nhầm, hãy dùng Checkbox hoặc Button thay vì Toggle để tránh việc người dùng vô tình chạm phải.',
+    'Accessibility: Đừng quên trạng thái Focus cho người dùng sử dụng bàn phím. Một Toggle tốt phải có thể được điều hướng bằng phím Tab và kích hoạt bằng phím Space.',
+    'Mô phỏng 4 ô bên dưới giúp bạn hình dung trọn vẹn: từ logic nhị phân (Binary Logic), chuyển động mượt mà (Smooth Transition), các trạng thái tương tác (Interaction States) đến tác động thực tế (Contextual Impact) của toggle.',
   ],
   sidebar: [
     'Sidebar là "cánh tay phải" của các Dashboard phức tạp. Nó giúp tận dụng chiều ngang rộng của màn hình máy tính để giữ các menu quan trọng luôn hiển thị mà không làm tốn diện tích chiều dọc quý giá.',
@@ -1172,11 +1175,7 @@ const deepDiveNotes: Partial<Record<string, string[]>> = {
     'Cấu trúc của nó gồm 2 phần độc lập về mặt tương tác: Main Button (hành động ngay) và Dropdown Trigger (mở menu). Đừng nhầm lẫn với một Menu Button đơn thuần (click vào đâu cũng mở menu).',
     'Quy tắc UX: Hành động chính nên là hành động được sử dụng nhiều nhất. Các hành động trong menu nên có liên quan mật thiết đến hành động chính (ví dụ: Save vs Save As, Export vs Export as PDF).',
   ],
-  'segmented-button': [
-    'Segmented Button là lựa chọn hoàn hảo khi bạn có từ 2 đến 5 lựa chọn cần hiển thị cùng lúc để user so sánh nhanh.',
-    'Khác với Tab Bar (dùng cho nội dung lớn toàn trang), Segmented Button thường dùng trong các component nhỏ như card, modal, hoặc thanh công cụ config.',
-    'Quy tắc "Mutually Exclusive": Chỉ có duy nhất một đoạn được active tại một thời điểm. Việc chọn đoạn mới sẽ tự động hủy chọn đoạn cũ.',
-  ],
+
   'commit': [
     'Commit là "nút Save" quyền năng nhất của bạn. Đừng bao giờ làm một lèo 3 tiếng rồi mới commit. Hãy chia nhỏ: làm xong header -> commit, xong footer -> commit.',
     'Mỗi commit đi kèm một mã Hash (ví dụ: `7f2a1b9`). Đây là "biển số xe" định danh duy nhất giúp bạn gọi tên chính xác phiên bản đó khi cần quay lại.',
