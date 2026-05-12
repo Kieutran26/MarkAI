@@ -11,12 +11,12 @@ export default function CategoryBar() {
 
   return (
     <div className="border-b border-border sticky top-[52px] z-40 bg-bg">
-      <div className="page-shell flex items-stretch">
+      <div className="flex items-stretch overflow-x-auto glossary-scroll">
         {categories.map((cat) => (
           <button
             key={cat}
             onClick={() => setActive(cat)}
-            className={`font-mono text-[11px] px-3 md:px-4 h-11 flex items-center border-r border-border transition-colors ${
+            className={`font-mono text-[11px] px-3 md:px-5 h-11 flex items-center border-r border-border transition-colors shrink-0 ${
               active === cat
                 ? 'text-ink border-b-2 border-b-accent'
                 : 'text-muted hover:bg-bg2 hover:text-ink'
@@ -26,7 +26,7 @@ export default function CategoryBar() {
           </button>
         ))}
         <div className="flex-1"></div>
-        <span className="font-mono text-[11px] text-muted px-4 h-11 flex items-center border-l border-border">
+        <span className="font-mono text-[11px] text-muted px-5 h-11 flex items-center border-l border-border shrink-0">
           {posts.length} bài viết
         </span>
       </div>

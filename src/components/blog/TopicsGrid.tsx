@@ -1,18 +1,15 @@
 import { Link } from 'react-router-dom';
 
 const topics = [
-  { label: 'Topic 01', title: 'Vibecode', count: 9 },
-  { label: 'Topic 02', title: 'Workflow & Automation', count: 5 },
-  { label: 'Topic 03', title: 'Tool Review', count: 4 },
-  { label: 'Topic 04', title: 'Case Study thực tế', count: 3 },
-  { label: 'Topic 05', title: 'Analytics với AI', count: 2 },
-  { label: 'Topic 06', title: 'Deploy & Infra', count: 1 },
+  { label: 'Topic 01', title: 'Tips', count: 12 },
+  { label: 'Topic 02', title: 'Tin tức AI mới nhất', count: 8 },
+  { label: 'Topic 03', title: 'Hướng dẫn', count: 15 },
 ];
 
 export default function TopicsGrid() {
   return (
     <div className="topics-section">
-      <div className="page-shell py-8">
+      <div className="py-8 px-[1.2rem] md:px-8">
         <p className="font-mono text-[11px] text-muted tracking-widest uppercase mb-4">
           <span className="text-accent mr-1">✳</span> Chủ đề · duyệt theo topic
         </p>

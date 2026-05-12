@@ -1956,7 +1956,10 @@ button, a { cursor: pointer; transition: all 0.15s ease; }
 }
 .post-row:hover { background: var(--accent); color: white; }
 .post-row:hover .post-row-num span,
-.post-row:hover .post-row-arrow { color: white; }
+.post-row:hover .post-row-arrow,
+.post-row:hover .text-muted,
+.post-row:hover span,
+.post-row:hover div { color: white !important; }
 .post-row:last-child { border-bottom: none; }
 .post-row-num {
   border-right: 1px solid var(--border);
@@ -1968,7 +1971,7 @@ button, a { cursor: pointer; transition: all 0.15s ease; }
 .post-row > div:nth-child(2) {
   padding-left: 1.5rem;
 }
-.post-row:hover .post-row-num span { color: var(--accent); }
+
 .post-row-arrow {
   font-family: var(--mono);
   font-size: 13px;

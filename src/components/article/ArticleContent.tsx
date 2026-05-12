@@ -77,6 +77,21 @@ export default function ArticleContent({ content }: ArticleContentProps) {
 
           case 'compare':
             return <CompareTable key={index} headers={block.headers} rows={block.rows} />;
+            
+          case 'embed':
+            return (
+              <div key={index} className="my-8 border border-border overflow-hidden bg-bg2">
+                <iframe 
+                  src={block.url} 
+                  title={block.title} 
+                  width="100%" 
+                  height={block.height || 600} 
+                  frameBorder="0" 
+                  allow="clipboard-write" 
+                  allowFullScreen
+                />
+              </div>
+            );
 
           default:
             return null;

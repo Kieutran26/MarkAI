@@ -22,6 +22,7 @@ export type ContentBlock =
   | { type: 'image'; label: string; caption: string }
   | { type: 'codeblock'; filename: string; code: string }
   | { type: 'steplist'; steps: { title: string; desc: string }[] }
+  | { type: 'embed'; url: string; title: string; height?: number }
   | { type: 'compare'; headers: [string, string]; rows: { left: string; leftStyle: 'cross' | 'check' | 'normal'; right: string; rightStyle: 'cross' | 'check' | 'normal' }[] };
 
 export type Post = {
@@ -109,6 +110,11 @@ export const posts: Post[] = [
       { type: 'h2', id: 'section-5', text: 'Kết quả sau 2 tiếng' },
       { type: 'p', html: 'Lúc 11:20 tôi có một landing page hoàn chỉnh, live trên Vercel, với custom domain của công ty. Không hoàn hảo — một vài chi tiết nhỏ tôi biết là chưa đúng với Figma gốc. Nhưng <strong>nó chạy được, trông ổn, và đủ để campaign ra đúng giờ</strong>.' },
       { type: 'image', label: 'Screenshot · Final version · Live', caption: 'Bản cuối cùng sau 2 tiếng — hero, features, CTA form đều hoạt động' },
+      { 
+        type: 'embed', 
+        url: 'https://claude.site/public/artifacts/98dc7845-3795-42a2-96a6-1dabc63f313f/embed', 
+        title: 'markai_blog_cursor.html' 
+      },
       { type: 'p', html: 'Kết quả campaign: 340 lượt đăng ký email trong ngày đầu tiên. Không phải do landing page đặc biệt — mà vì campaign ra đúng lúc, đúng người. Landing page chỉ cần "đủ tốt" thôi.' },
       { type: 'h2', id: 'section-6', text: 'Bài học rút ra' },
       { type: 'p', html: 'Sau lần này, tôi hiểu vibecode hơn rất nhiều so với 3 tuần thử nghiệm trước đó. Đây là những điều tôi sẽ làm khác nếu làm lại:' },
