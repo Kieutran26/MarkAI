@@ -8,7 +8,7 @@ import TipsGrid from '../../components/tips/TipsGrid';
 import FeaturedSection from '../../components/tips/FeaturedSection';
 import WeeklyTopics from '../../components/tips/WeeklyTopics';
 import AllTipsList from '../../components/tips/AllTipsList';
-import SubmitTip from '../../components/tips/SubmitTip';
+import SubmitTipModal from '../../components/tips/SubmitTipModal';
 import TipsCTA from '../../components/tips/TipsCTA';
 import TipPopup from '../../components/tips/TipPopup';
 
@@ -16,6 +16,7 @@ export default function Tips() {
   const location = useLocation();
   const navigate = useNavigate();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
   const [currentTip, setCurrentTip] = useState<Tip | null>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -63,13 +64,11 @@ export default function Tips() {
 
   return (
     <>
-      <TipsHero />
+      <TipsHero onSubmitButtonClick={() => setIsSubmitModalOpen(true)} />
       <FilterBar />
       <TipsGrid tips={gridTips.slice(0, 6)} onOpenTip={handleOpenTip} />
-      <FeaturedSection tips={featuredTips} onOpenTip={handleOpenTip} />
       <WeeklyTopics />
       <AllTipsList tips={allTips.slice(0, 8)} onOpenTip={handleOpenTip} />
-      <SubmitTip />
       <TipsCTA />
 
       <TipPopup
@@ -79,6 +78,11 @@ export default function Tips() {
         currentIndex={currentIndex}
         onClose={handleClosePopup}
         onNavigate={handleNavigateTip}
+      />
+
+      <SubmitTipModal 
+        isOpen={isSubmitModalOpen} 
+        onClose={() => setIsSubmitModalOpen(false)} 
       />
     </>
   );

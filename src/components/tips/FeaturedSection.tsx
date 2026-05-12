@@ -4,9 +4,10 @@ import { Tip } from '../../lib/types';
 interface FeaturedSectionProps {
   tips: Tip[];
   onOpenTip?: (tip: Tip) => void;
+  onSubmitButtonClick?: () => void;
 }
 
-export default function FeaturedSection({ tips, onOpenTip }: FeaturedSectionProps) {
+export default function FeaturedSection({ tips, onOpenTip, onSubmitButtonClick }: FeaturedSectionProps) {
   return (
     <section className="featured-section">
       <div className="featured-inner">
@@ -18,7 +19,15 @@ export default function FeaturedSection({ tips, onOpenTip }: FeaturedSectionProp
           </p>
           <div className="flex gap-4 flex-wrap">
             <Link to="/tips" className="btn-be">Xem tất cả tips →</Link>
-            <Link to="#submit-tip" className="btn-ghost-inv">Submit tip của bạn</Link>
+            <button 
+              onClick={(e) => {
+                e.preventDefault();
+                onSubmitButtonClick?.();
+              }} 
+              className="btn-ghost-inv"
+            >
+              Submit tip của bạn
+            </button>
           </div>
         </div>
         <div className="featured-right">

@@ -4,9 +4,10 @@ import { Tip } from '../../lib/types';
 interface TipSidebarProps {
   tip: Tip;
   relatedTips: Tip[];
+  onSubmitButtonClick?: () => void;
 }
 
-export default function TipSidebar({ tip, relatedTips }: TipSidebarProps) {
+export default function TipSidebar({ tip, relatedTips, onSubmitButtonClick }: TipSidebarProps) {
   return (
     <div className="tip-sidebar">
       <div className="mb-8">
@@ -48,9 +49,15 @@ export default function TipSidebar({ tip, relatedTips }: TipSidebarProps) {
           <div className="sidebar-submit-desc">
             Submit tip của bạn — nếu được chọn mình sẽ credit tên bạn.
           </div>
-          <Link to="/tips#submit-tip" className="btn-primary">
+          <button 
+            onClick={(e) => {
+              e.preventDefault();
+              onSubmitButtonClick?.();
+            }} 
+            className="btn-primary"
+          >
             Submit tip →
-          </Link>
+          </button>
           <Link to="/tips" className="btn-ghost">
             Xem tất cả tips
           </Link>

@@ -1,4 +1,5 @@
 import { useParams, Link, Navigate, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { getTipBySlug, getRelatedTips, getDetailTips, getTipDetailContent, shouldShowFullTipLink } from '../../lib/tips-data';
 import ReadingProgressBar from '../../components/article/ReadingProgressBar';
 import TipHero from '../../components/tip-detail/TipHero';
@@ -8,10 +9,12 @@ import TipNavigation from '../../components/tip-detail/TipNavigation';
 import MoreTips from '../../components/tip-detail/MoreTips';
 import Breadcrumb from '../../components/Breadcrumb';
 import TipsCTA from '../../components/tips/TipsCTA';
+import SubmitTipModal from '../../components/tips/SubmitTipModal';
 
 export default function TipDetail() {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
+  const [isSubmitModalOpen, setIsSubmitModalOpen] = useState(false);
   const tip = getTipBySlug(slug || '');
   const detailContent = tip ? getTipDetailContent(tip) : undefined;
 
@@ -65,10 +68,19 @@ export default function TipDetail() {
           <TipContent sections={detailContent.sections} />
           <TipNavigation prevTip={prevTip} nextTip={nextTip} />
         </div>
-        <TipSidebar tip={tipWithDetail} relatedTips={relatedTips} />
+        <TipSidebar 
+          tip={tipWithDetail} 
+          relatedTips={relatedTips} 
+          onSubmitButtonClick={() => setIsSubmitModalOpen(true)}
+        />
       </div>
       <MoreTips tips={moreTips} />
       <TipsCTA />
+
+      <SubmitTipModal 
+        isOpen={isSubmitModalOpen} 
+        onClose={() => setIsSubmitModalOpen(false)} 
+      />
     </>
   );
 }

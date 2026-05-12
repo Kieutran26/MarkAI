@@ -1,6 +1,10 @@
 import { Link } from 'react-router-dom';
 
-export default function TipsHero() {
+type TipsHeroProps = {
+  onSubmitButtonClick: () => void;
+};
+
+export default function TipsHero({ onSubmitButtonClick }: TipsHeroProps) {
   return (
     <section className="tips-hero">
       <div className="tips-hero-inner">
@@ -12,7 +16,15 @@ export default function TipsHero() {
           </p>
           <div className="hero-cta">
             <Link to="#tips-grid" className="btn-primary">Đọc tips mới nhất →</Link>
-            <Link to="#submit-tip" className="btn-ghost">Submit tip của bạn</Link>
+            <button 
+              onClick={(e) => {
+                e.preventDefault();
+                onSubmitButtonClick();
+              }} 
+              className="btn-ghost"
+            >
+              Submit tip của bạn
+            </button>
           </div>
           <p className="hero-note">✳ miễn phí · cập nhật hàng tuần</p>
         </div>
