@@ -12,12 +12,12 @@
   width: 100%;
 }
 .glossary-grid-shell #glossary-content {
-  padding-right: var(--page-gutter-mobile);
-  padding-left: var(--page-gutter-mobile);
+  padding-right: 0;
+  padding-left: 0;
 }
 @media (min-width: 1024px) {
   .glossary-grid-shell #glossary-content {
-    padding-right: var(--page-gutter);
+    padding-right: 0;
     padding-left: 0;
   }
 }

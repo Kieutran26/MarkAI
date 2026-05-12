@@ -48,8 +48,8 @@ export default function Nav() {
   }, [location.pathname]);
 
   return (
-    <nav className="page-gutter sticky top-0 z-50 bg-bg border-b border-border">
-      <div className="h-[52px] flex items-center justify-between">
+    <nav className="sticky top-0 z-50 bg-bg border-b border-border">
+      <div className="h-[52px] flex items-center justify-between px-[1.2rem] md:px-8">
         <Link
           to="/"
           aria-label="Về trang chủ markAI"

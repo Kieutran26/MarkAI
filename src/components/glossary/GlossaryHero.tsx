@@ -35,9 +35,9 @@ export default function GlossaryHero({ searchQuery, onSearchChange, filteredCoun
       <div className="page-shell">
         <div className="grid lg:grid-cols-[minmax(0,1fr)_500px] xl:grid-cols-[minmax(0,1fr)_560px]">
           <div className="border-b border-border px-[1.2rem] py-12 lg:border-b-0 lg:border-r lg:px-8 lg:py-16">
-            <p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">✳ <span className="text-accent">Bài 02</span> · Vibecode Web · Từ ngữ chuyên ngành</p>
+            <p className="font-mono text-[11px] uppercase tracking-[0.08em] text-muted">✳ <span className="text-accent">MarkAI Hub</span> · Thư viện kiến thức · Từ điển chuyên ngành</p>
             <h1 className="mt-6 font-serif text-[clamp(2.5rem,5vw,4rem)] leading-[1.05] tracking-[-0.03em] text-ink">Từ điển chuyên ngành<br />mà dân Marketer <em className="text-accent italic">phải biết.</em></h1>
-            <p className="mt-6 max-w-[540px] font-sans text-[16px] leading-[1.6] font-light text-ink2">62+ thuật ngữ kỹ thuật giải thích bằng ngôn ngữ Marketing, kèm ví dụ thực tế. Không cần nhớ hết, chỉ cần biết đủ để không bị mù khi làm việc với AI và dev.</p>
+            <p className="mt-6 max-w-[540px] font-sans text-[16px] leading-[1.6] font-light text-ink2">100+ thuật ngữ kỹ thuật giải thích bằng ngôn ngữ Marketing, kèm ví dụ thực tế. Không cần nhớ hết, chỉ cần biết đủ để không bị mù khi làm việc với AI và dev.</p>
             <label className="relative mt-8 block max-w-[480px]">
               <input value={searchQuery} onChange={(event) => onSearchChange(event.target.value)} placeholder="Tìm từ ngữ... vd: API, deploy, frontend" className="w-full border border-border bg-[var(--bg)] px-[14px] py-[11px] pr-11 font-mono text-[13px] text-ink outline-none transition-colors placeholder:text-muted focus:border-ink" />
               <span className="pointer-events-none absolute right-[14px] top-1/2 -translate-y-1/2 font-mono text-[13px] text-muted">⌕</span>
