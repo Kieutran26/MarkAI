@@ -4,7 +4,7 @@ import VibecodeHero from '../components/vibecode/VibecodeHero';
 import StatsBar from '../components/vibecode/StatsBar';
 import PathHeader from '../components/vibecode/PathHeader';
 import LessonList from '../components/vibecode/LessonList';
-import PromptTeaser from '../components/vibecode/PromptTeaser';
+
 import WhyFree from '../components/vibecode/WhyFree';
 
 export default function VibecodePage() {
@@ -23,8 +23,6 @@ export default function VibecodePage() {
         {/* 4. Lesson List - 10 lessons */}
         <LessonList />
         
-        {/* 5. Prompt Teaser (dark section) */}
-        <PromptTeaser />
         
         {/* 6. Why Free */}
         <WhyFree />

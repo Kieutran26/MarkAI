@@ -326,123 +326,6 @@ const LearningPaths = () => (
   </section>
 );
 
-// ─── TOOLS & RESOURCES ────────────────────────────────────────────────────────
-const featuredPrompts = [
-  {
-    category: 'VIBECODE',
-    title: 'Tạo landing page từ brief',
-    preview: '"Tạo landing page cho [sản phẩm]. Header có nav + CTA. Hero section với headline, subheadline, form thu lead..."',
-    note: 'Hero, CTA, form thu lead',
-  },
-  {
-    category: 'ANALYTICS',
-    title: 'Phân tích báo cáo tuần',
-    preview: '"Đây là data GA4 tuần này [paste data]. Phân tích: điểm nào tốt, điểm nào cần cải thiện, 3 action items..."',
-    note: 'GA4, summary, action items',
-  },
-  {
-    category: 'COPY',
-    title: 'Viết email sequence',
-    preview: '"Viết 5-email nurture sequence cho [audience]. Email 1: welcome. Email 2: value prop. Email 3: social proof..."',
-    note: 'Welcome, value prop, proof',
-  },
-];
-
-const tools = [
-  { tag: 'Blog', title: 'Blog markAI', sub: 'Case study · Xu hướng AI · Review', href: '/blog', stat: 'Bài dài, có context' },
-  { tag: 'Tips', title: 'Tips & Mẹo', sub: '100+ thủ thuật AI thực chiến', href: '/tips', stat: 'Ngắn, làm ngay' },
-  // { tag: 'Prompts', title: 'Prompt Library', sub: '150+ prompt đã test · copy & dùng', href: '/prompts', stat: 'Copy, sửa, chạy' },
-];
-
-const promptMotionText = 'Copy -> Sua -> Publish';
-
-const PromptWorkflowType = () => {
-  const [visibleCount, setVisibleCount] = useState(0);
-
-  useEffect(() => {
-    const typeSpeedMs = 85;
-    const restartDelayMs = 1100;
-
-    if (visibleCount < promptMotionText.length) {
-      const timer = window.setTimeout(() => {
-        setVisibleCount((count) => count + 1);
-      }, typeSpeedMs);
-
-      return () => window.clearTimeout(timer);
-    }
-
-    const restartTimer = window.setTimeout(() => {
-      setVisibleCount(0);
-    }, restartDelayMs);
-
-    return () => window.clearTimeout(restartTimer);
-  }, [visibleCount]);
-
-  return (
-    <div className="flex items-center font-mono text-[10px] uppercase tracking-[0.08em] text-muted">
-      <span>{promptMotionText.slice(0, visibleCount)}</span>
-      <span className="term-cursor ml-1 h-[12px] w-[6px]" aria-hidden="true" />
-    </div>
-  );
-};
-
-const ToolsResources = () => (
-  <section>
-    <div className="page-shell border-b border-border py-10">
-      <p className="section-label"><Sparkles className="inline w-3 h-3" /> công cụ & tài nguyên</p>
-      <h2 className="section-heading">
-        Không chỉ học. <em>Mà dùng được luôn.</em>
-      </h2>
-    </div>
-
-    <div className="page-shell grid grid-cols-1 border-b border-border lg:grid-cols-1">
-      <div className="flex flex-col">
-        <div className="border-b border-border px-5 py-6 md:px-8 lg:px-10">
-          <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.14em] text-muted">đi tắt vào phần cần dùng</p>
-          <div className="max-w-[24rem] font-sans text-[14px] leading-[1.7] text-ink2">
-            Mỗi ngày có thể đọc sâu, lướt nhanh hoặc copy prompt ra dùng ngay. Cùng một giọng, không tách rời khỏi hệ markAI.
-          </div>
-        </div>
-
-        {tools.map((tool, idx) => (
-          <motion.div
-            key={tool.title}
-            initial={{ opacity: 0, x: -10 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: idx * 0.08 }}
-          >
-            <Link
-              to={tool.href}
-              className="group flex items-start gap-4 border-b border-border px-5 py-6 no-underline transition-colors hover:bg-bg2 md:px-8 lg:px-10"
-            >
-              <span className="min-w-11 font-serif text-[1.35rem] leading-none text-accent">
-                0{idx + 1}
-              </span>
-              <div className="flex-1">
-                <div className="mb-3 flex flex-wrap items-center gap-3">
-                  <span className="border border-border px-2 py-1 font-mono text-[9px] uppercase tracking-[0.08em] text-muted">
-                    {tool.tag}
-                  </span>
-                  <span className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted">
-                    {tool.stat}
-                  </span>
-                </div>
-                <div className="mb-1 font-serif text-[1.65rem] leading-[1.05] tracking-[-0.02em] text-ink">
-                  {tool.title}
-                </div>
-                <div className="font-sans text-[14px] leading-[1.65] text-ink2">
-                  {tool.sub}
-                </div>
-              </div>
-              <ArrowRight size={14} className="mt-1 shrink-0 text-muted transition-transform group-hover:translate-x-1 group-hover:text-ink" />
-            </Link>
-          </motion.div>
-        ))}
-      </div>
-    </div>
-  </section>
-);
 
 // ─── BLOG & TIPS ─────────────────────────────────────────────────────────────
 const blogPosts = [
@@ -712,7 +595,7 @@ export default function Home() {
       <Hero />
       <StatsBar />
       <LearningPaths />
-      <ToolsResources />
+
       <BlogSection />
       <CTASection />
     </>

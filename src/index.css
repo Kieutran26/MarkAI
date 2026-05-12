@@ -1496,27 +1496,6 @@ button, a { cursor: pointer; transition: all 0.15s ease; }
   letter-spacing: 0.04em;
 }
 
-/* Prompt Teaser */
-.prompt-teaser { background: var(--ink); border-bottom: 1px solid #1a1a1a; }
-.prompt-label { font-family: var(--mono); font-size: 11px; color: #555; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 1rem; }
-.prompt-label span { color: var(--accent); }
-.prompt-h2 { font-family: var(--serif); font-size: clamp(1.6rem, 3vw, 2.2rem); color: var(--bg); line-height: 1.15; margin-bottom: 0.8rem; }
-.prompt-h2 em { color: var(--accent); font-style: italic; }
-.prompt-desc { font-family: var(--mono); font-size: 14px; font-weight: 300; color: #666; line-height: 1.7; margin-bottom: 1.8rem; }
-.prompt-ctas { display: flex; gap: 0.8rem; flex-wrap: wrap; }
-
-.code-box { background: #0a0a0a; border: 1px solid #2a2a2a; padding: 1.5rem; }
-.code-box-header { display: flex; align-items: center; font-family: var(--mono); font-size: 10px; color: #555; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 1rem; padding-bottom: 0.8rem; border-bottom: 1px solid #1a1a1a; }
-.code-box-header .dots { display: flex; gap: 6px; margin-right: 12px; }
-.code-box-header .dot { width: 10px; height: 10px; border-radius: 50%; }
-.code-box-header .dot.r { background: #FF5F57; }
-.code-box-header .dot.y { background: #FFBD2E; }
-.code-box-header .dot.g { background: #28CA41; }
-.code-box pre { font-family: var(--mono); font-size: 12px; line-height: 1.8; white-space: pre-wrap; }
-.ck { color: var(--accent); }
-.cv { color: #98c379; }
-.cc { color: #888; font-style: italic; }
-.code-box-footer { font-family: var(--mono); font-size: 11px; color: var(--accent); margin-top: 1rem; padding-top: 0.8rem; border-top: 1px solid #1a1a1a; }
 
 /* Why Free */
 .why-grid {
@@ -1559,14 +1538,14 @@ button, a { cursor: pointer; transition: all 0.15s ease; }
   .hero-grid { grid-template-columns: 1fr; gap: 2rem; padding-bottom: 0; }
   .hero-terminal-wrap { display: none; }
   .path-header-inner { grid-template-columns: 1fr; gap: 2rem; }
-  .prompt-teaser-inner { grid-template-columns: 1fr; gap: 2rem; }
+
   .footer-grid { grid-template-columns: 1fr 1fr; }
   .stats-inner { flex-wrap: wrap; }
   .stat { min-width: 50%; }
 }
 
 @media (max-width: 480px) {
-  nav, .section-inner, .path-header-inner, .hero-inner, .prompt-teaser-inner, .cta-inner, .footer-bottom { padding-left: 1.2rem; padding-right: 1.2rem; }
+  nav, .section-inner, .path-header-inner, .hero-inner, .cta-inner, .footer-bottom { padding-left: 1.2rem; padding-right: 1.2rem; }
   .footer-grid { grid-template-columns: 1fr; }
   .module-grid { grid-template-columns: 1fr; }
   .module-card { border-right: none; }
