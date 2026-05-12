@@ -66,7 +66,6 @@ export default function TipDetail() {
       >
         <div className="tip-main">
           <TipContent sections={detailContent.sections} />
-          <TipNavigation prevTip={prevTip} nextTip={nextTip} />
         </div>
         <TipSidebar 
           tip={tipWithDetail} 

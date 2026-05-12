@@ -3736,9 +3736,9 @@ button, a { cursor: pointer; transition: all 0.15s ease; }
 .tag:hover { background: var(--bg3); color: var(--ink); }
 
 /* Related Tips */
-.related-tip { display: block; padding: 1rem 0; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.15s; position: relative; }
+.related-tip { display: block; padding: 1rem 1.2rem; border-bottom: 1px solid var(--border); cursor: pointer; transition: background 0.15s; position: relative; margin: 0 -1.2rem; }
 .related-tip:first-of-type { border-top: 1px solid var(--border); }
-.related-tip:hover { background: var(--bg2); padding-left: 0.5rem; }
+.related-tip:hover { background: var(--bg2); }
 .related-tip-num { font-family: var(--mono); font-size: 9px; color: var(--muted); letter-spacing: 0.06em; margin-bottom: 0.3rem; }
 .related-tip-title { font-family: var(--serif); font-size: 0.95rem; line-height: 1.4; color: var(--ink); }
 .related-tip-cat { font-family: var(--mono); font-size: 9px; color: var(--muted); margin-top: 0.3rem; letter-spacing: 0.03em; }
@@ -3759,27 +3759,28 @@ button, a { cursor: pointer; transition: all 0.15s ease; }
 .tip-nav-item.next { text-align: right; }
 
 /* More Tips */
-.more-tips-section { background: var(--ink); border-top: 1px solid #1a1a1a; border-bottom: 1px solid #1a1a1a; }
+.more-tips-section { background: var(--accent); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
 .more-tips-inner { max-width: 1200px; margin: 0 auto; padding: 4rem 2rem; }
 .more-tips-header { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 2.5rem; }
-.more-tips-label { font-family: var(--mono); font-size: 11px; color: #555; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.5rem; }
-.more-tips-label span { color: var(--accent); }
-.more-tips-h2 { font-family: var(--serif); font-size: clamp(1.4rem, 3vw, 2rem); color: var(--bg); line-height: 1.15; }
-.more-tips-h2 em { color: var(--accent); font-style: italic; }
-.more-tips-link { font-family: var(--mono); font-size: 11px; color: #555; letter-spacing: 0.04em; transition: color 0.15s; }
-.more-tips-link:hover { color: var(--bg); }
-.more-tips-grid { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid #2a2a2a; }
-.more-tip-card { padding: 1.8rem; border-right: 1px solid #2a2a2a; border-bottom: 1px solid #2a2a2a; cursor: pointer; transition: background 0.15s; position: relative; }
+.more-tips-label { font-family: var(--mono); font-size: 11px; color: rgba(0,0,0,0.5); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 0.5rem; }
+.more-tips-label span { color: var(--ink); }
+.more-tips-h2 { font-family: var(--serif); font-size: clamp(1.4rem, 3vw, 2rem); color: var(--ink); line-height: 1.15; }
+.more-tips-h2 em { color: white; font-style: italic; }
+.more-tips-link { font-family: var(--mono); font-size: 11px; color: rgba(0,0,0,0.5); letter-spacing: 0.04em; transition: color 0.15s; }
+.more-tips-link:hover { color: var(--ink); }
+.more-tips-grid { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid rgba(0,0,0,0.1); }
+.more-tip-card { padding: 1.8rem; border-right: 1px solid rgba(0,0,0,0.1); border-bottom: 1px solid rgba(0,0,0,0.1); cursor: pointer; transition: background 0.15s; position: relative; }
 .more-tip-card:nth-child(3n) { border-right: none; }
 .more-tip-card:nth-last-child(-n+3) { border-bottom: none; }
-.more-tip-card:hover { background: #1a1a1a; }
+.more-tip-card:hover { background: rgba(0,0,0,0.05); }
 .more-tip-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; }
-.more-tip-num { font-family: var(--mono); font-size: 10px; color: #555; letter-spacing: 0.06em; }
-.more-tip-cat { font-family: var(--mono); font-size: 10px; color: #444; background: #1a1a1a; padding: 2px 8px; letter-spacing: 0.04em; }
-.more-tip-text { font-family: var(--serif); font-size: 1rem; line-height: 1.45; color: var(--bg); }
-.more-tip-meta { font-family: var(--mono); font-size: 10px; color: #555; margin-top: 1rem; letter-spacing: 0.03em; }
-.more-tip-arrow { position: absolute; bottom: 1.2rem; right: 1.2rem; font-family: var(--mono); font-size: 13px; color: #444; transition: transform 0.15s, color 0.15s; }
-.more-tip-card:hover .more-tip-arrow { transform: translateX(4px); color: var(--accent); }
+.more-tip-num { font-family: var(--mono); font-size: 10px; color: rgba(0,0,0,0.5); letter-spacing: 0.06em; }
+.more-tip-cat { font-family: var(--mono); font-size: 10px; color: white; background: var(--ink); padding: 2px 8px; letter-spacing: 0.04em; }
+.more-tip-text { font-family: var(--serif); font-size: 1rem; line-height: 1.45; color: var(--ink); }
+.more-tip-meta { font-family: var(--mono); font-size: 10px; color: rgba(0,0,0,0.5); margin-top: 1rem; letter-spacing: 0.03em; }
+.more-tip-arrow { position: absolute; bottom: 1.2rem; right: 1.2rem; font-family: var(--mono); font-size: 13px; color: rgba(0,0,0,0.3); transition: transform 0.15s, color 0.15s; }
+.more-tip-card:hover .more-tip-arrow { transform: translateX(4px); color: var(--ink); }
+.more-tips-section .btn-primary:hover { background: white !important; color: black !important; }
 
 /* Type Tags */
 .tip-type-long { font-family: var(--mono); font-size: 9px; letter-spacing: 0.05em; padding: 2px 6px; color: var(--accent); border: 1px solid var(--accent); background: transparent; margin-left: 12px; display: inline-block; }
