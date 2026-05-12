@@ -4,6 +4,7 @@ import { handleAdminContentRequest } from './http/admin-content-controller';
 import { handleLessonPreviewRequest } from './http/lesson-preview-controller';
 import { handlePublicLessonRequest } from './http/public-lesson-controller';
 import { handleTipSubmission, handleAdminTipSuggestionsRequest } from './http/tip-suggestion-controller';
+import { handlePromptSubmission, handleAdminPromptSuggestionsRequest } from './http/prompt-suggestion-controller';
 import { serverConfig } from './config';
 import { closePool } from './db';
 import adminAuthRoutes from './routes/admin-auth-routes';
@@ -18,8 +19,12 @@ app.get('/api/health', (_req, res) => {
 
 app.use('/api/admin/auth', adminAuthRoutes);
 app.post('/api/tips/submit', handleTipSubmission);
+app.post('/api/prompts/submit', handlePromptSubmission);
 app.get('/api/admin/tip-suggestions', (req, res) => {
   void handleAdminTipSuggestionsRequest(req as never, res);
+});
+app.get('/api/admin/prompt-suggestions', (req, res) => {
+  void handleAdminPromptSuggestionsRequest(req as never, res);
 });
 app.get('/api/lesson-preview/:previewToken', handleLessonPreviewRequest);
 app.get('/api/public-lessons/:lessonSlug', handlePublicLessonRequest);

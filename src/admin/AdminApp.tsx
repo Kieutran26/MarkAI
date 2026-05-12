@@ -18,6 +18,7 @@ import {
   TickerPage,
   TipsPage,
   TipSuggestionsPage,
+  PromptSuggestionsPage,
   CourseJsonPreviewPage,
 } from '@/app/components/pages';
 
@@ -80,6 +81,7 @@ export default function AdminApp() {
               <Route path="tips" element={<TipsPage />} />
               <Route path="tips/suggestions" element={<TipSuggestionsPage />} />
               <Route path="prompts" element={<PromptsPage />} />
+              <Route path="prompts/suggestions" element={<PromptSuggestionsPage />} />
               <Route path="modules" element={<ModulesPage />} />
               <Route path="ticker" element={<TickerPage />} />
               <Route path="nav-manage" element={<NavManagePage />} />

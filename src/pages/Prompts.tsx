@@ -1,17 +1,18 @@
 'use client';
 
+'use client';
+
 import { useState, useCallback } from 'react';
 import PromptsHero from '../components/prompts/PromptsHero';
 import FilterSearchBar from '../components/prompts/FilterSearchBar';
-import FeaturedPrompts from '../components/prompts/FeaturedPrompts';
+
 import PromptCategorySection from '../components/prompts/PromptCategorySection';
 import ToolsBand from '../components/prompts/ToolsBand';
-import AllPromptsList from '../components/prompts/AllPromptsList';
 import SubmitPromptSection from '../components/prompts/SubmitPromptSection';
 import PromptsCTA from '../components/prompts/PromptsCTA';
 import PromptPopup from '../components/prompts/PromptPopup';
 import { Prompt } from '../lib/prompts-types';
-import { promptsData, featuredPrompts, vibecodePrompts, contentPrompts, allPromptsList } from '../lib/prompts-data';
+import { promptsData, vibecodePrompts, contentPrompts } from '../lib/prompts-data';
 
 export default function Prompts() {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -40,7 +41,6 @@ export default function Prompts() {
     <div className="prompts-page">
       <PromptsHero />
       <FilterSearchBar />
-      <FeaturedPrompts onPromptClick={handlePromptClick} />
       
       <PromptCategorySection
         id="vibecode"
@@ -61,7 +61,7 @@ export default function Prompts() {
       />
 
       <ToolsBand />
-      <AllPromptsList promptIds={allPromptsList} onPromptClick={handlePromptClick} />
+      
       <SubmitPromptSection />
       <PromptsCTA />
 

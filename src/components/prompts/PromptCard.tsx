@@ -47,8 +47,10 @@ export default function PromptCard({ id, onClick, onCopy, variant = 'light' }: P
       <div className="prompt-card-title">{prompt.title}</div>
       <div className="prompt-card-preview">{preview}</div>
       <div className="prompt-card-meta">
-        <span>{prompt.tools[0]} · {prompt.date}</span>
-        <button className="prompt-copy-btn" onClick={handleCopy}>Copy</button>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <span>{prompt.tools[0]} · {prompt.date}</span>
+          <button className="prompt-copy-btn" onClick={handleCopy}>Copy</button>
+        </div>
       </div>
       <span className="prompt-arrow">→</span>
     </div>
