@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, type MouseEvent } from 'react';
+import { useState, useEffect, useCallback, type MouseEvent, type FormEvent } from 'react';
 
 interface SubmitTipModalProps {
   isOpen: boolean;
@@ -46,7 +46,7 @@ export default function SubmitTipModal({ isOpen, onClose }: SubmitTipModalProps)
     }
   }, [onClose]);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!content || !category) return;
 

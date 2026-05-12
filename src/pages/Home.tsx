@@ -41,6 +41,127 @@ const Hero = () => (
   </motion.div>
 );
 
+// ─── WHAT IS MARKAI ─────────────────────────────────────────────────────────
+const WhatIsMarkAI = () => {
+  const features = [
+    {
+      index: '01',
+      title: 'Lộ trình rõ ràng',
+      desc: 'Từ bài 01 đến bài cuối, không cần biết gì trước. Mỗi bài dưới 30 phút, có bài tập thực hành.'
+    },
+    {
+      index: '02',
+      title: 'Tiếng Việt 100%',
+      desc: 'Không thuật ngữ hàn lâm, không tiếng Anh lơ lửng. Viết cho dân Marketing, không phải developer.'
+    },
+    {
+      index: '03',
+      title: 'Dùng được ngay',
+      desc: 'Mỗi bài học kết thúc bằng một sản phẩm thật: website, dashboard, hình ảnh, video clip.'
+    }
+  ];
+
+  return (
+    <section className="bg-bg">
+      <div className="page-shell py-16 border-b border-border">
+        <div className="max-w-4xl mb-12">
+          <p className="section-label"><span>(01)</span> MARKAI LÀ GÌ</p>
+          <h2 className="font-serif text-[38px] leading-[1.1] mb-6 text-ink">
+            Nền tảng học AI <em className="text-accent italic">thực chiến</em> cho dân Marketing.
+          </h2>
+          <p className="font-sans text-[15px] leading-[1.7] text-ink2 max-w-2xl opacity-80">
+            markAI không dạy lý thuyết AI. markAI dạy bạn dùng AI để làm việc thật: tạo website, phân tích dữ liệu, sinh ảnh, dựng video — tất cả bằng tiếng Việt, từ zero, không cần biết code.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 border border-border">
+          {features.map((f, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+              className="p-8 border-b md:border-b-0 md:border-r border-border last:border-r-0 hover:bg-bg2/30 transition-colors"
+            >
+              <span className="font-mono text-[9px] text-accent tracking-widest block mb-4">({f.index})</span>
+              <h3 className="font-serif text-[20px] mb-3 text-ink">{f.title}</h3>
+              <p className="font-sans text-[13px] leading-[1.6] text-ink2 opacity-75">
+                {f.desc}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+};
+
+// ─── WHY MARKAI ─────────────────────────────────────────────────────────────
+const WhyMarkAI = () => {
+  const points = [
+    {
+      old: 'AI courses toàn tiếng Anh, dạy cho developer:',
+      new: 'markAI viết bằng tiếng Việt, dạy cho người không biết code.'
+    },
+    {
+      old: 'Học xong không biết áp dụng vào đâu:',
+      new: 'Mỗi bài kết thúc = 1 sản phẩm thật, deploy được ngay.'
+    },
+    {
+      old: 'Khoá học "miễn phí" nhưng upsell liên tục:',
+      new: 'markAI miễn phí thật. Không paywall. Không email gate.'
+    },
+    {
+      old: 'Nội dung rời rạc, không lộ trình:',
+      new: '4 module, mỗi module có lộ trình từ zero đến deploy.'
+    }
+  ];
+
+  return (
+    <section className="bg-bg">
+      <div className="page-shell py-16 border-b border-border">
+        <div className="max-w-4xl mb-12">
+          <p className="section-label"><span>(02)</span> TẠI SAO MARKAI RA ĐỜI</p>
+          <h2 className="font-serif text-[38px] leading-[1.1] mb-6 text-ink">
+            Vì dân Marketing <em className="text-accent italic">bị bỏ lại.</em>
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 border border-border mb-12">
+          {points.map((p, i) => (
+            <motion.div
+              key={i}
+              initial={{ opacity: 0, y: 10 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.08 }}
+              className="p-8 border-b md:even:border-l border-border last:border-b-0 md:[&:nth-last-child(2)]:border-b-0 hover:bg-bg2/30 transition-colors"
+            >
+              <p className="font-sans text-[13px] text-muted strike mb-3">{p.old}</p>
+              <p className="font-sans text-[15px] leading-[1.6] text-ink font-medium">
+                {p.new}
+              </p>
+            </motion.div>
+          ))}
+        </div>
+
+        <motion.div 
+          initial={{ opacity: 0, x: -10 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          className="border-l-2 border-accent pl-6 py-1"
+        >
+          <p className="font-mono text-[12px] text-ink2 leading-relaxed">
+            <span className="text-accent mr-2">*</span>
+            Sự thật: AI không thay thế marketer. Nhưng marketer biết dùng AI sẽ thay thế marketer không biết.
+          </p>
+        </motion.div>
+      </div>
+    </section>
+  );
+};
+
 // ─── STATS BAR (unchanged) ───────────────────────────────────────────────────
 const StatsBar = () => {
   const stats = [
@@ -594,6 +715,8 @@ export default function Home() {
     <>
       <Hero />
       <StatsBar />
+      <WhatIsMarkAI />
+      <WhyMarkAI />
       <LearningPaths />
 
       <BlogSection />
