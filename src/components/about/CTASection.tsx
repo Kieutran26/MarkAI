@@ -15,7 +15,7 @@ export default function CTASection() {
         </p>
         <div className="cta-btns">
           <Link to="/vibecode" className="btn-primary">Bắt đầu Vibecode →</Link>
-          <Link to="/prompts" className="btn-ghost">Xem Prompt Library</Link>
+          {/* <Link to="/prompts" className="btn-ghost">Xem Prompt Library</Link> */}
         </div>
         <p className="cta-note">✳ hoàn toàn miễn phí · mãi mãi</p>
       </div>

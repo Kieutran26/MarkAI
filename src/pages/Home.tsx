@@ -351,7 +351,7 @@ const featuredPrompts = [
 const tools = [
   { tag: 'Blog', title: 'Blog markAI', sub: 'Case study · Xu hướng AI · Review', href: '/blog', stat: 'Bài dài, có context' },
   { tag: 'Tips', title: 'Tips & Mẹo', sub: '100+ thủ thuật AI thực chiến', href: '/tips', stat: 'Ngắn, làm ngay' },
-  { tag: 'Prompts', title: 'Prompt Library', sub: '150+ prompt đã test · copy & dùng', href: '/prompts', stat: 'Copy, sửa, chạy' },
+  // { tag: 'Prompts', title: 'Prompt Library', sub: '150+ prompt đã test · copy & dùng', href: '/prompts', stat: 'Copy, sửa, chạy' },
 ];
 
 const promptMotionText = 'Copy -> Sua -> Publish';
@@ -395,72 +395,7 @@ const ToolsResources = () => (
       </h2>
     </div>
 
-    <div className="page-shell grid grid-cols-1 border-b border-border lg:grid-cols-[minmax(0,1.15fr)_minmax(320px,0.85fr)]">
-      <div className="border-b border-border lg:border-b-0 lg:border-r">
-        <div>
-          <div className="px-5 py-10 md:px-8 lg:px-[60px] lg:py-12">
-            <div className="flex flex-col gap-6">
-              <div className="flex flex-col gap-5 md:flex-row md:items-start md:justify-between">
-                <div className="max-w-[30rem]">
-                  <p className="mb-3 font-mono text-[10px] uppercase tracking-[0.16em] text-muted">
-                    <Sparkles className="inline w-3 h-3 mr-1" /> prompt library
-                  </p>
-                  <h3 className="font-serif text-[clamp(2rem,4vw,3.2rem)] leading-[0.95] tracking-[-0.03em] text-ink">
-                    150+ prompt
-                    <br />
-                    sẵn dùng ngay
-                  </h3>
-                </div>
-                <Link to="/prompts" className="btn-primary w-fit no-underline text-white">
-                  Xem tất cả →
-                </Link>
-              </div>
-
-              <p className="max-w-[36rem] font-sans text-[15px] leading-[1.75] text-ink2">
-                Không cần ngồi viết từ số 0. Thư viện này gom những prompt để làm landing page, báo cáo, email, research và các việc Marketer cần chạy hàng ngày.
-              </p>
-
-              <div className="grid grid-cols-2 border border-border sm:grid-cols-4">
-                {[
-                  { value: '150+', label: 'prompt đã test' },
-                  { value: '12', label: 'nhóm use case' },
-                  { value: '<5p', label: 'copy ra dùng' },
-                  { value: '0', label: 'cần viết từ đầu' },
-                ].map((item, idx) => (
-                  <div
-                    key={item.label}
-                    className={`p-4 ${idx < 2 ? 'border-b sm:border-b-0' : ''} ${idx < 3 ? 'border-r' : ''} border-border`}
-                  >
-                    <div className="mb-1 font-serif text-[1.8rem] leading-none text-ink">{item.value}</div>
-                    <div className="font-mono text-[10px] uppercase tracking-[0.08em] text-muted">{item.label}</div>
-                  </div>
-                ))}
-              </div>
-
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                className="border border-border bg-bg2 p-5 md:p-6"
-              >
-                <div className="mb-3 flex items-center justify-between gap-4">
-                  <span className="border border-accent bg-[rgba(232,140,46,0.08)] px-2 py-1 font-mono text-[9px] uppercase tracking-[0.1em] text-black">
-                    {featuredPrompts[0].category}
-                  </span>
-                  <PromptWorkflowType />
-                </div>
-                <div className="mb-3 font-serif text-[1.9rem] leading-[1.02] tracking-[-0.03em] text-ink">
-                  {featuredPrompts[0].title}
-                </div>
-                <div className="border-l-2 border-accent pl-4 font-sans text-[14px] italic leading-[1.7] text-ink2">
-                  {featuredPrompts[0].preview}
-                </div>
-              </motion.div>
-            </div>
-          </div>
-        </div>
-      </div>
-
+    <div className="page-shell grid grid-cols-1 border-b border-border lg:grid-cols-1">
       <div className="flex flex-col">
         <div className="border-b border-border px-5 py-6 md:px-8 lg:px-10">
           <p className="mb-2 font-mono text-[10px] uppercase tracking-[0.14em] text-muted">đi tắt vào phần cần dùng</p>
@@ -752,8 +687,8 @@ const CTASection = () => (
           <Link to="/vibecode" className="btn-primary !bg-ink !text-white no-underline !px-8 !py-3 !text-[13px] hover:!bg-white hover:!text-ink hover:!border-white">
             Vibecode Web — Bắt đầu ngay →
           </Link>
-          <Link to="/prompts" className="btn-ghost !border-ink !text-ink hover:!bg-ink/5 no-underline !px-8 !py-3 !text-[13px]">
-            Xem 150+ Prompt
+          <Link to="/tips" className="btn-ghost !border-ink !text-ink hover:!bg-ink/5 no-underline !px-8 !py-3 !text-[13px]">
+            Xem Tips & Mẹo →
           </Link>
         </div>
         <div style={{ fontFamily: 'var(--mono)', fontSize: '11px', color: 'rgba(0,0,0,0.5)', textTransform: 'uppercase' as const, letterSpacing: '0.06em', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 24, flexWrap: 'wrap' }}>

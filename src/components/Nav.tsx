@@ -19,7 +19,7 @@ export default function Nav() {
     { label: 'Từ điển chuyên ngành', path: GLOSSARY_PATH, active: isGlossaryRoute },
     { label: 'Blog', path: '/blog', active: isActive('/blog') },
     { label: 'Tips', path: '/tips', active: isActive('/tips') },
-    { label: 'Prompts', path: '/prompts', active: isActive('/prompts') },
+    // { label: 'Prompts', path: '/prompts', active: isActive('/prompts') },
   ];
   const getNavItemClass = (active: boolean) =>
     `font-mono text-[12px] px-4 h-[52px] flex items-center border-l border-border transition-colors no-underline ${

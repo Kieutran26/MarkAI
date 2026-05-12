@@ -13,7 +13,7 @@ export default function TipsCTA() {
         </p>
         <div className="cta-buttons">
           <Link to="/vibecode" className="btn-primary">Bắt đầu Vibecode →</Link>
-          <Link to="/prompts" className="btn-ghost">Xem Prompt Library</Link>
+          {/* <Link to="/prompts" className="btn-ghost">Xem Prompt Library</Link> */}
         </div>
         <p className="cta-note">✳ hoàn toàn miễn phí · vào học ngay · dùng được liền</p>
       </div>

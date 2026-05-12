@@ -79,7 +79,7 @@ export default function Footer() {
             <ul className="flex list-none flex-col gap-3 p-0">
               <li><Link to="/blog" className="font-sans text-[13px] text-ink2 no-underline transition-colors hover:text-accent">Blog</Link></li>
               <li><Link to="/tips" className="font-sans text-[13px] text-ink2 no-underline transition-colors hover:text-accent">Tips & Mẹo</Link></li>
-              <li><Link to="/prompts" className="font-sans text-[13px] text-ink2 no-underline transition-colors hover:text-accent">Prompt Library</Link></li>
+              {/* <li><Link to="/prompts" className="font-sans text-[13px] text-ink2 no-underline transition-colors hover:text-accent">Prompt Library</Link></li> */}
               <li><span className="cursor-default font-sans text-[13px] text-muted opacity-50">Analytics (sắp ra)</span></li>
               <li><span className="cursor-default font-sans text-[13px] text-muted opacity-50">Image (sắp ra)</span></li>
               <li><span className="cursor-default font-sans text-[13px] text-muted opacity-50">Video (sắp ra)</span></li>
