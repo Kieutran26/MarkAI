@@ -6,8 +6,7 @@ export default function BlogGrid() {
   const latestPosts = posts.slice(0, 6);
 
   return (
-    <div>
-    <div>
+    <div className="border-t border-border">
       <div>
         <div className="py-6 md:py-8 px-[1.2rem] md:px-8 flex justify-between items-baseline border-b border-border">
           <h2 className="font-serif text-[1.2rem]">Bài viết mới nhất</h2>

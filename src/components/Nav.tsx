@@ -49,7 +49,7 @@ export default function Nav() {
 
   return (
     <nav className="sticky top-0 z-50 bg-bg border-b border-border">
-      <div className="h-[52px] flex items-center justify-between px-[1.2rem] md:px-8">
+      <div className="h-[52px] flex items-center justify-between pl-[1.2rem] md:pl-8 pr-0">
         <Link
           to="/"
           aria-label="Về trang chủ markAI"

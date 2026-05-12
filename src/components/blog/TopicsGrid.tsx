@@ -1,9 +1,8 @@
 import { Link } from 'react-router-dom';
 
 const topics = [
-  { label: 'Topic 01', title: 'Tips', count: 12 },
-  { label: 'Topic 02', title: 'Tin tức AI mới nhất', count: 8 },
-  { label: 'Topic 03', title: 'Hướng dẫn', count: 15 },
+  { label: 'Topic 01', title: 'Tin tức AI mới nhất', count: 8 },
+  { label: 'Topic 02', title: 'Hướng dẫn', count: 15 },
 ];
 
 export default function TopicsGrid() {

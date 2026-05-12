@@ -28,7 +28,7 @@ export default function BlogDetailPage() {
       
       <div className="page-shell grid grid-cols-1 lg:grid-cols-[1fr_300px]">
         <ArticleContent content={post.content} />
-        <ArticleSidebar currentSlug={post.slug} currentCategory={post.category} />
+        <ArticleSidebar post={post} />
       </div>
       
       <ArticleFooter post={post} />

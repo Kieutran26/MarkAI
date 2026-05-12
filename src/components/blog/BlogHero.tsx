@@ -25,7 +25,7 @@ export default function BlogHero() {
               <div className="font-mono text-[10px] text-muted tracking-wide">Bài viết</div>
             </div>
             <div className="flex-1 p-4 border-r border-border">
-              <div className="font-serif text-[1.6rem] leading-none mb-1">6</div>
+              <div className="font-serif text-[1.6rem] leading-none mb-1">2</div>
               <div className="font-mono text-[10px] text-muted tracking-wide">Chủ đề</div>
             </div>
             <div className="flex-1 p-4">
@@ -36,8 +36,15 @@ export default function BlogHero() {
         </div>
 
         {/* Right column - Featured post */}
-        <Link to={`/blog/${featuredPost.slug}`} className="featured-post">
-          <div className="featured-pattern"></div>
+        <Link to={`/blog/${featuredPost.slug}`} className="featured-post group">
+          <div className="absolute inset-0 overflow-hidden">
+            <div className="featured-pattern absolute inset-0 z-10 opacity-30 group-hover:opacity-10"></div>
+            <img 
+              src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1200&auto=format&fit=crop" 
+              alt={featuredPost.title}
+              className="w-full h-full object-cover grayscale opacity-40 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-700 scale-110 group-hover:scale-100"
+            />
+          </div>
           <span className="featured-label">✳ Nổi bật</span>
           <div className="featured-content relative z-10">
             <div className="font-mono text-[10px] text-muted tracking-widest uppercase mb-3">
