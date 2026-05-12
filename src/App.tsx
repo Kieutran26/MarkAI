@@ -9,6 +9,7 @@ import BlogDetail from './pages/BlogDetail';
 import Tips from './pages/tips/Tips';
 import TipDetail from './pages/tips/TipDetail';
 import Prompts from './pages/Prompts';
+import AllPrompts from './pages/AllPrompts';
 import Lesson from './pages/Lesson';
 import About from './pages/About';
 import Feedback from './pages/Feedback';
@@ -65,6 +66,7 @@ const AppShell = () => {
           <Route path="/tips" element={<Tips />} />
           <Route path="/tips/:slug" element={<TipDetail />} />
           <Route path="/prompts" element={<Prompts />} />
+          <Route path="/prompts/all" element={<AllPrompts />} />
           <Route path="/lesson/:id" element={<Lesson />} />
           <Route path="/about" element={<About />} />
           <Route path="/feedback" element={<Feedback />} />

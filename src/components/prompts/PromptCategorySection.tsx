@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import { Prompt } from '../../lib/prompts-types';
 import PromptCard from './PromptCard';
 
@@ -26,7 +27,7 @@ export default function PromptCategorySection({
             <p className="section-label"><span>✳</span> {num}</p>
             <h2 className="section-heading" dangerouslySetInnerHTML={{ __html: title }} />
           </div>
-          <a href="#" className="cat-section-right">Xem tất cả →</a>
+          <Link to="/prompts/all" className="cat-section-right">Xem tất cả →</Link>
         </div>
         <div className="prompt-grid">
           {promptIds.map((pid) => (
