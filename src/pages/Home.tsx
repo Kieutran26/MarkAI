@@ -430,12 +430,20 @@ const LearningPaths = () => (
                 display: 'flex',
                 alignItems: 'center',
                 gap: 4,
-                padding: path.status === 'live' ? '7px 10px' : '0',
-                background: path.status === 'live' ? 'var(--accent)' : 'transparent',
-                border: path.status === 'live' ? '1px solid var(--accent)' : '0',
-                transition: 'color 0.15s, background 0.15s',
+                padding: '7px 10px',
+                background: 'var(--ink)',
+                border: '1px solid var(--ink)',
+                transition: 'color 0.15s, background 0.15s, border-color 0.15s',
               }}
               className="group"
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'var(--accent)';
+                e.currentTarget.style.borderColor = 'var(--accent)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'var(--ink)';
+                e.currentTarget.style.borderColor = 'var(--ink)';
+              }}
             >
               {path.cta}
               <ArrowRight size={10} className="transition-transform group-hover:translate-x-0.5" />
@@ -719,7 +727,6 @@ export default function Home() {
       <WhyMarkAI />
       <LearningPaths />
 
-      <BlogSection />
       <CTASection />
     </>
   );

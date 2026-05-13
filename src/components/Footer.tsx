@@ -65,12 +65,46 @@ export default function Footer() {
           <div>
             <div className="mb-6 font-mono text-[11px] uppercase tracking-widest text-muted">Lộ trình học</div>
             <ul className="flex list-none flex-col gap-3 p-0">
-              <li><Link to="/vibecode" className="flex items-center gap-2 font-sans text-[13px] text-ink2 no-underline transition-colors hover:text-accent"><span className="text-[10px] text-accent">●</span> Vibecode Web <span className="bg-accent px-1.5 py-[1px] font-mono text-[10px] text-white">Live</span></Link></li>
-              <li><Link to="/vibecode" className="flex items-center gap-2 font-sans text-[13px] text-ink2 no-underline transition-colors hover:text-accent"><span className="text-[10px] text-muted">○</span> Vibecode App <span className="font-mono text-[10px] text-muted">Sắp ra</span></Link></li>
-              <li><span className="flex items-center gap-2 font-sans text-[13px] text-muted opacity-60"><span className="text-[10px] text-muted">○</span> Analytics AI <span className="font-mono text-[10px] text-muted">Sắp ra</span></span></li>
-              <li><span className="flex items-center gap-2 font-sans text-[13px] text-muted opacity-60"><span className="text-[10px] text-muted">○</span> Generate Image <span className="font-mono text-[10px] text-muted">Sắp ra</span></span></li>
-              <li><span className="flex items-center gap-2 font-sans text-[13px] text-muted opacity-60"><span className="text-[10px] text-muted">○</span> Motion Video <span className="font-mono text-[10px] text-muted">Sắp ra</span></span></li>
-              <li className="mt-2 pt-3"><Link to="/feedback" className="inline-block bg-[#000] px-4 py-2 font-mono text-[10px] uppercase tracking-wider text-white no-underline transition-colors hover:bg-accent">+ Góp ý module mới</Link></li>
+              <li>
+                <Link to="/vibecode" className="flex items-center gap-2 font-sans text-[13px] text-ink2 no-underline transition-colors hover:text-accent">
+                  <span className="text-[10px] text-accent">●</span>
+                  Vibecode Web
+                  <span className="bg-accent px-1.5 py-[1px] font-mono text-[10px] text-white">Live</span>
+                </Link>
+              </li>
+              <li>
+                <span className="flex items-center gap-2 font-sans text-[13px] text-muted opacity-60">
+                  <span className="text-[10px] text-muted">○</span>
+                  Vibecode App
+                  <span className="font-mono text-[10px] text-muted">Sắp ra</span>
+                </span>
+              </li>
+              <li>
+                <span className="flex items-center gap-2 font-sans text-[13px] text-muted opacity-60">
+                  <span className="text-[10px] text-muted">○</span>
+                  Analytics AI
+                  <span className="font-mono text-[10px] text-muted">Sắp ra</span>
+                </span>
+              </li>
+              <li>
+                <span className="flex items-center gap-2 font-sans text-[13px] text-muted opacity-60">
+                  <span className="text-[10px] text-muted">○</span>
+                  Generate Image
+                  <span className="font-mono text-[10px] text-muted">Sắp ra</span>
+                </span>
+              </li>
+              <li>
+                <span className="flex items-center gap-2 font-sans text-[13px] text-muted opacity-60">
+                  <span className="text-[10px] text-muted">○</span>
+                  Motion Video
+                  <span className="font-mono text-[10px] text-muted">Sắp ra</span>
+                </span>
+              </li>
+              <li className="mt-2 pt-3">
+                <Link to="/feedback" className="inline-block bg-[#000] px-4 py-2 font-mono text-[10px] uppercase tracking-wider text-white no-underline transition-colors hover:bg-accent">
+                  + Góp ý module mới
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -79,10 +113,6 @@ export default function Footer() {
             <ul className="flex list-none flex-col gap-3 p-0">
               <li><Link to="/blog" className="font-sans text-[13px] text-ink2 no-underline transition-colors hover:text-accent">Blog</Link></li>
               <li><Link to="/tips" className="font-sans text-[13px] text-ink2 no-underline transition-colors hover:text-accent">Tips & Mẹo</Link></li>
-              {/* <li><Link to="/prompts" className="font-sans text-[13px] text-ink2 no-underline transition-colors hover:text-accent">Prompt Library</Link></li> */}
-              <li><span className="cursor-default font-sans text-[13px] text-muted opacity-50">Analytics (sắp ra)</span></li>
-              <li><span className="cursor-default font-sans text-[13px] text-muted opacity-50">Image (sắp ra)</span></li>
-              <li><span className="cursor-default font-sans text-[13px] text-muted opacity-50">Video (sắp ra)</span></li>
             </ul>
           </div>
 

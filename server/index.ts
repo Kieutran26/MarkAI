@@ -1,6 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
 import { handleAdminContentRequest } from './http/admin-content-controller';
+import { handleFeedbackSubmission } from './http/feedback-submission-controller';
 import { handleLessonPreviewRequest } from './http/lesson-preview-controller';
 import { handlePublicLessonRequest } from './http/public-lesson-controller';
 import { handleTipSubmission, handleAdminTipSuggestionsRequest } from './http/tip-suggestion-controller';
@@ -18,6 +19,7 @@ app.get('/api/health', (_req, res) => {
 });
 
 app.use('/api/admin/auth', adminAuthRoutes);
+app.post('/api/feedback/submit', handleFeedbackSubmission);
 app.post('/api/tips/submit', handleTipSubmission);
 app.post('/api/prompts/submit', handlePromptSubmission);
 app.get('/api/admin/tip-suggestions', (req, res) => {

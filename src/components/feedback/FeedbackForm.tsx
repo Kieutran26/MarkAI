@@ -12,13 +12,55 @@ export default function FeedbackForm() {
   const [role, setRole] = useState('');
   const [email, setEmail] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!selectedModule || !content.trim()) {
-      alert('Vui lòng chọn module và điền nội dung góp ý.');
+      setError('Vui lòng chọn module và điền nội dung góp ý.');
       return;
     }
-    setSubmitted(true);
+
+    setIsSubmitting(true);
+    setError(null);
+
+    try {
+      const response = await fetch('/api/feedback/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          moduleName: selectedModule,
+          rating: selectedRating,
+          content,
+          role,
+          email,
+        }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => null);
+        throw new Error(data?.error || 'Gửi góp ý thất bại.');
+      }
+
+      setSubmitted(true);
+      setSelectedModule('');
+      setSelectedRating('');
+      setContent('');
+      setRole('');
+      setEmail('');
+    } catch (submitError) {
+      setError(
+        submitError instanceof TypeError
+          ? 'Không kết nối được API góp ý lúc này.'
+          : submitError instanceof Error
+            ? submitError.message
+            : 'Đã có lỗi xảy ra. Vui lòng thử lại sau.'
+      );
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   if (submitted) {
@@ -38,6 +80,22 @@ export default function FeedbackForm() {
         <span className="form-header-step">Bước 1 / 1</span>
       </div>
       <div className="form-body">
+        {error ? (
+          <div
+            style={{
+              marginBottom: '1rem',
+              padding: '0.8rem 1rem',
+              border: '1px solid var(--danger)',
+              background: 'rgba(220, 38, 38, 0.08)',
+              color: 'var(--danger)',
+              fontFamily: 'var(--mono)',
+              fontSize: '12px',
+            }}
+          >
+            {error}
+          </div>
+        ) : null}
+
         <div className="form-field">
           <label className="form-label">Module bạn muốn góp ý <span className="req">*</span></label>
           <ModulePicker selected={selectedModule} onChange={setSelectedModule} />
@@ -56,6 +114,7 @@ export default function FeedbackForm() {
             rows={4}
             value={content}
             onChange={(e) => setContent(e.target.value)}
+            disabled={isSubmitting}
           />
         </div>
 
@@ -65,6 +124,7 @@ export default function FeedbackForm() {
             className="form-select"
             value={role}
             onChange={(e) => setRole(e.target.value)}
+            disabled={isSubmitting}
           >
             <option value="">Chọn lĩnh vực...</option>
             <option>Brand Marketing</option>
@@ -92,12 +152,19 @@ export default function FeedbackForm() {
             placeholder="you@example.com"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            disabled={isSubmitting}
           />
           <span className="form-hint">✳ Tùy chọn — không bắt buộc. Nếu để trống, góp ý hoàn toàn ẩn danh.</span>
         </div>
 
-        <button type="button" className="btn-primary" onClick={handleSubmit}>
-          Gửi góp ý →
+        <button
+          type="button"
+          className="btn-primary"
+          onClick={() => void handleSubmit()}
+          disabled={isSubmitting}
+          style={{ opacity: isSubmitting ? 0.7 : 1 }}
+        >
+          {isSubmitting ? 'Đang gửi...' : 'Gửi góp ý →'}
         </button>
       </div>
     </div>
