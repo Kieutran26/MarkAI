@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import gifVibecodeHtml from '../../../gif-vibecode.html?raw';
+import gifVibecodeHtml from '../../../docs/visual-demos/gif-vibecode.html?raw';
 
 export default function VibecodeShowcase() {
   const frameRef = useRef<HTMLIFrameElement | null>(null);
