@@ -22,6 +22,8 @@ export default function SubLessonPage() {
   const fallbackSubLesson = getSubLessonBySlug(lessonSlug, subSlug);
   const dbSubLesson = dbSubLessons ? findSubLessonFromSlug(dbSubLessons, subSlug) : null;
   const subLesson = dbSubLesson ?? fallbackSubLesson;
+  const shouldPreferCanonicalSubLessons = lessonSlug === 'tu-ngu-chuyen-nganh';
+  const displayedSubLessons = shouldPreferCanonicalSubLessons ? undefined : dbSubLessons ?? undefined;
   const prepared = useMemo(
     () => prepareReaderContent(subLesson?.content ?? []),
     [subLesson?.content],
@@ -122,7 +124,7 @@ export default function SubLessonPage() {
         <ReaderSidebar
           subLesson={subLesson}
           lessonSlug={lessonSlug}
-          subLessons={dbSubLessons ?? undefined}
+          subLessons={displayedSubLessons}
           onClose={() => setSidebarOpen(false)}
           isOpen={sidebarOpen}
         />

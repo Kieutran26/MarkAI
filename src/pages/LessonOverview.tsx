@@ -50,6 +50,10 @@ export default function LessonOverview() {
   const remainingLessons = getRemainingLessons(currentId);
   const whatYoullLearn = getWhatYoullLearn(currentId);
   const overviewModules = useMemo(() => (dbLesson ? mapPublicLessonToOverviewModules({ lesson: dbLesson }) : null), [dbLesson]);
+  const shouldPreferCanonicalModules = lessonSlug === 'tu-ngu-chuyen-nganh' && Boolean(lesson?.subLessons?.length);
+  const displayedModules = shouldPreferCanonicalModules
+    ? lesson?.subLessons ?? []
+    : overviewModules ?? lesson?.subLessons ?? [];
 
   return (
     <div>
@@ -84,7 +88,7 @@ export default function LessonOverview() {
 
       {lesson ? <LessonOverviewHero lesson={lesson} /> : <DbLessonHero lesson={dbLesson} />}
       <ProgressBar currentLesson={currentId} />
-      <SubLessonList subLessons={overviewModules ?? lesson?.subLessons ?? []} lessonSlug={lessonSlug} />
+      <SubLessonList subLessons={displayedModules} lessonSlug={lessonSlug} />
       <WhatYoullLearn items={whatYoullLearn} lessonId={currentId} />
       {lesson ? (
         <LessonNextUp currentLesson={lesson} nextLesson={nextLesson} remainingLessons={remainingLessons} />
