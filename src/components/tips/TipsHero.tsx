@@ -16,11 +16,11 @@ export default function TipsHero({ onSubmitButtonClick }: TipsHeroProps) {
           </p>
           <div className="hero-cta">
             <Link to="#tips-grid" className="btn-primary">Đọc tips mới nhất →</Link>
-            <button 
+            <button
               onClick={(e) => {
                 e.preventDefault();
                 onSubmitButtonClick();
-              }} 
+              }}
               className="btn-ghost"
             >
               Submit tip của bạn
