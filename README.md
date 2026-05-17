@@ -18,7 +18,7 @@ Repo này hiện tập trung vào 2 lớp:
 
 ## Chạy local
 
-Yêu cầu:
+Yêu cầu tối thiểu:
 
 - Node.js 20+
 
