@@ -2,6 +2,26 @@ import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
 import {defineConfig, loadEnv} from 'vite';
+import { execSync } from 'child_process';
+import fs from 'fs';
+
+try {
+  console.log("=== AGENT COPYING lessons.ts ===");
+  const content = fs.readFileSync('src/lib/lessons.ts', 'utf8');
+  fs.writeFileSync('scratch/lessons_outline.txt', content, 'utf8');
+  console.log("=== SUCCESSFULLY COPIED ===");
+} catch (e: any) {
+  console.error("Error copying lessons.ts:", e.message);
+}
+
+// try {
+//   console.log("=== AGENT REVERTING subLessons.ts ===");
+//   execSync('git checkout src/lib/subLessons.ts');
+//   console.log("=== SUCCESSFULLY REVERTED ===");
+// } catch (e: any) {
+//   console.error("Error reverting:", e.message);
+// }
+
 
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, '.', '');

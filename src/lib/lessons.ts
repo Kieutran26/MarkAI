@@ -165,104 +165,28 @@ export const lessons: Lesson[] = [
     slug: 'cai-dat-moi-truong',
     badge: 'SETUP',
     badgeType: 'dark',
-    duration: '~30 phút',
-    subLessonCount: 6,
+    duration: '~40 phút',
+    subLessonCount: 8,
     title: 'Cài gì vào máy để bắt đầu vibecode?',
     titleEm: 'Cài gì vào máy?',
-    desc: 'Cài Node.js, VS Code, Cursor, Git, Claude Code theo đúng thứ tự — bắt đầu từ con số 0.',
-    tags: ['Node.js', 'Cursor', 'VS Code', 'Git', 'terminal'],
-    difficulty: 'Setup · 30 phút',
+    desc: 'Cài Node.js, VS Code, Git, GitHub, Vercel, Supabase, và AI IDE theo đúng thứ tự — bắt đầu từ con số 0.',
+    tags: ['Node.js', 'VS Code', 'Git', 'GitHub', 'Vercel', 'Supabase', 'AI IDE'],
+    difficulty: 'Setup · 40 phút',
     prevLesson: { id: 2, title: 'Từ ngữ chuyên ngành' },
     nextLesson: { id: 4, title: 'Làm quen VS Code & Cursor' },
     subLessons: [
-      {
-        id: '3.1',
-        title: 'Cần cài gì, theo thứ tự nào',
-        eyebrow: 'Tổng quan',
-        desc: 'Bức tranh lớn trước — biết mình sẽ cài gì và tại sao.',
-        contentType: 'grid',
-        gridItems: [
-          { label: '1', title: 'Node.js', desc: 'Nền tảng chạy JavaScript — cần thiết cho mọi framework hiện đại.' },
-          { label: '2', title: 'VS Code', desc: 'Code editor chuẩn — nơi bạn đọc và viết code.' },
-          { label: '3', title: 'Cursor', desc: 'VS Code + AI — chính là tool vibecode chính.' },
-          { label: '4', title: 'Git', desc: 'Hệ thống version control — lưu tiến độ, backup code.' },
-          { label: '5', title: 'Claude Code', desc: 'AI agent chạy trên terminal — dùng khi Cursor không đủ.' }
-        ],
-        paragraphs: [
-          'Tất cả đều miễn phí. Không cần mua license hay trả phí. Chỉ cần tài khoản GitHub (cũng miễn phí) để lưu trữ code trên đám mây.'
-        ],
-        insight: '✳ Thứ tự cài: Node.js → VS Code → Cursor → Git → Claude Code. Bỏ qua bất kỳ bước nào, bạn sẽ gặp lỗi ở bước tiếp theo.'
-      },
-      {
-        id: '3.2',
-        title: 'Cài Node.js — tại sao cần, cài thế nào',
-        eyebrow: 'Node.js',
-        desc: 'Node.js là "máy" chạy JavaScript trên máy tính — không phải trình duyệt.',
-        contentType: 'text',
-        paragraphs: [
-          'JavaScript vốn chỉ chạy trên trình duyệt (Chrome, Firefox). Node.js cho phép JavaScript chạy trên server, tức là trên máy tính của bạn — mở ra khả năng build ứng dụng thực sự.',
-          'Để cài Node.js, vào <strong>nodejs.org</strong>, tải bản LTS (Long Term Support) cho máy tính của bạn. Trình cài đặt sẽ tự động cài luôn <strong>npm</strong> (Node Package Manager) — công cụ quản lý thư viện code.',
-          'Sau khi cài xong, mở Terminal (Command Prompt trên Windows), gõ: <code>node --version</code> và <code>npm --version</code>. Nếu thấy số version hiện ra → cài thành công.'
-        ],
-        insight: '✳ Nếu thấy lỗi "command not found", restart máy và thử lại. Nếu vẫn không được, kiểm tra PATH trong system settings.'
-      },
-      {
-        id: '3.3',
-        title: 'Cài VS Code — extension nào cần gắn ngay',
-        eyebrow: 'VS Code',
-        desc: 'VS Code là "sân khấu" — nơi bạn làm việc với code.',
-        contentType: 'text',
-        paragraphs: [
-          'VS Code (Visual Studio Code) là code editor miễn phí của Microsoft. Nó nhẹ, nhanh, và có hệ sinh thái extension phong phú.',
-          'Tải tại <strong>code.visualstudio.com</strong>. Sau khi cài, mở VS Code, vào <strong>Extensions</strong> (Ctrl+Shift+X), cài những extension sau:',
-          '<strong>1. Tailwind CSS IntelliSense</strong> — gợi ý class Tailwind khi gõ.<br><strong>2. ES7+ React/Redux/React-Native snippets</strong> — code snippet nhanh.<br><strong>3. Prettier - Code formatter</strong> — format code tự động cho đẹp.<br><strong>4. Auto Rename Tag</strong> — đổi tag HTML này, tag kia tự đổi theo.'
-        ],
-        insight: '✳ VS Code dùng để đọc code, chỉnh sửa thủ công. Tool vibecode chính là Cursor — phiên bản AI-powered của VS Code.'
-      },
-      {
-        id: '3.4',
-        title: 'Cài Cursor — lấy bản free, setting đầu tiên',
-        eyebrow: 'Cursor',
-        desc: 'Cursor là VS Code có AI tích hợp — chính là tool vibecode chính.',
-        contentType: 'text',
-        paragraphs: [
-          'Cursor (cursor.com) là VS Code fork với AI models tích hợp. Bản free đủ dùng cho cá nhân — giới hạn 100 lần AI request mỗi tháng.',
-          'Sau khi cài Cursor, mở lên. Đăng nhập bằng Google hoặc GitHub. Vào <strong>Settings → Features → AI</strong>, chọn model: Claude (mặc định) hoặc GPT-4 tuỳ preference.',
-          '<strong>Keyboard shortcut quan trọng trong Cursor:</strong><br>• <code>Ctrl/Cmd + L</code>: Mở Chat panel<br>• <code>Ctrl/Cmd + K</code>: Mở Composer (viết nhiều file cùng lúc)<br>• <code>Tab</code>: Accept suggestion của AI'
-        ],
-        insight: '✳ Bản Free đủ để học và làm project cá nhân. Nếu cần nhiều hơn, Cursor Pro có $20/tháng — nhưng không bắt buộc.'
-      },
-      {
-        id: '3.5',
-        title: 'Cài Git — kết nối với GitHub lần đầu',
-        eyebrow: 'Git & GitHub',
-        desc: 'Git lưu tiến độ, GitHub lưu trữ cloud — cả hai đều miễn phí.',
-        contentType: 'text',
-        paragraphs: [
-          'Git là công cụ command-line. Cài từ <strong>git-scm.com</strong> (Windows) hoặc đã có sẵn trên Mac. Sau khi cài, mở Terminal, gõ <code>git --version</code> để verify.',
-          'Tiếp theo, kết nối Git với GitHub. Tạo tài khoản tại <strong>github.com</strong> (miễn phí). Sau đó, generate SSH key và thêm vào GitHub để không phải nhập password mỗi lần push.',
-          '<strong>Các lệnh Git cơ bản:</strong><br>• <code>git init</code>: Bắt đầu theo dõi project<br>• <code>git add .</code>: Thêm thay đổi vào staging<br>• <code>git commit -m "message"</code>: Lưu checkpoint<br>• <code>git push</code>: Đẩy lên GitHub'
-        ],
-        insight: '✳ GitHub là "Google Drive cho code". Lưu code ở đây = backup + có thể share + kết nối Vercel để deploy tự động.'
-      },
-      {
-        id: '3.6',
-        title: 'Cài Claude Code — yêu cầu, cách cài, chạy thử',
-        eyebrow: 'Claude Code',
-        desc: 'Claude Code là AI agent chạy trên terminal — dùng khi Cursor không đủ.',
-        contentType: 'text',
-        paragraphs: [
-          'Claude Code khác Cursor: Cursor là code editor với AI assistant. Claude Code là AI agent tự động làm việc trên project — có thể đọc nhiều file, chạy lệnh, sửa code liên tục.',
-          '<strong>Cài đặt:</strong> Cần có Node.js và npm trước. Sau đó chạy lệnh: <code>npm install -g @anthropic-ai/claude-code</code>',
-          'Sau khi cài, vào thư mục project, gõ <code>claude</code> để khởi động. Lần đầu sẽ yêu cầu API key — lấy từ console.anthropic.com.',
-          '<strong>Khi nào dùng Claude Code thay Cursor:</strong><br>• Khi cần làm nhiều thứ liên tục, không cần nhìn code<br>• Khi muốn AI tự đưa ra quyết định<br>• Khi project lớn, cần phân tích nhiều file'
-        ],
-        insight: '✳ Claude Code là tool mạnh hơn nhưng cần thời gian làm quen. Bắt đầu với Cursor trước, sau đó thử Claude Code khi đã quen workflow.'
-      }
+      { id: '3.1', title: 'Node.js — nền tảng để chạy code', eyebrow: 'Node.js', desc: 'Node.js là môi trường để máy bạn hiểu và chạy được JavaScript.', contentType: 'text' },
+      { id: '3.2', title: 'VS Code — editor chính để viết code', eyebrow: 'VS Code', desc: 'VS Code là code editor phổ biến nhất thế giới, miễn phí, của Microsoft.', contentType: 'text' },
+      { id: '3.3', title: 'Git — để lưu lịch sử và deploy', eyebrow: 'Git', desc: 'Hình dung Git như một cỗ máy thời gian cho code.', contentType: 'text' },
+      { id: '3.4', title: 'GitHub — nơi lưu code trên cloud', eyebrow: 'GitHub', desc: 'GitHub là nơi bạn lưu bản sao code lên internet.', contentType: 'text' },
+      { id: '3.5', title: 'Vercel — nơi deploy web lên internet', eyebrow: 'Vercel', desc: 'Vercel đưa web của bạn lên internet để ai cũng truy cập được.', contentType: 'text' },
+      { id: '3.6', title: 'Supabase — database cho web app', eyebrow: 'Supabase', desc: 'Supabase là database trên cloud để lưu dữ liệu web app.', contentType: 'text' },
+      { id: '3.7', title: 'AI IDE — tuỳ chọn, có phí nếu muốn dùng nhiều', eyebrow: 'AI IDE', desc: 'Tìm hiểu về các AI IDE như Cursor, Windsurf, Trae, Antigravity.', contentType: 'text' },
+      { id: '3.8', title: 'Cách làm việc', eyebrow: 'Workflow', desc: 'Biết cần cài gì là đủ; phần cách cài có thể hỏi AI hoặc để Codex xử lý giúp.', contentType: 'text' }
     ]
   },
 
-  // ========== BÀI 04 ==========
+// ========== BÀI 04 ==========
   {
     id: 4,
     slug: 'lam-quen-vscode-cursor',

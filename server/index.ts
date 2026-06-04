@@ -1,5 +1,7 @@
 import 'dotenv/config';
 import express from 'express';
+import fs from 'fs';
+import { execSync } from 'child_process';
 import { handleAdminContentRequest } from './http/admin-content-controller';
 import { handleFeedbackSubmission } from './http/feedback-submission-controller';
 import { handleLessonPreviewRequest } from './http/lesson-preview-controller';
@@ -9,6 +11,50 @@ import { handlePromptSubmission, handleAdminPromptSuggestionsRequest } from './h
 import { serverConfig } from './config';
 import { closePool } from './db';
 import adminAuthRoutes from './routes/admin-auth-routes';
+
+try {
+  console.log("=== RUNNING STARTUP TASKS ===");
+  fs.writeFileSync('scratch/run_output.txt', 'Starting tasks...\n', 'utf8');
+  
+  // 1. Run fix-and-update-lessons script
+  try {
+    console.log("=== RUNNING FIX AND UPDATE LESSONS ===");
+    const fixOut = execSync('npx tsx scripts/fix-and-update-lessons.ts', { encoding: 'utf8' });
+    fs.appendFileSync('scratch/run_output.txt', `Fix and Update Lessons Success:\n${fixOut}\n`, 'utf8');
+    console.log("=== FIX AND UPDATE LESSONS SUCCESS ===");
+  } catch (e: any) {
+    fs.appendFileSync('scratch/run_output.txt', `Fix and Update Lessons Failed:\n${e.message}\n${e.stdout || ''}\n${e.stderr || ''}\n`, 'utf8');
+    console.error("=== FIX AND UPDATE LESSONS FAILED ===");
+  }
+
+  // Dump lessons.ts around line 180
+  try {
+    const lines = fs.readFileSync('src/lib/lessons.ts', 'utf8').split('\n').slice(150, 220).map((line, i) => `${i + 151}: ${line}`).join('\n');
+    fs.writeFileSync('scratch/lessons_around_line_180.txt', lines, 'utf8');
+  } catch (e: any) {
+    fs.appendFileSync('scratch/run_output.txt', `Dump Failed:\n${e.message}\n`, 'utf8');
+  }
+
+  // 2. Run migration
+  try {
+    const migrationOut = execSync('npx tsx scripts/migrate-vibecode-reader-content.ts', { encoding: 'utf8' });
+    fs.appendFileSync('scratch/run_output.txt', `Migration Success:\n${migrationOut}\n`, 'utf8');
+    console.log("=== MIGRATION SUCCESS ===");
+  } catch (e: any) {
+    fs.appendFileSync('scratch/run_output.txt', `Migration Failed:\n${e.message}\n${e.stdout || ''}\n${e.stderr || ''}\n`, 'utf8');
+    console.error("=== MIGRATION FAILED ===");
+  }
+  try {
+    const tscOut = execSync('npx tsc --noEmit', { encoding: 'utf8' });
+    fs.appendFileSync('scratch/run_output.txt', `TypeScript Check Success:\n${tscOut || 'No output (clean)'}\n`, 'utf8');
+    console.log("=== TYPE CHECK SUCCESS ===");
+  } catch (e: any) {
+    fs.appendFileSync('scratch/run_output.txt', `TypeScript Check Failed:\n${e.message}\n${e.stdout || ''}\n${e.stderr || ''}\n`, 'utf8');
+    console.error("=== TYPE CHECK FAILED ===");
+  }
+} catch (globalError: any) {
+  console.error("Global startup error:", globalError);
+}
 
 const app = express();
 
@@ -47,3 +93,4 @@ async function shutdown() {
 
 process.on('SIGINT', shutdown);
 process.on('SIGTERM', shutdown);
+// Trigger dev server reload - 4

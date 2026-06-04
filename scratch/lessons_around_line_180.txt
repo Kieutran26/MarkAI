@@ -1,0 +1,70 @@
+151:     tags: ['AI', 'model', 'prompt', 'input', 'output', 'tech mindset'],
+152:     difficulty: 'Cơ bản · đọc hiểu',
+153:     prevLesson: { id: 1, title: 'Vibecode là gì?' },
+154:     nextLesson: { id: 3, title: 'Cài đặt môi trường' },
+155:     subLessons: [
+156:       { id: '2.1', title: 'AI, Model, Prompt là gì?', eyebrow: 'Khái niệm gốc', desc: 'Ba từ này xuất hiện khắp nơi. Nhưng ít ai giải thích đúng theo kiểu marketer có thể dùng ngay.', contentType: 'text', paragraphs: ['AI là một phần mềm có khả năng xử lý ngôn ngữ, hình ảnh, dữ liệu — và trả lời theo cách giống con người.', 'Model là “bộ não” cụ thể bên trong AI đó. Cùng một câu hỏi, model khác nhau cho kết quả khác nhau — vì mỗi model được huấn luyện trên dữ liệu khác nhau, theo cách khác nhau.', 'Prompt không phải “câu hỏi” theo nghĩa thông thường. Prompt là một chỉ dẫn. Bạn viết prompt càng rõ, AI hiểu càng đúng, output ra càng gần với điều bạn thực sự cần.'], insight: 'AI KHÔNG thông minh hơn prompt của bạn. Prompt tốt = kết quả tốt.' },
+157:       { id: '2.2', title: 'Input vs Output', eyebrow: 'Cặp khái niệm nền tảng', desc: 'Đây là cặp khái niệm cơ bản nhất — và quan trọng hơn bạn nghĩ.', contentType: 'compare', compareHeaders: ['Input', 'Output'], compareRows: [['văn bản, hình ảnh, file, link, dữ liệu, prompt', 'bài viết, đoạn code, bản tóm tắt, danh sách ý tưởng, hình ảnh, to do list, plans'], ['Thứ bạn đưa vào cho AI xử lý', 'Thứ AI trả về sau khi xử lý'], ['Đầu tư tốt vào input', 'Thì output mới rõ ràng, đúng và dùng được']], paragraphs: ['Hầu hết mọi người chỉ chăm chăm nhìn vào output mà không chịu đầu tư vào input. Khi output ra sai, họ nghĩ AI dở. Thực ra, input của họ mới là vấn đề.', 'Một marketer giỏi dùng AI không phải người biết nhiều tool nhất. Là người biết cách kiểm soát input để lấy được output mình cần.'], insight: 'Input tốt thì output mới dùng được ngay.' },
+158:       { id: '2.3', title: 'Tại sao marketer cần hiểu tech?', eyebrow: 'Mindset làm việc với AI', desc: 'AI đang thay đổi cách công việc marketing được thực thi — và nếu bạn không hiểu nó hoạt động như thế nào, bạn sẽ dùng nó sai, hoặc không dùng được hết tiềm năng của nó.', contentType: 'grid', gridItems: [{ label: '01', title: 'Viết prompt tốt hơn', desc: 'Hiểu model là gì, input/output là gì để brief cho AI đúng hơn thay vì chỉ hỏi đại.' }, { label: '02', title: 'Kiểm soát AI', desc: 'Biết vì sao cùng một prompt trên ChatGPT và Claude lại cho kết quả khác nhau.' }, { label: '03', title: 'Không bị lệ thuộc', desc: 'Hiểu giới hạn của AI để không phụ thuộc mù quáng vào output của nó.' }, { label: '04', title: 'Tăng năng suất x3–x10', desc: 'Làm việc với AI như một đồng nghiệp thực thụ, không phải như một cái máy thần kỳ bạn chỉ biết bấm nút.' }], insight: 'Khác biệt KHÔNG phải do AI. Khác biệt do cách dùng AI.' },
+159:       { id: '2.4', title: 'Case thực tế: ChatGPT viết content sai vì prompt', eyebrow: 'Case study', desc: 'Tình huống này xảy ra với hầu hết marketer khi mới dùng AI.', contentType: 'text', paragraphs: ['Một bạn marketing cần viết caption Facebook cho sản phẩm sữa dưỡng thể mới ra của brand. Bạn gõ vào ChatGPT: “Viết caption Facebook cho sản phẩm sữa dưỡng thể mới.”', 'ChatGPT trả về một đoạn text khá ổn về mặt ngữ pháp. Nhưng nó sai hoàn toàn về tone, sai về message và sai về CTA.', 'Vấn đề không phải ChatGPT dở. Vấn đề là prompt thiếu hoàn toàn các thông tin cần thiết để AI hiểu đúng yêu cầu. Khi prompt được viết lại rõ hơn với target, tone, USP, CTA và giới hạn độ dài, output khác hoàn toàn — và có thể dùng được ngay, hoặc chỉ cần chỉnh nhẹ.'], insight: 'Prompt thiếu thông tin thì AI chỉ có thể đoán. Và đoán thì rất dễ sai.' },
+160:       { id: '2.5', title: 'Từ điển chuyên ngành', eyebrow: 'Trang tra cứu riêng', desc: 'Vì danh sách từ ngữ khá dài — và mỗi từ đều được giải thích kèm ví dụ thực tế — mình đã tách phần này thành một trang riêng biệt để bạn dễ tra cứu lại bất cứ lúc nào.', contentType: 'text', paragraphs: ['Khi làm việc với AI và công cụ kỹ thuật, bạn sẽ liên tục gặp các từ như API, token, deploy, frontend, repository, environment variable...', 'Hiểu từ ngữ chuyên ngành không phải để bạn nói chuyện được với dev. Mục đích thực tế hơn: để bạn prompt đúng hơn, đọc hiểu được lỗi khi AI báo lỗi, và đặc biệt bạn cần biết mình cần làm gì.', 'Ví dụ: Khi có một chỗ bị lệch, bạn sẽ biết chỗ lệch đó gọi là spacing, thì khi bạn nhờ AI sửa lỗi, AI sẽ hiểu ý bạn và sửa nhanh hơn.', 'Vì danh sách từ ngữ khá dài — và mỗi từ đều được giải thích kèm ví dụ thực tế — mình đã tách phần này thành một trang riêng biệt để bạn dễ tra cứu lại bất cứ lúc nào, không cần cuộn qua toàn bộ bài học.'], insight: 'Bấm vào nút bên dưới để xem toàn bộ từ điển thuật ngữ.' }
+161:     ]
+162:   },
+163:   {
+164:     id: 3,
+165:     slug: 'cai-dat-moi-truong',
+166:     badge: 'SETUP',
+167:     badgeType: 'dark',
+168:     duration: '~40 phút',
+169:     subLessonCount: 7,
+170:     title: 'Cài gì vào máy để bắt đầu vibecode?',
+171:     titleEm: 'Cài gì vào máy?',
+172:     desc: 'Cài Node.js, VS Code, Git, GitHub, Vercel, Supabase, và AI IDE theo đúng thứ tự — bắt đầu từ con số 0.',
+173:     tags: ['Node.js', 'VS Code', 'Git', 'GitHub', 'Vercel', 'Supabase', 'AI IDE'],
+174:     difficulty: 'Setup · 40 phút',
+175:     prevLesson: { id: 2, title: 'Từ ngữ chuyên ngành' },
+176:     nextLesson: { id: 4, title: 'Làm quen VS Code & Cursor' },
+177:     subLessons: [
+178:       { id: '3.1', title: 'Node.js — nền tảng để chạy code', eyebrow: 'Node.js', desc: 'Node.js là môi trường để máy bạn hiểu và chạy được JavaScript.', contentType: 'text' },
+179:       { id: '3.2', title: 'VS Code — editor chính để viết code', eyebrow: 'VS Code', desc: 'VS Code là code editor phổ biến nhất thế giới, miễn phí, của Microsoft.', contentType: 'text' },
+180:       { id: '3.3', title: 'Git — để lưu lịch sử và deploy', eyebrow: 'Git', desc: 'Hình dung Git như một cỗ máy thời gian cho code.', contentType: 'text' },
+181:       { id: '3.4', title: 'GitHub — nơi lưu code trên cloud', eyebrow: 'GitHub', desc: 'GitHub là nơi bạn lưu bản sao code lên internet.', contentType: 'text' },
+182:       { id: '3.5', title: 'Vercel — nơi deploy web lên internet', eyebrow: 'Vercel', desc: 'Vercel đưa web của bạn lên internet để ai cũng truy cập được.', contentType: 'text' },
+183:       { id: '3.6', title: 'Supabase — database cho web app', eyebrow: 'Supabase', desc: 'Supabase là database trên cloud để lưu dữ liệu web app.', contentType: 'text' },
+184:       { id: '3.7', title: 'AI IDE — tuỳ chọn, có phí nếu muốn dùng nhiều', eyebrow: 'AI IDE', desc: 'Tìm hiểu về các AI IDE như Cursor, Windsurf, Trae, Antigravity.', contentType: 'text' }
+185:     ]
+186:   },
+187: 
+188: // ========== BÀI 04 ==========
+189:   {
+190:     id: 4,
+191:     slug: 'lam-quen-vscode-cursor',
+192:     badge: 'CÔNG CỤ',
+193:     badgeType: 'dark',
+194:     duration: '~35 phút',
+195:     subLessonCount: 6,
+196:     title: 'Làm quen VS Code & Cursor — giao diện, phím tắt, cách đọc file',
+197:     titleEm: 'giao diện & phím tắt',
+198:     desc: 'Đi sâu vào VS Code và Cursor — hiểu giao diện, thư mục, terminal, và 10 phím tắt cần thiết.',
+199:     tags: ['VS Code', 'Cursor', 'terminal', 'phím tắt', 'file tree'],
+200:     difficulty: 'Công cụ · thực hành',
+201:     prevLesson: { id: 3, title: 'Cài đặt môi trường' },
+202:     nextLesson: { id: 5, title: 'Làm quen Claude Code' },
+203:     subLessons: [
+204:       {
+205:         id: '4.1',
+206:         title: 'Giao diện VS Code — Explorer, Terminal, Extensions',
+207:         eyebrow: 'Giao diện VS Code',
+208:         desc: 'Các panel chính: Explorer, Terminal, Extensions, Command Palette.',
+209:         contentType: 'text',
+210:         paragraphs: [
+211:           'VS Code có 5 panel chính bạn cần biết:',
+212:           '<strong>1. Activity Bar</strong> (thanh bên trái): Các icon để toggle panel. Explorer, Search, Source Control (Git), Extensions, Debug.',
+213:           '<strong>2. Explorer</strong>: Hiển thị cây thư mục của project. Click vào file để mở trong editor.',
+214:           '<strong>3. Editor</strong>: Vùng chính để đọc và sửa code. Có thể mở nhiều tabs.',
+215:           '<strong>4. Terminal</strong>: Mở bằng <code>Ctrl+`</code>. Nơi chạy lệnh npm, git, v.v.',
+216:           '<strong>5. Command Palette</strong>: Mở bằng <code>Ctrl+Shift+P</code>. Gõ tên lệnh để thực thi — không cần nhớ shortcut.'
+217:         ],
+218:         insight: '✳ Mẹo: Ctrl+P (Quick Open) để mở file nhanh bằng tên, không cần click trong Explorer.'
+219:       },
+220:       {
