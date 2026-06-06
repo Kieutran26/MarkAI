@@ -23,7 +23,7 @@
 173:     tags: ['Node.js', 'VS Code', 'Git', 'GitHub', 'Vercel', 'Supabase', 'AI IDE'],
 174:     difficulty: 'Setup · 40 phút',
 175:     prevLesson: { id: 2, title: 'Từ ngữ chuyên ngành' },
-176:     nextLesson: { id: 4, title: 'Làm quen VS Code & Cursor' },
+176:     nextLesson: { id: 4, title: 'Dựng giao diện web nhanh với AI' },
 177:     subLessons: [
 178:       { id: '3.1', title: 'Node.js — nền tảng để chạy code', eyebrow: 'Node.js', desc: 'Node.js là môi trường để máy bạn hiểu và chạy được JavaScript.', contentType: 'text' },
 179:       { id: '3.2', title: 'VS Code — editor chính để viết code', eyebrow: 'VS Code', desc: 'VS Code là code editor phổ biến nhất thế giới, miễn phí, của Microsoft.', contentType: 'text' },
@@ -38,16 +38,16 @@
 188: // ========== BÀI 04 ==========
 189:   {
 190:     id: 4,
-191:     slug: 'lam-quen-vscode-cursor',
-192:     badge: 'CÔNG CỤ',
+191:     slug: 'dung-giao-dien-web-nhanh-voi-ai',
+192:     badge: 'UI AI',
 193:     badgeType: 'dark',
-194:     duration: '~35 phút',
+194:     duration: '~30 phút',
 195:     subLessonCount: 6,
-196:     title: 'Làm quen VS Code & Cursor — giao diện, phím tắt, cách đọc file',
-197:     titleEm: 'giao diện & phím tắt',
-198:     desc: 'Đi sâu vào VS Code và Cursor — hiểu giao diện, thư mục, terminal, và 10 phím tắt cần thiết.',
-199:     tags: ['VS Code', 'Cursor', 'terminal', 'phím tắt', 'file tree'],
-200:     difficulty: 'Công cụ · thực hành',
+196:     title: 'Dựng giao diện web nhanh với AI',
+197:     titleEm: 'với AI',
+198:     desc: 'Dựng giao diện trước, lấy DESIGN.md làm context, dùng Google AI Studio, Stitch, Base44, Lovable, Figma Make, Claude Design, v0.dev và Replit để tạo UI nhanh.',
+199:     tags: ['DESIGN.md', 'UI', 'AI Studio', 'Base44', 'Lovable'],
+200:     difficulty: 'Giao diện · thực hành',
 201:     prevLesson: { id: 3, title: 'Cài đặt môi trường' },
 202:     nextLesson: { id: 5, title: 'Làm quen Claude Code' },
 203:     subLessons: [

@@ -39,7 +39,7 @@ export const getLessonSlug = (id: number): string => {
     1: 'vibecode-la-gi',
     2: 'tu-ngu-chuyen-nganh',
     3: 'cai-dat-moi-truong',
-    4: 'lam-quen-vscode-cursor',
+    4: 'dung-giao-dien-web-nhanh-voi-ai',
     5: 'lam-quen-claude-code',
     6: 'cong-cu-website-huu-ich',
     7: 'cach-prompt-cho-ai',
@@ -173,7 +173,7 @@ export const lessons: Lesson[] = [
     tags: ['Node.js', 'VS Code', 'Git', 'GitHub', 'Vercel', 'Supabase', 'AI IDE'],
     difficulty: 'Setup · 40 phút',
     prevLesson: { id: 2, title: 'Từ ngữ chuyên ngành' },
-    nextLesson: { id: 4, title: 'Làm quen VS Code & Cursor' },
+    nextLesson: { id: 4, title: 'Dựng giao diện web nhanh với AI' },
     subLessons: [
       { id: '3.1', title: 'Node.js — nền tảng để chạy code', eyebrow: 'Node.js', desc: 'Node.js là môi trường để máy bạn hiểu và chạy được JavaScript.', contentType: 'text' },
       { id: '3.2', title: 'VS Code — editor chính để viết code', eyebrow: 'VS Code', desc: 'VS Code là code editor phổ biến nhất thế giới, miễn phí, của Microsoft.', contentType: 'text' },
@@ -188,16 +188,16 @@ export const lessons: Lesson[] = [
 // ========== BÀI 04 ==========
   {
     id: 4,
-    slug: 'lam-quen-vscode-cursor',
-    badge: 'CÔNG CỤ',
+    slug: 'dung-giao-dien-web-nhanh-voi-ai',
+    badge: 'UI AI',
     badgeType: 'dark',
-    duration: '~35 phút',
+    duration: '~30 phút',
     subLessonCount: 6,
-    title: 'Làm quen VS Code & Cursor — giao diện, phím tắt, cách đọc file',
-    titleEm: 'giao diện & phím tắt',
-    desc: 'Đi sâu vào VS Code và Cursor — hiểu giao diện, thư mục, terminal, và 10 phím tắt cần thiết.',
-    tags: ['VS Code', 'Cursor', 'terminal', 'phím tắt', 'file tree'],
-    difficulty: 'Công cụ · thực hành',
+    title: 'Dựng giao diện web nhanh với AI',
+    titleEm: 'với AI',
+    desc: 'Dựng giao diện trước, lấy DESIGN.md làm context, dùng Google AI Studio, Stitch, Base44, Lovable, Figma Make, Claude Design, v0.dev và Replit để tạo UI nhanh.',
+    tags: ['DESIGN.md', 'UI', 'AI Studio', 'Base44', 'Lovable'],
+    difficulty: 'Giao diện · thực hành',
     prevLesson: { id: 3, title: 'Cài đặt môi trường' },
     nextLesson: { id: 5, title: 'Làm quen Claude Code' },
     subLessons: [
@@ -314,7 +314,7 @@ export const lessons: Lesson[] = [
     desc: 'Claude Code khác Cursor ở chỗ nào, lệnh nào hay dùng, và khi nào kết hợp cả hai.',
     tags: ['Claude Code', 'terminal', 'CLI', 'workflow'],
     difficulty: 'CLI · thực hành',
-    prevLesson: { id: 4, title: 'Làm quen VS Code & Cursor' },
+    prevLesson: { id: 4, title: 'Dựng giao diện web nhanh với AI' },
     nextLesson: { id: 6, title: 'Công cụ & website hữu ích' },
     subLessons: [
       {
