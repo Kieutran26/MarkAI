@@ -166,7 +166,7 @@ export const lessons: Lesson[] = [
     badge: 'SETUP',
     badgeType: 'dark',
     duration: '~40 phút',
-    subLessonCount: 8,
+    subLessonCount: 7,
     title: 'Cài gì vào máy để bắt đầu vibecode?',
     titleEm: 'Cài gì vào máy?',
     desc: 'Cài Node.js, VS Code, Git, GitHub, Vercel, Supabase, và AI IDE theo đúng thứ tự — bắt đầu từ con số 0.',
@@ -181,8 +181,7 @@ export const lessons: Lesson[] = [
       { id: '3.4', title: 'GitHub — nơi lưu code trên cloud', eyebrow: 'GitHub', desc: 'GitHub là nơi bạn lưu bản sao code lên internet.', contentType: 'text' },
       { id: '3.5', title: 'Vercel — nơi deploy web lên internet', eyebrow: 'Vercel', desc: 'Vercel đưa web của bạn lên internet để ai cũng truy cập được.', contentType: 'text' },
       { id: '3.6', title: 'Supabase — database cho web app', eyebrow: 'Supabase', desc: 'Supabase là database trên cloud để lưu dữ liệu web app.', contentType: 'text' },
-      { id: '3.7', title: 'AI IDE — tuỳ chọn, có phí nếu muốn dùng nhiều', eyebrow: 'AI IDE', desc: 'Tìm hiểu về các AI IDE như Cursor, Windsurf, Trae, Antigravity.', contentType: 'text' },
-      { id: '3.8', title: 'Cách làm việc', eyebrow: 'Workflow', desc: 'Biết cần cài gì là đủ; phần cách cài có thể hỏi AI hoặc để Codex xử lý giúp.', contentType: 'text' }
+      { id: '3.7', title: 'AI IDE — tuỳ chọn, có phí nếu muốn dùng nhiều', eyebrow: 'AI IDE', desc: 'Tìm hiểu về các AI IDE như Cursor, Windsurf, Trae, Antigravity.', contentType: 'text' }
     ]
   },
 

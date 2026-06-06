@@ -1,6 +1,8 @@
 Starting tasks...
 Fix and Update Lessons Success:
-lessons.ts is already updated and correct. Skipping update.
+Restoring lessons.ts from Git...
+Found Lesson 3 block from character 12286 to 14284
+Successfully updated src/lib/lessons.ts!
 
 Migration Success:
 Migrated 10 vibecode lessons into lesson_modules + lesson_blocks.
