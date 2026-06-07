@@ -1925,10 +1925,388 @@ const { error } = await supabase.auth.signInWithPassword({
       { type: 'html', html: '<div class="my-4 border border-[var(--border)] bg-[var(--bg2)]"><img src="/codex-tool-mention-example.png" alt="Ví dụ ghi @ tên tool và nói rõ yêu cầu trong Codex" class="w-full" /></div>' },
       { type: 'insight', label: 'Tóm lại', text: 'Bạn không cần biến mình thành người chuyên cài tool. Bạn chỉ cần biết tool nào cần có, sau đó hỏi AI hoặc để Codex hỗ trợ từng bước.' }
     ]
-  }
+  },
+                                              // ========== BÀI 04 ==========
+{
+    "id": "4.1",
+    "slug": "bai-4-1-mo-dau",
+    "lessonSlug": "dung-giao-dien-web-nhanh-voi-ai",
+    "lessonId": 4,
+    "lessonTitle": "Bài 4: Dựng giao diện web nhanh với AI",
+    "lessonTitleEm": "với AI",
+    "prevSlug": null,
+    "nextSlug": "bai-4-2-buoc-1-tim-web-co-giao-dien-minh-thich",
+    "prevTitle": null,
+    "nextTitle": "Bước 1 — Tìm web có giao diện mình thích",
+    "eyebrow": "Quy trình",
+    "title": "Mở đầu",
+    "titleEm": "",
+    "desc": "Một sai lầm hay gặp khi mới vibecode: <strongnhảy vào code tính năng luôn mà chưa có giao diện</strong.",
+    "duration": "~5 phút",
+    "totalSubs": 6,
+    "currentIndex": 1,
+    "content": [
+      {
+        "type": "p",
+        "text": "Một sai lầm hay gặp khi mới vibecode: <strong>nhảy vào code tính năng luôn mà chưa có giao diện</strong>."
+      },
+      {
+        "type": "infographic",
+        "label": "Workflow đúng khi dựng UI bằng AI",
+        "steps": [
+          {
+            "label": "01",
+            "title": "Dựng giao diện trước",
+            "desc": "Chốt layout, visual direction, màu, font, spacing và cảm giác tổng thể trước khi code logic."
+          },
+          {
+            "label": "02",
+            "title": "Hoàn thiện visual",
+            "desc": "Sửa hero, card, CTA, responsive và trạng thái rỗng cho đến khi nhìn đủ ổn để demo."
+          },
+          {
+            "label": "03",
+            "title": "Gắn tính năng sau",
+            "desc": "Khi khung UI đã ổn định, mới thêm form, database, auth, API hoặc logic phức tạp."
+          }
+        ],
+        "aside": {
+          "label": "Đừng làm ngược",
+          "title": "Code tính năng trước dễ làm UI vá víu",
+          "desc": "Mỗi lần sửa giao diện có thể kéo theo lỗi layout, state hoặc flow đang chạy."
+        }
+      },
+      {
+        "type": "p",
+        "text": "Kết quả là app chạy được nhưng trông xấu, layout vỡ, mỗi lần chỉnh UI lại phá tính năng đang chạy. Mất thời gian gấp đôi."
+      },
+      {
+        "type": "p",
+        "text": "Cách làm đúng hơn: <strong>dựng giao diện trước — hoàn thiện visual — rồi mới code tính năng vào sau</strong>"
+      },
+      {
+        "type": "p",
+        "text": "Bài này giới thiệu các tool mình thường dùng nhất:"
+      },
+      {
+        "type": "html",
+        "html": "<section class=\"tool-showcase\" aria-label=\"Các công cụ dựng giao diện web nhanh\">\n  <style>\n.tool-showcase {\n  margin: 2rem 0;\n}\n.tool-grid {\n  display: grid;\n  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));\n  gap: 1.25rem;\n  margin-top: 1.5rem;\n}\n.tool-card {\n  background: var(--bg);\n  border: 1px solid var(--border);\n  padding: 1.5rem;\n  display: flex;\n  flex-direction: column;\n  justify-content: space-between;\n  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);\n  position: relative;\n  min-height: 260px;\n}\n.tool-card:hover {\n  transform: translate(-3px, -3px);\n  box-shadow: 6px 6px 0px var(--accent);\n  border-color: var(--accent);\n}\n.tool-card:hover .tool-logo-wrapper {\n  border-color: var(--accent);\n  transform: scale(1.05);\n}\n.tool-header {\n  display: flex;\n  align-items: center;\n  gap: 1rem;\n  margin-bottom: 1.2rem;\n}\n.tool-logo-wrapper {\n  width: 52px;\n  height: 52px;\n  border: 1px solid var(--border);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  background: #000;\n  flex-shrink: 0;\n  padding: 6px;\n  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);\n}\n.tool-logo {\n  max-width: 100%;\n  max-height: 100%;\n  object-fit: contain;\n  image-rendering: -webkit-optimize-contrast;\n}\n.tool-info {\n  display: flex;\n  flex-direction: column;\n}\n.tool-name {\n  font-family: var(--display);\n  font-size: 16px;\n  font-weight: 800;\n  color: #000000 !important;\n  line-height: 1.2;\n}\n.tool-desc {\n  font-family: var(--sans);\n  font-size: 13.5px;\n  color: var(--ink2);\n  line-height: 1.6;\n  margin-bottom: 1.5rem;\n  flex-grow: 1;\n}\n.tool-footer {\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  border-top: 1px dashed var(--border);\n  padding-top: 1rem;\n  margin-top: auto;\n}\n.tool-badge {\n  font-family: var(--mono);\n  font-size: 9px;\n  padding: 3px 8px;\n  text-transform: uppercase;\n  letter-spacing: 0.06em;\n  font-weight: 500;\n}\n.badge-free {\n  background: color-mix(in srgb, #16a34a 8%, var(--bg));\n  color: #16a34a;\n  border: 1px solid color-mix(in srgb, #16a34a 24%, var(--border));\n}\n.badge-limits {\n  background: color-mix(in srgb, var(--accent) 8%, var(--bg));\n  color: var(--accent);\n  border: 1px solid color-mix(in srgb, var(--accent) 24%, var(--border));\n}\n.badge-paid {\n  background: color-mix(in srgb, #dc2626 8%, var(--bg));\n  color: #dc2626;\n  border: 1px solid color-mix(in srgb, #dc2626 24%, var(--border));\n}\n.tool-strength {\n  font-family: var(--mono);\n  font-size: 10px;\n  color: var(--muted);\n  letter-spacing: 0.04em;\n}\n@media (max-width: 480px) {\n  .tool-grid {\n    grid-template-columns: 1fr;\n    gap: 0.85rem;\n  }\n  .tool-card {\n    min-height: auto;\n    padding: 1.1rem;\n  }\n  .tool-logo-wrapper {\n    width: 44px;\n    height: 44px;\n    padding: 4px;\n  }\n  .tool-name {\n    font-size: 15px;\n  }\n  .tool-desc {\n    font-size: 13px;\n    margin-bottom: 1rem;\n  }\n}\n  </style>\n  <div class=\"tool-grid\">\n<!-- Card 1: Google AI Studio -->\n<article class=\"tool-card\">\n  <div>\n    <div class=\"tool-header\">\n      <div class=\"tool-logo-wrapper\">\n        <img class=\"tool-logo\" src=\"/aistudio.png\" alt=\"Google AI Studio Logo\" />\n      </div>\n      <div class=\"tool-info\">\n        <h4 class=\"tool-name\">Google AI Studio</h4>\n        <span class=\"tool-strength\">Model mạnh nhất</span>\n      </div>\n    </div>\n    <p class=\"tool-desc\">Prompt → code nhanh, model mạnh nhất, không giới hạn. Thích hợp để code prototype nhanh chóng.</p>\n  </div>\n  <div class=\"tool-footer\">\n    <span class=\"tool-badge badge-free\">Hoàn toàn FREE</span>\n  </div>\n</article>\n\n<!-- Card 2: Stitch -->\n<article class=\"tool-card\">\n  <div>\n    <div class=\"tool-header\">\n      <div class=\"tool-logo-wrapper\">\n        <img class=\"tool-logo\" src=\"/Google-Stitch-Logo.png\" alt=\"Stitch Logo\" />\n      </div>\n      <div class=\"tool-info\">\n        <h4 class=\"tool-name\">Stitch</h4>\n        <span class=\"tool-strength\">Nhái giao diện nhanh</span>\n      </div>\n    </div>\n    <p class=\"tool-desc\">Upload ảnh tham khảo → AI nhái theo. Hoặc ghi Prompt, giao diện sinh ra rất đẹp và hiện đại.</p>\n  </div>\n  <div class=\"tool-footer\">\n    <span class=\"tool-badge badge-free\">FREE (Beta)</span>\n  </div>\n</article>\n\n<!-- Card 3: Base44 -->\n<article class=\"tool-card\">\n  <div>\n    <div class=\"tool-header\">\n      <div class=\"tool-logo-wrapper\" style=\"background: #111;\">\n        <img class=\"tool-logo\" src=\"/base44.png\" alt=\"Base44 Logo\" />\n      </div>\n      <div class=\"tool-info\">\n        <h4 class=\"tool-name\">Base44</h4>\n        <span class=\"tool-strength\">Ưu tiên dùng nhất</span>\n      </div>\n    </div>\n    <p class=\"tool-desc\">Giao diện cực kỳ đẹp, hiện đại. Mình ưu tiên dùng công cụ này nhất cho các dự án vibecode.</p>\n  </div>\n  <div class=\"tool-footer\">\n    <span class=\"tool-badge badge-limits\">FREE giới hạn</span>\n  </div>\n</article>\n\n<!-- Card 4: Lovable -->\n<article class=\"tool-card\">\n  <div>\n    <div class=\"tool-header\">\n      <div class=\"tool-logo-wrapper\" style=\"background: #000;\">\n        <img class=\"tool-logo\" src=\"/lovable-logo.avif\" alt=\"Lovable Logo\" />\n      </div>\n      <div class=\"tool-info\">\n        <h4 class=\"tool-name\">Lovable</h4>\n        <span class=\"tool-strength\">Tích hợp Database</span>\n      </div>\n    </div>\n    <p class=\"tool-desc\">Giao diện đẹp, tự động tạo database + login ngay từ đầu. Tuy nhiên rất dễ hết credit miễn phí.</p>\n  </div>\n  <div class=\"tool-footer\">\n    <span class=\"tool-badge badge-limits\">FREE giới hạn</span>\n  </div>\n</article>\n\n<!-- Card 5: Figma Make -->\n<article class=\"tool-card\">\n  <div>\n    <div class=\"tool-header\">\n      <div class=\"tool-logo-wrapper\">\n        <img class=\"tool-logo\" src=\"/figma-make-logo.png\" alt=\"Figma Make Logo\" />\n      </div>\n      <div class=\"tool-info\">\n        <h4 class=\"tool-name\">Figma Make</h4>\n        <span class=\"tool-strength\">Figma sang Web</span>\n      </div>\n    </div>\n    <p class=\"tool-desc\">Tạo web cực đẹp trực tiếp từ bản thiết kế Figma của bạn, giữ nguyên các specs và layout chuẩn.</p>\n  </div>\n  <div class=\"tool-footer\">\n    <span class=\"tool-badge badge-limits\">FREE giới hạn</span>\n  </div>\n</article>\n\n<!-- Card 6: Claude Design -->\n<article class=\"tool-card\">\n  <div>\n    <div class=\"tool-header\">\n      <div class=\"tool-logo-wrapper\">\n        <img class=\"tool-logo\" src=\"/claude-design.png\" alt=\"Claude Design Logo\" />\n      </div>\n      <div class=\"tool-info\">\n        <h4 class=\"tool-name\">Claude Design</h4>\n        <span class=\"tool-strength\">Cực kỳ thông minh</span>\n      </div>\n    </div>\n    <p class=\"tool-desc\">Rất đẹp và cực kỳ mạnh mẽ. Tuy nhiên chi phí sử dụng đắt, yêu cầu có tài khoản Claude Pro trở lên.</p>\n  </div>\n  <div class=\"tool-footer\">\n    <span class=\"tool-badge badge-paid\">Claude Pro</span>\n  </div>\n</article>\n\n<!-- Card 7: v0.dev -->\n<article class=\"tool-card\">\n  <div>\n    <div class=\"tool-header\">\n      <div class=\"tool-logo-wrapper\" style=\"background: #000;\">\n        <img class=\"tool-logo\" src=\"/v0.png\" alt=\"v0.dev Logo\" />\n      </div>\n      <div class=\"tool-info\">\n        <h4 class=\"tool-name\">v0.dev</h4>\n        <span class=\"tool-strength\">Tạo UI React tốt nhất</span>\n      </div>\n    </div>\n    <p class=\"tool-desc\">Sinh UI components cực nhanh từ text hoặc ảnh chụp. Sử dụng thư viện Shadcn UI và Tailwind CSS.</p>\n  </div>\n  <div class=\"tool-footer\">\n    <span class=\"tool-badge badge-limits\">FREE giới hạn</span>\n  </div>\n</article>\n\n<!-- Card 8: Replit -->\n<article class=\"tool-card\">\n  <div>\n    <div class=\"tool-header\">\n      <div class=\"tool-logo-wrapper\" style=\"background: #0f172a;\">\n        <img class=\"tool-logo\" src=\"/replit.png\" alt=\"Replit Logo\" />\n      </div>\n      <div class=\"tool-info\">\n        <h4 class=\"tool-name\">Replit</h4>\n        <span class=\"tool-strength\">Môi trường toàn diện</span>\n      </div>\n    </div>\n    <p class=\"tool-desc\">Tạo web app hoàn chỉnh tương tự Lovable hay Base44, hỗ trợ đầy đủ editor và hosting trực tuyến.</p>\n  </div>\n  <div class=\"tool-footer\">\n    <span class=\"tool-badge badge-limits\">FREE giới hạn</span>\n  </div>\n</article>\n  </div>\n</section>"
+      },
+      {
+        "type": "html",
+        "html": "<section class=\"compare-table-section\" aria-label=\"So sánh nhanh các công cụ\">\n  <style>\n.compare-table-section {\n  margin: 2.5rem 0;\n}\n.compare-title {\n  font-family: var(--sans);\n  font-size: 1.5rem;\n  font-weight: 700;\n  color: var(--ink);\n  margin: 0 0 1.5rem 0;\n  letter-spacing: -0.02em;\n}\n.compare-table-wrapper {\n  overflow-x: auto;\n  margin-bottom: 2rem;\n}\n.compare-table {\n  width: 100%;\n  border-collapse: collapse;\n}\n.compare-table th {\n  font-family: var(--mono);\n  font-size: 11px;\n  font-weight: 500;\n  color: var(--muted);\n  text-transform: uppercase;\n  letter-spacing: 0.05em;\n  text-align: left;\n  padding: 0.75rem 1rem;\n  border-bottom: 1px solid var(--border);\n}\n.compare-table td {\n  padding: 1.25rem 1rem;\n  border-bottom: 1px solid var(--border);\n  vertical-align: middle;\n  font-family: var(--sans);\n  font-size: 14.5px;\n  line-height: 1.6;\n  color: var(--ink);\n}\n.compare-table tr:last-child td {\n  border-bottom: none;\n}\n.col-tool {\n  font-weight: 700;\n  width: 22%;\n}\n.col-strength {\n  color: var(--ink2);\n  width: 53%;\n}\n.col-free {\n  width: 25%;\n}\n.free-status {\n  display: inline-flex;\n  align-items: center;\n  gap: 0.5rem;\n  font-weight: 500;\n  color: var(--success);\n}\n.check-icon {\n  flex-shrink: 0;\n}\n.compare-note {\n  background: var(--bg2);\n  border-left: 2px solid var(--accent);\n  padding: 1.2rem 1.5rem;\n  margin-top: 1.5rem;\n}\n.compare-note p {\n  margin: 0;\n  font-family: var(--mono);\n  font-size: 12.5px;\n  line-height: 1.7;\n  color: var(--ink2);\n}\n\n@media (max-width: 768px) {\n  .compare-table thead {\n    display: none;\n  }\n  .compare-table tr {\n    display: block;\n    padding: 1rem 0;\n    border-bottom: 1px solid var(--border);\n  }\n  .compare-table td {\n    display: block;\n    padding: 0.25rem 0;\n    width: 100% !important;\n    border-bottom: none;\n  }\n  .col-tool {\n    font-size: 16px;\n    margin-bottom: 0.25rem;\n  }\n  .col-free {\n    margin-top: 0.25rem;\n  }\n}\n  </style>\n\n  <h3 class=\"compare-title\">So sánh nhanh trước khi đi vào từng tool</h3>\n\n  <div class=\"compare-table-wrapper\">\n<table class=\"compare-table\">\n  <thead>\n    <tr>\n      <th>Tool</th>\n      <th>Mạnh ở</th>\n      <th>Free?</th>\n    </tr>\n  </thead>\n  <tbody>\n    <tr>\n      <td class=\"col-tool\">Google AI Studio</td>\n      <td class=\"col-strength\">Prompt → code nhanh, model mạnh nhất, không giới hạn</td>\n      <td class=\"col-free\">\n        <div class=\"free-status\">\n          <svg class=\"check-icon\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\">\n            <rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\" fill=\"var(--success)\" stroke=\"var(--success)\"></rect>\n            <path d=\"M9 12l2 2 4-4\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path>\n          </svg>\n          <span>Hoàn toàn</span>\n        </div>\n      </td>\n    </tr>\n    <tr>\n      <td class=\"col-tool\">Stitch</td>\n      <td class=\"col-strength\">Upload ảnh tham khảo → AI nhái theo. Hoặc ghi Prompt, giao diện khá đẹp</td>\n      <td class=\"col-free\">\n        <div class=\"free-status\">\n          <svg class=\"check-icon\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\">\n            <rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\" fill=\"var(--success)\" stroke=\"var(--success)\"></rect>\n            <path d=\"M9 12l2 2 4-4\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path>\n          </svg>\n          <span>(beta)</span>\n        </div>\n      </td>\n    </tr>\n    <tr>\n      <td class=\"col-tool\">Base44</td>\n      <td class=\"col-strength\">Giao diện đẹp, mình ưu tiên dùng này nhất</td>\n      <td class=\"col-free\">\n        <div class=\"free-status\">\n          <svg class=\"check-icon\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\">\n            <rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\" fill=\"var(--success)\" stroke=\"var(--success)\"></rect>\n            <path d=\"M9 12l2 2 4-4\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path>\n          </svg>\n          <span>Giới hạn</span>\n        </div>\n      </td>\n    </tr>\n    <tr>\n      <td class=\"col-tool\">Lovable</td>\n      <td class=\"col-strength\">Giao diện đẹp, mình cũng ưu tiên này nhưng loveable rất dễ hết credit</td>\n      <td class=\"col-free\">\n        <div class=\"free-status\">\n          <svg class=\"check-icon\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\">\n            <rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\" fill=\"var(--success)\" stroke=\"var(--success)\"></rect>\n            <path d=\"M9 12l2 2 4-4\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path>\n          </svg>\n          <span>Giới hạn</span>\n        </div>\n      </td>\n    </tr>\n    <tr>\n      <td class=\"col-tool\">Figma Make</td>\n      <td class=\"col-strength\">Tạo cũng rất đẹp, bạn nào có giao diện từ file Figma thì Figma Make tạo thẳng web thì thiết kế đó luôn</td>\n      <td class=\"col-free\">\n        <div class=\"free-status\">\n          <svg class=\"check-icon\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\">\n            <rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\" fill=\"var(--success)\" stroke=\"var(--success)\"></rect>\n            <path d=\"M9 12l2 2 4-4\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path>\n          </svg>\n          <span>Giới hạn</span>\n        </div>\n      </td>\n    </tr>\n    <tr>\n      <td class=\"col-tool\">Claude Design</td>\n      <td class=\"col-strength\">Rất đẹp và rất mạnh, nhưng mình ko ưu tiên dùng vì…đắt</td>\n      <td class=\"col-free\">\n        <div class=\"free-status\">\n          <svg class=\"check-icon\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\">\n            <rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\" fill=\"var(--success)\" stroke=\"var(--success)\"></rect>\n            <path d=\"M9 12l2 2 4-4\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path>\n          </svg>\n          <span>đắt, phải có tài khoản Claude Pro trở lên mới có</span>\n        </div>\n      </td>\n    </tr>\n    <tr>\n      <td class=\"col-tool\">Replit</td>\n      <td class=\"col-strength\">Khá đẹp, là web toàn diện như Loveable hay Base44</td>\n      <td class=\"col-free\">\n        <div class=\"free-status\">\n          <svg class=\"check-icon\" width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3\">\n            <rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\" fill=\"var(--success)\" stroke=\"var(--success)\"></rect>\n            <path d=\"M9 12l2 2 4-4\" stroke=\"#fff\" stroke-linecap=\"round\" stroke-linejoin=\"round\"></path>\n          </svg>\n          <span>Giới hạn</span>\n        </div>\n      </td>\n    </tr>\n  </tbody>\n</table>\n  </div>\n\n  <div class=\"compare-note\">\n<p>* <strong>Lưu ý:</strong> Hướng dẫn chi tiết từng tool – cách dùng từng bước, tip, lỗi hay gặp – mình sẽ làm trong các bài blog riêng, mỗi tool một bài.</p>\n  </div>\n</section>"
+      },
+      {
+        "type": "html",
+        "html": "<section class=\"problem-solution-section\" aria-label=\"Vấn đề và giải pháp thiết kế\">\n  <style>\n.problem-solution-section {\n  margin: 2.5rem 0;\n}\n.sec-title {\n  font-family: var(--sans);\n  font-size: 1.5rem;\n  font-weight: 700;\n  color: var(--ink);\n  margin: 0 0 0.5rem 0;\n  letter-spacing: -0.02em;\n}\n.sec-subtitle {\n  font-family: var(--sans);\n  font-size: 14.5px;\n  color: var(--ink2);\n  margin-bottom: 1.5rem;\n  line-height: 1.6;\n}\n.outcomes-grid {\n  display: grid;\n  grid-template-columns: 1fr 1fr;\n  gap: 1.25rem;\n  margin-bottom: 1.5rem;\n}\n.outcome-card {\n  background: var(--bg2);\n  border: 1px solid var(--border);\n  padding: 1.5rem;\n  display: flex;\n  flex-direction: column;\n  position: relative;\n}\n.card-badge {\n  display: inline-block;\n  align-self: flex-start;\n  font-family: var(--mono);\n  font-size: 10px;\n  font-weight: 700;\n  text-transform: uppercase;\n  letter-spacing: 0.05em;\n  padding: 3px 8px;\n  border: 1px solid var(--border);\n  margin-bottom: 1rem;\n}\n.badge-generic {\n  background: color-mix(in srgb, var(--accent) 8%, var(--bg2));\n  color: var(--accent);\n  border-color: color-mix(in srgb, var(--accent) 30%, var(--border));\n}\n.badge-mismatch {\n  background: color-mix(in srgb, #ef4444 8%, var(--bg2));\n  color: #ef4444;\n  border-color: color-mix(in srgb, #ef4444 30%, var(--border));\n}\n.card-title {\n  font-family: var(--sans);\n  font-size: 15px;\n  font-weight: 700;\n  color: var(--ink);\n  margin: 0 0 0.75rem 0;\n  line-height: 1.3;\n}\n.card-desc {\n  font-family: var(--sans);\n  font-size: 13.5px;\n  color: var(--ink2);\n  line-height: 1.5;\n  margin: 0;\n}\n.insight-callout {\n  border: 1px solid var(--border);\n  background: var(--bg);\n  padding: 1.5rem;\n  margin-bottom: 1.5rem;\n  position: relative;\n  transition: all 0.2s ease;\n}\n.insight-title {\n  font-family: var(--display);\n  font-size: 14px;\n  font-weight: 700;\n  text-transform: uppercase;\n  letter-spacing: 0.05em;\n  color: var(--accent);\n  margin-bottom: 0.75rem;\n  display: flex;\n  align-items: center;\n  gap: 0.5rem;\n}\n.insight-text {\n  font-family: var(--sans);\n  font-size: 14.5px;\n  line-height: 1.6;\n  color: var(--ink);\n  margin: 0;\n}\n.solution-hero {\n  background: var(--ink);\n  color: var(--bg);\n  border: 1px solid var(--border);\n  padding: 1.75rem;\n  display: flex;\n  align-items: center;\n  justify-content: space-between;\n  gap: 1.5rem;\n  position: relative;\n  overflow: hidden;\n  box-shadow: 4px 4px 0px var(--accent);\n}\n.solution-content {\n  flex: 1;\n}\n.solution-label {\n  font-family: var(--mono);\n  font-size: 10px;\n  color: var(--accent);\n  text-transform: uppercase;\n  letter-spacing: 0.1em;\n  font-weight: 700;\n  margin-bottom: 0.5rem;\n  display: block;\n}\n.solution-title {\n  font-family: var(--sans);\n  font-size: 20px;\n  font-weight: 700;\n  margin: 0 0 0.75rem 0;\n  letter-spacing: -0.02em;\n  line-height: 1.2;\n}\n.solution-desc {\n  font-family: var(--sans);\n  font-size: 13.5px;\n  color: color-mix(in srgb, var(--bg) 80%, transparent);\n  line-height: 1.55;\n  margin: 0;\n}\n.solution-visual {\n  font-family: var(--mono);\n  font-size: 12px;\n  background: rgba(255, 255, 255, 0.08);\n  border: 1px solid rgba(255, 255, 255, 0.15);\n  padding: 0.75rem 1.25rem;\n  border-radius: 4px;\n  color: var(--accent);\n  font-weight: 700;\n  letter-spacing: 0.05em;\n  display: inline-flex;\n  align-items: center;\n  gap: 0.5rem;\n  flex-shrink: 0;\n}\n\n@media (max-width: 640px) {\n  .outcomes-grid {\n    grid-template-columns: 1fr;\n    gap: 0.85rem;\n  }\n  .solution-hero {\n    flex-direction: column;\n    align-items: flex-start;\n    gap: 1.25rem;\n    padding: 1.5rem;\n  }\n  .solution-visual {\n    align-self: stretch;\n    justify-content: center;\n  }\n}\n  </style>\n\n  <h3 class=\"sec-title\">Vấn đề thật: AI code UI đúng ý khó hơn tưởng tượng</h3>\n  <p class=\"sec-subtitle\">Khi bạn nhờ AI trong Cursor hay Claude Code viết giao diện từ đầu, thường ra một trong hai kết quả:</p>\n\n  <div class=\"outcomes-grid\">\n<div class=\"outcome-card\">\n  <span class=\"card-badge badge-generic\">Kết quả 1</span>\n  <h4 class=\"card-title\">UI generic, thiếu bản sắc</h4>\n  <p class=\"card-desc\">Giao diện trông na ná mọi app AI khác — màu xanh hoặc gradient mặc định, font hệ thống, layout cứng nhắc và thiếu tinh tế.</p>\n</div>\n<div class=\"outcome-card\">\n  <span class=\"card-badge badge-mismatch\">Kết quả 2</span>\n  <h4 class=\"card-title\">Lệch pha so với hình dung</h4>\n  <p class=\"card-desc\">Giao diện không giống thứ bạn mong muốn. Vì bạn mô tả bằng chữ (prompt), AI sẽ tự hiểu và thiết kế theo cách của riêng nó.</p>\n</div>\n  </div>\n\n  <div class=\"insight-callout\">\n<div class=\"insight-title\">\n  <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\">\n    <circle cx=\"12\" cy=\"12\" r=\"10\"></circle>\n    <line x1=\"12\" y1=\"16\" x2=\"12\" y2=\"12\"></line>\n    <line x1=\"12\" y1=\"8\" x2=\"12.01\" y2=\"8\"></line>\n  </svg>\n  <span>Bản chất cốt lõi</span>\n</div>\n<p class=\"insight-text\">Vấn đề không phải do AI dở. Bản chất là <strong>AI cần context cụ thể về design</strong> (mã màu chính xác, font chữ, quy chuẩn spacing, quy tắc component) thay vì chỉ nhận những câu lệnh mô tả chung chung.</p>\n  </div>\n\n  <div class=\"solution-hero\">\n<div class=\"solution-content\">\n  <span class=\"solution-label\">Chìa khóa giải quyết</span>\n  <h4 class=\"solution-title\">Đó là lý do DESIGN.md ra đời</h4>\n  <p class=\"solution-desc\">DESIGN.md đóng vai trò như một bản đặc tả thiết kế giúp đồng bộ hóa ngôn ngữ visual giữa bạn và AI, hướng dẫn AI code chính xác style mong muốn.</p>\n</div>\n<div class=\"solution-visual\">\n  <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\">\n    <path d=\"M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z\"></path>\n    <polyline points=\"14 2 14 8 20 8\"></polyline>\n    <line x1=\"16\" y1=\"13\" x2=\"8\" y2=\"13\"></line>\n    <line x1=\"16\" y1=\"17\" x2=\"8\" y2=\"17\"></line>\n    <polyline points=\"10 9 9 9 8 9\"></polyline>\n  </svg>\n  <span>DESIGN.md</span>\n</div>\n  </div>\n</section>"
+      }
+    ]
+  },
+  {
+    "id": "4.2",
+    "slug": "bai-4-2-buoc-1-tim-web-co-giao-dien-minh-thich",
+    "lessonSlug": "dung-giao-dien-web-nhanh-voi-ai",
+    "lessonId": 4,
+    "lessonTitle": "Bài 4: Dựng giao diện web nhanh với AI",
+    "lessonTitleEm": "với AI",
+    "prevSlug": "bai-4-1-mo-dau",
+    "nextSlug": "bai-4-3-buoc-2-lay-design-md-tu-web-do",
+    "prevTitle": "Mở đầu",
+    "nextTitle": "Bước 2 — Lấy DESIGN.md từ web đó",
+    "eyebrow": "Tìm tham khảo",
+    "title": "Bước 1 — Tìm web có giao diện mình thích",
+    "titleEm": "",
+    "desc": "Chưa có ý tưởng giao diện? Đừng bắt đầu từ tờ giấy trắng. Tìm một web trông đúng thứ mình muốn làm — rồi nhái theo.",
+    "duration": "~5 phút",
+    "totalSubs": 6,
+    "currentIndex": 2,
+    "content": [
+      {
+        "type": "p",
+        "text": "Chưa có ý tưởng giao diện? Đừng bắt đầu từ tờ giấy trắng. Tìm một web trông đúng thứ mình muốn làm — rồi nhái theo."
+      },
+      {
+        "type": "infographic",
+        "label": "Tìm reference trước khi prompt",
+        "steps": [
+          {
+            "label": "01",
+            "title": "Chọn web gần mục tiêu",
+            "desc": "Tìm một trang có mood, cấu trúc hoặc ngành giống thứ bạn muốn build."
+          },
+          {
+            "label": "02",
+            "title": "Ghi lại pattern",
+            "desc": "Nhìn nav, hero, card, bảng giá, form, spacing, màu và cách trang dẫn mắt người xem."
+          },
+          {
+            "label": "03",
+            "title": "Dùng làm brief",
+            "desc": "Đưa reference đó vào AI để giảm đoán mò và tăng khả năng ra UI đúng ý."
+          }
+        ],
+        "aside": {
+          "label": "Không bắt đầu trắng",
+          "title": "Reference giúp AI hiểu gu thiết kế nhanh hơn",
+          "desc": "Bạn không cần tự nghĩ từ đầu; chọn cái gần đúng rồi chỉnh theo nhu cầu của mình."
+        }
+      },
+      {
+        "type": "html",
+        "html": "<section class=\"reference-showcase\" aria-label=\"Nguồn tìm tham khảo thiết kế\">\n  <style>\n.reference-showcase {\n  margin: 3rem 0;\n  padding: 1.5rem;\n  background: var(--bg);\n  border: 2px solid var(--border);\n  box-shadow: 6px 6px 0px var(--border);\n}\n.ref-title {\n  font-family: var(--sans);\n  font-size: 1.25rem;\n  font-weight: 800;\n  color: var(--ink);\n  margin-top: 0;\n  margin-bottom: 1.5rem;\n  text-transform: uppercase;\n  letter-spacing: 0.06em;\n  display: flex;\n  align-items: center;\n  gap: 0.5rem;\n}\n.ref-title::after {\n  content: \"\";\n  flex-grow: 1;\n  height: 2px;\n  background: var(--border);\n  margin-left: 0.5rem;\n}\n.ref-grid {\n  display: grid;\n  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));\n  gap: 1.25rem;\n}\n.ref-card {\n  background: var(--bg2);\n  border: 2px solid var(--border);\n  padding: 1.25rem;\n  display: flex;\n  flex-direction: column;\n  justify-content: space-between;\n  transition: transform 0.15s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.15s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.15s cubic-bezier(0.16, 1, 0.3, 1);\n  position: relative;\n  min-height: 220px;\n  box-shadow: 4px 4px 0px var(--border);\n}\n.ref-card:hover {\n  transform: translate(-4px, -4px);\n  box-shadow: 8px 8px 0px var(--accent);\n  border-color: var(--accent);\n}\n.ref-card-header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  margin-bottom: 1rem;\n}\n.ref-icon-wrapper {\n  width: 36px;\n  height: 36px;\n  background: var(--bg);\n  border: 1px solid var(--border);\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  color: var(--ink);\n  transition: border-color 0.15s, color 0.15s, background-color 0.15s;\n}\n.ref-card:hover .ref-icon-wrapper {\n  border-color: var(--accent);\n  color: var(--accent);\n  background: color-mix(in srgb, var(--accent) 8%, var(--bg));\n}\n.ref-badge {\n  font-family: var(--mono);\n  font-size: 9px;\n  font-weight: 700;\n  text-transform: uppercase;\n  letter-spacing: 0.05em;\n  padding: 3px 8px;\n  background: var(--bg);\n  border: 1px solid var(--border);\n  color: var(--ink2);\n}\n.ref-card:hover .ref-badge {\n  border-color: var(--accent);\n  color: var(--accent);\n}\n.ref-name {\n  font-family: var(--sans);\n  font-size: 16px;\n  font-weight: 800;\n  color: var(--ink);\n  margin: 0 0 0.5rem 0;\n}\n.ref-name a {\n  color: inherit;\n  text-decoration: none;\n  display: inline-flex;\n  align-items: center;\n  gap: 0.25rem;\n}\n.ref-name a:hover {\n  color: var(--accent);\n}\n.ref-desc {\n  font-family: var(--sans);\n  font-size: 13px;\n  color: var(--ink2);\n  line-height: 1.5;\n  margin: 0 0 1rem 0;\n  flex-grow: 1;\n}\n.ref-card-footer {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  border-top: 1px dashed var(--border);\n  padding-top: 0.75rem;\n  margin-top: auto;\n}\n.ref-link-text {\n  font-family: var(--mono);\n  font-size: 10px;\n  font-weight: 700;\n  text-transform: uppercase;\n  color: var(--muted);\n  letter-spacing: 0.05em;\n}\n.ref-card:hover .ref-link-text {\n  color: var(--accent);\n}\n.ref-arrow {\n  font-family: var(--mono);\n  font-size: 14px;\n  color: var(--muted);\n  transition: transform 0.15s ease, color 0.15s ease;\n}\n.ref-card:hover .ref-arrow {\n  color: var(--accent);\n  transform: translateX(4px);\n}\n\n@media (max-width: 480px) {\n  .ref-grid {\n    grid-template-columns: 1fr;\n    gap: 1rem;\n  }\n  .ref-card {\n    min-height: auto;\n    padding: 1rem;\n  }\n}\n  </style>\n\n  <h4 class=\"ref-title\">Nguồn tìm tham khảo</h4>\n  <div class=\"ref-grid\">\n<!-- Card 1: Mobbin -->\n<article class=\"ref-card\">\n  <div>\n    <div class=\"ref-card-header\">\n      <div class=\"ref-icon-wrapper\">\n        <svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n          <rect x=\"5\" y=\"2\" width=\"14\" height=\"20\" rx=\"2\" ry=\"2\"></rect>\n          <line x1=\"12\" y1=\"18\" x2=\"12.01\" y2=\"18\"></line>\n        </svg>\n      </div>\n      <span class=\"ref-badge\">Thực tế · App/Web</span>\n    </div>\n    <h5 class=\"ref-name\">\n      <a href=\"https://mobbin.com/\" target=\"_blank\" rel=\"noreferrer\">Mobbin.com</a>\n    </h5>\n    <p class=\"ref-desc\">Thư viện screenshot UI/UX thực tế từ hàng nghìn app và web. Cực tốt để tìm kiếm theo pattern hoặc industry.</p>\n  </div>\n  <div class=\"ref-card-footer\">\n    <span class=\"ref-link-text\">Truy cập</span>\n    <span class=\"ref-arrow\">→</span>\n  </div>\n</article>\n\n<!-- Card 2: Dribbble -->\n<article class=\"ref-card\">\n  <div>\n    <div class=\"ref-card-header\">\n      <div class=\"ref-icon-wrapper\">\n        <svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n          <circle cx=\"12\" cy=\"12\" r=\"10\"></circle>\n          <path d=\"M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72\"></path>\n          <path d=\"M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10\"></path>\n          <path d=\"M2 12h20\"></path>\n        </svg>\n      </div>\n      <span class=\"ref-badge\">Visual Concept</span>\n    </div>\n    <h5 class=\"ref-name\">\n      <a href=\"https://dribbble.com/\" target=\"_blank\" rel=\"noreferrer\">Dribbble.com</a>\n    </h5>\n    <p class=\"ref-desc\">Nơi chia sẻ các concept UI phong phú từ các designer trên toàn thế giới, cực kỳ nhiều phong cách nghệ thuật đa dạng.</p>\n  </div>\n  <div class=\"ref-card-footer\">\n    <span class=\"ref-link-text\">Truy cập</span>\n    <span class=\"ref-arrow\">→</span>\n  </div>\n</article>\n\n<!-- Card 3: Pinterest -->\n<article class=\"ref-card\">\n  <div>\n    <div class=\"ref-card-header\">\n      <div class=\"ref-icon-wrapper\">\n        <svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n          <path d=\"M12 2a10 10 0 0 0-3.3 19.4c-.1-.9-.2-2.3 0-3.3l1.3-5.5s-.3-.7-.3-1.7c0-1.6.9-2.8 2-2.8 1 0 1.5.8 1.5 1.7 0 1-.6 2.5-.9 3.9-.3 1.2.6 2.2 1.8 2.2 2.2 0 3.9-2.3 3.9-5.6 0-3-2.1-5-5.1-5-3.5 0-5.6 2.6-5.6 5.4 0 1 .4 2.2.9 2.8.1.1.1.2 0 .6l-.3 1.2c-.1.3-.3.4-.6.3-2.1-1-3.4-4-3.4-6.5C3 7.8 7.3 3 12.5 3c4.2 0 7.4 3 7.4 7 0 4.2-2.6 7.5-6.3 7.5-1.2 0-2.4-.6-2.8-1.4l-.8 2.9c-.3 1.1-1.1 2.5-1.6 3.4A10 10 0 1 0 12 2z\"></path>\n        </svg>\n      </div>\n      <span class=\"ref-badge\">Ý tưởng · Mood</span>\n    </div>\n    <h5 class=\"ref-name\">\n      <a href=\"https://pinterest.com/\" target=\"_blank\" rel=\"noreferrer\">Pinterest.com</a>\n    </h5>\n    <p class=\"ref-desc\">Tìm kiếm với từ khóa kiểu \"minimal web design\", \"SaaS landing page\", \"dark dashboard UI\" để ra moodboard nhanh.</p>\n  </div>\n  <div class=\"ref-card-footer\">\n    <span class=\"ref-link-text\">Truy cập</span>\n    <span class=\"ref-arrow\">→</span>\n  </div>\n</article>\n\n<!-- Card 4: Behance -->\n<article class=\"ref-card\">\n  <div>\n    <div class=\"ref-card-header\">\n      <div class=\"ref-icon-wrapper\">\n        <svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n          <path d=\"M12 12H3V8h9v4z\"></path>\n          <path d=\"M12 16H3v-2h9v2z\"></path>\n          <path d=\"M18 10h4v2h-4v-2z\"></path>\n          <path d=\"M21 7h-2.5C17 7 16 8.5 16 10s1 3 2.5 3H21\"></path>\n        </svg>\n      </div>\n      <span class=\"ref-badge\">Case Studies</span>\n    </div>\n    <h5 class=\"ref-name\">\n      <a href=\"https://behance.net/\" target=\"_blank\" rel=\"noreferrer\">Behance.net</a>\n    </h5>\n    <p class=\"ref-desc\">Các portfolio thiết kế chuyên sâu từ các studio lớn, thường đi kèm phân tích breakdown quá trình thiết kế chi tiết.</p>\n  </div>\n  <div class=\"ref-card-footer\">\n    <span class=\"ref-link-text\">Truy cập</span>\n    <span class=\"ref-arrow\">→</span>\n  </div>\n</article>\n\n<!-- Card 5: Dark.design -->\n<article class=\"ref-card\">\n  <div>\n    <div class=\"ref-card-header\">\n      <div class=\"ref-icon-wrapper\">\n        <svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\">\n          <path d=\"M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z\"></path>\n        </svg>\n      </div>\n      <span class=\"ref-badge\">Dark Mode UI</span>\n    </div>\n    <h5 class=\"ref-name\">\n      <a href=\"https://dark.design/\" target=\"_blank\" rel=\"noreferrer\">Dark.design</a>\n    </h5>\n    <p class=\"ref-desc\">Nếu bạn muốn thiết kế giao diện tối (Dark Mode), đây là thư viện tổng hợp các web có dark UI xuất sắc nhất.</p>\n  </div>\n  <div class=\"ref-card-footer\">\n    <span class=\"ref-link-text\">Truy cập</span>\n    <span class=\"ref-arrow\">→</span>\n  </div>\n</article>\n  </div>\n</section>"
+      }
+    ]
+  },
+  {
+    "id": "4.3",
+    "slug": "bai-4-3-buoc-2-lay-design-md-tu-web-do",
+    "lessonSlug": "dung-giao-dien-web-nhanh-voi-ai",
+    "lessonId": 4,
+    "lessonTitle": "Bài 4: Dựng giao diện web nhanh với AI",
+    "lessonTitleEm": "với AI",
+    "prevSlug": "bai-4-2-buoc-1-tim-web-co-giao-dien-minh-thich",
+    "nextSlug": "bai-4-4-cach-lay-design-md",
+    "prevTitle": "Bước 1 — Tìm web có giao diện mình thích",
+    "nextTitle": "Cách lấy DESIGN.md",
+    "eyebrow": "Design System",
+    "title": "Bước 2 — Lấy DESIGN.md từ web đó",
+    "titleEm": "",
+    "desc": "<codeDESIGN.md</code là một file văn bản (markdown) chứa <strongtoàn bộ design system của một website</strong — màu sắc, font, spacing, cách component trông như thế nào — được viết dưới dạng mà AI coding agent đọc hiểu đ",
+    "duration": "~5 phút",
+    "totalSubs": 6,
+    "currentIndex": 3,
+    "content": [
+      {
+        "type": "p",
+        "text": "<code>DESIGN.md</code> là một file văn bản (markdown) chứa <strong>toàn bộ design system của một website</strong> — màu sắc, font, spacing, cách component trông như thế nào — được viết dưới dạng mà AI coding agent đọc hiểu được."
+      },
+      {
+        "type": "infographic",
+        "label": "DESIGN.md biến visual thành context",
+        "steps": [
+          {
+            "label": "01",
+            "title": "Web mẫu",
+            "desc": "Bạn chọn một website có style muốn học theo."
+          },
+          {
+            "label": "02",
+            "title": "DESIGN.md",
+            "desc": "Tool extract màu, font, spacing, component rules thành một file markdown."
+          },
+          {
+            "label": "03",
+            "title": "AI code theo spec",
+            "desc": "AI đọc file này để tạo UI nhất quán hơn thay vì tự bịa style."
+          }
+        ],
+        "aside": {
+          "label": "Context cụ thể",
+          "title": "DESIGN.md mạnh hơn câu mô tả chung chung",
+          "desc": "AI có token thiết kế cụ thể: mã màu, font, border, spacing và component behavior."
+        }
+      },
+      {
+        "type": "p",
+        "text": "Ví dụ một đoạn trong <code>DESIGN.md</code> của Linear (tool quản lý task nổi tiếng):"
+      },
+      {
+        "type": "html",
+        "html": "<section class=\"design-spec-showcase\" aria-label=\"Ví dụ DESIGN.md và UI kết quả\">\n  <style>\n.design-spec-showcase {\n  display: grid;\n  grid-template-columns: 1.1fr 0.9fr;\n  gap: 1.5rem;\n  margin: 2.5rem 0;\n}\n.spec-code-panel {\n  background: var(--bg);\n  border: 2px solid var(--border);\n  box-shadow: 4px 4px 0px var(--border);\n  display: flex;\n  flex-direction: column;\n}\n.editor-header {\n  background: var(--bg2);\n  border-bottom: 2px solid var(--border);\n  padding: 0.5rem 0.75rem;\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n}\n.editor-controls {\n  display: flex;\n  gap: 5px;\n}\n.editor-dot {\n  width: 10px;\n  height: 10px;\n  border-radius: 50%;\n  border: 1px solid var(--border);\n}\n.editor-dot.red { background: #ff5f56; }\n.editor-dot.yellow { background: #ffbd2e; }\n.editor-dot.green { background: #27c93f; }\n\n.editor-tabs {\n  display: flex;\n  margin-left: 1rem;\n}\n.editor-tab {\n  background: var(--bg);\n  border: 2px solid var(--border);\n  border-bottom: none;\n  padding: 3px 12px;\n  font-family: var(--mono);\n  font-size: 11px;\n  color: var(--ink);\n  display: flex;\n  align-items: center;\n  gap: 6px;\n  position: relative;\n  top: 9px;\n}\n.editor-content {\n  background: var(--bg) !important;\n  border-left: none !important;\n  padding: 1.25rem !important;\n  margin: 0 !important;\n  overflow-x: auto;\n  font-family: var(--mono);\n  font-size: 13px;\n  line-height: 1.6;\n  color: var(--ink);\n}\n.code-h { color: #0f172a; font-weight: 700; }\n.code-prop { color: #334155; }\n.code-val { color: #b91c1c; font-weight: 500; }\n\n.spec-preview-panel {\n  display: flex;\n  flex-direction: column;\n}\n.preview-window {\n  background: #0f0f0f;\n  border: 2px solid var(--border);\n  box-shadow: 4px 4px 0px var(--border);\n  display: flex;\n  flex-direction: column;\n  height: 100%;\n  min-height: 320px;\n}\n.preview-header {\n  background: var(--bg2);\n  border-bottom: 2px solid var(--border);\n  padding: 0.5rem;\n  display: flex;\n  align-items: center;\n  gap: 10px;\n}\n.preview-address {\n  flex-grow: 1;\n  background: var(--bg);\n  border: 1px solid var(--border);\n  font-family: var(--mono);\n  font-size: 10px;\n  padding: 2px 8px;\n  color: var(--ink2);\n}\n.preview-body {\n  padding: 1.25rem;\n  background: #0F0F0F;\n  color: #FFFFFF;\n  flex-grow: 1;\n  display: flex;\n  flex-direction: column;\n  gap: 1rem;\n  font-family: 'Inter', system-ui, sans-serif;\n}\n.mock-nav {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  border-bottom: 1px solid #2A2A2A;\n  padding-bottom: 0.5rem;\n}\n.mock-logo {\n  font-weight: 700;\n  font-size: 13px;\n  color: #FFFFFF;\n  letter-spacing: -0.02em;\n}\n.mock-nav-items {\n  display: flex;\n  gap: 12px;\n}\n.mock-nav-item {\n  font-family: var(--mono);\n  font-size: 10px;\n  text-transform: uppercase;\n  color: #8A8A8A;\n  letter-spacing: 0.05em;\n}\n.mock-nav-item.active {\n  color: #FFFFFF;\n}\n.mock-card {\n  background: #1A1A1A;\n  border: 1px solid #2A2A2A;\n  border-radius: 0px;\n  padding: 1rem;\n  display: flex;\n  flex-direction: column;\n  gap: 0.5rem;\n}\n.mock-card-title {\n  font-size: 14px;\n  font-weight: 600;\n  color: #FFFFFF;\n  margin: 0;\n}\n.mock-card-desc {\n  font-size: 11px;\n  color: #8A8A8A;\n  line-height: 1.5;\n  margin: 0;\n}\n.mock-btn {\n  background: #5B6AE8;\n  color: #FFFFFF;\n  border: none;\n  border-radius: 0px;\n  padding: 6px 12px;\n  font-size: 11px;\n  font-weight: 600;\n  cursor: pointer;\n  align-self: flex-start;\n  transition: background-color 0.15s;\n  box-shadow: none;\n}\n.mock-btn:hover {\n  background: #6c7bf5;\n}\n\n@media (max-width: 768px) {\n  .design-spec-showcase {\n    grid-template-columns: 1fr;\n    gap: 1.5rem;\n  }\n}\n  </style>\n\n  <div class=\"spec-code-panel\">\n<div class=\"editor-header\">\n  <div class=\"editor-controls\">\n    <span class=\"editor-dot red\"></span>\n    <span class=\"editor-dot yellow\"></span>\n    <span class=\"editor-dot green\"></span>\n  </div>\n  <div class=\"editor-tabs\">\n    <div class=\"editor-tab\">\n      <svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\"><path d=\"M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z\"></path><polyline points=\"14 2 14 8 20 8\"></polyline></svg>\n      DESIGN.md\n    </div>\n  </div>\n</div>\n<pre class=\"editor-content\"><code><span class=\"code-h\">## Colors</span>\n- Background: <span class=\"code-val\">#0F0F0F</span>\n- Surface: <span class=\"code-val\">#1A1A1A</span>\n- Border: <span class=\"code-val\">#2A2A2A</span>\n- Text primary: <span class=\"code-val\">#FFFFFF</span>\n- Text muted: <span class=\"code-val\">#8A8A8A</span>\n- Accent: <span class=\"code-val\">#5B6AE8</span>\n\n<span class=\"code-h\">## Typography</span>\n- Font family: <span class=\"code-val\">Inter</span>\n- Heading: <span class=\"code-val\">600 weight, tight tracking</span>\n- Body: <span class=\"code-val\">400 weight, 1.6 line-height</span>\n\n<span class=\"code-h\">## Components</span>\n- Cards: <span class=\"code-val\">no border-radius, 1px border, #2A2A2A</span>\n- Buttons: <span class=\"code-val\">flat, no shadow, hover shifts background 10% lighter</span>\n- Nav items: <span class=\"code-val\">uppercase, DM Mono, 12px</span></code></pre>\n  </div>\n\n  <div class=\"spec-preview-panel\">\n<div class=\"preview-window\">\n  <div class=\"preview-header\">\n    <div class=\"editor-controls\">\n      <span class=\"editor-dot\" style=\"background: #ccc; border: 1px solid var(--border);\"></span>\n      <span class=\"editor-dot\" style=\"background: #ccc; border: 1px solid var(--border);\"></span>\n      <span class=\"editor-dot\" style=\"background: #ccc; border: 1px solid var(--border);\"></span>\n    </div>\n    <div class=\"preview-address\">linear.app/demo-preview</div>\n  </div>\n  <div class=\"preview-body\">\n    <nav class=\"mock-nav\">\n      <span class=\"mock-logo\">L I N E A R</span>\n      <div class=\"mock-nav-items\">\n        <span class=\"mock-nav-item active\">Issues</span>\n        <span class=\"mock-nav-item\">Cycles</span>\n        <span class=\"mock-nav-item\">Views</span>\n      </div>\n    </nav>\n    <div class=\"mock-card\">\n      <h5 class=\"mock-card-title\">LIN-104 Update workspace styling</h5>\n      <p class=\"mock-card-desc\">Redesign the spec preview blocks to use modern brutalist borders and active state highlights.</p>\n      <button class=\"mock-btn\" type=\"button\">Mark Complete</button>\n    </div>\n  </div>\n</div>\n  </div>\n</section>"
+      },
+      {
+        "type": "p",
+        "text": "Khi bạn đưa file này vào bất kì một AI IDE nào như Claude Code, Antigravity, Cursor và nói <em>\"Dùng DESIGN.md này để code giao diện\"</em> — AI có đủ thông tin để ra UI trông giống hệt trang gốc, thay vì tự bịa style."
+      }
+    ]
+  },
+  {
+    "id": "4.4",
+    "slug": "bai-4-4-cach-lay-design-md",
+    "lessonSlug": "dung-giao-dien-web-nhanh-voi-ai",
+    "lessonId": 4,
+    "lessonTitle": "Bài 4: Dựng giao diện web nhanh với AI",
+    "lessonTitleEm": "với AI",
+    "prevSlug": "bai-4-3-buoc-2-lay-design-md-tu-web-do",
+    "nextSlug": "bai-4-5-buoc-3-quang-design-md-vao-tool-ai-code-luon",
+    "prevTitle": "Bước 2 — Lấy DESIGN.md từ web đó",
+    "nextTitle": "Bước 3 — Quăng DESIGN.md vào tool AI, code luôn",
+    "eyebrow": "Công cụ",
+    "title": "Cách lấy DESIGN.md",
+    "titleEm": "",
+    "desc": "Cách lấy DESIGN.md",
+    "duration": "~5 phút",
+    "totalSubs": 6,
+    "currentIndex": 4,
+    "content": [
+      {
+        "type": "infographic",
+        "label": "3 đường lấy DESIGN.md",
+        "steps": [
+          {
+            "label": "01",
+            "title": "Extension Chrome",
+            "desc": "Dùng khi muốn extract trực tiếp từ bất kỳ website nào đang mở."
+          },
+          {
+            "label": "02",
+            "title": "Kho DESIGN.md có sẵn",
+            "desc": "Dùng khi cần nhanh: lấy style từ các web nổi tiếng đã được cộng đồng curate."
+          },
+          {
+            "label": "03",
+            "title": "Nhập URL để generate",
+            "desc": "Dùng khi không muốn cài extension nhưng vẫn cần tạo DESIGN.md từ một URL cụ thể."
+          }
+        ],
+        "aside": {
+          "label": "Chọn nhanh",
+          "title": "Không cần dùng cả ba cách",
+          "desc": "Chọn cách ít ma sát nhất trong tình huống hiện tại, rồi đưa file đó vào AI IDE hoặc tool tạo web."
+        }
+      },
+      {
+        "type": "html",
+        "html": "<section class=\"design-acquisition-section\" aria-label=\"Cách lấy DESIGN.md và so sánh\">\n  <style>\n  .design-acquisition-section {\ndisplay: flex;\nflex-direction: column;\ngap: 2rem;\nmargin: 2rem 0;\nfont-family: var(--sans);\n  }\n  \n  /* Cards Grid */\n  .acquisition-grid {\ndisplay: grid;\ngrid-template-columns: repeat(3, 1fr);\ngap: 1.25rem;\n  }\n  \n  .acquisition-card {\nbackground: var(--bg2);\nborder: 1px solid var(--border);\npadding: 1.5rem;\ndisplay: flex;\nflex-direction: column;\nposition: relative;\ntransition: all 0.2s ease;\n  }\n  \n  .acquisition-card:hover {\nborder-color: var(--accent);\nbackground: var(--bg3);\n  }\n  \n  .acq-badge {\ndisplay: inline-block;\nalign-self: flex-start;\nfont-family: var(--mono);\nfont-size: 9px;\nfont-weight: 700;\ntext-transform: uppercase;\nletter-spacing: 0.08em;\npadding: 2px 8px;\nborder: 1px solid var(--border);\nmargin-bottom: 1rem;\nbackground: color-mix(in srgb, var(--accent) 8%, var(--bg2));\ncolor: var(--accent);\n  }\n  \n  .acq-icon {\ncolor: var(--accent);\nmargin-bottom: 0.75rem;\ndisplay: inline-flex;\nalign-items: center;\n  }\n  \n  .acq-title {\nfont-family: var(--sans);\nfont-size: 15px;\nfont-weight: 700;\ncolor: var(--ink);\nmargin: 0 0 0.5rem 0;\nline-height: 1.3;\n  }\n  \n  .acq-desc {\nfont-family: var(--sans);\nfont-size: 13px;\ncolor: var(--ink2);\nline-height: 1.55;\nmargin-bottom: 1rem;\n  }\n  \n  .acq-link-btn {\ndisplay: inline-flex;\nalign-items: center;\ngap: 6px;\nbackground: var(--bg);\ncolor: var(--ink);\nborder: 1px solid var(--border);\npadding: 6px 12px;\nfont-family: var(--mono);\nfont-size: 11px;\nfont-weight: 600;\ntext-decoration: none;\nmargin-bottom: 0.75rem;\nalign-self: flex-start;\ntransition: all 0.15s;\n  }\n  .acq-link-btn:hover {\nbackground: var(--ink);\ncolor: var(--bg);\nborder-color: var(--ink);\n  }\n  \n  .acq-steps {\nmargin: 0;\npadding: 0 0 0 1.1rem;\nfont-family: var(--sans);\nfont-size: 13px;\ncolor: var(--ink2);\nline-height: 1.5;\n  }\n  .acq-steps li {\nmargin-bottom: 0.4rem;\n  }\n  .acq-steps li:last-child {\nmargin-bottom: 0;\n  }\n  \n  .acq-note {\nmargin-top: auto;\nfont-family: var(--mono);\nfont-size: 11.5px;\nbackground: var(--bg);\nborder-left: 2px solid var(--accent);\npadding: 8px 12px;\ncolor: var(--ink2);\nline-height: 1.4;\n  }\n\n  .acq-links-list {\ndisplay: flex;\nflex-direction: column;\ngap: 6px;\nmargin-bottom: 0.75rem;\n  }\n  .acq-sub-link {\ndisplay: inline-flex;\nalign-items: center;\ngap: 4px;\nfont-size: 13px;\nfont-weight: 600;\ncolor: var(--ink);\ntext-decoration: underline;\n  }\n  .acq-sub-link:hover {\ncolor: var(--accent);\n  }\n\n  /* Comparison native styles matching the web */\n  .native-compare-wrapper {\nmargin-top: 1.5rem;\n  }\n  .native-compare-title {\nfont-family: var(--sans);\nfont-size: 1.25rem;\nfont-weight: 700;\nmargin: 0 0 1rem 0;\ncolor: var(--ink);\n  }\n  .native-compare-table {\nborder: 1px solid var(--border);\nwidth: 100%;\nbackground: var(--bg);\nborder-collapse: collapse;\n  }\n  .native-compare-row {\ndisplay: grid;\ngrid-template-columns: 1fr 1fr;\nborder-bottom: 1px solid var(--border);\n  }\n  .native-compare-row:last-child {\nborder-bottom: none;\n  }\n  .native-compare-row.header {\nbackground: var(--bg2);\nborder-bottom: 2px solid var(--border);\n  }\n  .native-compare-cell {\npadding: 1rem 1.5rem;\nborder-right: 1px solid var(--border);\nfont-family: var(--sans);\nfont-size: 13.5px;\nline-height: 1.6;\ncolor: var(--ink2);\ndisplay: flex;\nalign-items: center;\ngap: 8px;\n  }\n  .native-compare-cell:last-child {\nborder-right: none;\n  }\n  .native-compare-row.header .native-compare-cell {\nfont-family: var(--mono);\nfont-size: 10px;\ncolor: var(--muted);\nletter-spacing: 0.08em;\ntext-transform: uppercase;\npadding-top: 0.8rem;\npadding-bottom: 0.8rem;\n  }\n  .cell-cross {\ncolor: var(--muted);\ntext-decoration: line-through;\nopacity: 0.7;\n  }\n  .cell-check {\ncolor: var(--ink);\nfont-weight: 400;\n  }\n  .cell-check strong {\ncolor: var(--accent);\nfont-weight: 700;\n  }\n  \n  @media (max-width: 768px) {\n.acquisition-grid {\n  grid-template-columns: 1fr;\n}\n.native-compare-row {\n  grid-template-columns: 1fr;\n}\n.native-compare-cell {\n  border-right: none;\n  border-bottom: 1px solid var(--border);\n}\n.native-compare-cell:last-child {\n  border-bottom: none;\n}\n.native-compare-row.header {\n  display: none;\n}\n  }\n  </style>\n  \n  <div class=\"acquisition-grid\">\n<!-- CÁCH 1 -->\n<div class=\"acquisition-card\">\n  <span class=\"acq-badge\">Cách 01</span>\n  <div class=\"acq-icon\">\n    <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z\"></path><polyline points=\"3.27 6.96 12 12.01 20.73 6.96\"></polyline><line x1=\"12\" y1=\"22.08\" x2=\"12\" y2=\"12\"></line></svg>\n  </div>\n  <h4 class=\"acq-title\">Extension Chrome</h4>\n  <p class=\"acq-desc\">Lấy DESIGN.md trực tiếp từ bất kỳ website nào đang mở trên Chrome.</p>\n  \n  <a href=\"https://chromewebstore.google.com/detail/designmd-style-extractor/ogpdnchdjiibhobphelbbkemnnemkfma\" target=\"_blank\" rel=\"noreferrer\" class=\"acq-link-btn\">\n    <span>Cài Extension</span>\n    <svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><line x1=\"7\" y1=\"17\" x2=\"17\" y2=\"7\"></line><polyline points=\"7 7 17 7 17 17\"></polyline></svg>\n  </a>\n  \n  <ol class=\"acq-steps\">\n    <li>Bật Extension tại trang web bạn chọn để sinh file <code>DESIGN.md</code> ngay.</li>\n    <li>Copy specs lưu vào file <code>DESIGN.md</code> ở thư mục gốc project.</li>\n  </ol>\n</div>\n\n<!-- CÁCH 2 -->\n<div class=\"acquisition-card\">\n  <span class=\"acq-badge\">Cách 02</span>\n  <div class=\"acq-icon\">\n    <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5\"/></svg>\n  </div>\n  <h4 class=\"acq-title\">Kho DESIGN.md có sẵn</h4>\n  <p class=\"acq-desc\">Lấy style specs đã được curator cộng đồng chuẩn hóa từ các thương hiệu lớn.</p>\n  \n  <div class=\"acq-links-list\">\n    <a href=\"https://getdesign.md/\" target=\"_blank\" rel=\"noreferrer\" class=\"acq-sub-link\">\n      <span>getdesign.md</span>\n      <svg width=\"10\" height=\"10\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><line x1=\"7\" y1=\"17\" x2=\"17\" y2=\"7\"></line><polyline points=\"7 7 17 7 17 17\"></polyline></svg>\n    </a>\n    <a href=\"https://designmd.co/\" target=\"_blank\" rel=\"noreferrer\" class=\"acq-sub-link\">\n      <span>designmd.co</span>\n      <svg width=\"10\" height=\"10\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><line x1=\"7\" y1=\"17\" x2=\"17\" y2=\"7\"></line><polyline points=\"7 7 17 7 17 17\"></polyline></svg>\n    </a>\n  </div>\n  \n  <div class=\"acq-note\">\n    <strong>Lưu ý:</strong> Specs do cộng đồng trích xuất từ visual thực tế của Linear, Stripe, Notion... dùng làm điểm bắt đầu lý tưởng.\n  </div>\n</div>\n\n<!-- CÁCH 3 -->\n<div class=\"acquisition-card\">\n  <span class=\"acq-badge\">Cách 03</span>\n  <div class=\"acq-icon\">\n    <svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71\"></path><path d=\"M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71\"></path></svg>\n  </div>\n  <h4 class=\"acq-title\">Crawl từ URL bất kỳ</h4>\n  <p class=\"acq-desc\">Nhập địa chỉ URL để AI tự động phân tích CSS & visual và tạo DESIGN.md.</p>\n  \n  <a href=\"https://designmd.me/\" target=\"_blank\" rel=\"noreferrer\" class=\"acq-link-btn\">\n    <span>designmd.me</span>\n    <svg width=\"12\" height=\"12\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\"><line x1=\"7\" y1=\"17\" x2=\"17\" y2=\"7\"></line><polyline points=\"7 7 17 7 17 17\"></polyline></svg>\n  </a>\n  \n  <p class=\"acq-desc\" style=\"margin-bottom: 0;\">Dán link trang web bạn thích vào ô nhập, đợi vài giây để nhận file specs tương ứng.</p>\n</div>\n  </div>\n\n  <div class=\"native-compare-wrapper\">\n<h3 class=\"native-compare-title\">Tại sao DESIGN.md mạnh hơn mô tả thông thường?</h3>\n\n<div class=\"native-compare-table\">\n  <div class=\"native-compare-row header\">\n    <div class=\"native-compare-cell\">Cách mô tả cũ (Mơ hồ)</div>\n    <div class=\"native-compare-cell\">Dùng DESIGN.md (Chuẩn xác)</div>\n  </div>\n  \n  <div class=\"native-compare-row\">\n    <div class=\"native-compare-cell\">\n      <span class=\"cell-cross\">❌ \"Làm giao diện tối, trông minimal\"</span>\n    </div>\n    <div class=\"native-compare-cell\">\n      <span class=\"cell-check\">✅ AI có <strong>hex code</strong> chính xác, <strong>font name</strong>, <strong>spacing value</strong></span>\n    </div>\n  </div>\n  \n  <div class=\"native-compare-row\">\n    <div class=\"native-compare-cell\">\n      <span class=\"cell-cross\">❌ AI đoán style → thường bị sai lệch</span>\n    </div>\n    <div class=\"native-compare-cell\">\n      <span class=\"cell-check\">✅ AI đọc đặc tả specs → triển khai ra đúng</span>\n    </div>\n  </div>\n  \n  <div class=\"native-compare-row\">\n    <div class=\"native-compare-cell\">\n      <span class=\"cell-cross\">❌ Mỗi component mới lại phải mô tả lại style</span>\n    </div>\n    <div class=\"native-compare-cell\">\n      <span class=\"cell-check\">✅ File <code>DESIGN.md</code> dùng chung cho toàn bộ project</span>\n    </div>\n  </div>\n  \n  <div class=\"native-compare-row\">\n    <div class=\"native-compare-cell\">\n      <span class=\"cell-cross\">❌ Khó duy trì sự nhất quán (consistency)</span>\n    </div>\n    <div class=\"native-compare-cell\">\n      <span class=\"cell-check\">✅ Mọi component lớn nhỏ đều theo cùng một nguồn</span>\n    </div>\n  </div>\n</div>\n  </div>\n</section>"
+      }
+    ]
+  },
+  {
+    "id": "4.5",
+    "slug": "bai-4-5-buoc-3-quang-design-md-vao-tool-ai-code-luon",
+    "lessonSlug": "dung-giao-dien-web-nhanh-voi-ai",
+    "lessonId": 4,
+    "lessonTitle": "Bài 4: Dựng giao diện web nhanh với AI",
+    "lessonTitleEm": "với AI",
+    "prevSlug": "bai-4-4-cach-lay-design-md",
+    "nextSlug": "bai-4-6-buoc-4-tai-code-ve-dung-ai-ide-hoan-thien-tiep",
+    "prevTitle": "Cách lấy DESIGN.md",
+    "nextTitle": "Bước 4 — Tải code về, dùng AI IDE hoàn thiện tiếp",
+    "eyebrow": "Tạo giao diện",
+    "title": "Bước 3 — Quăng DESIGN.md vào tool AI, code luôn",
+    "titleEm": "",
+    "desc": "Đây là bước quan trọng nhất. Thay vì dùng các AI IDE viết từng dòng code, bạn quăng DESIGN.md thẳng vào các tool AI để nó <strongcode giao diện và tính năng cùng một lúc</strong.",
+    "duration": "~5 phút",
+    "totalSubs": 6,
+    "currentIndex": 5,
+    "content": [
+      {
+        "type": "p",
+        "text": "Đây là bước quan trọng nhất. Thay vì dùng các AI IDE viết từng dòng code, bạn quăng DESIGN.md thẳng vào các tool AI để nó <strong>code giao diện và tính năng cùng một lúc</strong>."
+      },
+      {
+        "type": "infographic",
+        "label": "Quăng DESIGN.md vào tool AI",
+        "steps": [
+          {
+            "label": "01",
+            "title": "Paste DESIGN.md",
+            "desc": "Đưa toàn bộ design system vào đầu prompt để AI có style guide rõ ràng."
+          },
+          {
+            "label": "02",
+            "title": "Mô tả app cần build",
+            "desc": "Nói rõ loại web, section cần có, dữ liệu mẫu, CTA và trạng thái responsive."
+          },
+          {
+            "label": "03",
+            "title": "Lặp để sửa UI",
+            "desc": "Xem output, yêu cầu sửa màu, spacing, section, copy hoặc behavior cho đến khi dùng được."
+          }
+        ],
+        "aside": {
+          "label": "Tool chỉ là phương tiện",
+          "title": "Brief tốt mới quyết định output",
+          "desc": "Google AI Studio, Base44, Lovable hay v0 đều tốt hơn khi nhận context thiết kế đủ rõ."
+        }
+      },
+      {
+        "type": "p",
+        "text": "Đây là cách mình hay làm:"
+      },
+      {
+        "type": "html",
+        "html": "<section class=\"ai-tools-list-section\" aria-label=\"Các công cụ AI dựng giao diện\">\n  <style>\n  .ai-tools-list-section {\ndisplay: flex;\nflex-direction: column;\ngap: 2rem;\nmargin: 2rem 0;\nfont-family: var(--sans);\n  }\n  \n  .tool-item-card {\nbackground: var(--bg2);\nborder: 1px solid var(--border);\ndisplay: flex;\nflex-direction: column;\nposition: relative;\ntransition: all 0.2s ease;\n  }\n  \n  .tool-item-card:hover {\nborder-color: var(--accent);\nbackground: var(--bg3);\n  }\n  \n  .tool-item-header {\nborder-bottom: 1px solid var(--border);\npadding: 1.25rem 1.5rem;\ndisplay: flex;\njustify-content: space-between;\nalign-items: center;\nflex-wrap: wrap;\ngap: 0.75rem;\n  }\n  \n  .tool-item-title-grp {\ndisplay: flex;\nalign-items: center;\ngap: 0.75rem;\n  }\n  \n  .tool-item-title {\nfont-family: var(--sans);\nfont-size: 20px;\nfont-weight: 900;\nmargin: 0;\ncolor: #000000 !important;\n  }\n  \n  .tool-item-badge {\nfont-family: var(--mono);\nfont-size: 9px;\nfont-weight: 700;\npadding: 2px 8px;\nborder: 1px solid var(--border);\ntext-transform: uppercase;\nletter-spacing: 0.08em;\n  }\n  \n  .tool-item-badge.free {\nbackground: color-mix(in srgb, #16a34a 8%, var(--bg2));\ncolor: #16a34a;\nborder-color: color-mix(in srgb, #16a34a 20%, var(--border));\n  }\n  \n  .tool-item-badge.paid {\nbackground: color-mix(in srgb, var(--accent) 8%, var(--bg2));\ncolor: var(--accent);\nborder-color: color-mix(in srgb, var(--accent) 20%, var(--border));\n  }\n  \n  .tool-item-badge.recommended {\nbackground: var(--ink);\ncolor: var(--bg);\nborder-color: var(--ink);\n  }\n  \n  .tool-item-body {\npadding: 1.5rem;\ndisplay: flex;\nflex-direction: column;\ngap: 1.25rem;\n  }\n  \n  .tool-item-intro {\nfont-family: var(--sans);\nfont-size: 14px;\nline-height: 1.6;\ncolor: var(--ink2);\nmargin: 0;\n  }\n  \n  /* Steps styling */\n  .tool-item-steps {\ndisplay: flex;\nflex-direction: column;\ngap: 0.75rem;\npadding: 0;\nmargin: 0;\nlist-style: none;\n  }\n  \n  .tool-item-step {\ndisplay: flex;\ngap: 0.75rem;\nalign-items: flex-start;\n  }\n  \n  .tool-item-step-num {\nfont-family: var(--mono);\nfont-size: 11px;\nfont-weight: 700;\ncolor: var(--accent);\nmargin-top: 2px;\nflex-shrink: 0;\n  }\n  \n  .tool-item-step-content {\nfont-family: var(--sans);\nfont-size: 13.5px;\nline-height: 1.55;\ncolor: var(--ink2);\n  }\n  \n  /* Prompt spec styling */\n  .tool-prompt-box {\nbackground: var(--bg);\nborder: 1px dashed var(--border);\npadding: 1.25rem;\nfont-family: var(--mono);\nfont-size: 12.5px;\nline-height: 1.6;\ncolor: var(--ink2);\nposition: relative;\n  }\n  \n  .tool-prompt-label {\nposition: absolute;\ntop: -10px;\nright: 1rem;\nbackground: var(--bg2);\nborder: 1px solid var(--border);\ncolor: var(--muted);\nfont-size: 9px;\nfont-weight: 700;\npadding: 1px 6px;\ntext-transform: uppercase;\nletter-spacing: 0.05em;\n  }\n  \n  .tool-prompt-text {\nfont-style: italic;\ncolor: var(--ink);\n  }\n  \n  /* Callouts matching index.css */\n  .tool-item-callout {\nborder: 1px solid var(--border);\nbackground: var(--bg);\npadding: 1.25rem;\ndisplay: flex;\nflex-direction: column;\ngap: 0.5rem;\n  }\n  \n  .tool-item-callout.tip {\nborder-left: 3px solid #16a34a;\n  }\n  .tool-item-callout.warning {\nborder-left: 3px solid var(--accent);\n  }\n  \n  .callout-lbl {\nfont-family: var(--mono);\nfont-weight: 700;\nfont-size: 10px;\nletter-spacing: 0.08em;\ntext-transform: uppercase;\n  }\n  \n  .tool-item-callout.tip .callout-lbl {\ncolor: #16a34a;\n  }\n  .tool-item-callout.warning .callout-lbl {\ncolor: var(--accent);\n  }\n  \n  .callout-body {\nfont-family: var(--sans);\nfont-size: 13px;\nline-height: 1.5;\ncolor: var(--ink2);\nmargin: 0;\n  }\n\n  .tool-item-footer {\nfont-size: 12px;\ncolor: var(--muted);\nborder-top: 1px solid var(--border);\npadding-top: 1rem;\nfont-style: italic;\n  }\n\n  /* Redesigned other tools card */\n  .other-tools-card {\nbackground: var(--bg2);\nborder: 1px dashed var(--border);\npadding: 1.75rem;\ndisplay: flex;\nflex-direction: column;\ngap: 1.25rem;\nposition: relative;\nmargin-top: 1rem;\n  }\n  \n  .other-tools-title {\nfont-family: var(--sans);\nfont-size: 22px;\nfont-weight: 900;\ncolor: #000000 !important;\nmargin: 0;\ntext-transform: none !important;\nletter-spacing: normal !important;\n  }\n  \n  .other-tools-tags {\ndisplay: flex;\nflex-wrap: wrap;\ngap: 0.5rem;\nmargin: 0.25rem 0;\n  }\n  \n  .other-tools-tag {\nfont-family: var(--mono);\nfont-size: 11px;\nfont-weight: 600;\ncolor: var(--ink);\nbackground: var(--bg);\nborder: 1px solid var(--border);\npadding: 3px 10px;\ntransition: all 0.2s ease;\n  }\n  \n  .other-tools-tag:hover {\nborder-color: var(--accent);\ncolor: var(--accent);\nbackground: color-mix(in srgb, var(--accent) 8%, var(--bg));\n  }\n  \n  .other-tools-desc {\nfont-family: var(--sans);\nfont-size: 13.5px;\nline-height: 1.6;\ncolor: var(--ink2);\nmargin: 0;\n  }\n  \n  .other-tools-footer {\nfont-family: var(--sans);\nfont-size: 12.5px;\ncolor: var(--muted);\nborder-top: 1px dashed var(--border);\npadding-top: 1rem;\ndisplay: flex;\nalign-items: center;\ngap: 0.5rem;\nline-height: 1.5;\n  }\n\n  @media (max-width: 768px) {\n.tool-item-header {\n  flex-direction: column;\n  align-items: flex-start;\n}\n  }\n  </style>\n\n  <!-- GOOGLE AI STUDIO -->\n  <div class=\"tool-item-card\">\n<div class=\"tool-item-header\">\n  <div class=\"tool-item-title-grp\">\n    <h4 class=\"tool-item-title\" style=\"font-size:20px;font-weight:900;color:#000000;margin:0;text-transform:none;letter-spacing:normal;\">Google AI Studio</h4>\n  </div>\n  <span class=\"tool-item-badge free\">Miễn phí · Ưu tiên dùng</span>\n</div>\n<div class=\"tool-item-body\">\n  <p class=\"tool-item-intro\">Sử dụng model Gemini Pro / Flash cho tốc độ xử lý cực nhanh, context window siêu lớn phù hợp cho specs dài.</p>\n  \n  <ul class=\"tool-item-steps\">\n    <li class=\"tool-item-step\">\n      <span class=\"tool-item-step-num\">01.</span>\n      <div class=\"tool-item-step-content\">Truy cập <a href=\"https://aistudio.google.com/\" target=\"_blank\" rel=\"noreferrer\" style=\"font-weight:600; text-decoration:underline;\">aistudio.google.com</a> → tạo chat mới với Gemini 2.5 Pro hoặc Flash.</div>\n    </li>\n    <li class=\"tool-item-step\">\n      <span class=\"tool-item-step-num\">02.</span>\n      <div class=\"tool-item-step-content\">Copy toàn bộ nội dung file <code>DESIGN.md</code> → paste vào ô chat ở đầu prompt.</div>\n    </li>\n    <li class=\"tool-item-step\">\n      <span class=\"tool-item-step-num\">03.</span>\n      <div class=\"tool-item-step-content\">Mô tả chi tiết cấu trúc website bạn muốn tạo:</div>\n    </li>\n  </ul>\n\n  <div class=\"tool-prompt-box\">\n    <span class=\"tool-prompt-label\">Prompt mẫu</span>\n    <span class=\"tool-prompt-text\">\"Đây là DESIGN.md của web tôi muốn làm theo: [paste nội dung]. Dùng design system này để tạo một landing page hoàn chỉnh cho nền tảng học AI cho marketer Việt Nam. Gồm: nav sticky, hero section có headline + subtitle + 2 CTA, section features 3 cột, footer.\"</span>\n  </div>\n\n  <ul class=\"tool-item-steps\">\n    <li class=\"tool-item-step\">\n      <span class=\"tool-item-step-num\">04.</span>\n      <div class=\"tool-item-step-content\">Google AI Studio có kết nối với Github, bạn chỉ cần liên kết để lưu code và clone về máy.</div>\n    </li>\n    <li class=\"tool-item-step\">\n      <span class=\"tool-item-step-num\">05.</span>\n      <div class=\"tool-item-step-content\">Dùng AI IDE để tiếp tục tinh chỉnh: <em>\"Thêm section pricing 3 tier. Đổi hero background sang tối.\"</em></div>\n    </li>\n  </ul>\n</div>\n  </div>\n\n  <!-- LOVABLE -->\n  <div class=\"tool-item-card\">\n<div class=\"tool-item-header\">\n  <div class=\"tool-item-title-grp\">\n    <h4 class=\"tool-item-title\" style=\"font-size:20px;font-weight:900;color:#000000;margin:0;text-transform:none;letter-spacing:normal;\">Lovable.dev</h4>\n  </div>\n  <span class=\"tool-item-badge paid\">Có phí · Hỗ trợ Database & Auth</span>\n</div>\n<div class=\"tool-item-body\">\n  <p class=\"tool-item-intro\">Phù hợp khi ứng dụng của bạn cần tính năng đăng nhập và lưu trữ dữ liệu với Supabase ngay từ đầu.</p>\n  \n  <ul class=\"tool-item-steps\">\n    <li class=\"tool-item-step\">\n      <span class=\"tool-item-step-num\">01.</span>\n      <div class=\"tool-item-step-content\">Vào <a href=\"https://lovable.dev/\" target=\"_blank\" rel=\"noreferrer\" style=\"font-weight:600; text-decoration:underline;\">lovable.dev</a> → tạo project mới.</div>\n    </li>\n    <li class=\"tool-item-step\">\n      <span class=\"tool-item-step-num\">02.</span>\n      <div class=\"tool-item-step-content\">Tại ô prompt đầu tiên, paste DESIGN.md vào rồi mô tả ý tưởng ứng dụng.</div>\n    </li>\n    <li class=\"tool-item-step\">\n      <span class=\"tool-item-step-num\">03.</span>\n      <div class=\"tool-item-step-content\">Lovable tự build toàn bộ — giao diện theo đúng specs, tích hợp sẵn backend Supabase.</div>\n    </li>\n    <li class=\"tool-item-step\">\n      <span class=\"tool-item-step-num\">04.</span>\n      <div class=\"tool-item-step-content\">Khi xong → bấm **Connect GitHub** để Lovable tự động push mã nguồn lên repository.</div>\n    </li>\n  </ul>\n\n  <div class=\"tool-item-callout tip\">\n    <span class=\"callout-lbl\">💡 Mẹo nhỏ</span>\n    <p class=\"callout-body\">Tận dụng lượng credit miễn phí ban đầu để tinh chỉnh UI và các tương tác trước khi nâng cấp gói trả phí.</p>\n  </div>\n</div>\n  </div>\n\n  <!-- BASE44 -->\n  <div class=\"tool-item-card\">\n<div class=\"tool-item-header\">\n  <div class=\"tool-item-title-grp\">\n    <h4 class=\"tool-item-title\" style=\"font-size:20px;font-weight:900;color:#000000;margin:0;text-transform:none;letter-spacing:normal;\">Base44.com</h4>\n  </div>\n  <span class=\"tool-item-badge recommended\">Khuyên dùng · Nhanh nhất</span>\n</div>\n<div class=\"tool-item-body\">\n  <p class=\"tool-item-intro\">Công cụ sinh giao diện tức thì, tối giản hóa quy trình và cho ra sản phẩm chạy trực tuyến ngay lập tức.</p>\n  \n  <ul class=\"tool-item-steps\">\n    <li class=\"tool-item-step\">\n      <span class=\"tool-item-step-num\">01.</span>\n      <div class=\"tool-item-step-content\">Truy cập <a href=\"https://base44.com/\" target=\"_blank\" rel=\"noreferrer\" style=\"font-weight:600; text-decoration:underline;\">base44.com</a> → tạo app mới.</div>\n    </li>\n    <li class=\"tool-item-step\">\n      <span class=\"tool-item-step-num\">02.</span>\n      <div class=\"tool-item-step-content\">Paste DESIGN.md vào rồi nhập mô tả cấu trúc website.</div>\n    </li>\n    <li class=\"tool-item-step\">\n      <span class=\"tool-item-step-num\">03.</span>\n      <div class=\"tool-item-step-content\">App được khởi tạo ngay lập tức, sẵn sàng để chia sẻ hoặc xem trước trực tuyến.</div>\n    </li>\n  </ul>\n\n  <div class=\"tool-item-callout warning\">\n    <span class=\"callout-lbl\">⚠️ Nhược điểm & Giải pháp</span>\n    <div class=\"callout-body\">\n      Base44 chỉ cho phép kết nối GitHub với tài khoản trả phí. Mẹo nhỏ là dùng <strong>Codex + Plugin Base44</strong>:\n      <ol style=\"margin-top: 6px; padding-left: 1.1rem; list-style-type: decimal;\">\n        <li>Tạo một folder rỗng hoàn chỉnh trên máy tính của bạn.</li>\n        <li>Kết nối tài khoản của bạn thông qua Codex và gửi prompt:</li>\n      </ol>\n      <div class=\"tool-prompt-box\" style=\"margin-top: 8px;\">\n        <span class=\"tool-prompt-label\">Prompt Codex</span>\n        <code>@Base44 Hãy đăng nhập vào tài khoản [gmailcuaban] và tải toàn bộ code của project về folder hiện tại cho tôi.</code>\n      </div>\n    </div>\n  </div>\n</div>\n  </div>\n\n  <!-- CÁC TOOL KHÁC -->\n  <div class=\"other-tools-card\">\n<h4 class=\"other-tools-title\" style=\"font-size:22px;font-weight:900;color:#000000;margin:0;text-transform:none;letter-spacing:normal;\">Các công cụ AI khác</h4>\n\n<div class=\"other-tools-tags\">\n  <span class=\"other-tools-tag\">v0.dev</span>\n  <span class=\"other-tools-tag\">Replit</span>\n  <span class=\"other-tools-tag\">Claude Design</span>\n  <span class=\"other-tools-tag\">Figma Make</span>\n</div>\n\n<p class=\"other-tools-desc\">\n  Quy trình áp dụng hoàn toàn tương tự: <strong>quăng file DESIGN.md vào context → mô tả cấu trúc website mong muốn → để AI tự động dựng code.</strong> Chúng đều hoạt động tốt nhất khi nhận diện được specifications thiết kế rõ ràng.\n</p>\n\n<div class=\"other-tools-footer\">\n  <svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" style=\"flex-shrink: 0; color: var(--accent);\">\n    <circle cx=\"12\" cy=\"12\" r=\"10\"></circle>\n    <line x1=\"12\" y1=\"16\" x2=\"12\" y2=\"12\"></line>\n    <line x1=\"12\" y1=\"8\" x2=\"12.01\" y2=\"8\"></line>\n  </svg>\n  <span>Hướng dẫn chi tiết từng công cụ, tip, lỗi thường gặp sẽ được cập nhật liên tục trong các bài viết riêng trên <strong>markAI</strong>.</span>\n</div>\n  </div>\n</section>"
+      }
+    ]
+  },
+  {
+    "id": "4.6",
+    "slug": "bai-4-6-buoc-4-tai-code-ve-dung-ai-ide-hoan-thien-tiep",
+    "lessonSlug": "dung-giao-dien-web-nhanh-voi-ai",
+    "lessonId": 4,
+    "lessonTitle": "Bài 4: Dựng giao diện web nhanh với AI",
+    "lessonTitleEm": "với AI",
+    "prevSlug": "bai-4-5-buoc-3-quang-design-md-vao-tool-ai-code-luon",
+    "nextSlug": null,
+    "prevTitle": "Bước 3 — Quăng DESIGN.md vào tool AI, code luôn",
+    "nextTitle": null,
+    "eyebrow": "Hoàn thiện",
+    "title": "Bước 4 — Tải code về, dùng AI IDE hoàn thiện tiếp",
+    "titleEm": "",
+    "desc": "Sau khi giao diện đã đúng ý bạn và các tính năng cũng đã hoàn thiện 1 phần hoặc bạn hết credit =))), tải code về máy để tiếp tục làm việc với AI IDE.",
+    "duration": "~5 phút",
+    "totalSubs": 6,
+    "currentIndex": 6,
+    "content": [
+      {
+        "type": "p",
+        "text": "Sau khi giao diện đã đúng ý bạn và các tính năng cũng đã hoàn thiện 1 phần hoặc bạn hết credit =))), tải code về máy để tiếp tục làm việc với AI IDE."
+      },
+      {
+        "type": "infographic",
+        "label": "Từ UI generator về AI IDE",
+        "steps": [
+          {
+            "label": "01",
+            "title": "Tải code về máy",
+            "desc": "Lấy project từ tool AI hoặc GitHub về một folder local rõ ràng."
+          },
+          {
+            "label": "02",
+            "title": "Chạy và kiểm tra",
+            "desc": "Cài dependency, build, chạy dev server để nhìn UI thật trong browser."
+          },
+          {
+            "label": "03",
+            "title": "Hoàn thiện trong AI IDE",
+            "desc": "Dùng Cursor, Claude Code hoặc Codex để polish UI, thêm tính năng và chuẩn bị deploy."
+          }
+        ],
+        "aside": {
+          "label": "Giữ DESIGN.md",
+          "title": "File design vẫn dùng tiếp sau khi tải code",
+          "desc": "Đặt ở root project để AI giữ style nhất quán khi thêm component hoặc sửa layout mới."
+        }
+      },
+      {
+        "type": "p",
+        "text": "<strong>Mở trong AIIDE:</strong>"
+      },
+      {
+        "type": "html",
+        "html": "<pre><code class=\"language-markdown\">pnpm install\npnpm run build\npnpm run dev</code></pre>"
+      },
+      {
+        "type": "p",
+        "text": "Bây giờ app đang chạy trên máy local. Bắt đầu dùng AI IDE để hoàn thiện những thứ còn dang dở:"
+      },
+      {
+        "type": "html",
+        "html": "<ol><li>Chỉnh lại UI chi tiết cho sát DESIGN.md hơn</li><li>Thêm tính năng phức tạp hơn</li><li>Fix lỗi, tối ưu performance</li><li>Chuẩn bị deploy</li></ol>"
+      },
+      {
+        "type": "p",
+        "text": "Ở bước này, DESIGN.md vẫn còn dùng được — đặt file trong thư mục gốc project, dùng <code>@DESIGN.md</code> trong IDE chat để AI giữ đúng style khi thêm component mới."
+      }
+    ]
+  },
 ];
 export function getSubLessonBySlug(lessonSlug: string, subSlug: string): SubLessonFull | undefined {
-  return subLessons.find(sl => sl.lessonSlug === lessonSlug && sl.slug === subSlug);
+  const exact = subLessons.find(sl => sl.lessonSlug === lessonSlug && sl.slug === subSlug);
+  if (exact) return exact;
+  // Prefix match: short slug (e.g. "bai-4-6") matches long slug (e.g. "bai-4-6-buoc-4-...")
+  return subLessons.find(sl => sl.lessonSlug === lessonSlug && (sl.slug.startsWith(subSlug + '-') || subSlug.startsWith(sl.slug + '-')));
 }
 
 export function getSubLessonsByLesson(lessonSlug: string): SubLessonFull[] {

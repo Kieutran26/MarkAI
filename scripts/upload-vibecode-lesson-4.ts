@@ -507,6 +507,87 @@ async function main() {
   console.log(`Uploaded ${parsed.modules.length} modules to lesson ${LESSON_SORT_ORDER}.`)
   console.log(`Old slug: ${result.oldSlug}`)
   console.log(`New slug: ${LESSON_SLUG}`)
+
+  // --- AUTO SYNC TO LOCAL FALLBACK FILES ---
+  try {
+    const fallbackSubLessons = parsed.modules.map((m, idx) => {
+      const prev = parsed.modules[idx - 1]
+      const next = parsed.modules[idx + 1]
+      return {
+        id: m.moduleCode,
+        slug: m.slug,
+        lessonSlug: LESSON_SLUG,
+        lessonId: LESSON_SORT_ORDER,
+        lessonTitle: parsed.title,
+        lessonTitleEm: 'với AI',
+        prevSlug: prev ? prev.slug : null,
+        nextSlug: next ? next.slug : null,
+        prevTitle: prev ? prev.title : null,
+        nextTitle: next ? next.title : null,
+        eyebrow: m.moduleCode === '4.1' ? 'Quy trình' : m.moduleCode === '4.2' ? 'Tìm tham khảo' : m.moduleCode === '4.3' ? 'Design System' : m.moduleCode === '4.4' ? 'Công cụ' : m.moduleCode === '4.5' ? 'Tạo giao diện' : 'Hoàn thiện',
+        title: m.title,
+        titleEm: '',
+        desc: m.summary,
+        duration: '~5 phút',
+        totalSubs: parsed.modules.length,
+        currentIndex: idx + 1,
+        content: m.content
+      }
+    })
+
+    const subLessonsPath = path.resolve(process.cwd(), 'src/lib/subLessons.ts')
+    let subLessonsContent = fs.readFileSync(subLessonsPath, 'utf8')
+    const slMarkerStart = '// ========== BÀI 04 ==========';
+    const slStartIdx = subLessonsContent.indexOf(slMarkerStart);
+    if (slStartIdx !== -1) {
+      const slEndIdx = subLessonsContent.indexOf('];\nexport function getSubLessonBySlug');
+      subLessonsContent = subLessonsContent.substring(0, slStartIdx) + subLessonsContent.substring(slEndIdx);
+    }
+    const slNewBlock = `  ${slMarkerStart}\n` + fallbackSubLessons.map(sl => JSON.stringify(sl, null, 2).replace(/\n/g, '\n  ')).join(',\n  ') + ',\n';
+    subLessonsContent = subLessonsContent.replace('];\nexport function getSubLessonBySlug', slNewBlock + '];\nexport function getSubLessonBySlug');
+    fs.writeFileSync(subLessonsPath, subLessonsContent, 'utf8')
+    console.log('Successfully synced and updated offline fallback src/lib/subLessons.ts!')
+
+    const lessonSubLessons = parsed.modules.map((m) => ({
+      id: m.moduleCode,
+      title: m.title,
+      eyebrow: m.moduleCode === '4.1' ? 'Quy trình' : m.moduleCode === '4.2' ? 'Tìm tham khảo' : m.moduleCode === '4.3' ? 'Design System' : m.moduleCode === '4.4' ? 'Công cụ' : m.moduleCode === '4.5' ? 'Tạo giao diện' : 'Hoàn thiện',
+      desc: m.summary,
+      contentType: 'text' as const
+    }))
+    
+    const lessonData = {
+      id: 4,
+      slug: 'dung-giao-dien-web-nhanh-voi-ai',
+      badge: 'UI AI',
+      badgeType: 'dark' as const,
+      duration: '~30 phút',
+      subLessonCount: parsed.modules.length,
+      title: parsed.title,
+      titleEm: 'với AI',
+      desc: 'Dựng giao diện trước, lấy DESIGN.md làm context, dùng Google AI Studio, Stitch, Base44, Lovable, Figma Make, Claude Design, v0.dev và Replit để tạo UI nhanh.',
+      tags: ['DESIGN.md', 'UI', 'AI Studio', 'Base44', 'Lovable'],
+      difficulty: 'Giao diện · thực hành',
+      prevLesson: { id: 3, title: 'Cài đặt môi trường' },
+      nextLesson: { id: 5, title: 'Làm quen Claude Code' },
+      subLessons: lessonSubLessons
+    }
+
+    const lessonsPath = path.resolve(process.cwd(), 'src/lib/lessons.ts')
+    let lessonsContent = fs.readFileSync(lessonsPath, 'utf8')
+    const lMarkerStart = '// ========== BÀI 04 ==========';
+    const lMarkerEnd = '  // ========== BÀI 05 ==========';
+    const lStartIdx = lessonsContent.indexOf(lMarkerStart);
+    const lEndIdx = lessonsContent.indexOf(lMarkerEnd);
+    if (lStartIdx !== -1 && lEndIdx !== -1) {
+      const lNewBlock = `${lMarkerStart}\n  ` + JSON.stringify(lessonData, null, 2).replace(/\n/g, '\n  ') + ',\n\n';
+      lessonsContent = lessonsContent.substring(0, lStartIdx) + lNewBlock + lessonsContent.substring(lEndIdx);
+      fs.writeFileSync(lessonsPath, lessonsContent, 'utf8')
+      console.log('Successfully synced and updated offline fallback src/lib/lessons.ts!')
+    }
+  } catch (syncError) {
+    console.error('Failed to sync changes to offline fallback files:', syncError)
+  }
 }
 
 main()

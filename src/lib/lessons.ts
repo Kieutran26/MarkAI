@@ -187,116 +187,73 @@ export const lessons: Lesson[] = [
 
 // ========== BÀI 04 ==========
   {
-    id: 4,
-    slug: 'dung-giao-dien-web-nhanh-voi-ai',
-    badge: 'UI AI',
-    badgeType: 'dark',
-    duration: '~30 phút',
-    subLessonCount: 6,
-    title: 'Dựng giao diện web nhanh với AI',
-    titleEm: 'với AI',
-    desc: 'Dựng giao diện trước, lấy DESIGN.md làm context, dùng Google AI Studio, Stitch, Base44, Lovable, Figma Make, Claude Design, v0.dev và Replit để tạo UI nhanh.',
-    tags: ['DESIGN.md', 'UI', 'AI Studio', 'Base44', 'Lovable'],
-    difficulty: 'Giao diện · thực hành',
-    prevLesson: { id: 3, title: 'Cài đặt môi trường' },
-    nextLesson: { id: 5, title: 'Làm quen Claude Code' },
-    subLessons: [
+    "id": 4,
+    "slug": "dung-giao-dien-web-nhanh-voi-ai",
+    "badge": "UI AI",
+    "badgeType": "dark",
+    "duration": "~30 phút",
+    "subLessonCount": 6,
+    "title": "Bài 4: Dựng giao diện web nhanh với AI",
+    "titleEm": "với AI",
+    "desc": "Dựng giao diện trước, lấy DESIGN.md làm context, dùng Google AI Studio, Stitch, Base44, Lovable, Figma Make, Claude Design, v0.dev và Replit để tạo UI nhanh.",
+    "tags": [
+      "DESIGN.md",
+      "UI",
+      "AI Studio",
+      "Base44",
+      "Lovable"
+    ],
+    "difficulty": "Giao diện · thực hành",
+    "prevLesson": {
+      "id": 3,
+      "title": "Cài đặt môi trường"
+    },
+    "nextLesson": {
+      "id": 5,
+      "title": "Làm quen Claude Code"
+    },
+    "subLessons": [
       {
-        id: '4.1',
-        title: 'Giao diện VS Code — Explorer, Terminal, Extensions',
-        eyebrow: 'Giao diện VS Code',
-        desc: 'Các panel chính: Explorer, Terminal, Extensions, Command Palette.',
-        contentType: 'text',
-        paragraphs: [
-          'VS Code có 5 panel chính bạn cần biết:',
-          '<strong>1. Activity Bar</strong> (thanh bên trái): Các icon để toggle panel. Explorer, Search, Source Control (Git), Extensions, Debug.',
-          '<strong>2. Explorer</strong>: Hiển thị cây thư mục của project. Click vào file để mở trong editor.',
-          '<strong>3. Editor</strong>: Vùng chính để đọc và sửa code. Có thể mở nhiều tabs.',
-          '<strong>4. Terminal</strong>: Mở bằng <code>Ctrl+`</code>. Nơi chạy lệnh npm, git, v.v.',
-          '<strong>5. Command Palette</strong>: Mở bằng <code>Ctrl+Shift+P</code>. Gõ tên lệnh để thực thi — không cần nhớ shortcut.'
-        ],
-        insight: '✳ Mẹo: Ctrl+P (Quick Open) để mở file nhanh bằng tên, không cần click trong Explorer.'
+        "id": "4.1",
+        "title": "Mở đầu",
+        "eyebrow": "Quy trình",
+        "desc": "Một sai lầm hay gặp khi mới vibecode: <strongnhảy vào code tính năng luôn mà chưa có giao diện</strong.",
+        "contentType": "text"
       },
       {
-        id: '4.2',
-        title: 'Cấu trúc project Next.js — file nào làm gì',
-        eyebrow: 'Đọc cấu trúc thư mục',
-        desc: 'Hiểu cấu trúc một project Next.js — package.json, app folder, components.',
-        contentType: 'grid',
-        gridItems: [
-          { label: 'package.json', title: 'Quản lý dependencies', desc: 'Khai báo thư viện cần cài (React, Next.js, Tailwind...).' },
-          { label: 'app/', title: 'Router & Pages', desc: 'Next.js App Router — mỗi folder là một route/page.' },
-          { label: 'components/', title: 'UI components', desc: 'Các khối giao diện có thể tái sử dụng.' },
-          { label: 'public/', title: 'Static assets', desc: 'Hình ảnh, font, file tĩnh copy nguyên sang deploy.' }
-        ],
-        paragraphs: [
-          '<strong>app/</strong> là folder chính của Next.js 13+. Mỗi <code>page.tsx</code> là một trang. <code>layout.tsx</code> là layout chung cho các trang con.',
-          '<strong>components/</strong> chứa các React components. Nên đặt tên theo PascalCase: <code>LessonCard.tsx</code>, <code>NavBar.tsx</code>.'
-        ],
-        insight: '✳ Khi AI tạo file mới, nó thường tạo đúng vị trí. Bạn chỉ cần hiểu: "folder này chứa gì" là đủ.'
+        "id": "4.2",
+        "title": "Bước 1 — Tìm web có giao diện mình thích",
+        "eyebrow": "Tìm tham khảo",
+        "desc": "Chưa có ý tưởng giao diện? Đừng bắt đầu từ tờ giấy trắng. Tìm một web trông đúng thứ mình muốn làm — rồi nhái theo.",
+        "contentType": "text"
       },
       {
-        id: '4.3',
-        title: 'Terminal tích hợp — mở, chạy lệnh, không sợ màn hình đen',
-        eyebrow: 'Terminal tích hợp',
-        desc: 'Terminal không đáng sợ — đây là nơi chạy lệnh, cài package, start server.',
-        contentType: 'text',
-        paragraphs: [
-          'Terminal (hay Command Line Interface - CLI) là "màn hình đen" đáng sợ với người mới. Thực ra nó chỉ là nơi gõ lệnh text thay vì click chuột.',
-          '<strong>Các lệnh cơ bản cần biết:</strong><br>• <code>cd folder-name</code>: Di chuyển vào thư mục<br>• <code>ls</code> (Mac) / <code>dir</code> (Windows): Liệt kê file trong thư mục<br>• <code>cd ..</code>: Di chuyển ra thư mục cha<br>• <code>npm install</code>: Cài dependencies<br>• <code>npm run dev</code>: Chạy development server'
-        ],
-        paragraphs_extra: [
-          '<strong>Đừng sợ lỗi trong terminal</strong>. Lỗi là bình thường — đọc thông báo, paste cho AI, nhờ nó fix.'
-        ],
-        insight: '✳ Khi terminal "chạy mãi không dừng", đó là vì server đang hoạt động. Mở trình duyệt xem kết quả. Nhấn Ctrl+C để dừng.'
+        "id": "4.3",
+        "title": "Bước 2 — Lấy DESIGN.md từ web đó",
+        "eyebrow": "Design System",
+        "desc": "<codeDESIGN.md</code là một file văn bản (markdown) chứa <strongtoàn bộ design system của một website</strong — màu sắc, font, spacing, cách component trông như thế nào — được viết dưới dạng mà AI coding agent đọc hiểu đ",
+        "contentType": "text"
       },
       {
-        id: '4.4',
-        title: 'Cursor khác VS Code ở chỗ nào',
-        eyebrow: 'Giao diện Cursor',
-        desc: 'Cursor là VS Code + AI — thêm Chat, Composer, và inline suggestions.',
-        contentType: 'compare',
-        compareHeaders: ['VS Code', 'Cursor'],
-        compareRows: [
-          ['Code editor thuần', 'Code editor + AI tích hợp'],
-          ['Cần extension cho AI', 'AI có sẵn (Claude/GPT-4)'],
-          ['Tự viết code hoàn toàn', 'AI viết code, bạn review & accept'],
-          ['Miễn phí hoàn toàn', 'Free tier có giới hạn'],
-          ['Tốt cho developer chuyên', 'Tốt cho người muốn AI hỗ trợ']
-        ],
-        insight: '✳ Cursor = VS Code nhưng thêm "co-pilot". Nếu đã quen VS Code, chuyển sang Cursor không mất gì — giao diện y hệt, thêm AI bên cạnh.'
+        "id": "4.4",
+        "title": "Cách lấy DESIGN.md",
+        "eyebrow": "Công cụ",
+        "desc": "Cách lấy DESIGN.md",
+        "contentType": "text"
       },
       {
-        id: '4.5',
-        title: 'Chat vs Composer trong Cursor — dùng cái nào khi nào',
-        eyebrow: 'Chat vs Composer',
-        desc: 'Hai AI panel của Cursor phục vụ hai mục đích khác nhau.',
-        contentType: 'text',
-        paragraphs: [
-          '<strong>Chat (<code>Ctrl+L</code>)</strong>: Hỏi đáp, giải thích code, debug. Dùng khi bạn cần hiểu một đoạn code hoặc muốn AI giải thích lỗi.',
-          '<strong>Composer (<code>Ctrl+K</code>)</strong>: Tạo hoặc sửa nhiều file cùng lúc. Dùng khi bạn muốn AI tạo tính năng mới — nó sẽ tạo/sửa nhiều file một lượt.',
-          '<strong>Inline Chat</strong>: AI nhắc trong code. Dùng <code>Ctrl+I</code> để hỏi ngay tại dòng đang đọc.',
-          '<strong>Khi nào dùng:</strong><br>• Cần hiểu code → Chat<br>• Cần tạo/sửa tính năng → Composer<br>• Cần sửa nhanh 1-2 dòng → Inline Chat'
-        ],
-        insight: '✳ Composer là "vibecode mode" — bạn mô tả gì cần làm, AI tạo code trong nhiều file. Chat là "hỏi đáp mode" — hỏi gì đáp nấy.'
+        "id": "4.5",
+        "title": "Bước 3 — Quăng DESIGN.md vào tool AI, code luôn",
+        "eyebrow": "Tạo giao diện",
+        "desc": "Đây là bước quan trọng nhất. Thay vì dùng các AI IDE viết từng dòng code, bạn quăng DESIGN.md thẳng vào các tool AI để nó <strongcode giao diện và tính năng cùng một lúc</strong.",
+        "contentType": "text"
       },
       {
-        id: '4.6',
-        title: '10 phím tắt hay dùng nhất',
-        eyebrow: 'Phím tắt',
-        desc: '10 phím tắt đủ để sống — không cần nhớ tất cả.',
-        contentType: 'grid',
-        gridItems: [
-          { label: '1', title: 'Ctrl/Cmd + `', desc: 'Mở/tắt terminal' },
-          { label: '2', title: 'Ctrl/Cmd + P', desc: 'Quick Open — mở file nhanh' },
-          { label: '3', title: 'Ctrl/Cmd + Shift + P', desc: 'Command Palette' },
-          { label: '4', title: 'Ctrl/Cmd + L', desc: 'Mở Cursor Chat' },
-          { label: '5', title: 'Ctrl/Cmd + K', desc: 'Mở Cursor Composer' },
-          { label: '6', title: 'Ctrl/Cmd + S', desc: 'Lưu file (rất quan trọng!)' },
-          { label: '7', title: 'Ctrl/Cmd + D', desc: 'Chọn word tiếp theo giống vậy' },
-          { label: '8', title: 'Alt + Click', desc: 'Multi-cursor — sửa nhiều chỗ' }
-        ],
-        insight: '✳ Không cần nhớ tất cả. Bắt đầu với 3 cái: Ctrl+S (lưu), Ctrl+P (mở file), Ctrl+L (chat). Thêm dần khi quen.'
+        "id": "4.6",
+        "title": "Bước 4 — Tải code về, dùng AI IDE hoàn thiện tiếp",
+        "eyebrow": "Hoàn thiện",
+        "desc": "Sau khi giao diện đã đúng ý bạn và các tính năng cũng đã hoàn thiện 1 phần hoặc bạn hết credit =))), tải code về máy để tiếp tục làm việc với AI IDE.",
+        "contentType": "text"
       }
     ]
   },

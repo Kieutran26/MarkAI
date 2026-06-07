@@ -53,7 +53,12 @@ export function mapPublicLessonToOverviewModules(payload: PublicLessonPayload): 
 }
 
 export function findSubLessonFromSlug(subLessons: SubLessonFull[], subSlug: string) {
-  return subLessons.find((item) => item.slug === subSlug) ?? null;
+  // Exact match first
+  const exact = subLessons.find((item) => item.slug === subSlug);
+  if (exact) return exact;
+  // Prefix match: DB may return short slug (e.g. "bai-4-6") while local has long slug (e.g. "bai-4-6-buoc-4-...")
+  const prefix = subLessons.find((item) => item.slug.startsWith(subSlug + '-') || subSlug.startsWith(item.slug + '-'));
+  return prefix ?? null;
 }
 
 function summarizeBlocks(blocks: Array<{ contentJson: Record<string, unknown> }>) {
@@ -66,7 +71,7 @@ function inferLessonNumber(slug: string) {
     'vibecode-la-gi',
     'tu-ngu-chuyen-nganh',
     'cai-dat-moi-truong',
-    'lam-quen-vscode-cursor',
+    'dung-giao-dien-web-nhanh-voi-ai',
     'lam-quen-claude-code',
     'cong-cu-website-huu-ich',
     'cach-prompt-cho-ai',

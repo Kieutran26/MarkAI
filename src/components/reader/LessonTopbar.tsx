@@ -66,8 +66,8 @@ function getNextLessonSlug(currentSlug: string): string {
   const slugMap: Record<string, string> = {
     'vibecode-la-gi': 'tu-ngu-chuyen-nganh',
     'tu-ngu-chuyen-nganh': 'cai-dat-moi-truong',
-    'cai-dat-moi-truong': 'lam-quen-vscode-cursor',
-    'lam-quen-vscode-cursor': 'lam-quen-claude-code',
+    'cai-dat-moi-truong': 'dung-giao-dien-web-nhanh-voi-ai',
+    'dung-giao-dien-web-nhanh-voi-ai': 'lam-quen-claude-code',
     'lam-quen-claude-code': 'cong-cu-website-huu-ich',
     'cong-cu-website-huu-ich': 'cach-prompt-cho-ai',
     'cach-prompt-cho-ai': 'khi-ai-code-sai',

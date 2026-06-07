@@ -1,4 +1,4 @@
-﻿import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import type { SubLessonFull } from '../../lib/subLessons';
 import { getSubLessonsByLesson } from '../../lib/subLessons';
 
@@ -41,7 +41,7 @@ export default function ReaderSidebar({ subLesson, lessonSlug, subLessons, onClo
           >
             <span className="si-num">{sl.id}</span>
             <div className="si-body">
-              <span className="si-title">{sl.title.split('—')[0].trim()}</span>
+              <span className="si-title">{sl.title}</span>
               <span className="si-time">{sl.duration}</span>
             </div>
             {isDone && <span className="si-check">✓</span>}
@@ -59,7 +59,7 @@ export default function ReaderSidebar({ subLesson, lessonSlug, subLessons, onClo
             onClick={handleClick}
           >
             <span className="snl-num">{next.id.toString().padStart(2, '0')}</span>
-            <span>{next.title.split('—')[0].trim()}</span>
+            <span>{next.title}</span>
           </Link>
         ))}
       </div>
@@ -72,7 +72,7 @@ function getNextLessons(currentSlug: string) {
     { id: 1, slug: 'vibecode-la-gi', title: 'Vibecode là gì?' },
     { id: 2, slug: 'tu-ngu-chuyen-nganh', title: 'AI đang “nói gì” với bạn?' },
     { id: 3, slug: 'cai-dat-moi-truong', title: 'Cài đặt môi trường' },
-    { id: 4, slug: 'lam-quen-vscode-cursor', title: 'Làm quen VS Code & Cursor' },
+    { id: 4, slug: 'dung-giao-dien-web-nhanh-voi-ai', title: 'Dựng giao diện web nhanh với AI' },
     { id: 5, slug: 'lam-quen-claude-code', title: 'Làm quen Claude Code' },
     { id: 6, slug: 'cong-cu-website-huu-ich', title: 'Công cụ & website hữu ích' },
     { id: 7, slug: 'cach-prompt-cho-ai', title: 'Cách prompt cho AI' },

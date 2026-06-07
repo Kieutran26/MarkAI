@@ -15,7 +15,7 @@ export default function LessonSidebar({ lesson }: LessonSidebarProps) {
       1: 'vibecode-la-gi',
       2: 'tu-ngu-chuyen-nganh',
       3: 'cai-dat-moi-truong',
-      4: 'lam-quen-vscode-cursor',
+      4: 'dung-giao-dien-web-nhanh-voi-ai',
       5: 'lam-quen-claude-code',
       6: 'cong-cu-website-huu-ich',
       7: 'cach-prompt-cho-ai',
@@ -67,7 +67,7 @@ export default function LessonSidebar({ lesson }: LessonSidebarProps) {
           className={`sidebar-item ${activeId === `sub-${subLesson.id}` ? 'active' : ''}`}
         >
           <span className="sidebar-item-num">{subLesson.id}</span>
-          <span className="sidebar-item-text">{subLesson.title.split('—')[0].trim()}</span>
+          <span className="sidebar-item-text">{subLesson.title}</span>
           {idx === 0 && (
             <span className="sidebar-item-done">✓</span>
           )}

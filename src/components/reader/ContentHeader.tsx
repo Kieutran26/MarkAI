@@ -20,7 +20,9 @@ export default function ContentHeader({ subLesson }: ContentHeaderProps) {
       {/* Title */}
       <h1 className="ch-title">
         {title.split('—')[0].trim()}
-        {titleEm && <em className="text-accent italic"> — {titleEm}</em>}
+        {(title.split('—')[1] || titleEm) && (
+          <em className="text-accent italic"> — {(title.split('—')[1]?.trim() || titleEm)}</em>
+        )}
       </h1>
 
       {/* Description */}

@@ -64,7 +64,7 @@ try {
     tags: ['Node.js', 'VS Code', 'Git', 'GitHub', 'Vercel', 'Supabase', 'AI IDE'],
     difficulty: 'Setup · 40 phút',
     prevLesson: { id: 2, title: 'Từ ngữ chuyên ngành' },
-    nextLesson: { id: 4, title: 'Làm quen VS Code & Cursor' },
+    nextLesson: { id: 4, title: 'Dựng giao diện web nhanh với AI' },
     subLessons: [
       { id: '3.1', title: 'Node.js — nền tảng để chạy code', eyebrow: 'Node.js', desc: 'Node.js là môi trường để máy bạn hiểu và chạy được JavaScript.', contentType: 'text' },
       { id: '3.2', title: 'VS Code — editor chính để viết code', eyebrow: 'VS Code', desc: 'VS Code là code editor phổ biến nhất thế giới, miễn phí, của Microsoft.', contentType: 'text' },

@@ -479,7 +479,7 @@ export const terms: GlossaryTerm[] = rawTerms
 
 export const ctaLessons = [
   { num: '03', title: 'Cài gì vào máy để bắt đầu vibecode?', to: '/vibecode/cai-dat-moi-truong', arrow: '→' },
-  { num: '04', title: 'Làm quen VS Code & Cursor', to: '/vibecode/lam-quen-vscode-cursor', arrow: '→' },
+  { num: '04', title: 'Dựng giao diện web nhanh với AI', to: '/vibecode/dung-giao-dien-web-nhanh-voi-ai', arrow: '→' },
   { num: '05', title: 'Làm quen Claude Code', to: '/vibecode/lam-quen-claude-code', arrow: '→' },
   { num: '01', title: 'Quay lại Bài 01 · Vibecode là gì?', to: '/vibecode/vibecode-la-gi', arrow: '↩' },
 ] as const;

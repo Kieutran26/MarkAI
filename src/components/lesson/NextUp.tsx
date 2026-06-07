@@ -13,7 +13,7 @@ const getSlug = (id: number) => {
     1: 'vibecode-la-gi',
     2: 'tu-ngu-chuyen-nganh',
     3: 'cai-dat-moi-truong',
-    4: 'lam-quen-vscode-cursor',
+    4: 'dung-giao-dien-web-nhanh-voi-ai',
     5: 'lam-quen-claude-code',
     6: 'cong-cu-website-huu-ich',
     7: 'cach-prompt-cho-ai',

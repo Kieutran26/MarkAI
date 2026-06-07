@@ -37,34 +37,34 @@
 187: 
 188: // ========== BÀI 04 ==========
 189:   {
-190:     id: 4,
-191:     slug: 'dung-giao-dien-web-nhanh-voi-ai',
-192:     badge: 'UI AI',
-193:     badgeType: 'dark',
-194:     duration: '~30 phút',
-195:     subLessonCount: 6,
-196:     title: 'Dựng giao diện web nhanh với AI',
-197:     titleEm: 'với AI',
-198:     desc: 'Dựng giao diện trước, lấy DESIGN.md làm context, dùng Google AI Studio, Stitch, Base44, Lovable, Figma Make, Claude Design, v0.dev và Replit để tạo UI nhanh.',
-199:     tags: ['DESIGN.md', 'UI', 'AI Studio', 'Base44', 'Lovable'],
-200:     difficulty: 'Giao diện · thực hành',
-201:     prevLesson: { id: 3, title: 'Cài đặt môi trường' },
-202:     nextLesson: { id: 5, title: 'Làm quen Claude Code' },
-203:     subLessons: [
-204:       {
-205:         id: '4.1',
-206:         title: 'Giao diện VS Code — Explorer, Terminal, Extensions',
-207:         eyebrow: 'Giao diện VS Code',
-208:         desc: 'Các panel chính: Explorer, Terminal, Extensions, Command Palette.',
-209:         contentType: 'text',
-210:         paragraphs: [
-211:           'VS Code có 5 panel chính bạn cần biết:',
-212:           '<strong>1. Activity Bar</strong> (thanh bên trái): Các icon để toggle panel. Explorer, Search, Source Control (Git), Extensions, Debug.',
-213:           '<strong>2. Explorer</strong>: Hiển thị cây thư mục của project. Click vào file để mở trong editor.',
-214:           '<strong>3. Editor</strong>: Vùng chính để đọc và sửa code. Có thể mở nhiều tabs.',
-215:           '<strong>4. Terminal</strong>: Mở bằng <code>Ctrl+`</code>. Nơi chạy lệnh npm, git, v.v.',
-216:           '<strong>5. Command Palette</strong>: Mở bằng <code>Ctrl+Shift+P</code>. Gõ tên lệnh để thực thi — không cần nhớ shortcut.'
-217:         ],
-218:         insight: '✳ Mẹo: Ctrl+P (Quick Open) để mở file nhanh bằng tên, không cần click trong Explorer.'
-219:       },
-220:       {
+190:     "id": 4,
+191:     "slug": "dung-giao-dien-web-nhanh-voi-ai",
+192:     "badge": "UI AI",
+193:     "badgeType": "dark",
+194:     "duration": "~30 phút",
+195:     "subLessonCount": 6,
+196:     "title": "Bài 4: Dựng giao diện web nhanh với AI",
+197:     "titleEm": "với AI",
+198:     "desc": "Dựng giao diện trước, lấy DESIGN.md làm context, dùng Google AI Studio, Stitch, Base44, Lovable, Figma Make, Claude Design, v0.dev và Replit để tạo UI nhanh.",
+199:     "tags": [
+200:       "DESIGN.md",
+201:       "UI",
+202:       "AI Studio",
+203:       "Base44",
+204:       "Lovable"
+205:     ],
+206:     "difficulty": "Giao diện · thực hành",
+207:     "prevLesson": {
+208:       "id": 3,
+209:       "title": "Cài đặt môi trường"
+210:     },
+211:     "nextLesson": {
+212:       "id": 5,
+213:       "title": "Làm quen Claude Code"
+214:     },
+215:     "subLessons": [
+216:       {
+217:         "id": "4.1",
+218:         "title": "Mở đầu",
+219:         "eyebrow": "Quy trình",
+220:         "desc": "Một sai lầm hay gặp khi mới vibecode: <strongnhảy vào code tính năng luôn mà chưa có giao diện</strong.",

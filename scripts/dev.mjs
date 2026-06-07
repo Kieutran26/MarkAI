@@ -32,3 +32,29 @@ for (const child of children) {
 
 process.on('SIGINT', () => shutdown(0));
 process.on('SIGTERM', () => shutdown(0));
+
+// --- AUTO-WATCHER FOR LESSON MARKDOWN ---
+import fs from 'node:fs';
+import { exec } from 'node:child_process';
+
+let watchTimeout = null;
+fs.watch('.', (eventType, filename) => {
+  if (filename && filename.endsWith('.md') && filename.startsWith('Bài 4')) {
+    if (watchTimeout) clearTimeout(watchTimeout);
+    watchTimeout = setTimeout(() => {
+      console.log(`\n[Watcher] File ${filename} changed. Auto-uploading content to database...`);
+      const proc = exec('npx tsx scripts/upload-vibecode-lesson-4.ts');
+      
+      proc.stdout.on('data', (data) => process.stdout.write(`[Watcher] ${data}`));
+      proc.stderr.on('data', (data) => process.stderr.write(`[Watcher ERROR] ${data}`));
+      
+      proc.on('close', (code) => {
+        if (code === 0) {
+          console.log(`[Watcher] Successfully uploaded changes to database!\n`);
+        } else {
+          console.error(`[Watcher] Upload script failed with exit code ${code}\n`);
+        }
+      });
+    }, 500);
+  }
+});

@@ -97,7 +97,7 @@ function PreviewSidebar({ current, lessonSlug, previewToken, subLessons }: { cur
           <Link key={subLesson.id} to={getPreviewHref(previewToken, index + 1)} className={`sidebar-item ${isActive ? 'active' : ''} ${isDone ? 'done' : ''}`}>
             <span className="si-num">{subLesson.id}</span>
             <div className="si-body">
-              <span className="si-title">{subLesson.title.split('—')[0].trim()}</span>
+              <span className="si-title">{subLesson.title}</span>
               <span className="si-time">{subLesson.duration}</span>
             </div>
             {isDone ? <span className="si-check">✓</span> : null}
@@ -183,7 +183,7 @@ function mapBlocksToSubLessons(lesson: PreviewLesson): SubLessonFull[] {
 }
 
 function inferLessonNumber(slug: string) {
-  const orderedSlugs = ['vibecode-la-gi', 'tu-ngu-chuyen-nganh', 'cai-dat-moi-truong', 'lam-quen-vscode-cursor', 'lam-quen-claude-code', 'cong-cu-website-huu-ich', 'cach-prompt-cho-ai', 'khi-ai-code-sai', 'tao-skills-va-workflow', 'deploy-va-tracking'];
+  const orderedSlugs = ['vibecode-la-gi', 'tu-ngu-chuyen-nganh', 'cai-dat-moi-truong', 'dung-giao-dien-web-nhanh-voi-ai', 'lam-quen-claude-code', 'cong-cu-website-huu-ich', 'cach-prompt-cho-ai', 'khi-ai-code-sai', 'tao-skills-va-workflow', 'deploy-va-tracking'];
   const index = orderedSlugs.indexOf(slug);
   return index >= 0 ? index + 1 : 1;
 }

@@ -17,6 +17,8 @@ Upload Lesson 4 Success:
 Uploaded 6 modules to lesson 4.
 Old slug: dung-giao-dien-web-nhanh-voi-ai
 New slug: dung-giao-dien-web-nhanh-voi-ai
+Successfully synced and updated offline fallback src/lib/subLessons.ts!
+Successfully synced and updated offline fallback src/lib/lessons.ts!
 
 TypeScript Check Failed:
 Command failed: npx tsc --noEmit

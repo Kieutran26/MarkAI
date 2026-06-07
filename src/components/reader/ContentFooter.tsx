@@ -1,4 +1,4 @@
-﻿import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import type { SubLessonFull } from '../../lib/subLessons';
 
 interface ContentFooterProps {
@@ -17,7 +17,7 @@ export default function ContentFooter({ subLesson, lessonSlug }: ContentFooterPr
 
   if (nextSlug) {
     nextHref = `/vibecode/${lessonSlug}/${nextSlug}`;
-    nextDisplayText = (nextTitle?.split('—')[0] || nextTitle || '').trim();
+    nextDisplayText = (nextTitle || '').trim();
   } else if (isLastInLesson) {
     nextHref = `/vibecode/${getNextLessonSlug(lessonSlug)}`;
     nextDisplayText = getNextLessonLabel(lessonSlug);
@@ -31,7 +31,7 @@ export default function ContentFooter({ subLesson, lessonSlug }: ContentFooterPr
       {prevHref ? (
         <Link to={prevHref} className="cf-btn">
           <span className="cf-dir">← Phần trước</span>
-          <span className="cf-title">{(prevTitle?.split('—')[0] || prevTitle || '').trim()}</span>
+          <span className="cf-title">{(prevTitle || '').trim()}</span>
           <span className="cf-sub">{id.split('.')[0]}.{currentIndex - 1} · ~5 phút</span>
         </Link>
       ) : (
@@ -57,8 +57,8 @@ function getNextLessonSlug(currentSlug: string): string {
   const slugMap: Record<string, string> = {
     'vibecode-la-gi': 'tu-ngu-chuyen-nganh',
     'tu-ngu-chuyen-nganh': 'cai-dat-moi-truong',
-    'cai-dat-moi-truong': 'lam-quen-vscode-cursor',
-    'lam-quen-vscode-cursor': 'lam-quen-claude-code',
+    'cai-dat-moi-truong': 'dung-giao-dien-web-nhanh-voi-ai',
+    'dung-giao-dien-web-nhanh-voi-ai': 'lam-quen-claude-code',
     'lam-quen-claude-code': 'cong-cu-website-huu-ich',
     'cong-cu-website-huu-ich': 'cach-prompt-cho-ai',
     'cach-prompt-cho-ai': 'khi-ai-code-sai',
@@ -88,8 +88,8 @@ function getNextLessonLabel(currentSlug: string): string {
   const labels: Record<string, string> = {
     'vibecode-la-gi': 'Bài 02 · AI đang “nói gì” với bạn?',
     'tu-ngu-chuyen-nganh': 'Bài 03 · Cài đặt môi trường',
-    'cai-dat-moi-truong': 'Bài 04 · Làm quen VS Code & Cursor',
-    'lam-quen-vscode-cursor': 'Bài 05 · Làm quen Claude Code',
+    'cai-dat-moi-truong': 'Bài 04 · Dựng giao diện web nhanh với AI',
+    'dung-giao-dien-web-nhanh-voi-ai': 'Bài 05 · Làm quen Claude Code',
     'lam-quen-claude-code': 'Bài 06 · Công cụ & website hữu ích',
     'cong-cu-website-huu-ich': 'Bài 07 · Cách prompt cho AI',
     'cach-prompt-cho-ai': 'Bài 08 · Khi AI code sai',
