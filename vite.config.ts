@@ -39,6 +39,9 @@ export default defineConfig(({mode}) => {
       ],
     },
     server: {
+      watch: {
+        ignored: ['**/soure markai/**', '**/giao dien moi/**', '**/scratch/**'],
+      },
       proxy: {
         '/api': {
           target: 'http://localhost:3002',

@@ -238,7 +238,7 @@ export const lessons: Lesson[] = [
         "id": "4.4",
         "title": "Cách lấy DESIGN.md",
         "eyebrow": "Công cụ",
-        "desc": "Có 3 cách, tùy tình huống:",
+        "desc": "Cách lấy DESIGN.md",
         "contentType": "text"
       },
       {

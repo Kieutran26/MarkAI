@@ -11,8 +11,13 @@ export const serverConfig = {
   isProduction: process.env.NODE_ENV === 'production',
 };
 
-export function assertDatabaseUrl() {
+export function assertDatabaseUrl(strict = false) {
   if (!serverConfig.databaseUrl) {
-    throw new Error('DATABASE_URL is required to start the admin API server.');
+    const msg = 'DATABASE_URL is not set. Database features are disabled. Please set DATABASE_URL in .env if you need database access.';
+    if (strict) {
+      throw new Error(msg);
+    }
+    console.warn(`\n⚠️  [Server] ${msg}\n`);
   }
 }
+

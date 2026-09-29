@@ -14,31 +14,11 @@ export default function Nav() {
       location.pathname.startsWith('/lesson') ||
       location.pathname.includes('/bai-'));
   const isActive = (path: string) => location.pathname === path;
-  const navItems = [
-    { label: 'Vibecode', path: '/vibecode', active: isVibecodeActive },
-    { label: 'Từ điển chuyên ngành', path: GLOSSARY_PATH, active: isGlossaryRoute },
-    { label: 'Blog', path: '/blog', active: isActive('/blog') },
-    { label: 'Tips', path: '/tips', active: isActive('/tips') },
-    // { label: 'Prompts', path: '/prompts', active: isActive('/prompts') },
-  ];
-  const getNavItemClass = (active: boolean) =>
-    `font-mono text-[12px] px-4 h-[52px] flex items-center border-l border-border transition-colors no-underline ${
-      active
-        ? 'bg-accent text-white font-medium'
-        : 'text-ink hover:bg-bg2'
-    }`;
-  const getMobileNavItemClass = (active: boolean) =>
-    `font-mono text-[12px] px-5 py-4 flex items-center justify-between border-t border-border transition-colors no-underline ${
-      active
-        ? 'bg-accent text-white font-medium'
-        : 'text-ink hover:bg-bg2'
-    }`;
 
   const handleLogoClick = (event: MouseEvent<HTMLAnchorElement>) => {
     if (location.pathname !== '/') {
       return;
     }
-
     event.preventDefault();
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -48,72 +28,140 @@ export default function Nav() {
   }, [location.pathname]);
 
   return (
-    <nav className="sticky top-0 z-50 bg-bg border-b border-border">
-      <div className="h-[52px] flex items-center justify-between pl-[1.2rem] md:pl-8 pr-0">
+    <header className="sticky top-0 z-50 bg-[#F6F5F1]/90 backdrop-blur-md border-b border-[#E6E4DE] transition-colors">
+      <div className="max-w-[1280px] mx-auto px-5 md:px-8 py-3.5 md:py-4 flex items-center justify-between gap-4">
+        {/* Brand Logo with Orange Dot */}
         <Link
           to="/"
-          aria-label="Về trang chủ markAI"
-          title="Về trang chủ"
           onClick={handleLogoClick}
-          className="shrink-0 font-mono text-[15px] font-medium tracking-tight no-underline text-ink"
+          className="flex items-center gap-2.5 font-semibold text-[17px] tracking-[-0.02em] text-[#141414] no-underline shrink-0"
         >
-          mark<span className="text-accent">AI</span>
+          <span className="w-2.5 h-2.5 rounded-full bg-[#E8772E] shrink-0" />
+          <span>markAI</span>
         </Link>
 
-        <ul className="hidden md:flex items-center h-full">
-          {navItems.map((item) => (
-            <li key={item.path}>
-              <Link to={item.path} className={getNavItemClass(item.active)}>
-                {item.label}
-              </Link>
-            </li>
-          ))}
-          <li>
-            <span className="font-mono text-[12px] text-muted px-4 h-[52px] flex items-center border-l border-border opacity-40 cursor-default">Analytics</span>
-          </li>
-          <li>
-            <span className="font-mono text-[12px] text-muted px-4 h-[52px] flex items-center border-l border-border opacity-40 cursor-default">Image</span>
-          </li>
-          <li>
-            <span className="font-mono text-[12px] text-muted px-4 h-[52px] flex items-center border-l border-border opacity-40 cursor-default">Video</span>
-          </li>
-        </ul>
+        {/* Center Floating Pill Nav (Desktop) */}
+        <nav className="hidden lg:flex items-center gap-1 text-[14px] bg-white border border-[#E6E4DE] rounded-full p-1 shadow-xs">
+          <Link
+            to="/vibecode"
+            className={`px-3.5 py-1.5 rounded-full no-underline transition-all ${
+              isVibecodeActive
+                ? 'bg-[#141414] text-white font-medium'
+                : 'text-[#55534F] hover:bg-[#F1EFEA] hover:text-[#141414]'
+            }`}
+          >
+            Vibecode
+          </Link>
+          <Link
+            to={GLOSSARY_PATH}
+            className={`px-3.5 py-1.5 rounded-full no-underline transition-all ${
+              isGlossaryRoute
+                ? 'bg-[#141414] text-white font-medium'
+                : 'text-[#55534F] hover:bg-[#F1EFEA] hover:text-[#141414]'
+            }`}
+          >
+            Từ điển
+          </Link>
+          <Link
+            to="/blog"
+            className={`px-3.5 py-1.5 rounded-full no-underline transition-all ${
+              isActive('/blog')
+                ? 'bg-[#141414] text-white font-medium'
+                : 'text-[#55534F] hover:bg-[#F1EFEA] hover:text-[#141414]'
+            }`}
+          >
+            Blog
+          </Link>
+          <Link
+            to="/tips"
+            className={`px-3.5 py-1.5 rounded-full no-underline transition-all ${
+              isActive('/tips')
+                ? 'bg-[#141414] text-white font-medium'
+                : 'text-[#55534F] hover:bg-[#F1EFEA] hover:text-[#141414]'
+            }`}
+          >
+            Tips
+          </Link>
+          <span className="px-3.5 py-1.5 text-[#B8B6B0] text-[13px] select-none whitespace-nowrap">
+            Sắp ra: Analytics · Image · Video
+          </span>
+        </nav>
 
-        <div className="flex items-center h-full">
-          <div className="nav-free-wrap hidden md:flex font-mono text-[12px] items-center h-full">
-            <span className="nav-free font-medium">{'Miễn phí 100%'}</span>
-          </div>
+        {/* Right Badge & Mobile Toggle */}
+        <div className="flex items-center gap-3">
+          <span className="font-mono text-[12px] text-[#55534F] hidden sm:inline-block">
+            Miễn phí 100%
+          </span>
+
           <button
             type="button"
             aria-expanded={isMobileMenuOpen}
             aria-label={isMobileMenuOpen ? 'Đóng menu' : 'Mở menu'}
             onClick={() => setIsMobileMenuOpen((open) => !open)}
-            className="md:hidden h-[52px] px-4 border-l border-border font-mono text-[11px] tracking-[0.08em] uppercase text-ink"
+            className="lg:hidden flex items-center gap-2 px-3 py-1.5 border border-[#DAD8D2] rounded-full font-mono text-[11px] tracking-wide uppercase text-[#141414] bg-white hover:bg-[#F1EFEA] transition-colors"
           >
-            {isMobileMenuOpen ? 'Close' : 'Menu'}
+            {isMobileMenuOpen ? 'Đóng' : 'Menu'}
           </button>
         </div>
       </div>
 
+      {/* Mobile Drawer */}
       {isMobileMenuOpen && (
-        <div className="md:hidden border-t border-border mx-[calc(var(--page-gutter-mobile)*-1)] bg-bg">
-          <div className="flex flex-col">
-            {navItems.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={getMobileNavItemClass(item.active)}
-              >
-                <span>{item.label}</span>
-                <span aria-hidden="true">{'→'}</span>
-              </Link>
-            ))}
-            <div className="px-5 py-4 border-t border-border font-mono text-[11px] text-muted uppercase tracking-[0.06em] bg-bg2">
-              {'Miễn phí 100% · Không cần email'}
+        <div className="lg:hidden border-t border-[#E6E4DE] bg-[#F6F5F1] px-5 py-4">
+          <div className="flex flex-col gap-2">
+            <Link
+              to="/vibecode"
+              className={`px-4 py-2.5 rounded-full text-[14px] no-underline transition-all flex items-center justify-between ${
+                isVibecodeActive
+                  ? 'bg-[#141414] text-white font-medium'
+                  : 'text-[#141414] bg-white border border-[#E6E4DE]'
+              }`}
+            >
+              <span>Vibecode</span>
+              <span className="font-mono text-[11px] text-[#E8772E]">Live</span>
+            </Link>
+            <Link
+              to={GLOSSARY_PATH}
+              className={`px-4 py-2.5 rounded-full text-[14px] no-underline transition-all flex items-center justify-between ${
+                isGlossaryRoute
+                  ? 'bg-[#141414] text-white font-medium'
+                  : 'text-[#141414] bg-white border border-[#E6E4DE]'
+              }`}
+            >
+              <span>Từ điển chuyên ngành</span>
+              <span className="text-[#8A8883]">→</span>
+            </Link>
+            <Link
+              to="/blog"
+              className={`px-4 py-2.5 rounded-full text-[14px] no-underline transition-all flex items-center justify-between ${
+                isActive('/blog')
+                  ? 'bg-[#141414] text-white font-medium'
+                  : 'text-[#141414] bg-white border border-[#E6E4DE]'
+              }`}
+            >
+              <span>Blog</span>
+              <span className="text-[#8A8883]">→</span>
+            </Link>
+            <Link
+              to="/tips"
+              className={`px-4 py-2.5 rounded-full text-[14px] no-underline transition-all flex items-center justify-between ${
+                isActive('/tips')
+                  ? 'bg-[#141414] text-white font-medium'
+                  : 'text-[#141414] bg-white border border-[#E6E4DE]'
+              }`}
+            >
+              <span>Tips &amp; Mẹo</span>
+              <span className="text-[#8A8883]">→</span>
+            </Link>
+            <div className="px-4 py-3 rounded-2xl bg-[#F1EFEA] border border-[#DAD8D2] font-mono text-[11px] text-[#8A8883] mt-2">
+              Sắp ra: Analytics · Image · Video
+            </div>
+            <div className="px-4 py-2 text-center font-mono text-[11px] text-[#55534F]">
+              Miễn phí 100% · Không quảng cáo · Không email gate
             </div>
           </div>
         </div>
       )}
-    </nav>
+    </header>
   );
 }

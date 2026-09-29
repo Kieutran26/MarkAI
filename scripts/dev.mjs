@@ -4,10 +4,9 @@ const isWindows = process.platform === 'win32';
 const shellCmd = isWindows ? process.env.ComSpec || 'cmd.exe' : 'sh';
 const shellFlag = isWindows ? '/c' : '-c';
 
-const children = [
-  spawn(shellCmd, [shellFlag, 'npm run dev:web'], { stdio: 'inherit' }),
-  spawn(shellCmd, [shellFlag, 'npm run dev:server'], { stdio: 'inherit' }),
-];
+const webChild = spawn(shellCmd, [shellFlag, 'npm run dev:web'], { stdio: 'inherit' });
+const serverChild = spawn(shellCmd, [shellFlag, 'npm run dev:server'], { stdio: 'inherit' });
+const children = [webChild, serverChild];
 
 let shuttingDown = false;
 
@@ -24,11 +23,15 @@ const shutdown = (code = 0) => {
   setTimeout(() => process.exit(code), 200);
 };
 
-for (const child of children) {
-  child.on('exit', (code) => {
-    shutdown(code ?? 0);
-  });
-}
+webChild.on('exit', (code) => {
+  shutdown(code ?? 0);
+});
+
+serverChild.on('exit', (code) => {
+  if (code !== 0 && !shuttingDown) {
+    console.warn('\n[dev:server] Admin API server stopped (DATABASE_URL may not be configured). Public web app continues running.\n');
+  }
+});
 
 process.on('SIGINT', () => shutdown(0));
 process.on('SIGTERM', () => shutdown(0));

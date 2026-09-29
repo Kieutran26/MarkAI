@@ -67,4 +67,4 @@
 217:         "id": "4.1",
 218:         "title": "Mở đầu",
 219:         "eyebrow": "Quy trình",
-220:         "desc": "Một sai lầm hay gặp khi mới vibecode: <strongnhảy vào code tính năng luôn mà chưa có giao diện</strong.",
+220:         "desc": "Một sai lầm hay gặp khi mới vibecode: <strongnhảy vào code tính năng luôn mà chưa có giao diện</strong.",
