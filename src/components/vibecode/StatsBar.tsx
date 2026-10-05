@@ -2,35 +2,29 @@ import React from 'react';
 
 export default function StatsBar() {
   const stats = [
-    { num: '10', label: 'Bài học · lộ trình vibecode' },
-    { num: '50+', label: 'Bài nhỏ · học từng phần' },
-    { num: '100%', label: 'Miễn phí · mãi mãi' },
-    { num: '0', label: 'Yêu cầu kiến thức code' },
+    { v: '10', l: 'Bài học · lộ trình vibecode', c: '#141414' },
+    { v: '50+', l: 'Bài nhỏ · học từng phần', c: '#141414' },
+    { v: '100%', l: 'Miễn phí · mãi mãi', c: '#141414' },
+    { v: '0', l: 'Yêu cầu kiến thức code', c: '#E8772E' },
   ];
 
   return (
-    <div className="border-b border-[var(--border)]">
-      <div className="page-shell w-full grid grid-cols-2 lg:grid-cols-4">
+    <section className="max-w-[1280px] mx-auto px-6 sm:px-8 pt-20 sm:pt-28">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
         {stats.map((stat, index) => (
-          <div
-            key={index}
-            className={`px-5 py-7 sm:px-8 sm:py-9 border-[var(--border)] ${
-              index % 2 === 0 ? 'border-r' : ''
-            } ${
-              index < 2 ? 'border-b lg:border-b-0' : ''
-            } ${
-              index < stats.length - 1 ? 'lg:border-r' : 'lg:border-r-0'
-            }`}
-          >
-            <div className="font-[family-name:var(--serif)] text-[2.4rem] leading-[1] mb-2">
-              {stat.num}
+          <div key={index} className="border-l border-[#DAD8D2] pl-6 py-2 mb-4">
+            <div
+              className="text-[clamp(44px,5.5vw,84px)] font-light tracking-[-0.05em] leading-none"
+              style={{ color: stat.c }}
+            >
+              {stat.v}
             </div>
-            <div className="font-[family-name:var(--mono)] text-[11px] text-[var(--muted)] tracking-[0.04em]">
-              {stat.label}
+            <div className="mt-3 text-[13.5px] sm:text-[14px] text-[#6B6B6B]">
+              {stat.l}
             </div>
           </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 }

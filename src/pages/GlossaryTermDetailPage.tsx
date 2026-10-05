@@ -1,10 +1,12 @@
-import { Fragment, useEffect, useRef } from 'react';
+import { Fragment, useEffect, useRef, useState } from 'react';
 import { Link, Navigate, useParams, useNavigate } from 'react-router-dom';
 import '../components/glossary/glossary.css';
 import AuthPracticePanel from '../components/glossary/AuthPracticePanel';
 import SpacingPracticePanel from '../components/glossary/SpacingPracticePanel';
 import LetterSpacingPracticePanel from '../components/glossary/LetterSpacingPracticePanel';
-import { getTermById, getTermDeepDiveNotes, GlossaryTerm } from '../lib/glossary';
+import EnvironmentInteractivePanel from '../components/glossary/EnvironmentInteractivePanel';
+import { DICTIONARY_CATEGORIES, DICTIONARY_TERMS, type DictionaryCategoryKey } from '../lib/tuDienTerms';
+import { getTermById, getTermDeepDiveNotes, terms, GlossaryTerm } from '../lib/glossary';
 import apiDemoHtml from '../../docs/visual-demos/gif-api-demo.html?raw';
 import apiPracticeHtml from '../../docs/visual-demos/gif-api-practice.html?raw';
 import authDemoHtml from '../../docs/visual-demos/gif-auth-demo.html?raw';
@@ -226,7 +228,33 @@ import flexboxPracticeHtml from '../../docs/visual-demos/gif-flexbox-practice.ht
 export default function GlossaryTermDetailPage() {
   const { termId } = useParams<{ termId: string }>();
   const navigate = useNavigate();
-  const term = termId ? getTermById(termId) : undefined;
+
+  let term: GlossaryTerm | undefined = termId ? getTermById(termId) : undefined;
+  if (!term && termId) {
+    const clean = termId.toLowerCase().replace(/-/g, ' ');
+    term = terms.find(
+      (t) => t.id.toLowerCase() === termId.toLowerCase() || t.name.toLowerCase() === clean
+    );
+  }
+  if (!term && termId) {
+    const dict = DICTIONARY_TERMS.find(
+      (t) =>
+        t.term.toLowerCase() === termId.toLowerCase() ||
+        t.term.toLowerCase().replace(/\s+/g, '-') === termId.toLowerCase()
+    );
+    if (dict) {
+      term = {
+        id: dict.term.toLowerCase().replace(/\s+/g, '-'),
+        name: dict.term,
+        nameEn: dict.categoryName,
+        letter: dict.letter,
+        groups: [dict.category],
+        definition: dict.def,
+        example: `Thuật ngữ thuộc nhóm ${dict.categoryName}. Dành riêng cho dân Marketing khi làm việc với AI và dev.`,
+        related: [],
+      };
+    }
+  }
 
   useEffect(() => {
     if (!term) return;
@@ -600,127 +628,169 @@ function TermDisplaySection({
   onBack 
 }: TermDisplaySectionProps) {
   const deepDiveNotes = getTermDeepDiveNotes(term);
-  const practiceCaption = undefined;
+  const [caret, setCaret] = useState(true);
+
+  useEffect(() => {
+    const timer = setInterval(() => setCaret((c) => !c), 500);
+    return () => clearInterval(timer);
+  }, []);
+
+  const isEnvironment =
+    term.id === 'environment' ||
+    term.id === 'environment-variable' ||
+    term.id === 'env';
+
+  const groupInfo = term.groups[0]
+    ? DICTIONARY_CATEGORIES[term.groups[0] as DictionaryCategoryKey]
+    : null;
+  const categoryDot = groupInfo ? groupInfo.dot : '#4F7FD1';
+  const categoryLabel = term.groups
+    .map((g: string) => DICTIONARY_CATEGORIES[g as DictionaryCategoryKey]?.name || g)
+    .join(' · ');
+
+  const cleanDefinition = term.definition.replace(/<[^>]*>/g, '');
+  const cleanExample = term.example.replace(/Prompt:/g, '').trim();
+
   return (
-    <section className="border-b border-border">
-      <div className="page-shell grid gap-0 lg:grid-cols-[minmax(0,3fr)_minmax(0,7fr)] items-start">
-        <div className="border-b border-border px-[1.2rem] py-10 lg:border-b-0 lg:border-r lg:px-8 lg:py-14 lg:sticky lg:top-[52px] lg:h-fit">
-          {showBackLink && (
-            <button
-              onClick={onBack}
-              className="inline-flex items-center border border-[var(--ink)] bg-[var(--ink)] px-[10px] py-[7px] font-mono text-[10px] uppercase tracking-[0.04em] text-[var(--bg)] no-underline transition-colors hover:border-accent hover:bg-accent hover:text-[var(--ink)] active:border-accent active:bg-accent active:text-[var(--ink)] cursor-pointer"
-            >
-              ← Quay lại từ điển
-            </button>
-          )}
-          <h1 className={`${showBackLink ? 'mt-5' : 'mt-0'} font-serif text-[clamp(2.6rem,5vw,4.4rem)] leading-[0.95]`}>{term.name}</h1>
-          <p className="mt-3 font-mono text-[11px] tracking-[0.04em] text-muted">{term.nameEn}</p>
-          <p 
-            className="mt-8 max-w-[46rem] font-sans text-[17px] leading-[1.8] text-ink2"
-            dangerouslySetInnerHTML={{ __html: term.definition }}
+    <section
+      data-screen-label="Term"
+      className="w-full px-5 py-8 sm:px-8 sm:py-10 md:px-10 lg:px-12 xl:px-14 2xl:px-16 lg:py-14 grid grid-cols-1 lg:grid-cols-[minmax(360px,1fr)_minmax(0,1.35fr)] xl:grid-cols-[minmax(380px,520px)_minmax(0,1fr)] 2xl:grid-cols-[minmax(420px,580px)_minmax(0,1fr)] gap-8 lg:gap-12 xl:gap-16 items-start"
+    >
+      {/* Left Column (Sticky) */}
+      <div className="lg:sticky lg:top-[96px] flex flex-col">
+        {showBackLink && (
+          <Link
+            to="/tu-dien-thuat-ngu"
+            onClick={(e) => {
+              if (onBack) {
+                e.preventDefault();
+                onBack();
+              }
+            }}
+            className="self-start font-mono text-[12px] text-[#55534F] flex items-center gap-2 px-3.5 py-2 border border-[#DAD8D2] rounded-full whitespace-nowrap transition-colors hover:border-[#141414] hover:text-[#141414] no-underline"
+          >
+            ← Quay lại từ điển
+          </Link>
+        )}
+
+        <div className="mt-10 flex items-center gap-2.5 font-mono text-[12px] text-[#8A8883]">
+          <span
+            className="w-1.5 h-1.5 rounded-full shrink-0"
+            style={{ backgroundColor: categoryDot }}
           />
+          <span>{categoryLabel}</span>
+        </div>
 
-          {deepDiveNotes.length ? (
-            <div className="mt-8 max-w-[52rem] border-l-2 border-l-accent bg-bg2 px-4 py-4">
-              <p className="font-mono text-[10px] uppercase tracking-[0.06em] text-muted">Hiểu nhanh</p>
-              <div className="mt-3 space-y-3">
-                {deepDiveNotes.map((note) => (
-                  <p 
-                    key={note} 
-                    className="font-sans text-[14px] leading-[1.75] text-ink2"
-                    dangerouslySetInnerHTML={{ __html: note }}
+        <h1 className="m-0 mt-3.5 font-sans text-[clamp(44px,5.5vw,76px)] font-semibold tracking-[-0.055em] leading-[1] text-[#141414]">
+          {term.name}
+        </h1>
+
+        <div className="mt-2.5 font-sans text-[17px] font-light italic text-[#E8772E]">
+          {term.nameEn}
+        </div>
+
+        <p className="mt-7 font-sans text-[18px] leading-[1.6] text-[#141414] text-pretty">
+          {cleanDefinition}
+        </p>
+
+        {/* Hiểu nhanh */}
+        {deepDiveNotes.length > 0 && (
+          <div className="mt-10 border-t border-[#141414] pt-4">
+            <div className="font-mono text-[11px] text-[#8A8883] pb-1">Hiểu nhanh</div>
+            <div className="divide-y divide-[#E6E4DE]">
+              {deepDiveNotes.map((note, index) => {
+                const colonIdx = note.indexOf(':');
+                const hasColon = colonIdx !== -1;
+                const title = hasColon ? note.slice(0, colonIdx + 1) : '';
+                const desc = hasColon ? note.slice(colonIdx + 1) : note;
+                return (
+                  <div key={index} className="grid grid-cols-[28px_minmax(0,1fr)] gap-2 py-3.5">
+                    <span className="font-mono text-[11px] text-[#E8772E] pt-0.5">
+                      {String(index + 1).padStart(2, '0')}
+                    </span>
+                    <p className="m-0 font-sans text-[14px] leading-[1.65] text-[#55534F]">
+                      {title && <span className="font-semibold text-[#141414] mr-1">{title}</span>}
+                      <span>{desc}</span>
+                    </p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        )}
+
+        {/* Ví dụ thực tế */}
+        <div className="mt-8">
+          <div className="font-mono text-[11px] text-[#8A8883] mb-2.5">Ví dụ thực tế</div>
+          <div className="rounded-[16px] bg-[#141414] p-[20px_22px] font-mono text-[13px] leading-[1.8] text-[#EDEBE6]">
+            <span className="text-[#E8772E] mr-2">$</span>
+            <span className="whitespace-pre-line">{cleanExample}</span>
+            <span
+              className="inline-block w-2 h-3.5 bg-[#E8772E] align-[-2px] ml-1.5 transition-opacity duration-150"
+              style={{ opacity: caret ? 1 : 0 }}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Right Column */}
+      <div className="w-full">
+        {isEnvironment ? (
+          <EnvironmentInteractivePanel />
+        ) : (
+          <div className="flex flex-col gap-14">
+            {/* (01) Minh hoạ */}
+            <div>
+              <div className="mb-4 flex items-baseline justify-between font-mono">
+                <span className="text-[12px] text-[#8A8883]">(01) Minh hoạ</span>
+                <span className="text-[11px] text-[#A8A6A0]">{term.name}</span>
+              </div>
+              <div className="rounded-[20px] border border-[#E6E4DE] bg-white p-5 overflow-hidden">
+                {interactiveDemoHtml ? (
+                  <InteractiveFrame
+                    html={interactiveDemoHtml}
+                    title={`${term.name} demo`}
+                    caption={term.demo?.caption}
                   />
-                ))}
+                ) : term.demo?.src ? (
+                  <img
+                    src={term.demo.src}
+                    alt={term.demo.alt ?? `${term.name} demo`}
+                    className="block aspect-[4/3] w-full object-cover rounded-[14px]"
+                  />
+                ) : (
+                  <div className="flex h-[200px] flex-col items-center justify-center rounded-[14px] bg-[#F6F5F1] p-5 text-center">
+                    <span className="font-mono text-[12px] text-[#8A8883]">
+                      Minh hoạ cho {term.name} đang được cập nhật
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
-          ) : null}
 
-          <div className="mt-10 max-w-[52rem]">
-            <p className="font-mono text-[10px] uppercase tracking-[0.06em] text-muted">Ví dụ thực tế</p>
-            <div className="mt-4">
-              {term.example.includes('Prompt:') ? (
-                (() => {
-                  const [desc, prompt] = term.example.split('Prompt:');
-                  return (
-                    <>
-                      <p 
-                        className="font-sans text-[15px] leading-[1.8] text-ink2 mb-4"
-                        dangerouslySetInnerHTML={{ __html: desc }}
-                      />
-                      <div className="terminal-box">
-                        <div className="terminal-header">
-                          <div className="terminal-dot red" />
-                          <div className="terminal-dot yellow" />
-                          <div className="terminal-dot green" />
-                        </div>
-                        <div className="terminal-content">
-                          <span className="prompt-sym">$</span>
-                          <span className="opacity-50 text-[#c9c9c9] mr-1">Prompt:</span>
-                          <span className="text-accent">{prompt}</span>
-                          <span className="terminal-cursor" />
-                        </div>
-                      </div>
-                    </>
-                  );
-                })()
-              ) : (
-                <div className="terminal-box">
-                  <div className="terminal-header">
-                    <div className="terminal-dot red" />
-                    <div className="terminal-dot yellow" />
-                    <div className="terminal-dot green" />
+            {/* (02) Thực hành */}
+            <div>
+              <div className="mb-4 flex items-baseline justify-between font-mono">
+                <span className="text-[12px] text-[#8A8883]">(02) Thực hành</span>
+                <span className="text-[11px] text-[#A8A6A0]">{term.name}</span>
+              </div>
+              <div className="rounded-[24px] border border-[#E6E4DE] bg-white p-[clamp(20px,3vw,32px)] overflow-hidden">
+                {interactivePracticeHtml ? (
+                  <InteractiveFrame
+                    html={interactivePracticeHtml}
+                    title={`${term.name} practice`}
+                  />
+                ) : (
+                  <div className="flex h-[180px] flex-col items-center justify-center rounded-[16px] bg-[#F6F5F1] p-5 text-center">
+                    <span className="font-mono text-[12px] text-[#8A8883]">
+                      Phần thực hành cho {term.name} đang được cập nhật
+                    </span>
                   </div>
-                  <div className="terminal-content">
-                    <span className="prompt-sym">$</span>
-                    {term.example}
-                    <span className="terminal-cursor" />
-                  </div>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </div>
-        </div>
-
-        <div className="px-[1.2rem] py-10 lg:px-8 lg:py-14">
-          <div className="mt-8 border border-[#2a2a33] bg-[#0f0f12]">
-            <div className="flex items-center justify-between border-b border-[#2a2a33] bg-[#e88c2e] px-4 py-2">
-              <span className="font-mono text-[10px] font-bold uppercase tracking-[0.05em] text-[#0f0f12]">Demo / GIF</span>
-              <span className="font-mono text-[10px] font-bold text-[#0f0f12]">{term.name}</span>
-            </div>
-            {term.demo?.kind === 'interactive' && interactiveDemoHtml ? (
-              <InteractiveFrame
-                html={interactiveDemoHtml}
-                title={term.demo.alt ?? `${term.name} demo`}
-                caption={term.demo.caption}
-              />
-            ) : term.demo?.src ? (
-              <img src={term.demo.src} alt={term.demo.alt ?? `${term.name} demo`} className="block aspect-[4/3] w-full object-cover" />
-            ) : (
-              <div className="glossary-demo-placeholder p-4">
-                <div className="aspect-[4/3] border border-border bg-[var(--bg2)]" />
-                <p className="mt-4 font-sans text-[12px] leading-[1.65] text-ink2">
-                  {term.id === 'letter-spacing' 
-                    ? "Phần mô phỏng Letter Spacing đang được hoàn thiện. GIF sẽ được cập nhật sớm."
-                    : "Trang riêng này đang chừa sẵn chỗ cho GIF mô phỏng chi tiết của term phức tạp."}
-                </p>
-              </div>
-            )}
-          </div>
-          {interactivePracticeHtml ? (
-            <div className="mt-6 border border-[#2a2a33] bg-[#0f0f12]">
-              <div className="flex items-center justify-between border-b border-[#2a2a33] bg-[#e88c2e] px-4 py-2">
-                <span className="font-mono text-[10px] font-bold uppercase tracking-[0.05em] text-[#0f0f12]">Thực hành / GIF</span>
-                <span className="font-mono text-[10px] font-bold text-[#0f0f12]">{term.name}</span>
-              </div>
-              <InteractiveFrame
-                html={interactivePracticeHtml}
-                title={`${term.name} practice`}
-                caption={practiceCaption}
-              />
-            </div>
-          ) : null}
-          {/* Practices are now handled via InteractiveFrame if HTML exists */}
-        </div>
+        )}
       </div>
     </section>
   );

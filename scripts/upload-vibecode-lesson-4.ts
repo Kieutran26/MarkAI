@@ -538,15 +538,18 @@ async function main() {
     const subLessonsPath = path.resolve(process.cwd(), 'src/lib/subLessons.ts')
     let subLessonsContent = fs.readFileSync(subLessonsPath, 'utf8')
     const slMarkerStart = '// ========== BÀI 04 ==========';
-    const slStartIdx = subLessonsContent.indexOf(slMarkerStart);
-    if (slStartIdx !== -1) {
-      const slEndIdx = subLessonsContent.indexOf('];\nexport function getSubLessonBySlug');
-      subLessonsContent = subLessonsContent.substring(0, slStartIdx) + subLessonsContent.substring(slEndIdx);
+    const endMatch = subLessonsContent.match(/\];\r?\nexport function getSubLessonBySlug/);
+    if (endMatch && endMatch.index !== undefined) {
+      const slEndIdx = endMatch.index;
+      const slStartIdx = subLessonsContent.indexOf(slMarkerStart);
+      if (slStartIdx !== -1 && slStartIdx < slEndIdx) {
+        subLessonsContent = subLessonsContent.substring(0, slStartIdx) + subLessonsContent.substring(slEndIdx);
+      }
+      const slNewBlock = `  ${slMarkerStart}\n` + fallbackSubLessons.map(sl => JSON.stringify(sl, null, 2).replace(/\n/g, '\n  ')).join(',\n  ') + ',\n';
+      subLessonsContent = subLessonsContent.replace(/\];\r?\nexport function getSubLessonBySlug/, slNewBlock + '];\nexport function getSubLessonBySlug');
+      fs.writeFileSync(subLessonsPath, subLessonsContent, 'utf8')
+      console.log('Successfully synced and updated offline fallback src/lib/subLessons.ts!')
     }
-    const slNewBlock = `  ${slMarkerStart}\n` + fallbackSubLessons.map(sl => JSON.stringify(sl, null, 2).replace(/\n/g, '\n  ')).join(',\n  ') + ',\n';
-    subLessonsContent = subLessonsContent.replace('];\nexport function getSubLessonBySlug', slNewBlock + '];\nexport function getSubLessonBySlug');
-    fs.writeFileSync(subLessonsPath, subLessonsContent, 'utf8')
-    console.log('Successfully synced and updated offline fallback src/lib/subLessons.ts!')
 
     const lessonSubLessons = parsed.modules.map((m) => ({
       id: m.moduleCode,
@@ -595,4 +598,7 @@ main()
     console.error(error instanceof Error ? error.message : error)
     process.exitCode = 1
   })
-  .finally(() => closePool())
+  .finally(async () => {
+    await closePool()
+    process.exit(process.exitCode || 0)
+  })

@@ -1,47 +1,49 @@
 import React from 'react';
 
 export default function PathHeader() {
-  const stats = [
-    { label: 'Tổng thời gian', value: '~6 tiếng đọc' },
-    { label: 'Số bài lớn', value: '10 bài' },
-    { label: 'Số bài nhỏ', value: '52 bài nhỏ' },
-    { label: 'Hình thức', value: 'Text · không video' },
-    { label: 'Yêu cầu', value: 'Không cần nền tảng code', accent: true },
+  const specs = [
+    { k: 'Tổng thời gian', v: '~6 tiếng đọc', c: '#141414' },
+    { k: 'Số bài lớn', v: '10 bài', c: '#141414' },
+    { k: 'Số bài nhỏ', v: '52 bài nhỏ', c: '#141414' },
+    { k: 'Hình thức', v: 'Text · không video', c: '#141414' },
+    { k: 'Yêu cầu', v: 'Không cần nền tảng code', c: '#E8772E' },
   ];
 
   return (
-    <div className="bg-[var(--ink)] border-b border-[var(--surface-2)]" id="lo-trinh">
-      <div className="page-shell py-16 lg:py-20 grid gap-10 lg:gap-16 grid-cols-1 lg:grid-cols-2 items-end">
-        {/* Left Column */}
-        <div>
-          <div className="mb-5">
-            <span className="badge badge-accent">VIBECODE WEB ⚡</span>
-          </div>
-          <h2 className="font-[family-name:var(--serif)] text-[clamp(2rem,4vw,3.2rem)] text-[var(--bg)] leading-[1.1] tracking-[-0.02em] mb-4">
-            Từ <em className="text-[var(--accent)] italic">zero</em> đến có web<br />trong 1 buổi sáng.
-          </h2>
-          <p className="font-[family-name:var(--sans)] text-[15px] font-light text-[var(--text-soft)] leading-[1.7]">
-            10 bài — từ tư duy đến deploy thực tế. Mỗi bài chia nhỏ thành 5–6 phần, đọc từng phần trong 5–10 phút.
-          </p>
+    <section
+      id="lo-trinh"
+      className="max-w-[1280px] mx-auto px-6 sm:px-8 pt-24 sm:pt-32 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-end"
+    >
+      <div>
+        <div className="font-[family-name:var(--mono)] text-[12px] text-[#8A8883] mb-5">
+          (01) Tổng quan
         </div>
-        
-        {/* Right Column - Stats Table */}
-        <div>
-          {stats.map((stat, index) => (
-            <div
-              key={index}
-              className={`flex flex-col items-start gap-2 sm:flex-row sm:justify-between sm:items-center py-4 border-b ${index === 0 ? 'border-t' : ''} border-[var(--surface-2)]`}
-            >
-              <span className="font-[family-name:var(--mono)] text-[10px] text-[var(--text-dim)] tracking-[0.04em] uppercase">
-                {stat.label}
-              </span>
-              <span className={`font-[family-name:var(--mono)] text-[12px] sm:text-right ${stat.accent ? 'text-[var(--accent)]' : 'text-[var(--text-soft)]'}`}>
-                {stat.value}
-              </span>
-            </div>
-          ))}
-        </div>
+        <h2 className="m-0 text-[clamp(32px,4vw,56px)] leading-[1.05] tracking-[-0.045em] font-semibold text-[#141414]">
+          Từ <span className="font-light italic text-[#E8772E]">zero</span> đến có web trong 1 buổi sáng.
+        </h2>
+        <p className="mt-6 text-[16px] sm:text-[17px] leading-[1.65] text-[#55534F] max-w-[460px]">
+          10 bài — từ tư duy đến deploy thực tế. Mỗi bài chia nhỏ thành 5–6 phần, đọc từng phần trong 5–10 phút.
+        </p>
       </div>
-    </div>
+
+      <div className="border-t border-[#141414]">
+        {specs.map((s, index) => (
+          <div
+            key={index}
+            className="flex justify-between items-center gap-4 py-4 border-b border-[#DAD8D2] text-[15px]"
+          >
+            <span className="font-[family-name:var(--mono)] text-[12px] text-[#8A8883] pt-0.5">
+              {s.k}
+            </span>
+            <span
+              className="font-medium text-right"
+              style={{ color: s.c }}
+            >
+              {s.v}
+            </span>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }

@@ -4,10 +4,7 @@ import Nav from './components/Nav';
 import Footer from './components/Footer';
 import Ticker from './components/Ticker';
 import Home from './pages/Home';
-import Blog from './pages/Blog';
-import BlogDetail from './pages/BlogDetail';
-import Tips from './pages/tips/Tips';
-import TipDetail from './pages/tips/TipDetail';
+
 import Prompts from './pages/Prompts';
 import AllPrompts from './pages/AllPrompts';
 import Lesson from './pages/Lesson';
@@ -61,10 +58,8 @@ const AppShell = () => {
       <main className="flex-1">
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/blog" element={<Blog />} />
-          <Route path="/blog/:slug" element={<BlogDetail />} />
-          <Route path="/tips" element={<Tips />} />
-          <Route path="/tips/:slug" element={<TipDetail />} />
+          <Route path="/blog/*" element={<Navigate to="/" replace />} />
+          <Route path="/tips/*" element={<Navigate to="/" replace />} />
           <Route path="/prompts" element={<Prompts />} />
           <Route path="/prompts/all" element={<AllPrompts />} />
           <Route path="/lesson/:id" element={<Lesson />} />

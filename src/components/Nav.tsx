@@ -28,8 +28,8 @@ export default function Nav() {
   }, [location.pathname]);
 
   return (
-    <header className="sticky top-0 z-50 bg-[#F6F5F1]/90 backdrop-blur-md border-b border-[#E6E4DE] transition-colors">
-      <div className="max-w-[1280px] mx-auto px-5 md:px-8 py-3.5 md:py-4 flex items-center justify-between gap-4">
+    <header className="sticky top-0 z-50 bg-[#F6F5F1]/90 backdrop-blur-md border-b border-[#E6E4DE] transition-colors h-[60px] md:h-[76px] flex items-center">
+      <div className="w-full max-w-[1280px] mx-auto px-5 md:px-8 flex items-center justify-between gap-4">
         {/* Brand Logo with Orange Dot */}
         <Link
           to="/"
@@ -62,26 +62,7 @@ export default function Nav() {
           >
             Từ điển
           </Link>
-          <Link
-            to="/blog"
-            className={`px-3.5 py-1.5 rounded-full no-underline transition-all ${
-              isActive('/blog')
-                ? 'bg-[#141414] text-white font-medium'
-                : 'text-[#55534F] hover:bg-[#F1EFEA] hover:text-[#141414]'
-            }`}
-          >
-            Blog
-          </Link>
-          <Link
-            to="/tips"
-            className={`px-3.5 py-1.5 rounded-full no-underline transition-all ${
-              isActive('/tips')
-                ? 'bg-[#141414] text-white font-medium'
-                : 'text-[#55534F] hover:bg-[#F1EFEA] hover:text-[#141414]'
-            }`}
-          >
-            Tips
-          </Link>
+
           <span className="px-3.5 py-1.5 text-[#B8B6B0] text-[13px] select-none whitespace-nowrap">
             Sắp ra: Analytics · Image · Video
           </span>
@@ -89,9 +70,15 @@ export default function Nav() {
 
         {/* Right Badge & Mobile Toggle */}
         <div className="flex items-center gap-3">
-          <span className="font-mono text-[12px] text-[#55534F] hidden sm:inline-block">
-            Miễn phí 100%
-          </span>
+          <div className="hidden sm:inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#E8772E] text-white border border-[#D96B24] shadow-[0_2px_10px_rgba(232,119,46,0.28)] hover:bg-[#D96B24] hover:shadow-[0_4px_14px_rgba(232,119,46,0.38)] transition-all select-none group cursor-default">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-white" />
+            </span>
+            <span className="font-mono text-[12px] font-medium tracking-tight text-white">
+              Miễn phí <span className="font-bold text-white underline decoration-white/40 underline-offset-2">100%</span>
+            </span>
+          </div>
 
           <button
             type="button"
@@ -131,33 +118,17 @@ export default function Nav() {
               <span>Từ điển chuyên ngành</span>
               <span className="text-[#8A8883]">→</span>
             </Link>
-            <Link
-              to="/blog"
-              className={`px-4 py-2.5 rounded-full text-[14px] no-underline transition-all flex items-center justify-between ${
-                isActive('/blog')
-                  ? 'bg-[#141414] text-white font-medium'
-                  : 'text-[#141414] bg-white border border-[#E6E4DE]'
-              }`}
-            >
-              <span>Blog</span>
-              <span className="text-[#8A8883]">→</span>
-            </Link>
-            <Link
-              to="/tips"
-              className={`px-4 py-2.5 rounded-full text-[14px] no-underline transition-all flex items-center justify-between ${
-                isActive('/tips')
-                  ? 'bg-[#141414] text-white font-medium'
-                  : 'text-[#141414] bg-white border border-[#E6E4DE]'
-              }`}
-            >
-              <span>Tips &amp; Mẹo</span>
-              <span className="text-[#8A8883]">→</span>
-            </Link>
             <div className="px-4 py-3 rounded-2xl bg-[#F1EFEA] border border-[#DAD8D2] font-mono text-[11px] text-[#8A8883] mt-2">
               Sắp ra: Analytics · Image · Video
             </div>
-            <div className="px-4 py-2 text-center font-mono text-[11px] text-[#55534F]">
-              Miễn phí 100% · Không quảng cáo · Không email gate
+            <div className="px-4 py-2.5 rounded-xl bg-[#E8772E] border border-[#D96B24] text-white flex items-center justify-center gap-2 font-mono text-[11.5px] shadow-sm">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-white opacity-75" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-white" />
+              </span>
+              <span className="text-white">
+                Miễn phí <strong className="font-bold text-white">100%</strong> · Không quảng cáo · Không email gate
+              </span>
             </div>
           </div>
         </div>

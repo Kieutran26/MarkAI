@@ -1,26 +1,30 @@
-import type { GlossaryTerm } from '../../lib/glossary';
-import { getTermViewMode } from '../../lib/glossary';
+import React from 'react';
+import type { DictionaryTermItem } from '../../lib/tuDienTerms';
 import TermCard from './TermCard';
 
 interface GroupSectionProps {
   key?: string;
   letter: string;
-  terms: GlossaryTerm[];
-  onOpenTerm: (term: GlossaryTerm) => void;
+  items: DictionaryTermItem[];
+  onOpenTerm: (item: DictionaryTermItem) => void;
 }
 
-export default function GroupSection({ letter, terms, onOpenTerm }: GroupSectionProps) {
+export default function GroupSection({ letter, items, onOpenTerm }: GroupSectionProps) {
   return (
-    <section id={`letter-${letter}`} className="group-section border-b border-border scroll-mt-[136px]">
-      <div className="sticky top-[96px] z-30 flex items-baseline gap-4 border-b border-border bg-bg2 pl-[1.2rem] pr-0 py-[1rem] md:pl-8 md:pr-0 md:py-[1.4rem]">
-        <span className="font-serif text-[2.2rem] leading-none">{letter}</span>
-        <span className="font-mono text-[10px] tracking-[0.04em] text-muted">{terms.length} thuật ngữ</span>
+    <div id={`L-${letter}`} data-letter={letter} className="border-b border-[#DAD8D2] pb-10 pt-[18px] scroll-mt-[76px] md:scroll-mt-[92px]">
+      <div className="sticky top-[60px] md:top-[76px] z-20 mb-5 flex items-baseline gap-4 border-b border-[#E6E4DE] bg-[rgba(246,245,241,0.96)] py-[18px] backdrop-blur-[8px]">
+        <span className="font-sans text-[clamp(44px,6vw,72px)] font-light leading-[0.85] tracking-[-0.06em] text-[#E8772E]">
+          {letter}
+        </span>
+        <span className="font-mono text-[12px] text-[#8A8883]">
+          {items.length} thuật ngữ
+        </span>
       </div>
-      <div className="glossary-term-grid pl-[1.2rem] pr-0 py-5 md:pl-8 md:pr-0 md:py-8">
-        {terms.map((term) => (
-          <TermCard key={term.id} term={term} viewMode={getTermViewMode(term)} onOpenTerm={onOpenTerm} />
+      <div className="grid grid-cols-[repeat(auto-fill,minmax(min(100%,280px),1fr))] gap-3">
+        {items.map((item) => (
+          <TermCard key={item.term} item={item} onClick={onOpenTerm} />
         ))}
       </div>
-    </section>
+    </div>
   );
 }

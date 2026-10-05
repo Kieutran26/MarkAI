@@ -60,6 +60,7 @@ try {
       fs.appendFileSync('scratch/run_output.txt', `Dump Failed:\n${e.message}\n`, 'utf8');
     }
 
+
     // 2. Run migration
     try {
       const migrationOut = execSync('npx tsx scripts/migrate-vibecode-reader-content.ts', { encoding: 'utf8' });
@@ -130,4 +131,4 @@ async function shutdown() {
 
 process.on('SIGINT', shutdown);
 process.on('SIGTERM', shutdown);
-// Trigger dev server reload - 6
+// Trigger dev server reload - 8

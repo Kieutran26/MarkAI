@@ -10,55 +10,27 @@ Copied logo v0.png to public/
 Fix and Update Lessons Success:
 lessons.ts is already updated and correct. Skipping update.
 
-Migration Failed:
-Command failed: npx tsx scripts/migrate-vibecode-reader-content.ts
-(node:58192) Warning: SECURITY WARNING: The SSL modes 'prefer', 'require', and 'verify-ca' are treated as aliases for 'verify-full'.
-In the next major version (pg-connection-string v3.0.0 and pg v9.0.0), these modes will adopt standard libpq semantics, which have weaker security guarantees.
+Migration Success:
+Migrated 10 vibecode lessons into lesson_modules + lesson_blocks.
 
-To prepare for this change:
-- If you want the current behavior, explicitly use 'sslmode=verify-full'
-- If you want libpq compatibility now, use 'uselibpqcompat=true&sslmode=require'
+Upload Lesson 4 Success:
+Uploaded 6 modules to lesson 4.
+Old slug: dung-giao-dien-web-nhanh-voi-ai
+New slug: dung-giao-dien-web-nhanh-voi-ai
+Successfully synced and updated offline fallback src/lib/subLessons.ts!
+Successfully synced and updated offline fallback src/lib/lessons.ts!
 
-See https://www.postgresql.org/docs/current/libpq-ssl.html for libpq SSL mode definitions.
-(Use `node --trace-warnings ...` to show where the warning was created)
-getaddrinfo ENOTFOUND host
+TypeScript Check Success:
+No output (clean)
+Migration Success:
+Migrated 10 vibecode lessons into lesson_modules + lesson_blocks.
 
-
-(node:58192) Warning: SECURITY WARNING: The SSL modes 'prefer', 'require', and 'verify-ca' are treated as aliases for 'verify-full'.
-In the next major version (pg-connection-string v3.0.0 and pg v9.0.0), these modes will adopt standard libpq semantics, which have weaker security guarantees.
-
-To prepare for this change:
-- If you want the current behavior, explicitly use 'sslmode=verify-full'
-- If you want libpq compatibility now, use 'uselibpqcompat=true&sslmode=require'
-
-See https://www.postgresql.org/docs/current/libpq-ssl.html for libpq SSL mode definitions.
-(Use `node --trace-warnings ...` to show where the warning was created)
-getaddrinfo ENOTFOUND host
-
-Upload Lesson 4 Failed:
-Command failed: npx tsx scripts/upload-vibecode-lesson-4.ts
-(node:53288) Warning: SECURITY WARNING: The SSL modes 'prefer', 'require', and 'verify-ca' are treated as aliases for 'verify-full'.
-In the next major version (pg-connection-string v3.0.0 and pg v9.0.0), these modes will adopt standard libpq semantics, which have weaker security guarantees.
-
-To prepare for this change:
-- If you want the current behavior, explicitly use 'sslmode=verify-full'
-- If you want libpq compatibility now, use 'uselibpqcompat=true&sslmode=require'
-
-See https://www.postgresql.org/docs/current/libpq-ssl.html for libpq SSL mode definitions.
-(Use `node --trace-warnings ...` to show where the warning was created)
-getaddrinfo ENOTFOUND host
-
-
-(node:53288) Warning: SECURITY WARNING: The SSL modes 'prefer', 'require', and 'verify-ca' are treated as aliases for 'verify-full'.
-In the next major version (pg-connection-string v3.0.0 and pg v9.0.0), these modes will adopt standard libpq semantics, which have weaker security guarantees.
-
-To prepare for this change:
-- If you want the current behavior, explicitly use 'sslmode=verify-full'
-- If you want libpq compatibility now, use 'uselibpqcompat=true&sslmode=require'
-
-See https://www.postgresql.org/docs/current/libpq-ssl.html for libpq SSL mode definitions.
-(Use `node --trace-warnings ...` to show where the warning was created)
-getaddrinfo ENOTFOUND host
+Upload Lesson 4 Success:
+Uploaded 6 modules to lesson 4.
+Old slug: dung-giao-dien-web-nhanh-voi-ai
+New slug: dung-giao-dien-web-nhanh-voi-ai
+Successfully synced and updated offline fallback src/lib/subLessons.ts!
+Successfully synced and updated offline fallback src/lib/lessons.ts!
 
 TypeScript Check Success:
 No output (clean)

@@ -1,45 +1,83 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { Sparkles } from 'lucide-react';
-import VibecodeShowcase from './VibecodeShowcase';
 
 export default function VibecodeHero() {
+  const [typedText, setTypedText] = useState('');
+  const [caretVisible, setCaretVisible] = useState(true);
+
+  useEffect(() => {
+    const targetWord = 'ý tưởng.';
+    let tick = 0;
+    const interval = setInterval(() => {
+      tick = (tick + 1) % 200;
+      if (tick < 10) {
+        setTypedText('');
+      } else if (tick < 60) {
+        const charIndex = Math.min(targetWord.length, Math.floor((tick - 10) / 6));
+        setTypedText(targetWord.slice(0, charIndex));
+      } else if (tick < 170) {
+        setTypedText(targetWord);
+      } else if (tick < 190) {
+        const deleteIdx = Math.max(0, targetWord.length - Math.floor((tick - 170) / 3));
+        setTypedText(targetWord.slice(0, deleteIdx));
+      } else {
+        setTypedText('');
+      }
+      setCaretVisible(Math.floor(tick / 8) % 2 === 0);
+    }, 50);
+
+    return () => clearInterval(interval);
+  }, []);
+
   return (
-    <section className="border-b border-[var(--border)] bg-[var(--bg)]">
-      <div className="page-shell pt-20 pb-16 grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 items-center">
-        {/* Left Column */}
-        <div>
-          <p className="font-[family-name:var(--mono)] text-[11px] text-[var(--muted)] tracking-widest uppercase flex items-center gap-2 mb-4">
-            <Sparkles className="w-3 h-3 text-[var(--accent)]" /> Vibecode Web · Lộ trình từ zero · 2026
-          </p>
+    <section className="max-w-[1280px] mx-auto px-6 sm:px-8 pt-16 sm:pt-20">
+      {/* Top Meta */}
+      <div className="flex justify-between items-center gap-4 flex-wrap font-[family-name:var(--mono)] text-[12px] text-[#8A8883]">
+        <span>Vibecode Web</span>
+        <span>Lộ trình từ zero</span>
+        <span>2026</span>
+      </div>
 
-          <h1 className="font-[family-name:var(--serif)] text-[clamp(2.8rem,5.5vw,4.8rem)] leading-[1.05] tracking-tight mb-6">
-            Tự build web<br />
-            không cần <span className="strike">lập trình.</span><br />
-            Chỉ cần <em className="text-[var(--accent)] italic">ý tưởng.</em>
-          </h1>
+      {/* Main Massive Headline */}
+      <h1 className="mt-10 sm:mt-12 font-semibold tracking-[-0.06em] leading-[0.98] text-[clamp(44px,9vw,120px)] flex flex-col text-[#141414]">
+        <span>Tự build web</span>
+        <span>
+          không cần{' '}
+          <span className="font-light text-[#B8B6B0] line-through decoration-[#E8772E] decoration-[0.05em] whitespace-nowrap">
+            lập trình.
+          </span>
+        </span>
+        <span className="flex items-center gap-[0.25em] flex-wrap">
+          Chỉ cần{' '}
+          <span className="inline-flex items-center bg-[#E8772E] text-white rounded-[0.2em] px-[0.18em] pb-[0.06em] font-light italic min-w-[1.2em] whitespace-nowrap shadow-sm">
+            {typedText}
+            <span
+              className={`inline-block w-[0.05em] h-[0.8em] bg-white ml-[0.04em] transition-opacity duration-75 ${
+                caretVisible ? 'opacity-100' : 'opacity-0'
+              }`}
+            />
+          </span>
+        </span>
+      </h1>
 
-          <p className="font-[family-name:var(--sans)] text-[15px] text-[var(--ink2)] leading-[1.7] max-w-prose mb-8">
-            10 bài học thực chiến — từ tư duy đến deploy thật. Không cần nền tảng code. Không slide. Không lý thuyết suông. Học xong hôm nay, dùng được ngay hôm nay.
-          </p>
-
-          <div className="flex flex-wrap gap-4 items-center mb-6">
-            <Link to="/vibecode/vibecode-la-gi" className="btn-primary">
-              Bắt đầu bài 01 →
-            </Link>
-            <a href="#lo-trinh" className="btn-ghost">
-              Xem lộ trình
-            </a>
-          </div>
-
-          <p className="font-[family-name:var(--mono)] text-[11px] text-[var(--muted)]">
-            <Sparkles className="inline w-3 h-3" /> miễn phí · học ngay
-          </p>
-        </div>
-
-        {/* Right Column - Illustrative Showcase */}
-        <div className="hidden md:block w-full">
-          <VibecodeShowcase />
+      {/* Description & CTAs */}
+      <div className="mt-12 sm:mt-16 pt-7 border-t border-[#141414] flex justify-between gap-8 items-center flex-wrap">
+        <p className="m-0 text-[16px] sm:text-[17px] leading-[1.6] text-[#3A3935] max-w-[560px]">
+          10 bài học thực chiến — từ tư duy đến deploy thật. Không cần nền tảng code. Không slide. Không lý thuyết suông. Học xong hôm nay, dùng được ngay hôm nay.
+        </p>
+        <div className="flex gap-3 flex-wrap">
+          <Link
+            to="/vibecode/vibecode-la-gi"
+            className="bg-[#141414] text-white px-[26px] py-[16px] rounded-full text-[14px] font-medium whitespace-nowrap hover:bg-[#E8772E] hover:text-white transition-all shadow-sm active:scale-[0.98]"
+          >
+            Bắt đầu bài 01 →
+          </Link>
+          <a
+            href="#lo-trinh"
+            className="px-[22px] py-[16px] rounded-full text-[14px] font-medium border border-[#141414] text-[#141414] whitespace-nowrap hover:bg-[#141414] hover:text-white transition-all active:scale-[0.98]"
+          >
+            Xem lộ trình
+          </a>
         </div>
       </div>
     </section>

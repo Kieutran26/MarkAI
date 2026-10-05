@@ -204,10 +204,10 @@ export default function Home() {
             Bắt đầu Vibecode →
           </Link>
           <Link
-            to="/blog"
+            to="/tu-dien-thuat-ngu"
             className="px-6 py-3.5 rounded-full text-[14px] font-medium border border-[#CFCDC6] bg-white text-[#141414] whitespace-nowrap hover:border-[#141414] transition-all no-underline"
           >
-            Đọc blog mới nhất
+            Từ điển thuật ngữ →
           </Link>
         </div>
 
@@ -695,10 +695,10 @@ export default function Home() {
                 Vibecode Web — Bắt đầu ngay →
               </Link>
               <Link
-                to="/tips"
+                to="/tu-dien-thuat-ngu"
                 className="px-6 py-4 rounded-full text-[14px] font-medium border-[1.5px] border-[#141414] text-[#141414] whitespace-nowrap hover:bg-[#141414] hover:text-white transition-all no-underline"
               >
-                Xem Tips &amp; Mẹo
+                Tra cứu từ điển →
               </Link>
             </div>
           </div>

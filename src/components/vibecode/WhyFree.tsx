@@ -1,55 +1,54 @@
 import React from 'react';
 
-const reasons = [
-  {
-    icon: '✳ Dành riêng',
-    title: 'Cho dân Marketing Việt Nam',
-    desc: 'Không học chung với dân tech. Ví dụ, use case, và ngôn ngữ — tất cả từ góc nhìn Marketing.',
-  },
-  {
-    icon: '✳ Thực chiến',
-    title: 'Học xong dùng được ngay',
-    desc: 'Không slide. Không lý thuyết suông. Mỗi bài kết thúc bằng thứ gì đó bạn có thể làm được luôn.',
-  },
-  {
-    icon: '✳ Cập nhật',
-    title: 'Mỗi tuần có nội dung mới',
-    desc: 'AI thay đổi nhanh. markAI cập nhật theo — tool mới, kỹ thuật mới, prompt mới liên tục.',
-  },
-  {
-    icon: '✳ Sạch',
-    title: 'Không quảng cáo · Không tracking',
-    desc: 'Không retargeting. Không bán data. Không email spam. Học xong, đi làm — không bị làm phiền.',
-  },
-];
-
 export default function WhyFree() {
+  const values = [
+    {
+      k: 'Dành riêng',
+      t: 'Cho dân Marketing Việt Nam',
+      d: 'Không học chung với dân tech. Ví dụ, use case, và ngôn ngữ — tất cả từ góc nhìn Marketing.',
+    },
+    {
+      k: 'Thực chiến',
+      t: 'Học xong dùng được ngay',
+      d: 'Không slide. Không lý thuyết suông. Mỗi bài kết thúc bằng thứ gì đó bạn có thể làm được luôn.',
+    },
+    {
+      k: 'Cập nhật',
+      t: 'Mỗi tuần có nội dung mới',
+      d: 'AI thay đổi nhanh. markAI cập nhật theo — tool mới, kỹ thuật mới, prompt mới liên tục.',
+    },
+    {
+      k: 'Sạch',
+      t: 'Không quảng cáo · Không tracking',
+      d: 'Không retargeting. Không bán data. Không email spam. Học xong, đi làm — không bị làm phiền.',
+    },
+  ];
+
   return (
-    <div className="border-b border-[var(--border)]">
-      <div className="page-shell py-16 lg:py-20">
-        <p className="section-label">
-          <span>✳</span> 05 · triết lý markAI
-        </p>
-        <h2 className="section-heading mb-10">
-          Không phải freemium. <em>Miễn phí thật.</em>
-        </h2>
-        
-        <div className="why-grid">
-          {reasons.map((reason, index) => (
-            <div key={index} className="why-card">
-              <div className="why-icon">
-                {reason.icon}
-              </div>
-              <div className="why-title font-[family-name:var(--serif)] text-[1.05rem] leading-[1.3] mb-2">
-                {reason.title}
-              </div>
-              <div className="why-desc font-[family-name:var(--sans)] text-[13px] font-light text-[var(--ink2)] leading-[1.6]">
-                {reason.desc}
-              </div>
-            </div>
-          ))}
-        </div>
+    <section className="max-w-[1280px] mx-auto px-6 sm:px-8 py-24 sm:py-32">
+      <div className="font-[family-name:var(--mono)] text-[12px] text-[#8A8883] mb-5">
+        (03) Triết lý markAI
       </div>
-    </div>
+      <h2 className="m-0 text-[clamp(32px,4vw,56px)] leading-[1.05] tracking-[-0.045em] font-semibold text-[#141414]">
+        Không phải freemium.{' '}
+        <span className="font-light italic text-[#E8772E]">Miễn phí thật.</span>
+      </h2>
+
+      <div className="mt-14 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-10">
+        {values.map((p, index) => (
+          <div key={index} className="border-t border-[#141414] pt-5">
+            <div className="font-[family-name:var(--mono)] text-[12px] text-[#E8772E] font-medium">
+              {p.k}
+            </div>
+            <h3 className="my-3 text-[18px] sm:text-[19px] font-semibold tracking-[-0.02em] text-[#141414]">
+              {p.t}
+            </h3>
+            <p className="m-0 text-[14.5px] leading-[1.65] text-[#6B6B6B]">
+              {p.d}
+            </p>
+          </div>
+        ))}
+      </div>
+    </section>
   );
 }

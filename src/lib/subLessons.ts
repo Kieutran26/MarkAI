@@ -1926,7 +1926,7 @@ const { error } = await supabase.auth.signInWithPassword({
       { type: 'insight', label: 'Tóm lại', text: 'Bạn không cần biến mình thành người chuyên cài tool. Bạn chỉ cần biết tool nào cần có, sau đó hỏi AI hoặc để Codex hỗ trợ từng bước.' }
     ]
   },
-                                              // ========== BÀI 04 ==========
+                                                      // ========== BÀI 04 ==========
 {
     "id": "4.1",
     "slug": "bai-4-1-mo-dau",

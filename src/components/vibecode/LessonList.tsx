@@ -1,100 +1,229 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { ArrowRight, ArrowDown } from 'lucide-react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { lessons } from '../../lib/lessons';
 
 export default function LessonList() {
+  const [open, setOpen] = useState(0);
+  const [step, setStep] = useState(356);
+  const [maxX, setMaxX] = useState(99999);
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const navigate = useNavigate();
+
+  const measure = useCallback(() => {
+    const wrap = wrapRef.current;
+    const track = trackRef.current;
+    if (!wrap || !track) return;
+    const children = track.children;
+    const calculatedStep =
+      children.length > 1
+        ? (children[1] as HTMLElement).offsetLeft - (children[0] as HTMLElement).offsetLeft
+        : 356;
+    const calculatedMaxX = Math.max(0, track.scrollWidth - wrap.clientWidth);
+    setStep(calculatedStep);
+    setMaxX(calculatedMaxX);
+  }, []);
+
+  useEffect(() => {
+    measure();
+    const handleResize = () => measure();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, [measure]);
+
+  const go = (i: number) => {
+    const nextIdx = Math.max(0, Math.min(i, lessons.length - 1));
+    setOpen(nextIdx);
+  };
+
+  const handlePrev = () => {
+    setOpen((prev) => (prev + lessons.length - 1) % lessons.length);
+  };
+
+  const handleNext = () => {
+    setOpen((prev) => (prev + 1) % lessons.length);
+  };
+
+  const fillPercent = (open / (lessons.length - 1)) * 100;
+  const translateX = -Math.min(open * step, maxX);
+
   return (
-    <div className="border-b border-[var(--border)] bg-[var(--bg)]">
-      <div className="page-shell py-24">
-        <div className="w-full max-w-[1100px] mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-16 lg:gap-y-24 gap-x-12 relative">
-            {lessons.map((lesson, index) => (
-              <div key={lesson.id} className="relative group/card cursor-pointer">
-                <Link 
-                  to={`/vibecode/${lesson.slug}`}
-                  className="h-full border border-[var(--border)] bg-[var(--bg)]/40 group-hover/card:bg-[#f7f5f0] group-hover/card:border-[var(--accent)] transition-all p-7 flex flex-col no-underline text-inherit"
+    <section className="pt-24 sm:pt-32 overflow-hidden select-none">
+      <div className="max-w-[1280px] mx-auto px-6 sm:px-8">
+        {/* Header row */}
+        <div className="flex justify-between items-end gap-6 flex-wrap">
+          <div>
+            <div className="font-[family-name:var(--mono)] text-[12px] text-[#8A8883] mb-4">
+              (02) 10 bài học
+            </div>
+            <h2 className="m-0 text-[clamp(32px,4vw,56px)] leading-[1.05] tracking-[-0.045em] font-semibold text-[#141414]">
+              Lộ trình <span className="font-light italic text-[#E8772E]">từng bước.</span>
+            </h2>
+          </div>
+          <div className="flex gap-2.5">
+            <button
+              type="button"
+              onClick={handlePrev}
+              aria-label="Bài trước"
+              className="w-12 h-12 rounded-full border border-[#CFCDC6] bg-transparent flex items-center justify-center text-[18px] text-[#141414] hover:border-[#141414] transition-colors cursor-pointer active:scale-95"
+            >
+              ←
+            </button>
+            <button
+              type="button"
+              onClick={handleNext}
+              aria-label="Bài tiếp theo"
+              className="w-12 h-12 rounded-full bg-[#141414] text-white flex items-center justify-center text-[18px] hover:bg-[#E8772E] transition-colors cursor-pointer active:scale-95 shadow-sm"
+            >
+              →
+            </button>
+          </div>
+        </div>
+
+        {/* Stepper timeline */}
+        <div className="mt-12 sm:mt-14 grid grid-cols-10 relative">
+          {/* Base track */}
+          <div className="absolute left-0 right-0 top-[5px] h-[1px] bg-[#DAD8D2]" />
+          {/* Animated fill track */}
+          <div
+            className="absolute left-0 top-[5px] h-[1px] bg-[#141414] transition-all duration-500 ease-[cubic-bezier(0.2,0.7,0.2,1)]"
+            style={{ width: `${fillPercent}%` }}
+          />
+          {lessons.map((lesson, i) => {
+            const isActive = i === open;
+            const isCompleted = i < open;
+
+            let dotBg = '#F6F5F1';
+            let dotBorder = '#CFCDC6';
+            let numColor = '#C9C7C0';
+
+            if (isActive) {
+              dotBg = '#E8772E';
+              dotBorder = '#E8772E';
+              numColor = '#E8772E';
+            } else if (isCompleted) {
+              dotBg = '#141414';
+              dotBorder = '#141414';
+              numColor = '#141414';
+            }
+
+            return (
+              <button
+                key={lesson.id}
+                type="button"
+                onClick={() => go(i)}
+                className="relative flex flex-col items-start gap-2.5 bg-transparent border-0 p-0 cursor-pointer group text-left"
+              >
+                <span
+                  className="w-[11px] h-[11px] rounded-full transition-all duration-300"
+                  style={{ background: dotBg, borderColor: dotBorder, borderWidth: 1, borderStyle: 'solid' }}
+                />
+                <span
+                  className="font-[family-name:var(--mono)] text-[11px] transition-colors duration-300 font-medium"
+                  style={{ color: numColor }}
                 >
-                  <div className="flex justify-between items-start mb-8">
-                    <div>
-                      <div className="font-[family-name:var(--mono)] text-[10px] text-[var(--muted)] tracking-widest uppercase mb-1">Bài</div>
-                      <div className="font-[family-name:var(--serif)] text-[3.2rem] text-[var(--ink)] leading-none italic">{String(index + 1).padStart(2, '0')}</div>
-                    </div>
-                    <div className="flex flex-col items-end gap-2">
-                      <span className={`px-2 py-0.5 font-[family-name:var(--mono)] text-[9px] uppercase tracking-wider ${lesson.badgeType === 'accent' ? 'bg-[var(--accent)] text-white' : 'bg-[var(--ink)] text-white'}`}>
-                        {lesson.badge}
-                      </span>
-                      <span className="border border-[var(--border)]/60 bg-white/50 px-2 py-0.5 font-[family-name:var(--mono)] text-[9px] text-[var(--muted)] uppercase tracking-wider">
-                        {lesson.duration}
-                      </span>
-                    </div>
+                  {String(i + 1).padStart(2, '0')}
+                </span>
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Carousel Window */}
+        <div ref={wrapRef} className="mt-8 overflow-hidden py-4 -my-4">
+          <div
+            ref={trackRef}
+            className="flex gap-4 transition-transform duration-500 ease-[cubic-bezier(0.2,0.7,0.2,1)]"
+            style={{ transform: `translateX(${translateX}px)` }}
+          >
+            {lessons.map((lesson, i) => {
+              const isActive = i === open;
+              const numStr = String(i + 1).padStart(2, '0');
+
+              return (
+                <div
+                  key={lesson.id}
+                  id={`bai-${numStr}`}
+                  onClick={() => {
+                    if (!isActive) {
+                      go(i);
+                    } else {
+                      navigate(`/vibecode/${lesson.slug}`);
+                    }
+                  }}
+                  className={`cursor-pointer shrink-0 w-[min(340px,82vw)] min-h-[420px] rounded-[22px] p-7 flex flex-col transition-all duration-400 border select-none ${
+                    isActive
+                      ? 'bg-[#141414] text-[#F6F5F1] border-[#141414] shadow-xl scale-[1.01]'
+                      : 'bg-[#FFFFFF] text-[#141414] border-[#E6E4DE] hover:border-[#CFCDC6] hover:shadow-sm'
+                  }`}
+                >
+                  {/* Card Header: Tag & Duration */}
+                  <div className="flex justify-between items-center font-[family-name:var(--mono)] text-[11px]">
+                    <span className={isActive ? 'text-[#A8A6A0]' : 'text-[#8A8883]'}>
+                      {lesson.badge}
+                    </span>
+                    <span className={isActive ? 'text-[#A8A6A0]' : 'text-[#8A8883]'}>
+                      {lesson.duration}
+                    </span>
                   </div>
 
-                  <h3 className="font-[family-name:var(--serif)] text-[1.25rem] text-[var(--ink)] leading-tight mb-4">
+                  {/* Lesson Number */}
+                  <span
+                    className={`mt-5 text-[64px] font-light tracking-[-0.05em] leading-none transition-colors duration-300 ${
+                      isActive ? 'text-[#E8772E]' : 'text-[#C9C7C0]'
+                    }`}
+                  >
+                    {numStr}
+                  </span>
+
+                  {/* Title */}
+                  <h3 className="mt-5 text-[20px] leading-[1.3] tracking-[-0.02em] font-semibold">
                     {lesson.title}
                   </h3>
-                  
-                  <p className="font-[family-name:var(--sans)] text-[13px] text-[var(--muted)] leading-relaxed mb-8 flex-1 line-clamp-3">
+
+                  {/* Description */}
+                  <p
+                    className={`mt-3 text-[14px] leading-[1.6] line-clamp-3 ${
+                      isActive ? 'text-[#A8A6A0]' : 'text-[#8A8883]'
+                    }`}
+                  >
                     {lesson.desc}
                   </p>
 
-                  <div className="flex flex-wrap gap-1.5 mb-8">
-                    {(lesson.tags || []).map((tag, tIdx) => (
-                      <span key={tIdx} className="border border-[var(--border)]/60 bg-[var(--bg)]/50 px-2 py-1 font-[family-name:var(--mono)] text-[9px] text-[var(--muted)] uppercase tracking-wider">
-                        {tag}
+                  {/* Tags */}
+                  <div className="mt-4 flex gap-1.5 flex-wrap">
+                    {(lesson.tags || []).slice(0, 5).map((t, tIdx) => (
+                      <span
+                        key={tIdx}
+                        className={`font-[family-name:var(--mono)] text-[10px] px-2.5 py-1 rounded-full border whitespace-nowrap ${
+                          isActive
+                            ? 'border-[#3A3935] text-[#A8A6A0]'
+                            : 'border-[#E6E4DE] text-[#8A8883]'
+                        }`}
+                      >
+                        {t}
                       </span>
                     ))}
                   </div>
 
-                  <div className="relative mt-auto border-t border-[var(--border)] overflow-hidden">
-                    <div className="absolute inset-0 bg-[var(--accent)] -translate-x-full group-hover/card:translate-x-0 transition-transform duration-500 ease-out" />
-                    <div className="relative z-10 flex items-center justify-between py-4 px-4">
-                      <span className="font-[family-name:var(--mono)] text-[10px] text-[var(--muted)] uppercase tracking-widest group-hover/card:text-[var(--ink)] transition-colors">Bắt đầu ngay</span>
-                      <ArrowRight className="w-4 h-4 text-[var(--muted)] group-hover/card:text-[var(--ink)] group-hover/card:translate-x-1 transition-all" />
-                    </div>
+                  {/* CTA link */}
+                  <div className="mt-auto pt-6">
+                    <Link
+                      to={`/vibecode/${lesson.slug}`}
+                      onClick={(e) => e.stopPropagation()}
+                      className={`inline-flex items-center gap-1 text-[13px] font-medium transition-colors ${
+                        isActive ? 'text-[#E8772E] hover:underline' : 'text-[#141414] hover:text-[#E8772E]'
+                      }`}
+                    >
+                      Bắt đầu ngay →
+                    </Link>
                   </div>
-                </Link>
-
-                {/* Right Arrow Connector Line */}
-                {index % 3 !== 2 && index < lessons.length - 1 && (
-                  <div className="hidden lg:flex absolute top-1/2 left-full w-12 -translate-y-1/2 items-center justify-center z-0">
-                    <div className="w-full border-t border-dashed border-[var(--border)] group-hover/card:border-[var(--accent)] transition-colors" />
-                    <div className="absolute left-1/2 -translate-x-1/2 w-7 h-7 bg-white border border-[var(--border)] group-hover/card:bg-[var(--accent)] group-hover/card:border-[var(--accent)] group-hover/card:text-[var(--ink)] transition-all flex items-center justify-center text-[var(--border)] rounded-full">
-                      <ArrowRight className="w-3.5 h-3.5" />
-                    </div>
-                  </div>
-                )}
-                
-                {/* Down Arrow Connector Line (End of Row to Start of Next Row) */}
-                {index % 3 === 2 && index < lessons.length - 1 && (
-                  <div className="hidden lg:flex absolute top-full right-1/2 w-[calc(200%+6rem)] h-24 items-center justify-center z-0 pointer-events-none">
-                    <svg width="100%" height="100%" viewBox="0 0 600 100" fill="none" className="overflow-visible">
-                      <path 
-                        d="M600,0 C600,50 0,50 0,100" 
-                        stroke="var(--border)" 
-                        strokeWidth="1" 
-                        strokeDasharray="4 4"
-                        className="group-hover/card:stroke-[var(--accent)] transition-colors"
-                      />
-                      <g className="translate-y-[50px] translate-x-[300px]">
-                        <circle r="14" fill="white" stroke="var(--border)" className="group-hover/card:fill-[var(--accent)] group-hover/card:stroke-[var(--accent)] transition-all" />
-                        <path 
-                          d="M-4,-2 L0,2 L4,-2" 
-                          stroke="currentColor" 
-                          strokeWidth="1.5" 
-                          strokeLinecap="round" 
-                          strokeLinejoin="round"
-                          className="text-[var(--border)] group-hover/card:text-[var(--ink)]"
-                        />
-                      </g>
-                    </svg>
-                  </div>
-                )}
-              </div>
-            ))}
+                </div>
+              );
+            })}
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }

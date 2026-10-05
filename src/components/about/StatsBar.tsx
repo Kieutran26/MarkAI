@@ -1,21 +1,33 @@
+import React from 'react';
+
 export default function StatsBar() {
   const stats = [
-    { num: '10', label: 'Bài học Vibecode\nđang live' },
-    { num: '150+', label: 'Prompt trong\nthư viện' },
-    { num: '0đ', label: 'Chi phí để học\nmãi mãi' },
-    { num: '4', label: 'Module AI sắp\nra mắt' }
+    { v: '10', k: 'bài học Vibecode đang live', c: '#141414' },
+    { v: '150+', k: 'prompt trong thư viện', c: '#141414' },
+    { v: '0đ', k: 'chi phí để học · mãi mãi', c: '#E8772E' },
+    { v: '4', k: 'module AI sắp ra mắt', c: '#141414' },
   ];
 
   return (
-    <div className="stats-section">
-      <div className="stats-inner">
-        {stats.map((stat, index) => (
-          <div key={index} className="stat-item">
-            <div className="stat-num">{stat.num}</div>
-            <div className="stat-label whitespace-pre-line">{stat.label}</div>
+    <section
+      data-screen-label="Stats"
+      className="border-t border-[#141414] border-b border-[#DAD8D2]"
+    >
+      <div className="max-w-[1280px] mx-auto px-6 sm:px-8 grid grid-cols-2 md:grid-cols-4 gap-6">
+        {stats.map((s, index) => (
+          <div key={index} className="py-9 pr-4 flex flex-col gap-3.5">
+            <span
+              className="text-[clamp(44px,5vw,72px)] font-light tracking-[-0.06em] leading-[0.9]"
+              style={{ color: s.c }}
+            >
+              {s.v}
+            </span>
+            <span className="font-[family-name:var(--mono)] text-[12px] text-[#55534F]">
+              {s.k}
+            </span>
           </div>
         ))}
       </div>
-    </div>
+    </section>
   );
 }

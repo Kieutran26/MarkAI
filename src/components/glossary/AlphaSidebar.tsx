@@ -1,26 +1,39 @@
+import React from 'react';
+
 interface AlphaSidebarProps {
-  groupedLetters: Array<{ letter: string; count: number }>;
+  letters: Array<{ letter: string; count: number }>;
   activeLetter: string;
+  onLetterClick: (letter: string) => void;
 }
 
-const dividerAfter = new Set(['E', 'I', 'N', 'T']);
-
-export default function AlphaSidebar({ groupedLetters, activeLetter }: AlphaSidebarProps) {
+export default function AlphaSidebar({ letters, activeLetter, onLetterClick }: AlphaSidebarProps) {
   return (
-    <aside className="glossary-alpha hidden border-r border-border lg:block lg:w-full lg:sticky lg:top-[96px] lg:h-[calc(100vh-96px)] lg:overflow-y-auto lg:scrollbar-hide">
-      <p className="px-5 pb-1 pt-2 font-mono text-[9px] uppercase tracking-[0.08em] text-muted">Chữ cái</p>
-      {groupedLetters.map(({ letter, count }) => (
-        <div key={letter}>
-          <a
-            href={`#letter-${letter}`}
-            className={`flex items-center justify-between gap-3 px-5 py-[0.3rem] font-mono text-[11px] transition-colors hover:bg-bg2 hover:text-ink ${activeLetter === letter ? 'border-l-2 border-l-accent bg-bg2 pl-[calc(1.25rem-2px)] font-medium text-accent' : 'text-ink2'}`}
-          >
-            <span>{letter}</span>
-            <span className={`text-[9px] ${activeLetter === letter ? 'text-accent opacity-50' : 'text-border'}`}>{count}</span>
-          </a>
-          {dividerAfter.has(letter) ? <div className="mx-0 my-1 h-px bg-border" /> : null}
-        </div>
-      ))}
+    <aside className="sticky top-[60px] md:top-[76px] self-start h-[calc(100vh-60px)] md:h-[calc(100vh-76px)] overflow-y-auto py-5 border-r border-[#DAD8D2] scrollbar-none w-[56px] shrink-0">
+      <div className="font-mono text-[10px] text-[#A8A6A0] mb-2.5 text-center">A–Z</div>
+      <div className="flex flex-col gap-[1px]">
+        {letters.map(({ letter, count }) => {
+          const isActive = letter === activeLetter;
+          return (
+            <button
+              key={letter}
+              type="button"
+              onClick={() => onLetterClick(letter)}
+              className={`relative flex items-baseline justify-center gap-[3px] py-1.5 font-mono text-[13px] transition-colors hover:bg-white cursor-pointer border-none ${
+                isActive ? 'bg-white text-[#E8772E] font-medium' : 'bg-transparent text-[#3A3935]'
+              }`}
+            >
+              <span
+                className="absolute left-0 top-1 bottom-1 bg-[#E8772E] transition-all duration-300"
+                style={{ width: isActive ? '2px' : '0px' }}
+              />
+              <span>{letter}</span>
+              <span className={`text-[9px] ${isActive ? 'text-[#E8772E]' : 'text-[#B8B6B0]'}`}>
+                {count}
+              </span>
+            </button>
+          );
+        })}
+      </div>
     </aside>
   );
 }

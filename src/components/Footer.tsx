@@ -79,12 +79,6 @@ export default function Footer() {
               <div className="font-mono text-[11px] text-[#A8A6A0] uppercase tracking-wider mb-1">
                 Khám phá
               </div>
-              <Link to="/blog" className="text-[#141414] hover:text-[#E8772E] no-underline transition-colors">
-                Blog
-              </Link>
-              <Link to="/tips" className="text-[#141414] hover:text-[#E8772E] no-underline transition-colors">
-                Tips &amp; Mẹo
-              </Link>
               <Link to="/tu-dien-thuat-ngu" className="text-[#141414] hover:text-[#E8772E] no-underline transition-colors">
                 Từ điển chuyên ngành
               </Link>
