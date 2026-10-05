@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../components/glossary/glossary.css';
 import AlphaSidebar from '../components/glossary/AlphaSidebar';
 import GlossaryContent from '../components/glossary/GlossaryContent';
 import GlossaryHero from '../components/glossary/GlossaryHero';
 import GlossarySuggestBanner from '../components/glossary/GlossarySuggestBanner';
-import GlossaryTermModal from '../components/glossary/GlossaryTermModal';
 
-import { terms, type GlossaryTerm } from '../lib/glossary';
+import { terms } from '../lib/glossary';
 import {
   DICTIONARY_TERMS,
   type DictionaryCategoryKey,
@@ -14,11 +14,11 @@ import {
 } from '../lib/tuDienTerms';
 
 export default function VibecodeGlossaryPage() {
+  const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeCategory, setActiveCategory] = useState<DictionaryCategoryKey | 'all'>('all');
   const [activeLetter, setActiveLetter] = useState('A');
   const [scrolled, setScrolled] = useState(false);
-  const [activeModalTerm, setActiveModalTerm] = useState<GlossaryTerm | null>(null);
 
   const contentRef = useRef<HTMLDivElement>(null);
 
@@ -121,39 +121,8 @@ export default function VibecodeGlossaryPage() {
     const existing = terms.find(
       (t) => t.name.toLowerCase() === query || t.id.toLowerCase() === query
     );
-
-    if (existing) {
-      setActiveModalTerm(existing);
-    } else {
-      setActiveModalTerm({
-        id: item.term.toLowerCase().replace(/\s+/g, '-'),
-        name: item.term,
-        nameEn: item.categoryName,
-        letter: item.letter,
-        groups: [item.category],
-        definition: item.def,
-        example: `Thuật ngữ thuộc nhóm ${item.categoryName}. Dành riêng cho dân Marketing khi làm việc với AI và dev.`,
-        related: [],
-      });
-    }
-  };
-
-  const getTermName = (id: string) => {
-    const found = terms.find((t) => t.id === id);
-    if (found) return found.name;
-    const foundDict = DICTIONARY_TERMS.find(
-      (t) => t.term.toLowerCase().replace(/\s+/g, '-') === id
-    );
-    return foundDict ? foundDict.term : id.toUpperCase();
-  };
-
-  const handleNextTerm = () => {
-    if (!activeModalTerm || filteredItems.length === 0) return;
-    const currentIndex = filteredItems.findIndex(
-      (t) => t.term.toLowerCase() === activeModalTerm.name.toLowerCase()
-    );
-    const nextIndex = (currentIndex + 1) % filteredItems.length;
-    handleOpenTerm(filteredItems[nextIndex]);
+    const termId = existing ? existing.id : item.term.toLowerCase().replace(/\s+/g, '-');
+    navigate(`/tu-dien-thuat-ngu/${termId}`);
   };
 
   return (
@@ -201,15 +170,6 @@ export default function VibecodeGlossaryPage() {
       >
         Lên đầu ↑
       </button>
-
-      {/* Rich Term Modal */}
-      <GlossaryTermModal
-        term={activeModalTerm}
-        isOpen={Boolean(activeModalTerm)}
-        onClose={() => setActiveModalTerm(null)}
-        onNext={handleNextTerm}
-        getTermName={getTermName}
-      />
     </div>
   );
 }

@@ -1,6 +1,7 @@
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, useEffect, useMemo, useRef, useState } from 'react';
 import { Link, Navigate, useParams, useNavigate } from 'react-router-dom';
 import '../components/glossary/glossary.css';
+import { applyGlossaryTheme } from '../lib/glossaryTheme';
 import AuthPracticePanel from '../components/glossary/AuthPracticePanel';
 import SpacingPracticePanel from '../components/glossary/SpacingPracticePanel';
 import LetterSpacingPracticePanel from '../components/glossary/LetterSpacingPracticePanel';
@@ -545,6 +546,7 @@ interface InteractiveFrameProps {
 function InteractiveFrame({ html, title, caption }: InteractiveFrameProps) {
   const frameRef = useRef<HTMLIFrameElement | null>(null);
   const observerRef = useRef<ResizeObserver | null>(null);
+  const themedHtml = useMemo(() => applyGlossaryTheme(html), [html]);
 
   const syncHeight = () => {
     const frame = frameRef.current;
@@ -605,7 +607,7 @@ function InteractiveFrame({ html, title, caption }: InteractiveFrameProps) {
       <iframe
         ref={frameRef}
         title={title}
-        srcDoc={html}
+        srcDoc={themedHtml}
         className="glossary-demo-frame"
         sandbox="allow-scripts allow-same-origin"
         scrolling="no"
