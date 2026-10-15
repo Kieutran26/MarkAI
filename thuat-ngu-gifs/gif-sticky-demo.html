@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sticky — Amber Brutalist 4-Cell Grid</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0c;
+      --card-bg: #16161b;
+      --amber: #E88C2E;
+      --gray: #707070;
+      --text: #ece8e1;
+      --border: #26262a;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Space Grotesk', sans-serif;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      max-width: 940px;
+      width: 100%;
+    }
+
+    @media (max-width: 640px) {
+      .grid-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 3px;
+      position: relative;
+      padding-top: 2px;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--amber);
+    }
+
+    .header {
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .num-box {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      border: 1px solid rgba(232, 140, 46, 0.4);
+      padding: 3px 8px;
+      color: var(--amber);
+      background: rgba(232, 140, 46, 0.05);
+      border-radius: 2px;
+      line-height: 1;
+    }
+
+    .title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+    }
+
+    .indicator {
+      width: 6px;
+      height: 6px;
+      background: var(--amber);
+      border-radius: 50%;
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      animation: blink 1.2s infinite;
+      box-shadow: 0 0 8px var(--amber);
+      z-index: 10;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .sim-area {
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(0,0,0,0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ins {
+      padding: 12px 16px;
+      border-left: 2px solid var(--amber);
+      font-size: 11.5px;
+      color: var(--gray);
+      background: rgba(232, 140, 46, 0.03);
+      margin: 0 16px 16px 16px;
+      line-height: 1.5;
+    }
+
+    .ins strong {
+      color: var(--amber);
+      font-weight: 700;
+    }
+
+    .badge-logic {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      color: var(--gray);
+      background: rgba(0,0,0,0.4);
+      padding: 2px 6px;
+      border-radius: 2px;
+      z-index: 5;
+    }
+
+    /* Simulation Elements */
+    .viewport {
+      width: 100%;
+      height: 100%;
+      background: #0f0f12;
+      border: 1px solid #222;
+      border-radius: 2px;
+      overflow-y: auto;
+      scrollbar-width: none; /* Hide scrollbar for clean look */
+      position: relative;
+    }
+    .viewport::-webkit-scrollbar { display: none; }
+
+    .content-mock {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .box {
+      height: 40px;
+      background: #2a2a30;
+      border-radius: 2px;
+      width: 100%;
+    }
+
+    /* Cell 1: Sticky Header */
+    .sticky-header {
+      position: sticky;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: var(--amber);
+      color: #000;
+      height: 30px;
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      font-size: 10px;
+      font-weight: 700;
+      z-index: 10;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    }
+
+    /* Cell 2: Sticky Sidebar */
+    .flex-layout {
+      display: flex;
+      gap: 10px;
+      padding: 10px;
+      min-height: 300px;
+    }
+    .main-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .sidebar-sticky {
+      position: sticky;
+      top: 10px;
+      width: 50px;
+      height: 100px;
+      background: rgba(232, 140, 46, 0.2);
+      border: 1px solid var(--amber);
+      border-radius: 4px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .sb-line {
+      height: 4px;
+      background: var(--amber);
+      opacity: 0.5;
+      width: 100%;
+      border-radius: 2px;
+    }
+
+    /* Cell 3: Sticky Footer */
+    .sticky-footer {
+      position: sticky;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #1a1a20;
+      border-top: 1px solid var(--amber);
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 10px;
+      z-index: 10;
+    }
+    .cta-btn {
+      width: 100%;
+      height: 24px;
+      background: var(--amber);
+      border-radius: 2px;
+    }
+
+    /* Cell 4: Stacking Headers */
+    .section {
+      position: relative;
+    }
+    .section-header {
+      position: sticky;
+      top: 0;
+      background: #2a2a30;
+      border-bottom: 1px solid #444;
+      padding: 4px 10px;
+      font-size: 9px;
+      font-family: 'JetBrains Mono', monospace;
+      color: var(--amber);
+      z-index: 5;
+    }
+    .section-content {
+      height: 80px;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .line {
+      height: 6px;
+      background: #1a1a20;
+      width: 100%;
+      border-radius: 2px;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="grid-container">
+    
+    <!-- Cell 01: Sticky Header -->
+    <div class="card">
+      <div class="indicator"></div>
+      <div class="header">
+        <div class="num-box">01</div>
+        <div class="title">Sticky Header</div>
+      </div>
+      <div class="sim-area">
+        <div class="badge-logic" id="logic-1">SCROLLING</div>
+        <div class="viewport" id="vp-1">
+          <div class="sticky-header">NAVIGATION BAR</div>
+          <div class="content-mock">
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+          </div>
+        </div>
+      </div>
+      <div class="ins">
+        <strong>Sticky Header</strong> giúp thanh điều hướng luôn dính chặt ở trên cùng khi người dùng cuộn trang, giúp họ <strong>luôn tìm thấy menu</strong> mà không cần cuộn ngược lên.
+      </div>
+    </div>
+
+    <!-- Cell 02: Sticky Sidebar -->
+    <div class="card">
+      <div class="indicator"></div>
+      <div class="header">
+        <div class="num-box">02</div>
+        <div class="title">Sticky Sidebar</div>
+      </div>
+      <div class="sim-area">
+        <div class="badge-logic" id="logic-2">SCROLLING</div>
+        <div class="viewport" id="vp-2">
+          <div class="flex-layout">
+            <div class="main-content">
+              <div class="box"></div>
+              <div class="box"></div>
+              <div class="box"></div>
+              <div class="box"></div>
+              <div class="box"></div>
+              <div class="box"></div>
+            </div>
+            <div class="sidebar-sticky">
+              <div class="sb-line"></div>
+              <div class="sb-line" style="width: 70%"></div>
+              <div class="sb-line" style="width: 85%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ins">
+        Khi nội dung chính quá dài, <strong>Sticky Sidebar</strong> giữ cho các công cụ (như bộ lọc hoặc mục lục) <strong>luôn trong tầm mắt</strong>, tăng hiệu quả tương tác.
+      </div>
+    </div>
+
+    <!-- Cell 03: Sticky Footer / CTA -->
+    <div class="card">
+      <div class="indicator"></div>
+      <div class="header">
+        <div class="num-box">03</div>
+        <div class="title">Sticky Footer (CTA)</div>
+      </div>
+      <div class="sim-area">
+        <div class="badge-logic" id="logic-3">SCROLLING</div>
+        <div class="viewport" id="vp-3">
+          <div class="content-mock" style="padding-bottom: 0;">
+            <div class="box" style="height: 60px"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box"></div>
+            <div class="box" style="height: 60px"></div>
+          </div>
+          <div class="sticky-footer">
+            <div class="cta-btn"></div>
+          </div>
+        </div>
+      </div>
+      <div class="ins">
+        <strong>Sticky Footer</strong> (hoặc Action Bar) thường được dùng cho các nút quan trọng như "Mua ngay" hoặc "Lưu lại", đảm bảo <strong>tỉ lệ chuyển đổi</strong> tối đa.
+      </div>
+    </div>
+
+    <!-- Cell 04: Stacking Sections -->
+    <div class="card">
+      <div class="indicator"></div>
+      <div class="header">
+        <div class="num-box">04</div>
+        <div class="title">Stacking Sections</div>
+      </div>
+      <div class="sim-area">
+        <div class="badge-logic" id="logic-4">SCROLLING</div>
+        <div class="viewport" id="vp-4">
+          <div class="section">
+            <div class="section-header">SECTION A</div>
+            <div class="section-content" style="height: 120px;">
+              <div class="line"></div>
+              <div class="line" style="width: 80%"></div>
+              <div class="line"></div>
+              <div class="line" style="width: 60%"></div>
+            </div>
+          </div>
+          <div class="section">
+            <div class="section-header">SECTION B</div>
+            <div class="section-content" style="height: 120px;">
+              <div class="line"></div>
+              <div class="line"></div>
+              <div class="line" style="width: 60%"></div>
+              <div class="line" style="width: 90%"></div>
+            </div>
+          </div>
+          <div class="section">
+            <div class="section-header">SECTION C</div>
+            <div class="section-content" style="height: 120px;">
+              <div class="line"></div>
+              <div class="line" style="width: 70%"></div>
+              <div class="line"></div>
+              <div class="line" style="width: 40%"></div>
+            </div>
+          </div>
+          <div class="section">
+            <div class="section-header">SECTION D</div>
+            <div class="section-content" style="height: 120px;">
+              <div class="line"></div>
+              <div class="line"></div>
+              <div class="line"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="ins">
+        Kỹ thuật <strong>Section Stacking</strong> tạo hiệu ứng các tiêu đề nhóm "đẩy" nhau đi khi cuộn, giúp người dùng dễ dàng nhận biết <strong>vị trí hiện tại</strong> trong danh sách dài.
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Independent Animation Loops
+    
+    function setupScrollLoop(vpId, logicId) {
+      const vp = document.getElementById(vpId);
+      const lg = document.getElementById(logicId);
+      let direction = 1;
+      let currentPos = 0;
+      
+      function animate() {
+        const maxScroll = vp.scrollHeight - vp.clientHeight;
+        
+        if (maxScroll <= 0) {
+          requestAnimationFrame(animate);
+          return;
+        }
+
+        if (direction === 1) {
+          currentPos += 0.8;
+          vp.scrollTop = currentPos;
+          
+          if (currentPos >= maxScroll) {
+            currentPos = maxScroll;
+            vp.scrollTop = currentPos;
+            direction = 0;
+            lg.textContent = 'REACHED END';
+            setTimeout(() => {
+              direction = -1;
+              lg.textContent = 'RETURNING';
+            }, 1500);
+          }
+        } else if (direction === -1) {
+          currentPos -= 2;
+          vp.scrollTop = currentPos;
+          
+          if (currentPos <= 0) {
+            currentPos = 0;
+            vp.scrollTop = currentPos;
+            direction = 0;
+            lg.textContent = 'RESTARTING';
+            setTimeout(() => {
+              direction = 1;
+              lg.textContent = 'SCROLLING';
+            }, 1000);
+          }
+        }
+        requestAnimationFrame(animate);
+      }
+      
+      animate();
+    }
+
+    // Start all loops with slight delays for organic feel
+    setTimeout(() => setupScrollLoop('vp-1', 'logic-1'), 0);
+    setTimeout(() => setupScrollLoop('vp-2', 'logic-2'), 400);
+    setTimeout(() => setupScrollLoop('vp-3', 'logic-3'), 800);
+    setTimeout(() => setupScrollLoop('vp-4', 'logic-4'), 1200);
+
+  </script>
+</body>
+</html>

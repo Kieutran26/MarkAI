@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Letter Spacing Demo</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700&family=JetBrains+Mono:wght@600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0f0f12;
+    --bg-card: #16161b;
+    --fg: #e8e4dc;
+    --muted: #707070;
+    --accent: #E88C2E;
+    --border: #2a2a33;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: 'Space Grotesk', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+  }
+  .grid-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    width: 100%;
+    max-width: 940px;
+  }
+  @media (max-width: 768px) {
+    .grid-container {
+      grid-template-columns: 1fr;
+    }
+  }
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    position: relative;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    min-height: 240px;
+  }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent);
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+  }
+  .card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .c-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    border: 1px solid rgba(232, 140, 46, 0.4);
+    padding: 3px 8px;
+    color: var(--accent);
+    background: rgba(232, 140, 46, 0.05);
+    border-radius: 2px;
+    line-height: 1;
+  }
+
+  .c-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    letter-spacing: -0.01em;
+  }
+  .indicator {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 1.5s infinite cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  @keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(232,140,46,0.6); }
+    70% { box-shadow: 0 0 0 6px rgba(232,140,46,0); }
+    100% { box-shadow: 0 0 0 0 rgba(232,140,46,0); }
+  }
+  .demo-area {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+  .demo-text {
+    font-size: 32px;
+    font-weight: 700;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    white-space: nowrap;
+  }
+  .ins {
+    border-left: 2px solid var(--accent);
+    padding-left: 12px;
+    color: var(--muted);
+    font-size: 11.5px;
+    line-height: 1.5;
+  }
+  .ins strong {
+    color: var(--accent);
+    font-weight: 600;
+  }
+  
+  /* Specific styling for Kerning */
+  .kerning-demo {
+    font-family: 'Times New Roman', serif;
+    font-size: 48px;
+  }
+  .k-char {
+    display: inline-block;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+</style>
+</head>
+<body>
+
+<div class="grid-container">
+  
+  <!-- Card 1: Tracking -->
+  <div class="card">
+    <div class="indicator"></div>
+    <div class="card-header">
+      <div class="c-num">01</div>
+      <div class="c-name">Tracking (Toàn cục)</div>
+    </div>
+    <div class="demo-area">
+      <div class="demo-text" id="demo1">SPACING</div>
+    </div>
+    <div class="ins">
+      <strong>Tracking</strong> điều chỉnh khoảng cách đồng đều giữa tất cả các ký tự trong một từ hoặc một khối văn bản.
+    </div>
+  </div>
+
+  <!-- Card 2: Kerning -->
+  <div class="card">
+    <div class="indicator"></div>
+    <div class="card-header">
+      <div class="c-num">02</div>
+      <div class="c-name">Kerning (Cục bộ)</div>
+    </div>
+    <div class="demo-area">
+      <div class="demo-text kerning-demo">
+        <span class="k-char" id="demo2-a">A</span><span class="k-char" id="demo2-v">V</span><span class="k-char">A</span>
+      </div>
+    </div>
+    <div class="ins">
+      <strong>Kerning</strong> tinh chỉnh khoảng cách cục bộ giữa hai ký tự cụ thể (như A và V) để tạo sự cân bằng thị giác.
+    </div>
+  </div>
+
+  <!-- Card 3: Uppercase -->
+  <div class="card">
+    <div class="indicator"></div>
+    <div class="card-header">
+      <div class="c-num">03</div>
+      <div class="c-name">Chữ In Hoa</div>
+    </div>
+    <div class="demo-area">
+      <div class="demo-text" id="demo3">PREMIUM</div>
+    </div>
+    <div class="ins">
+      Chữ in hoa thường cần <strong>letter-spacing rộng hơn</strong> để dễ đọc và tạo cảm giác sang trọng, trang trọng.
+    </div>
+  </div>
+
+  <!-- Card 4: Lowercase -->
+  <div class="card">
+    <div class="indicator"></div>
+    <div class="card-header">
+      <div class="c-num">04</div>
+      <div class="c-name">Chữ Thường</div>
+    </div>
+    <div class="demo-area">
+      <div class="demo-text" id="demo4" style="text-transform: lowercase;">reading</div>
+    </div>
+    <div class="ins">
+      Chữ thường được thiết kế để kết nối liền mạch, việc <strong>tăng letter-spacing quá mức</strong> sẽ phá vỡ liên kết này.
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
+
+  // Loop 1: Tracking
+  async function loop1() {
+    const el = document.getElementById('demo1');
+    while(true) {
+      el.style.letterSpacing = '12px';
+      await sleep(1500);
+      el.style.letterSpacing = '-1px';
+      await sleep(1500);
+    }
+  }
+
+  // Loop 2: Kerning
+  async function loop2() {
+    const charA = document.getElementById('demo2-a');
+    const charV = document.getElementById('demo2-v');
+    while(true) {
+      charA.style.transform = 'translateX(4px)';
+      charV.style.transform = 'translateX(-4px)';
+      await sleep(1500);
+      charA.style.transform = 'translateX(0px)';
+      charV.style.transform = 'translateX(0px)';
+      await sleep(1500);
+    }
+  }
+
+  // Loop 3: Uppercase
+  async function loop3() {
+    const el = document.getElementById('demo3');
+    while(true) {
+      el.style.letterSpacing = '16px';
+      await sleep(1500);
+      el.style.letterSpacing = '2px';
+      await sleep(1500);
+    }
+  }
+
+  // Loop 4: Lowercase
+  async function loop4() {
+    const el = document.getElementById('demo4');
+    while(true) {
+      el.style.letterSpacing = '8px';
+      await sleep(1500);
+      el.style.letterSpacing = '0px';
+      await sleep(1500);
+    }
+  }
+
+  // Khởi chạy các vòng lặp độc lập với độ trễ khác nhau để tạo cảm giác tự nhiên
+  setTimeout(loop1, 0);
+  setTimeout(loop2, 400);
+  setTimeout(loop3, 800);
+  setTimeout(loop4, 1200);
+</script>
+</body>
+</html>

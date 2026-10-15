@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chips Practice — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f0f12;
+  --bgc: #16161b;
+  --bgi: #121217;
+  --bd: #282830;
+  --tx: #e8e4dc;
+  --txm: #707070;
+  --ac: #E88C2E;
+  --abg: rgba(232, 140, 46, 0.1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  color: var(--tx);
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.pw { width: 100%; max-width: 940px; }
+
+.pw-h {
+  margin-bottom: 24px;
+  border-left: 2px solid var(--ac);
+  padding-left: 16px;
+}
+.pw-h h2 { font-size: 14px; font-weight: 700; color: var(--ac); text-transform: uppercase; letter-spacing: 1px; }
+.pw-h p { font-size: 12px; color: var(--txm); margin-top: 4px; }
+
+.main-card {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+}
+
+.main-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--ac);
+  z-index: 10;
+}
+
+.left-col {
+  flex: 1;
+  background: var(--bgi);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  border-right: 1px solid var(--bd);
+}
+
+.right-col {
+  width: 320px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Chips Styling */
+.chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  padding: 6px 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  border: 1px solid var(--bd);
+  background: var(--bg);
+  color: var(--txm);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all 0.2s;
+  user-select: none;
+}
+.chip:hover { border-color: var(--ac); color: var(--tx); }
+.chip.active { border-color: var(--ac); background: var(--abg); color: var(--ac); }
+
+/* Campaign Grid */
+.p-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+.p-card {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  padding: 12px;
+  border-radius: 3px;
+  transition: all 0.3s;
+}
+.p-card.dim { opacity: 0.2; transform: scale(0.95); pointer-events: none; }
+.p-card h4 { font-size: 12px; margin-bottom: 6px; }
+.p-card span { font-family: 'JetBrains Mono', monospace; font-size: 8px; color: var(--txm); padding: 2px 6px; border: 1px solid var(--bd); border-radius: 2px; }
+
+/* Input Area */
+.input-wrap {
+  background: var(--bg);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  min-height: 44px;
+  align-items: center;
+}
+.input-field {
+  flex: 1;
+  min-width: 100px;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--tx);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+}
+.ichip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  background: var(--abg);
+  color: var(--ac);
+  border: 1px solid rgba(232, 140, 46, 0.2);
+  border-radius: 2px;
+  animation: chipIn 0.2s ease both;
+}
+.ichip span { cursor: pointer; opacity: 0.5; }
+.ichip span:hover { opacity: 1; }
+
+@keyframes chipIn { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: scale(1); } }
+
+/* Labels */
+.tool-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--txm); letter-spacing: 1px; text-transform: uppercase; }
+.hint-box {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--bd);
+  padding: 14px;
+  border-radius: 3px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--txm);
+}
+.hint-box strong { color: var(--ac); }
+
+/* Hint Component */
+.input-wrap { position: relative; }
+.btn-hint {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ac);
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 2px;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: pulseTop 2s infinite;
+  z-index: 99;
+}
+.btn-hint::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid var(--ac);
+}
+@keyframes pulseTop {
+  0% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.05); }
+  100% { transform: translateX(-50%) scale(1); }
+}
+
+@media (max-width: 700px) {
+  .main-card { flex-direction: column; }
+  .right-col { width: 100%; }
+  .left-col { border-right: none; border-bottom: 1px solid var(--bd); }
+  .p-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="pw">
+  <div class="pw-h">
+    <h2>Chips Manager</h2>
+    <p>Thực hành sử dụng Filter Chips để lọc nội dung và Input Chips để quản lý danh sách thuộc tính.</p>
+  </div>
+
+  <div class="main-card">
+    <div class="left-col">
+      <div class="chip-row" id="filter-row">
+        <div class="chip" data-cat="Design">Design</div>
+        <div class="chip" data-cat="Code">Code</div>
+        <div class="chip" data-cat="Marketing">Marketing</div>
+      </div>
+      
+      <div class="p-grid" id="p-grid"></div>
+
+      <div style="margin-top: 10px;">
+        <span class="tool-label" style="display:block; margin-bottom: 8px;">Add Tags</span>
+        <div class="input-wrap">
+          <div class="btn-hint" id="input-hint">Type & Enter!</div>
+          <div id="ichip-wrap" style="display:contents;"></div>
+          <input type="text" class="input-field" id="input-field" placeholder="Gõ và nhấn Enter...">
+        </div>
+      </div>
+    </div>
+
+    <div class="right-col">
+      <span class="tool-label">INSTRUCTION</span>
+      <div class="hint-box">
+        <strong>Filter:</strong> Nhấn vào các chip phía trên để lọc danh sách Campaign bên dưới theo danh mục.<br><br>
+        <strong>Input:</strong> Nhập từ khóa vào ô bên dưới và nhấn <strong>Enter</strong> để tạo tag mới. Nhấn dấu <strong>×</strong> để xóa tag.
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const campaigns = [
+    { name: 'Landing Page Q4', cat: 'Design' },
+    { name: 'Email Automation', cat: 'Marketing' },
+    { name: 'Dashboard UI', cat: 'Design' },
+    { name: 'API Integration', cat: 'Code' }
+  ];
+
+  const grid = document.getElementById('p-grid');
+  const filterRow = document.getElementById('filter-row');
+  const inputField = document.getElementById('input-field');
+  const ichipWrap = document.getElementById('ichip-wrap');
+  const activeCats = new Set();
+
+  // Render cards
+  campaigns.forEach(c => {
+    const card = document.createElement('div');
+    card.className = 'p-card';
+    card.dataset.cat = c.cat;
+    card.innerHTML = `<h4>${c.name}</h4><span>${c.cat}</span>`;
+    grid.appendChild(card);
+  });
+
+  function updateFilter() {
+    const cards = grid.querySelectorAll('.p-card');
+    cards.forEach(card => {
+      const show = activeCats.size === 0 || activeCats.has(card.dataset.cat);
+      card.classList.toggle('dim', !show);
+    });
+  }
+
+  filterRow.addEventListener('click', e => {
+    if (e.target.classList.contains('chip')) {
+      const cat = e.target.dataset.cat;
+      if (activeCats.has(cat)) activeCats.delete(cat);
+      else activeCats.add(cat);
+      e.target.classList.toggle('active');
+      updateFilter();
+    }
+  });
+
+  inputField.addEventListener('keydown', e => {
+    // Hide hint on interaction
+    const hint = document.getElementById('input-hint');
+    if (hint) hint.style.display = 'none';
+
+    if (e.key === 'Enter' && inputField.value.trim()) {
+      const val = inputField.value.trim();
+      const chip = document.createElement('div');
+      chip.className = 'ichip';
+      chip.innerHTML = `${val} <span>×</span>`;
+      chip.querySelector('span').onclick = () => chip.remove();
+      ichipWrap.appendChild(chip);
+      inputField.value = '';
+    }
+  });
+
+  inputField.addEventListener('focus', () => {
+    const hint = document.getElementById('input-hint');
+    if (hint) hint.style.display = 'none';
+  });
+})();
+</script>
+</body>
+</html>
+

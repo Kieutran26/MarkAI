@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gutter Demo — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f0f12;
+  --bgc: #16161b;
+  --bgi: #121217;
+  --bd: #282830;
+  --tx: #e8e4dc;
+  --txm: #707070;
+  --ac: #E88C2E;
+  --abg: rgba(232, 140, 46, 0.1);
+  --abg2: rgba(232, 140, 46, 0.2);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--tx);
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.g {
+  width: 100%;
+  max-width: 940px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 600px) {
+  .g { grid-template-columns: 1fr; }
+}
+
+.c {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.c::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--ac);
+}
+
+.c::after {
+  content: '';
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 6px;
+  height: 6px;
+  background: var(--ac);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--ac);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0.3; transform: scale(1); }
+}
+
+.ch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.ch .n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ac);
+  background: var(--abg);
+  border: 1px solid var(--abg2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+.ch h2 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+}
+
+.st {
+  background: var(--bgi);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  flex: 1;
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ins {
+  margin-top: 14px;
+  font-size: 11.5px;
+  color: var(--txm);
+  line-height: 1.6;
+  padding-left: 12px;
+  border-left: 2px solid var(--ac);
+}
+
+.ins strong {
+  color: var(--ac);
+  font-weight: 600;
+}
+
+.val {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--txm);
+  background: rgba(0,0,0,0.2);
+  padding: 2px 6px;
+  border-radius: 2px;
+  z-index: 10;
+}
+
+/* Visuals */
+.grid-sim {
+  display: grid;
+  width: 100%;
+  max-width: 200px;
+  background: rgba(255,255,255,0.02);
+  padding: 10px;
+  border-radius: 4px;
+  position: relative;
+  transition: gap 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.grid-col {
+  height: 80px;
+  background: var(--abg);
+  border: 1px dashed var(--ac);
+  opacity: 0.8;
+  position: relative;
+  z-index: 2;
+}
+
+.gutter-highlight {
+  position: absolute;
+  background: var(--ac);
+  opacity: 0.4;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.content-block {
+  width: 100%;
+  padding: 12px;
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: all 0.5s ease;
+}
+
+.skeleton-text {
+  height: 6px;
+  background: var(--bd);
+  border-radius: 3px;
+  width: 100%;
+}
+.skeleton-text.short { width: 60%; }
+
+</style>
+</head>
+<body>
+
+<div class="g">
+  <!-- 01: Column Gutter -->
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>Khoảng cách cột</h2></div>
+    <div class="st">
+      <div class="grid-sim" id="g1" style="grid-template-columns: repeat(3, 1fr); gap: 16px;">
+        <div class="grid-col"></div>
+        <div class="grid-col"></div>
+        <div class="grid-col"></div>
+        <div id="h1_1" class="gutter-highlight"></div>
+        <div id="h1_2" class="gutter-highlight"></div>
+      </div>
+      <div class="val" id="val1">column-gap: 16px</div>
+    </div>
+    <p class="ins"><strong>Gutter</strong> là khoảng trống nằm giữa các cột, giúp phân tách nội dung và tạo nhịp điệu cho bố cục Grid.</p>
+  </section>
+
+  <!-- 02: Row Gutter -->
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Khoảng cách hàng</h2></div>
+    <div class="st">
+      <div class="grid-sim" id="g2" style="grid-template-columns: 1fr; gap: 12px; max-width: 140px;">
+        <div class="grid-col" style="height: 35px;"></div>
+        <div class="grid-col" style="height: 35px;"></div>
+        <div class="grid-col" style="height: 35px;"></div>
+        <div id="h2_1" class="gutter-highlight"></div>
+        <div id="h2_2" class="gutter-highlight"></div>
+      </div>
+      <div class="val" id="val2">row-gap: 12px</div>
+    </div>
+    <p class="ins">Ngoài cột, <strong>Gutter</strong> còn được dùng để chỉ khoảng cách giữa các hàng (row-gap), đảm bảo các khối nội dung không bị dính vào nhau.</p>
+  </section>
+
+  <!-- 03: Visual Breathing Room -->
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Khoảng thở thị giác</h2></div>
+    <div class="st">
+      <div class="content-block" id="b3">
+        <div class="skeleton-text"></div>
+        <div class="skeleton-text"></div>
+        <div class="skeleton-text short"></div>
+      </div>
+      <div class="val" id="val3">Gutter: 0px</div>
+    </div>
+    <p class="ins">Nếu không có <strong>Gutter</strong>, nội dung sẽ bị "ngộp". Khoảng trắng này tạo ra <strong>Visual Breathing Room</strong> giúp mắt người dùng dễ quét thông tin.</p>
+  </section>
+
+  <!-- 04: Responsive Gutters -->
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Đáp ứng linh hoạt</h2></div>
+    <div class="st">
+      <div class="grid-sim" id="g4" style="grid-template-columns: repeat(2, 1fr); gap: 8px;">
+        <div class="grid-col"></div>
+        <div class="grid-col"></div>
+      </div>
+      <div class="val" id="val4">Mobile: 8px</div>
+    </div>
+    <p class="ins">Trong thiết kế <strong>Responsive</strong>, Gutter thường nhỏ trên Mobile và rộng dần trên Desktop để tối ưu không gian hiển thị.</p>
+  </section>
+</div>
+
+<script>
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+/**
+ * Centrally align highlights in gaps of a grid container
+ * @param {HTMLElement} grid - The grid container
+ * @param {HTMLElement[]} highlights - Array of highlight elements
+ * @param {'col'|'row'} type - Gap type
+ */
+function updateGaps(grid, highlights, type) {
+  const rect = grid.getBoundingClientRect();
+  const cols = Array.from(grid.querySelectorAll('.grid-col'));
+  if (cols.length < 2) return;
+
+  highlights.forEach((h, i) => {
+    if (!cols[i] || !cols[i+1]) return;
+    const r1 = cols[i].getBoundingClientRect();
+    const r2 = cols[i+1].getBoundingClientRect();
+
+    if (type === 'col') {
+      const left = r1.right - rect.left;
+      const width = r2.left - r1.right;
+      h.style.left = left + 'px';
+      h.style.width = width + 'px';
+      h.style.top = '10px';
+      h.style.bottom = '10px';
+      h.style.height = 'auto';
+    } else {
+      const top = r1.bottom - rect.top;
+      const height = r2.top - r1.bottom;
+      h.style.top = top + 'px';
+      h.style.height = height + 'px';
+      h.style.left = '10px';
+      h.style.right = '10px';
+      h.style.width = 'auto';
+    }
+  });
+}
+
+// 01: Column Gutter Loop
+(async function() {
+  const g = document.getElementById('g1');
+  const h1 = document.getElementById('h1_1');
+  const h2 = document.getElementById('h1_2');
+  const v = document.getElementById('val1');
+  const highlights = [h1, h2];
+  
+  while (true) {
+    const gaps = ['8px', '24px', '16px'];
+    for (const gap of gaps) {
+      g.style.gap = gap;
+      v.textContent = `column-gap: ${gap}`;
+      await wait(500); 
+      updateGaps(g, highlights, 'col');
+      await wait(1500);
+    }
+  }
+})();
+
+// 02: Row Gutter Loop
+(async function() {
+  const g = document.getElementById('g2');
+  const h1 = document.getElementById('h2_1');
+  const h2 = document.getElementById('h2_2');
+  const v = document.getElementById('val2');
+  const highlights = [h1, h2];
+  
+  while (true) {
+    const gaps = ['4px', '20px', '12px'];
+    for (const gap of gaps) {
+      g.style.gap = gap;
+      v.textContent = `row-gap: ${gap}`;
+      await wait(500);
+      updateGaps(g, highlights, 'row');
+      await wait(1500);
+    }
+  }
+})();
+
+// 03: Breathing Room Loop
+(async function() {
+  const b = document.getElementById('b3');
+  const v = document.getElementById('val3');
+  
+  while (true) {
+    b.style.gap = '0px';
+    b.style.padding = '2px';
+    v.textContent = 'Gutter: 0px (Cramped)';
+    await wait(2500);
+    
+    b.style.gap = '16px';
+    b.style.padding = '16px';
+    v.textContent = 'Gutter: 16px (Balanced)';
+    await wait(2500);
+  }
+})();
+
+// 04: Responsive Loop
+(async function() {
+  const g = document.getElementById('g4');
+  const v = document.getElementById('val4');
+  
+  while (true) {
+    g.style.gap = '8px';
+    g.style.maxWidth = '120px';
+    v.textContent = 'Mobile: 8px';
+    await wait(2000);
+    
+    g.style.gap = '24px';
+    g.style.maxWidth = '200px';
+    v.textContent = 'Desktop: 24px';
+    await wait(2000);
+  }
+})();
+</script>
+</body>
+</html>

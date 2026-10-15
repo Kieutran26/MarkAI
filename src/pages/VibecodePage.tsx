@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import VibecodeHero from '../components/vibecode/VibecodeHero';
 import StatsBar from '../components/vibecode/StatsBar';
+import VibecodePlaybook from '../components/vibecode/VibecodePlaybook';
 import PathHeader from '../components/vibecode/PathHeader';
 import LessonList from '../components/vibecode/LessonList';
 import WhyFree from '../components/vibecode/WhyFree';
 
 export default function VibecodePage() {
+  const [learningMode, setLearningMode] = useState<'cases' | 'sequential'>('cases');
+
   return (
     <div className="font-[family-name:var(--sans)] text-[#141414] min-h-screen flex flex-col bg-[#F6F5F1] overflow-x-hidden">
       <main className="flex-1 pb-16 sm:pb-24">
@@ -16,11 +19,130 @@ export default function VibecodePage() {
         {/* 2. Stats Bar */}
         <StatsBar />
 
-        {/* 3. Overview (01) */}
-        <PathHeader />
+        {/* 3. Learning Mode Switcher Bar */}
+        <section className="max-w-[1280px] mx-auto px-6 sm:px-8 mt-14 sm:mt-20">
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 pb-6 border-b border-[#DAD8D2]">
+            <div>
+              <div className="font-[family-name:var(--mono)] text-[12px] text-[#8A8883] mb-3">
+                (01) Phương thức học
+              </div>
+              <h3 className="m-0 text-[clamp(24px,3vw,36px)] leading-[1.1] font-semibold text-[#141414] tracking-[-0.035em]">
+                {learningMode === 'cases' ? (
+                  <span>
+                    Playbook thực chiến.{' '}
+                    <span className="font-light italic text-[#E8772E]">
+                      Học theo tình huống.
+                    </span>
+                  </span>
+                ) : (
+                  <span>
+                    Giáo trình 10 bài.{' '}
+                    <span className="font-light italic text-[#E8772E]">
+                      Tuần tự từ số 0.
+                    </span>
+                  </span>
+                )}
+              </h3>
+            </div>
 
-        {/* 4. 10 Lessons Stepper & Carousel (02) */}
-        <LessonList />
+            {/* Pill Switcher matching markAI Landing */}
+            <div className="flex bg-white border border-[#E6E4DE] rounded-full p-1 gap-1 shrink-0">
+              <button
+                type="button"
+                onClick={() => setLearningMode('cases')}
+                className={`px-5 py-2.5 rounded-full text-[13px] font-medium transition-all cursor-pointer flex items-center gap-2 ${
+                  learningMode === 'cases'
+                    ? 'bg-[#141414] text-white'
+                    : 'text-[#6B6B6B] hover:text-[#141414]'
+                }`}
+              >
+                <span>⚡ Playbook Theo Case</span>
+                <span
+                  className={`text-[10px] font-mono px-2 py-0.5 rounded-full ${
+                    learningMode === 'cases'
+                      ? 'bg-[#E8772E] text-white font-bold'
+                      : 'bg-[#F1EFEA] text-[#8A8883]'
+                  }`}
+                >
+                  18 cases
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setLearningMode('sequential')}
+                className={`px-5 py-2.5 rounded-full text-[13px] font-medium transition-all cursor-pointer flex items-center gap-1.5 ${
+                  learningMode === 'sequential'
+                    ? 'bg-[#141414] text-white'
+                    : 'text-[#6B6B6B] hover:text-[#141414]'
+                }`}
+              >
+                <span>📚 10 Bài Tuần Tự</span>
+              </button>
+            </div>
+          </div>
+        </section>
+
+        {/* 4. Main Learning Area */}
+        {learningMode === 'cases' ? (
+          <div>
+            <VibecodePlaybook />
+
+            {/* Subtle Switch Link to Sequential */}
+            <div className="max-w-[1280px] mx-auto px-6 sm:px-8 mb-20">
+              <div className="bg-white border border-[#E6E4DE] rounded-3xl p-8 sm:p-10 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
+                <div>
+                  <span className="font-[family-name:var(--mono)] text-[12px] text-[#E8772E] font-medium block mb-1">
+                    Học nền tảng bài bản
+                  </span>
+                  <h4 className="text-[20px] sm:text-[22px] font-semibold text-[#141414] tracking-[-0.025em] m-0">
+                    Muốn tìm hiểu toàn bộ 10 bài học từ số 0 đến deploy?
+                  </h4>
+                  <p className="text-[15px] text-[#6B6B6B] mt-2 mb-0 max-w-[620px] leading-relaxed">
+                    Xem trọn bộ giáo trình nền tảng: cài đặt môi trường, từ ngữ chuyên ngành dev, dòng lệnh Claude Code, và kết nối database.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setLearningMode('sequential');
+                    window.scrollTo({ top: 400, behavior: 'smooth' });
+                  }}
+                  className="px-6 py-3 bg-[#141414] hover:bg-[#E8772E] text-white rounded-full text-[13.5px] font-medium whitespace-nowrap transition-colors shrink-0 cursor-pointer"
+                >
+                  Chuyển sang 10 bài tuần tự →
+                </button>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div>
+            {/* Quick Switch Banner back to Cases */}
+            <div className="max-w-[1280px] mx-auto px-6 sm:px-8 mt-10">
+              <div className="bg-white border border-[#E6E4DE] rounded-2xl p-5 flex items-center justify-between gap-4 flex-wrap">
+                <div className="text-[14.5px] text-[#141414]">
+                  💡 <strong>Bạn đang cần làm gấp 1 tính năng cụ thể?</strong> (như Landing page, Form Google Sheets, Quiz...)
+                </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setLearningMode('cases');
+                    window.scrollTo({ top: 400, behavior: 'smooth' });
+                  }}
+                  className="text-[13.5px] font-semibold text-[#E8772E] hover:underline cursor-pointer"
+                >
+                  Mở kho 18+ Case thực chiến làm ngay →
+                </button>
+              </div>
+            </div>
+
+            {/* Overview (01) */}
+            <PathHeader />
+
+            {/* 10 Lessons Stepper & Carousel (02) */}
+            <LessonList />
+          </div>
+        )}
 
         {/* 5. Philosophy (03) */}
         <WhyFree />

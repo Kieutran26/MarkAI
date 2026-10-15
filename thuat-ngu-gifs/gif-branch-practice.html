@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Branch Practice — Animated Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#101010;--bgc:#181818;--bgi:#131313;
+  --bd:#272727;--tx:#e0e0e0;--txm:#707070;--txd:#3a3a3a;
+  --ac:#d97706;--acl:#f59e0b;
+  --abg:rgba(217,119,6,.08);--abg2:rgba(217,119,6,.18);
+  --rd:#ef4444;--gn:#22c55e;--gnb:rgba(34,197,94,.12);--rdb:rgba(239,68,68,.1);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Space Grotesk',sans-serif;background-color:var(--bg);background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);background-size:20px 20px;color:var(--tx);min-height:100vh;padding:20px 16px 48px}
+.ch{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.ch .n{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--ac);background:var(--abg);border:1px solid rgba(217,119,6,.2);padding:1px 6px;border-radius:2px}
+.ch h2{font-size:14px;font-weight:600;letter-spacing:-.3px}
+
+/* ═══════════════════════════════════════
+   PRACTICE
+   ═══════════════════════════════════════ */
+.pra{max-width:900px;margin:0 auto;background:var(--bgc);border:1px solid var(--bd);border-radius:3px;padding:22px}
+.pra .ch{margin-bottom:6px}
+.pra-goal{font-size:12.5px;color:var(--txm);margin-bottom:18px;line-height:1.5}
+.pra-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:660px){.pra-grid{grid-template-columns:1fr}}
+.cfg-g{display:flex;flex-direction:column;gap:6px}
+.cfg-l{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txm);text-transform:uppercase;letter-spacing:.5px}
+.branch-tabs{display:flex;gap:0}
+.btab{flex:1;padding:8px 6px;font-family:'JetBrains Mono',monospace;font-size:10px;background:var(--bgi);border:1px solid var(--bd);color:var(--txm);cursor:pointer;transition:all .15s;text-align:center;white-space:nowrap}
+.btab:first-child{border-radius:2px 0 0 2px}
+.btab:last-child{border-radius:0 2px 2px 0}
+.btab:not(:first-child){border-left:none}
+.btab.on{background:var(--abg2);border-color:var(--ac);color:var(--acl)}
+.btab.on+.btab{border-left-color:var(--ac)}
+.btab.merged-tab{position:relative}
+.btab.merged-tab::after{content:'merged';position:absolute;top:-6px;right:2px;font-size:7px;color:var(--gn);background:var(--gnb);border:1px solid rgba(34,197,94,.2);padding:0 3px;border-radius:2px}
+.branch-info{font-size:11px;color:var(--txm);line-height:1.5;min-height:36px}
+.branch-info .mono{color:var(--acl);font-size:10px}
+.pv-stage{background:var(--bgi);border:1px solid var(--bd);border-radius:3px;padding:14px;min-height:180px}
+.pv-files{display:flex;flex-direction:column;gap:3px}
+.pv-f{display:flex;align-items:center;gap:6px;padding:4px 8px;border-radius:2px;font-family:'JetBrains Mono',monospace;font-size:10.5px;transition:all .2s;border:1px solid transparent;animation:pfIn .2s ease both}
+@keyframes pfIn{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:translateX(0)}}
+.pv-f .fid{width:8px;height:8px;border-radius:1px;flex-shrink:0}
+.pv-f .fn{flex:1}
+.pv-f .fbadge{font-size:8px;padding:1px 4px;border-radius:2px;font-weight:700;white-space:nowrap}
+.pv-f .fbadge.changed{background:var(--abg2);color:var(--acl);border:1px solid rgba(217,119,6,.2)}
+.pv-f .fbadge.new{background:var(--gnb);color:var(--gn);border:1px solid rgba(34,197,94,.2)}
+.step-nav{display:flex;gap:8px;margin-top:10px}
+.btn{position:relative;padding:8px 16px;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;border:1px solid var(--bd);background:var(--bgi);color:var(--txm);border-radius:2px;cursor:pointer;transition:all .15s}
+.btn:hover:not(:disabled){border-color:var(--ac);color:var(--acl);background:var(--abg)}
+.btn:disabled{opacity:.3;cursor:default}
+.btn.pri{background:var(--ac);border-color:var(--ac);color:#fff}
+.btn.pri:hover:not(:disabled){background:var(--acl);border-color:var(--acl)}
+.btn.grn{background:var(--gnb);border-color:rgba(34,197,94,.3);color:var(--gn)}
+.btn.grn:hover:not(:disabled){background:rgba(34,197,94,.2)}
+
+/* Hint Badge */
+.btn-hint {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ac);
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  padding: 2px 6px;
+  border-radius: 2px;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: pulseHint 2s infinite;
+  z-index: 999;
+}
+.btn-hint::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid var(--ac);
+}
+@keyframes pulseHint {
+  0% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.1); }
+  100% { transform: translateX(-50%) scale(1); }
+}
+
+.hint{font-size:11px;color:var(--txd);line-height:1.4;padding:8px 10px;background:var(--bgi);border-radius:2px;border-left:2px solid var(--bd);margin-top:8px}
+.pr-box{background:var(--bgi);border:1px solid var(--bd);border-radius:3px;padding:12px 14px;margin-top:14px}
+.pr-box .cl{display:block;margin-bottom:8px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txd);text-transform:uppercase;letter-spacing:.5px}
+.pr-txt{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--acl);line-height:1.55;word-break:break-word}
+
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+</style>
+</head>
+<body>
+
+<section class="pra" aria-label="Thực hành">
+  <div class="ch"><span class="n">PRACTICE</span><h2>Chuyển branch & Merge</h2></div>
+  <p class="pra-goal">Click từng branch để xem file thay đổi thế nào. Thử merge một branch vào main.</p>
+  <div class="pra-grid">
+    <div>
+      <div class="cfg-g">
+        <span class="cfg-l">Chọn branch</span>
+        <div class="branch-tabs" id="bTabs">
+          <button class="btab on" data-b="main">main</button>
+          <button class="btab" data-b="feature-hero">feature-hero</button>
+          <button class="btab" data-b="fix-nav">fix-nav</button>
+        </div>
+      </div>
+      <div class="cfg-g">
+        <span class="cfg-l">Trạng thái</span>
+        <div class="branch-info" id="bInfo"></div>
+      </div>
+      <div class="step-nav" id="bNav" style="overflow: visible;">
+        <button class="btn grn" id="mergeBtn" disabled>
+          <span id="mergeBtnText">Merge vào main</span>
+          <div class="btn-hint" id="mergeHint" style="display: none;">Gộp code</div>
+        </button>
+        <button class="btn" id="resetBtn">Reset</button>
+      </div>
+      <div class="hint">Click từng branch để xem file khác nhau. Chọn feature-hero hoặc fix-nav → click "Merge vào main" → quan sát main cập nhật. Click "Reset" để quay lại đầu.</div>
+    </div>
+    <div>
+      <div class="pv-stage">
+        <div class="cfg-g" style="margin-bottom:8px"><span class="cfg-l" id="pvLabel">main — files</span></div>
+        <div class="pv-files" id="pvFiles"></div>
+      </div>
+      <div class="pr-box">
+        <span class="cl">Nói với dev</span>
+        <div class="pr-txt" id="prTxt"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  /* ── BRANCH DATA ── */
+  var base = {
+    main: [
+      {name:'index.html', dot:'#f59e0b', ver:'v1 — trang chính'},
+      {name:'style.css', dot:'#22c55e', ver:'original'},
+      {name:'app.js', dot:'#6366f1', ver:'original'}
+    ],
+    'feature-hero': [
+      {name:'index.html', dot:'#f59e0b', ver:'v2 — thêm hero section', changed:true},
+      {name:'style.css', dot:'#22c55e', ver:'original'},
+      {name:'app.js', dot:'#6366f1', ver:'original'},
+      {name:'hero.css', dot:'#22c55e', ver:'NEW — style cho hero', isNew:true}
+    ],
+    'fix-nav': [
+      {name:'index.html', dot:'#f59e0b', ver:'v1 — trang chính'},
+      {name:'style.css', dot:'#22c55e', ver:'v2 — fix navigation bị lệch', changed:true},
+      {name:'app.js', dot:'#6366f1', ver:'original'}
+    ]
+  };
+
+  var merged = {}; /* track merged branches */
+  var active = 'main';
+
+  /* ── REFS ── */
+  var $tabs = document.querySelectorAll('.btab');
+  var $info = document.getElementById('bInfo');
+  var $merge = document.getElementById('mergeBtn');
+  var $reset = document.getElementById('resetBtn');
+  var $pvLabel = document.getElementById('pvLabel');
+  var $pvFiles = document.getElementById('pvFiles');
+  var $prTxt = document.getElementById('prTxt');
+
+  function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;'); }
+
+  function getFiles(branch){
+    if(branch === 'main'){
+      /* start with base main */
+      var files = base.main.map(function(f){ return {name:f.name,dot:f.dot,ver:f.ver}; });
+      /* apply merged changes */
+      Object.keys(merged).forEach(function(bName){
+        if(merged[bName] && base[bName]){
+          base[bName].forEach(function(f){
+            var existing = null;
+            for(var i=0;i<files.length;i++){
+              if(files[i].name === f.name){ existing = files[i]; break; }
+            }
+            if(existing){
+              existing.ver = f.ver;
+              existing.changed = f.changed;
+              existing.isNew = false;
+            } else if(f.isNew){
+              files.push({name:f.name, dot:f.dot, ver:f.ver, isNew:true, changed:false});
+            }
+          });
+        }
+      });
+      return files;
+    }
+    return base[branch] ? base[branch].map(function(f){ return {name:f.name,dot:f.dot,ver:f.ver,changed:f.changed,isNew:f.isNew}; }) : [];
+  }
+
+  function render(){
+    var files = getFiles(active);
+    $pvLabel.textContent = active + ' — files';
+
+    var html = '';
+    for(var i=0;i<files.length;i++){
+      var f = files[i];
+      var badge = '';
+      if(f.isNew) badge = '<span class="fbadge new">NEW</span>';
+      else if(f.changed) badge = '<span class="fbadge changed">CHANGED</span>';
+      html += '<div class="pv-f" style="animation-delay:'+i*0.04+'s">'
+        +'<span class="fid" style="background:'+f.dot+'"></span>'
+        +'<span class="fn">'+esc(f.name)+'</span>'
+        +badge
+        +'</div>';
+    }
+    $pvFiles.innerHTML = html;
+
+    /* info */
+    if(active === 'main'){
+      var mKeys = Object.keys(merged).filter(function(k){return merged[k]});
+      if(mKeys.length === 0){
+        $info.innerHTML = 'Branch <span class="mono">main</span> — chưa có gì được merge vào.';
+      } else {
+        $info.innerHTML = 'Branch <span class="mono">main</span> — đã merge: ' + mKeys.map(function(k){return '<span class="mono">'+k+'</span>'}).join(', ');
+      }
+    } else {
+      var isMerged = !!merged[active];
+      $info.innerHTML = 'Branch <span class="mono">'+active+'</span> — ' + (isMerged ? 'đã merge vào main' : 'chưa merge') + '. ' + files.length + ' files.';
+    }
+
+    /* merge button */
+    $merge.disabled = (active === 'main' || !!merged[active]);
+    var $mBtnText = document.getElementById('mergeBtnText');
+    if($mBtnText) {
+      $mBtnText.textContent = active !== 'main' ? 'Merge '+active+' vào main' : 'Merge vào main';
+    }
+
+    /* hint visibility */
+    var $mHint = document.getElementById('mergeHint');
+    if($mHint) {
+      if (active !== 'main' && !merged[active]) {
+        $mHint.setAttribute('style', 'display: block !important');
+      } else {
+        $mHint.setAttribute('style', 'display: none !important');
+      }
+    }
+
+    /* tabs merged state */
+    $tabs.forEach(function(t){
+      var b = t.getAttribute('data-b');
+      t.classList.toggle('merged-tab', !!merged[b] && b !== 'main');
+    });
+
+    /* prompt */
+    if(active === 'main'){
+      var mKeys2 = Object.keys(merged).filter(function(k){return merged[k]});
+      if(mKeys2.length === 0){
+        $prTxt.textContent = 'Branch main hiện tại. Chưa có branch nào được merge vào.';
+      } else {
+        $prTxt.textContent = 'Main đã nhận merge từ: ' + mKeys2.join(', ') + '. Code production đã được cập nhật.';
+      }
+    } else {
+      var m = merged[active];
+      $prTxt.textContent = m
+        ? 'Branch '+active+' đã merge vào main. Có thể xóa branch này.'
+        : 'Đang trên branch '+active+'. Cần review và merge vào main khi sẵn sàng.';
+    }
+  }
+
+  $tabs.forEach(function(tab){
+    tab.addEventListener('click', function(){
+      $tabs.forEach(function(t){ t.classList.remove('on'); });
+      this.classList.add('on');
+      active = this.getAttribute('data-b');
+      render();
+    });
+  });
+
+  /* ── MERGE ── */
+  $merge.addEventListener('click', function(){
+    if(active === 'main' || merged[active]) return;
+    merged[active] = true;
+    render();
+    /* auto switch to main to show result */
+    setTimeout(function(){
+      $tabs.forEach(function(t){ t.classList.remove('on'); });
+      $tabs[0].classList.add('on');
+      active = 'main';
+      render();
+    }, 300);
+  });
+
+  /* ── RESET ── */
+  $reset.addEventListener('click', function(){
+    merged = {};
+    active = 'main';
+    $tabs.forEach(function(t){ t.classList.remove('on'); });
+    $tabs[0].classList.add('on');
+    render();
+  });
+
+  /* ── INIT ── */
+  render();
+})();
+</script>
+</body>
+</html>

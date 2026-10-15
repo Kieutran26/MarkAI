@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deploy Practice — markAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+  --bg:#0f0f12;--bg-card:#16161b;--fg:#e8e4dc;--muted:#6e6e7a;
+  --accent:#e88c2e;--accent-soft:rgba(232,140,46,.12);
+  --accent-border:rgba(232,140,46,.3);--border:#282830;
+  --surface:#1c1c23;--success:#3a9e5c;--success-soft:rgba(58,158,92,.12);
+  --success-border:rgba(58,158,92,.3);--warning:#c49030;--warning-soft:rgba(196,144,48,.1);
+  --error:#c43a3a;--error-soft:rgba(196,58,58,.12);--error-border:rgba(196,58,58,.3);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:'Space Grotesk',sans-serif;line-height:1.6;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(rgba(255,255,255,.022) 1px,transparent 1px);background-size:20px 20px;pointer-events:none;z-index:0}
+
+#app-root{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:24px}
+
+.sec-lbl{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.sec-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+
+.pg{font-size:15px;color:var(--fg);opacity:.8;margin-bottom:22px;line-height:1.6}
+.pg span{color:var(--accent);font-weight:600}
+
+.timeline{position:relative;padding-left:28px;margin-bottom:24px}
+.timeline::before{content:'';position:absolute;left:11px;top:0;bottom:0;width:1px;background:var(--border)}
+.tl-item{position:relative;padding-bottom:24px;cursor:pointer}
+.tl-item:last-child{padding-bottom:0}
+.tl-dot{position:absolute;left:-28px;top:2px;width:22px;height:22px;border:2px solid var(--border);background:var(--bg-card);display:flex;align-items:center;justify-content:center;font-size:9px;color:var(--muted);transition:all .3s;z-index:1}
+.tl-item.active .tl-dot{border-color:var(--accent);background:var(--accent-soft);color:var(--accent)}
+.tl-item.done .tl-dot{border-color:var(--success);background:var(--success-soft);color:var(--success)}
+.tl-item.error .tl-dot{border-color:var(--error);background:var(--error-soft);color:var(--error)}
+
+.tl-content{background:var(--bg-card);border:1px solid var(--border);padding:16px 18px;transition:all .3s}
+.tl-item.active .tl-content{border-color:var(--accent-border);background:var(--surface)}
+.tl-item.done .tl-content{border-color:rgba(58,158,92,.2)}
+.tl-item.error .tl-content{border-color:var(--error-border);background:var(--error-soft)}
+
+.tl-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.tl-title{font-size:13px;font-weight:700}
+.tl-item.active .tl-title{color:var(--accent)}
+.tl-item.done .tl-title{color:var(--success)}
+.tl-item.error .tl-title{color:var(--error)}
+
+.tl-status{font-family:'JetBrains Mono',monospace;font-size:9px;padding:3px 8px;border:1px solid var(--border);color:var(--muted)}
+.tl-item.active .tl-status{border-color:var(--accent-border);color:var(--accent);background:var(--accent-soft)}
+.tl-item.done .tl-status{border-color:var(--success-border);color:var(--success);background:var(--success-soft)}
+.tl-item.error .tl-status{border-color:var(--error-border);color:var(--error);background:var(--error-soft)}
+
+.tl-desc{font-size:12px;color:var(--muted);line-height:1.5}
+.tl-item.active .tl-desc{color:var(--fg);opacity:.8}
+.tl-detail{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);opacity:.5;margin-top:8px;padding:8px 10px;background:var(--bg);border:1px solid var(--border);display:none;line-height:1.6;white-space:pre-wrap}
+.tl-item.active .tl-detail{display:block;opacity:.7}
+
+.step-controls{display:flex;gap:10px;align-items:center;justify-content:center;margin-bottom:16px}
+.step-btn{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;padding:10px 24px;border:1px solid var(--border);background:transparent;color:var(--fg);cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:8px}
+.step-btn:hover{border-color:var(--accent-border);background:var(--accent-soft)}
+.step-btn:disabled{opacity:.3;cursor:default;border-color:var(--border);background:transparent}
+.step-btn.primary{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.step-btn.primary:hover{background:rgba(232,140,46,.2)}
+.step-btn.danger{border-color:var(--error-border);color:var(--error);background:var(--error-soft)}
+.step-btn.danger:hover{background:rgba(196,58,58,.15)}
+
+.result{border:1px solid var(--border);padding:20px 22px;display:none;align-items:center;gap:14px;margin-top:16px}
+.result.show{display:flex}
+.result.ok{border-color:var(--success-border);background:var(--success-soft)}
+.result.err{border-color:var(--error-border);background:var(--error-soft)}
+.result .r-icon{font-size:22px;flex-shrink:0}
+.result.ok .r-icon{color:var(--success)}
+.result.err .r-icon{color:var(--error)}
+.result .r-text{font-size:14px;line-height:1.5}
+.result.ok .r-text{color:var(--success)}
+.result.err .r-text{color:var(--error)}
+
+.reset-btn{font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:500;padding:8px 16px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .25s;display:inline-flex;align-items:center;gap:6px;margin-top:12px}
+.reset-btn:hover{border-color:var(--accent-border);color:var(--fg)}
+
+.hint{font-size:12px;color:var(--muted);opacity:.5;margin-top:10px;display:flex;align-items:center;gap:6px}
+.hint i{font-size:10px;color:var(--accent)}
+
+.step-btn { position: relative; }
+.btn-hint {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--accent);
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: 2px;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: hintPulse 2s infinite;
+  z-index: 999;
+}
+.btn-hint::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 5px solid var(--accent);
+}
+@keyframes hintPulse {
+  0% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.08); }
+  100% { transform: translateX(-50%) scale(1); }
+}
+</style>
+</head>
+<body>
+<div id="app-root">
+  <section aria-label="Thực hành deploy flow">
+    <p class="pg"><span>Mục tiêu:</span> Bấm Next để đi qua toàn bộ pipeline deploy. Hãy thử cả nhánh Verify Pass và nhánh Verify Fail (Rollback).</p>
+
+    <div class="timeline" id="timeline"></div>
+
+    <div class="step-controls">
+      <button class="step-btn" id="prevBtn" disabled><i class="fa-solid fa-arrow-left"></i> Back</button>
+      <div style="position: relative; display: inline-block;">
+        <div class="btn-hint" id="stepHint">Click to proceed!</div>
+        <button class="step-btn primary" id="nextBtn">Next <i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+      <button class="step-btn danger" id="failBtn" disabled><i class="fa-solid fa-bug"></i> Fail</button>
+    </div>
+
+    <div class="result" id="result">
+      <div class="r-icon"></div>
+      <div class="r-text" id="resultText"></div>
+    </div>
+
+    <button class="reset-btn" id="resetBtn"><i class="fa-solid fa-rotate-left"></i> Thử lại từ đầu</button>
+
+    <p class="hint">
+      <i class="fa-solid fa-arrow-up-right"></i>
+      Ở bước "Verify", hãy thử bấm nút "Fail" để xem kịch bản Rollback.
+    </p>
+  </section>
+</div>
+
+<script>
+const stepsData = [
+  {
+    id:0, title:'Push Code', icon:'fa-code-commit',
+    desc:'Bạn đẩy code lên branch main. Git nhận commit mới.',
+    detail:'$ git push origin main\n→ 3 commits pushed\n→ Triggered deploy pipeline'
+  },
+  {
+    id:1, title:'Build', icon:'fa-hammer',
+    desc:'Hệ thống đóng gói code: minify CSS, bundle JS, optimize ảnh.',
+    detail:'npm run build\n→ Bundle size: 245KB (gzipped: 78KB)\n→ No warnings'
+  },
+  {
+    id:2, title:'Test', icon:'fa-flask',
+    desc:'Chạy test tự động: unit test, integration test. Tất cả phải pass.',
+    detail:'npm run test\n→ 42 tests passed\n→ 0 failures'
+  },
+  {
+    id:3, title:'Deploy', icon:'fa-rocket',
+    desc:'Code được đẩy lên production server. Website đang dùng version mới.',
+    detail:'Deploying to production...\n→ v1.3.0 → v1.4.0'
+  },
+  {
+    id:4, title:'Verify', icon:'fa-shield-halved',
+    desc:'Kiểm tra site live. Pass → Success, Fail → Rollback.',
+    detail:'Running health checks...\n→ Homepage: 200 OK\n→ /api: ⏳ checking...'
+  },
+  {
+    id:5, title:'Deploy Success', branch:'success', icon:'fa-check-circle',
+    desc:'Tất cả pass. Version v1.4.0 đang live.',
+    detail:'Deployment successful\n→ URL: https://app.example.com\n→ All healthy'
+  },
+  {
+    id:6, title:'Rollback', branch:'rollback', icon:'fa-rotate-left',
+    desc:'Verify thất bại. Hệ thống tự quay về v1.3.0.',
+    detail:'ROLLBACK TRIGGERED\n→ Reason: AI generated Error 500\n→ v1.4.0 → v1.3.0'
+  }
+];
+
+let currentStep = 0;
+let failed = false;
+const timeline = document.getElementById('timeline');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const failBtn = document.getElementById('failBtn');
+const result = document.getElementById('result');
+const resultText = document.getElementById('resultText');
+const resetBtn = document.getElementById('resetBtn');
+
+function renderTimeline(){
+  timeline.innerHTML = stepsData.map(s=>`
+    <div class="tl-item" data-id="${s.id}" data-branch="${s.branch||''}" style="display:none">
+      <div class="tl-dot"><i class="fa-solid ${s.icon}"></i></div>
+      <div class="tl-content">
+        <div class="tl-head">
+          <span class="tl-title">${s.title}</span>
+          <span class="tl-status">Pending</span>
+        </div>
+        <div class="tl-desc">${s.desc}</div>
+        <div class="tl-detail">${s.detail}</div>
+      </div>
+    </div>`).join('');
+}
+
+function updateUI(){
+  const visibleSteps = stepsData.filter(s => {
+    if(s.id <= 4) return true;
+    if(failed && s.branch === 'rollback') return true;
+    if(!failed && s.branch === 'success' && currentStep >= 5) return true;
+    return false;
+  });
+
+  const items = timeline.querySelectorAll('.tl-item');
+  items.forEach(el => {
+    const id = parseInt(el.dataset.id);
+    const branch = el.dataset.branch;
+    
+    let isVisible = id <= 4;
+    if(failed) isVisible = id <= 4 || branch === 'rollback';
+    else if(currentStep >= 5) isVisible = id <= 4 || branch === 'success';
+    
+    el.style.display = isVisible ? '' : 'none';
+    
+    el.classList.remove('active', 'done', 'error');
+    const statusLabel = el.querySelector('.tl-status');
+    
+    if(id < currentStep){
+       el.classList.add(branch === 'rollback' ? 'error' : 'done');
+       statusLabel.textContent = branch === 'rollback' ? 'Reverted' : 'Complete';
+    } else if(id === currentStep){
+       el.classList.add(branch === 'rollback' ? 'error' : 'active');
+       statusLabel.textContent = branch === 'rollback' ? 'Reverted' : (id === 4 ? 'Checking...' : 'Active');
+    } else {
+       statusLabel.textContent = 'Pending';
+    }
+  });
+
+  prevBtn.disabled = currentStep === 0;
+  failBtn.disabled = currentStep !== 4;
+  
+  const isEnd = (failed && currentStep === 6) || (!failed && currentStep === 5);
+  nextBtn.disabled = isEnd;
+
+  if(currentStep === 4){
+    nextBtn.innerHTML = 'Verify Pass <i class="fa-solid fa-check"></i>';
+  } else {
+    nextBtn.innerHTML = isEnd ? 'Done <i class="fa-solid fa-check"></i>' : 'Next <i class="fa-solid fa-arrow-right"></i>';
+  }
+
+  if(isEnd){
+    result.classList.add('show');
+    if(failed){
+      result.className = 'result show err';
+      result.querySelector('.r-icon').innerHTML = '<i class="fa-solid fa-triangle-exclamation"></i>';
+      resultText.textContent = 'Rollback hoàn tất. Hệ thống đã an toàn ở phiên bản cũ.';
+    } else {
+      result.className = 'result show ok';
+      result.querySelector('.r-icon').innerHTML = '<i class="fa-solid fa-check-circle"></i>';
+      resultText.textContent = 'Deploy thành công! Phiên bản mới đã sẵn sàng cho người dùng.';
+    }
+  } else {
+    result.classList.remove('show');
+  }
+}
+
+function hideHint() {
+  const h = document.getElementById('stepHint');
+  if(h) h.style.display = 'none';
+}
+
+nextBtn.addEventListener('click', () => {
+  hideHint();
+  if(currentStep === 4){
+    failed = false;
+    currentStep = 5;
+  } else if(currentStep < 5){
+    currentStep++;
+  }
+  updateUI();
+});
+
+failBtn.addEventListener('click', () => {
+  hideHint();
+  failed = true;
+  currentStep = 6;
+  updateUI();
+});
+
+prevBtn.addEventListener('click', () => {
+  if(currentStep > 4) currentStep = 4;
+  else if(currentStep > 0) currentStep--;
+  failed = false;
+  updateUI();
+});
+
+resetBtn.addEventListener('click', () => {
+  currentStep = 0;
+  failed = false;
+  updateUI();
+});
+
+renderTimeline();
+updateUI();
+</script>
+</body>
+</html>

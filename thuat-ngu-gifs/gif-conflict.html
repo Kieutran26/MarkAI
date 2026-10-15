@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conflict — Animated Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#101010;--bgc:#181818;--bgi:#131313;
+  --bd:#272727;--tx:#e0e0e0;--txm:#707070;--txd:#3a3a3a;
+  --ac:#d97706;--acl:#f59e0b;
+  --abg:rgba(217,119,6,.08);--abg2:rgba(217,119,6,.18);
+  --rd:#ef4444;--gn:#22c55e;--gnb:rgba(34,197,94,.12);
+  --rdb:rgba(239,68,68,.1);--rdb2:rgba(239,68,68,.18);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Space Grotesk',sans-serif;
+  background-color:var(--bg);
+  background-image:
+    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:20px 20px;
+  color:var(--tx);min-height:100vh;padding:20px 16px 48px;
+}
+.hd{max-width:900px;margin:0 auto 28px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.hd h1{font-size:32px;font-weight:700;letter-spacing:-1px;line-height:1}
+.hd .tag{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ac);border:1px solid var(--ac);padding:2px 8px;border-radius:2px}
+.hd .sub{width:100%;font-size:13px;color:var(--txm);margin-top:4px}
+.g{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:660px){.g{grid-template-columns:1fr}.hd h1{font-size:24px}}
+.c{background:var(--bgc);border:1px solid var(--bd);border-radius:3px;padding:18px;position:relative;overflow:hidden}
+.c::after{content:'';position:absolute;top:14px;right:14px;width:5px;height:5px;background:var(--ac);border-radius:50%;animation:dp 2.4s ease-in-out infinite}
+@keyframes dp{0%,100%{opacity:.3}50%{opacity:1}}
+.ch{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.ch .n{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--ac);background:var(--abg);border:1px solid rgba(217,119,6,.2);padding:1px 6px;border-radius:2px}
+.ch h2{font-size:14px;font-weight:600;letter-spacing:-.3px}
+.st{background:var(--bgi);border:1px solid var(--bd);border-radius:3px;padding:24px 18px;display:flex;flex-direction:column;align-items:center;min-height:160px;position:relative}
+.ins{margin-top:14px;font-size:11.5px;color:var(--txm);line-height:1.55;padding-left:12px;border-left:2px solid var(--bd)}
+.ins strong{color:var(--acl);font-weight:600}
+
+/* ═══════════════════════════════════════
+   01 — COLLISION  10s
+   ═══════════════════════════════════════ */
+.col-track{display:flex;align-items:center;gap:0;width:100%;max-width:320px;position:relative}
+.col-block{padding:6px 10px;border:1.5px solid var(--bd);border-radius:2px;background:var(--bgc);display:flex;flex-direction:column;gap:2px;flex-shrink:0;z-index:2}
+.col-who{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:.5px}
+.col-code{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--tx)}
+.col-yours .col-who{color:var(--ac)}
+.col-yours{animation:colL 10s ease infinite}
+.col-team .col-who{color:var(--txm)}
+.col-team{animation:colR 10s ease infinite}
+@keyframes colL{
+  0%,12%{transform:translateX(0);border-color:var(--bd)}
+  18%{transform:translateX(0);border-color:var(--ac)}
+  36%{transform:translateX(calc(50vw - 90px));border-color:var(--ac)}
+  42%{transform:translateX(calc(50vw - 90px));border-color:var(--rd);box-shadow:0 0 16px rgba(239,68,68,.2)}
+  72%{transform:translateX(calc(50vw - 90px));border-color:var(--rd);box-shadow:0 0 16px rgba(239,68,68,.2)}
+  80%,100%{transform:translateX(0);border-color:var(--bd);box-shadow:none;opacity:0}
+}
+@keyframes colR{
+  0%,12%{transform:translateX(0);border-color:var(--bd)}
+  18%{transform:translateX(0);border-color:var(--txm)}
+  36%{transform:translateX(calc(-50vw + 90px));border-color:var(--txm)}
+  42%{transform:translateX(calc(-50vw + 90px));border-color:var(--rd);box-shadow:0 0 16px rgba(239,68,68,.2)}
+  72%{transform:translateX(calc(-50vw + 90px));border-color:var(--rd);box-shadow:0 0 16px rgba(239,68,68,.2)}
+  80%,100%{transform:translateX(0);border-color:var(--bd);box-shadow:none;opacity:0}
+}
+.col-mid{flex:1;height:2px;background:var(--bd);position:relative;min-width:20px}
+.col-mid::before{content:'cùng 1 dòng';position:absolute;top:-18px;left:50%;transform:translateX(-50%);font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--txd);white-space:nowrap;opacity:0;animation:colMid 10s ease infinite}
+@keyframes colMid{0%,12%{opacity:0}18%{opacity:1}34%{opacity:1}40%,100%{opacity:0}}
+.col-flash{position:absolute;top:50%;left:50%;width:0;height:0;border-radius:50%;background:radial-gradient(circle,rgba(239,68,68,.35),transparent 70%);transform:translate(-50%,-50%);pointer-events:none;z-index:1;animation:cFlash 10s ease infinite}
+@keyframes cFlash{0%,38%{width:0;height:0;opacity:0}42%{width:160px;height:80px;opacity:1}56%{width:160px;height:80px;opacity:0}100%{width:0;height:0;opacity:0}}
+.col-badge{position:absolute;top:calc(100% + 8px);left:50%;transform:translateX(-50%);font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--rd);background:var(--rdb);border:1px solid var(--rdb2);padding:3px 10px;border-radius:2px;white-space:nowrap;opacity:0;animation:colBadge 10s ease infinite}
+@keyframes colBadge{0%,44%{opacity:0;transform:translateX(-50%) translateY(4px)}50%{opacity:1;transform:translateX(-50%) translateY(0)}70%{opacity:1;transform:translateX(-50%) translateY(0)}78%,100%{opacity:0;transform:translateX(-50%) translateY(-4px)}}
+.col-hint{font-size:10px;color:var(--txd);height:14px;margin-top:4px;opacity:0;animation:colHint 10s ease infinite}
+@keyframes colHint{0%,50%{opacity:0}55%{opacity:1;color:var(--txm)}72%{opacity:1;color:var(--txm)}78%,100%{opacity:0}}
+
+/* ═══════════════════════════════════════
+   02 — MARKERS  16s
+   ═══════════════════════════════════════ */
+.mk-ed{width:100%;max-width:260px;background:#0c0c0c;border:1px solid var(--bd);border-radius:2px;overflow:hidden}
+.mk-ed-hd{padding:3px 8px;background:rgba(255,255,255,.03);border-bottom:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--txd);display:flex;gap:6px}
+.mk-ed-hd span:nth-child(2){color:var(--rd)}
+.mk-body{padding:4px 0}
+.mk-ln{display:flex;align-items:stretch;opacity:0;animation:mkIn 16s ease infinite;animation-delay:var(--d)}
+@keyframes mkIn{0%,3%{opacity:0;transform:translateX(-8px)}7%{opacity:1;transform:translateX(0)}82%{opacity:1;transform:translateX(0)}88%,100%{opacity:0;transform:translateX(-8px)}}
+.mk-n{width:28px;padding:2px 6px 2px 0;text-align:right;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--txd);border-right:1px solid var(--bd);flex-shrink:0;user-select:none}
+.mk-c{flex:1;padding:2px 8px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--tx);white-space:pre;line-height:1.5}
+.mk-ln.mk-mk .mk-c{background:var(--rdb);color:var(--rd);font-weight:700}
+.mk-ln.mk-yr{border-left:3px solid var(--ac)}
+.mk-ln.mk-tr{border-left:3px solid #64748b}
+.mk-tag{font-family:'JetBrains Mono',monospace;font-size:8px;padding:1px 5px;border-radius:2px;margin-left:6px;align-self:center;white-space:nowrap}
+.mk-tag-ty{background:var(--abg2);color:var(--acl);border:1px solid rgba(217,119,6,.15)}
+.mk-tag-tt{background:rgba(100,116,139,.1);color:#94a3b8;border:1px solid rgba(100,116,139,.15)}
+.mk-warn{display:flex;align-items:center;gap:6px;padding:6px 10px;background:var(--rdb);border:1px solid var(--rdb2);border-top:1px solid var(--bd);opacity:0;animation:mkIn 16s ease infinite;animation-delay:13s}
+.mk-warn svg{width:12px;height:12px;stroke:var(--rd);fill:none;stroke-width:2;flex-shrink:0}
+.mk-warn span{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--rd);font-weight:700}
+
+/* ═══════════════════════════════════════
+   03 — CAUSES  12s
+   ═══════════════════════════════════════ */
+.cs-list{display:flex;flex-direction:column;gap:6px;width:100%;max-width:280px}
+.cs-item{display:flex;align-items:flex-start;gap:8px;padding:8px 10px;border:1px solid var(--bd);border-radius:2px;transition:none}
+.cs-num{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;width:18px;height:18px;border-radius:2px;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--txd);background:var(--bgi);border:1px solid var(--bd)}
+.cs-icon{width:18px;height:18px;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.cs-icon svg{width:16px;height:16px;stroke:var(--txd);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.cs-txt{flex:1;min-width:0}
+.cs-t{font-size:12px;font-weight:600;color:var(--tx);line-height:1.3}
+.cs-d{font-size:10px;color:var(--txm);line-height:1.4;margin-top:1px}
+/* sequential highlight */
+.cs-item:nth-child(1){animation:csH 12s ease infinite}
+.cs-item:nth-child(2){animation:csH 12s ease infinite 4s}
+.cs-item:nth-child(3){animation:csH 12s ease infinite 8s}
+@keyframes csH{0%,3%{border-color:var(--bd);background:transparent}6%{border-color:var(--ac);background:var(--abg)}30%{border-color:var(--ac);background:var(--abg)}34%,100%{border-color:var(--bd);background:transparent}}
+.cs-item:nth-child(1) .cs-num{animation:csN 12s ease infinite}
+.cs-item:nth-child(2) .cs-num{animation:csN 12s ease infinite 4s}
+.cs-item:nth-child(3) .cs-num{animation:csN 12s ease infinite 8s}
+@keyframes csN{0%,3%{color:var(--txd);background:var(--bgi);border-color:var(--bd)}6%{color:#fff;background:var(--ac);border-color:var(--ac)}30%{color:#fff;background:var(--ac);border-color:var(--ac)}34%,100%{color:var(--txd);background:var(--bgi);border-color:var(--bd)}}
+.cs-item:nth-child(1) .cs-icon svg{animation:csI 12s ease infinite}
+.cs-item:nth-child(2) .cs-icon svg{animation:csI 12s ease infinite 4s}
+.cs-item:nth-child(3) .cs-icon svg{animation:csI 12s ease infinite 8s}
+@keyframes csI{0%,3%{stroke:var(--txd)}6%{stroke:var(--acl)}30%{stroke:var(--acl)}34%,100%{stroke:var(--txd)}}
+
+/* ═══════════════════════════════════════
+   04 — RESOLUTION FLOW  14s
+   ═══════════════════════════════════════ */
+.fl-track{display:flex;align-items:center;gap:0;width:100%;max-width:340px}
+.fl-node{display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0;z-index:1}
+.fl-c{width:32px;height:32px;border-radius:50%;border:2px solid var(--bd);display:flex;align-items:center;justify-content:center;background:var(--bgi)}
+.fl-c svg{width:14px;height:14px;stroke:var(--txd);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.fl-l{font-family:'JetBrains Mono',monospace;font-size:8.5px;color:var(--txd);white-space:nowrap}
+.fl-ln{flex:1;height:2px;background:var(--bd);position:relative;overflow:hidden;min-width:10px}
+.fl-lf{position:absolute;left:0;top:0;height:100%;width:0;background:var(--ac);border-radius:1px}
+/* sequential */
+.fl-node:nth-child(1) .fl-c{animation:fn 14s ease infinite 0s}
+.fl-node:nth-child(3) .fl-c{animation:fn 14s ease infinite 3.5s}
+.fl-node:nth-child(5) .fl-c{animation:fn 14s ease infinite 7s}
+.fl-node:nth-child(7) .fl-c{animation:fn 14s ease infinite 10.5s}
+@keyframes fn{0%,2%{border-color:var(--bd);background:var(--bgi);box-shadow:none}5%{border-color:var(--ac);background:var(--abg2);box-shadow:0 0 14px rgba(217,119,6,.2)}22%{border-color:var(--ac);background:var(--abg2);box-shadow:0 0 14px rgba(217,119,6,.2)}26%{border-color:var(--bd);background:var(--bgi);box-shadow:none}100%{border-color:var(--bd);background:var(--bgi);box-shadow:none}}
+.fl-node:nth-child(1) .fl-l{animation:fla 14s ease infinite 0s}
+.fl-node:nth-child(3) .fl-l{animation:fla 14s ease infinite 3.5s}
+.fl-node:nth-child(5) .fl-l{animation:fla 14s ease infinite 7s}
+.fl-node:nth-child(7) .fl-l{animation:fla 14s ease infinite 10.5s}
+@keyframes fla{0%,2%{color:var(--txd)}5%{color:var(--acl)}22%{color:var(--acl)}26%{color:var(--txd)}100%{color:var(--txd)}}
+.fl-node:nth-child(1) .fl-c svg{animation:fli 14s ease infinite 0s}
+.fl-node:nth-child(3) .fl-c svg{animation:fli 14s ease infinite 3.5s}
+.fl-node:nth-child(5) .fl-c svg{animation:fli 14s ease infinite 7s}
+.fl-node:nth-child(7) .fl-c svg{animation:fli 14s ease infinite 10.5s}
+@keyframes fli{0%,2%{stroke:var(--txd)}5%{stroke:var(--acl)}22%{stroke:var(--acl)}26%{stroke:var(--txd)}100%{stroke:var(--txd)}}
+.fl-ln:nth-child(2) .fl-lf{animation:flf 14s ease infinite 1.8s}
+.fl-ln:nth-child(4) .fl-lf{animation:flf 14s ease infinite 5.2s}
+.fl-ln:nth-child(6) .fl-lf{animation:flf 14s ease infinite 8.8s}
+@keyframes flf{0%,2%{width:0}8%{width:100%}22%{width:100%}28%{width:0}100%{width:0}}
+.fl-sub{font-size:10px;color:var(--txd);height:14px;margin-top:8px;opacity:0;text-align:center}
+.fl-sub.s1{animation:fls 14s ease infinite 0s}
+.fl-sub.s2{animation:fls 14s ease infinite 3.5s}
+.fl-sub.s3{animation:fls 14s ease infinite 7s}
+.fl-sub.s4{animation:fls 14s ease infinite 10.5s}
+@keyframes fls{0%,2%{opacity:0}4%{opacity:1;color:var(--txm)}18%{opacity:1;color:var(--txm)}22%{opacity:0}100%{opacity:0}}
+
+/* ═══════════════════════════════════════
+   PRACTICE
+   ═══════════════════════════════════════ */
+.pra{max-width:900px;margin:24px auto 0;background:var(--bgc);border:1px solid var(--bd);border-radius:3px;padding:22px}
+.pra .ch{margin-bottom:6px}
+.pra-goal{font-size:12.5px;color:var(--txm);margin-bottom:18px;line-height:1.5}
+.pra-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:660px){.pra-grid{grid-template-columns:1fr}}
+.cfg-l{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txd);text-transform:uppercase;letter-spacing:.5px;display:block;margin-bottom:8px}
+
+/* editor */
+.pra-ed{background:#0c0c0c;border:2px solid var(--rd);border-radius:3px;overflow:hidden;transition:border-color .3s}
+.pra-ed.ok{border-color:var(--gn)}
+.pra-ed-hd{padding:3px 8px;background:rgba(255,255,255,.03);border-bottom:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--txd);display:flex;justify-content:space-between}
+.pra-ed-hd .st{font-weight:700}
+.pra-ed-hd .st.conf{color:var(--rd)}
+.pra-ed-hd .st.res{color:var(--gn)}
+.pra-ed-body{padding:4px 0;min-height:120px;position:relative}
+.pra-ln{display:flex;align-items:stretch;transition:opacity .2s,transform .2s}
+.pra-ln.hide{opacity:0;height:0;overflow:hidden;padding:0}
+.pra-ln .mk-n{width:28px;padding:2px 6px 2px 0;text-align:right;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--txd);border-right:1px solid var(--bd);flex-shrink:0;user-select:none}
+.pra-ln .mk-c{flex:1;padding:2px 8px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--tx);white-space:pre;line-height:1.5}
+.pra-ln.mk-mk .mk-c{background:var(--rdb);color:var(--rd);font-weight:700}
+.pra-ln.mk-yr{border-left:3px solid var(--ac)}
+.pra-ln.mk-tr{border-left:3px solid #64748b}
+.pra-ln.new-ln{animation:praNew .3s ease both}
+@keyframes praNew{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.pra-tag{font-family:'JetBrains Mono',monospace;font-size:8px;padding:1px 5px;border-radius:2px;margin-left:6px;align-self:center}
+.pra-tag-ty{background:var(--abg2);color:var(--acl)}
+.pra-tag-tt{background:rgba(100,116,139,.1);color:#94a3b8}
+.pra-tag-ok{background:var(--gnb);color:var(--gn)}
+
+/* buttons */
+.pra-btns{display:flex;gap:6px;margin-top:12px;flex-wrap:wrap}
+.btn{padding:7px 12px;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;border:1px solid var(--bd);background:var(--bgi);color:var(--txm);border-radius:2px;cursor:pointer;transition:all .15s}
+.btn:hover:not(:disabled){border-color:var(--ac);color:var(--acl);background:var(--abg)}
+.btn:disabled{opacity:.3;cursor:default}
+.btn.rst{border-color:rgba(239,68,68,.2);color:var(--rd);background:var(--rdb)}
+.btn.rst:hover:not(:disabled){border-color:var(--rd);background:var(--rdb2)}
+.hint{font-size:11px;color:var(--txd);line-height:1.4;padding:8px 10px;background:var(--bgi);border-radius:2px;border-left:2px solid var(--bd);margin-top:12px}
+
+/* prompt */
+.pr-box{background:var(--bgi);border:1px solid var(--bd);border-radius:3px;padding:12px 14px;margin-top:14px}
+.pr-box .cl{display:block;margin-bottom:8px}
+.pr-txt{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--acl);line-height:1.55;word-break:break-word}
+
+/* summary */
+.sum{max-width:900px;margin:20px auto 0;padding:16px 18px;border:1px solid var(--bd);border-radius:3px;background:var(--bgc);font-size:12.5px;color:var(--txm);line-height:1.6}
+.sum strong{color:var(--acl);font-weight:600}
+
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+</style>
+</head>
+<body>
+
+<header class="hd">
+  <h1>CONFLICT</h1>
+  <span class="tag">workflow</span>
+  <p class="sub">Hai người sửa cùng chỗ — Git không tự quyết, cần bạn chọn</p>
+</header>
+
+<div class="g">
+
+  <!-- ─── 01 COLLISION ─── -->
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>Conflict là sao</h2></div>
+    <div class="st">
+      <div class="col-track">
+        <div class="col-block col-yours">
+          <span class="col-who">BẠN</span>
+          <span class="col-code">color: #fff;</span>
+        </div>
+        <div class="col-mid"></div>
+        <div class="col-block col-team">
+          <span class="col-who">TEAM</span>
+          <span class="col-code">color: #000;</span>
+        </div>
+        <div class="col-flash"></div>
+        <div class="col-badge">CONFLICT</div>
+      </div>
+      <div class="col-hint">Hai edit cùng dòng → Git không biết giữ cái nào</div>
+    </div>
+    <p class="ins">Conflict xảy ra khi <strong>hai người sửa cùng một dòng</strong> trong cùng file. Git không thể tự gộp — phải có người quyết định giữ cái nào.</p>
+  </section>
+
+  <!-- ─── 02 MARKERS ─── -->
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Nhận diện trong file</h2></div>
+    <div class="st">
+      <div class="mk-ed">
+        <div class="mk-ed-hd>
+          <span>index.html</span>
+          <span>CONFLICT</span>
+        </div>
+        <div class="mk-body">
+          <div class="mk-ln" style="--d:0s"><span class="mk-n">1</span><span class="mk-c">.hero {</span></div>
+          <div class="mk-ln mk-mk" style="--d:1.8s"><span class="mk-n">2</span><span class="mk-c">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</span></div>
+          <div class="mk-ln mk-yr" style="--d:3.6s"><span class="mk-n">3</span><span class="mk-c">  color: #fff;</span><span class="pra-tag pra-tag-ty">của bạn</span></div>
+          <div class="mk-ln mk-mk" style="--d:5.4s"><span class="mk-n">4</span><span class="mk-c">=======</span></div>
+          <div class="mk-ln mk-tr" style="--d:7.2s"><span class="mk-n">5</span><span class="mk-c">  color: #000;</span><span class="pra-tag pra-tag-tt">của team</span></div>
+          <div class="mk-ln mk-mk" style="--d:9s"><span class="mk-n">6</span><span class="mk-c">&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; main</span></div>
+          <div class="mk-ln" style="--d:10.8s"><span class="mk-n">7</span><span class="mk-c">}</span></div>
+          <div class="mk-warn" style="--d:13s">
+            <svg viewBox="0 0 24 24"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+            <span>MERGE CONFLICT — cần xử lý tay</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="ins">Khi conflict, Git chèn <strong>marker</strong> vào file: <strong>&lt;&lt;&lt;</strong> bắt đầu phần bạn, <strong>=======</strong> phân cách, <strong>&gt;&gt;&gt;&gt;</strong> bắt đầu phần team. Nhìn thấy mấy dấu này = đang có conflict.</p>
+  </section>
+
+  <!-- ─── 03 CAUSES ─── -->
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Ba nguyên nhân phổ biến</h2></div>
+    <div class="st">
+      <div class="cs-list">
+        <div class="cs-item">
+          <span class="cs-num">1</span>
+          <span class="cs-icon"><svg viewBox="0 0 24 24"><path d="M18 6L6 18"/><path d="M6 6l12 12"/></svg></span>
+          <div class="cs-txt">
+            <div class="cs-t">Cùng sửa 1 dòng</div>
+            <div class="cs-d">Bạn và team đều thay .hero color — Git không tự gộp được</div>
+          </div>
+        </div>
+        <div class="cs-item">
+          <span class="cs-num">2</span>
+          <span class="cs-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+          <div class="cs-txt">
+            <div class="cs-t">Không pull trước khi push</div>
+            <div class="cs-d">Code trên GitHub đã mới hơn bản local — đẩy lên bị clash</div>
+          </div>
+        </div>
+        <div class="cs-item">
+          <span class="cs-num">3</span>
+          <span class="cs-icon"><svg viewBox="0 0 24 24"><path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9c0 4-6 6-6 12"/></svg></span>
+          <div class="cs-txt">
+            <div class="cs-t">Branch tách nhau quá lâu</div>
+            <div class="cs-d">Feature branch không merge lâu → main đã thay nhiều chỗ</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <p class="ins">Ba nguyên nhân: <strong>cùng dòng</strong> (phổ biến nhất), <strong>thiếu pull</strong> (quên sync), <strong>branch cũ</strong> (chờ quá lâu). Nguyên nhân nào cũng dẫn đến cùng kết quả: phải resolve tay.</p>
+  </section>
+
+  <!-- ─── 04 FLOW ─── -->
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Luồng xử lý</h2></div>
+    <div class="st">
+      <div class="fl-track">
+        <div class="fl-node">
+          <div class="fl-c"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg></div>
+          <span class="fl-l">Detect</span>
+        </div>
+        <div class="fl-ln"><div class="fl-lf"></div></div>
+        <div class="fl-node">
+          <div class="fl-c"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg></div>
+          <span class="fl-l">Read</span>
+        </div>
+        <div class="fl-ln"><div class="fl-lf"></div></div>
+        <div class="fl-node">
+          <div class="fl-c"><svg viewBox="0 0 24 24"><path d="M16 3h5v5"/><path d="M8 3H3v5"/><path d="M12 22v-5"/><path d="m21 3-7 7"/><path d="M3 3l7 7"/></svg></div>
+          <span class="fl-l">Decide</span>
+        </div>
+        <div class="fl-ln"><div class="fl-lf"></div></div>
+        <div class="fl-node">
+          <div class="fl-c"><svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+          <span class="fl-l">Commit</span>
+        </div>
+      </div>
+      <div class="fl-sub s1">Git báo "CONFLICT in file"</div>
+      <div class="fl-sub s2">Mở file, đọc marker, hiểu ai sửa gì</div>
+      <div class="fl-sub s3">Chọn giữ của bạn, team, hoặc gộp</div>
+      <div class="fl-sub s4">Xóa marker, commit lại — xong</div>
+    </div>
+    <p class="ins">Bốn bước fix: <strong>Phát hiện</strong> (Git báo lỗi) → <strong>Đọc</strong> (mở file, xem marker) → <strong>Quyết định</strong> (chọn version) → <strong>Commit</strong> (lưu kết quả). Không qua bước nào cũng được.</p>
+  </section>
+</div>
+
+<!-- ═══ PRACTICE ═══ -->
+<section class="pra" aria-label="Thực hành">
+  <div class="ch"><span class="n">PRACTICE</span><h2>Resolve conflict</h2></div>
+  <p class="pra-goal">Thấy conflict marker trong file — chọn cách xử lý để thấy kết quả thay đổi realtime.</p>
+  <div class="pra-grid">
+    <div>
+      <span class="cfg-l">File đang bị conflict</span>
+      <div class="pra-ed" id="praEd">
+        <div class="pra-ed-hd">
+          <span>index.html</span>
+          <span class="st conf" id="praSt">CONFLICT</span>
+        </div>
+        <div class="pra-ed-body" id="praBody"></div>
+      </div>
+      <div class="pra-btns" id="praBtns">
+        <button class="btn" data-ch="yours">Giữ của bạn</button>
+        <button class="btn" data-ch="theirs">Giữ của team</button>
+        <button class="btn" data-ch="both">Gộp cả hai</button>
+        <button class="btn rst" id="praRst" disabled>Reset</button>
+      </div>
+      <div class="hint">Click một trong ba cách resolve. Quan sát: marker biến mất, border chuyển xanh, code sạch lại. Click Reset để thử cách khác.</div>
+    </div>
+    <div>
+      <div class="pr-box">
+        <span class="cl">Nói với dev</span>
+        <div class="pr-txt" id="praPr">Chọn cách resolve để xem prompt phù hợp...</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="sum">
+  <strong>Conflict</strong> = hai người sửa cùng chỗ, Git không tự gộp được. Ba điều marketer cần nhớ: (1) Nhận diện qua marker trong file: <strong>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</strong>, <strong>=======</strong>, <strong>&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;</strong> — nhìn thấy mấy dấu này là đang có conflict, (2) Không phải lỗi — nó là tính năng bảo vệ, không để code bị ghi đè âm thầm, (3) Ba cách resolve: giữ của bạn, giữ của team, hoặc gộp cả hai. Khi báo "merge bị conflict" = team sửa trùng phần mình sửa, cần dev mở file chọn version — không phải "Git bị hỏng".
+</div>
+
+<script>
+(function(){
+  var $body = document.getElementById('praBody');
+  var $ed = document.getElementById('praEd');
+  var $st = document.getElementById('praSt');
+  var $pr = document.getElementById('praPr');
+  var $btns = document.querySelectorAll('#praBtns .btn[data-ch]');
+  var $rst = document.getElementById('praRst');
+  var resolved = false;
+
+  /* line builder */
+  function ln(num, code, cls, tag){
+    var tagHtml = tag ? '<span class="pra-tag ' + tag.cls + '">' + tag.text + '</span>' : '';
+    return '<div class="pra-ln ' + (cls||'') + '">'
+      + '<span class="mk-n">' + num + '</span>'
+      + '<span class="mk-c">' + code + tagHtml + '</span>'
+      + '</div>';
+  }
+
+  /* conflicted state */
+  function showConflict(){
+    resolved = false;
+    $ed.classList.remove('ok');
+    $st.className = 'st conf';
+    $st.textContent = 'CONFLICT';
+    $body.innerHTML =
+      ln(1,'.hero {','','')
+      + ln(2,'<<<<<<< HEAD','mk-mk','')
+      + ln(3,'  color: #fff;','mk-yr mk-mk',{cls:'pra-tag-ty',text:'của bạn'})
+      + ln(4,'=======','mk-mk','')
+      + ln(5,'  color: #000;','mk-tr mk-mk',{cls:'pra-tag-tt',text:'của team'})
+      + ln(6,'>>>>>>> main','mk-mk','')
+      + ln(7,'}','','');
+    $pr.textContent = 'Chọn cách resolve để xem prompt phù hợp...';
+    $btns.forEach(function(b){b.disabled=false});
+    $rst.disabled = true;
+  }
+
+  /* resolve */
+  function resolve(choice){
+    resolved = true;
+    $ed.classList.add('ok');
+    $st.className = 'st res';
+    $st.textContent = 'RESOLVED';
+    $btns.forEach(function(b){b.disabled=true});
+    $rst.disabled = false;
+
+    var lines = '';
+    if(choice === 'yours'){
+      lines = ln(1,'.hero {','','')
+        + ln(2,'  color: #fff;','new-ln','')
+        + ln(3,'}','new-ln',{cls:'pra-tag-ok',text:'kept yours'});
+      $pr.textContent = 'Conflict ở index.html dòng color — giữ version của mình (color: #fff), xóa marker, commit.';
+    } else if(choice === 'theirs'){
+      lines = ln(1,'.hero {','','')
+        + ln(2,'  color: #000;','new-ln','')
+        + ln(3,'}','new-ln',{cls:'pra-tag-ok',text:'kept theirs'});
+      $pr.textContent = 'Conflict ở index.html dòng color — giữ version của team (color: #000), xóa marker, commit.';
+    } else {
+      lines = ln(1,'.hero {','','')
+        + ln(2,'  color: #fff;','new-ln','')
+        + ln(3,'  /* fallback: #000 */','new-ln','')
+        + ln(4,'}','new-ln',{cls:'pra-tag-ok',text:'merged both'});
+      $pr.textContent = 'Conflict ở index.html dòng color — gộp cả hai version, thêm fallback comment, commit.';
+    }
+    $body.innerHTML = lines;
+  }
+
+  /* events */
+  $btns.forEach(function(btn){
+    btn.addEventListener('click',function(){
+      if(resolved) return;
+      resolve(this.getAttribute('data-ch'));
+    });
+  });
+  $rst.addEventListener('click', showConflict);
+
+  /* init */
+  showConflict();
+})();
+</script>
+</body>
+</html>

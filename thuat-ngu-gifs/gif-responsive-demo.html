@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Responsive — Amber Brutalist 4-Cell Grid</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0c;
+      --card-bg: #16161b;
+      --amber: #E88C2E;
+      --gray: #707070;
+      --text: #ece8e1;
+      --border: #26262a;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Space Grotesk', sans-serif;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      max-width: 940px;
+      width: 100%;
+    }
+
+    @media (max-width: 640px) {
+      .grid-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 3px;
+      position: relative;
+      padding-top: 2px;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--amber);
+    }
+
+    .header {
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .num-box {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      border: 1px solid rgba(232, 140, 46, 0.4);
+      padding: 3px 8px;
+      color: var(--amber);
+      background: rgba(232, 140, 46, 0.05);
+      border-radius: 2px;
+      line-height: 1;
+    }
+
+    .title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+    }
+
+    .indicator {
+      width: 6px;
+      height: 6px;
+      background: var(--amber);
+      border-radius: 50%;
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      animation: blink 1.2s infinite;
+      box-shadow: 0 0 8px var(--amber);
+      z-index: 10;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .sim-area {
+      height: 160px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 15px;
+      background: rgba(0,0,0,0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ins {
+      padding: 12px 16px;
+      border-left: 2px solid var(--amber);
+      font-size: 11.5px;
+      color: var(--gray);
+      background: rgba(232, 140, 46, 0.03);
+      margin: 0 16px 16px 16px;
+      line-height: 1.5;
+    }
+
+    .ins strong {
+      color: var(--amber);
+      font-weight: 700;
+    }
+
+    /* Simulation Elements */
+    .viewport-frame {
+      border: 1px dashed var(--gray);
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    /* 01: Breakpoints */
+    .bp-container {
+      display: grid;
+      gap: 6px;
+      width: 100%;
+      transition: grid-template-columns 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .bp-box {
+      height: 40px;
+      background: rgba(232, 140, 46, 0.2);
+      border: 1px solid var(--amber);
+      border-radius: 2px;
+    }
+
+    /* 02: Fluid Scaling */
+    .fluid-outer {
+      border: 1px solid var(--gray);
+      padding: 8px;
+      border-radius: 4px;
+      background: #1d1d23;
+    }
+    .fluid-inner {
+      height: 20px;
+      background: var(--amber);
+      border-radius: 2px;
+      width: 100%;
+    }
+    .fluid-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--gray);
+      margin-top: 6px;
+    }
+
+    /* 03: Visibility */
+    .nav-mock {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #1d1d23;
+      padding: 8px 12px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+    }
+    .nav-links {
+      display: flex;
+      gap: 10px;
+    }
+    .nav-link {
+      width: 30px;
+      height: 6px;
+      background: var(--gray);
+      border-radius: 3px;
+    }
+    .burger-icon {
+      display: none;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .burger-line {
+      width: 18px;
+      height: 2px;
+      background: var(--amber);
+    }
+
+    /* 04: Reordering */
+    .order-container {
+      display: flex;
+      gap: 10px;
+      width: 100%;
+    }
+    .order-box {
+      flex: 1;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    .box-a { background: var(--amber); color: #000; }
+    .box-b { background: #26262a; border: 1px solid var(--gray); color: var(--gray); }
+
+  </style>
+</head>
+<body>
+
+  <div class="grid-container">
+    
+    <!-- Cell 01: Breakpoints -->
+    <div class="card">
+      <div class="indicator"></div>
+      <div class="header">
+        <div class="num-box">01</div>
+        <div class="title">Breakpoints</div>
+      </div>
+      <div class="sim-area">
+        <div id="bp-frame" style="width: 100%; max-width: 200px; margin-bottom: 10px; text-align: center;">
+          <div style="font-family: 'JetBrains Mono'; font-size: 10px; color: var(--gray); margin-bottom: 5px;" id="bp-label">Width: 320px</div>
+        </div>
+        <div class="viewport-frame" id="bp-viewport" style="width: 100%;">
+          <div class="bp-container" id="bp-content" style="grid-template-columns: repeat(3, 1fr);">
+            <div class="bp-box"></div>
+            <div class="bp-box"></div>
+            <div class="bp-box"></div>
+          </div>
+        </div>
+      </div>
+      <div class="ins">
+        <strong>Breakpoints</strong> là các điểm dừng để giao diện <strong>thay đổi cấu trúc</strong> (VD: từ 3 cột sang 1 cột) khi màn hình đạt kích thước nhất định.
+      </div>
+    </div>
+
+    <!-- Cell 02: Fluid Units -->
+    <div class="card">
+      <div class="indicator"></div>
+      <div class="header">
+        <div class="num-box">02</div>
+        <div class="title">Fluid Scaling</div>
+      </div>
+      <div class="sim-area">
+        <div class="fluid-outer" id="fluid-box" style="width: 80%;">
+          <div class="fluid-inner"></div>
+          <div class="fluid-text">width: <span id="fluid-val">80%</span></div>
+        </div>
+      </div>
+      <div class="ins">
+        Sử dụng đơn vị <strong>tương đối</strong> (%, vw, rem) thay vì px cố định giúp các phần tử <strong>co giãn mượt mà</strong> theo mọi kích thước màn hình.
+      </div>
+    </div>
+
+    <!-- Cell 03: Adaptive UI -->
+    <div class="card">
+      <div class="indicator"></div>
+      <div class="header">
+        <div class="num-box">03</div>
+        <div class="title">Adaptive Visibility</div>
+      </div>
+      <div class="sim-area">
+        <div class="nav-mock" id="nav-container" style="width: 100%;">
+          <div style="width: 20px; height: 20px; border-radius: 50%; background: var(--amber);"></div>
+          <div class="nav-links" id="nav-links">
+            <div class="nav-link"></div>
+            <div class="nav-link"></div>
+            <div class="nav-link"></div>
+          </div>
+          <div class="burger-icon" id="burger-icon">
+            <div class="burger-line"></div>
+            <div class="burger-line"></div>
+            <div class="burger-line"></div>
+          </div>
+        </div>
+        <div style="font-family: 'JetBrains Mono'; font-size: 10px; color: var(--gray); margin-top: 15px;" id="vis-label">Desktop Mode</div>
+      </div>
+      <div class="ins">
+        Một số thành phần có thể được <strong>ẩn đi hoặc thay thế</strong> (VD: menu ngang thành menu burger) để tối ưu không gian cho <strong>trải nghiệm di động</strong>.
+      </div>
+    </div>
+
+    <!-- Cell 04: Visual Order -->
+    <div class="card">
+      <div class="indicator"></div>
+      <div class="header">
+        <div class="num-box">04</div>
+        <div class="title">Content Reordering</div>
+      </div>
+      <div class="sim-area">
+        <div class="order-container" id="order-container" style="flex-direction: row;">
+          <div class="order-box box-a">A</div>
+          <div class="order-box box-b">B</div>
+        </div>
+        <div style="font-family: 'JetBrains Mono'; font-size: 10px; color: var(--gray); margin-top: 15px;" id="order-label">Desktop: Row</div>
+      </div>
+      <div class="ins">
+        Thay đổi <strong>thứ tự hiển thị</strong> (Visual Order) của nội dung giúp đưa các thông tin <strong>quan trọng nhất</strong> lên trước trên thiết bị màn hình nhỏ.
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Independent Animation Loops
+
+    // 01: Breakpoints Loop
+    const bpViewport = document.getElementById('bp-viewport');
+    const bpContent = document.getElementById('bp-content');
+    const bpLabel = document.getElementById('bp-label');
+    let bpState = 0; // 0: Desktop, 1: Mobile
+    let bpTime = 0;
+
+    function loopBreakpoints(time) {
+      if (time - bpTime > 2000) {
+        bpState = bpState === 0 ? 1 : 0;
+        if (bpState === 1) {
+          bpViewport.style.width = '40%';
+          bpContent.style.gridTemplateColumns = '1fr';
+          bpLabel.textContent = 'Width: 320px (Mobile)';
+          bpLabel.style.color = 'var(--amber)';
+        } else {
+          bpViewport.style.width = '100%';
+          bpContent.style.gridTemplateColumns = 'repeat(3, 1fr)';
+          bpLabel.textContent = 'Width: 1024px (Desktop)';
+          bpLabel.style.color = 'var(--gray)';
+        }
+        bpTime = time;
+      }
+      requestAnimationFrame(loopBreakpoints);
+    }
+    requestAnimationFrame(loopBreakpoints);
+
+    // 02: Fluid Scaling Loop
+    const fluidBox = document.getElementById('fluid-box');
+    const fluidVal = document.getElementById('fluid-val');
+    let angle = 0;
+
+    function loopFluid() {
+      angle += 0.03;
+      const width = 60 + Math.sin(angle) * 30; // 30% to 90%
+      fluidBox.style.width = width + '%';
+      fluidVal.textContent = Math.floor(width) + '%';
+      requestAnimationFrame(loopFluid);
+    }
+    loopFluid();
+
+    // 03: Visibility Loop
+    const navLinks = document.getElementById('nav-links');
+    const burgerIcon = document.getElementById('burger-icon');
+    const navContainer = document.getElementById('nav-container');
+    const visLabel = document.getElementById('vis-label');
+    let visTime = 0;
+    let isMobile = false;
+
+    function loopVisibility(time) {
+      if (time - visTime > 2500) {
+        isMobile = !isMobile;
+        if (isMobile) {
+          navContainer.style.width = '100px';
+          navLinks.style.display = 'none';
+          burgerIcon.style.display = 'flex';
+          visLabel.textContent = 'Mobile Mode';
+          visLabel.style.color = 'var(--amber)';
+        } else {
+          navContainer.style.width = '100%';
+          navLinks.style.display = 'flex';
+          burgerIcon.style.display = 'none';
+          visLabel.textContent = 'Desktop Mode';
+          visLabel.style.color = 'var(--gray)';
+        }
+        visTime = time;
+      }
+      requestAnimationFrame(loopVisibility);
+    }
+    requestAnimationFrame(loopVisibility);
+
+    // 04: Reordering Loop
+    const orderContainer = document.getElementById('order-container');
+    const orderLabel = document.getElementById('order-label');
+    let orderTime = 0;
+    let isColumn = false;
+
+    function loopOrder(time) {
+      if (time - orderTime > 3000) {
+        isColumn = !isColumn;
+        if (isColumn) {
+          orderContainer.style.flexDirection = 'column';
+          orderLabel.textContent = 'Mobile: Column';
+          orderLabel.style.color = 'var(--amber)';
+        } else {
+          orderContainer.style.flexDirection = 'row';
+          orderLabel.textContent = 'Desktop: Row';
+          orderLabel.style.color = 'var(--gray)';
+        }
+        orderTime = time;
+      }
+      requestAnimationFrame(loopOrder);
+    }
+    requestAnimationFrame(loopOrder);
+
+  </script>
+</body>
+</html>

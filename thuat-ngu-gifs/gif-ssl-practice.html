@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SSL Security Lab - Amber Brutalist</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --amber: #E88C2E;
+      --bg: #0a0a0c;
+      --card-bg: #16161b;
+      --text-main: #e0e0e0;
+      --text-muted: #707070;
+      --border: #25252a;
+      --green: #4CAF50;
+      --red: #F44336;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: 'Space Grotesk', sans-serif;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .lab-card {
+      background: var(--card-bg);
+      width: 100%;
+      max-width: 940px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      position: relative;
+    }
+
+    .accent-bar {
+      height: 3px;
+      background: var(--amber);
+    }
+
+    .card-content {
+      padding: 24px;
+    }
+
+    .header {
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .header h1 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--amber);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .score-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--red);
+      border: 2px solid var(--red);
+      width: 50px;
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 3px;
+      background: rgba(244, 67, 54, 0.05);
+      transition: all 0.3s;
+    }
+
+    .score-badge.secure {
+      color: var(--green);
+      border-color: var(--green);
+      background: rgba(76, 175, 80, 0.05);
+      box-shadow: 0 0 15px rgba(76, 175, 80, 0.2);
+    }
+
+    .status-panel {
+      background: #000;
+      border: 1px solid var(--border);
+      padding: 20px;
+      margin-bottom: 24px;
+      border-radius: 2px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .status-line {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+    }
+
+    .status-line:last-child { margin-bottom: 0; }
+    .status-label { color: var(--text-muted); text-transform: uppercase; font-size: 10px; }
+    .status-val { font-weight: 600; font-size: 14px; }
+    .val-warn { color: var(--red); }
+    .val-ok { color: var(--green); }
+
+    .control-list {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .control-list { grid-template-columns: 1fr; }
+      .status-panel { grid-template-columns: 1fr; }
+    }
+
+    .toggle-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 16px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border);
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .toggle-item:hover {
+      border-color: var(--amber);
+      background: rgba(232, 140, 46, 0.03);
+    }
+
+    .toggle-info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .toggle-title {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .toggle-desc {
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .switch {
+      width: 32px;
+      height: 18px;
+      background: #333;
+      border-radius: 10px;
+      position: relative;
+      transition: background 0.3s;
+    }
+
+    .switch::after {
+      content: '';
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 14px;
+      height: 14px;
+      background: #eee;
+      border-radius: 50%;
+      transition: transform 0.3s;
+    }
+
+    .toggle-item.active .switch {
+      background: var(--green);
+    }
+
+    .toggle-item.active .switch::after {
+      transform: translateX(14px);
+    }
+
+    .hint-box {
+      margin-top: 20px;
+      padding: 12px;
+      border-left: 2px solid var(--amber);
+      font-size: 11px;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .hint-box strong { color: var(--amber); }
+
+  </style>
+</head>
+<body>
+  <div class="lab-card">
+    <div class="accent-bar"></div>
+    <div class="card-content">
+      <div class="header">
+        <div>
+          <h1>SSL Security Lab</h1>
+          <p style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Cấu hình để đạt chứng chỉ A+</p>
+        </div>
+        <div class="score-badge" id="rating">F</div>
+      </div>
+
+      <div class="status-panel">
+        <div class="status-line">
+          <span class="status-label">Protocol:</span>
+          <span class="status-val" id="protocol">HTTP</span>
+        </div>
+        <div class="status-line">
+          <span class="status-label">Encryption:</span>
+          <span class="status-val val-warn" id="encryption">NONE</span>
+        </div>
+        <div class="status-line">
+          <span class="status-label">Trust Score:</span>
+          <span class="status-val" id="score">0%</span>
+        </div>
+      </div>
+
+      <div class="control-list">
+        <div class="toggle-item" onclick="toggleOption('cert', this)">
+          <div class="toggle-info">
+            <span class="toggle-title">Install SSL Certificate</span>
+            <span class="toggle-desc">Mở khóa giao thức HTTPS an toàn.</span>
+          </div>
+          <div class="switch"></div>
+        </div>
+
+        <div class="toggle-item" onclick="toggleOption('redirect', this)">
+          <div class="toggle-info">
+            <span class="toggle-title">Force HTTPS Redirect</span>
+            <span class="toggle-desc">Tự động chuyển HTTP sang HTTPS.</span>
+          </div>
+          <div class="switch"></div>
+        </div>
+
+        <div class="toggle-item" onclick="toggleOption('hsts', this)">
+          <div class="toggle-info">
+            <span class="toggle-title">Enable HSTS</span>
+            <span class="toggle-desc">Bắt buộc trình duyệt chỉ dùng HTTPS.</span>
+          </div>
+          <div class="switch"></div>
+        </div>
+
+        <div class="toggle-item" onclick="toggleOption('tls', this)">
+          <div class="toggle-info">
+            <span class="toggle-title">TLS 1.3 Protocol</span>
+            <span class="toggle-desc">Sử dụng chuẩn mã hóa mới nhất.</span>
+          </div>
+          <div class="switch"></div>
+        </div>
+      </div>
+
+      <div class="hint-box" id="hint">
+        🛡️ Website hiện đang <strong>không an toàn</strong>. Hãy bắt đầu bằng cách cài đặt Chứng chỉ SSL.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const options = {
+      cert: false,
+      redirect: false,
+      hsts: false,
+      tls: false
+    };
+
+    function toggleOption(id, el) {
+      // Logic: must have cert before others
+      if (id !== 'cert' && !options.cert) {
+        alert("Bạn cần cài đặt Chứng chỉ SSL trước!");
+        return;
+      }
+
+      options[id] = !options[id];
+      el.classList.toggle('active');
+      
+      updateUI();
+    }
+
+    function updateUI() {
+      const rating = document.getElementById('rating');
+      const protocol = document.getElementById('protocol');
+      const encryption = document.getElementById('encryption');
+      const scoreText = document.getElementById('score');
+      const hint = document.getElementById('hint');
+
+      let score = 0;
+      if (options.cert) score += 40;
+      if (options.redirect) score += 20;
+      if (options.hsts) score += 20;
+      if (options.tls) score += 20;
+
+      scoreText.innerText = score + '%';
+
+      if (score === 0) {
+        rating.innerText = 'F';
+        rating.className = 'score-badge';
+        protocol.innerText = 'HTTP';
+        protocol.className = 'status-val val-warn';
+        encryption.innerText = 'NONE';
+        encryption.className = 'status-val val-warn';
+        hint.innerHTML = '🛡️ Website hiện đang <strong>không an toàn</strong>. Hãy bắt đầu bằng cách cài đặt Chứng chỉ SSL.';
+      } else if (score < 60) {
+        rating.innerText = 'C';
+        rating.className = 'score-badge';
+        protocol.innerText = 'HTTPS';
+        protocol.className = 'status-val val-ok';
+        encryption.innerText = 'AES-128';
+        encryption.className = 'status-val val-ok';
+        hint.innerHTML = '👌 Đã có HTTPS! Nhưng hãy bật <strong>Redirect</strong> để đảm bảo mọi user đều vào bản an toàn.';
+      } else if (score < 100) {
+        rating.innerText = 'B';
+        rating.className = 'score-badge';
+        hint.innerHTML = '⚡ Rất tốt! Bật thêm <strong>HSTS</strong> và <strong>TLS 1.3</strong> để đạt điểm bảo mật tối đa.';
+      } else {
+        rating.innerText = 'A+';
+        rating.className = 'score-badge secure';
+        encryption.innerText = 'TLS 1.3 (STRONG)';
+        hint.innerHTML = '🏆 <strong>Tuyệt vời!</strong> Website của bạn đã đạt chuẩn bảo mật cao nhất hiện nay.';
+      }
+    }
+  </script>
+</body>
+</html>

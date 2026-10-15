@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Git Practice — Vibecode Glossary</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #101010;
+      --bgc: #16161b;
+      --bgi: #0d0d11;
+      --bd: #2a2a2f;
+      --tx: #e0e0e0;
+      --txm: #707070;
+      --txd: #3a3a3a;
+      --ac: #E88C2E;
+      --acl: #ffb05c;
+      --abg: rgba(232,140,46,0.1);
+      --abg2: rgba(232,140,46,0.2);
+      --gn: #22c55e;
+      --gnb: rgba(34, 197, 94, .12);
+      --rd: #ef4444;
+      --rdb: rgba(239, 68, 68, .1);
+      --mono: 'JetBrains Mono', monospace;
+      --sans: 'Space Grotesk', sans-serif;
+    }
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--sans);
+      background-color: var(--bg);
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+      background-size: 20px 20px;
+      color: var(--tx);
+      min-height: 100vh;
+      padding: 20px 16px 48px;
+    }
+
+    .pra {
+      max-width: 940px;
+      margin: 0 auto;
+      background: var(--bgc);
+      border: 1px solid var(--bd);
+      border-radius: 3px;
+      padding: 22px;
+      position: relative;
+    }
+
+    .pra::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--ac);
+    }
+
+    .ch {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .ch .n {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--ac);
+      background: var(--abg);
+      border: 1px solid rgba(232, 140, 46, .2);
+      padding: 1px 6px;
+      border-radius: 2px;
+    }
+
+    .ch h2 {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -.3px;
+    }
+
+    .pra-goal {
+      font-size: 12.5px;
+      color: var(--txm);
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .pra-grid {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 768px) {
+      .pra-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .cfg-l {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--txm);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    /* Workflow Board */
+    .pra-board {
+      background: var(--bgi);
+      border: 1px solid var(--bd);
+      border-radius: 3px;
+      height: 240px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .area {
+      flex: 1;
+      height: 100%;
+      border-right: 1px dashed var(--bd);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .area:last-child { border-right: none; }
+
+    .area-label {
+      position: absolute;
+      top: 10px;
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--txd);
+      text-align: center;
+    }
+
+    .file-block {
+      width: 40px;
+      height: 50px;
+      background: var(--bgc);
+      border: 1px solid var(--bd);
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      position: absolute;
+      z-index: 10;
+      transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .file-block::before {
+      content: 'JS';
+      font-family: var(--mono);
+      font-size: 8px;
+      font-weight: 700;
+      color: var(--ac);
+    }
+    .file-block .line {
+      width: 20px;
+      height: 2px;
+      background: var(--bd);
+    }
+
+    .file-block.staged { border-color: var(--ac); box-shadow: 0 0 15px var(--abg); }
+    .file-block.committed { border-color: var(--gn); background: var(--gnb); }
+
+    /* Controls */
+    .pra-controls {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 8px;
+    }
+
+    .btn {
+      position: relative;
+      padding: 12px;
+      background: var(--bg);
+      border: 1px solid var(--bd);
+      border-radius: 2px;
+      color: var(--tx);
+      font-family: var(--sans);
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-align: left;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: all 0.2s;
+    }
+    .btn:hover:not(:disabled) {
+      border-color: var(--ac);
+      background: var(--abg);
+    }
+    .btn:disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
+    }
+    .btn .cmd {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--txm);
+      opacity: 0.6;
+    }
+
+    .btn.next {
+      border-color: var(--ac);
+      background: var(--abg);
+      animation: pulseBtn 2s infinite;
+    }
+
+    /* Style cho Badge Hint */
+    .btn-hint {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--ac);
+      color: #fff;
+      font-family: var(--mono);
+      font-size: 8px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 2px;
+      white-space: nowrap;
+      pointer-events: none;
+      animation: pulseHint 2s infinite;
+      z-index: 999;
+    }
+
+    .btn-hint::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 4px solid var(--ac);
+    }
+
+    @keyframes pulseBtn {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(232, 140, 46, 0.4); }
+      50% { box-shadow: 0 0 0 6px rgba(232, 140, 46, 0); }
+    }
+
+    @keyframes pulseHint {
+      0% { transform: translateX(-50%) scale(1); }
+      50% { transform: translateX(-50%) scale(1.05); }
+      100% { transform: translateX(-50%) scale(1); }
+    }
+
+    /* Right Side */
+    .info-box {
+      background: var(--bgi);
+      border: 1px solid var(--bd);
+      border-radius: 3px;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .info-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--txm);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    .prompt-box {
+      background: #000;
+      border: 1px solid #333;
+      padding: 14px;
+      border-radius: 3px;
+      min-height: 100px;
+    }
+
+    .prompt-text {
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--acl);
+      line-height: 1.6;
+    }
+
+    .step-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .step {
+      font-size: 11px;
+      color: var(--txm);
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+    .step-n {
+      width: 18px;
+      height: 18px;
+      background: var(--bd);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+    .step.active .step-n { background: var(--ac); color: #000; }
+    .step.active { color: var(--tx); }
+    .step.done .step-n { background: var(--gn); color: #000; }
+  </style>
+</head>
+<body>
+
+  <section class="pra">
+    <div class="ch">
+      <span class="n">PRACTICE</span>
+      <h2>Git Workflow Master</h2>
+    </div>
+    <p class="pra-goal">Hoàn thành chu kỳ lưu và đồng bộ code từ Máy cá nhân lên Đám mây theo đúng trình tự Git.</p>
+
+    <div class="pra-grid">
+      <!-- Left: Visual Board -->
+      <div>
+        <span class="cfg-l">Code Flow Visualization</span>
+        <div class="pra-board">
+          <div class="area"><span class="area-label">Local<br>Changes</span></div>
+          <div class="area"><span class="area-label">Staging<br>Area</span></div>
+          <div class="area"><span class="area-label">Local<br>Repo</span></div>
+          <div class="area"><span class="area-label">Remote<br>(Cloud)</span></div>
+          
+          <div class="file-block" id="file">
+            <div class="line"></div>
+            <div class="line"></div>
+          </div>
+        </div>
+
+        <span class="cfg-l">Run Command</span>
+        <div class="pra-controls">
+          <button class="btn" id="btn-add">
+            <div class="btn-hint" id="hint">Start here!</div>
+            <span>1. Stage Changes</span>
+            <span class="cmd">git add .</span>
+          </button>
+          <button class="btn" id="btn-commit" disabled>
+            <span>2. Save Checkpoint</span>
+            <span class="cmd">git commit -m "..."</span>
+          </button>
+          <button class="btn" id="btn-push" disabled>
+            <span>3. Share to Team</span>
+            <span class="cmd">git push</span>
+          </button>
+          <button class="btn rst" id="btn-reset" style="margin-top:10px; color:var(--rd); border-color:var(--rdb); font-size:11px; justify-content:center; opacity: 0;">
+            Restart Workflow
+          </button>
+        </div>
+      </div>
+
+      <!-- Right: AI Prompt -->
+      <div>
+        <div class="info-box">
+          <div>
+            <span class="info-label">Nói với AI (Prompt)</span>
+            <div class="prompt-box">
+              <div class="prompt-text" id="prompt">
+                Sẵn sàng! Hãy chọn bước đầu tiên để bắt đầu lưu code.
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <span class="info-label">Workflow Progress</span>
+            <div class="step-list">
+              <div class="step active" id="s1"><span class="step-n">1</span><span>Chuẩn bị các thay đổi (Add to Staging)</span></div>
+              <div class="step" id="s2"><span class="step-n">2</span><span>Đặt tên và đóng gói bản lưu (Commit)</span></div>
+              <div class="step" id="s3"><span class="step-n">3</span><span>Đẩy bản lưu lên mây (Push to Remote)</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const file = document.getElementById('file');
+    const bAdd = document.getElementById('btn-add');
+    const bCommit = document.getElementById('btn-commit');
+    const bPush = document.getElementById('btn-push');
+    const bReset = document.getElementById('btn-reset');
+    const prompt = document.getElementById('prompt');
+    
+    const s1 = document.getElementById('s1');
+    const s2 = document.getElementById('s2');
+    const s3 = document.getElementById('s3');
+
+    const positions = {
+      start: '12%',
+      staged: '37%',
+      repo: '62%',
+      remote: '87%'
+    };
+
+    function init() {
+      file.style.left = positions.start;
+      file.classList.remove('staged', 'committed');
+      bAdd.disabled = false;
+      bAdd.classList.add('next');
+      bCommit.disabled = true;
+      bCommit.classList.remove('next');
+      bPush.disabled = true;
+      bPush.classList.remove('next');
+      bReset.style.opacity = 0;
+      prompt.textContent = "Sẵn sàng! Hãy chọn bước đầu tiên để bắt đầu lưu code.";
+      s1.className = 'step active';
+      s2.className = 'step';
+      s3.className = 'step';
+    }
+
+    bAdd.onclick = () => {
+      const hint = document.getElementById('hint');
+      if (hint) hint.style.display = 'none';
+      
+      file.style.left = positions.staged;
+      file.classList.add('staged');
+      bAdd.disabled = true;
+      bAdd.classList.remove('next');
+      bCommit.disabled = false;
+      bCommit.classList.add('next');
+      s1.className = 'step done';
+      s2.className = 'step active';
+      prompt.textContent = 'Tôi đã sửa xong header. Hãy chạy lệnh "git add ." để đưa vào khu vực chờ (Staging).';
+    };
+
+    bCommit.onclick = () => {
+      file.style.left = positions.repo;
+      file.classList.add('committed');
+      bCommit.disabled = true;
+      bCommit.classList.remove('next');
+      bPush.disabled = false;
+      bPush.classList.add('next');
+      s2.className = 'step done';
+      s3.className = 'step active';
+      prompt.textContent = 'Các thay đổi đã nằm trong khu vực chờ. Hãy "commit" chúng lại với lời nhắn: "feat: hoàn thiện giao diện header".';
+    };
+
+    bPush.onclick = () => {
+      file.style.left = positions.remote;
+      file.style.transform = 'scale(0.5) translateY(-100px)';
+      file.style.opacity = '0';
+      bPush.disabled = true;
+      bPush.classList.remove('next');
+      s3.className = 'step done';
+      bReset.style.opacity = 1;
+      prompt.innerHTML = '<span style="color:var(--gn)">✓ THÀNH CÔNG!</span><br>Code đã được đẩy lên Remote. Cả team hiện đã có thể nhìn thấy và tải về bản mới nhất.';
+    };
+
+    bReset.onclick = init;
+
+    init();
+  </script>
+</body>
+</html>

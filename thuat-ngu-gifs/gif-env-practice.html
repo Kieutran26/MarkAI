@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>.env Essence Practice — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root {
+  --bg: #0f0f12;
+  --bgc: #16161b;
+  --bgi: #121217;
+  --bd: #282830;
+  --tx: #e8e4dc;
+  --txm: #707070;
+  --ac: #E88C2E;
+  --abg: rgba(232, 140, 46, 0.08);
+  --abg2: rgba(232, 140, 46, 0.18);
+  --err: #ef4444;
+  --gn: #22c55e;
+  --blu: #3b82f6;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--tx);
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.pra {
+  width: 100%;
+  max-width: 940px;
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 24px;
+  position: relative;
+}
+
+.ch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.ch .n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ac);
+  background: var(--abg);
+  border: 1px solid var(--abg2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+.ch h2 {
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.pra-goal {
+  font-size: 12.5px;
+  color: var(--txm);
+  margin-bottom: 24px;
+  line-height: 1.6;
+}
+
+.lab-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+@media (max-width: 768px) {
+  .lab-grid { grid-template-columns: 1fr; }
+}
+
+.card {
+  background: var(--bgi);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-hd {
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border-bottom: 1px solid var(--bd);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--txm);
+  display: flex;
+  justify-content: space-between;
+}
+
+.card-body {
+  padding: 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  line-height: 1.8;
+  min-height: 160px;
+  position: relative;
+}
+
+/* Essence Elements */
+.secret-bad {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--err);
+  padding: 2px 4px;
+  border-bottom: 1px dashed var(--err);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+.secret-bad:hover { background: rgba(239, 68, 68, 0.3); }
+
+.env-var {
+  color: var(--ac);
+  font-weight: 700;
+  padding: 2px 4px;
+  background: var(--abg);
+  border-radius: 2px;
+}
+
+.flow-line {
+  position: absolute;
+  background: var(--ac);
+  height: 2px;
+  width: 0;
+  z-index: 10;
+  pointer-events: none;
+  box-shadow: 0 0 10px var(--ac);
+}
+
+/* Terminal */
+.term {
+  background: #000;
+  border: 1px solid var(--bd);
+  padding: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10.5px;
+  border-radius: 2px;
+}
+.term-line { margin-bottom: 4px; opacity: 0; transform: translateY(5px); animation: fadeInUp 0.3s forwards; }
+@keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+/* Controls */
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.btn {
+  padding: 10px 20px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid var(--bd);
+  background: var(--bgi);
+  color: var(--txm);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn:hover:not(:disabled) {
+  border-color: var(--ac);
+  color: var(--ac);
+  background: var(--abg);
+}
+
+.btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.btn.primary {
+  background: var(--ac);
+  color: #fff;
+  border-color: var(--ac);
+}
+
+.token-key { color: var(--ac); }
+.token-val { color: var(--gn); }
+.token-cmt { color: var(--txm); opacity: 0.5; }
+.token-kw { color: #60a5fa; }
+
+/* Modal/Hint overlay */
+.step-hint {
+  background: var(--abg2);
+  border: 1px solid var(--ac);
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+.step-hint i { color: var(--ac); margin-top: 3px; }
+.step-txt { font-size: 13px; line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<section class="pra" aria-label="Bản chất .env">
+  <div class="ch"><span class="n">ESSENCE</span><h2>Bản chất của .env</h2></div>
+  
+  <!-- Step Instruction -->
+  <div class="step-hint" id="stepHint">
+    <i class="fa-solid fa-triangle-exclamation"></i>
+    <div class="step-txt" id="stepTxt">
+      <strong>Vấn đề:</strong> Bạn đang dán mật khẩu trực tiếp vào code (Hardcoded). Điều này cực kỳ nguy hiểm nếu code bị lộ. 
+      <br>Hãy click vào phần <span style="color:var(--err)">màu đỏ</span> để trích xuất nó sang file .env!
+    </div>
+  </div>
+
+  <div class="lab-grid">
+    <!-- Code Editor -->
+    <div class="card">
+      <div class="card-hd"><span>server.js (Mã nguồn)</span><i class="fa-solid fa-code"></i></div>
+      <div class="card-body" id="codeEditor">
+        <span class="token-cmt">// Kết nối Database</span><br>
+        <span class="token-kw">const</span> config = {<br>
+        &nbsp;&nbsp;db_pass: <span class="secret-bad" id="secretPass" onclick="extractSecret('PASS', '123456')">"123456"</span>,<br>
+        &nbsp;&nbsp;api_key: <span class="secret-bad" id="secretKey" onclick="extractSecret('KEY', 'sk_test_99')">"sk_test_99"</span><br>
+        };
+      </div>
+    </div>
+
+    <!-- .env File -->
+    <div class="card">
+      <div class="card-hd"><span>.env (Cấu hình bí mật)</span><i class="fa-solid fa-vault"></i></div>
+      <div class="card-body" id="envEditor">
+        <span class="token-cmt"># File trống...</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Terminal Output -->
+  <div class="card" style="min-height: 100px;">
+    <div class="card-hd"><span>Console Output</span><i class="fa-solid fa-terminal"></i></div>
+    <div class="card-body term" id="termOutput" style="min-height: 80px;">
+      <div class="term-line" style="color:var(--txm)">Đợi bạn bảo mật mã nguồn...</div>
+    </div>
+  </div>
+
+  <!-- Final Controls (Hidden until refactored) -->
+  <div class="controls" id="finalControls" style="display: none;">
+    <button class="btn" onclick="switchEnv('LOCAL')"><i class="fa-solid fa-house-laptop"></i> Chạy Local</button>
+    <button class="btn" onclick="switchEnv('PROD')"><i class="fa-solid fa-server"></i> Chạy Production</button>
+    <button class="btn" id="resetBtn" onclick="location.reload()" style="margin-left:auto"><i class="fa-solid fa-rotate"></i> Reset</button>
+  </div>
+
+</section>
+
+<script>
+let extracted = { PASS: false, KEY: false };
+let currentEnv = 'NONE';
+
+const envData = {
+  LOCAL: { PASS: 'local_db_123', KEY: 'sk_test_dev_mode' },
+  PROD: { PASS: 'P@ssw0rd_Str0ng_99', KEY: 'sk_live_money_real' }
+};
+
+function extractSecret(type, value) {
+  if (extracted[type]) return;
+  extracted[type] = true;
+
+  // Update Code Editor
+  const el = document.getElementById(type === 'PASS' ? 'secretPass' : 'secretKey');
+  el.className = 'env-var';
+  el.textContent = `process.env.DB_${type}`;
+  el.onclick = null;
+
+  // Update .env Editor
+  const envEd = document.getElementById('envEditor');
+  if (envEd.innerHTML.includes('File trống')) envEd.innerHTML = '';
+  envEd.innerHTML += `<div><span class="token-key">DB_${type}</span>=<span class="token-val">"${value}"</span></div>`;
+
+  // Check if finished
+  if (extracted.PASS && extracted.KEY) {
+    completeRefactor();
+  } else {
+    updateTerminal(`<span style="color:var(--ac)">[OK]</span> Đã chuyển bí mật ${type} sang file .env.`);
+  }
+}
+
+function completeRefactor() {
+  document.getElementById('stepHint').style.borderColor = 'var(--gn)';
+  document.getElementById('stepHint').style.background = 'var(--gnb)';
+  document.getElementById('stepHint').querySelector('i').className = 'fa-solid fa-circle-check';
+  document.getElementById('stepHint').querySelector('i').style.color = 'var(--gn)';
+  document.getElementById('stepTxt').innerHTML = '<strong>Tuyệt vời!</strong> Bạn đã tách biệt hoàn toàn <strong>Cấu hình</strong> ra khỏi <strong>Mã nguồn</strong>. <br>Bây giờ, hãy thử đổi "môi trường" để xem app tự động đổi giá trị mà không cần sửa code.';
+  
+  document.getElementById('finalControls').style.display = 'flex';
+  updateTerminal(`<span style="color:var(--gn)">[SUCCESS]</span> Hệ thống đã được bảo mật! Sẵn sàng chạy thử.`);
+}
+
+function switchEnv(env) {
+  currentEnv = env;
+  const data = envData[env];
+  
+  // Update .env UI with animation
+  const envEd = document.getElementById('envEditor');
+  envEd.style.opacity = '0';
+  
+  setTimeout(() => {
+    envEd.innerHTML = `
+      <span class="token-cmt"># Môi trường ${env}</span><br>
+      <div><span class="token-key">DB_PASS</span>=<span class="token-val">"${data.PASS}"</span></div>
+      <div><span class="token-key">DB_KEY</span>=<span class="token-val">"${data.KEY}"</span></div>
+    `;
+    envEd.style.transition = 'opacity 0.3s';
+    envEd.style.opacity = '1';
+  }, 100);
+
+  // Update Terminal
+  updateTerminal(`
+    <span style="color:var(--blu)">[DEPLOYING]</span> Chạy ứng dụng trên môi trường <strong>${env}</strong>...<br>
+    <span style="color:var(--tx)">> DB Connected with password: <span style="color:var(--ac)">${data.PASS}</span></span><br>
+    <span style="color:var(--tx)">> API Initialized with key: <span style="color:var(--ac)">${data.KEY}</span></span><br>
+    <span style="color:var(--gn)">[RUNNING]</span> App đang hoạt động ổn định.
+  `);
+}
+
+function updateTerminal(msg) {
+  const term = document.getElementById('termOutput');
+  term.innerHTML = `<div class="term-line">${msg}</div>`;
+}
+</script>
+</body>
+</html>

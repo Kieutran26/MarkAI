@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gutter Practice — markAI</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0f0f12;--fg:#e8e0d4;--muted:#706b64;--accent:#e88c2e;--accent-dim:rgba(232,140,46,.15);--card:#16161b;--card-alt:#1c1c22;--border:#282830;--border-hi:#44403a;--c0:#e88c2e;--c1:#4a5a8a;--c2:#4a8a5a}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);background-image:radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:16px 16px;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:12px 16px;min-height:auto;overflow:hidden}
+
+.pw{width:100%;margin:0}
+.pw-h{font-size:16px;font-weight:800;margin-bottom:4px}
+.pw-h span{color:var(--accent)}
+.pw-s{font-size:11px;color:var(--muted);margin-bottom:16px;line-height:1.4}
+
+.pp{border:1px solid var(--border);background:var(--card);overflow:hidden;margin-bottom:16px}
+.pp-lbl{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:2px;padding:8px 14px 0;opacity:.4}
+.pp-viz{position:relative;height:160px;margin:6px 14px 14px}
+.pp-grid{display:flex;flex-direction:column;width:100%;height:100%}
+.pp-bk{background:var(--card-alt);border:1px solid var(--border);border-left:3px solid var(--c0);flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 10px;transition:all .2s;overflow:hidden}
+.pp-bk.c1{border-left-color:var(--c1)}.pp-bk.c2{border-left-color:var(--c2)}
+.pp-gut{flex-shrink:0;background:var(--accent);opacity:.45;transition:width .25s;position:relative}
+.pp-gut-v{flex-shrink:0;background:var(--accent);opacity:.45;transition:height .25s;position:relative}
+.pp-gl{font-family:'JetBrains Mono',monospace;font-size:7px;font-weight:700;color:#fff;white-space:nowrap;position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);letter-spacing:.5px;pointer-events:none}
+
+.rc-t{font-size:10px;font-weight:600}.rc-d{font-size:8px;color:var(--muted);margin-top:2px}
+
+.slr{display:flex;flex-direction:column;gap:12px;margin-bottom:14px}
+.sr{display:flex;align-items:center;gap:12px}
+.sl{font-size:12px;min-width:100px}
+.sv{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);min-width:52px;text-align:right}
+
+input[type=range]{flex:1;-webkit-appearance:none;appearance:none;height:4px;background:var(--border);outline:none;border:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;background:var(--accent);border:2px solid var(--bg);cursor:pointer}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;background:var(--accent);border:2px solid var(--bg);cursor:pointer;border-radius:0}
+
+.pfb{font-family:'JetBrains Mono',monospace;font-size:11px;min-height:18px;color:var(--muted);transition:color .2s;line-height:1.4}
+.pfb.w{color:var(--accent)}
+.pht{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:20px;padding-top:10px;border-top:1px dashed var(--border);opacity:.6;line-height:1.4}
+.rst-btn{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);background:transparent;border:1px solid var(--border);padding:4px 12px;cursor:pointer;transition:all .2s;margin-left:8px}
+.rst-btn:hover{border-color:var(--border-hi);color:var(--fg)}
+
+@media(max-width:520px){.sl{min-width:80px;font-size:11px}.sr{gap:8px}}
+</style>
+</head>
+<body>
+
+<div class="pw" id="app-root">
+    <div class="pw-h">Thực hành — <span>Kéo Gutter</span></div>
+    <div class="pw-s">Thay đổi gutter để thấy layout thay đổi realtime.</div>
+    <div class="pp">
+        <div class="pp-lbl">PREVIEW</div>
+        <div class="pp-viz">
+            <div class="pp-grid" id="pG"></div>
+        </div>
+    </div>
+    <div class="slr">
+        <div class="sr">
+            <span class="sl">Column gap</span>
+            <input type="range" id="sCol" min="0" max="48" value="16" step="2">
+            <span class="sv" id="vCol">16px</span>
+        </div>
+        <div class="sr">
+            <span class="sl">Row gap</span>
+            <input type="range" id="sRow" min="0" max="48" value="16" step="2">
+            <span class="sv" id="vRow">16px</span>
+        </div>
+    </div>
+    <div style="display:flex;align-items:center;padding-bottom:20px">
+        <div class="pfb" id="pfb">&nbsp;</div>
+        <button class="rst-btn" id="rstBtn">Reset</button>
+    </div>
+    <div class="pht">Hint: Kéo cả 2 về 0px → thấy items dính sát nhau. Tăng lên → "thở" hơn.</div>
+</div>
+
+<script>
+const P_CARDS=[
+    {t:'Analytics',d:'Data view',c:0},{t:'Campaigns',d:'Manage',c:1},{t:'Reports',d:'Export',c:2}
+];
+const pG=document.getElementById('pG');
+const pfb=document.getElementById('pfb');
+const sCol=document.getElementById('sCol');
+const sRow=document.getElementById('sRow');
+const vCol=document.getElementById('vCol');
+const vRow=document.getElementById('vRow');
+
+function renderPractice(){
+    const cg=+sCol.value, rg=+sRow.value;
+    vCol.textContent=cg+'px';vRow.textContent=rg+'px';
+
+    let h='';
+    /* Row 1 */
+    h+='<div style="display:flex;flex:1">';
+    P_CARDS.forEach((card,ci)=>{
+        if(ci>0){
+            h+='<div class="pp-gut" style="width:'+cg+'px">';
+            if(cg>=10) h+='<span class="pp-gl">'+cg+'</span>';
+            h+='</div>';
+        }
+        h+='<div class="pp-bk c'+card.c+'"><span class="rc-t">'+card.t+'</span><span class="rc-d">'+card.d+'</span></div>';
+    });
+    h+='</div>';
+    /* Row gutter */
+    h+='<div class="pp-gut-v" style="height:'+rg+'px">';
+    if(rg>=10) h+='<span class="pp-gl">'+rg+'</span>';
+    h+='</div>';
+    /* Row 2 */
+    h+='<div style="display:flex;flex:1">';
+    P_CARDS.forEach((card,ci)=>{
+        if(ci>0){
+            h+='<div class="pp-gut" style="width:'+cg+'px">';
+            if(cg>=10) h+='<span class="pp-gl">'+cg+'</span>';
+            h+='</div>';
+        }
+        h+='<div class="pp-bk c'+((ci+1)%3)+'"><span class="rc-t">'+card.t+'</span><span class="rc-d">'+card.d+'</span></div>';
+    });
+    h+='</div>';
+
+    pG.innerHTML=h;
+
+    if(cg===0&&rg===0){
+        pfb.textContent='Gutter = 0 — items dính sát, không "thở"';
+        pfb.className='pfb w';
+    }else if(cg>=40||rg>=40){
+        pfb.textContent='Gutter quá lớn — khoảng trống chiếm hơn nội dung';
+        pfb.className='pfb w';
+    }else{
+        pfb.textContent='Column '+cg+'px · Row '+rg+'px — layout cân bằng';
+        pfb.className='pfb';
+    }
+}
+
+sCol.addEventListener('input',renderPractice);
+sRow.addEventListener('input',renderPractice);
+document.getElementById('rstBtn').addEventListener('click',()=>{sCol.value=16;sRow.value=16;renderPractice()});
+
+renderPractice();
+</script>
+</body>
+</html>

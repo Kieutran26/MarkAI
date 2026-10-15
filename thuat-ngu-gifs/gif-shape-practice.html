@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shape — Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#1a1a1a;--bg-card:#222;--accent:#d97706;--accent-dim:#92400e;
+  --accent-glow:rgba(217,119,6,.12);--fg:#e8e4df;--fg-muted:#8a8580;
+  --fg-dim:#5a5550;--border:#3a3a3a;--border-accent:#d97706;
+  --success:#22c55e;--success-bg:rgba(34,197,94,.1);
+  --error:#ef4444;--error-bg:rgba(239,68,68,.1);
+  --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;--radius:2px;
+}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);line-height:1.5;padding:20px 20px 40px 20px;
+  background-image:linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);
+  background-size:24px 24px;overflow-x:hidden}
+#app-root{padding-bottom:40px}
+
+.practice-card{padding:0;margin-bottom:20px}
+.practice-goal{font-family:var(--mono);font-size:11px;color:var(--fg-muted);margin-bottom:20px;line-height:1.6;padding-left:12px;border-left:2px solid var(--accent-dim)}
+.practice-goal strong{color:var(--fg);font-weight:600}
+
+.ws-workspace{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+@media(max-width:700px){.ws-workspace{grid-template-columns:1fr}}
+.ws-panel{background:#141414;border:1px solid var(--border);border-radius:var(--radius);padding:28px}
+.ws-panel-title{font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--fg-dim);margin-bottom:16px}
+
+.range-slider{-webkit-appearance:none;appearance:none;width:100%;height:4px;background:var(--border);border-radius:1px;outline:none;touch-action:none}
+.range-slider::-webkit-slider-thumb{-webkit-appearance:none;width:20px;height:20px;background:var(--accent);border-radius:var(--radius);cursor:pointer;border:2px solid var(--bg)}
+
+.control-group{margin-bottom:20px}
+.control-group label{display:block;font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--fg-dim);margin-bottom:8px}
+.value-display{float:right;color:var(--accent)}
+
+.toggle-group{display:flex;gap:8px;margin-bottom:20px}
+.toggle-btn{flex:1;background:#222;border:1px solid var(--border);color:var(--fg-muted);padding:8px;font-family:var(--mono);font-size:9px;cursor:pointer;transition:all .3s}
+.toggle-btn.active{background:var(--accent-glow);border-color:var(--accent);color:var(--accent)}
+
+.prop-row{display:flex;align-items:center;gap:8px;padding:4px 0;font-size:10px;font-family:var(--mono)}
+.prop-name{width:80px;color:var(--fg-dim);flex-shrink:0}
+.prop-val{color:var(--accent);font-weight:600}
+
+.vibe-meter{margin-top:16px;padding:12px;background:rgba(255,255,255,.02);border:1px solid var(--border);border-radius:var(--radius)}
+.vibe-label{font-family:var(--mono);font-size:9px;color:var(--fg-dim);text-transform:uppercase;margin-bottom:6px;display:block}
+.vibe-bar{height:6px;background:var(--border);border-radius:3px;overflow:hidden;position:relative}
+.vibe-fill{height:100%;background:var(--accent);width:0%;transition:width .4s, background .4s}
+.vibe-markers{display:flex;justify-content:space-between;margin-top:4px;font-size:8px;font-family:var(--mono);color:var(--fg-dim)}
+
+.preview-area{min-height:240px;background:#000;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.target-shape{width:100px;height:100px;transition:all .4s cubic-bezier(.4,0,.2,1)}
+
+.personality-tag{position:absolute;bottom:12px;left:12px;font-family:var(--mono);font-size:9px;font-weight:700;color:var(--accent);background:var(--accent-glow);padding:4px 8px;border:1px solid var(--accent-border);border-radius:2px}
+</style>
+</head>
+<body>
+
+<div id="app-root">
+  <div class="practice-card">
+    <div class="practice-goal">
+      <strong>Mục tiêu:</strong> Điều chỉnh Shape để thay đổi cảm xúc của giao diện. Quan sát cách Radius và Stroke ảnh hưởng đến "Personality".
+    </div>
+    <div class="ws-workspace">
+      <!-- CONTROLS -->
+      <div class="ws-panel">
+        <div class="ws-panel-title">Shape Configurator</div>
+        
+        <div class="control-group">
+          <label>Shape Primitive</label>
+          <div class="toggle-group">
+            <button class="toggle-btn active" onclick="setShape('square')">SQUARE</button>
+            <button class="toggle-btn" onclick="setShape('circle')">CIRCLE</button>
+            <button class="toggle-btn" onclick="setShape('triangle')">TRIANGLE</button>
+          </div>
+        </div>
+
+        <div class="control-group">
+          <label>Corner Radius <span class="value-display" id="radius-val">0px</span></label>
+          <input type="range" class="range-slider" min="0" max="50" value="0" id="radius-slider">
+        </div>
+
+        <div class="control-group">
+          <label>Style</label>
+          <div class="toggle-group">
+            <button class="toggle-btn active" id="btn-solid" onclick="setStyle('solid')">SOLID</button>
+            <button class="toggle-btn" id="btn-stroke" onclick="setStyle('stroke')">STROKE</button>
+          </div>
+        </div>
+
+        <div class="vibe-meter">
+          <span class="vibe-label">Visual Weight</span>
+          <div class="vibe-bar"><div class="vibe-fill" id="weight-fill"></div></div>
+          <div class="vibe-markers"><span>Light</span><span>Heavy</span></div>
+        </div>
+
+        <div class="vibe-meter" style="margin-top:12px">
+          <span class="vibe-label">Personality</span>
+          <div class="vibe-bar"><div class="vibe-fill" id="vibe-fill"></div></div>
+          <div class="vibe-markers"><span>Technical</span><span>Friendly</span></div>
+        </div>
+      </div>
+
+      <!-- PREVIEW -->
+      <div>
+        <div class="preview-area" id="preview-area">
+          <div class="target-shape" id="main-shape" style="background:var(--accent)"></div>
+          <div class="personality-tag" id="personality-tag">TECHNICAL / PRECISE</div>
+        </div>
+        <div style="margin-top:12px; font-family:var(--mono); font-size:10px; color:var(--fg-dim); line-height:1.6; padding:12px; background:var(--bg-card); border:1px solid var(--border)">
+          <div class="prop-row"><span class="prop-name">shape:</span><span class="prop-val" id="code-shape">square</span></div>
+          <div class="prop-row"><span class="prop-name">radius:</span><span class="prop-val" id="code-radius">0px</span></div>
+          <div class="prop-row"><span class="prop-name">style:</span><span class="prop-val" id="code-style">solid</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+let state = {
+  shape: 'square',
+  radius: 0,
+  style: 'solid'
+};
+
+function update() {
+  const shapeEl = document.getElementById('main-shape');
+  const radiusVal = document.getElementById('radius-val');
+  const weightFill = document.getElementById('weight-fill');
+  const vibeFill = document.getElementById('vibe-fill');
+  const tag = document.getElementById('personality-tag');
+  
+  const codeShape = document.getElementById('code-shape');
+  const codeRadius = document.getElementById('code-radius');
+  const codeStyle = document.getElementById('code-style');
+
+  // Reset styles
+  shapeEl.style.borderRadius = '0';
+  shapeEl.style.clipPath = 'none';
+  shapeEl.style.border = 'none';
+  shapeEl.style.background = 'none';
+
+  // Apply Shape
+  if (state.shape === 'square') {
+    shapeEl.style.width = '100px';
+    shapeEl.style.height = '100px';
+    shapeEl.style.borderRadius = state.radius + 'px';
+  } else if (state.shape === 'circle') {
+    shapeEl.style.width = '100px';
+    shapeEl.style.height = '100px';
+    shapeEl.style.borderRadius = '50%';
+  } else if (state.shape === 'triangle') {
+    shapeEl.style.width = '100px';
+    shapeEl.style.height = '100px';
+    shapeEl.style.clipPath = 'polygon(50% 0%, 0% 100%, 100% 100%)';
+  }
+
+  // Apply Style
+  if (state.style === 'solid') {
+    shapeEl.style.background = 'var(--accent)';
+  } else {
+    shapeEl.style.border = '4px solid var(--accent)';
+    // Handle triangle stroke (approximate with drop shadow for demo or keep simple)
+    if (state.shape === 'triangle') {
+       shapeEl.style.background = 'transparent';
+       // clip-path triangles don't show border easily, so we use a trick or just accept it for demo
+       shapeEl.style.filter = 'drop-shadow(0 0 0 var(--accent))'; 
+    }
+  }
+
+  // Metrics
+  radiusVal.textContent = state.radius + 'px';
+  codeShape.textContent = state.shape;
+  codeRadius.textContent = (state.shape === 'circle' ? '50%' : state.radius + 'px');
+  codeStyle.textContent = state.style;
+
+  // Weight Calculation
+  let weight = 0;
+  if (state.style === 'solid') weight += 60;
+  else weight += 20;
+  if (state.shape === 'square') weight += 20;
+  else if (state.shape === 'triangle') weight += 10;
+  weightFill.style.width = weight + '%';
+  weightFill.style.background = weight > 50 ? 'var(--accent)' : 'var(--accent-dim)';
+
+  // Personality Calculation
+  let vibe = 0;
+  vibe += (state.radius / 50) * 60; // radius adds friendiness
+  if (state.shape === 'circle') vibe += 30;
+  if (state.shape === 'square' && state.radius < 5) vibe = 5; 
+  if (state.shape === 'triangle') vibe -= 10;
+  vibe = Math.max(0, Math.min(100, vibe));
+  vibeFill.style.width = vibe + '%';
+  vibeFill.style.background = vibe > 60 ? 'var(--success)' : (vibe < 30 ? 'var(--error)' : 'var(--accent)');
+
+  if (vibe < 30) tag.textContent = 'TECHNICAL / PRECISE / RIGID';
+  else if (vibe > 70) tag.textContent = 'FRIENDLY / SOFT / ORGANIC';
+  else tag.textContent = 'BALANCED / MODERN';
+}
+
+function setShape(s) {
+  state.shape = s;
+  document.querySelectorAll('.toggle-group:first-of-type .toggle-btn').forEach(b => {
+    b.classList.toggle('active', b.textContent.toLowerCase() === s);
+  });
+  update();
+}
+
+function setStyle(s) {
+  state.style = s;
+  document.getElementById('btn-solid').classList.toggle('active', s === 'solid');
+  document.getElementById('btn-stroke').classList.toggle('active', s === 'stroke');
+  update();
+}
+
+document.getElementById('radius-slider').oninput = function() {
+  state.radius = this.value;
+  update();
+};
+
+update();
+</script>
+</body>
+</html>

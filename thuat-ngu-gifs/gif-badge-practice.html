@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Badge Builder — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f0f12;
+  --bgc: #16161b;
+  --bgi: #121217;
+  --bd: #282830;
+  --tx: #e8e4dc;
+  --txm: #707070;
+  --ac: #E88C2E;
+  --abg: rgba(232, 140, 46, 0.1);
+  --abg2: rgba(232, 140, 46, 0.2);
+  --success: #22c55e;
+  --error: #ef4444;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--tx);
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.pw {
+  width: 100%;
+  max-width: 940px;
+}
+
+.pw-h {
+  margin-bottom: 24px;
+  border-left: 2px solid var(--ac);
+  padding-left: 16px;
+}
+
+.pw-g {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--ac);
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 4px;
+}
+
+.pw-d {
+  font-size: 13px;
+  color: var(--txm);
+}
+
+.pr-card {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.pr-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--ac);
+  z-index: 10;
+}
+
+.main-content {
+  display: flex;
+  min-height: 400px;
+}
+
+.left-col {
+  flex: 1;
+  background: var(--bgi);
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-right: 1px solid var(--bd);
+}
+
+.right-col {
+  width: 340px;
+  padding: 32px;
+  background: var(--bgc);
+  display: flex;
+  flex-direction: column;
+}
+
+.scenario-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--ac);
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  background: var(--abg);
+  padding: 2px 8px;
+  border-radius: 2px;
+}
+
+.scenario-text {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--tx);
+  margin-bottom: 32px;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.target-element {
+  width: 80px;
+  height: 80px;
+  background: var(--bd);
+  border-radius: 8px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.target-element.avatar { border-radius: 50%; }
+
+.badge-layer {
+  position: absolute;
+  pointer-events: none;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.options-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  flex: 1;
+}
+
+.option-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.option-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--txm);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.option-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.opt-btn {
+  padding: 8px 14px;
+  background: var(--bg);
+  border: 1px solid var(--bd);
+  border-radius: 2px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--txm);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.opt-btn:hover { border-color: var(--tx); color: var(--tx); }
+.opt-btn.active { background: var(--abg); border-color: var(--ac); color: var(--ac); }
+
+.feedback {
+  margin-top: auto;
+  padding: 16px;
+  border-radius: 2px;
+  font-size: 12px;
+  line-height: 1.5;
+  min-height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-family: 'JetBrains Mono', monospace;
+  margin-bottom: 20px;
+}
+
+.feedback.show { opacity: 1; }
+.feedback.success { background: rgba(34, 197, 94, 0.05); border: 1px solid rgba(34, 197, 94, 0.2); color: var(--success); }
+.feedback.error { background: rgba(239, 68, 68, 0.05); border: 1px solid rgba(239, 68, 68, 0.2); color: var(--error); }
+
+.controls {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn-reset {
+  padding: 8px 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  font-weight: 700;
+  border-radius: 2px;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid var(--bd);
+  color: var(--txm);
+  transition: all 0.2s;
+  text-transform: uppercase;
+}
+
+.btn-reset:hover { border-color: var(--tx); color: var(--tx); }
+
+/* Badge Styles */
+.b-dot { width: 14px; height: 14px; border-radius: 50%; border: 2.5px solid var(--bgi); }
+.b-count { padding: 3px 7px; border-radius: 12px; font-size: 10px; font-weight: 800; color: #fff; border: 2.5px solid var(--bgi); }
+.b-label { padding: 3px 8px; border-radius: 4px; font-size: 10px; font-weight: 800; color: #fff; border: 1px solid rgba(255,255,255,0.2); }
+
+@media (max-width: 768px) {
+  .main-content { flex-direction: column; }
+  .right-col { width: 100%; }
+  .left-col { border-right: none; border-bottom: 1px solid var(--bd); }
+}
+
+</style>
+</head>
+<body>
+
+<main class="pw">
+  <div class="pw-h">
+    <div class="pw-g">BADGE BUILDER</div>
+    <p class="pw-d">Chọn đúng loại Badge và Màu sắc để giải quyết tình huống giao diện.</p>
+  </div>
+
+  <div class="pr-card">
+    <div class="main-content">
+      <div class="left-col">
+        <div class="scenario-label" id="scenario-id">SCENARIO 1</div>
+        <div class="scenario-text" id="scenario-text">Báo hiệu người dùng đang Online</div>
+        
+        <div class="target-element" id="target-el">
+          <div id="icon-container"></div>
+          <div class="badge-layer" id="badge-preview"></div>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="options-stack">
+          <div class="option-group">
+            <div class="option-label">TYPE</div>
+            <div class="option-buttons" id="type-options">
+              <button class="opt-btn" data-val="dot">DOT</button>
+              <button class="opt-btn" data-val="count">COUNT</button>
+              <button class="opt-btn" data-val="label">LABEL</button>
+            </div>
+          </div>
+          <div class="option-group">
+            <div class="option-label">COLOR</div>
+            <div class="option-buttons" id="color-options">
+              <button class="opt-btn" data-val="success">GREEN</button>
+              <button class="opt-btn" data-val="error">RED</button>
+              <button class="opt-btn" data-val="ac">AMBER</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="feedback" id="feedback"></div>
+
+        <div class="controls">
+          <button class="btn-reset" onclick="resetLevel()">LÀM LẠI</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+const LEVELS = [
+  {
+    scenario: "Báo hiệu người dùng đang Online",
+    type: "avatar",
+    icon: `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--txm)"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>`,
+    answer: { type: "dot", color: "success" },
+    hint: "Dùng Dot Badge màu Xanh lá là chuẩn nhất."
+  },
+  {
+    scenario: "Hiển thị 5 tin nhắn chưa đọc",
+    type: "box",
+    icon: `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--txm)"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>`,
+    answer: { type: "count", color: "error" },
+    hint: "Dùng Count Badge màu Đỏ để gây chú ý."
+  },
+  {
+    scenario: "Đánh dấu sản phẩm 'NEW'",
+    type: "box",
+    icon: `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--txm)"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"></path><line x1="3" y1="6" x2="21" y2="6"></line><path d="M16 10a4 4 0 0 1-8 0"></path></svg>`,
+    answer: { type: "label", color: "ac" },
+    hint: "Dùng Label Badge màu Cam (Amber) cho thông tin bổ sung."
+  },
+  {
+    scenario: "Cảnh báo hệ thống có lỗi",
+    type: "box",
+    icon: `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--txm)"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>`,
+    answer: { type: "dot", color: "error" },
+    hint: "Dấu chấm đỏ là ký hiệu cảnh báo lỗi kinh điển."
+  }
+];
+
+let currentLevel = 0;
+let selection = { type: null, color: null };
+
+function initLevel() {
+  const level = LEVELS[currentLevel];
+  document.getElementById('scenario-id').textContent = `SCENARIO ${currentLevel + 1}`;
+  document.getElementById('scenario-text').textContent = level.scenario;
+  document.getElementById('icon-container').innerHTML = level.icon;
+  
+  const targetEl = document.getElementById('target-el');
+  targetEl.className = 'target-element ' + level.type;
+  
+  selection = { type: null, color: null };
+  updateSelectionUI();
+  updateBadgePreview();
+  hideFeedback();
+}
+
+function updateSelectionUI() {
+  document.querySelectorAll('#type-options .opt-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.val === selection.type);
+  });
+  document.querySelectorAll('#color-options .opt-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.val === selection.color);
+  });
+}
+
+function updateBadgePreview() {
+  const preview = document.getElementById('badge-preview');
+  preview.innerHTML = '';
+  
+  if (!selection.type || !selection.color) return;
+  
+  const color = `var(--${selection.color})`;
+  
+  if (selection.type === 'dot') {
+    preview.innerHTML = `<div class="b-dot" style="background: ${color};"></div>`;
+    preview.style.top = '-2px';
+    preview.style.right = '-2px';
+  } else if (selection.type === 'count') {
+    preview.innerHTML = `<div class="b-count" style="background: ${color};">5</div>`;
+    preview.style.top = '-8px';
+    preview.style.right = '-12px';
+  } else if (selection.type === 'label') {
+    preview.innerHTML = `<div class="b-label" style="background: ${color};">NEW</div>`;
+    preview.style.top = '-8px';
+    preview.style.right = '-16px';
+  }
+}
+
+function checkResult() {
+  if (!selection.type || !selection.color) return;
+  
+  const level = LEVELS[currentLevel];
+  const isCorrect = selection.type === level.answer.type && selection.color === level.answer.color;
+  
+  if (isCorrect) {
+    showFeedback("CHÍNH XÁC! Lựa chọn Badge rất hợp lý.", "success");
+    setTimeout(() => {
+      currentLevel = (currentLevel + 1) % LEVELS.length;
+      initLevel();
+    }, 2000);
+  } else {
+    showFeedback(`CHƯA ĐÚNG. ${level.hint}`, "error");
+  }
+}
+
+function showFeedback(text, type) {
+  const fb = document.getElementById('feedback');
+  fb.textContent = text;
+  fb.className = 'feedback show ' + type;
+}
+
+function hideFeedback() {
+  document.getElementById('feedback').className = 'feedback';
+}
+
+document.querySelectorAll('#type-options .opt-btn').forEach(btn => {
+  btn.onclick = () => {
+    selection.type = btn.dataset.val;
+    updateSelectionUI();
+    updateBadgePreview();
+    checkResult();
+  };
+});
+
+document.querySelectorAll('#color-options .opt-btn').forEach(btn => {
+  btn.onclick = () => {
+    selection.color = btn.dataset.val;
+    updateSelectionUI();
+    updateBadgePreview();
+    checkResult();
+  };
+});
+
+function resetLevel() {
+  selection = { type: null, color: null };
+  updateSelectionUI();
+  updateBadgePreview();
+  hideFeedback();
+}
+
+initLevel();
+</script>
+</body>
+</html>

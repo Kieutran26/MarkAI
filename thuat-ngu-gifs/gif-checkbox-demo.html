@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Checkbox Demo — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f0f12;
+  --bgc: #16161b;
+  --bgi: #121217;
+  --bd: #282830;
+  --tx: #e8e4dc;
+  --txm: #707070;
+  --ac: #E88C2E;
+  --abg: rgba(232, 140, 46, 0.1);
+  --abg2: rgba(232, 140, 46, 0.2);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--tx);
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.g {
+  width: 100%;
+  max-width: 940px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 600px) {
+  .g { grid-template-columns: 1fr; }
+}
+
+.c {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Accent Bar */
+.c::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--ac);
+}
+
+/* Pulsating Indicator */
+.c::after {
+  content: '';
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 6px;
+  height: 6px;
+  background: var(--ac);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--ac);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0.3; transform: scale(1); }
+}
+
+.ch {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.ch .n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ac);
+  background: var(--abg);
+  border: 1px solid var(--abg2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+.ch h2 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  text-transform: uppercase;
+}
+
+.st {
+  background: var(--bgi);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  flex: 1;
+  min-height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ins {
+  margin-top: 14px;
+  font-size: 11.5px;
+  color: var(--txm);
+  line-height: 1.6;
+  padding-left: 12px;
+  border-left: 2px solid var(--ac);
+}
+
+.ins strong {
+  color: var(--ac);
+  font-weight: 600;
+}
+
+.val {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--txm);
+  background: rgba(0,0,0,0.2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+/* Checkbox Visual Components */
+.cb-box {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--bd);
+  border-radius: 3px;
+  position: relative;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
+
+.cb-box.checked {
+  background: var(--ac);
+  border-color: var(--ac);
+}
+
+.cb-box.indet {
+  background: transparent;
+  border-color: var(--ac);
+}
+
+.cb-box svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: var(--bg);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 20;
+  stroke-dashoffset: 20;
+  transition: stroke-dashoffset 0.2s ease;
+}
+
+.cb-box.checked svg {
+  stroke-dashoffset: 0;
+}
+
+.cb-box .indet-line {
+  width: 10px;
+  height: 2px;
+  background: var(--ac);
+  border-radius: 1px;
+  display: none;
+}
+
+.cb-box.indet .indet-line {
+  display: block;
+}
+
+.cb-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 4px;
+  transition: background 0.2s;
+  width: 100%;
+}
+
+.cb-item:hover {
+  background: rgba(255,255,255,0.03);
+}
+
+.cb-label {
+  font-size: 13px;
+  color: var(--tx);
+}
+
+.cb-item.active .cb-label {
+  color: var(--ac);
+  font-weight: 500;
+}
+
+/* List Sim */
+.list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+  max-width: 200px;
+}
+
+/* Form Sim */
+.form-card {
+  width: 100%;
+  max-width: 220px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.btn {
+  background: var(--bd);
+  color: var(--txm);
+  border: none;
+  padding: 10px;
+  border-radius: 4px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 13px;
+  cursor: not-allowed;
+  transition: all 0.3s;
+  text-align: center;
+}
+
+.btn.active {
+  background: var(--ac);
+  color: var(--bg);
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(232, 140, 46, 0.3);
+}
+
+</style>
+</head>
+<body>
+
+<div class="g">
+  <!-- 01: States & Logic -->
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>States & Logic</h2></div>
+    <div class="st">
+      <div style="display: flex; flex-direction: column; align-items: center; gap: 15px;">
+        <div id="cb1" class="cb-box">
+          <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
+          <div class="indet-line"></div>
+        </div>
+        <div id="label1" style="font-family: 'JetBrains Mono'; font-size: 12px; color: var(--ac);">UNCHECKED</div>
+      </div>
+      <div class="val">Type: Tri-state</div>
+    </div>
+    <p class="ins">Checkbox có 3 trạng thái chính: <strong>Rỗng</strong> (Unchecked), <strong>Chọn</strong> (Checked) và <strong>Nửa-chọn</strong> (Indeterminate).</p>
+  </section>
+
+  <!-- 02: Multiple Choice -->
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Multiple Choice</h2></div>
+    <div class="st">
+      <div class="list-container">
+        <div class="cb-item" id="item2_1">
+          <div class="cb-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          <span class="cb-label">Facebook Ads</span>
+        </div>
+        <div class="cb-item" id="item2_2">
+          <div class="cb-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          <span class="cb-label">Google Search</span>
+        </div>
+        <div class="cb-item" id="item2_3">
+          <div class="cb-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          <span class="cb-label">TikTok Shop</span>
+        </div>
+      </div>
+      <div class="val" id="count2">Selected: 0</div>
+    </div>
+    <p class="ins">Khác với Radio Button, Checkbox cho phép chọn <strong>nhiều phương án</strong> cùng lúc trong một danh sách.</p>
+  </section>
+
+  <!-- 03: Parent & Child -->
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Parent & Child</h2></div>
+    <div class="st">
+      <div class="list-container">
+        <div class="cb-item" id="parent3" style="border-bottom: 1px solid var(--bd); padding-bottom: 10px; margin-bottom: 6px;">
+          <div class="cb-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg><div class="indet-line"></div></div>
+          <span class="cb-label" style="font-weight: 700;">Select All</span>
+        </div>
+        <div style="padding-left: 14px; display: flex; flex-direction: column; gap: 4px;">
+          <div class="cb-item" id="child3_1">
+            <div class="cb-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+            <span class="cb-label">Email Campaign</span>
+          </div>
+          <div class="cb-item" id="child3_2">
+            <div class="cb-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+            <span class="cb-label">SMS Blast</span>
+          </div>
+        </div>
+      </div>
+      <div class="val" id="status3">Status: Mixed</div>
+    </div>
+    <p class="ins">Logic <strong>Cha-Con</strong> giúp quản lý các nhóm tùy chọn lớn một cách thông minh và tiết kiệm thao tác.</p>
+  </section>
+
+  <!-- 04: Form Guard -->
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Form Guard</h2></div>
+    <div class="st">
+      <div class="form-card">
+        <div style="height: 10px; width: 40%; background: var(--bd); border-radius: 2px;"></div>
+        <div style="height: 30px; width: 100%; background: var(--bgi); border: 1px solid var(--bd); border-radius: 4px;"></div>
+        <div class="cb-item" id="guard4">
+          <div class="cb-box"><svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg></div>
+          <span class="cb-label" style="font-size: 11px;">I agree to Terms & Conditions</span>
+        </div>
+        <div class="btn" id="btn4">SUBMIT FORM</div>
+      </div>
+      <div class="val" id="msg4">Waiting...</div>
+    </div>
+    <p class="ins">Trong các Form, Checkbox thường đóng vai trò là <strong>người gác cổng</strong> cho các hành động quan trọng.</p>
+  </section>
+</div>
+
+<script>
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// 01: States & Logic
+(async function() {
+  const cb = document.getElementById('cb1');
+  const label = document.getElementById('label1');
+  
+  while (true) {
+    // Unchecked
+    cb.classList.remove('checked', 'indet');
+    label.textContent = 'UNCHECKED';
+    label.style.color = 'var(--txm)';
+    await wait(2000);
+    
+    // Checked
+    cb.classList.add('checked');
+    label.textContent = 'CHECKED';
+    label.style.color = 'var(--ac)';
+    await wait(2000);
+    
+    // Indeterminate
+    cb.classList.remove('checked');
+    cb.classList.add('indet');
+    label.textContent = 'INDETERMINATE';
+    label.style.color = 'var(--ac)';
+    await wait(2000);
+  }
+})();
+
+// 02: Multiple Choice
+(async function() {
+  const items = [
+    document.getElementById('item2_1'),
+    document.getElementById('item2_2'),
+    document.getElementById('item2_3')
+  ];
+  const count = document.getElementById('count2');
+  
+  while (true) {
+    // Reset
+    items.forEach(item => {
+      item.classList.remove('active');
+      item.querySelector('.cb-box').classList.remove('checked');
+    });
+    count.textContent = 'Selected: 0';
+    await wait(1500);
+    
+    // Select one by one
+    for(let i=0; i<items.length; i++) {
+      items[i].classList.add('active');
+      items[i].querySelector('.cb-box').classList.add('checked');
+      count.textContent = `Selected: ${i+1}`;
+      await wait(1000);
+    }
+    
+    await wait(2000);
+  }
+})();
+
+// 03: Parent & Child
+(async function() {
+  const parent = document.getElementById('parent3');
+  const parentBox = parent.querySelector('.cb-box');
+  const children = [
+    document.getElementById('child3_1'),
+    document.getElementById('child3_2')
+  ];
+  const status = document.getElementById('status3');
+  
+  while (true) {
+    // Step 1: All Unchecked
+    parentBox.classList.remove('checked', 'indet');
+    children.forEach(c => {
+      c.classList.remove('active');
+      c.querySelector('.cb-box').classList.remove('checked');
+    });
+    status.textContent = 'Status: None';
+    await wait(2000);
+    
+    // Step 2: One child checked -> Parent Indeterminate
+    children[0].classList.add('active');
+    children[0].querySelector('.cb-box').classList.add('checked');
+    parentBox.classList.add('indet');
+    status.textContent = 'Status: Mixed';
+    await wait(2000);
+    
+    // Step 3: All children checked -> Parent Checked
+    children[1].classList.add('active');
+    children[1].querySelector('.cb-box').classList.add('checked');
+    parentBox.classList.remove('indet');
+    parentBox.classList.add('checked');
+    status.textContent = 'Status: All Selected';
+    await wait(2000);
+  }
+})();
+
+// 04: Form Guard
+(async function() {
+  const guard = document.getElementById('guard4');
+  const guardBox = guard.querySelector('.cb-box');
+  const btn = document.getElementById('btn4');
+  const msg = document.getElementById('msg4');
+  
+  while (true) {
+    // Reset
+    guard.classList.remove('active');
+    guardBox.classList.remove('checked');
+    btn.classList.remove('active');
+    msg.textContent = 'Waiting...';
+    msg.style.color = 'var(--txm)';
+    await wait(2000);
+    
+    // User checks the guard
+    guard.classList.add('active');
+    guardBox.classList.add('checked');
+    btn.classList.add('active');
+    msg.textContent = 'Ready to Submit';
+    msg.style.color = 'var(--ac)';
+    await wait(2000);
+    
+    // Submit
+    msg.textContent = 'Submitted!';
+    btn.style.transform = 'scale(0.95)';
+    await wait(100);
+    btn.style.transform = 'scale(1)';
+    await wait(3000);
+  }
+})();
+</script>
+</body>
+</html>

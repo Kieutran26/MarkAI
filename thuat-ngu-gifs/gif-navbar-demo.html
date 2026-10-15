@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nav bar Demo - Amber Brutalist</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --amber: #E88C2E;
+            --bg: #0a0a0c;
+            --card-bg: #16161b;
+            --text: #e0e0e6;
+            --text-muted: #707070;
+            --border: #2a2a30;
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-sans: 'Space Grotesk', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: var(--font-sans);
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 14px;
+            width: 100%;
+            max-width: 940px;
+        }
+
+        @media (max-width: 600px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            position: relative;
+            padding-top: 2px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .accent-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--amber);
+        }
+
+        .header {
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .num-box {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            border: 1px solid rgba(232, 140, 46, 0.4);
+            padding: 3px 8px;
+            color: var(--amber);
+            background: rgba(232, 140, 46, 0.05);
+            border-radius: 2px;
+            line-height: 1;
+        }
+
+        .title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            color: #ffffff;
+            letter-spacing: -0.01em;
+        }
+
+        .indicator {
+            position: absolute;
+            top: 14px;
+            right: 16px;
+            width: 8px;
+            height: 8px;
+            background: var(--amber);
+            border-radius: 50%;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; box-shadow: 0 0 5px var(--amber); }
+            50% { opacity: 0.3; }
+        }
+
+        .simulation {
+            height: 160px;
+            position: relative;
+            background: #0f0f13;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        .ins {
+            padding: 12px 16px;
+            font-size: 11.5px;
+            color: var(--text-muted);
+            border-left: 2px solid var(--amber);
+            line-height: 1.5;
+            background: rgba(232, 140, 46, 0.03);
+            min-height: 64px;
+        }
+
+        .ins strong {
+            color: var(--amber);
+            font-weight: 600;
+        }
+
+        /* Nav Elements */
+        .nav-container {
+            width: 100%;
+            background: #1c1c24;
+            border: 1px solid var(--border);
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 12px;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+
+        .logo {
+            font-family: var(--font-mono);
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--amber);
+        }
+
+        .links {
+            display: flex;
+            gap: 12px;
+        }
+
+        .link {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            position: relative;
+        }
+
+        .link.active {
+            color: var(--amber);
+        }
+
+        .link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 1.5px;
+            background: var(--amber);
+        }
+
+        .cta-btn {
+            background: var(--amber);
+            color: #000;
+            font-size: 9px;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 2px;
+        }
+
+        /* Simulation Specifics */
+        .scroll-box {
+            width: 100%;
+            height: 120px;
+            border: 1px dashed #333;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .content-scroll {
+            padding-top: 50px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .dummy-line {
+            height: 8px;
+            background: #222;
+            border-radius: 4px;
+            width: 80%;
+        }
+
+        .dummy-line.short { width: 40%; }
+
+        .cursor {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            background: var(--amber);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 100;
+            opacity: 0;
+            mix-blend-mode: difference;
+            transition: opacity 0.2s;
+        }
+
+        .mobile-toggle {
+            width: 20px;
+            height: 14px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .bar { height: 2px; background: var(--text); width: 100%; transition: 0.3s; }
+        
+        .nav-container.scrolled {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            background: #25252d;
+            border-color: #3a3a45;
+        }
+    </style>
+</head>
+<body>
+    <div class="grid">
+        <!-- 01: Layout Structure -->
+        <div class="card">
+            <div class="accent-bar"></div>
+            <div class="indicator"></div>
+            <div class="header">
+                <div class="num-box">01</div>
+                <div class="title">Standard Layout</div>
+            </div>
+            <div class="simulation" id="sim1">
+                <div class="nav-container">
+                    <div class="logo">LOGO</div>
+                    <div class="links">
+                        <div class="link">Home</div>
+                        <div class="link">About</div>
+                        <div class="link">Blog</div>
+                    </div>
+                    <div class="cta-btn">JOIN</div>
+                </div>
+            </div>
+            <div class="ins">
+                Cấu trúc chuẩn của <strong>Nav bar</strong> gồm <strong>Logo</strong>, danh sách <strong>Links</strong> và nút <strong>CTA</strong> (Call to Action).
+            </div>
+        </div>
+
+        <!-- 02: Sticky Behavior -->
+        <div class="card">
+            <div class="accent-bar"></div>
+            <div class="indicator"></div>
+            <div class="header">
+                <div class="num-box">02</div>
+                <div class="title">Sticky & Shadow</div>
+            </div>
+            <div class="simulation" id="sim2" style="padding: 10px;">
+                <div class="scroll-box">
+                    <div class="nav-container" id="sticky-nav" style="position: absolute; top: 0; left: 0; z-index: 10; border-radius: 0; border-left: none; border-right: none;">
+                        <div class="logo">BRAND</div>
+                        <div class="links">
+                            <div class="link">Docs</div>
+                            <div class="link">Pricing</div>
+                        </div>
+                    </div>
+                    <div class="content-scroll" id="scroll-content">
+                        <div class="dummy-line"></div>
+                        <div class="dummy-line"></div>
+                        <div class="dummy-line short"></div>
+                        <div class="dummy-line"></div>
+                        <div class="dummy-line short"></div>
+                        <div class="dummy-line"></div>
+                        <div class="dummy-line"></div>
+                        <div class="dummy-line"></div>
+                        <div class="dummy-line short"></div>
+                        <div class="dummy-line"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="ins">
+                Khi cuộn trang, thanh điều hướng có thể <strong>cố định (Sticky)</strong> ở trên cùng và thêm <strong>bóng đổ (Shadow)</strong> để tách biệt với nội dung bên dưới.
+            </div>
+        </div>
+
+        <!-- 03: Interactive States -->
+        <div class="card">
+            <div class="accent-bar"></div>
+            <div class="indicator"></div>
+            <div class="header">
+                <div class="num-box">03</div>
+                <div class="title">Interactive States</div>
+            </div>
+            <div class="simulation" id="sim3">
+                <div class="cursor" id="cursor3"></div>
+                <div class="nav-container" style="justify-content: center; gap: 20px;">
+                    <div class="link" id="link-home">HOME</div>
+                    <div class="link" id="link-work">WORK</div>
+                    <div class="link" id="link-contact">CONTACT</div>
+                </div>
+            </div>
+            <div class="ins">
+                Nav bar cung cấp phản hồi trực quan qua trạng thái <strong>Hover</strong> (di chuột) và <strong>Active</strong> (trang hiện tại) để định hướng người dùng.
+            </div>
+        </div>
+
+        <!-- 04: Mobile Responsive -->
+        <div class="card">
+            <div class="accent-bar"></div>
+            <div class="indicator"></div>
+            <div class="header">
+                <div class="num-box">04</div>
+                <div class="title">Responsive Switch</div>
+            </div>
+            <div class="simulation" id="sim4">
+                <div class="nav-container" id="responsive-nav" style="max-width: 180px;">
+                    <div class="logo" style="font-size: 11px;">MOBI</div>
+                    <div class="mobile-toggle">
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                        <div class="bar"></div>
+                    </div>
+                </div>
+                <div id="desktop-nav-sim" class="nav-container" style="position: absolute; transform: scale(0.6); opacity: 0; width: 280px;">
+                     <div class="logo">DESK</div>
+                     <div class="links">
+                        <div class="link">Menu 1</div>
+                        <div class="link">Menu 2</div>
+                        <div class="link">Menu 3</div>
+                     </div>
+                </div>
+            </div>
+            <div class="ins">
+                Trên màn hình nhỏ, Nav bar thu gọn các mục menu vào một <strong>nút điều hướng (Hamburger)</strong> để tối ưu không gian hiển thị.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const wait = ms => new Promise(r => setTimeout(r, ms));
+
+        // Card 1: Static Layout (No heavy animation, maybe subtle glow)
+        async function loop1() {
+            const items = document.querySelectorAll('#sim1 .link, #sim1 .cta-btn');
+            while(true) {
+                for(let item of items) {
+                    item.style.transition = 'color 0.5s, box-shadow 0.5s';
+                    item.style.color = 'var(--amber)';
+                    if(item.classList.contains('cta-btn')) item.style.boxShadow = '0 0 10px var(--amber)';
+                    await wait(800);
+                    item.style.color = '';
+                    item.style.boxShadow = '';
+                    await wait(200);
+                }
+                await wait(1000);
+            }
+        }
+
+        // Card 2: Sticky Scroll
+        async function loop2() {
+            const content = document.getElementById('scroll-content');
+            const nav = document.getElementById('sticky-nav');
+            while(true) {
+                // Scroll down
+                nav.classList.remove('scrolled');
+                content.style.transition = 'transform 2s ease-in-out';
+                content.style.transform = 'translateY(0)';
+                await wait(1000);
+                
+                content.style.transform = 'translateY(-60px)';
+                await wait(500);
+                nav.classList.add('scrolled');
+                await wait(2000);
+
+                // Reset
+                content.style.transition = 'transform 0.5s ease-in';
+                content.style.transform = 'translateY(0)';
+                nav.classList.remove('scrolled');
+                await wait(1500);
+            }
+        }
+
+        // Card 3: Interactive States
+        async function loop3() {
+            const cursor = document.getElementById('cursor3');
+            const links = [
+                document.getElementById('link-home'),
+                document.getElementById('link-work'),
+                document.getElementById('link-contact')
+            ];
+
+            while(true) {
+                cursor.style.opacity = 0;
+                links.forEach(l => {
+                    l.classList.remove('active');
+                    l.style.color = '';
+                });
+                await wait(1000);
+
+                // Set HOME as active initially
+                links[0].classList.add('active');
+                await wait(800);
+
+                // Move to WORK
+                cursor.style.opacity = 1;
+                const rect = links[1].getBoundingClientRect();
+                const simRect = document.getElementById('sim3').getBoundingClientRect();
+                cursor.style.left = (rect.left - simRect.left + rect.width/2) + 'px';
+                cursor.style.top = (rect.top - simRect.top + rect.height/2) + 'px';
+                
+                await wait(600);
+                links[1].style.color = 'var(--text)';
+                links[1].style.textShadow = '0 0 5px var(--amber)';
+                await wait(800);
+                
+                // Click WORK (make it active)
+                links[0].classList.remove('active');
+                links[1].classList.add('active');
+                links[1].style.textShadow = '';
+                await wait(1500);
+            }
+        }
+
+        // Card 4: Responsive Switch
+        async function loop4() {
+            const mobile = document.getElementById('responsive-nav');
+            const desktop = document.getElementById('desktop-nav-sim');
+            
+            while(true) {
+                // Show Desktop
+                mobile.style.transition = 'opacity 0.5s, transform 0.5s';
+                desktop.style.transition = 'opacity 0.5s, transform 0.5s';
+                
+                mobile.style.opacity = 0;
+                mobile.style.transform = 'scale(0.8)';
+                await wait(200);
+                desktop.style.opacity = 1;
+                desktop.style.transform = 'scale(1)';
+                await wait(2500);
+
+                // Switch to Mobile
+                desktop.style.opacity = 0;
+                desktop.style.transform = 'scale(1.2)';
+                await wait(200);
+                mobile.style.opacity = 1;
+                mobile.style.transform = 'scale(1)';
+                await wait(2500);
+            }
+        }
+
+        loop1();
+        loop2();
+        loop3();
+        loop4();
+    </script>
+</body>
+</html>

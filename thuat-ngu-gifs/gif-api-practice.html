@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API Practice — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#101010;--bgc:#181818;--bgi:#131313;
+  --bd:#272727;--tx:#e0e0e0;--txm:#707070;--txd:#3a3a3a;
+  --ac:#E88C2E;--acl:#ffb05c;
+  --abg:rgba(232,140,46,.08);--abg2:rgba(232,140,46,.18);
+  --success:#22c55e;--error:#ef4444;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Space Grotesk',sans-serif;
+  background-color:var(--bg);
+  background-image:
+    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:20px 20px;
+  color:var(--tx);min-height:100vh;padding:24px 16px;
+}
+.pr{max-width:900px;margin:0 auto}
+.pr-h{margin-bottom:24px;border-left:2px solid var(--ac);padding-left:16px}
+.pr-g{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ac);font-weight:700;letter-spacing:1px;margin-bottom:4px}
+.pr-d{font-size:13px;color:var(--txm)}
+
+.pr-card{background:var(--bgc);border:1px solid var(--bd);padding:24px;position:relative;border-radius:3px}
+
+.stages{display:flex;gap:1px;background:var(--bd);margin-bottom:24px;border:1px solid var(--bd);border-radius:2px;overflow:hidden}
+.stg{flex:1;background:var(--bgc);padding:12px;cursor:pointer;transition:all .2s;text-align:center}
+.stg.on{background:var(--bgi);box-shadow:inset 0 -2px 0 var(--ac)}
+.stg.done{background:rgba(34,197,94,.03)}
+.stg-n{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--txm);display:block;margin-bottom:4px}
+.stg-v{font-size:11px;font-weight:600}
+
+.panel-w{min-height:280px;background:var(--bgi);border:1px solid var(--bd);border-radius:2px;padding:24px;margin-bottom:24px;position:relative}
+.panel{display:none}
+.panel.on{display:block;animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+
+.panel-h{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--ac);font-weight:700;margin-bottom:16px;text-transform:uppercase;letter-spacing:1px}
+
+.code{background:#000;border:1px solid var(--bd);padding:16px;border-radius:2px;font-family:'JetBrains Mono',monospace;font-size:11px;line-height:1.7;margin-bottom:16px;overflow-x:auto}
+.c-kw{color:#c678dd}
+.c-v{color:#e06c75}
+.c-s{color:#98c379}
+.c-m{color:var(--txm)}
+
+.btn{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:12px 24px;background:var(--bg);border:1px solid var(--bd);color:var(--tx);cursor:pointer;transition:all .2s;border-radius:2px;text-transform:uppercase}
+.btn:hover{border-color:var(--ac);color:var(--ac)}
+.btn-primary{background:var(--ac);color:#000;border-color:var(--ac)}
+.btn-primary:hover{background:var(--acl)}
+
+.fb{padding:12px 16px;border:1px solid var(--bd);font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txm);background:var(--bg);margin-top:16px}
+.fb.ok{border-color:var(--success);color:var(--success)}
+
+.data-res{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+.data-i{background:var(--bgc);border:1px solid var(--bd);padding:12px;border-radius:2px}
+.di-l{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--txm);text-transform:uppercase;margin-bottom:4px;display:block}
+.di-v{font-size:14px;font-weight:700;color:var(--ac)}
+  
+/* Badge Hint - Vibecode Style */
+.btn-hint {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ac);
+  color: #000;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  padding: 2px 6px;
+  border-radius: 2px;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: pulseTop 2s infinite;
+  z-index: 999;
+  font-weight: 700;
+}
+.btn-hint::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid var(--ac);
+}
+@keyframes pulseTop {
+  0% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.08); }
+  100% { transform: translateX(-50%) scale(1); }
+}
+</style>
+</head>
+<body>
+
+<main class="pr">
+  <div class="pr-h">
+    <div class="pr-g">API REQUEST FLOW</div>
+    <p class="pr-d">Chạy mô phỏng để hiểu cách dữ liệu di chuyển từ App đến Server.</p>
+  </div>
+
+  <div class="pr-card">
+    <div class="stages">
+      <div class="stg on" id="s0"><span class="stg-n">STEP 1</span><span class="stg-v">Prepare</span></div>
+      <div class="stg" id="s1"><span class="stg-n">STEP 2</span><span class="stg-v">Auth</span></div>
+      <div class="stg" id="s2"><span class="stg-n">STEP 3</span><span class="stg-v">Process</span></div>
+      <div class="stg" id="s3"><span class="stg-n">STEP 4</span><span class="stg-v">Respond</span></div>
+    </div>
+
+    <div class="panel-w">
+      <!-- Panel 0 -->
+      <div class="panel on" id="p0">
+        <div class="panel-h">Your App — Chuẩn bị yêu cầu</div>
+        <div class="code">
+          <span class="c-m">// Bước 1: Khai báo endpoint và dữ liệu cần lấy</span><br>
+          <span class="c-kw">const</span> <span class="c-v">endpoint</span> = <span class="c-s">"https://api.example.com/users"</span>;<br>
+          <span class="c-kw">const</span> <span class="c-v">query</span> = <span class="c-s">"lan@company.com"</span>;
+        </div>
+        <p style="font-size:12px;color:var(--txm)">App chuẩn bị các thông tin cần thiết trước khi gửi đi.</p>
+      </div>
+
+      <!-- Panel 1 -->
+      <div class="panel" id="p1">
+        <div class="panel-h">Request Header — Gắn mã bảo mật</div>
+        <div class="code">
+          <span class="c-kw">GET</span> <span class="c-s">/users?email=lan@company.com</span><br>
+          <span class="c-kw">Authorization:</span> <span class="c-v">Bearer sk-proj-aB3dE...</span><br>
+          <span class="c-kw">Content-Type:</span> <span class="c-s">application/json</span>
+        </div>
+        <p style="font-size:12px;color:var(--txm)">API Key được gắn vào <strong>Header</strong> để Server xác thực danh tính của bạn.</p>
+      </div>
+
+      <!-- Panel 2 -->
+      <div class="panel" id="p2">
+        <div class="panel-h">Server — Xử lý nghiệp vụ</div>
+        <div class="code">
+          <span class="c-m">// 1. Xác thực API Key</span><br>
+          <span class="c-m">// 2. Kiểm tra quyền truy cập (Read)</span><br>
+          <span class="c-m">// 3. Truy vấn Database lấy thông tin User</span>
+        </div>
+        <p style="font-size:12px;color:var(--txm)">Server kiểm tra "chìa khóa" và tìm kiếm dữ liệu bạn yêu cầu.</p>
+      </div>
+
+      <!-- Panel 3 -->
+      <div class="panel" id="p3">
+        <div class="panel-h">Response — Kết quả trả về</div>
+        <div class="code">
+          {<br>
+          &nbsp;&nbsp;<span class="c-v">"name"</span>: <span class="c-s">"Lan Nguyen"</span>,<br>
+          &nbsp;&nbsp;<span class="c-v">"role"</span>: <span class="c-s">"Marketer"</span>,<br>
+          &nbsp;&nbsp;<span class="c-v">"plan"</span>: <span class="c-s">"Pro"</span><br>
+          }
+        </div>
+        <div class="data-res">
+          <div class="data-i"><span class="di-l">Name</span><span class="di-v">Lan Nguyen</span></div>
+          <div class="data-i"><span class="di-l">Role</span><span class="di-v">Marketer</span></div>
+          <div class="data-i"><span class="di-l">Plan</span><span class="di-v">Pro</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:12px">
+      <button class="btn btn-primary" id="runBtn" onclick="run()" style="position: relative;">
+        Chạy Flow
+        <div class="btn-hint">Click me!</div>
+      </button>
+      <button class="btn" onclick="reset()">Reset</button>
+    </div>
+
+    <div class="fb" id="fb">Nhấn "Chạy Flow" để xem quy trình.</div>
+  </div>
+</main>
+
+<script>
+let step = 0;
+let running = false;
+
+async function run() {
+    if(running) return;
+    running = true;
+    document.getElementById('runBtn').disabled = true;
+    
+    // Hide hint on click
+    const hint = document.querySelector('.btn-hint');
+    if (hint) hint.style.display = 'none';
+    
+    for(let i=0; i<4; i++) {
+        showStep(i);
+        document.getElementById('fb').textContent = `Đang xử lý bước ${i+1}...`;
+        await new Promise(r => setTimeout(r, 1500));
+    }
+    
+    document.getElementById('fb').className = 'fb ok';
+    document.getElementById('fb').textContent = 'Hoàn tất! Bạn đã thấy cách API Key bảo vệ dữ liệu.';
+    running = false;
+    document.getElementById('runBtn').disabled = false;
+}
+
+function showStep(idx) {
+    step = idx;
+    for(let i=0; i<4; i++) {
+        document.getElementById('s'+i).className = 'stg' + (i===idx?' on':'') + (i<idx?' done':'');
+        document.getElementById('p'+i).className = 'panel' + (i===idx?' on':'');
+    }
+}
+
+function reset() {
+    step = 0;
+    running = false;
+    document.getElementById('runBtn').disabled = false;
+    document.getElementById('fb').className = 'fb';
+    document.getElementById('fb').textContent = 'Nhấn "Chạy Flow" để xem quy trình.';
+    showStep(0);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Drawer Practice — Vibecode Glossary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#141413;--bgc:#1c1b19;--fg:#e5ddd0;--mu:#6e675d;
+  --ac:#d4722a;--ag:rgba(212,114,42,.1);
+  --bd:#2e2a26;--lb:#a89d90;
+  --ok:#5a9e6f;--er:#c45c4a;
+  --mn:'JetBrains Mono',monospace;--sn:'Space Grotesk',sans-serif;
+  --ms:#2a2826;--msb:#3a3530;--msf:#c5bdb0;--msm:#7a7268;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--bg);color:var(--fg);font-family:var(--sn);
+  min-height:100vh;-webkit-font-smoothing:antialiased;
+  padding:20px;
+}
+
+/* Builder Container */
+.builder{
+  max-width:800px;margin:0 auto;
+  background:var(--bgc);border:1px solid var(--bd);
+  display:grid;grid-template-columns:300px 1fr;
+  min-height:400px;
+}
+@media(max-width:700px){
+  .builder{grid-template-columns:1fr;min-height:auto}
+}
+
+/* Controls */
+.controls{
+  padding:24px;border-right:1px solid var(--bd);
+  display:flex;flex-direction:column;gap:20px;
+}
+.control-group{display:flex;flex-direction:column;gap:10px}
+.label{font-family:var(--mn);font-size:10px;text-transform:uppercase;color:var(--mu);letter-spacing:1px}
+
+.btn-group{display:flex;border:1px solid var(--bd);overflow:hidden;border-radius:4px}
+.btn-opt{
+  flex:1;background:var(--ms);border:none;color:var(--mu);
+  padding:8px;font-family:var(--mn);font-size:10px;cursor:pointer;
+  transition:all 0.2s;
+}
+.btn-opt.ac{background:var(--ac);color:#fff}
+.btn-opt:not(:last-child){border-right:1px solid var(--bd)}
+
+/* Preview Area */
+.preview-wrap{
+  flex:1;background:var(--bgc);position:relative;
+  display:flex;flex-direction:column;overflow:visible;
+}
+.preview-header{
+  height:44px;background:var(--bgc);border-bottom:1px solid var(--bd);
+  display:flex;align-items:center;padding:0 16px;gap:12px;
+}
+.menu-btn{
+  width:32px;height:32px;border:1px solid var(--bd);background:var(--ms);
+  display:flex;flex-direction:column;justify-content:center;align-items:center;gap:3px;
+  cursor:pointer;border-radius:4px;position:relative;
+}
+.menu-btn span{width:14px;height:1.5px;background:var(--fg)}
+
+.btn-hint{
+  position:absolute;top:50%;right:calc(100% + 8px);transform:translateY(-50%);
+  background:var(--ac);color:#fff;
+  font-family:var(--mn);font-size:8px;padding:2px 6px;border-radius:2px;
+  white-space:nowrap;pointer-events:none;animation:pulseLeft 2s infinite;
+  z-index:999;
+}
+.btn-hint::after{
+  content:'';position:absolute;right:-4px;top:50%;transform:translateY(-50%);
+  border-top:4px solid transparent;border-bottom:4px solid transparent;border-left:4px solid var(--ac);
+}
+@keyframes pulseLeft{
+  0%{transform:translateY(-50%) scale(1)}
+  50%{transform:translateY(-50%) scale(1.1)}
+  100%{transform:translateY(-50%) scale(1)}
+}
+
+.preview-content{padding:20px;flex:1;display:flex;flex-direction:column;gap:12px}
+.skeleton-bar{height:12px;background:var(--ms);border-radius:2px;width:100%}
+.skeleton-box{height:100px;background:var(--ms);border-radius:4px;width:100%}
+
+/* Interactive Drawer */
+.drawer{
+  position:absolute;background:var(--bgc);z-index:100;
+  transition:transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s;
+  display:flex;flex-direction:column;visibility:hidden;
+  border:1px solid var(--bd);box-shadow:0 10px 30px rgba(0,0,0,0.5);
+}
+.drawer.open{ visibility:visible; }
+
+.drawer-header{padding:16px;border-bottom:1px solid var(--bd);font-family:var(--sn);font-weight:600}
+.drawer-items{padding:12px;display:flex;flex-direction:column;gap:8px}
+.drawer-item{
+  padding:10px;background:var(--ms);border-radius:4px;
+  display:flex;align-items:center;gap:10px;font-size:12px;
+}
+.drawer-item::before{content:'';width:8px;height:8px;background:var(--mu);border-radius:50%}
+
+/* Drawer States */
+.drawer.side{top:0;bottom:0;left:0;width:240px;transform:translateX(-100%)}
+.drawer.bottom{left:0;right:0;bottom:0;height:240px;transform:translateY(100%);border-top-left-radius:16px;border-top-right-radius:16px}
+
+.drawer.open{transform:translate(0,0)!important}
+
+/* Persistent logic */
+.builder.persistent.side .preview-wrap{ flex-direction:row }
+.builder.persistent .drawer.side{
+  left:0;position:relative;transform:none;visibility:visible;
+  box-shadow:none;width:160px;border-right:1px solid var(--bd);
+}
+.builder.persistent .drawer.bottom{
+  bottom:0;position:relative;transform:none;visibility:visible;
+  box-shadow:none;height:120px;border-top:1px solid var(--bd);
+}
+.builder.persistent.side .menu-btn{display:none}
+.builder.persistent.bottom .menu-btn{display:none}
+
+.overlay{
+  position:absolute;inset:0;background:rgba(0,0,0,0.6);
+  opacity:0;pointer-events:none;transition:opacity 0.4s;z-index:90;
+}
+.overlay.ac{opacity:1;pointer-events:auto}
+
+.hint{font-family:var(--mn);font-size:9px;color:var(--mu);margin-top:auto;line-height:1.5}
+</style>
+</head>
+<body>
+
+<div class="builder" id="builder">
+  <div class="controls">
+    <div class="control-group">
+      <div class="label" style="color:var(--ok)">Mục tiêu (Goal)</div>
+      <div style="font-size:11px;line-height:1.6;color:var(--msf)">
+        Thử nghiệm các cấu hình Drawer để thấy sự khác biệt giữa việc <b>đè lên</b> (Temporary) và <b>đẩy</b> (Persistent) nội dung.
+      </div>
+    </div>
+
+    <div class="control-group">
+      <div class="label">Vị trí (Position)</div>
+      <div class="btn-group">
+        <button class="btn-opt ac" onclick="setPos('side')">Side</button>
+        <button class="btn-opt" onclick="setPos('bottom')">Bottom</button>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <div class="label">Chế độ (Mode)</div>
+      <div class="btn-group">
+        <button class="btn-opt ac" onclick="setMode('temporary')">Temporary</button>
+        <button class="btn-opt" onclick="setMode('persistent')">Persistent</button>
+      </div>
+    </div>
+
+    <div class="hint">
+      • Temporary: Trượt đè lên nội dung, cần overlay.<br>
+      • Persistent: Đẩy nội dung hoặc cố định tại chỗ.<br>
+      • Side: Dành cho Desktop/Tablet.<br>
+      • Bottom: Phổ biến trên Mobile.
+    </div>
+  </div>
+
+  <div class="preview-wrap">
+    <div class="overlay" id="overlay" onclick="closeDrawer()"></div>
+    
+    <div class="drawer side" id="drawer">
+      <div class="drawer-header" id="drawerTitle">Navigation</div>
+      <div class="drawer-items">
+        <div class="drawer-item">Dashboard</div>
+        <div class="drawer-item">Analytics</div>
+        <div class="drawer-item">Messages</div>
+        <div class="drawer-item">Settings</div>
+      </div>
+    </div>
+
+    <div class="preview-header">
+      <div class="menu-btn" onclick="openDrawer()" id="menuBtn">
+        <span></span><span></span><span></span>
+        <div class="btn-hint">Click me!</div>
+      </div>
+      <div style="font-family:var(--mn);font-size:10px;color:var(--mu)">APP PREVIEW</div>
+    </div>
+
+    <div class="preview-content">
+      <div style="width:40%;height:20px;background:var(--msb);margin-bottom:10px"></div>
+      <div class="skeleton-bar" style="width:90%"></div>
+      <div class="skeleton-bar" style="width:95%"></div>
+      <div class="skeleton-bar" style="width:70%"></div>
+      <div class="skeleton-box"></div>
+      <div class="skeleton-bar"></div>
+      <div class="skeleton-bar" style="width:80%"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+let currentPos = 'side';
+let currentMode = 'temporary';
+
+function setPos(pos) {
+  currentPos = pos;
+  updateButtons('Vị trí (Position)', pos);
+  applyConfig();
+}
+
+function setMode(mode) {
+  currentMode = mode;
+  updateButtons('Chế độ (Mode)', mode);
+  applyConfig();
+}
+
+function updateButtons(label, val) {
+  const groups = document.querySelectorAll('.control-group');
+  groups.forEach(g => {
+    if (g.querySelector('.label').textContent.includes(label)) {
+      g.querySelectorAll('.btn-opt').forEach(b => {
+        b.classList.toggle('ac', b.textContent.toLowerCase() === val.toLowerCase());
+      });
+    }
+  });
+}
+
+function applyConfig() {
+  const builder = document.getElementById('builder');
+  const drawer = document.getElementById('drawer');
+  const overlay = document.getElementById('overlay');
+  const hint = document.querySelector('.btn-hint');
+  
+  // Reset
+  closeDrawer();
+  drawer.className = 'drawer ' + currentPos;
+  builder.className = 'builder ' + currentMode + ' ' + currentPos;
+  
+  const drawerTitle = document.getElementById('drawerTitle');
+  drawerTitle.textContent = currentPos === 'side' ? 'Navigation' : 'Quick Actions';
+
+  if (currentMode === 'persistent') {
+    overlay.classList.remove('ac');
+    if(hint) hint.style.display = 'none';
+  } else {
+    if(hint) hint.style.display = 'block';
+  }
+}
+
+function openDrawer() {
+  if (currentMode === 'persistent') return;
+  const drawer = document.getElementById('drawer');
+  const overlay = document.getElementById('overlay');
+  const hint = document.querySelector('.btn-hint');
+  drawer.classList.add('open');
+  overlay.classList.add('ac');
+  if(hint) hint.style.display = 'none';
+}
+
+function closeDrawer() {
+  const drawer = document.getElementById('drawer');
+  const overlay = document.getElementById('overlay');
+  drawer.classList.remove('open');
+  overlay.classList.remove('ac');
+}
+</script>
+
+</body>
+</html>

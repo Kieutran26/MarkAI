@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Font Weight — Animated</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;--card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a;--ok:#4a8a5a;--err:#a03030}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 100%,16px 16px;display:flex;flex-direction:column;align-items:center;min-height:100vh;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:12px;gap:16px}
+.aw{width:min(700px,100%)}
+.ab{width:700px;height:412px;background:var(--card);border:2px solid var(--border);transform-origin:top left;overflow:hidden}
+.hd{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
+.hd-t{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:2.5px}
+.hd-f{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
+.la{position:relative;width:100%;height:260px;background:linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);background-size:30px 30px;overflow:hidden}
+.fr{position:absolute;inset:0;display:flex;flex-direction:column;padding:12px 20px;opacity:0;pointer-events:none;transition:opacity .3s}.fr.show{opacity:1;pointer-events:auto}
+.si{opacity:0;transform:translateY(4px);transition:opacity .25s,transform .25s}.fr.show .si{opacity:1;transform:translateY(0)}
+.fl{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;color:var(--accent);letter-spacing:2px;text-transform:uppercase;margin-bottom:6px}
+
+/* Weight table */
+.wt{display:flex;flex-direction:column;gap:3px;flex:1;min-height:0}
+.wr{display:flex;align-items:center;gap:8px;padding:3px 0;border-bottom:1px solid rgba(48,44,40,.3)}
+.wr:last-child{border-bottom:none}
+.wn{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);min-width:52px;letter-spacing:.5px}
+.wv{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--accent);min-width:28px;font-weight:700}
+.ws{flex:1;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.wu{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);min-width:90px;text-align:right;letter-spacing:.3px;opacity:.7}
+
+/* Hierarchy */
+.hi{display:flex;flex-direction:column;gap:4px;flex:1;justify-content:center}
+.hl{display:flex;align-items:baseline;gap:10px;border-left:3px solid var(--accent);padding-left:10px}
+.hl-label{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);min-width:40px;letter-spacing:1px;flex-shrink:0}
+
+/* UI components */
+.uc{display:flex;gap:10px;flex:1;min-height:0}
+.uc-nav{flex:1;border:1px solid var(--border);background:var(--card-alt);padding:8px 10px}
+.uc-nav-t{font-size:12px;font-weight:700;margin-bottom:6px}
+.uc-nav-lks{display:flex;gap:8px}
+.uc-nav-lk{font-size:9px;color:var(--muted)}
+.uc-profile{flex:1;border:1px solid var(--border);background:var(--card-alt);padding:8px 10px;display:flex;gap:10px;align-items:center}
+.uc-avatar{width:36px;height:36px;background:var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted)}
+.uc-info{flex:1;display:flex;flex-direction:column;gap:2px}
+.uc-name{font-size:11px}
+.uc-role{font-size:8px;color:var(--muted)}
+.uc-btn{padding:0 10px;height:22px;background:var(--accent);border:none;color:#fff;font-family:'Space Grotesk',sans-serif;font-size:8px;font-weight:600;flex-shrink:0}
+
+/* DOs & DON'Ts */
+.dd-row{display:flex;gap:10px;flex:1;min-height:0}
+.dd-col{flex:1;border:1px solid var(--border);padding:8px 10px}
+.dd-col.good{border-top:3px solid var(--ok)}.dd-col.bad{border-top:3px solid var(--err)}
+.dd-h{font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;letter-spacing:1.5px;margin-bottom:6px}
+.dd-col.good .dd-h{color:var(--ok)}.dd-col.bad .dd-h{color:var(--err)}
+.dd-item{font-size:9px;color:var(--muted);line-height:1.5;padding-left:10px;position:relative;margin-bottom:4px}
+.dd-item::before{content:'';position:absolute;left:0;top:5px;width:4px;height:1px}
+.dd-col.good .dd-item::before{background:var(--ok)}.dd-col.bad .dd-item::before{background:var(--err)}
+.dd-ex{display:flex;gap:8px;margin-top:6px}
+.dd-ex-box{flex:1;border:1px solid var(--border);background:var(--card);padding:6px 8px;display:flex;align-items:center;gap:8px}
+
+.inf{padding:11px 14px;border-top:1px solid var(--border)}
+.dn{font-size:17px;font-weight:800;line-height:1.15}
+.ds{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);margin-top:2px}
+.dd2{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.4}
+.di{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);margin-top:6px;padding-top:6px;border-top:1px dashed var(--border);opacity:.78}
+.pt{height:2px;background:var(--border)}.pf2{height:100%;background:var(--accent);width:0%}
+.fdw{display:flex;gap:4px;justify-content:center;padding:8px 0}
+.fdd{width:22px;height:2px;background:var(--border);transition:background .3s}.fdd.on{background:var(--accent)}
+
+/* ===== PRACTICE ===== */
+.pw{width:min(700px,100%);background:var(--card);border:2px solid var(--border);padding:20px 24px}
+.pw-h{font-size:15px;font-weight:700;margin-bottom:2px}.pw-h span{color:var(--accent)}
+.pw-s{font-size:11px;color:var(--muted);margin-bottom:14px}
+.sr{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+.sl{font-size:12px;white-space:nowrap;min-width:60px}
+.sv{font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:800;color:var(--accent);min-width:48px;text-align:right}
+input[type=range]{flex:1;-webkit-appearance:none;appearance:none;height:4px;background:var(--border);outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;background:var(--accent);border:2px solid var(--bg);cursor:pointer}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;background:var(--accent);border:2px solid var(--bg);cursor:pointer;border-radius:0}
+
+.pp{border:1px solid var(--border);background:var(--card-alt);overflow:hidden;margin-bottom:10px}
+.pp-lbl{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:2px;padding:6px 14px 0;opacity:.4}
+.pp-inner{padding:14px 20px 18px}
+.pp-preview{text-align:center;margin-bottom:14px;padding:10px;border:1px dashed var(--border);background:var(--card)}
+.pp-big{font-size:32px;line-height:1.1;margin-bottom:4px;transition:font-weight .15s}
+.pp-med{font-size:16px;margin-bottom:2px;transition:font-weight .15s}
+.pp-sm{font-size:11px;color:var(--muted);margin-bottom:4px;transition:font-weight .15s}
+.pp-sample{font-size:13px;text-align:left;line-height:1.5;padding:10px;border:1px solid var(--border);background:var(--card);transition:font-weight .15s}
+
+.pp-meta{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:10px}
+.pp-mi{display:flex;flex-direction:column;gap:1px}
+.pp-mi-l{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);letter-spacing:1.5px}
+.pp-mi-v{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:500}
+
+.pp-scale{display:flex;gap:3px;align-items:flex-end;height:40px}
+.pp-sb{width:100%;display:flex;flex-direction:column;align-items:center;gap:2px;transition:all .2s}
+.pp-sb-bar{width:100%;border-radius:1px 1px 0 0;transition:height .2s}
+.pp-sb-lbl{font-family:'JetBrains Mono',monospace;font-size:6px;color:var(--muted);letter-spacing:.5px}
+.pp-sb.active .pp-sb-bar{background:var(--accent)}
+.pp-sb.active .pp-sb-lbl{color:var(--accent);font-weight:700}
+
+.pfb{font-family:'JetBrains Mono',monospace;font-size:11px;min-height:18px;color:var(--muted);transition:color .2s;line-height:1.4}.pfb.w{color:var(--accent)}
+.pht{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);opacity:.65}
+
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media(max-width:520px){.pw{padding:16px}.pp-big{font-size:24px}.uc{flex-direction:column}.dd-row{flex-direction:column}.wt{overflow-y:auto}}
+</style>
+</head>
+<body>
+
+<div class="aw">
+<div class="ab" id="ab">
+  <div class="hd"><span class="hd-t">FONT WEIGHT</span><span class="hd-f" id="hf">01 / 04</span></div>
+  <div class="la" id="la">
+
+    <!-- F0: Weight Table -->
+    <div class="fr" id="f0">
+      <div class="fl si">01 FONT WEIGHT SCALE</div>
+      <div class="wt si">
+        <div class="wr"><span class="wn">Thin</span><span class="wv">100</span><span class="ws" style="font-weight:100">The quick brown fox jumps</span><span class="wu">decoration</span></div>
+        <div class="wr"><span class="wn">Light</span><span class="wv">300</span><span class="ws" style="font-weight:300">The quick brown fox jumps</span><span class="wu">subhead</span></div>
+        <div class="wr"><span class="wn">Regular</span><span class="wv">400</span><span class="ws" style="font-weight:400">The quick brown fox jumps</span><span class="wu">body text</span></div>
+        <div class="wr"><span class="wn">Medium</span><span class="wv">500</span><span class="ws" style="font-weight:500">The quick brown fox jumps</span><span class="wu">nav links</span></div>
+        <div class="wr"><span class="wn">Semi</span><span class="wv">600</span><span class="ws" style="font-weight:600">The quick brown fox jumps</span><span class="wu">subheading</span></div>
+        <div class="wr"><span class="wn">Bold</span><span class="wv">700</span><span class="ws" style="font-weight:700">The quick brown fox jumps</span><span class="wu">heading</span></div>
+        <div class="wr"><span class="wn">Extra</span><span class="wv">800</span><span class="ws" style="font-weight:800">The quick brown fox jumps</span><span class="wu">hero</span></div>
+        <div class="wr"><span class="wn">Black</span><span class="wv">900</span><span class="ws" style="font-weight:900">The quick brown fox jumps</span><span class="wu">display</span></div>
+      </div>
+    </div>
+
+    <!-- F1: Hierarchy -->
+    <div class="fr" id="f1">
+      <div class="fl si">02 TYPOGRAPHY HIERARCHY</div>
+      <div class="hi si">
+        <div class="hl"><span class="hl-label">H1 · 800</span><span class="ws" style="font-size:22px;font-weight:800">Build products that scale</span></div>
+        <div class="hl" style="border-left-color:var(--border-hi)"><span class="hl-label">H2 · 600</span><span class="ws" style="font-size:16px;font-weight:600">Powerful infrastructure for teams</span></div>
+        <div class="hl" style="border-left-color:var(--muted)"><span class="hl-label">H3 · 600</span><span class="ws" style="font-size:13px;font-weight:600">Get started in minutes</span></div>
+        <div class="hl" style="border-left-color:transparent"><span class="hl-label">BODY · 400</span><span class="ws" style="font-size:11px;font-weight:400;color:var(--muted)">Deploy globally with zero configuration. Our platform handles scaling, security, and monitoring automatically.</span></div>
+        <div class="hl" style="border-left-color:transparent"><span class="hl-label">CAPTION · 300</span><span class="ws" style="font-size:9px;font-weight:300;color:var(--muted);letter-spacing:1px;text-transform:uppercase">Last updated 2 hours ago</span></div>
+      </div>
+    </div>
+
+    <!-- F2: UI Components -->
+    <div class="fr" id="f2">
+      <div class="fl si">03 UI COMPONENT EXAMPLES</div>
+      <div class="uc si">
+        <div class="uc-nav">
+          <div class="uc-nav-t" style="font-weight:700">BRAND</div>
+          <div class="uc-nav-lks"><span style="font-weight:500">Home</span><span style="font-weight:500">Product</span><span style="font-weight:500">Pricing</span><span style="font-weight:500">About</span></div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);margin-top:6px;letter-spacing:1px">BRAND: 700 &middot; LINKS: 500 &middot; CTA: 600</div>
+        </div>
+        <div class="uc-profile">
+          <div class="uc-avatar">IMG</div>
+          <div class="uc-info">
+            <div style="font-weight:600">Linh Nguyen</div>
+            <div style="font-weight:400;color:var(--muted)">Product Designer</div>
+          </div>
+          <button class="uc-btn" style="font-weight:600">Follow</button>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);margin-top:4px;letter-spacing:1px;align-self:flex-end">NAME: 600 &middot; ROLE: 400 &middot; BTN: 600</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- F3: DOs & DON'Ts -->
+    <div class="fr" id="f3">
+      <div class="fl si">04 DOS & DON'TS</div>
+      <div class="dd-row si">
+        <div class="dd-col good">
+          <div class="dd-h">&#10003; DO</div>
+          <div class="dd-item">Dùng 2-3 weight (400, 600, 700)</div>
+          <div class="dd-item">Heading lớn hơn body</div>
+          <div class="dd-item">Light weight chỉ cho text lớn</div>
+          <div class="dd-ex">
+            <div class="dd-ex-box"><span style="font-weight:700;font-size:12px">Heading</span><span style="font-weight:400;font-size:10px;color:var(--muted)">Body text here</span></div>
+          </div>
+        </div>
+        <div class="dd-col bad">
+          <div class="dd-h">&#10007; DON'T</div>
+          <div class="dd-item">Dùng quá nhiều weight cùng lúc</div>
+          <div class="dd-item">Weight 100-300 cho text nhỏ</div>
+          <div class="dd-item">Body text nặng hơn heading</div>
+          <div class="dd-ex">
+            <div class="dd-ex-box" style="border-color:rgba(160,48,48,.3)"><span style="font-weight:300;font-size:10px;color:var(--muted)">Tiny light text</span><span style="font-weight:700;font-size:12px">HEADING</span><span style="font-weight:400;font-size:10px">Body</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="inf"><div class="dn" id="dn">Weight Scale</div><div class="ds" id="ds">THANG ĐỘ NẶNG CHỮ</div><div class="dd2" id="dd2">Từ 100 (mảnh) đến 900 (đậm) — mỗi số = 1 mức độ đậm, quyết định visual hierarchy</div><div class="di" id="di">Khi nói "đậm lên" → nói rõ font-weight (600 hay 700), dev mới biết chỉnh đúng</div></div>
+  <div class="pt"><div class="pf2" id="pf"></div></div>
+  <div class="fdw"><div class="fdd on" id="d0"></div><div class="fdd" id="d1"></div><div class="fdd" id="d2"></div><div class="fdd" id="d3"></div></div>
+</div>
+</div>
+
+<!-- Practice -->
+<div class="pw">
+  <div class="pw-h">Thực hành — <span>Kéo thay đổi Weight</span></div>
+  <div class="pw-s">Kéo slider → thấy text thay đổi độ đậm + tên + use case tương ứng</div>
+  <div class="sr"><span class="sl">Weight</span><input type="range" id="sW" min="100" max="900" value="400" step="100"><span class="sv" id="vW">400</span></div>
+  <div class="pp">
+    <div class="pp-lbl">PREVIEW</div>
+    <div class="pp-inner">
+      <div class="pp-preview">
+        <div class="pp-big" id="pBig" style="font-weight:400">Heading Text</div>
+        <div class="pp-med" id="pMed" style="font-weight:400">Subheading line</div>
+        <div class="pp-sm" id="pSm" style="font-weight:400">Caption / secondary info</div>
+      </div>
+      <div class="pp-sample" id="pSample" style="font-weight:400">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore.</div>
+      <div class="pp-meta" id="pMeta">
+        <div class="pp-mi"><span class="pp-mi-l">NAME</span><span class="pp-mi-v" id="pName">Regular</span></div>
+        <div class="pp-mi"><span class="pp-mi-l">VALUE</span><span class="pp-mi-v" id="pVal">400</span></div>
+        <div class="pp-mi"><span class="pp-mi-l">USE FOR</span><span class="pp-mi-v" id="pUse">Body text, paragraphs</span></div>
+      </div>
+      <div class="pp-scale" id="pScale"></div>
+    </div>
+  </div>
+  <div class="pfb" id="pfb">400 Regular — body text mặc định, dễ đọc, phù hợp đoạn văn dài</div>
+  <div class="pht">Hint: Kéo đến 100 hoặc 300 → để ý text rất khó đọc ở kích thước nhỏ</div>
+</div>
+
+<script>
+/* ===== DATA ===== */
+const INFO=[
+  {nm:'Weight Scale',sz:'THANG ĐỘ NẶNG CHỮ',dc:'Từ 100 (mảnh) đến 900 (đậm) — mỗi số = 1 mức độ đậm, quyết định visual hierarchy',ins:'Khi nói "đậm lên" → nói rõ font-weight (600 hay 700), dev mới biết chỉnh đúng'},
+  {nm:'Typography Hierarchy',sz:'CẤP BẬC CHỮ',dc:'Heading 700-800 + Body 400 + Caption 300 — weight tạo thứ tự đọc tự nhiên',ins:'"Thứ tự nhìn sai" → thường là weight không đúng, không phải size sai'},
+  {nm:'UI Components',sz:'THÀNH PHẦN UI',dc:'Brand 700, links 500, body 400, button 600 — mỗi element có weight riêng',ins:'"Nút không nổi" → kiểm tra weight, có thể đang dùng 400 thay vì 600'},
+  {nm:'DOs & DON\'Ts',sz:'NÊN / KHÔNG NÊN',dc:'Dùng 2-3 weight, light weight chỉ cho text lớn, không dùng quá nhiều weight',ins:'Prompt AI "design a page" mà không nói weight → AI có thể dùng 6+ weight gây rối'}
+];
+
+const WEIGHTS=[
+  {v:100,n:'Thin',u:'Decoration, large display only'},
+  {v:300,n:'Light',u:'Large subheadings, quotes'},
+  {v:400,n:'Regular',u:'Body text, paragraphs'},
+  {v:500,n:'Medium',u:'Navigation links, tabs'},
+  {v:600,n:'Semi Bold',u:'Subheadings, card titles, buttons'},
+  {v:700,n:'Bold',u:'Headings, brand name, emphasis'},
+  {v:800,n:'Extra Bold',u:'Hero headings, display text'},
+  {v:900,n:'Black',u:'Impact text, logos'}
+];
+
+/* ===== ANIMATION ===== */
+const frs=[0,1,2,3].map(i=>document.getElementById('f'+i));
+const el={dn:document.getElementById('dn'),ds:document.getElementById('ds'),dd2:document.getElementById('dd2'),di:document.getElementById('di'),hf:document.getElementById('hf'),pf:document.getElementById('pf')};
+const dts=[0,1,2,3].map(i=>document.getElementById('d'+i));
+let cur=0,ft=null,pa=null,t0=0;
+const DUR=3500;
+
+function apply(i){
+  const s=INFO[i];el.dn.textContent=s.nm;el.ds.textContent=s.sz;el.dd2.textContent=s.dc;el.di.textContent=s.ins;
+  el.hf.textContent='0'+(i+1)+' / 04';
+  dts.forEach((d,j)=>d.classList.toggle('on',j===i));
+  frs.forEach(f=>f.classList.remove('show'));
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{frs[i].classList.add('show')}));
+}
+function startProg(){t0=performance.now();el.pf.style.transition='none';el.pf.style.width='0%';(function tk(n){const p=Math.min(100,(n-t0)/DUR*100);el.pf.style.width=p+'%';if(p<100)pa=requestAnimationFrame(tk)})(t0)}
+function next(){cur=(cur+1)%4;apply(cur);startProg()}
+function start(){apply(0);startProg();ft=setInterval(next,DUR)}
+function scale(){const w=document.querySelector('.aw'),b=document.getElementById('ab'),s=w.clientWidth/700;b.style.transform='scale('+s+')';w.style.height=Math.ceil(412*s)+'px'}
+
+/* ===== PRACTICE ===== */
+const sW=document.getElementById('sW');
+const vW=document.getElementById('vW');
+const pBig=document.getElementById('pBig');
+const pMed=document.getElementById('pMed');
+const pSm=document.getElementById('pSm');
+const pSample=document.getElementById('pSample');
+const pName=document.getElementById('pName');
+const pVal=document.getElementById('pVal');
+const pUse=document.getElementById('pUse');
+const pScale=document.getElementById('pScale');
+const pfb=document.getElementById('pfb');
+
+/* Build scale bars */
+pScale.innerHTML=WEIGHTS.map(w=>`<div class="pp-sb" data-v="${w.v}"><div class="pp-sb-bar" style="height:${Math.max(2,w.v/90)}px;background:var(--border-hi)"></div><span class="pp-sb-lbl">${w.v}</span></div>`).join('');
+
+function updateP(){
+  const v=+sW.value;
+  vW.textContent=v;
+  pBig.style.fontWeight=v;
+  pMed.style.fontWeight=v;
+  pSm.style.fontWeight=v;
+  pSample.style.fontWeight=v;
+
+  const w=WEIGHTS.find(w=>w.v===v);
+  pName.textContent=w?w.n:v+'';
+  pVal.textContent=v;
+  pUse.textContent=w?w.u:'—';
+
+  /* Highlight active bar */
+  pScale.querySelectorAll('.pp-sb').forEach(b=>{
+    const bv=+b.dataset.v;
+    const active=bv===v;
+    b.classList.toggle('active',active);
+    b.querySelector('.pp-sb-bar').style.background=active?'var(--accent)':'var(--border-hi)';
+  });
+
+  /* Feedback */
+  if(v<=300){
+    pfb.textContent=v+' '+w.n+' — quá mảnh cho text nhỏ, chỉ nên dùng cho text lớn (≥20px)';
+    pfb.className='pfb w';pfb.style.color='var(--err)';
+  }else if(v===400){
+    pfb.textContent='400 Regular — body text mặc định, dễ đọc, phù hợp đoạn văn dài';
+    pfb.className='pfb';pfb.style.color='';
+  }else if(v===500){
+    pfb.textContent='500 Medium — nhẹ hơn Bold, dùng cho nav links và tabs';
+    pfb.className='pfb';pfb.style.color='';
+  }else if(v<=600){
+    pfb.textContent=v+' '+w.n+' — phù hợp subheading và button, nhấn vừa đủ không quá nặng';
+    pfb.className='pfb w';pfb.style.color='';
+  }else{
+    pfb.textContent=v+' '+w.n+' — dành cho heading và hero, không dùng cho body text';
+    pfb.className='pfb w';pfb.style.color='';
+  }
+}
+
+sW.addEventListener('input',updateP);
+
+/* ===== INIT ===== */
+window.addEventListener('resize',scale);
+requestAnimationFrame(()=>requestAnimationFrame(scale));
+start();updateP();
+document.addEventListener('visibilitychange',()=>{if(document.hidden){clearInterval(ft);cancelAnimationFrame(pa)}else{start()}});
+</script>
+</body>
+</html>

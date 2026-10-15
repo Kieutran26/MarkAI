@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gradient Practice - Amber Brutalist Builder</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --amber: #E88C2E;
+            --bg: #0f0f12;
+            --card-bg: #16161b;
+            --border: #282830;
+            --text: #e8e4dc;
+            --muted: #707070;
+            --gap: 14px;
+            --radius: 3px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg);
+            background-image: 
+                radial-gradient(ellipse at 25% 15%, rgba(232, 140, 46, 0.05) 0%, transparent 55%),
+                radial-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 16px 16px;
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .builder-container {
+            width: 100%;
+            max-width: 940px;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .builder-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--amber);
+            z-index: 2;
+        }
+
+        .builder-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .builder-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--amber);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .builder-body {
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            min-height: 500px;
+        }
+
+        @media (max-width: 800px) {
+            .builder-body {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* --- Left Column: Controls --- */
+        .controls-pane {
+            padding: 24px;
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .control-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .label-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .value-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--amber);
+            background: rgba(232, 140, 46, 0.1);
+            padding: 2px 6px;
+            border-radius: 2px;
+        }
+
+        /* Segmented Buttons */
+        .segmented {
+            display: flex;
+            background: #0d0d10;
+            padding: 2px;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
+
+        .seg-btn {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--muted);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 600;
+            padding: 8px;
+            cursor: pointer;
+            border-radius: 2px;
+            transition: all 0.2s;
+        }
+
+        .seg-btn.active {
+            background: var(--amber);
+            color: #000;
+        }
+
+        /* Swatches */
+        .swatches {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .swatch {
+            width: 24px;
+            height: 24px;
+            border-radius: 2px;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .swatch:hover {
+            transform: scale(1.1);
+        }
+
+        .swatch.active {
+            border-color: var(--text);
+            box-shadow: 0 0 10px rgba(255,255,255,0.2);
+        }
+
+        /* Slider */
+        input[type=range] {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 4px;
+            background: #282830;
+            border-radius: 2px;
+            outline: none;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            background: var(--amber);
+            border-radius: 2px;
+            cursor: pointer;
+            box-shadow: 0 0 8px rgba(232, 140, 46, 0.4);
+        }
+
+        /* --- Right Column: Preview --- */
+        .preview-pane {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            background: #0d0d10;
+            justify-content: center;
+        }
+
+        .preview-box {
+            width: 100%;
+            height: 200px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .preview-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            line-height: 1.1;
+        }
+
+        .preview-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            color: white;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        /* --- Prompt Area --- */
+        .prompt-area {
+            background: #111116;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            padding: 16px;
+            margin-top: auto;
+        }
+
+        .prompt-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            color: var(--muted);
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .prompt-text {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11.5px;
+            color: var(--text);
+            line-height: 1.6;
+            word-break: break-all;
+        }
+
+        .prompt-text strong {
+            color: var(--amber);
+        }
+
+        .copy-btn {
+            background: transparent;
+            border: 1px solid var(--amber);
+            color: var(--amber);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            padding: 4px 8px;
+            cursor: pointer;
+            margin-top: 12px;
+            border-radius: 2px;
+            transition: all 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: var(--amber);
+            color: #000;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="builder-container">
+        <div class="builder-header">
+            <div class="builder-title">Gradient Builder</div>
+            <div class="value-badge" id="type-display">Linear</div>
+        </div>
+
+        <div class="builder-body">
+            <!-- Left: Controls -->
+            <div class="controls-pane">
+                <div class="control-group">
+                    <div class="label">Text Content</div>
+                    <input type="text" id="text-input" value="Creative UI" oninput="setText(this.value)" 
+                        style="background: #0d0d10; border: 1px solid var(--border); color: var(--text); padding: 8px; font-family: inherit; border-radius: 4px; outline: none; font-size: 13px;">
+                </div>
+
+                <div class="control-group">
+                    <div class="label">Apply To</div>
+                    <div class="segmented">
+                        <button class="seg-btn active" id="apply-bg" onclick="setApply('bg', this)">Background</button>
+                        <button class="seg-btn" id="apply-text" onclick="setApply('text', this)">Text Only</button>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="label">Type</div>
+                    <div class="segmented" id="type-segmented">
+                        <button class="seg-btn active" data-val="linear" onclick="setType('linear', this)">Linear</button>
+                        <button class="seg-btn" data-val="radial" onclick="setType('radial', this)">Radial</button>
+                        <button class="seg-btn" data-val="conic" onclick="setType('conic', this)">Conic</button>
+                    </div>
+                </div>
+
+                <div class="control-group" id="angle-group">
+                    <div class="label-row">
+                        <div class="label" id="angle-label">Angle</div>
+                        <div class="value-badge" id="angle-val">135°</div>
+                    </div>
+                    <input type="range" min="0" max="360" value="135" oninput="setAngle(this.value)">
+                </div>
+
+                <div class="control-group">
+                    <div class="label-row">
+                        <div class="label">Start Color</div>
+                        <div class="value-badge" id="color1-val">#E88C2E</div>
+                    </div>
+                    <div class="swatches" id="swatches1">
+                        <div class="swatch active" style="background: #E88C2E;" data-hex="#E88C2E"></div>
+                        <div class="swatch" style="background: #dc2626;" data-hex="#dc2626"></div>
+                        <div class="swatch" style="background: #7c3aed;" data-hex="#7c3aed"></div>
+                        <div class="swatch" style="background: #2563eb;" data-hex="#2563eb"></div>
+                        <div class="swatch" style="background: #059669;" data-hex="#059669"></div>
+                        <div class="swatch" style="background: #ffffff;" data-hex="#ffffff"></div>
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="label-row">
+                        <div class="label">End Color</div>
+                        <div class="value-badge" id="color2-val">#16161b</div>
+                    </div>
+                    <div class="swatches" id="swatches2">
+                        <div class="swatch" style="background: #E88C2E;" data-hex="#E88C2E"></div>
+                        <div class="swatch" style="background: #dc2626;" data-hex="#dc2626"></div>
+                        <div class="swatch" style="background: #7c3aed;" data-hex="#7c3aed"></div>
+                        <div class="swatch active" style="background: #16161b;" data-hex="#16161b"></div>
+                        <div class="swatch" style="background: #000000;" data-hex="#000000"></div>
+                        <div class="swatch" style="background: #1e3a8a;" data-hex="#1e3a8a"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Preview -->
+            <div class="preview-pane">
+                <div class="preview-box" id="preview-bg">
+                    <div class="preview-title" id="preview-text">Creative UI</div>
+                    <button class="preview-btn" id="preview-btn">Get Started</button>
+                </div>
+
+                <div class="prompt-area">
+                    <div class="prompt-label">AI Prompt</div>
+                    <div class="prompt-text" id="prompt-output">
+                        Dùng gradient <strong>linear</strong> từ màu <strong>#E88C2E</strong> sang <strong>#16161b</strong>, góc <strong>135°</strong>.
+                    </div>
+                    <button class="copy-btn" onclick="copyPrompt()">Copy Prompt</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let config = {
+            type: 'linear',
+            angle: 135,
+            color1: '#E88C2E',
+            color2: '#16161b',
+            text: 'Creative UI',
+            applyTo: 'bg' // 'bg' or 'text'
+        };
+
+        function updateUI() {
+            const previewBg = document.getElementById('preview-bg');
+            const previewText = document.getElementById('preview-text');
+            const previewBtn = document.getElementById('preview-btn');
+            const promptOutput = document.getElementById('prompt-output');
+            const typeDisplay = document.getElementById('type-display');
+
+            let css = '';
+            let angleLabel = 'Angle';
+            let angleSuffix = '°';
+
+            if (config.type === 'linear') {
+                css = `linear-gradient(${config.angle}deg, ${config.color1}, ${config.color2})`;
+            } else if (config.type === 'radial') {
+                css = `radial-gradient(circle, ${config.color1}, ${config.color2})`;
+                angleLabel = 'Size';
+                angleSuffix = '%';
+            } else {
+                css = `conic-gradient(from ${config.angle}deg, ${config.color1}, ${config.color2}, ${config.color1})`;
+            }
+
+            // Reset styles
+            previewBg.style.background = '#0d0d10';
+            previewText.style.background = 'none';
+            previewText.style.webkitBackgroundClip = 'initial';
+            previewText.style.webkitTextFillColor = 'initial';
+            previewText.style.color = 'var(--text)';
+            previewBtn.style.background = 'var(--amber)';
+            previewText.textContent = config.text;
+
+            if (config.applyTo === 'bg') {
+                previewBg.style.background = css;
+                previewBtn.style.background = css;
+            } else {
+                previewText.style.background = css;
+                previewText.style.webkitBackgroundClip = 'text';
+                previewText.style.webkitTextFillColor = 'transparent';
+                previewBtn.style.background = 'rgba(255,255,255,0.05)';
+                previewBtn.style.border = '1px solid var(--border)';
+            }
+
+            typeDisplay.textContent = config.type.toUpperCase();
+            document.getElementById('angle-label').textContent = angleLabel;
+            document.getElementById('angle-val').textContent = config.angle + angleSuffix;
+
+            // Update Prompt
+            let targetText = config.applyTo === 'bg' ? 'cho nền' : `cho chữ "<strong>${config.text}</strong>"`;
+            let promptAngle = config.type === 'radial' ? '' : `, góc <strong>${config.angle}°</strong>`;
+            promptOutput.innerHTML = `Dùng gradient <strong>${config.type}</strong> từ màu <strong>${config.color1}</strong> sang <strong>${config.color2}</strong> ${targetText}${promptAngle}.`;
+        }
+
+        function setType(type, btn) {
+            config.type = type;
+            document.querySelectorAll('#type-segmented .seg-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            const angleGroup = document.getElementById('angle-group');
+            if (type === 'radial') {
+                angleGroup.style.opacity = '0.3';
+                angleGroup.style.pointerEvents = 'none';
+            } else {
+                angleGroup.style.opacity = '1';
+                angleGroup.style.pointerEvents = 'auto';
+            }
+            
+            updateUI();
+        }
+
+        function setApply(mode, btn) {
+            config.applyTo = mode;
+            document.getElementById('apply-bg').classList.toggle('active', mode === 'bg');
+            document.getElementById('apply-text').classList.toggle('active', mode === 'text');
+            updateUI();
+        }
+
+        function setAngle(val) {
+            config.angle = val;
+            updateUI();
+        }
+
+        function setText(val) {
+            config.text = val;
+            updateUI();
+        }
+
+        // Color selection logic
+        document.getElementById('swatches1').addEventListener('click', (e) => {
+            if (e.target.classList.contains('swatch')) {
+                config.color1 = e.target.dataset.hex;
+                document.querySelectorAll('#swatches1 .swatch').forEach(s => s.classList.remove('active'));
+                e.target.classList.add('active');
+                document.getElementById('color1-val').textContent = config.color1;
+                updateUI();
+            }
+        });
+
+        document.getElementById('swatches2').addEventListener('click', (e) => {
+            if (e.target.classList.contains('swatch')) {
+                config.color2 = e.target.dataset.hex;
+                document.querySelectorAll('#swatches2 .swatch').forEach(s => s.classList.remove('active'));
+                e.target.classList.add('active');
+                document.getElementById('color2-val').textContent = config.color2;
+                updateUI();
+            }
+        });
+
+        async function copyPrompt() {
+            const text = document.getElementById('prompt-output').innerText;
+            await navigator.clipboard.writeText(text);
+            const btn = document.querySelector('.copy-btn');
+            const original = btn.textContent;
+            btn.textContent = 'Copied!';
+            setTimeout(() => btn.textContent = original, 2000);
+        }
+
+        updateUI();
+    </script>
+</body>
+</html>

@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Conflict Demo — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f0f12;
+  --bgc: #16161b;
+  --bgi: #121217;
+  --bd: #282830;
+  --tx: #e8e4dc;
+  --txm: #707070;
+  --ac: #E88C2E;
+  --abg: rgba(232, 140, 46, 0.1);
+  --abg2: rgba(232, 140, 46, 0.2);
+  --err: #ef4444;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--tx);
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.g {
+  width: 100%;
+  max-width: 940px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 600px) {
+  .g { grid-template-columns: 1fr; }
+}
+
+.c {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.c::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--ac);
+}
+
+.c::after {
+  content: '';
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 6px;
+  height: 6px;
+  background: var(--ac);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--ac);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0.3; transform: scale(1); }
+}
+
+.ch {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.ch .n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ac);
+  background: var(--abg);
+  border: 1px solid var(--abg2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+.ch h2 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  text-transform: uppercase;
+}
+
+.st {
+  background: var(--bgi);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  flex: 1;
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ins {
+  margin-top: 14px;
+  font-size: 11.5px;
+  color: var(--txm);
+  line-height: 1.6;
+  padding-left: 12px;
+  border-left: 2px solid var(--ac);
+}
+
+.ins strong {
+  color: var(--ac);
+  font-weight: 600;
+}
+
+.val {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--txm);
+  background: rgba(0,0,0,0.2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+/* Marker Anatomy Visuals */
+.marker-sim {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--txm);
+  line-height: 1.5;
+  width: 100%;
+}
+.m-line { padding: 2px 4px; border-radius: 2px; transition: all 0.3s; }
+.m-head { color: #5bc0de; background: rgba(91, 192, 222, 0.1); }
+.m-sep { color: var(--txm); background: rgba(112, 112, 112, 0.1); }
+.m-tail { color: #f0ad4e; background: rgba(240, 173, 78, 0.1); }
+.m-active { background: var(--abg2); color: var(--ac); font-weight: 700; }
+
+/* Choice Visuals */
+.choice-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 140px;
+}
+.c-item {
+  padding: 8px;
+  border: 1px solid var(--bd);
+  border-radius: 4px;
+  font-size: 11px;
+  text-align: center;
+  transition: all 0.3s;
+  background: var(--bgc);
+}
+.c-item.active {
+  border-color: var(--ac);
+  background: var(--abg);
+  color: var(--ac);
+}
+
+/* Cause Visuals */
+.user-sim {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.u-icon {
+  width: 36px;
+  height: 36px;
+  background: var(--bd);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.file-line {
+  width: 80px;
+  height: 6px;
+  background: var(--bd);
+  border-radius: 3px;
+  position: relative;
+}
+.f-edit {
+  position: absolute;
+  height: 100%;
+  width: 0;
+  background: var(--ac);
+  border-radius: 3px;
+}
+
+.conflict-badge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  background: var(--err);
+  color: white;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+}
+
+/* Flow Visuals */
+.flow-step {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0.3;
+  transition: all 0.4s;
+}
+.f-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--bd);
+  color: var(--txm);
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'JetBrains Mono';
+}
+.f-txt { font-size: 12px; font-weight: 500; }
+.flow-step.active { opacity: 1; transform: translateX(5px); }
+.flow-step.active .f-num { background: var(--ac); color: white; }
+
+</style>
+</head>
+<body>
+
+<div class="g">
+  <!-- 01: Marker Anatomy -->
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>Giải mã Marker</h2></div>
+    <div class="st" id="st1">
+      <div class="marker-sim">
+        <div class="m-line" id="m1"><span class="m-head">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</span> (Của bạn)</div>
+        <div class="m-line" id="m2">  background: #ff0000;</div>
+        <div class="m-line" id="m3"><span class="m-sep">=======</span> (Vách ngăn)</div>
+        <div class="m-line" id="m4">  background: #00ff00;</div>
+        <div class="m-line" id="m5"><span class="m-tail">&gt;&gt;&gt;&gt;&gt;&gt;&gt; feature-nav</span> (Của team)</div>
+      </div>
+      <div class="val" id="val1">Anatomy</div>
+    </div>
+    <p class="ins">Git sử dụng các dấu <strong>Marker</strong> để đánh dấu vùng bị đụng độ. Bạn cần xóa chúng sau khi đã chọn được nội dung ưng ý.</p>
+  </section>
+
+  <!-- 02: Conflict States -->
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Các lựa chọn</h2></div>
+    <div class="st" id="st2">
+      <div class="choice-box">
+        <div class="c-item" id="opt1">Keep Current</div>
+        <div class="c-item" id="opt2">Keep Incoming</div>
+        <div class="c-item" id="opt3">Keep Both</div>
+      </div>
+      <div class="val" id="val2">Resolution Mode</div>
+    </div>
+    <p class="ins">Bạn có thể chọn giữ lại code của mình (<strong>Current</strong>), code của đồng nghiệp (<strong>Incoming</strong>) hoặc gộp cả hai lại nếu cần thiết.</p>
+  </section>
+
+  <!-- 03: Common Causes -->
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Nguyên nhân</h2></div>
+    <div class="st" id="st3">
+      <div style="display: flex; gap: 40px; align-items: center;">
+        <div class="user-sim">
+          <div class="u-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--txm)"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>
+          <div class="file-line"><div class="f-edit" id="edit1"></div></div>
+        </div>
+        <div class="user-sim">
+          <div class="u-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--txm)"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg></div>
+          <div class="file-line"><div class="f-edit" id="edit2"></div></div>
+        </div>
+      </div>
+      <div class="conflict-badge" id="badge3">CONFLICT!</div>
+      <div class="val">Logic: Same Line Edit</div>
+    </div>
+    <p class="ins">Đụng độ xảy ra khi hai người cùng sửa <strong>cùng một dòng</strong> hoặc một người xóa file trong khi người khác đang sửa.</p>
+  </section>
+
+  <!-- 04: Resolution Flow -->
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Quy trình xử lý</h2></div>
+    <div class="st" id="st4">
+      <div style="display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 200px;">
+        <div class="flow-step" id="step1"><div class="f-num">1</div><div class="f-txt">Phát hiện</div></div>
+        <div class="flow-step" id="step2"><div class="f-num">2</div><div class="f-txt">Mở file marker</div></div>
+        <div class="flow-step" id="step3"><div class="f-num">3</div><div class="f-txt">Chọn version</div></div>
+        <div class="flow-step" id="step4"><div class="f-num">4</div><div class="f-txt">Commit kết quả</div></div>
+      </div>
+      <div class="val">Workflow</div>
+    </div>
+    <p class="ins">Quy trình chuẩn: <strong>Phát hiện</strong> → <strong>Tìm marker</strong> → <strong>Xử lý</strong> nội dung → <strong>Commit</strong> để xác nhận kết quả cuối cùng.</p>
+  </section>
+</div>
+
+<script>
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// 01: Marker Anatomy
+(async function() {
+  const lines = [
+    { id: 'm1', label: 'Pointer: Local' },
+    { id: 'm2', label: 'Local Content' },
+    { id: 'm3', label: 'Separator' },
+    { id: 'm4', label: 'Remote Content' },
+    { id: 'm5', label: 'Pointer: Remote' }
+  ];
+  const val = document.getElementById('val1');
+
+  while (true) {
+    for (const l of lines) {
+      const el = document.getElementById(l.id);
+      el.classList.add('m-active');
+      val.textContent = l.label;
+      await wait(1500);
+      el.classList.remove('m-active');
+    }
+    val.textContent = 'Anatomy';
+    await wait(2000);
+  }
+})();
+
+// 02: Conflict States
+(async function() {
+  const opts = [
+    { id: 'opt1', text: 'Keeping Local' },
+    { id: 'opt2', text: 'Keeping Remote' },
+    { id: 'opt3', text: 'Merging Both' }
+  ];
+  const val = document.getElementById('val2');
+
+  while (true) {
+    for (const o of opts) {
+      const el = document.getElementById(o.id);
+      el.classList.add('active');
+      val.textContent = o.text;
+      await wait(2000);
+      el.classList.remove('active');
+      await wait(500);
+    }
+  }
+})();
+
+// 03: Common Causes
+(async function() {
+  const edit1 = document.getElementById('edit1');
+  const edit2 = document.getElementById('edit2');
+  const badge = document.getElementById('badge3');
+
+  while (true) {
+    badge.animate([{ transform: 'translate(-50%, -50%) scale(0)', opacity: 0 }, { transform: 'translate(-50%, -50%) scale(0)', opacity: 0 }], { duration: 1 });
+    
+    // User 1 edits
+    edit1.animate([{ width: '0%' }, { width: '80%' }], { duration: 1000, fill: 'forwards' });
+    await wait(1200);
+    
+    // User 2 edits same line
+    edit2.animate([{ width: '0%' }, { width: '80%' }], { duration: 1000, fill: 'forwards' });
+    await wait(1000);
+    
+    // Boom
+    badge.animate([
+      { transform: 'translate(-50%, -50%) scale(0.5)', opacity: 0 },
+      { transform: 'translate(-50%, -50%) scale(1.2)', opacity: 1 },
+      { transform: 'translate(-50%, -50%) scale(1)', opacity: 1 }
+    ], { duration: 400, fill: 'forwards', easing: 'cubic-bezier(0.175, 0.885, 0.32, 1.275)' });
+    
+    await wait(3000);
+    
+    // Reset
+    edit1.style.width = '0%';
+    edit2.style.width = '0%';
+    badge.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 500, fill: 'forwards' });
+    await wait(1000);
+  }
+})();
+
+// 04: Resolution Flow
+(async function() {
+  const steps = ['step1', 'step2', 'step3', 'step4'];
+  const labels = ['Status: Error', 'Status: Reading', 'Status: Solving', 'Status: Fixed!'];
+  const val = document.getElementById('val4');
+
+  while (true) {
+    document.querySelectorAll('.flow-step').forEach(s => s.classList.remove('active'));
+    
+    for (let i = 0; i < steps.length; i++) {
+      const el = document.getElementById(steps[i]);
+      el.classList.add('active');
+      if (val) val.textContent = labels[i];
+      await wait(1800);
+    }
+    
+    await wait(3000);
+  }
+})();
+</script>
+</body>
+</html>

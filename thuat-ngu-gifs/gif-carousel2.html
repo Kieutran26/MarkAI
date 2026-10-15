@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carousel / Slider — Animated</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;--card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 100%,16px 16px;display:flex;flex-direction:column;align-items:center;min-height:100vh;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:12px;gap:16px}
+
+.aw{width:min(700px,100%)}
+.ab{width:700px;height:412px;background:var(--card);border:2px solid var(--border);transform-origin:top left;overflow:hidden}
+.hd{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
+.hd-t{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:2.5px}
+.hd-f{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
+.la{position:relative;width:100%;height:260px;background:linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);background-size:30px 30px;overflow:hidden}
+
+.fr{position:absolute;inset:0;display:flex;flex-direction:column;opacity:0;pointer-events:none;transition:opacity .3s}.fr.show{opacity:1;pointer-events:auto}
+.cw{flex:1;display:flex;flex-direction:column;padding:10px 24px 0;min-height:0}
+.cv{position:relative;flex:1;overflow:hidden;border:1px solid var(--border);background:var(--card-alt);min-height:0}
+.ct{display:flex;height:100%;transition:transform .5s cubic-bezier(.4,0,.2,1)}
+.cs{height:100%;display:flex;flex-direction:column;justify-content:center;padding:14px 18px;position:relative;overflow:hidden;flex-shrink:0;transition:transform .5s cubic-bezier(.4,0,.2,1),opacity .45s}
+.cs .sa{position:absolute;top:0;left:0;width:3px;height:100%}
+.cs .sl{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--muted);margin-bottom:3px}
+.cs .st{font-size:18px;font-weight:800;line-height:1.1}
+.cs .sd2{font-size:9px;color:var(--muted);margin-top:5px}
+
+.ca{position:absolute;top:50%;transform:translateY(-50%);width:26px;height:26px;background:rgba(19,17,16,.8);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--muted);z-index:5;cursor:default;transition:color .25s,border-color .25s}
+.ca.l{left:5px}.ca.r{right:5px}.ca.flash{color:var(--accent);border-color:var(--accent)}
+
+.cd{display:flex;gap:4px;justify-content:center;padding:7px 0 0}
+.cdot{width:16px;height:2px;background:var(--border);transition:background .3s,width .3s}
+.cdot.on{background:var(--accent);width:24px}
+
+.cfl{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);letter-spacing:1.5px;padding:5px 0 0;text-align:center;opacity:.55}
+
+.cprog{height:2px;background:var(--border);margin-top:5px;overflow:hidden}
+.cprog-f{height:100%;width:0%;background:var(--accent)}
+@keyframes pf{from{width:0}to{width:100%}}
+.cprog-f.anim{animation:pf 1.4s linear forwards}
+
+.inf{padding:11px 14px;border-top:1px solid var(--border)}
+.dn{font-size:17px;font-weight:800;line-height:1.15}
+.ds{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);margin-top:2px}
+.dd{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.4}
+.di{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);margin-top:6px;padding-top:6px;border-top:1px dashed var(--border);opacity:.78}
+.pt{height:2px;background:var(--border)}.pf{height:100%;background:var(--accent);width:0%}
+.fdw{display:flex;gap:4px;justify-content:center;padding:8px 0}
+.fdd{width:22px;height:2px;background:var(--border);transition:background .3s}.fdd.on{background:var(--accent)}
+
+/* Practice */
+.pw{width:min(700px,100%);background:var(--card);border:2px solid var(--border);padding:20px 24px}
+.pw-h{font-size:15px;font-weight:700;margin-bottom:2px}.pw-h span{color:var(--accent)}
+.pw-s{font-size:11px;color:var(--muted);margin-bottom:14px}
+.mbs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.mb{padding:6px 12px;border:2px solid var(--border);background:var(--card-alt);font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);cursor:pointer;transition:all .2s}.mb:hover{border-color:var(--border-hi)}.mb.on{border-color:var(--accent);color:var(--accent);background:rgba(212,113,42,.08)}
+.pcv{position:relative;height:160px;overflow:hidden;border:1px solid var(--border);background:var(--card-alt);margin-bottom:8px}
+.pct{display:flex;height:100%;transition:transform .45s cubic-bezier(.4,0,.2,1)}
+.pcs{height:100%;display:flex;flex-direction:column;justify-content:center;padding:14px 18px;position:relative;overflow:hidden;flex-shrink:0;transition:transform .45s cubic-bezier(.4,0,.2,1),opacity .4s}
+.pcs .sa{position:absolute;top:0;left:0;width:3px;height:100%}
+.pcs .sl{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2px;color:var(--muted);margin-bottom:3px}
+.pcs .st{font-size:18px;font-weight:800;line-height:1.1}
+.pcs .sd2{font-size:10px;color:var(--muted);margin-top:5px}
+.pca{position:absolute;top:50%;transform:translateY(-50%);width:28px;height:28px;background:rgba(19,17,16,.85);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--muted);z-index:5;cursor:pointer;transition:all .2s;user-select:none}.pca:hover{color:var(--accent);border-color:var(--accent)}.pca.l{left:6px}.pca.r{right:6px}
+.pcd{display:flex;gap:4px;justify-content:center;margin-bottom:8px}
+.pcdot{width:16px;height:2px;background:var(--border);cursor:pointer;transition:all .2s}.pcdot.on{background:var(--accent);width:26px}
+.pcp{height:2px;background:var(--border);margin-bottom:10px;overflow:hidden;display:none}
+.pcpf{height:100%;width:0%;background:var(--accent)}
+.pfb{font-family:'JetBrains Mono',monospace;font-size:11px;min-height:18px;color:var(--muted);transition:color .2s;line-height:1.4}.pfb.w{color:var(--accent)}
+.pht{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);opacity:.65}
+
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media(max-width:520px){.pw{padding:16px}.mbs{gap:4px}.mb{padding:5px 8px;font-size:9px}.pcv{height:130px}}
+</style>
+</head>
+<body>
+
+<div class="aw">
+<div class="ab" id="ab">
+  <div class="hd"><span class="hd-t">CAROUSEL / SLIDER</span><span class="hd-f" id="hf">01 / 04</span></div>
+  <div class="la" id="la">
+    <!-- F0: Single -->
+    <div class="fr" id="f0">
+      <div class="cw"><div class="cv"><div class="ct" id="at0"></div><div class="ca l" id="a0l">&#8249;</div><div class="ca r" id="a0r">&#8250;</div></div><div class="cd" id="ad0"></div></div>
+      <div class="cfl">SINGLE ITEM &middot; 1 VISIBLE AT A TIME</div>
+    </div>
+    <!-- F1: Multi -->
+    <div class="fr" id="f1">
+      <div class="cw"><div class="cv"><div class="ct" id="at1"></div><div class="ca l" id="a1l">&#8249;</div><div class="ca r" id="a1r">&#8250;</div></div><div class="cd" id="ad1"></div></div>
+      <div class="cfl">MULTIPLE ITEMS &middot; 3 VISIBLE AT A TIME</div>
+    </div>
+    <!-- F2: Center -->
+    <div class="fr" id="f2">
+      <div class="cw"><div class="cv"><div class="ct" id="at2"></div><div class="ca l" id="a2l">&#8249;</div><div class="ca r" id="a2r">&#8250;</div></div><div class="cd" id="ad2"></div></div>
+      <div class="cfl">CENTER MODE &middot; FOCUS ON ACTIVE ITEM</div>
+    </div>
+    <!-- F3: Autoplay -->
+    <div class="fr" id="f3">
+      <div class="cw"><div class="cv"><div class="ct" id="at3"></div><div class="ca l" id="a3l">&#8249;</div><div class="ca r" id="a3r">&#8250;</div></div><div class="cd" id="ad3"></div><div class="cprog"><div class="cprog-f" id="ap3"></div></div></div>
+      <div class="cfl">AUTOPLAY &middot; AUTO-ADVANCE WITH PROGRESS</div>
+    </div>
+  </div>
+  <div class="inf"><div class="dn" id="dn">Single Item</div><div class="ds" id="ds">MỖI LẦN 1 SLIDE</div><div class="dd" id="dd">Chỉ hiển thị 1 slide tại một thời điểm — user phải bấm để xem tiếp</div><div class="di" id="di">Khi nói "carousel" không nói thêm gì → dev mặc định hiểu là dạng này</div></div>
+  <div class="pt"><div class="pf" id="pf"></div></div>
+  <div class="fdw"><div class="fdd on" id="d0"></div><div class="fdd" id="d1"></div><div class="fdd" id="d2"></div><div class="fdd" id="d3"></div></div>
+</div>
+</div>
+
+<!-- Practice -->
+<div class="pw">
+  <div class="pw-h">Thực hành — <span>Chế độ Carousel</span></div>
+  <div class="pw-s">Chọn chế độ → dùng mũi tên hoặc dots để điều hướng</div>
+  <div class="mbs" id="mbs">
+    <button class="mb on" data-m="0">Single</button>
+    <button class="mb" data-m="1">Multiple</button>
+    <button class="mb" data-m="2">Center</button>
+    <button class="mb" data-m="3">Autoplay</button>
+  </div>
+  <div class="pcv" id="pcv">
+    <div class="pct" id="pct"></div>
+    <div class="pca l" id="pcal">&#8249;</div>
+    <div class="pca r" id="pcar">&#8250;</div>
+  </div>
+  <div class="pcd" id="pcd"></div>
+  <div class="pcp" id="pcp"><div class="pcpf" id="pcpf"></div></div>
+  <div class="pfb" id="pfb">Single Item — 1 slide visible, navigate with arrows</div>
+  <div class="pht">Hint: Chuyển chế độ → để ý cách slide trượt khác nhau, đặc biệt ở Center mode</div>
+</div>
+
+<script>
+/* ===== DATA ===== */
+const SD=[
+  {l:'TRAVEL',t:'Swiss Alps',d:'Discover mountain landscapes',bg:'#252018',ac:'#d4712a'},
+  {l:'ROAD TRIP',t:'Coastal Roads',d:'Scenic drives along the coast',bg:'#182220',ac:'#2a9a7a'},
+  {l:'NATURE',t:'Forest Escape',d:'Immerse in ancient forests',bg:'#1a2018',ac:'#4a9a3a'},
+  {l:'EXPERIENCE',t:'Northern Lights',d:'Witness the aurora borealis',bg:'#1a1815',ac:'#d4a12a'}
+];
+const INFO=[
+  {nm:'Single Item',sz:'MỖI LẦN 1 SLIDE',dc:'Chỉ hiển thị 1 slide tại một thời điểm — user phải bấm để xem tiếp',ins:'Khi nói "carousel" không nói thêm gì → dev mặc định hiểu là dạng này'},
+  {nm:'Multiple Items',sz:'NHIỀU SLIDE CÙNG LÚC',dc:'Hiển thị nhiều slide cùng lúc — trượt dần để xem thêm',ins:'Product grid, testimonial row — hỏi rõ "hiển thị mấy cái một lần"'},
+  {nm:'Center Mode',sz:'TRUNG TÂM NHẤN MẠNH',dc:'Slide giữa to hơn, 2 bên nhỏ hơn — focus attention vào item chính',ins:'Feature highlight, portfolio — nói rõ "center mode" thay vì chỉ "carousel"'},
+  {nm:'Autoplay',sz:'TỰ ĐỘNG CHẠY',dc:'Slide tự chuyển sau mỗi N giây — progress bar cho biết khi nào chuyển',ins:'Banner hero, kiosk — cần nói rõ "autoplay" + thời gian mỗi slide'}
+];
+
+/* ===== HELPERS ===== */
+function mkS(s,tiny){
+  return `<div class="cs" style="background:${s.bg}"><div class="sa" style="background:${s.ac}"></div><span class="sl">${s.l}</span><span class="st" style="color:${s.ac}">${s.t}</span>${tiny?'':`<span class="sd2">${s.d}</span>`}</div>`;
+}
+function mkPS(s){return `<div class="pcs" style="background:${s.bg}"><div class="sa" style="background:${s.ac}"></div><span class="sl">${s.l}</span><span class="st" style="color:${s.ac}">${s.t}</span><span class="sd2">${s.d}</span></div>`;}
+function dots(n,on){let h='';for(let i=0;i<n;i++)h+=`<span class="cdot${i===on?' on':''}"></span>`;return h;}
+function pdots(n,on){let h='';for(let i=0;i<n;i++)h+=`<span class="pcdot${i===on?' on':''}" data-i="${i}"></span>`;return h;}
+
+/* ===== BUILD ANIMATION FRAMES ===== */
+// F0: Single — 4 slides, 100% each
+document.getElementById('at0').innerHTML=SD.map(s=>mkS(s,1)).join('');
+document.getElementById('at0').querySelectorAll('.cs').forEach(s=>s.style.flex='0 0 100%');
+document.getElementById('ad0').innerHTML=dots(4,0);
+
+// F1: Multi — 4 slides, 33.33% each
+document.getElementById('at1').innerHTML=SD.map(s=>mkS(s,1)).join('');
+document.getElementById('at1').querySelectorAll('.cs').forEach(s=>s.style.flex='0 0 33.333%');
+document.getElementById('ad1').innerHTML=dots(2,0);
+
+// F2: Center — 3 slides, 42% each
+document.getElementById('at2').innerHTML=SD.slice(0,3).map(s=>mkS(s,1)).join('');
+document.getElementById('at2').querySelectorAll('.cs').forEach(s=>s.style.flex='0 0 42%');
+document.getElementById('ad2').innerHTML=dots(3,1);
+
+// F3: Autoplay — 4 slides, 100% each
+document.getElementById('at3').innerHTML=SD.map(s=>mkS(s,1)).join('');
+document.getElementById('at3').querySelectorAll('.cs').forEach(s=>s.style.flex='0 0 100%');
+document.getElementById('ad3').innerHTML=dots(4,0);
+
+/* ===== ANIMATION CONTROL ===== */
+const frs=[0,1,2,3].map(i=>document.getElementById('f'+i));
+const el={dn:document.getElementById('dn'),ds:document.getElementById('ds'),dd:document.getElementById('dd'),di:document.getElementById('di'),hf:document.getElementById('hf'),pf:document.getElementById('pf')};
+const dts=[0,1,2,3].map(i=>document.getElementById('d'+i));
+let cur=0,ft=null,pa=null,t0=0,ftimers=[];
+const DUR=3500;
+
+function setTrack(fi,si){
+  const t=document.getElementById('at'+fi);
+  if(fi===0||fi===3)t.style.transform='translateX(-'+si*100+'%)';
+  else if(fi===1)t.style.transform='translateX(-'+si*33.333+'%)';
+  else t.style.transform='translateX('+(29-si*42)+'%)';
+}
+function setDots(fi,si){document.getElementById('ad'+fi).innerHTML=dots(fi===1?2:fi===2?3:4,si);}
+function setCenter(fi,si){
+  const slides=document.getElementById('at'+fi).children;
+  for(let i=0;i<slides.length;i++){
+    if(i===si){slides[i].style.transform='scale(1.06)';slides[i].style.opacity='1';slides[i].style.zIndex='3';}
+    else{slides[i].style.transform='scale(0.88)';slides[i].style.opacity='0.35';slides[i].style.zIndex='1';}
+  }
+}
+function flash(fi,dir){const a=document.getElementById('a'+fi+dir);a.classList.add('flash');setTimeout(()=>a.classList.remove('flash'),400);}
+function startProg(){const b=document.getElementById('ap3');b.classList.remove('anim');void b.offsetWidth;b.classList.add('anim');}
+
+function runFrame(fi){
+  ftimers.forEach(t=>clearTimeout(t));ftimers=[];
+  if(fi===0){setTrack(0,0);setDots(0,0);ftimers.push(setTimeout(()=>{flash(0,'r');setTrack(0,1);setDots(0,1)},800));ftimers.push(setTimeout(()=>{flash(0,'r');setTrack(0,2);setDots(0,2)},2100));}
+  else if(fi===1){setTrack(1,0);setDots(1,0);ftimers.push(setTimeout(()=>{flash(1,'r');setTrack(1,1);setDots(1,1)},1000));}
+  else if(fi===2){setTrack(2,1);setCenter(2,1);setDots(2,1);ftimers.push(setTimeout(()=>{flash(2,'r');setTrack(2,2);setCenter(2,2);setDots(2,2)},1200));}
+  else{setTrack(3,0);setDots(3,0);startProg();ftimers.push(setTimeout(()=>{setTrack(3,1);setDots(3,1);startProg()},1500));ftimers.push(setTimeout(()=>{setTrack(3,2);setDots(3,2);startProg()},3000));}
+}
+
+function apply(i){
+  const s=INFO[i];el.dn.textContent=s.nm;el.ds.textContent=s.sz;el.dd.textContent=s.dc;el.di.textContent=s.ins;
+  el.hf.textContent='0'+(i+1)+' / 04';
+  dts.forEach((d,j)=>d.classList.toggle('on',j===i));
+  frs.forEach(f=>f.classList.remove('show'));
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    frs[i].classList.add('show');
+    // Reset center transforms when leaving/entering frame 2
+    if(i===2)setCenter(2,1);
+    runFrame(i);
+  }));
+}
+function startProg2(){t0=performance.now();el.pf.style.transition='none';el.pf.style.width='0%';(function tk(n){const p=Math.min(100,(n-t0)/DUR*100);el.pf.style.width=p+'%';if(p<100)pa=requestAnimationFrame(tk)})(t0);}
+function next(){cur=(cur+1)%4;apply(cur);startProg2();}
+function start(){apply(0);startProg2();ft=setInterval(next,DUR);}
+function scale(){const w=document.querySelector('.aw'),b=document.getElementById('ab'),s=w.clientWidth/700;b.style.transform='scale('+s+')';w.style.height=Math.ceil(412*s)+'px';}
+
+/* ===== PRACTICE ===== */
+let pm=0,ps=0,apt=null,app=0;
+const pct=document.getElementById('pct'),pcd=document.getElementById('pcd'),pcp=document.getElementById('pcp'),pcpf=document.getElementById('pcpf'),pfb=document.getElementById('pfb');
+const MODES=['Single Item — 1 slide visible, navigate with arrows','Multiple Items — 3 slides visible, slide to see more','Center Mode — center item focused, sides dimmed','Autoplay — slides advance automatically with progress'];
+const MAXS=[3,1,3,3];
+
+function buildP(){
+  pct.innerHTML=SD.map(s=>mkPS(s)).join('');
+  updateP();
+}
+function maxP(){return MAXS[pm];}
+function updateP(){
+  const slides=pct.children;
+  // Set widths
+  for(let i=0;i<slides.length;i++){
+    if(pm===0||pm===3)slides[i].style.flex='0 0 100%';
+    else if(pm===1)slides[i].style.flex='0 0 33.333%';
+    else slides[i].style.flex='0 0 42%';
+  }
+  // Track transform
+  if(pm===0||pm===3)pct.style.transform='translateX(-'+ps*100+'%)';
+  else if(pm===1)pct.style.transform='translateX(-'+ps*33.333+'%)';
+  else pct.style.transform='translateX('+(29-ps*42)+'%)';
+  // Center transforms
+  for(let i=0;i<slides.length;i++){
+    if(pm===2){
+      if(i===ps){slides[i].style.transform='scale(1.06)';slides[i].style.opacity='1';slides[i].style.zIndex='3';}
+      else{slides[i].style.transform='scale(0.88)';slides[i].style.opacity='0.35';slides[i].style.zIndex='1';}
+    }else{slides[i].style.transform='';slides[i].style.opacity='';slides[i].style.zIndex='';}
+  }
+  // Dots
+  const nd=pm===1?SD.length-2:SD.length;
+  pcd.innerHTML=pdots(nd,ps);
+  pcd.querySelectorAll('.pcdot').forEach(d=>d.addEventListener('click',()=>{ps=+d.dataset.i;updateP();restartAP();}));
+  // Progress bar
+  pcp.style.display=pm===3?'block':'none';
+  // Arrows visibility
+  document.getElementById('pcal').style.display=(pm===3)?'none':'flex';
+  document.getElementById('pcar').style.display=(pm===3)?'none':'flex';
+  // Feedback
+  pfb.textContent=MODES[pm];
+  pfb.className='pfb'+(pm===2?' w':'');
+}
+function pNext(){if(ps<maxP()){ps++;updateP();restartAP();}}
+function pPrev(){if(ps>0){ps--;updateP();restartAP();}}
+function stopAP(){if(apt){clearInterval(apt);apt=null;}app=0;pcpf.style.width='0%';}
+function startAP(){stopAP();apt=setInterval(()=>{app+=2;if(app>=100){app=0;if(ps<maxP())ps++;else ps=0;updateP();}pcpf.style.width=app+'%';},40);}
+function restartAP(){if(pm===3)startAP();}
+
+// Mode buttons
+document.getElementById('mbs').addEventListener('click',e=>{
+  const b=e.target.closest('.mb');if(!b)return;
+  const m=+b.dataset.m;if(m===pm)return;
+  document.querySelectorAll('.mb').forEach(x=>x.classList.remove('on'));
+  b.classList.add('on');
+  pm=m;ps=0;stopAP();
+  updateP();
+  if(pm===3)startAP();
+});
+
+// Arrows
+document.getElementById('pcal').addEventListener('click',pPrev);
+document.getElementById('pcar').addEventListener('click',pNext);
+
+/* ===== INIT ===== */
+window.addEventListener('resize',scale);
+requestAnimationFrame(()=>requestAnimationFrame(scale));
+start();buildP();
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden){clearInterval(ft);cancelAnimationFrame(pa);ftimers.forEach(t=>clearTimeout(t));}
+  else{start();}
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Container</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0c0c0e;
+      --bg2: #131315;
+      --fg: #ece8e1;
+      --muted: #706b64;
+      --accent: #e88c2e;
+      --card: #1a1a1e;
+      --border: #26262a;
+      --mono: 'Space Mono', monospace;
+      --sans: 'Space Grotesk', sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--sans);
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 28px 16px 48px;
+      background-image:
+        radial-gradient(ellipse 60% 40% at 50% 0%, rgba(207, 92, 39, .04) 0%, transparent 100%),
+        linear-gradient(rgba(255, 255, 255, .016) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, .016) 1px, transparent 1px);
+      background-size: 100% 100%, 28px 28px, 28px 28px;
+    }
+
+    .wrap {
+      width: 100%;
+      max-width: 880px
+    }
+
+    .stag {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid rgba(207, 92, 39, .35);
+      display: inline-block;
+      padding: 3px 10px;
+      margin-bottom: 10px
+    }
+
+    .sdesc {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 14px;
+      max-width: 520px;
+      line-height: 1.55
+    }
+
+    .tbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 2px 10px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 10px
+    }
+
+    .tl {
+      display: flex;
+      align-items: center;
+      gap: 8px
+    }
+
+    .tg {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted)
+    }
+
+    .tsep {
+      color: var(--border)
+    }
+
+    .ta {
+      color: var(--accent);
+      border: 1px solid rgba(207, 92, 39, .35);
+      padding: 2px 8px
+    }
+
+    /* === Preview === */
+    .prev {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      overflow: hidden
+    }
+
+    .prev::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      background-image: linear-gradient(rgba(255, 255, 255, .008) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, .008) 1px, transparent 1px);
+      background-size: 20px 20px
+    }
+
+    .badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      z-index: 30;
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--bg);
+      background: var(--accent);
+      padding: 3px 9px;
+      line-height: 1.7;
+      white-space: nowrap
+    }
+
+    .ctr {
+      position: absolute;
+      bottom: 10px;
+      right: 12px;
+      z-index: 30;
+      font-family: var(--mono);
+      font-size: 9px;
+      color: rgba(255, 255, 255, .15);
+      letter-spacing: .1em
+    }
+
+    /* Viewport reference label */
+    .vp-ref {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      z-index: 30;
+      font-family: var(--mono);
+      font-size: 8px;
+      color: rgba(255, 255, 255, .2);
+      letter-spacing: .1em
+    }
+
+    /* === Sim states === */
+    .ss {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity .5s;
+      pointer-events: none;
+      z-index: 5
+    }
+
+    .ss.on {
+      opacity: 1;
+      pointer-events: auto
+    }
+
+    /* Container */
+    .sc {
+      position: absolute;
+      top: 14%;
+      bottom: 22%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 1.5px dashed var(--accent);
+      background: rgba(207, 92, 39, .03);
+      transition: width .6s cubic-bezier(.4, 0, .2, 1);
+      overflow: hidden;
+    }
+
+    .sc-inner {
+      position: absolute;
+      top: 10%;
+      bottom: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 1.5px solid var(--accent);
+      background: rgba(207, 92, 39, .06);
+      transition: width .6s cubic-bezier(.4, 0, .2, 1);
+      overflow: hidden;
+    }
+
+    /* Content inside container */
+    .sc-nav {
+      padding: clamp(3px, .5vw, 5px) clamp(6px, 1vw, 10px);
+      background: rgba(255, 255, 255, .04);
+      border-bottom: 1px solid rgba(255, 255, 255, .06);
+      font-family: var(--mono);
+      font-size: clamp(6px, .7vw, 8px);
+      letter-spacing: .1em;
+      color: var(--muted);
+      display: flex;
+      gap: clamp(6px, 1.5vw, 14px);
+      white-space: nowrap
+    }
+
+    .sc-cards {
+      flex: 1;
+      display: flex;
+      gap: clamp(3px, .5vw, 5px);
+      padding: clamp(4px, .7vw, 7px);
+      align-items: center
+    }
+
+    .sc-card {
+      flex: 1;
+      height: clamp(14px, 3vw, 28px);
+      background: rgba(255, 255, 255, .05);
+      border: 1px solid rgba(255, 255, 255, .06)
+    }
+
+    .sc-btn {
+      margin: clamp(3px, .5vw, 5px) clamp(6px, 1vw, 10px);
+      height: clamp(6px, 1.2vw, 12px);
+      width: clamp(30px, 8vw, 60px);
+      background: var(--accent);
+      align-self: flex-start
+    }
+
+    /* Dimension indicator */
+    .sc-dim {
+      position: absolute;
+      bottom: clamp(2px, .4vw, 5px);
+      left: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10
+    }
+
+    .sc-dim-line {
+      position: absolute;
+      bottom: 50%;
+      left: 4px;
+      right: 4px;
+      height: 1px;
+      background: var(--accent);
+      opacity: .4
+    }
+
+    .sc-dim-lbl {
+      position: relative;
+      z-index: 1;
+      font-family: var(--mono);
+      font-size: clamp(7px, .8vw, 9px);
+      color: var(--accent);
+      background: rgba(19, 19, 21, .9);
+      padding: 0 4px;
+      white-space: nowrap
+    }
+
+    .sc-dim-arr {
+      font-family: var(--mono);
+      font-size: clamp(7px, .8vw, 9px);
+      color: var(--accent);
+      opacity: .5;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%)
+    }
+
+    .sc-dim-arr.l {
+      left: 0
+    }
+
+    .sc-dim-arr.r {
+      right: 0
+    }
+
+    /* Margin labels */
+    .sc-margin {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: var(--mono);
+      font-size: clamp(6px, .6vw, 7px);
+      color: rgba(207, 92, 39, .4);
+      writing-mode: vertical-lr;
+      letter-spacing: .08em;
+      text-orientation: mixed;
+      z-index: 10;
+      transition: opacity .4s
+    }
+
+    .sc-margin.hide {
+      opacity: 0
+    }
+
+    /* Responsive breakpoint label */
+    .sc-bp {
+      position: absolute;
+      top: -1px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--mono);
+      font-size: clamp(7px, .8vw, 9px);
+      color: var(--accent);
+      background: rgba(19, 19, 21, .9);
+      padding: 1px 6px;
+      white-space: nowrap;
+      z-index: 10;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      transition: opacity .3s
+    }
+
+    /* Inner container labels */
+    .sc-inner-dim {
+      position: absolute;
+      bottom: -1px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--mono);
+      font-size: clamp(6px, .65vw, 7px);
+      color: var(--accent);
+      background: rgba(19, 19, 21, .9);
+      padding: 1px 5px;
+      white-space: nowrap;
+      z-index: 10;
+      letter-spacing: .06em;
+      opacity: .7
+    }
+
+    /* === Bottom === */
+    .bot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 10px;
+      padding: 0 2px;
+      min-height: 20px
+    }
+
+    .dots {
+      display: flex;
+      gap: 6px
+    }
+
+    .dot {
+      width: 22px;
+      height: 3px;
+      background: var(--border);
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      transition: background .3s
+    }
+
+    .dot:hover {
+      background: var(--muted)
+    }
+
+    .dot.on {
+      background: var(--accent)
+    }
+
+    .ins {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      letter-spacing: .02em;
+      max-width: 62%;
+      text-align: right;
+      line-height: 1.5;
+      transition: opacity .25s
+    }
+
+    /* ======================== */
+    /* === PRACTICE ========== */
+    /* ======================== */
+    .prac {
+      margin-top: 28px;
+      border-top: 1px solid var(--border);
+      padding-top: 18px
+    }
+
+    .prac-hd {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 14px;
+      flex-wrap: wrap
+    }
+
+    .prac-g {
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.6;
+      max-width: 440px
+    }
+
+    .prac-g strong {
+      color: var(--fg);
+      font-weight: 600
+    }
+
+    .prac-h {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: rgba(207, 92, 39, .55);
+      text-align: right;
+      line-height: 1.5
+    }
+
+    .cp {
+      margin-bottom: 14px
+    }
+
+    .cp-row {
+      display: flex;
+      align-items: center;
+      gap: clamp(8px, 2vw, 16px);
+      margin-bottom: 10px;
+      flex-wrap: wrap
+    }
+
+    .cp-label {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      min-width: 70px;
+      flex-shrink: 0
+    }
+
+    .cp-label b {
+      color: var(--accent);
+      font-weight: 400
+    }
+
+    input[type=range] {
+      -webkit-appearance: none;
+      appearance: none;
+      flex: 1;
+      min-width: 120px;
+      height: 3px;
+      background: var(--border);
+      outline: none;
+      cursor: pointer
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      background: var(--accent);
+      border: none;
+      cursor: pointer
+    }
+
+    input[type=range]::-moz-range-thumb {
+      width: 14px;
+      height: 14px;
+      background: var(--accent);
+      border: none;
+      cursor: pointer;
+      border-radius: 0
+    }
+
+    .cp-presets {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap
+    }
+
+    .cp-pb {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: .06em;
+      color: var(--muted);
+      background: none;
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+      cursor: pointer;
+      transition: border-color .2s, color .2s
+    }
+
+    .cp-pb:hover {
+      border-color: rgba(207, 92, 39, .3);
+      color: var(--fg)
+    }
+
+    .cp-pb.on {
+      border-color: var(--accent);
+      color: var(--accent)
+    }
+
+    /* Practice preview */
+    .pp {
+      width: 100%;
+      height: 200px;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      position: relative;
+      overflow: hidden
+    }
+
+    .pp::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image: linear-gradient(rgba(255, 255, 255, .006) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, .006) 1px, transparent 1px);
+      background-size: 20px 20px;
+      z-index: 0
+    }
+
+    /* Viewport reference bar */
+    .pp-vp-bar {
+      position: absolute;
+      top: 8px;
+      left: 8px;
+      right: 8px;
+      height: 3px;
+      background: var(--border);
+      z-index: 10
+    }
+
+    .pp-vp-lbl {
+      position: absolute;
+      top: 12px;
+      left: 8px;
+      font-family: var(--mono);
+      font-size: 7px;
+      color: rgba(255, 255, 255, .15);
+      letter-spacing: .08em;
+      z-index: 10
+    }
+
+    /* Practice container */
+    .pp-con {
+      position: absolute;
+      top: 28px;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      border: 1.5px dashed var(--accent);
+      background: rgba(207, 92, 39, .03);
+      overflow: hidden;
+      transition: width .15s ease-out;
+      z-index: 5
+    }
+
+    .pp-con .sc-nav,
+    .pp-con .sc-cards,
+    .pp-con .sc-card,
+    .pp-con .sc-btn {
+      pointer-events: none
+    }
+
+    /* Practice dimension */
+    .pp-dim {
+      position: absolute;
+      bottom: 8px;
+      left: 0;
+      right: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 10
+    }
+
+    .pp-dim-line {
+      position: absolute;
+      bottom: 50%;
+      left: 4px;
+      right: 4px;
+      height: 1px;
+      background: var(--accent);
+      opacity: .4;
+      transition: left .15s, right .15s
+    }
+
+    .pp-dim-lbl {
+      position: relative;
+      z-index: 1;
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--accent);
+      background: rgba(19, 19, 21, .9);
+      padding: 0 6px;
+      white-space: nowrap
+    }
+
+    .pp-dim-arr {
+      font-family: var(--mono);
+      font-size: 9px;
+      color: var(--accent);
+      opacity: .5;
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%)
+    }
+
+    .pp-dim-arr.l {
+      left: 0
+    }
+
+    .pp-dim-arr.r {
+      right: 0
+    }
+
+    /* Margin indicators */
+    .pp-margin {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      font-family: var(--mono);
+      font-size: 7px;
+      color: rgba(207, 92, 39, .35);
+      writing-mode: vertical-lr;
+      letter-spacing: .06em;
+      z-index: 8;
+      transition: opacity .3s;
+      white-space: nowrap
+    }
+
+    .pp-margin.hide {
+      opacity: 0
+    }
+
+    /* Feedback */
+    .fb {
+      margin-top: 10px;
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--muted);
+      line-height: 1.7;
+      min-height: 16px;
+      transition: opacity .25s
+    }
+
+    .fb em {
+      color: var(--fg);
+      font-style: normal
+    }
+
+    .fb .w {
+      color: var(--accent)
+    }
+
+    @media(max-width:640px) {
+      body {
+        padding: 14px 10px 36px
+      }
+
+      .ins,
+      .vp-ref {
+        display: none
+      }
+
+      .bot {
+        justify-content: center
+      }
+
+      .tl .tg:nth-child(n+3) {
+        display: none
+      }
+
+      .prac-hd {
+        flex-direction: column
+      }
+
+      .prac-h {
+        text-align: left
+      }
+
+      .sc-margin,
+      .pp-margin {
+        display: none
+      }
+
+      .pp {
+        height: 160px
+      }
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+
+      *,
+      *::before,
+      *::after {
+        transition-duration: .01ms !important
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <!-- ===== MÔ PHỠNG ===== -->
+    <span class="stag">mô phỏng</span>
+    <p class="sdesc">Container = hộp bao bọc nội dung. Cùng nội dung, đổi container → layout thay đổi.</p>
+
+    <div class="tbar">
+      <div class="tl"><span class="tg">container</span><span class="tsep">/</span><span class="tg">layout</span></div>
+      <span class="ta">4 TYPES</span>
+    </div>
+
+    <div class="prev" id="sp">
+      <div class="badge" id="sbadge">01 FIXED CONTAINER</div>
+      <div class="ctr" id="sctr">1 / 4</div>
+      <div class="vp-ref">viewport: 1440px</div>
+
+      <!-- State 0: Fixed -->
+      <div class="ss on" id="ss0">
+        <div class="sc" id="sc0" style="width:83%">
+          <div class="sc-nav">BRAND · Home · About · Pricing</div>
+          <div class="sc-cards">
+            <div class="sc-card"></div>
+            <div class="sc-card"></div>
+            <div class="sc-card"></div>
+          </div>
+          <div class="sc-btn"></div>
+          <div class="sc-dim">
+            <div class="sc-dim-line"></div><span class="sc-dim-arr l">←</span><span class="sc-dim-lbl">max-width:
+              1200px</span><span class="sc-dim-arr r">→</span>
+          </div>
+        </div>
+        <div class="sc-margin" id="sm0l" style="left:2%">margin: auto</div>
+        <div class="sc-margin" id="sm0r" style="right:2%">margin: auto</div>
+      </div>
+
+      <!-- State 1: Fluid -->
+      <div class="ss" id="ss1">
+        <div class="sc" id="sc1" style="width:100%">
+          <div class="sc-nav">BRAND · Home · About · Pricing</div>
+          <div class="sc-cards">
+            <div class="sc-card"></div>
+            <div class="sc-card"></div>
+            <div class="sc-card"></div>
+          </div>
+          <div class="sc-btn"></div>
+          <div class="sc-dim">
+            <div class="sc-dim-line"></div><span class="sc-dim-arr l">←</span><span class="sc-dim-lbl">width:
+              100%</span><span class="sc-dim-arr r">→</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- State 2: Responsive -->
+      <div class="ss" id="ss2">
+        <div class="sc" id="sc2" style="width:83%">
+          <div class="sc-bp" id="sc2bp">desktop · max-width: 1200px</div>
+          <div class="sc-nav">BRAND · Home · About · Pricing</div>
+          <div class="sc-cards">
+            <div class="sc-card"></div>
+            <div class="sc-card"></div>
+            <div class="sc-card"></div>
+          </div>
+          <div class="sc-btn"></div>
+          <div class="sc-dim">
+            <div class="sc-dim-line"></div><span class="sc-dim-arr l">←</span><span class="sc-dim-lbl"
+              id="sc2dim">1200px</span><span class="sc-dim-arr r">→</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- State 3: Nested -->
+      <div class="ss" id="ss3">
+        <div class="sc" id="sc3" style="width:83%">
+          <div class="sc-dim">
+            <div class="sc-dim-line"></div><span class="sc-dim-arr l">←</span><span class="sc-dim-lbl">outer:
+              1200px</span><span class="sc-dim-arr r">→</span>
+          </div>
+          <div class="sc-inner" id="sc3i" style="width:67%">
+            <div class="sc-nav">BRAND · Home · About</div>
+            <div class="sc-cards">
+              <div class="sc-card"></div>
+              <div class="sc-card"></div>
+            </div>
+            <div class="sc-btn"></div>
+            <div class="sc-inner-dim">inner: 800px</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bot">
+      <div class="dots" id="sdots">
+        <button class="dot on" data-i="0" aria-label="Fixed"></button>
+        <button class="dot" data-i="1" aria-label="Fluid"></button>
+        <button class="dot" data-i="2" aria-label="Responsive"></button>
+        <button class="dot" data-i="3" aria-label="Nested"></button>
+      </div>
+      <div class="ins" id="sins">Container cố định 1200px — không đổi dù viewport to hay nhỏ</div>
+    </div>
+
+    <!-- ===== THỰC HÀNH ===== -->
+    <div class="prac">
+      <span class="stag">thực hành</span>
+      <div class="prac-hd">
+        <p class="prac-g"><strong>Kéo slider</strong> thay đổi max-width — thấy container co giãn so với viewport.</p>
+        <p class="prac-h">Kéo về 0 rồi lên 100% — thấy ranh giới giữa container và viewport biến mất.</p>
+      </div>
+
+      <div class="cp">
+        <div class="cp-row">
+          <span class="cp-label">MAX-WIDTH <b id="pvVal">1200px</b></span>
+          <input type="range" id="pvSlider" min="0" max="100" step="1" value="83">
+        </div>
+        <div class="cp-row">
+          <span class="cp-label">PRESET</span>
+          <div class="cp-presets" id="ppres">
+            <button class="cp-pb" data-v="0">0px</button>
+            <button class="cp-pb" data-v="33">480px</button>
+            <button class="cp-pb" data-v="53">768px</button>
+            <button class="cp-pb on" data-v="83">1200px</button>
+            <button class="cp-pb" data-v="100">100% FLUID</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="pp">
+        <div class="pp-vp-bar"></div>
+        <div class="pp-vp-lbl">viewport (full width)</div>
+
+        <div class="pp-con" id="ppCon" style="width:83%">
+          <div class="sc-nav">BRAND · Home · About · Pricing</div>
+          <div class="sc-cards">
+            <div class="sc-card"></div>
+            <div class="sc-card"></div>
+            <div class="sc-card"></div>
+          </div>
+          <div class="sc-btn"></div>
+        </div>
+
+        <div class="pp-dim">
+          <div class="pp-dim-line" id="ppDimLine"></div>
+          <span class="pp-dim-arr l">←</span>
+          <span class="pp-dim-lbl" id="ppDimLbl">1200px</span>
+          <span class="pp-dim-arr r">→</span>
+        </div>
+
+        <div class="pp-margin hide" id="ppML" style="left:1%">auto margin</div>
+        <div class="pp-margin hide" id="ppMR" style="right:1%">auto margin</div>
+      </div>
+
+      <div class="fb" id="pfb"><em>1200px</em> — container chiếm 83% viewport, hai bên còn khoảng trống (margin auto).
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    const $ = id => document.getElementById(id);
+
+    /* ===== Dữ liệu mô phỏng ===== */
+    const VP_REF = 1440;
+    const SNAMES = ['01 FIXED CONTAINER', '02 FLUID CONTAINER', '03 RESPONSIVE CONTAINER', '04 NESTED CONTAINER'];
+    const SINS = [
+      'Container cố định 1200px — không đổi dù viewport to hay nhỏ',
+      'Container.fill viewport — không giới hạn, co giãn theo màn hình',
+      'Container tự thay đổi max-width theo breakpoint — desktop to, mobile nhỏ',
+      'Container trong container — outer kiểm soát tổng, inner kiểm soát nội dung'
+    ];
+
+    /* Responsive sub-states */
+    const RESP = [
+      { w: 83, bp: 'desktop · max-width: 1200px', dim: '1200px' },
+      { w: 53, bp: 'tablet · max-width: 768px', dim: '768px' },
+      { w: 100, bp: 'mobile · width: 100%', dim: '100%' }
+    ];
+    let respI = 0, respT = null;
+
+    /* ===== Simulation ===== */
+    const states = [0, 1, 2, 3].map(i => $('ss' + i));
+    let si = 0, mt = null;
+
+    function showState(i) {
+      clearInterval(respT);
+      states.forEach((s, j) => s.classList.toggle('on', j === i));
+      $('sbadge').textContent = SNAMES[i];
+      $('sctr').textContent = (i + 1) + ' / 4';
+      const ins = $('sins');
+      ins.style.opacity = '0';
+      setTimeout(() => { ins.textContent = SINS[i]; ins.style.opacity = '1' }, 200);
+      document.querySelectorAll('#sdots .dot').forEach((d, j) => d.classList.toggle('on', j === i));
+
+      /* Reset margin labels */
+      $('sm0l').classList.add('hide'); $('sm0r').classList.add('hide');
+
+      if (i === 0) {
+        $('sm0l').classList.remove('hide'); $('sm0r').classList.remove('hide');
+      }
+      if (i === 2) {
+        respI = 0; applyResp();
+        respT = setInterval(() => {
+          respI = (respI + 1) % RESP.length;
+          applyResp();
+        }, 1200);
+      }
+      /* Reset other states to default widths */
+      if (i !== 1) $('sc1').style.width = '100%';
+      if (i !== 2) { $('sc2').style.width = '83%'; $('sc2bp').textContent = 'desktop · max-width: 1200px'; $('sc2dim').textContent = '1200px' }
+      if (i !== 3) { $('sc3').style.width = '83%'; $('sc3i').style.width = '67%' }
+    }
+
+    function applyResp() {
+      const r = RESP[respI];
+      $('sc2').style.width = r.w + '%';
+      $('sc2bp').textContent = r.bp;
+      $('sc2dim').textContent = r.dim;
+    }
+
+    function startLoop() { clearInterval(mt); mt = setInterval(() => { si = (si + 1) % 4; showState(si) }, 3800) }
+    document.querySelectorAll('#sdots .dot').forEach(d => d.addEventListener('click', () => { si = +d.dataset.i; showState(si); startLoop() }));
+    showState(0); startLoop();
+
+    /* ===== Practice ===== */
+    let pvPct = 83;
+
+    function pxFromPct(pct) { return Math.round(pct / 100 * VP_REF) }
+    function pctFromPx(px) { return Math.min(100, Math.round(px / VP_REF * 100)) }
+
+    function updatePractice() {
+      const px = pxFromPct(pvPct);
+      $('ppCon').style.width = pvPct + '%';
+      $('pvVal').textContent = pvPct >= 100 ? '100%' : px + 'px';
+
+      /* Dimension label */
+      $('ppDimLbl').textContent = pvPct >= 100 ? '100% (fluid)' : px + 'px';
+
+      /* Margin labels: show when container < viewport */
+      const showMargin = pvPct < 98;
+      $('ppML').classList.toggle('hide', !showMargin);
+      $('ppMR').classList.toggle('hide', !showMargin);
+
+      /* Preset buttons */
+      document.querySelectorAll('#ppres .cp-pb').forEach(b => b.classList.toggle('on', +b.dataset.v === pvPct));
+
+      /* Feedback */
+      const fb = $('pfb');
+      const lines = [];
+
+      if (pvPct === 0) {
+        lines.push('<span class="w">Container 0px — nội dung không có giới hạn, tràn ra toàn bộ viewport.</span>');
+      } else if (pvPct < 40) {
+        lines.push('Container quá hẹp (' + px + 'px) — content bị ép, layout hỏng.');
+      } else if (pvPct < 60) {
+        lines.push('<em>' + px + 'px</em> — phù hợp mobile-first layout, hoặc sidebar narrower.');
+      } else if (pvPct <= 85) {
+        lines.push('<em>' + px + 'px</em> — range phổ biến nhất cho main container. Hai bên còn margin auto để center.');
+      } else if (pvPct < 98) {
+        lines.push('<em>' + px + 'px</em> — container gần đầy viewport, chỉ còn margin nhỏ hai bên.');
+      } else {
+        lines.push('<em>100% fluid</em> — container bằng viewport, không giới hạn. Phù hợp full-width hero, footer.');
+      }
+
+      if (pvPct >= 50 && pvPct <= 90) {
+        lines.push('Khoảng trống hai bên = <em>margin: auto</em>. Khi prompt: "container 1200px centered" = max-width + margin auto.');
+      }
+
+      if (pvPct === 100) {
+        lines.push('Fluid container không có max-width — trên màn hình cực rộng, text line quá dài → khó đọc.');
+        lines.push('Nhiều trang dùng <em>fluid container + max-width</em> để giới hạn chiều rộng tối đa.');
+      }
+
+      fb.innerHTML = lines.join(' ');
+    }
+
+    $('pvSlider').addEventListener('input', e => { pvPct = +e.target.value; updatePractice() });
+
+    document.querySelectorAll('#ppres .cp-pb').forEach(b => b.addEventListener('click', () => { pvPct = +b.dataset.v; $('pvSlider').value = pvPct; updatePractice() }));
+
+    updatePractice();
+  </script>
+</body>
+
+</html>

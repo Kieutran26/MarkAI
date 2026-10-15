@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toast Notification - Amber Brutalist 4-Cell Grid</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --amber: #E88C2E;
+            --bg: #0f0f12;
+            --card-bg: #16161b;
+            --border: #282830;
+            --text: #e8e4dc;
+            --muted: #707070;
+            --gap: 14px;
+            --ease: cubic-bezier(0.65, 0, 0.35, 1);
+            
+            --success: #4CAF50;
+            --error: #F44336;
+            --info: #2196F3;
+            --warning: #FF9800;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg);
+            background-image: 
+                radial-gradient(ellipse at 25% 15%, rgba(232, 140, 46, 0.05) 0%, transparent 55%),
+                radial-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 16px 16px;
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--gap);
+            width: 100%;
+            max-width: 940px;
+        }
+
+        @media (max-width: 600px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            position: relative;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            height: 320px;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--amber);
+            z-index: 2;
+        }
+
+        .indicator {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 6px;
+            height: 6px;
+            background: var(--amber);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--amber);
+            animation: pulse 2s infinite;
+            z-index: 3;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 22px;
+        }
+
+        .num-box {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--amber);
+            background: rgba(232, 140, 46, 0.1);
+            border: 1px solid rgba(232, 140, 46, 0.2);
+            padding: 2px 5px;
+            border-radius: 2px;
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(232, 228, 220, 0.9);
+        }
+
+        .sim-area {
+            height: 160px;
+            background: #0d0d10;
+            border: 1px solid rgba(255,255,255,0.03);
+            border-radius: 4px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 16px;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        .ins {
+            border-left: 2px solid var(--amber);
+            padding-left: 14px;
+            margin-top: auto;
+            color: var(--muted);
+            font-size: 11.5px;
+            line-height: 1.6;
+            padding-top: 8px;
+            padding-bottom: 8px;
+            display: block;
+        }
+
+        .ins strong {
+            color: var(--amber);
+            font-weight: 600;
+        }
+
+        /* --- Toast Simulation Styles --- */
+        .toast {
+            background: #1e1e24;
+            border-radius: 6px;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.05);
+            min-width: 160px;
+            position: absolute;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: all 0.4s var(--ease);
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast-icon {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+        }
+
+        .toast-text {
+            font-size: 11px;
+            font-weight: 500;
+            color: #eee;
+        }
+
+        /* Cell 2 specific */
+        .screen-mock {
+            width: 100%;
+            height: 100%;
+            border: 1px dashed #333;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .pos-indicator {
+            position: absolute;
+            width: 40px;
+            height: 20px;
+            background: rgba(232, 140, 46, 0.1);
+            border: 1px solid var(--amber);
+            border-radius: 3px;
+            opacity: 0;
+            transition: all 0.5s var(--ease);
+        }
+
+        /* Cell 3 specific */
+        .progress-toast {
+            position: relative;
+            overflow: hidden;
+            padding-bottom: 12px;
+        }
+
+        .progress-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: var(--amber);
+            width: 100%;
+            transition: width linear;
+        }
+
+        /* Cell 4 specific */
+        .stack-container {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            align-items: flex-end;
+        }
+
+        .stack-item {
+            background: #1e1e24;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 10px;
+            border-left: 3px solid var(--amber);
+            width: 120px;
+            opacity: 0;
+            transform: translateX(20px);
+            transition: all 0.4s var(--ease);
+        }
+
+        .stack-item.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="grid-container">
+        <!-- Cell 1: Status Feedback -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">01</div>
+                <div class="card-title">Status Feedback</div>
+            </div>
+            <div class="sim-area">
+                <div id="toast-1" class="toast">
+                    <div id="icon-1" class="toast-icon"></div>
+                    <div id="text-1" class="toast-text">Processing...</div>
+                </div>
+            </div>
+            <div class="ins">
+                Toast dùng để thông báo <strong>phản hồi tức thì</strong> từ hệ thống, thường đi kèm <strong>màu sắc</strong> để phân biệt loại trạng thái.
+            </div>
+        </div>
+
+        <!-- Cell 2: Spatial Priority -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">02</div>
+                <div class="card-title">Spatial Priority</div>
+            </div>
+            <div class="sim-area">
+                <div class="screen-mock">
+                    <div id="pos-box" class="pos-indicator"></div>
+                </div>
+                <div id="pos-label" style="position: absolute; bottom: 10px; font-size: 10px; color: var(--muted); font-family: 'JetBrains Mono';">TOP-RIGHT</div>
+            </div>
+            <div class="ins">
+                Vị trí đặt Toast ảnh hưởng đến <strong>tầm mắt</strong> người dùng; thông dụng nhất là <strong>góc trên bên phải</strong> hoặc chính giữa phía dưới.
+            </div>
+        </div>
+
+        <!-- Cell 3: Time-To-Live -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">03</div>
+                <div class="card-title">Time-To-Live</div>
+            </div>
+            <div class="sim-area">
+                <div id="toast-3" class="toast progress-toast">
+                    <div class="toast-icon" style="background: var(--amber);"></div>
+                    <div class="toast-text">Auto-dismissing...</div>
+                    <div id="progress-3" class="progress-bar"></div>
+                </div>
+            </div>
+            <div class="ins">
+                Toast mang tính <strong>tạm thời</strong>, thường tự động biến mất sau <strong>3-5 giây</strong> để không làm gián đoạn trải nghiệm người dùng.
+            </div>
+        </div>
+
+        <!-- Cell 4: Notification Stack -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">04</div>
+                <div class="card-title">Notification Stack</div>
+            </div>
+            <div class="sim-area">
+                <div class="stack-container" id="stack-4">
+                    <div class="stack-item">Message #1</div>
+                    <div class="stack-item">Message #2</div>
+                    <div class="stack-item">Message #3</div>
+                </div>
+            </div>
+            <div class="ins">
+                Khi có nhiều thông báo, Toast sẽ được xếp vào <strong>hàng đợi (Stack)</strong> để tránh việc thông báo mới đè lên thông báo cũ.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const sleep = ms => new Promise(res => setTimeout(res, ms));
+
+        // Cell 1: Status Feedback Loop
+        async function runSim1() {
+            const toast = document.getElementById('toast-1');
+            const icon = document.getElementById('icon-1');
+            const text = document.getElementById('text-1');
+            
+            const states = [
+                { color: 'var(--success)', text: 'Success: File saved' },
+                { color: 'var(--error)', text: 'Error: Connection lost' },
+                { color: 'var(--info)', text: 'Info: Update available' },
+                { color: 'var(--warning)', text: 'Warning: Low disk space' }
+            ];
+
+            let i = 0;
+            while(true) {
+                const s = states[i % states.length];
+                icon.style.background = s.color;
+                text.innerText = s.text;
+                
+                toast.classList.add('show');
+                await sleep(2000);
+                toast.classList.remove('show');
+                await sleep(500);
+                i++;
+            }
+        }
+
+        // Cell 2: Spatial Priority Loop
+        async function runSim2() {
+            const box = document.getElementById('pos-box');
+            const label = document.getElementById('pos-label');
+            const positions = [
+                { top: '10px', right: '10px', left: 'auto', bottom: 'auto', name: 'TOP-RIGHT' },
+                { top: '10px', left: '50%', transform: 'translateX(-50%)', right: 'auto', bottom: 'auto', name: 'TOP-CENTER' },
+                { bottom: '10px', right: '10px', top: 'auto', left: 'auto', name: 'BOTTOM-RIGHT' },
+                { bottom: '10px', left: '50%', transform: 'translateX(-50%)', top: 'auto', right: 'auto', name: 'BOTTOM-CENTER' }
+            ];
+
+            let i = 0;
+            while(true) {
+                const p = positions[i % positions.length];
+                box.style.opacity = '0';
+                await sleep(400);
+                
+                box.style.top = p.top;
+                box.style.left = p.left;
+                box.style.right = p.right;
+                box.style.bottom = p.bottom;
+                box.style.transform = p.transform || 'none';
+                label.innerText = p.name;
+                
+                box.style.opacity = '1';
+                await sleep(1600);
+                i++;
+            }
+        }
+
+        // Cell 3: Time-To-Live Loop
+        async function runSim3() {
+            const toast = document.getElementById('toast-3');
+            const progress = document.getElementById('progress-3');
+            
+            while(true) {
+                progress.style.transition = 'none';
+                progress.style.width = '100%';
+                await sleep(100);
+                
+                toast.classList.add('show');
+                await sleep(400);
+                
+                progress.style.transition = 'width 2.5s linear';
+                progress.style.width = '0%';
+                
+                await sleep(2500);
+                toast.classList.remove('show');
+                await sleep(1000);
+            }
+        }
+
+        // Cell 4: Notification Stack Loop
+        async function runSim4() {
+            const items = document.querySelectorAll('.stack-item');
+            
+            while(true) {
+                for(let item of items) {
+                    item.classList.add('active');
+                    await sleep(800);
+                }
+                await sleep(1500);
+                for(let item of items) {
+                    item.classList.remove('active');
+                    await sleep(300);
+                }
+                await sleep(1000);
+            }
+        }
+
+        runSim1();
+        runSim2();
+        runSim3();
+        runSim4();
+    </script>
+</body>
+</html>

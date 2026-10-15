@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Array Practice — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#101010;--bgc:#181818;--bgi:#131313;
+  --bd:#272727;--tx:#e0e0e0;--txm:#707070;--txd:#3a3a3a;
+  --ac:#E88C2E;--acl:#ffb05c;
+  --abg:rgba(232,140,46,.08);--abg2:rgba(232,140,46,.18);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Space Grotesk',sans-serif;
+  background-color:var(--bg);
+  background-image:
+    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:20px 20px;
+  color:var(--tx);min-height:100vh;padding:24px 16px;
+}
+.pr{max-width:900px;margin:0 auto}
+.pr-h{margin-bottom:24px;border-left:2px solid var(--ac);padding-left:16px}
+.pr-g{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--ac);font-weight:700;letter-spacing:1px;margin-bottom:4px}
+.pr-d{font-size:13px;color:var(--txm)}
+
+.pr-card{background:var(--bgc);border:1px solid var(--bd);padding:20px;position:relative;border-radius:3px}
+
+.viz-area{background:var(--bgi);border:1px solid var(--bd);border-radius:3px;padding:40px 20px;min-height:160px;display:flex;justify-content:center;align-items:center;gap:12px;margin-bottom:20px;position:relative;overflow-x:auto}
+.array-item{min-width:56px;height:56px;border:1px solid var(--bd);background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;animation:popIn .3s ease;border-radius:2px}
+.array-val{font-size:16px;font-weight:700;color:var(--tx)}
+.array-idx{position:absolute;top:-22px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--txm)}
+
+@keyframes popIn{from{transform:scale(0.8);opacity:0}to{transform:scale(1);opacity:1}}
+
+.controls-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:12px;margin-bottom:20px}
+.ctrl-grp{display:flex;flex-direction:column;gap:8px}
+.ctrl-l{font-family:'JetBrains Mono',monospace;font-size:9px;text-transform:uppercase;color:var(--txm);letter-spacing:1px}
+
+.btn{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:600;padding:8px 12px;background:var(--bg);border:1px solid var(--bd);color:var(--tx);cursor:pointer;transition:all .2s;border-radius:2px;text-align:center}
+.btn:hover{border-color:var(--txd);background:var(--bgi)}
+.btn-primary{background:var(--abg2);color:var(--ac);border-color:var(--ac)}
+.btn-primary:hover{background:rgba(232,140,46,.25)}
+
+.input-box{font-family:'JetBrains Mono',monospace;font-size:11px;background:#000;border:1px solid var(--bd);color:var(--tx);padding:8px 12px;border-radius:2px;outline:none}
+.input-box:focus{border-color:var(--ac)}
+
+.code-output{background:#000;border:1px solid var(--bd);border-radius:3px;padding:12px 16px;font-family:'JetBrains Mono',monospace;font-size:12px;line-height:1.6}
+.c-kw{color:#c678dd}
+.c-var{color:#e06c75}
+.c-num{color:#d19a66}
+.c-str{color:#98c379}
+.c-op{color:#56b6c2}
+
+.ins{margin-top:16px;font-size:11px;color:var(--txm);line-height:1.6;padding-left:12px;border-left:2px solid var(--bd)}
+.ins strong{color:var(--ac);font-weight:600}
+</style>
+</head>
+<body>
+
+<main class="pr">
+  <div class="pr-h">
+    <div class="pr-g">ARRAY LABORATORY</div>
+    <p class="pr-d">Thử nghiệm các phương thức biến đổi mảng và quan sát cách index cập nhật.</p>
+  </div>
+
+  <div class="pr-card">
+    <!-- Visualizer -->
+    <div class="viz-area" id="viz"></div>
+
+    <!-- Controls -->
+    <div class="controls-grid">
+      <div class="ctrl-grp">
+        <span class="ctrl-l">Value to add</span>
+        <input type="text" id="valInput" class="input-box" placeholder="Ví dụ: 50" value="10">
+      </div>
+      <div class="ctrl-grp">
+        <span class="ctrl-l">Add to...</span>
+        <div style="display:flex; gap:8px">
+          <button class="btn btn-primary" style="flex:1" onclick="doOp('push')">Push (Cuối)</button>
+          <button class="btn btn-primary" style="flex:1" onclick="doOp('unshift')">Unshift (Đầu)</button>
+        </div>
+      </div>
+      <div class="ctrl-grp">
+        <span class="ctrl-l">Remove from...</span>
+        <div style="display:flex; gap:8px">
+          <button class="btn" style="flex:1" onclick="doOp('pop')">Pop (Cuối)</button>
+          <button class="btn" style="flex:1" onclick="doOp('shift')">Shift (Đầu)</button>
+        </div>
+      </div>
+      <div class="ctrl-grp">
+        <span class="ctrl-l">Actions</span>
+        <button class="btn" onclick="resetArray()" style="border-color:#ef4444; color:#ef4444">Reset Array</button>
+      </div>
+    </div>
+
+    <!-- Code Output -->
+    <div class="code-output" id="code">
+      <span><span class="c-kw">let</span> <span class="c-var">arr</span> <span class="c-op">=</span> [<span id="code-content"></span>];</span>
+    </div>
+
+    <p class="ins">
+      <strong>Lưu ý:</strong> <code>shift</code> và <code>unshift</code> làm thay đổi index của <strong>TOÀN BỘ</strong> phần tử còn lại trong mảng.
+    </p>
+  </div>
+</main>
+
+<script>
+let arr = [10, 20, 30];
+const viz = document.getElementById('viz');
+const codeContent = document.getElementById('code-content');
+const valInput = document.getElementById('valInput');
+
+function update(){
+    if(arr.length === 0){
+        viz.innerHTML = '<span style="color:var(--txm); font-family:\'JetBrains Mono\'; font-size:11px">Mảng đang trống</span>';
+    } else {
+        viz.innerHTML = arr.map((v, i) => `
+            <div class="array-item">
+                <span class="array-idx">${i}</span>
+                <span class="array-val">${v}</span>
+            </div>
+        `).join('');
+    }
+    codeContent.innerHTML = arr.map(v => isNaN(v) ? `<span class="c-str">"${v}"</span>` : `<span class="c-num">${v}</span>`).join(', ');
+}
+
+function doOp(type){
+    const val = valInput.value;
+    const numVal = isNaN(val) || val.trim()==='' ? val : Number(val);
+    switch(type){
+        case 'push': arr.push(numVal); break;
+        case 'pop': arr.pop(); break;
+        case 'unshift': arr.unshift(numVal); break;
+        case 'shift': arr.shift(); break;
+    }
+    update();
+    if(!isNaN(val) && val.trim()!=='') valInput.value = Number(val) + 10;
+}
+
+function resetArray(){
+    arr = [10, 20, 30];
+    valInput.value = 40;
+    update();
+}
+
+update();
+</script>
+</body>
+</html>

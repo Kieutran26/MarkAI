@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Container Practice — Interactive</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0c0c0e;--fg:#ece8e1;--muted:#706b64;--accent:#e88c2e;--accent-dim:rgba(232,140,46,.15);--card:#1a1a1e;--card-alt:#242120;--border:#26262a;--border-hi:#44403a;--mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  background:var(--bg);color:var(--fg);font-family:var(--sans);
+  display:flex;flex-direction:column;align-items:center;
+  background-image:radial-gradient(ellipse 60% 40% at 50% 0%,rgba(232,140,46,.04) 0%,transparent 100%);
+  margin:0;padding:0;padding-bottom:0;margin-bottom:0;
+}
+
+.wrap{width:100%;max-width:880px;padding:20px 16px 12px}
+.stag{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);border:1px solid var(--accent-dim);display:inline-block;padding:3px 10px;margin-bottom:12px}
+
+.prac-hd{margin-bottom:20px}
+.prac-g{font-size:14px;color:var(--muted);line-height:1.5}
+.prac-g strong{color:var(--fg);font-weight:700}
+
+.cp{margin-bottom:20px;background:var(--card);border:1px solid var(--border);padding:16px}
+.cp-row{display:flex;align-items:center;gap:16px;margin-bottom:12px}
+.cp-row:last-child{margin-bottom:0}
+.cp-label{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);min-width:90px;flex-shrink:0}
+.cp-label b{color:var(--accent);font-weight:700}
+
+input[type=range]{-webkit-appearance:none;appearance:none;flex:1;height:3px;background:var(--border);outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;background:var(--accent);border:none;cursor:pointer}
+input[type=range]::-moz-range-thumb{width:14px;height:14px;background:var(--accent);border:none;cursor:pointer;border-radius:0}
+
+.cp-presets{display:flex;gap:6px;flex-wrap:wrap}
+.cp-pb{font-family:var(--mono);font-size:9px;letter-spacing:.06em;color:var(--muted);background:var(--card-alt);border:1px solid var(--border);padding:5px 12px;cursor:pointer;transition:all .2s;text-transform:uppercase}
+.cp-pb:hover{border-color:var(--border-hi);color:var(--fg)}
+.cp-pb.on{border-color:var(--accent);color:var(--accent);background:var(--accent-dim)}
+
+/* Practice preview */
+.pp{width:100%;height:280px;background:#0c0c0e;border:2px solid var(--border);position:relative;overflow:hidden}
+.pp::before{content:'';position:absolute;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.006) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.006) 1px,transparent 1px);background-size:20px 20px}
+
+.vp-ref{position:absolute;top:12px;left:14px;font-family:var(--mono);font-size:8px;color:rgba(255,255,255,.15);letter-spacing:.1em;z-index:10}
+
+/* Practice container */
+.pp-con{
+  position:absolute;top:40px;bottom:45px;left:50%;transform:translateX(-50%);
+  border:1.5px dashed var(--accent);background:rgba(232,140,46,.03);
+  overflow:hidden;transition:width .2s cubic-bezier(.4,0,.2,1);z-index:5;
+  display:flex;flex-direction:column;
+}
+
+.sc-nav{padding:8px 12px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.06);font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--muted);display:flex;gap:12px;white-space:nowrap}
+.sc-cards{flex:1;display:flex;gap:8px;padding:12px;align-items:center}
+.sc-card{flex:1;height:32px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.06)}
+.sc-btn{margin:0 12px 12px;height:12px;width:60px;background:var(--accent);align-self:flex-start}
+
+/* Dimension indicator */
+.pp-dim{position:absolute;bottom:12px;left:0;right:0;display:flex;align-items:center;justify-content:center;z-index:10}
+.pp-dim-line{position:absolute;bottom:50%;left:4px;right:4px;height:1px;background:var(--accent);opacity:.4;transition:all .2s}
+.pp-dim-lbl{position:relative;z-index:1;font-family:var(--mono);font-size:10px;font-weight:700;color:var(--accent);background:#0c0c0e;padding:0 8px;white-space:nowrap}
+.pp-dim-arr{font-family:var(--mono);font-size:10px;color:var(--accent);opacity:.5;position:absolute;top:50%;transform:translateY(-50%)}
+.pp-dim-arr.l{left:0}.pp-dim-arr.r{right:0}
+
+.pp-margin{position:absolute;top:50%;transform:translateY(-50%);font-family:var(--mono);font-size:8px;color:rgba(232,140,46,.4);writing-mode:vertical-lr;letter-spacing:.08em;text-orientation:mixed;z-index:8;transition:opacity .3s;white-space:nowrap}
+.pp-margin.hide{opacity:0}
+
+/* Feedback */
+.fb{margin-top:12px;padding:12px;background:var(--accent-dim);border-left:3px solid var(--accent);min-height:auto;display:flex;flex-direction:column;gap:4px}
+.fb-txt{font-size:13px;line-height:1.6;color:var(--fg)}
+.fb-txt em{color:var(--accent);font-style:normal;font-weight:700}
+.fb-tip{font-family:var(--mono);font-size:11px;color:var(--muted);margin-top:4px}
+
+@media(max-width:640px){
+  .pp-margin{display:none}
+  .pp{height:220px}
+  .pp-con{top:30px;bottom:35px}
+  .sc-nav{display:none}
+}
+.wrap>:last-child{margin-bottom:0}
+</style>
+</head>
+<body>
+<div class="wrap" id="app-root">
+  <div class="prac-hd">
+    <p class="prac-g"><strong>Kéo slider</strong> thay đổi max-width — thấy container co giãn so với viewport.</p>
+  </div>
+
+  <div class="cp">
+    <div class="cp-row">
+      <span class="cp-label">MAX-WIDTH <b id="pvVal">1200px</b></span>
+      <input type="range" id="pvSlider" min="0" max="100" step="1" value="83">
+    </div>
+    <div class="cp-row">
+      <span class="cp-label">PRESET</span>
+      <div class="cp-presets" id="ppres">
+        <button class="cp-pb" data-v="0">0px</button>
+        <button class="cp-pb" data-v="33">480px</button>
+        <button class="cp-pb" data-v="53">768px</button>
+        <button class="cp-pb on" data-v="83">1200px</button>
+        <button class="cp-pb" data-v="100">100% FLUID</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="pp">
+    <div class="vp-ref">viewport (full width)</div>
+    <div class="pp-con" id="ppCon" style="width:83%">
+      <div class="sc-nav">BRAND · Home · About · Pricing</div>
+      <div class="sc-cards"><div class="sc-card"></div><div class="sc-card"></div><div class="sc-card"></div></div>
+      <div class="sc-btn"></div>
+    </div>
+    <div class="pp-dim">
+      <div class="pp-dim-line" id="ppDimLine"></div>
+      <span class="pp-dim-arr l">←</span>
+      <span class="pp-dim-lbl" id="ppDimLbl">1200px</span>
+      <span class="pp-dim-arr r">→</span>
+    </div>
+    <div class="pp-margin hide" id="ppML" style="left:1%">auto margin</div>
+    <div class="pp-margin hide" id="ppMR" style="right:1%">auto margin</div>
+  </div>
+
+  <div class="fb" id="pfb">
+    <div class="fb-txt" id="fbMain"></div>
+    <div class="fb-tip" id="fbTip"></div>
+  </div>
+</div>
+
+<script>
+const $=id=>document.getElementById(id);
+const VP_REF=1440;
+let pvPct=83;
+
+function pxFromPct(pct){return Math.round(pct/100*VP_REF)}
+
+function update(){
+  const px=pxFromPct(pvPct);
+  $('ppCon').style.width=pvPct+'%';
+  $('pvVal').textContent=pvPct>=100?'100%':px+'px';
+  $('ppDimLbl').textContent=pvPct>=100?'100% (fluid)':px+'px';
+
+  const showMargin=pvPct<98;
+  if($('ppML'))$('ppML').classList.toggle('hide',!showMargin);
+  if($('ppMR'))$('ppMR').classList.toggle('hide',!showMargin);
+
+  document.querySelectorAll('#ppres .cp-pb').forEach(b=>b.classList.toggle('on',+b.dataset.v===pvPct));
+
+  const fbMain=$('fbMain');
+  const fbTip=$('fbTip');
+  let main='',tip='';
+
+  if(pvPct===0){
+    main='<em>Container 0px</em> — Nội dung không có giới hạn, tràn ra toàn bộ viewport.';
+    tip='Hãy tăng max-width để bảo vệ nội dung của bạn.';
+  }else if(pvPct<40){
+    main='Container quá hẹp (<em>'+px+'px</em>) — Content bị ép chặt, gây khó đọc và hỏng layout.';
+    tip='Tránh dùng container quá nhỏ cho nội dung chính.';
+  }else if(pvPct<=85){
+    main='<em>'+px+'px</em> — Kích thước lý tưởng cho desktop. Hai bên là <em>margin: auto</em> giúp căn giữa.';
+    tip='Đây là cách phổ biến nhất để xây dựng website có cấu trúc rõ ràng.';
+  }else if(pvPct<100){
+    main='<em>'+px+'px</em> — Container gần đầy màn hình. Khoảng trống hai bên rất ít.';
+    tip='Phù hợp cho các ứng dụng web cần nhiều không gian hiển thị dữ liệu.';
+  }else{
+    main='<em>100% FLUID</em> — Container tràn lề, không giới hạn. Bằng chính chiều rộng viewport.';
+    tip='Phù hợp cho Landing Page hiện đại hoặc các section cần sự dàn trải tuyệt đối.';
+  }
+
+  fbMain.innerHTML=main;
+  fbTip.textContent=tip;
+}
+
+$('pvSlider').addEventListener('input',e=>{pvPct=+e.target.value;update()});
+document.querySelectorAll('#ppres .cp-pb').forEach(b=>b.addEventListener('click',()=>{pvPct=+b.dataset.v;$('pvSlider').value=pvPct;update()}));
+
+update();
+</script>
+</body>
+</html>

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hover Demo — Amber Brutalist</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@600&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0c;
+      --card-bg: #16161b;
+      --accent: #E88C2E;
+      --text-main: #FFFFFF;
+      --text-dim: #707070;
+      --border: #2a2a2e;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-sans: 'Space Grotesk', sans-serif;
+      --font-body: 'Inter', sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text-main);
+      font-family: var(--font-body);
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .demo-container {
+      width: 100%;
+      max-width: 940px;
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+
+    @media (max-width: 600px) {
+      .demo-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 3px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    .accent-bar {
+      height: 2px;
+      background: var(--accent);
+      width: 100%;
+    }
+
+    .card-header {
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      position: relative;
+    }
+
+    .num-box {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 2px 5px;
+      line-height: 1;
+      border-radius: 2px;
+    }
+
+    .card-title {
+      font-family: var(--font-sans);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-main);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .indicator {
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      position: absolute;
+      top: 15px;
+      right: 16px;
+      box-shadow: 0 0 8px var(--accent);
+      animation: blink 1.5s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(0.8); }
+    }
+
+    .sim-area {
+      height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      background: radial-gradient(circle at center, #1c1c24 0%, #16161b 100%);
+      padding: 20px;
+    }
+
+    .ins {
+      padding: 12px 16px;
+      border-left: 2px solid var(--accent);
+      font-size: 11.5px;
+      color: var(--text-dim);
+      background: rgba(232, 140, 46, 0.03);
+      line-height: 1.6;
+    }
+
+    .ins strong {
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* Simulation Elements */
+    .btn-hover {
+      padding: 10px 24px;
+      background: transparent;
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-family: var(--font-mono);
+      font-size: 13px;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      cursor: default;
+    }
+
+    .card-lift {
+      width: 140px;
+      height: 100px;
+      background: #2a2a35;
+      border-radius: 8px;
+      border: 1px solid #3a3a45;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      color: #888;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .detail-reveal {
+      text-align: center;
+      color: var(--text-dim);
+      font-size: 13px;
+      position: relative;
+    }
+
+    .tooltip {
+      position: absolute;
+      bottom: 120%;
+      left: 50%;
+      transform: translateX(-50%) translateY(10px);
+      background: var(--accent);
+      color: #000;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 10px;
+      font-weight: 700;
+      white-space: nowrap;
+      opacity: 0;
+      transition: all 0.3s ease;
+    }
+
+    .icon-scale {
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-dim);
+      transition: all 0.3s ease;
+    }
+
+    .cursor {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      pointer-events: none;
+      z-index: 100;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.5));
+    }
+
+    /* Loop Animations */
+    @keyframes moveCursor1 {
+      0%, 10% { transform: translate(-40px, 40px); opacity: 0; }
+      20% { opacity: 1; }
+      40%, 60% { transform: translate(0, 0); opacity: 1; }
+      80% { transform: translate(40px, -40px); opacity: 0; }
+      100% { transform: translate(40px, -40px); opacity: 0; }
+    }
+
+    @keyframes buttonState {
+      0%, 40% { background: transparent; color: var(--accent); box-shadow: none; }
+      45%, 60% { background: var(--accent); color: #000; box-shadow: 0 0 20px rgba(232, 140, 46, 0.4); }
+      65%, 100% { background: transparent; color: var(--accent); box-shadow: none; }
+    }
+
+    @keyframes liftState {
+      0%, 40% { transform: translateY(0); box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-color: #3a3a45; }
+      45%, 60% { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.5); border-color: var(--accent); }
+      65%, 100% { transform: translateY(0); box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-color: #3a3a45; }
+    }
+
+    @keyframes revealState {
+      0%, 40% { opacity: 0; transform: translateX(-50%) translateY(10px); }
+      45%, 60% { opacity: 1; transform: translateX(-50%) translateY(0); }
+      65%, 100% { opacity: 0; transform: translateX(-50%) translateY(-10px); }
+    }
+
+    @keyframes scaleState {
+      0%, 40% { transform: scale(1); color: var(--text-dim); }
+      45%, 60% { transform: scale(1.4) rotate(5deg); color: var(--accent); }
+      65%, 100% { transform: scale(1); color: var(--text-dim); }
+    }
+
+    .card:nth-child(1) .cursor { animation: moveCursor1 3s infinite; }
+    .card:nth-child(1) .btn-hover { animation: buttonState 3s infinite; }
+
+    .card:nth-child(2) .cursor { animation: moveCursor1 3.5s infinite; }
+    .card:nth-child(2) .card-lift { animation: liftState 3.5s infinite; }
+
+    .card:nth-child(3) .cursor { animation: moveCursor1 4s infinite; }
+    .card:nth-child(3) .tooltip { animation: revealState 4s infinite; }
+
+    .card:nth-child(4) .cursor { animation: moveCursor1 2.5s infinite; }
+    .card:nth-child(4) .icon-scale { animation: scaleState 2.5s infinite; }
+
+  </style>
+</head>
+<body>
+  <div class="demo-container">
+    <!-- CELL 1: FEEDBACK -->
+    <div class="card">
+      <div class="accent-bar"></div>
+      <div class="card-header">
+        <div class="num-box">01</div>
+        <div class="card-title">Interaction Feedback</div>
+        <div class="indicator"></div>
+      </div>
+      <div class="sim-area">
+        <svg class="cursor" viewBox="0 0 24 24" fill="white" stroke="black" stroke-width="1.5">
+          <path d="M4.5 3l15 11-7 1.5L16 21l-3 1.5-3.5-6.5L4.5 3z"/>
+        </svg>
+        <button class="btn-hover">HOVER ME</button>
+      </div>
+      <div class="ins">
+        Khi chuột di vào, element thay đổi <strong>background</strong> và <strong>box-shadow</strong> để xác nhận khả năng tương tác (Feedback).
+      </div>
+    </div>
+
+    <!-- CELL 2: ELEVATION -->
+    <div class="card">
+      <div class="accent-bar"></div>
+      <div class="card-header">
+        <div class="num-box">02</div>
+        <div class="card-title">Depth & Elevation</div>
+        <div class="indicator"></div>
+      </div>
+      <div class="sim-area">
+        <svg class="cursor" viewBox="0 0 24 24" fill="white" stroke="black" stroke-width="1.5">
+          <path d="M4.5 3l15 11-7 1.5L16 21l-3 1.5-3.5-6.5L4.5 3z"/>
+        </svg>
+        <div class="card-lift">Product Card</div>
+      </div>
+      <div class="ins">
+        Hiệu ứng <strong>Lift (nâng lên)</strong> kết hợp bóng đổ giúp element nổi bật trên mặt phẳng, tạo cảm giác <strong>sẵn sàng để click</strong>.
+      </div>
+    </div>
+
+    <!-- CELL 3: REVEAL -->
+    <div class="card">
+      <div class="accent-bar"></div>
+      <div class="card-header">
+        <div class="num-box">03</div>
+        <div class="card-title">Detail Discovery</div>
+        <div class="indicator"></div>
+      </div>
+      <div class="sim-area">
+        <svg class="cursor" viewBox="0 0 24 24" fill="white" stroke="black" stroke-width="1.5">
+          <path d="M4.5 3l15 11-7 1.5L16 21l-3 1.5-3.5-6.5L4.5 3z"/>
+        </svg>
+        <div class="detail-reveal">
+          <div class="tooltip">Price: $99.00</div>
+          <span>Hover to see price</span>
+        </div>
+      </div>
+      <div class="ins">
+        Hover được dùng để <strong>tiết lộ thông tin phụ</strong> (như Tooltip hoặc Menu) giúp giao diện gọn gàng hơn khi ở trạng thái nghỉ.
+      </div>
+    </div>
+
+    <!-- CELL 4: EMPHASIS -->
+    <div class="card">
+      <div class="accent-bar"></div>
+      <div class="card-header">
+        <div class="num-box">04</div>
+        <div class="card-title">Visual Emphasis</div>
+        <div class="indicator"></div>
+      </div>
+      <div class="sim-area">
+        <svg class="cursor" viewBox="0 0 24 24" fill="white" stroke="black" stroke-width="1.5">
+          <path d="M4.5 3l15 11-7 1.5L16 21l-3 1.5-3.5-6.5L4.5 3z"/>
+        </svg>
+        <div class="icon-scale">
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 0 0 0-7.78z"></path>
+          </svg>
+        </div>
+      </div>
+      <div class="ins">
+        Sử dụng <strong>Scale (phóng to)</strong> và thay đổi màu sắc mạnh để <strong>nhấn mạnh hành động</strong> nhỏ như Icon Buttons hoặc Links.
+      </div>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Placeholder Strategy Lab — Amber Brutalist</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --amber: #E88C2E;
+            --bg: #0f0f12;
+            --card-bg: #16161b;
+            --border: #282830;
+            --text: #e8e4dc;
+            --muted: #707070;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #F44336;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            padding: 16px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .lab-container {
+            width: 100%;
+            max-width: 900px;
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 16px;
+        }
+
+        @media (max-width: 800px) {
+            .lab-container { grid-template-columns: 1fr; }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--amber);
+            z-index: 10;
+        }
+
+        .card-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255,255,255,0.02);
+        }
+
+        .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--amber);
+        }
+
+        /* --- Preview Area --- */
+        .preview-area {
+            height: 320px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        .form-preview {
+            width: 280px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .field-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .field-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text);
+            transition: all 0.3s;
+        }
+
+        .field-input {
+            width: 100%;
+            padding: 12px 16px;
+            background: #0a0a0c;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-size: 14px;
+            color: var(--text);
+            outline: none;
+            transition: all 0.3s;
+        }
+
+        .field-input:focus {
+            border-color: var(--amber);
+            box-shadow: 0 0 0 2px rgba(232, 140, 46, 0.1);
+        }
+
+        .field-input::placeholder {
+            transition: all 0.3s;
+        }
+
+        /* Strategy Panel */
+        .strategy-panel {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .config-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .config-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+
+        .option-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+        }
+
+        .option-btn {
+            background: #1a1a20;
+            border: 1px solid var(--border);
+            padding: 8px;
+            font-size: 11px;
+            color: var(--muted);
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+        }
+
+        .option-btn:hover { border-color: var(--amber); }
+        .option-btn.active {
+            border-color: var(--amber);
+            background: rgba(232, 140, 46, 0.1);
+            color: var(--amber);
+        }
+
+        /* Audit Results */
+        .audit-results {
+            padding: 16px;
+            background: #0d0d10;
+            border-top: 1px solid var(--border);
+        }
+
+        .score-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .gauge-container {
+            height: 4px;
+            background: #222;
+            width: 100%;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        #score-gauge {
+            height: 100%;
+            width: 0%;
+            background: var(--danger);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .feedback-box {
+            margin-top: 12px;
+            font-size: 11px;
+            line-height: 1.5;
+            color: var(--muted);
+            min-height: 33px;
+        }
+        .feedback-box span { color: var(--amber); }
+
+        .ins-box {
+            border-left: 2px solid var(--amber);
+            padding-left: 12px;
+            margin-top: 16px;
+            font-size: 11px;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="lab-container">
+    <!-- Left: Preview -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">Strategy Lab: Placeholder UX</div>
+            <div style="font-family: 'JetBrains Mono'; font-size: 9px; color: var(--muted);">v1.0.0</div>
+        </div>
+        
+        <div class="preview-area">
+          <div class="preview-canvas" style="width:280px">
+            <div class="img-placeholder" id="preview-img" style="display:none; margin-bottom:20px; width:100%; height:100px; background:#222; border:1px dashed #444; border-radius:4px; flex-direction:column; align-items:center; justify-content:center; gap:8px">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#444" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                <polyline points="21 15 16 10 5 21"></polyline>
+              </svg>
+              <span style="font-size:9px; color:#444">IMAGE_PREVIEW.JPG</span>
+            </div>
+            <div class="form-preview">
+                <div class="field-group">
+                    <label class="field-label" id="label-name">Họ và tên</label>
+                    <input type="text" class="field-input" id="input-name" placeholder="Nhập tên của bạn">
+                </div>
+                <div class="field-group">
+                    <label class="field-label" id="label-email">Email liên hệ</label>
+                    <input type="email" class="field-input" id="input-email" placeholder="example@markai.vn">
+                </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="audit-results">
+            <div class="score-header">
+                <span class="config-label">UX Clarity Score</span>
+                <span id="score-text" style="font-family: 'JetBrains Mono'; font-size: 11px; font-weight: 700;">0/100</span>
+            </div>
+            <div class="gauge-container">
+                <div id="score-gauge"></div>
+            </div>
+            <div class="feedback-box" id="feedback">
+                <span>Nhận xét:</span> Tùy chỉnh các thông số để tối ưu tính rõ ràng cho form.
+            </div>
+        </div>
+    </div>
+
+    <!-- Right: Controls -->
+    <div class="card">
+        <div class="strategy-panel">
+            <div class="config-group">
+                <span class="config-label">1. Cấu trúc nhãn (Labels)</span>
+                <div class="option-grid">
+                    <button class="option-btn active" data-type="labels" data-val="visible">Hiện Label</button>
+                    <button class="option-btn" data-type="labels" data-val="hidden">Ẩn Label</button>
+                </div>
+            </div>
+
+            <div class="config-group">
+                <span class="config-label">2. Nội dung Placeholder</span>
+                <div class="option-grid">
+                    <button class="option-btn active" data-type="content" data-val="example">Ví dụ cụ thể</button>
+                    <button class="option-btn" data-type="content" data-val="instruction">Lời hướng dẫn</button>
+                    <button class="option-btn" data-type="content" data-val="none">Không dùng</button>
+                </div>
+            </div>
+
+            <div class="config-group">
+                <span class="config-label">3. Độ tương phản (Contrast)</span>
+                <div class="option-grid">
+                    <button class="option-btn active" data-type="contrast" data-val="normal">Vừa đủ (Grey)</button>
+                    <button class="option-btn" data-type="contrast" data-val="faint">Quá mờ</button>
+                    <button class="option-btn" data-type="contrast" data-val="heavy">Quá đậm</button>
+                </div>
+            </div>
+
+            <div class="config-group">
+                <span class="config-label">4. Giữ chỗ hình ảnh (Image)</span>
+                <div class="option-grid">
+                    <button class="option-btn active" data-type="image" data-val="off">Tắt</button>
+                    <button class="option-btn" data-type="image" data-val="on">Bật</button>
+                </div>
+            </div>
+
+            <div class="ins-box">
+                <strong>Gợi ý:</strong> Placeholder <strong>không thể thay thế</strong> hoàn toàn Label. Ngoài text, placeholder còn dùng để <strong>giữ chỗ cho ảnh</strong> chưa tải xong, giúp layout không bị giật.
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const state = {
+        labels: 'visible',
+        content: 'example',
+        contrast: 'normal',
+        image: 'off'
+    };
+
+    const placeholders = {
+        example: { name: 'Nguyễn Văn A', email: 'example@markai.vn' },
+        instruction: { name: 'Nhập họ tên...', email: 'Nhập địa chỉ email...' },
+        none: { name: '', email: '' }
+    };
+
+    const contrasts = {
+        normal: '#555',
+        faint: '#222',
+        heavy: '#999'
+    };
+
+    function updateLab() {
+        const scoreGauge = document.getElementById('score-gauge');
+        const scoreText = document.getElementById('score-text');
+        const feedback = document.getElementById('feedback');
+        
+        const labelName = document.getElementById('label-name');
+        const labelEmail = document.getElementById('label-email');
+        const inputName = document.getElementById('input-name');
+        const inputEmail = document.getElementById('input-email');
+        const previewImg = document.getElementById('preview-img');
+
+        // Apply Image
+        previewImg.style.display = state.image === 'on' ? 'flex' : 'none';
+
+        // Apply Labels
+        if (state.labels === 'visible') {
+            labelName.style.opacity = '1';
+            labelEmail.style.opacity = '1';
+            labelName.style.transform = 'translateY(0)';
+            labelEmail.style.transform = 'translateY(0)';
+        } else {
+            labelName.style.opacity = '0';
+            labelEmail.style.opacity = '0';
+            labelName.style.transform = 'translateY(5px)';
+            labelEmail.style.transform = 'translateY(5px)';
+        }
+
+        // Apply Content
+        inputName.placeholder = placeholders[state.content].name;
+        inputEmail.placeholder = placeholders[state.content].email;
+
+        // Apply Contrast
+        const style = document.createElement('style');
+        style.innerHTML = `
+            #input-name::placeholder, #input-email::placeholder {
+                color: ${contrasts[state.contrast]} !important;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Calculate Score
+        let score = 0;
+        let tips = "";
+
+        // Label Score (Critical for UX)
+        if (state.labels === 'visible') {
+            score += 40;
+        } else {
+            score += 10;
+            tips = "Ẩn Label gây khó khăn cho trí nhớ ngắn hạn của người dùng.";
+        }
+
+        // Content Score
+        if (state.content === 'example') {
+            score += 30;
+        } else if (state.content === 'instruction') {
+            score += 20;
+            tips += " Hướng dẫn tốt nhưng ví dụ cụ thể giúp user hình dung định dạng tốt hơn.";
+        } else {
+            score += 5;
+            tips += " Thiếu gợi ý khiến người dùng mất thời gian suy nghĩ.";
+        }
+
+        // Contrast Score
+        if (state.contrast === 'normal') {
+            score += 30;
+        } else if (state.contrast === 'faint') {
+            score += 5;
+            tips += " Placeholder quá mờ khiến người già hoặc người khiếm thị không đọc được.";
+        } else {
+            score += 15;
+            tips += " Placeholder quá đậm làm người dùng tưởng ô đã được điền sẵn.";
+        }
+
+        // Update UI
+        scoreText.textContent = `${score}/100`;
+        scoreGauge.style.width = `${score}%`;
+        
+        if (score < 50) {
+            scoreGauge.style.background = 'var(--danger)';
+            scoreText.style.color = 'var(--danger)';
+        } else if (score < 80) {
+            scoreGauge.style.background = 'var(--warning)';
+            scoreText.style.color = 'var(--warning)';
+        } else {
+            scoreGauge.style.background = 'var(--success)';
+            scoreText.style.color = 'var(--success)';
+        }
+
+        if (tips) {
+            feedback.innerHTML = `<span>Phân tích:</span> ${tips}`;
+        } else {
+            feedback.innerHTML = `<span>Hoàn hảo:</span> Bạn đã tạo ra một trải nghiệm nhập liệu rõ ràng và chuyên nghiệp.`;
+        }
+    }
+
+    // Event Listeners
+    document.querySelectorAll('.option-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const type = btn.dataset.type;
+            const val = btn.dataset.val;
+
+            state[type] = val;
+            
+            // UI Toggle
+            document.querySelectorAll(`.option-btn[data-type="${type}"]`).forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            updateLab();
+        });
+    });
+
+    // Initial State
+    updateLab();
+</script>
+
+</body>
+</html>

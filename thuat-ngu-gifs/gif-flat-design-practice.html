@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flat Design Practice — Vibecode Glossary</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #101010;
+      --bgc: #16161b;
+      --bgi: #0d0d11;
+      --bd: #2a2a2f;
+      --tx: #e0e0e0;
+      --txm: #707070;
+      --txd: #3a3a3a;
+      --ac: #E88C2E;
+      --acl: #ffb05c;
+      --abg: rgba(232,140,46,0.1);
+      --abg2: rgba(232,140,46,0.2);
+      --gn: #22c55e;
+      --gnb: rgba(34, 197, 94, .12);
+      --rd: #ef4444;
+      --rdb: rgba(239, 68, 68, .1);
+    }
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background-color: var(--bg);
+      background-image: 
+        linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+      background-size: 20px 20px;
+      color: var(--tx);
+      min-height: 100vh;
+      padding: 20px 16px 48px;
+    }
+
+    /* ═══════════════════════════════════════
+       PRACTICE LAYOUT
+       ═══════════════════════════════════════ */
+    .pra {
+      max-width: 940px;
+      margin: 0 auto;
+      background: var(--bgc);
+      border: 1px solid var(--bd);
+      border-radius: 3px;
+      padding: 22px;
+      position: relative;
+    }
+
+    .pra::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--ac);
+    }
+
+    .ch {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 6px;
+    }
+
+    .ch .n {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--ac);
+      background: var(--abg);
+      border: 1px solid rgba(232, 140, 46, .2);
+      padding: 1px 6px;
+      border-radius: 2px;
+    }
+
+    .ch h2 {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -.3px;
+    }
+
+    .pra-goal {
+      font-size: 12.5px;
+      color: var(--txm);
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+
+    .pra-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    @media (max-width: 768px) {
+      .pra-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .cfg-l {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--txm);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    /* Preview Area */
+    .pra-view {
+      background: var(--bgi);
+      border: 1px solid var(--bd);
+      border-radius: 3px;
+      padding: 32px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 220px;
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .mu-card {
+      width: 200px;
+      padding: 20px;
+      text-align: center;
+      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .mu-card.skeuo {
+      background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.3);
+      border-radius: 16px;
+      border: 1px solid #60a5fa;
+    }
+
+    .mu-card.flat {
+      background: #3b82f6;
+      box-shadow: none;
+      border-radius: 2px;
+      border: none;
+    }
+
+    .mu-icon {
+      font-size: 40px;
+      margin-bottom: 12px;
+      transition: all 0.5s ease;
+    }
+    .mu-icon.skeuo {
+      filter: drop-shadow(0 4px 4px rgba(0,0,0,0.4));
+    }
+    .mu-icon.flat {
+      filter: none;
+    }
+
+    .mu-btn {
+      margin-top: 16px;
+      padding: 8px 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      transition: all 0.5s ease;
+    }
+
+    .mu-btn.skeuo {
+      background: linear-gradient(0deg, #fff, #e2e8f0);
+      color: #1e3a8a;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+      border: 1px solid #fff;
+    }
+
+    .mu-btn.flat {
+      background: #fff;
+      color: #1e3a8a;
+      border-radius: 2px;
+      box-shadow: none;
+      border: none;
+    }
+
+    /* Controls */
+    .pra-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 10px 14px;
+      background: var(--bg);
+      border: 1px solid var(--bd);
+      border-radius: 2px;
+      color: var(--tx);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: all 0.2s;
+    }
+
+    .btn:hover:not(:disabled) {
+      border-color: var(--ac);
+      background: var(--abg);
+    }
+
+    .btn.active {
+      border-color: var(--gn);
+      background: var(--gnb);
+      color: var(--gn);
+    }
+
+    .btn.active .status::after {
+      content: '✓';
+      margin-left: 8px;
+    }
+
+    .btn.rst {
+      margin-top: 8px;
+      border-color: var(--rdb);
+      color: var(--rd);
+    }
+    .btn.rst:hover {
+      background: var(--rdb);
+      border-color: var(--rd);
+    }
+
+    /* Right Column: Prompt & Info */
+    .info-box {
+      background: var(--bgi);
+      border: 1px solid var(--bd);
+      border-radius: 3px;
+      padding: 20px;
+      height: 100%;
+    }
+
+    .info-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--txm);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .prompt-box {
+      background: #000;
+      border: 1px solid #333;
+      padding: 12px;
+      border-radius: 3px;
+      margin-bottom: 20px;
+    }
+
+    .prompt-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      color: var(--acl);
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+
+    .stat-list {
+      list-style: none;
+      font-size: 12px;
+      color: var(--txm);
+    }
+
+    .stat-list li {
+      margin-bottom: 8px;
+      padding-left: 14px;
+      position: relative;
+    }
+
+    .stat-list li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--ac);
+    }
+
+    .btn-hint {
+      position: absolute;
+      top: -10px;
+      right: 10px;
+      background: var(--ac);
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      padding: 2px 6px;
+      border-radius: 2px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.8; transform: scale(1); }
+      50% { opacity: 1; transform: scale(1.05); }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="pra">
+    <div class="ch">
+      <span class="n">PRACTICE</span>
+      <h2>Flat Design Converter</h2>
+    </div>
+    <p class="pra-goal">Loại bỏ các hiệu ứng thừa thãi để chuyển giao diện từ Skeuomorphic sang Pure Flat.</p>
+
+    <div class="pra-grid">
+      <!-- Left Column -->
+      <div>
+        <span class="cfg-l">Live Preview</span>
+        <div class="pra-view">
+          <div class="btn-hint" id="hint">Skeuomorphic</div>
+          <div class="mu-card skeuo" id="card">
+            <div class="mu-icon skeuo" id="icon">🚀</div>
+            <h3 style="font-size: 16px; margin-bottom: 8px;">Vibecode</h3>
+            <p style="font-size: 10px; opacity: 0.8;">Premium Agency</p>
+            <div class="mu-btn skeuo" id="btn">Upgrade</div>
+          </div>
+        </div>
+
+        <span class="cfg-l">Flatten Actions</span>
+        <div class="pra-controls">
+          <button class="btn" id="flat-shadows"><span class="label">Remove All Shadows</span><span class="status"></span></button>
+          <button class="btn" id="flat-gradients"><span class="label">Strip Color Gradients</span><span class="status"></span></button>
+          <button class="btn" id="flat-radius"><span class="label">Flatten Corner Radius</span><span class="status"></span></button>
+          <button class="btn" id="flat-details"><span class="label">Simplify Icon Details</span><span class="status"></span></button>
+          <button class="btn rst" id="reset">Reset Component</button>
+        </div>
+      </div>
+
+      <!-- Right Column -->
+      <div>
+        <div class="info-box">
+          <span class="info-label">Nói với AI (Prompt)</span>
+          <div class="prompt-box">
+            <div class="prompt-text" id="prompt">Hãy thiết kế card theo phong cách Skeuomorphic hiện đại...</div>
+          </div>
+
+          <span class="info-label">Key Principles</span>
+          <ul class="stat-list">
+            <li><strong>Màu sắc:</strong> Sử dụng các mảng màu đơn (Solid) thay vì chuyển sắc.</li>
+            <li><strong>Độ nổi khối:</strong> Loại bỏ hoàn toàn drop-shadow và inner-shadow.</li>
+            <li><strong>Iconography:</strong> Dùng các biểu tượng tối giản, dạng phẳng (Glyph).</li>
+            <li><strong>Cấu trúc:</strong> Nhấn mạnh vào phân cấp thông tin qua typography và khoảng trắng.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const states = {
+      shadows: false,
+      gradients: false,
+      radius: false,
+      details: false
+    };
+
+    const card = document.getElementById('card');
+    const icon = document.getElementById('icon');
+    const btn = document.getElementById('btn');
+    const promptEl = document.getElementById('prompt');
+    const hint = document.getElementById('hint');
+
+    function updateUI() {
+      // Update Card
+      if (states.shadows) {
+        card.style.boxShadow = 'none';
+        btn.style.boxShadow = 'none';
+      } else {
+        card.style.boxShadow = '0 15px 30px rgba(0,0,0,0.5), inset 0 1px 2px rgba(255,255,255,0.3)';
+        btn.style.boxShadow = '0 4px 8px rgba(0,0,0,0.3)';
+      }
+
+      if (states.gradients) {
+        card.style.background = '#3b82f6';
+        btn.style.background = '#fff';
+        card.style.border = 'none';
+        btn.style.border = 'none';
+      } else {
+        card.style.background = 'linear-gradient(135deg, #3b82f6, #1d4ed8)';
+        btn.style.background = 'linear-gradient(0deg, #fff, #e2e8f0)';
+        card.style.border = '1px solid #60a5fa';
+        btn.style.border = '1px solid #fff';
+      }
+
+      if (states.radius) {
+        card.style.borderRadius = '2px';
+        btn.style.borderRadius = '2px';
+      } else {
+        card.style.borderRadius = '16px';
+        btn.style.borderRadius = '8px';
+      }
+
+      if (states.details) {
+        icon.innerHTML = '🎯';
+        icon.style.filter = 'none';
+      } else {
+        icon.innerHTML = '🚀';
+        icon.style.filter = 'drop-shadow(0 4px 4px rgba(0,0,0,0.4))';
+      }
+
+      // Update Buttons
+      document.getElementById('flat-shadows').classList.toggle('active', states.shadows);
+      document.getElementById('flat-gradients').classList.toggle('active', states.gradients);
+      document.getElementById('flat-radius').classList.toggle('active', states.radius);
+      document.getElementById('flat-details').classList.toggle('active', states.details);
+
+      // Update Prompt
+      let activeChanges = [];
+      if (states.shadows) activeChanges.push("bỏ hết shadow");
+      if (states.gradients) activeChanges.push("dùng màu solid thay vì gradient");
+      if (states.radius) activeChanges.push("không bo góc (hoặc bo góc cực nhỏ)");
+      if (states.details) activeChanges.push("dùng icon dạng phẳng đơn giản");
+
+      if (activeChanges.length === 0) {
+        promptEl.textContent = "Hãy thiết kế card theo phong cách Skeuomorphic hiện đại, có chiều sâu và bóng đổ chân thực.";
+        hint.textContent = "Skeuomorphic";
+        hint.style.background = "#d97706";
+      } else if (activeChanges.length === 4) {
+        promptEl.textContent = "Thiết kế card theo phong cách Pure Flat Design: " + activeChanges.join(", ") + ". Tập trung vào typography sạch sẽ.";
+        hint.textContent = "Pure Flat";
+        hint.style.background = "#22c55e";
+      } else {
+        promptEl.textContent = "Cập nhật thiết kế: " + activeChanges.join(", ") + ". Hướng tới phong cách Flat Design hiện đại.";
+        hint.textContent = "Modern Flat";
+        hint.style.background = "#3b82f6";
+      }
+    }
+
+    document.getElementById('flat-shadows').onclick = () => { states.shadows = !states.shadows; updateUI(); };
+    document.getElementById('flat-gradients').onclick = () => { states.gradients = !states.gradients; updateUI(); };
+    document.getElementById('flat-radius').onclick = () => { states.radius = !states.radius; updateUI(); };
+    document.getElementById('flat-details').onclick = () => { states.details = !states.details; updateUI(); };
+    
+    document.getElementById('reset').onclick = () => {
+      states.shadows = false;
+      states.gradients = false;
+      states.radius = false;
+      states.details = false;
+      updateUI();
+    };
+
+    updateUI();
+  </script>
+</body>
+</html>

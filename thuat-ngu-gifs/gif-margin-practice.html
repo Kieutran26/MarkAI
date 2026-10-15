@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Margin Practice</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#0f0f12;--card:#16161b;--text:#e8e4dc;--muted:#6e6e7a;--accent:#cf5c26;--accent-soft:rgba(207,92,38,.08);--accent-border:rgba(207,92,38,.28);--border:#282830;--success:#3a9e5c;--success-soft:rgba(58,158,92,.12);--warning:#c49030;--warning-soft:rgba(196,144,48,.1);--shape:#393946;--zone:rgba(207,92,38,.06);--zone-stroke:rgba(207,92,38,.2)}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;line-height:1.6}
+    body::before{content:"";position:fixed;inset:0;background-image:radial-gradient(rgba(255,255,255,.022) 1px,transparent 1px);background-size:20px 20px;pointer-events:none}
+    .entry{position:relative;max-width:940px;margin:0 auto;padding:24px 24px 20px}
+    .section-label{display:flex;align-items:center;gap:10px;margin-bottom:28px;color:var(--muted);font:600 11px 'JetBrains Mono',monospace;letter-spacing:2px;text-transform:uppercase}
+    .section-label::before,.section-label::after{content:"";flex:1;height:1px;background:var(--border)}
+    .goal{margin-bottom:22px;font-size:15px;line-height:1.7;opacity:.88}
+    .goal strong{color:var(--accent)}
+    .slider-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+    .slider-label{font-size:12px;color:var(--muted)}
+    .slider-value{font:600 18px 'JetBrains Mono',monospace;color:var(--accent)}
+    .slider-value.ok{color:var(--success)}
+    .slider-wrap{position:relative;height:34px}
+    .track{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);height:4px;background:var(--border)}
+    .zone{position:absolute;top:50%;left:25%;width:25%;height:4px;transform:translateY(-50%);background:var(--accent-soft);border:1px solid var(--accent-border);transition:background .25s,border-color .25s}
+    .zone.ok{background:var(--success-soft);border-color:rgba(58,158,92,.35)}
+    input[type=range]{-webkit-appearance:none;appearance:none;position:absolute;inset:0;width:100%;height:34px;background:transparent;cursor:pointer}
+    input[type=range]::-webkit-slider-runnable-track{height:4px;background:transparent}
+    input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;margin-top:-7px;background:var(--accent);border:2px solid var(--bg)}
+    input[type=range]::-moz-range-track{height:4px;background:transparent;border:none}
+    input[type=range]::-moz-range-thumb{width:18px;height:18px;border:none;background:var(--accent)}
+    input.ok::-webkit-slider-thumb,input.ok::-moz-range-thumb{background:var(--success)}
+    .ticks{display:flex;justify-content:space-between;padding-top:5px}
+    .ticks span{font:9px 'JetBrains Mono',monospace;color:var(--muted);opacity:.4}
+    .preview{position:relative;margin:28px 0 18px;padding:28px;border:1px solid var(--border);background:var(--card)}
+    .preview::before{content:"";position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.006) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.006) 1px,transparent 1px);background-size:14px 14px;pointer-events:none}
+    .preview.ok{border-color:rgba(58,158,92,.25)}
+    .preview-label{position:absolute;top:8px;left:12px;font:9px 'JetBrains Mono',monospace;color:var(--muted);opacity:.4;letter-spacing:1.5px;text-transform:uppercase}
+    .layout{position:relative;z-index:1;border:1px dashed rgba(255,255,255,.06);overflow:hidden}
+    .card{position:relative;padding:12px;background:var(--shape)}
+    .card + .card{border-top:1px solid rgba(255,255,255,.04)}
+    .card.highlight{margin:var(--m);border:1px solid var(--accent-border);background:rgba(207,92,38,.05);transition:margin .35s cubic-bezier(.4,0,.2,1)}
+    .card h3{margin-bottom:3px;font-size:12px}
+    .card p{margin-bottom:8px;font-size:9px;line-height:1.45;color:var(--muted)}
+    .card span{display:inline-block;padding:4px 12px;background:var(--accent);color:#fff;font-size:9px;font-weight:600}
+    .marker{color:var(--accent);font-size:9px;font-weight:400}
+    .margin-zone{position:absolute;inset:0;border:1px dashed var(--zone-stroke);background:var(--zone)}
+    .dim{position:absolute;left:50%;transform:translateX(-50%);font:8px 'JetBrains Mono',monospace;color:var(--accent);opacity:.8}
+    .dim.top{top:calc(var(--m) * -1 - 12px)}
+    .dim.bottom{bottom:calc(var(--m) * -1 - 12px)}
+    .feedback{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;border:1px solid var(--border);background:var(--card);font-size:13px}
+    .feedback.ok{color:var(--success);border-color:rgba(58,158,92,.4);background:var(--success-soft)}
+    .feedback.no{color:var(--warning);border-color:rgba(196,144,48,.3);background:var(--warning-soft)}
+    .hint{margin-top:10px;font-size:12px;color:var(--muted);opacity:.55}
+    @media (max-width:520px){.entry{padding:28px 14px 44px}.preview{padding:20px 14px}}
+  </style>
+</head>
+<body>
+  <div id="app-root">
+  <div class="entry">
+    <p class="goal"><strong>Mục tiêu:</strong> Kéo slider để đổi margin của card được highlight. Quan sát cách nó đẩy card khác và mép container ra xa.</p>
+
+    <div class="slider-head">
+      <span class="slider-label">margin (tất cả các phía)</span>
+      <span class="slider-value" id="value">0px</span>
+    </div>
+    <div class="slider-wrap">
+      <div class="track"></div>
+      <div class="zone" id="zone"></div>
+      <input type="range" id="range" min="0" max="48" step="2" value="0" aria-label="Điều chỉnh margin">
+    </div>
+    <div class="ticks"><span>0</span><span>8</span><span>16</span><span>24</span><span>32</span><span>40</span><span>48</span></div>
+
+    <div class="preview" id="preview">
+      <span class="preview-label">LAYOUT PREVIEW</span>
+      <div class="layout">
+        <div class="card">
+          <h3>Card A</h3>
+          <p>Mô tả ngắn cho card đầu tiên trong layout.</p>
+          <span>ACTION</span>
+        </div>
+        <div class="card highlight" id="target" style="--m:0px">
+          <div class="margin-zone"></div>
+          <div class="dim top" id="topDim">0px</div>
+          <div class="dim bottom" id="bottomDim">0px</div>
+          <h3>Card B <span class="marker">← kéo slider</span></h3>
+          <p>Card giữa - đây là card sẽ được thay đổi margin.</p>
+          <span>SUBMIT</span>
+        </div>
+        <div class="card">
+          <h3>Card C</h3>
+          <p>Card cuối cùng trong chuỗi layout demo.</p>
+          <span>DETAILS</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="feedback" id="feedback">Kéo slider để thay đổi margin của card giữa</div>
+    <p class="hint">Vùng cam nhạt bao quanh card là margin zone. Nó tạo khoảng cách bên ngoài và đẩy mọi thứ xung quanh ra xa.</p>
+  </div>
+  </div>
+
+  <script>
+    const range=document.getElementById("range");
+    const value=document.getElementById("value");
+    const target=document.getElementById("target");
+    const topDim=document.getElementById("topDim");
+    const bottomDim=document.getElementById("bottomDim");
+    const feedback=document.getElementById("feedback");
+    const preview=document.getElementById("preview");
+    const zone=document.getElementById("zone");
+    const optimal=[12,24];
+
+    function update(){
+      const v=Number(range.value);
+      const ok=v>=optimal[0]&&v<=optimal[1];
+      const text=`${v}px`;
+      value.textContent=text;
+      value.classList.toggle("ok",ok);
+      range.classList.toggle("ok",ok);
+      zone.classList.toggle("ok",ok);
+      target.style.setProperty("--m",text);
+      topDim.textContent=text;
+      bottomDim.textContent=text;
+      preview.classList.toggle("ok",ok);
+      feedback.className=`feedback ${ok?"ok":"no"}`;
+      feedback.textContent=ok
+        ? "Margin phù hợp cho card trong layout - đủ thoáng mà chưa bị lãng phí space"
+        : v<optimal[0]
+          ? "Quá chặt - các card dính vào nhau và khó tách nhịp"
+          : "Quá rộng - layout bắt đầu bị thưa và mất nhịp";
+    }
+
+    range.addEventListener("input",update);
+    update();
+  </script>
+</body>
+</html>

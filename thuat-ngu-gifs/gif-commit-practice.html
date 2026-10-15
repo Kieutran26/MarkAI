@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Commit Practice — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #1a1a18;
+    --bg-card: #222220;
+    --bg-elevated: #2a2a27;
+    --fg: #e8e4dd;
+    --fg-muted: #8a877e;
+    --accent: #e88c2e;
+    --accent-dim: #c97522;
+    --amber: #c9922a;
+    --green: #6b8f5e;
+    --red: #b54a4a;
+    --border: #3a3a36;
+    --border-light: #4a4a45;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Space Grotesk', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--sans);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,.018) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.018) 1px, transparent 1px);
+    background-size: 24px 24px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+
+  /* ===== PRACTICE ===== */
+  .practice-section {
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    overflow: visible;
+  }
+  .practice-section .section-head {
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255,255,255,0.02);
+  }
+  .practice-section .section-head h2 {
+    font-family: var(--mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .practice-body { padding: 24px 20px 32px; }
+  .practice-goal {
+    font-size: 13px;
+    color: var(--fg-muted);
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+  .practice-goal strong { color: var(--fg); }
+
+  /* Timeline practice */
+  .practice-timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin-bottom: 20px;
+  }
+  .pt-step {
+    display: flex;
+    align-items: stretch;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    transition: border-color .2s, background .2s;
+    overflow: visible;
+  }
+  .pt-step + .pt-step { border-top: none; }
+  .pt-step:hover { background: var(--bg-elevated); }
+  .pt-step.pt-active {
+    border-color: var(--accent);
+    background: rgba(212,98,43,.04);
+  }
+  .pt-step.pt-committed {
+    border-color: var(--green);
+    background: rgba(107,143,94,.04);
+  }
+  .pt-check {
+    width: 44px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid var(--border);
+    cursor: pointer;
+    transition: background .2s;
+    user-select: none;
+    -webkit-user-select: none;
+  }
+  .pt-check:hover { background: rgba(212,98,43,.08); }
+  .pt-check-box {
+    width: 18px;
+    height: 18px;
+    border: 1.5px solid var(--border-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 12px;
+    color: transparent;
+    transition: border-color .2s, color .2s, background .2s;
+  }
+  .pt-step.pt-committed .pt-check-box {
+    border-color: var(--green);
+    color: var(--green);
+    background: rgba(107,143,94,.1);
+  }
+  .pt-content {
+    flex: 1;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .pt-file-icon {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--fg-muted);
+    width: 48px;
+    flex-shrink: 0;
+    text-align: center;
+    padding: 3px 0;
+    border: 1px solid var(--border);
+  }
+  .pt-file-icon.img { color: var(--amber); border-color: var(--amber-dim, rgba(201,146,42,.3)); }
+  .pt-info { flex: 1; }
+  .pt-name {
+    font-size: 13px;
+    color: var(--fg);
+    margin-bottom: 1px;
+  }
+  .pt-desc {
+    font-size: 11px;
+    color: var(--fg-muted);
+  }
+  .pt-status {
+    font-family: var(--mono);
+    font-size: 10px;
+    padding: 2px 8px;
+    border: 1px solid var(--border);
+    color: var(--fg-muted);
+    flex-shrink: 0;
+    transition: border-color .2s, color .2s, background .2s;
+  }
+  .pt-step.pt-committed .pt-status {
+    border-color: var(--green);
+    color: var(--green);
+    background: rgba(107,143,94,.08);
+  }
+
+  /* Commit message input */
+  .commit-input-area {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+  }
+  @media (max-width: 500px) {
+    .commit-input-area { flex-direction: column; }
+  }
+  .commit-msg-input {
+    flex: 1;
+    padding: 10px 14px;
+    font-family: var(--mono);
+    font-size: 12px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--fg);
+    outline: none;
+    transition: border-color .2s;
+  }
+  .commit-msg-input:focus { border-color: var(--accent); }
+  .commit-msg-input::placeholder { color: var(--fg-muted); opacity: .5; }
+  .commit-msg-input.input-error { border-color: var(--red); }
+  .commit-btn {
+    font-family: var(--mono);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 10px 20px;
+    border: 1.5px solid var(--accent);
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+    transition: opacity .2s, background .2s;
+    white-space: nowrap;
+  }
+  .commit-btn:hover { opacity: .9; }
+  .commit-btn:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+  }
+
+  /* Result log */
+  .result-log {
+    border: 1px solid var(--border);
+    background: #161614;
+    padding: 14px 16px;
+    font-family: var(--mono);
+    font-size: 11px;
+    line-height: 1.8;
+    min-height: 80px;
+    max-height: 200px;
+    overflow-y: auto;
+  }
+  .result-log .rl-prompt { color: var(--green); }
+  .result-log .rl-cmd { color: var(--fg); }
+  .result-log .rl-str { color: var(--accent); }
+  .result-log .rl-hash { color: var(--accent-dim); }
+  .result-log .rl-ok { color: var(--green); }
+  .result-log .rl-err { color: var(--red); }
+  .result-log .rl-muted { color: var(--fg-muted); }
+
+  .reset-btn {
+    font-family: var(--mono);
+    font-size: 11px;
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    color: var(--fg-muted);
+    cursor: pointer;
+    margin-top: 16px;
+    transition: border-color .2s, color .2s;
+  }
+  .reset-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+  .hint {
+    font-size: 11px;
+    color: var(--fg-muted);
+    opacity: .7;
+    margin-top: 14px;
+    font-style: italic;
+  }
+  .hint::before {
+    content: '>';
+    font-family: var(--mono);
+    color: var(--accent);
+    margin-right: 6px;
+  }
+
+  /* ===== HINT SYSTEM (from GUIDE_GLOSSARY_HINT.md) ===== */
+  .pt-check, .commit-btn, .commit-input-area { position: relative; }
+  
+  .btn-hint {
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--mono);
+    font-size: 8px;
+    padding: 2px 6px;
+    border-radius: 2px;
+    white-space: nowrap;
+    pointer-events: none;
+    animation: pulseTop 2s infinite;
+    z-index: 999;
+  }
+  .btn-hint::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-top: 4px solid var(--accent);
+  }
+  @keyframes pulseTop {
+    0% { transform: translateX(-50%) scale(1); }
+    50% { transform: translateX(-50%) scale(1.1); }
+    100% { transform: translateX(-50%) scale(1); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-wrap" id="app-root">
+
+  <section class="practice-section" aria-label="Thực hành">
+    <div class="section-head">
+      <h2>Thực hành</h2>
+    </div>
+    <div class="practice-body">
+      <div class="practice-goal">
+        <strong>Mục tiêu:</strong> Chọn file → viết commit message → commit. Thử commit rỗng hoặc không chọn file để thấy lỗi.
+      </div>
+
+      <!-- File list -->
+      <div class="practice-timeline" id="practiceTimeline">
+        <div class="pt-step" data-file="hero.html">
+          <div class="pt-check" role="checkbox" aria-checked="false" tabindex="0">
+            <div class="pt-check-box">&#10003;</div>
+            <div class="btn-hint" id="hint-step-1">Bước 1: Chọn file</div>
+          </div>
+          <div class="pt-content">
+            <div class="pt-file-icon">HTML</div>
+            <div class="pt-info">
+              <div class="pt-name">hero.html</div>
+              <div class="pt-desc">Đổi headline và thêm nút CTA</div>
+            </div>
+            <div class="pt-status">chưa chọn</div>
+          </div>
+        </div>
+        <div class="pt-step" data-file="style.css">
+          <div class="pt-check" role="checkbox" aria-checked="false" tabindex="0">
+            <div class="pt-check-box">&#10003;</div>
+          </div>
+          <div class="pt-content">
+            <div class="pt-file-icon">CSS</div>
+            <div class="pt-info">
+              <div class="pt-name">style.css</div>
+              <div class="pt-desc">Đổi font heading, thêm màu nút</div>
+            </div>
+            <div class="pt-status">chưa chọn</div>
+          </div>
+        </div>
+        <div class="pt-step" data-file="hero-bg.webp">
+          <div class="pt-check" role="checkbox" aria-checked="false" tabindex="0">
+            <div class="pt-check-box">&#10003;</div>
+          </div>
+          <div class="pt-content">
+            <div class="pt-file-icon img">IMG</div>
+            <div class="pt-info">
+              <div class="pt-name">hero-bg.webp</div>
+              <div class="pt-desc">Thay ảnh background hero</div>
+            </div>
+            <div class="pt-status">chưa chọn</div>
+          </div>
+        </div>
+        <div class="pt-step" data-file="config.js">
+          <div class="pt-check" role="checkbox" aria-checked="false" tabindex="0">
+            <div class="pt-check-box">&#10003;</div>
+          </div>
+          <div class="pt-content">
+            <div class="pt-file-icon">JS</div>
+            <div class="pt-info">
+              <div class="pt-name">config.js</div>
+              <div class="pt-desc">Cập nhật API endpoint</div>
+            </div>
+            <div class="pt-status">chưa chọn</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Commit message input -->
+      <div class="commit-input-area">
+        <input type="text" class="commit-msg-input" id="commitMsgInput" placeholder="Viết commit message..." maxlength="80" aria-label="Commit message"/>
+        <div class="btn-hint" id="hint-step-2">Bước 2: Ghi chú</div>
+        <button class="commit-btn" id="commitBtn" disabled>
+          Commit
+          <div class="btn-hint" id="hint-step-3">Bước 3: Lưu</div>
+        </button>
+      </div>
+
+      <!-- Result log -->
+      <div class="result-log" id="resultLog">
+        <span class="rl-muted">// Chờ thao tác...</span>
+      </div>
+
+      <button class="reset-btn" id="resetBtn">Reset toàn bộ</button>
+
+      <div class="hint">Thử bấm Commit mà không chọn file nào → sẽ thấy lỗi git thật. Rồi chọn file nhưng để trống message → lỗi khác. Đó là 2 lỗi commit phổ biến nhất.</div>
+    </div>
+  </section>
+
+</div>
+
+<script>
+  // ===== Practice: Select files & commit =====
+  (function() {
+    var steps = document.querySelectorAll('#practiceTimeline .pt-step');
+    var msgInput = document.getElementById('commitMsgInput');
+    var commitBtn = document.getElementById('commitBtn');
+    var resultLog = document.getElementById('resultLog');
+    var resetBtn = document.getElementById('resetBtn');
+    var selectedFiles = new Set();
+    var commitCount = 0;
+
+    // Hints
+    var hint1 = document.getElementById('hint-step-1');
+    var hint2 = document.getElementById('hint-step-2');
+    var hint3 = document.getElementById('hint-step-3');
+
+    // Initial state: Only hint 1 is visible
+    if (hint2) hint2.style.display = 'none';
+    if (hint3) hint3.style.display = 'none';
+
+    function updateHints() {
+      // Step 1 -> Step 2
+      if (selectedFiles.size > 0) {
+        if (hint1) hint1.style.display = 'none';
+        
+        // Step 2 -> Step 3
+        if (msgInput.value.trim().length > 0) {
+          if (hint2) hint2.style.display = 'none';
+          if (hint3) hint3.style.display = 'block';
+        } else {
+          if (hint2) hint2.style.display = 'block';
+          if (hint3) hint3.style.display = 'none';
+        }
+      } else {
+        if (hint1) hint1.style.display = 'block';
+        if (hint2) hint2.style.display = 'none';
+        if (hint3) hint3.style.display = 'none';
+      }
+    }
+
+    // Hash ngẫu nhiên kiểu git
+    function randHash() {
+      var chars = '0123456789abcdef';
+      var h = '';
+      for (var i = 0; i < 7; i++) h += chars[Math.floor(Math.random() * 16)];
+      return h;
+    }
+
+    function updateBtnState() {
+      commitBtn.disabled = selectedFiles.size === 0;
+      updateHints();
+    }
+
+    function logLine(html) {
+      var div = document.createElement('div');
+      div.innerHTML = html;
+      resultLog.appendChild(div);
+      resultLog.scrollTop = resultLog.scrollHeight;
+    }
+
+    // Toggle file selection
+    steps.forEach(function(step) {
+      var checkBox = step.querySelector('.pt-check');
+      function toggle() {
+        var file = step.dataset.file;
+        var isCommitted = step.classList.contains('pt-committed');
+
+        if (isCommitted) return; // Đã commit rồi thì không bỏ chọn
+
+        if (selectedFiles.has(file)) {
+          selectedFiles.delete(file);
+          step.classList.remove('pt-active');
+          step.querySelector('.pt-status').textContent = 'chưa chọn';
+          checkBox.setAttribute('aria-checked', 'false');
+        } else {
+          selectedFiles.add(file);
+          step.classList.add('pt-active');
+          step.querySelector('.pt-status').textContent = 'đã chọn';
+          checkBox.setAttribute('aria-checked', 'true');
+        }
+        updateBtnState();
+      }
+      checkBox.addEventListener('click', toggle);
+      checkBox.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+      });
+    });
+
+    // Handle typing
+    msgInput.addEventListener('input', function() {
+      updateHints();
+    });
+
+    // Commit action
+    commitBtn.addEventListener('click', function() {
+      if (selectedFiles.size === 0) return;
+
+      var msg = msgInput.value.trim();
+
+      // Lỗi: không có message
+      if (!msg) {
+        msgInput.classList.add('input-error');
+        logLine('<span class="rl-err">error: không có commit message (dùng -m "ghi chú")</span>');
+        setTimeout(function() { msgInput.classList.remove('input-error'); }, 1500);
+        return;
+      }
+
+      // Thực hiện commit
+      var files = Array.from(selectedFiles);
+      var hash = randHash();
+      commitCount++;
+
+      logLine('');
+      logLine('<span class="rl-prompt">$ </span><span class="rl-cmd">git add</span> ' + files.join(' '));
+      logLine('<span class="rl-prompt">$ </span><span class="rl-cmd">git commit</span> <span class="rl-str">-m "' + msg + '"</span>');
+      logLine('<span class="rl-muted">[main </span><span class="rl-hash">' + hash + '</span><span class="rl-muted">] ' + msg + '</span>');
+      logLine('<span class="rl-muted"> ' + files.length + ' file changed</span>');
+      logLine('<span class="rl-ok">// Commit #' + commitCount + ' thành công</span>');
+
+      // Đánh dấu file đã committed
+      steps.forEach(function(step) {
+        if (selectedFiles.has(step.dataset.file)) {
+          step.classList.remove('pt-active');
+          step.classList.add('pt-committed');
+          step.querySelector('.pt-status').textContent = 'đã commit';
+          step.querySelector('.pt-check').setAttribute('aria-checked', 'true');
+        }
+      });
+
+      // Reset cho commit tiếp
+      selectedFiles.clear();
+      msgInput.value = '';
+      updateBtnState();
+
+      // Nếu tất cả file đã commit
+      var allDone = true;
+      steps.forEach(function(step) {
+        if (!step.classList.contains('pt-committed')) allDone = false;
+      });
+      if (allDone) {
+        logLine('');
+        logLine('<span class="rl-ok">// Tất cả file đã được commit. Clean working tree.</span>');
+        // Hide all hints when fully done
+        if (hint1) hint1.style.display = 'none';
+        if (hint2) hint2.style.display = 'none';
+        if (hint3) hint3.style.display = 'none';
+      }
+    });
+
+    // Enter để commit
+    msgInput.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && !commitBtn.disabled) {
+        commitBtn.click();
+      }
+    });
+
+    // Reset
+    resetBtn.addEventListener('click', function() {
+      selectedFiles.clear();
+      commitCount = 0;
+      msgInput.value = '';
+      msgInput.classList.remove('input-error');
+      resultLog.innerHTML = '<span class="rl-muted">// Đã reset. Chọn file và commit lại.</span>';
+      steps.forEach(function(step) {
+        step.classList.remove('pt-active', 'pt-committed');
+        step.querySelector('.pt-status').textContent = 'chưa chọn';
+        step.querySelector('.pt-check').setAttribute('aria-checked', 'false');
+      });
+      updateBtnState();
+    });
+  })();
+</script>
+
+</body>
+</html>

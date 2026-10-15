@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Commit Demo — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f0f12;
+  --bgc: #16161b;
+  --bgi: #121217;
+  --bd: #282830;
+  --tx: #e8e4dc;
+  --txm: #707070;
+  --ac: #E88C2E;
+  --abg: rgba(232, 140, 46, 0.1);
+  --abg2: rgba(232, 140, 46, 0.2);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--tx);
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.g {
+  width: 100%;
+  max-width: 940px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 600px) {
+  .g { grid-template-columns: 1fr; }
+}
+
+.c {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Accent Bar */
+.c::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--ac);
+}
+
+/* Pulsating Indicator */
+.c::after {
+  content: '';
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 6px;
+  height: 6px;
+  background: var(--ac);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--ac);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0.3; transform: scale(1); }
+}
+
+.ch {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.ch .n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ac);
+  background: var(--abg);
+  border: 1px solid var(--abg2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+.ch h2 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  text-transform: uppercase;
+}
+
+.st {
+  background: var(--bgi);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  flex: 1;
+  min-height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ins {
+  margin-top: 14px;
+  font-size: 11.5px;
+  color: var(--txm);
+  line-height: 1.6;
+  padding-left: 12px;
+  border-left: 2px solid var(--ac);
+}
+
+.ins strong {
+  color: var(--ac);
+  font-weight: 600;
+}
+
+.val {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--txm);
+  background: rgba(0,0,0,0.2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+/* Commit Specific Components */
+.snapshot-box {
+  width: 60px;
+  height: 60px;
+  border: 2px solid var(--bd);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.5s;
+}
+
+.snapshot-box.active {
+  border-color: var(--ac);
+  background: var(--abg);
+}
+
+.file-fragment {
+  width: 12px;
+  height: 16px;
+  background: var(--ac);
+  position: absolute;
+  opacity: 0;
+}
+
+.timeline {
+  width: 80%;
+  height: 2px;
+  background: var(--bd);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.node {
+  width: 8px;
+  height: 8px;
+  background: var(--bd);
+  border-radius: 50%;
+  position: relative;
+  transition: all 0.3s;
+}
+
+.node.active {
+  background: var(--ac);
+  box-shadow: 0 0 10px var(--ac);
+  transform: scale(1.5);
+}
+
+.terminal-line {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--ac);
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 2px solid var(--ac);
+  width: 0;
+}
+
+.history-item {
+  width: 100%;
+  height: 24px;
+  border-left: 2px solid var(--bd);
+  margin-left: 10px;
+  padding-left: 10px;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  color: var(--txm);
+  transition: all 0.3s;
+}
+
+.history-item.active {
+  border-left-color: var(--ac);
+  color: var(--tx);
+  background: var(--abg);
+}
+
+@keyframes typing {
+  from { width: 0 }
+  to { width: 100% }
+}
+
+@keyframes blink {
+  50% { border-color: transparent }
+}
+</style>
+</head>
+<body>
+
+<div class="g">
+  <!-- 01: State Snapshot -->
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>State Snapshot</h2></div>
+    <div class="st">
+      <div id="box1" class="snapshot-box">
+        <div id="frag1" class="file-fragment"></div>
+        <div id="frag2" class="file-fragment"></div>
+        <div id="frag3" class="file-fragment"></div>
+        <span id="icon1" style="font-size: 24px; opacity: 0.3;">📸</span>
+      </div>
+      <div class="val" id="status1">WAITING</div>
+    </div>
+    <p class="ins">Ghi lại <strong>toàn bộ trạng thái</strong> của dự án tại một thời điểm cụ thể, giống như chụp một tấm ảnh tức thời.</p>
+  </section>
+
+  <!-- 02: Progress Timeline -->
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Progress Timeline</h2></div>
+    <div class="st">
+      <div class="timeline">
+        <div class="node" id="n1"></div>
+        <div class="node" id="n2"></div>
+        <div class="node" id="n3"></div>
+        <div class="node" id="n4"></div>
+      </div>
+      <div class="val" id="log2">HISTORY</div>
+    </div>
+    <p class="ins">Mỗi commit tạo ra một <strong>mốc lịch sử</strong>, giúp bạn theo dõi quá trình phát triển của mã nguồn theo thời gian.</p>
+  </section>
+
+  <!-- 03: Atomic Operation -->
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Atomic Operation</h2></div>
+    <div class="st">
+      <div style="display: flex; flex-direction: column; gap: 8px; width: 100%; padding: 0 10px;">
+        <div id="term3" class="terminal-line">git commit -m "feat: login"</div>
+        <div id="hash3" style="font-family: 'JetBrains Mono'; font-size: 10px; color: var(--txm); opacity: 0;">[main 7f2a1b9] 2 files changed...</div>
+      </div>
+      <div class="val" id="op3">IDLE</div>
+    </div>
+    <p class="ins">Xác nhận các thay đổi đã "Staged" và gán cho chúng một <strong>mã định danh duy nhất</strong> (Hash) để quản lý.</p>
+  </section>
+
+  <!-- 04: Safety Rollback -->
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Safety Rollback</h2></div>
+    <div class="st">
+      <div style="display: flex; flex-direction: column; width: 80%; gap: 4px;">
+        <div class="history-item" id="h1">add: hero section</div>
+        <div class="history-item" id="h2">fix: navigation</div>
+        <div class="history-item" id="h3">bug: broken layout</div>
+      </div>
+      <div id="rollback4" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 32px; opacity: 0;">↩️</div>
+      <div class="val" id="ready4">STABLE</div>
+    </div>
+    <p class="ins">Cho phép bạn <strong>quay ngược thời gian</strong> về bất kỳ checkpoint nào nếu vô tình làm dự án bị lỗi.</p>
+  </section>
+</div>
+
+<script>
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// 01: State Snapshot
+(async function() {
+  const box = document.getElementById('box1');
+  const frags = [document.getElementById('frag1'), document.getElementById('frag2'), document.getElementById('frag3')];
+  const icon = document.getElementById('icon1');
+  const status = document.getElementById('status1');
+  
+  while (true) {
+    status.textContent = 'WAITING';
+    box.classList.remove('active');
+    icon.style.opacity = '0.3';
+    frags.forEach(f => { f.style.opacity = '0'; f.style.transform = 'translate(0, 0)'; });
+    await wait(1500);
+    
+    status.textContent = 'CHANGING...';
+    frags.forEach((f, i) => {
+      f.style.opacity = '1';
+      f.style.top = (Math.random() * 80 - 40) + 'px';
+      f.style.left = (Math.random() * 80 - 40) + 'px';
+    });
+    await wait(1500);
+    
+    status.textContent = 'COMMITTING...';
+    frags.forEach(f => {
+      f.style.transition = 'all 0.5s ease-in';
+      f.style.top = '22px';
+      f.style.left = '24px';
+      f.style.opacity = '0';
+    });
+    await wait(600);
+    
+    box.classList.add('active');
+    icon.style.opacity = '1';
+    status.textContent = 'SAVED';
+    await wait(2000);
+  }
+})();
+
+// 02: Progress Timeline
+(async function() {
+  const nodes = [document.getElementById('n1'), document.getElementById('n2'), document.getElementById('n3'), document.getElementById('n4')];
+  const log = document.getElementById('log2');
+  
+  while (true) {
+    nodes.forEach(n => n.classList.remove('active'));
+    log.textContent = 'HISTORY';
+    await wait(1500);
+    
+    for(let i=0; i<nodes.length; i++) {
+      nodes[i].classList.add('active');
+      log.textContent = `V.${i+1}`;
+      await wait(800);
+    }
+    
+    await wait(2000);
+  }
+})();
+
+// 03: Atomic Operation
+(async function() {
+  const term = document.getElementById('term3');
+  const hash = document.getElementById('hash3');
+  const op = document.getElementById('op3');
+  
+  while (true) {
+    term.style.width = '0';
+    hash.style.opacity = '0';
+    op.textContent = 'IDLE';
+    await wait(1500);
+    
+    op.textContent = 'TYPING...';
+    term.style.animation = 'typing 1.5s steps(20) forwards';
+    await wait(2000);
+    
+    op.textContent = 'EXECUTING...';
+    await wait(1000);
+    
+    hash.style.opacity = '1';
+    op.textContent = 'SUCCESS';
+    await wait(2500);
+    term.style.animation = 'none';
+  }
+})();
+
+// 04: Safety Rollback
+(async function() {
+  const items = [document.getElementById('h1'), document.getElementById('h2'), document.getElementById('h3')];
+  const rb = document.getElementById('rollback4');
+  const ready = document.getElementById('ready4');
+  
+  while (true) {
+    items.forEach(el => el.classList.remove('active'));
+    items[0].classList.add('active');
+    items[1].classList.add('active');
+    items[2].classList.add('active');
+    items[2].style.color = 'var(--ac)';
+    rb.style.opacity = '0';
+    ready.textContent = 'STABLE';
+    ready.style.color = 'var(--txm)';
+    await wait(2000);
+    
+    ready.textContent = 'ERROR DETECTED';
+    ready.style.color = '#ff4444';
+    items[2].style.background = 'rgba(255, 68, 68, 0.1)';
+    await wait(1500);
+    
+    rb.style.opacity = '1';
+    rb.style.transform = 'translate(-50%, -50%) rotate(-360deg)';
+    rb.style.transition = 'all 0.8s';
+    await wait(800);
+    
+    items[2].classList.remove('active');
+    items[2].style.background = 'transparent';
+    items[2].style.color = 'var(--txm)';
+    ready.textContent = 'ROLLBACK TO V.2';
+    ready.style.color = 'var(--ac)';
+    await wait(2000);
+    
+    rb.style.transition = 'none';
+    rb.style.transform = 'translate(-50%, -50%) rotate(0)';
+  }
+})();
+</script>
+</body>
+</html>

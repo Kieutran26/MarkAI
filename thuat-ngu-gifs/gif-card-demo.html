@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Card Demo — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f0f12;
+  --bgc: #16161b;
+  --bgi: #121217;
+  --bd: #282830;
+  --tx: #e8e4dc;
+  --txm: #707070;
+  --ac: #E88C2E;
+  --abg: rgba(232, 140, 46, 0.1);
+  --abg2: rgba(232, 140, 46, 0.2);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--tx);
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.g {
+  width: 100%;
+  max-width: 940px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 600px) {
+  .g { grid-template-columns: 1fr; }
+}
+
+.c {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Accent Bar */
+.c::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--ac);
+}
+
+/* Pulsating Indicator */
+.c::after {
+  content: '';
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 6px;
+  height: 6px;
+  background: var(--ac);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--ac);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0.3; transform: scale(1); }
+}
+
+.ch {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.ch .n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ac);
+  background: var(--abg);
+  border: 1px solid var(--abg2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+.ch h2 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  text-transform: uppercase;
+}
+
+.st {
+  background: var(--bgi);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  flex: 1;
+  min-height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ins {
+  margin-top: 14px;
+  font-size: 11.5px;
+  color: var(--txm);
+  line-height: 1.6;
+  padding-left: 12px;
+  border-left: 2px solid var(--ac);
+}
+
+.ins strong {
+  color: var(--ac);
+  font-weight: 600;
+}
+
+.val {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--txm);
+  background: rgba(0,0,0,0.2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+/* Card Visuals */
+.mc {
+  width: 140px;
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 4px;
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.mc-img {
+  height: 60px;
+  background: var(--bd);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.mc-img svg {
+  width: 24px;
+  height: 24px;
+  fill: var(--txm);
+  opacity: 0.5;
+}
+
+.mc-body {
+  padding: 10px;
+}
+
+.mc-title {
+  height: 8px;
+  width: 70%;
+  background: var(--tx);
+  border-radius: 4px;
+  margin-bottom: 6px;
+}
+
+.mc-line {
+  height: 4px;
+  width: 100%;
+  background: var(--bd);
+  border-radius: 2px;
+  margin-bottom: 4px;
+}
+
+.mc-btn {
+  height: 14px;
+  width: 40px;
+  background: var(--abg);
+  border: 1px solid var(--abg2);
+  border-radius: 2px;
+  margin-top: 6px;
+}
+
+/* Variations */
+.mc.horizontal {
+  width: 200px;
+  display: flex;
+  align-items: center;
+}
+
+.mc.horizontal .mc-img {
+  width: 80px;
+  height: 80px;
+}
+
+.mc.horizontal .mc-body {
+  flex: 1;
+}
+
+.mc.featured {
+  border-color: var(--ac);
+  box-shadow: 0 0 15px rgba(232, 140, 46, 0.2);
+}
+
+.badge {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  background: var(--ac);
+  color: #fff;
+  font-family: 'JetBrains Mono';
+  font-size: 7px;
+  padding: 2px 4px;
+  border-radius: 2px;
+  font-weight: 700;
+}
+
+/* Stats Card */
+.stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  width: 100%;
+}
+
+.stat-box {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  padding: 10px;
+  border-radius: 4px;
+  text-align: center;
+}
+
+.stat-val {
+  font-family: 'JetBrains Mono';
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ac);
+}
+
+.stat-lbl {
+  font-size: 8px;
+  color: var(--txm);
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="g">
+  <!-- 01: Structure & Hierarchy -->
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>Hierarchy</h2></div>
+    <div class="st" id="st1">
+      <div class="mc" id="mc1">
+        <div class="mc-img">
+          <svg viewBox="0 0 24 24"><path d="M19,19H5V5H19M19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M13.96,12.29L11.21,15.83L9.25,13.47L6.5,17H17.5L13.96,12.29Z"/></svg>
+        </div>
+        <div class="mc-body">
+          <div class="mc-title"></div>
+          <div class="mc-line"></div>
+          <div class="mc-line" style="width: 85%;"></div>
+          <div class="mc-btn"></div>
+        </div>
+      </div>
+      <div class="val" id="val1">Layout: Vertical</div>
+    </div>
+    <p class="ins"><strong>Card</strong> gom nhóm thông tin vào một "hộp", thiết lập <strong>Visual Hierarchy</strong> rõ ràng giữa ảnh, tiêu đề và hành động.</p>
+  </section>
+
+  <!-- 02: Layout Adaptation -->
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Adaptation</h2></div>
+    <div class="st" id="st2">
+      <div class="mc" id="mc2">
+        <div class="mc-img">
+          <svg viewBox="0 0 24 24"><path d="M19,19H5V5H19M19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M13.96,12.29L11.21,15.83L9.25,13.47L6.5,17H17.5L13.96,12.29Z"/></svg>
+        </div>
+        <div class="mc-body">
+          <div class="mc-title"></div>
+          <div class="mc-line"></div>
+          <div class="mc-btn"></div>
+        </div>
+      </div>
+      <div class="val" id="val2">Mode: Standard</div>
+    </div>
+    <p class="ins">Cấu trúc Card có thể <strong>xoay trục</strong> (Vertical sang Horizontal) để phù hợp với <strong>không gian hiển thị</strong> và mật độ thông tin.</p>
+  </section>
+
+  <!-- 03: States & Emphasis -->
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Emphasis</h2></div>
+    <div class="st" id="st3">
+      <div class="mc" id="mc3">
+        <div class="mc-img" id="img3">
+          <svg viewBox="0 0 24 24"><path d="M19,19H5V5H19M19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V5A2,2 0 0,0 19,3M13.96,12.29L11.21,15.83L9.25,13.47L6.5,17H17.5L13.96,12.29Z"/></svg>
+        </div>
+        <div class="mc-body">
+          <div class="mc-title"></div>
+          <div class="mc-line"></div>
+          <div class="mc-btn" id="btn3"></div>
+        </div>
+      </div>
+      <div class="val" id="val3">State: Normal</div>
+    </div>
+    <p class="ins">Sử dụng <strong>Badges</strong> hoặc <strong>Accent Borders</strong> để biến Card thường thành <strong>Featured Card</strong>, thu hút sự chú ý ngay lập tức.</p>
+  </section>
+
+  <!-- 04: Data-Driven Cards -->
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Stats Card</h2></div>
+    <div class="st" id="st4">
+      <div class="stats-grid">
+        <div class="stat-box" id="box4_1">
+          <div class="stat-val" id="val4_1">--</div>
+          <div class="stat-lbl">Visits</div>
+        </div>
+        <div class="stat-box" id="box4_2">
+          <div class="stat-val" id="val4_2">--</div>
+          <div class="stat-lbl">Leads</div>
+        </div>
+        <div class="stat-box" id="box4_3">
+          <div class="stat-val" id="val4_3">--</div>
+          <div class="stat-lbl">Sales</div>
+        </div>
+        <div class="stat-box" id="box4_4">
+          <div class="stat-val" id="val4_4">--</div>
+          <div class="stat-lbl">ROAS</div>
+        </div>
+      </div>
+      <div class="val">Type: Dashboard</div>
+    </div>
+    <p class="ins">Card cũng là đơn vị cơ bản của <strong>Dashboards</strong>, nơi nó gom nhóm các <strong>chỉ số (metrics)</strong> liên quan vào các vùng dễ quản lý.</p>
+  </section>
+</div>
+
+<script>
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// 01: Hierarchy Animation
+(async function() {
+  const mc = document.getElementById('mc1');
+  const val = document.getElementById('val1');
+  while (true) {
+    mc.style.transform = 'translateY(0) scale(1)';
+    await wait(2000);
+    mc.style.transform = 'translateY(-5px) scale(1.02)';
+    mc.style.borderColor = 'var(--ac)';
+    val.textContent = 'State: Hover';
+    await wait(1500);
+    mc.style.transform = 'translateY(0) scale(1)';
+    mc.style.borderColor = 'var(--bd)';
+    val.textContent = 'State: Default';
+    await wait(2000);
+  }
+})();
+
+// 02: Adaptation Animation
+(async function() {
+  const mc = document.getElementById('mc2');
+  const val = document.getElementById('val2');
+  while (true) {
+    mc.className = 'mc';
+    val.textContent = 'Mode: Standard';
+    await wait(3000);
+    mc.className = 'mc horizontal';
+    val.textContent = 'Mode: Horizontal';
+    await wait(3000);
+  }
+})();
+
+// 03: Emphasis Animation
+(async function() {
+  const mc = document.getElementById('mc3');
+  const img = document.getElementById('img3');
+  const btn = document.getElementById('btn3');
+  const val = document.getElementById('val3');
+  
+  while (true) {
+    // Normal
+    mc.className = 'mc';
+    const existingBadge = img.querySelector('.badge');
+    if (existingBadge) existingBadge.remove();
+    btn.style.background = 'var(--abg)';
+    val.textContent = 'State: Normal';
+    await wait(2500);
+    
+    // Featured
+    mc.className = 'mc featured';
+    const badge = document.createElement('span');
+    badge.className = 'badge';
+    badge.textContent = 'NEW';
+    img.appendChild(badge);
+    btn.style.background = 'var(--ac)';
+    val.textContent = 'State: Featured';
+    await wait(2500);
+  }
+})();
+
+// 04: Stats Card Animation
+(async function() {
+  const v1 = document.getElementById('val4_1');
+  const v2 = document.getElementById('val4_2');
+  const v3 = document.getElementById('val4_3');
+  const v4 = document.getElementById('val4_4');
+  
+  function rand(min, max) { return Math.floor(Math.random() * (max - min + 1)) + min; }
+  
+  while (true) {
+    v1.textContent = (rand(10, 25)) + 'K';
+    v2.textContent = rand(400, 900);
+    v3.textContent = '$' + rand(12, 18) + 'K';
+    v4.textContent = (rand(3, 8)) + '.2x';
+    
+    const boxes = [1,2,3,4].map(i => document.getElementById('box4_'+i));
+    const target = boxes[rand(0,3)];
+    target.style.borderColor = 'var(--ac)';
+    target.style.background = 'var(--abg)';
+    
+    await wait(1500);
+    boxes.forEach(b => {
+      b.style.borderColor = 'var(--bd)';
+      b.style.background = 'var(--bgc)';
+    });
+    await wait(500);
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Responsive Practice — markAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+  --bg:#0f0f12;--bg-card:#16161b;--fg:#e8e4dc;--muted:#6e6e7a;
+  --accent:#e88c2e;--accent-soft:rgba(232,140,46,.12);
+  --accent-border:rgba(232,140,46,.3);--border:#282830;
+  --surface:#1c1c23;--success:#3a9e5c;--success-soft:rgba(58,158,92,.12);
+  --success-border:rgba(58,158,92,.3);--warning:#c49030;
+  --bar-d:#2a2a34;--bar-m:#44444f;--shape-lt:#33333d;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:'Space Grotesk',sans-serif;line-height:1.6;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(rgba(255,255,255,.022) 1px,transparent 1px);background-size:20px 20px;pointer-events:none;z-index:0}
+
+#app-root{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:24px}
+
+.sec-lbl{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:20px;display:flex;align-items:center;gap:10px}
+.sec-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
+
+.pg{font-size:15px;color:var(--fg);opacity:.8;margin-bottom:8px;line-height:1.6}
+.pg span{color:var(--accent);font-weight:600}
+.pg-sub{font-size:13px;color:var(--muted);opacity:.6;margin-bottom:22px}
+
+/* Device toggles */
+.dev-toggles{display:flex;gap:8px;margin-bottom:20px;justify-content:center}
+.dev-btn{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;padding:10px 20px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:8px}
+.dev-btn:hover{border-color:var(--accent-border);color:var(--fg);background:var(--accent-soft)}
+.dev-btn.on{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+.dev-btn i{font-size:12px}
+
+/* Width indicator */
+.width-bar{display:flex;align-items:center;gap:12px;margin-bottom:20px;padding:0 4px}
+.width-track{flex:1;height:6px;background:var(--border);position:relative;overflow:visible}
+.width-fill{height:100%;background:var(--accent);transition:width .5s cubic-bezier(.4,0,.2,1);position:relative}
+.width-fill::after{content:'';position:absolute;right:-4px;top:-2px;width:2px;height:10px;background:var(--accent)}
+.width-label{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);min-width:80px;text-align:right}
+.width-label b{color:var(--accent);font-weight:600}
+
+/* Preview container */
+.prev-outer{background:var(--bg-card);border:1px solid var(--border);padding:24px;margin-bottom:18px;position:relative;overflow:hidden}
+.prev-outer::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.004) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.004) 1px,transparent 1px);background-size:12px 12px;pointer-events:none}
+.prev-lbl{position:absolute;top:8px;left:12px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);opacity:.3;z-index:2}
+.prev-bp-lbl{position:absolute;top:8px;right:12px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);opacity:0;transition:opacity .3s;z-index:2}
+.prev-bp-lbl.show{opacity:.7}
+
+/* Preview page content */
+.prev-page{margin:0 auto;transition:width .5s cubic-bezier(.4,0,.2,1);position:relative;z-index:1}
+.pp-nav{height:32px;background:var(--bg);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 14px;gap:16px}
+.pp-nav-logo{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;color:var(--accent)}
+.pp-nav-link{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);opacity:.6}
+.pp-hero{padding:28px 14px 20px;text-align:center;border-bottom:1px solid var(--border)}
+.pp-hero-title{font-size:18px;font-weight:800;margin-bottom:4px;line-height:1.2}
+.pp-hero-desc{font-size:11px;color:var(--muted);line-height:1.5;margin-bottom:14px}
+.pp-hero-btn{display:inline-block;padding:7px 20px;background:var(--accent);color:#fff;font-size:11px;font-weight:600;font-family:'Space Grotesk',sans-serif}
+.pp-cards{padding:14px;display:grid;gap:10px;transition:all .5s ease}
+.pp-card{background:var(--bg);border:1px solid var(--border);overflow:hidden;transition:all .3s}
+.pp-card-img{height:48px;background:var(--bar-d)}
+.pp-card-body{padding:8px 10px}
+.pp-card-title{height:4px;background:var(--bar-m);width:60%;margin-bottom:4px}
+.pp-card-desc{height:3px;background:var(--bar-d);margin-bottom:2px}
+.pp-card-desc2{height:3px;background:var(--bar-d);width:50%}
+.pp-wiki{padding:14px;display:flex;gap:10px;border-bottom:1px solid var(--border)}
+.pp-wiki-side{width:120px;display:flex;flex-direction:column;gap:6px;flex-shrink:0;transition:all .4s ease}
+.pp-wiki-side.wide{width:100%;flex-direction:row;gap:10px}
+.pp-wiki-item{height:3px;background:var(--bar-d)}
+.pp-wiki-item.active{background:var(--bar-m)}
+.pp-wiki-main{flex:1;display:flex;flex-direction:column;gap:4px;transition:all .4s ease}
+.pp-wiki-main.hidden{display:none}
+.pp-wiki-title{height:5px;background:var(--bar-m);width:55%;margin-bottom:3px}
+.pp-wiki-text{height:3px;background:var(--bar-d);margin-bottom:2px}
+.pp-wiki-text2{height:3px;background:var(--bar-d);width:75%}
+.pp-cta{padding:20px 14px;border-top:1px solid var(--border);text-align:center}
+.pp-cta-title{font-size:13px;font-weight:700;margin-bottom:4px}
+.pp-cta-desc{font-size:10px;color:var(--muted);margin-bottom:12px}
+.pp-cta-btn{display:inline-block;padding:7px 22px;background:var(--accent);color:#fff;font-size:11px;font-weight:600;font-family:'Space Grotesk',sans-serif}
+.pp-footer{padding:10px 14px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid var(--border)}
+.pp-footer-text{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);opacity:.4}
+.pp-footer-links{display:flex;gap:10px}
+.pp-footer-link{font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);opacity:.4}
+
+.fb{background:var(--surface);border:1px solid var(--border);padding:14px 18px;margin-bottom:12px;display:flex;align-items:flex-start;gap:10px;transition:all .3s}
+.fb .fb-icon{font-size:12px;color:var(--accent);margin-top:2px;flex-shrink:0}
+.fb .fb-text{font-size:13px;color:var(--fg);opacity:.8;line-height:1.5}
+.fb .fb-text b{color:var(--accent);font-weight:600}
+
+.hint{font-size:12px;color:var(--muted);opacity:.5;margin-top:10px;display:flex;align-items:center;gap:6px}
+.hint i{font-size:10px;color:var(--accent)}
+
+@media(max-width:500px){.dev-toggles{flex-wrap:wrap}.dev-btn{flex:1;min-width:100px;justify-content:center}.pp-wiki{flex-direction:column}.pp-wiki-side{width:100%}}
+</style>
+</head>
+<body>
+
+<div id="app-root">
+  <section aria-label="Thực hành responsive">
+    <p class="pg"><span>Mục tiêu:</span> Bấm chuyển giữa Desktop / Tablet / Mobile để thấy cùng một trang đổi layout realtime. Quan sát breakpoint và cấu trúc grid thay đổi.</p>
+    <p class="pg-sub">Đây chính xác là những gì user trải nghiệm khi resize browser hoặc mở site trên điện thoại.</p>
+
+    <div class="dev-toggles" id="devToggles">
+      <button class="dev-btn on" data-dev="desktop"><i class="fa-solid fa-desktop"></i> Desktop</button>
+      <button class="dev-btn" data-dev="tablet"><i class="fa-solid fa-tablet-screen-button"></i> Tablet</button>
+      <button class="dev-btn" data-dev="mobile"><i class="fa-solid fa-mobile-screen-button"></i> Mobile</button>
+    </div>
+
+    <div class="width-bar">
+      <div class="width-track"><div class="width-fill" id="widthFill" style="width:100%"></div></div>
+      <div class="width-label" id="widthLbl"><b>960px</b> / 960px</div>
+    </div>
+
+    <div class="prev-outer" id="prevOuter">
+      <span class="prev-lbl">LIVE PREVIEW</span>
+      <span class="prev-bp-lbl" id="prevBpLbl"></span>
+      <div class="prev-page" id="prevPage" style="width:100%">
+        <div class="pp-nav"><div class="pp-nav-logo">BRAND</div><div class="pp-nav-link">Home</div><div class="pp-nav-link">Product</div><div class="pp-nav-link">About</div><div class="pp-nav-link">Contact</div></div>
+        <div class="pp-hero"><div class="pp-hero-title">Build products that scale.</div><div class="pp-hero-desc">The modern platform for teams who want to move fast without breaking things.</div><div class="pp-hero-btn">Get Started</div></div>
+        <div class="pp-cards" id="ppCards">
+          <div class="pp-card"><div class="pp-card-img"></div><div class="pp-card-body"><div class="pp-card-title"></div><div class="pp-card-desc"></div><div class="pp-card-desc2"></div></div></div>
+          <div class="pp-card"><div class="pp-card-img"></div><div class="pp-card-body"><div class="pp-card-title"></div><div class="pp-card-desc"></div><div class="pp-card-desc2"></div></div></div>
+          <div class="pp-card"><div class="pp-card-img"></div><div class="pp-card-body"><div class="pp-card-title"></div><div class="pp-card-desc"></div><div class="pp-card-desc2"></div></div></div>
+          <div class="pp-card"><div class="pp-card-img"></div><div class="pp-card-body"><div class="pp-card-title"></div><div class="pp-card-desc"></div><div class="pp-card-desc2"></div></div></div>
+        </div>
+        <div class="pp-wiki" id="ppWiki">
+          <div class="pp-wiki-side" id="wikiSide"><div class="pp-wiki-item active"></div><div class="pp-wiki-item"></div><div class="pp-wiki-item"></div><div class="pp-wiki-item"></div><div class="pp-wiki-item"></div></div>
+          <div class="pp-wiki-main" id="wikiMain"><div class="pp-wiki-title"></div><div class="pp-wiki-text"></div><div class="pp-wiki-text2"></div><div class="pp-wiki-text"></div><div class="pp-wiki-text2"></div><div class="pp-wiki-text"></div></div>
+        </div>
+        <div class="pp-cta"><div class="pp-cta-title">Ready to get started?</div><div class="pp-cta-desc">Join thousands of teams shipping faster every day.</div><div class="pp-cta-btn">Start Free Trial</div></div>
+        <div class="pp-footer"><div class="pp-footer-text">2024 Brand Inc.</div><div class="pp-footer-links"><div class="pp-footer-link">Privacy</div><div class="pp-footer-link">Terms</div></div></div>
+      </div>
+    </div>
+
+    <div class="fb" id="feedback">
+      <i class="fa-solid fa-circle-info fb-icon"></i>
+      <div class="fb-text" id="fbText">Desktop: 4 cột, wiki sidebar hiển thị. Navbar đầy đủ link.</div>
+    </div>
+
+    <p class="hint">
+      <i class="fa-solid fa-arrow-up-right"></i>
+      Thiết bị toggle mô phỏng breakpoint cố định giúp bạn thấy layout thay đổi như thế nào.
+    </p>
+  </section>
+</div>
+
+<script>
+const devConfigs = {
+  desktop:{width:'100%',maxWidth:'100%',cols:4,wikiSide:true,navFull:true,bpLabel:'≥ 1280px — Desktop',px:960,
+    fb:'Desktop: 4 cột card, wiki sidebar hiển thị bên trái, navbar đầy đủ link. Đây là layout đầy đủ nhất.'},
+  tablet:{width:'75%',maxWidth:'75%',cols:2,wikiSide:false,navFull:false,bpLabel:'768px — Tablet',px:720,
+    fb:'Tablet: 2 cột card, wiki sidebar ẩn (chỉ giữ nội dung). Navbar link có thể gộp. Ít cột hơn nhưng vẫn dễ đọc.'},
+  mobile:{width:'48%',maxWidth:'48%',cols:1,wikiSide:false,navFull:false,bpLabel:'≤ 767px — Mobile',px:460,
+    fb:'Mobile: 1 cột, mọi thứ xếp dọc. Cards, wiki, CTA đều full-width. Ưu tiên đọc được — user chỉ cần scroll xuống.'}
+};
+
+let curDev = 'desktop';
+const devToggles = document.getElementById('devToggles');
+const prevPage = document.getElementById('prevPage');
+const prevBpLbl = document.getElementById('prevBpLbl');
+const widthFill = document.getElementById('widthFill');
+const widthLbl = document.getElementById('widthLbl');
+const ppCards = document.getElementById('ppCards');
+const wikiSide = document.getElementById('wikiSide');
+const wikiMain = document.getElementById('wikiMain');
+const fbText = document.getElementById('fbText');
+
+function switchDev(id){
+  curDev = id;
+  devToggles.querySelectorAll('.dev-btn').forEach(b=>{
+    b.classList.toggle('on',b.dataset.dev===id);
+  });
+  const cfg = devConfigs[id];
+
+  prevPage.style.width = cfg.width;
+  widthFill.style.width = cfg.width;
+  widthLbl.innerHTML = `<b>${cfg.px}px</b> / 960px`;
+
+  prevBpLbl.textContent = cfg.bpLabel;
+  prevBpLbl.classList.add('show');
+
+  ppCards.style.gridTemplateColumns = `repeat(${cfg.cols}, 1fr)`;
+
+  if(cfg.wikiSide){
+    wikiSide.classList.remove('wide');
+    wikiMain.classList.remove('hidden');
+  } else {
+    wikiSide.classList.add('wide');
+    wikiMain.classList.add('hidden');
+  }
+
+  fbText.textContent = cfg.fb;
+}
+
+devToggles.querySelectorAll('.dev-btn').forEach(b=>{
+  b.addEventListener('click',()=>switchDev(b.dataset.dev));
+});
+
+switchDev('desktop');
+</script>
+</body>
+</html>

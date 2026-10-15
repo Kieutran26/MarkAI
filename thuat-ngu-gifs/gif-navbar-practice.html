@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Navbar Practice — markAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root{
+  --bg:#0f0f12;--bg-card:#16161b;--fg:#e8e4dc;--muted:#6e6e7a;
+  --accent:#e88c2e;--accent-soft:rgba(232,140,46,.12);
+  --accent-border:rgba(232,140,46,.3);--border:#282830;
+  --surface:#1c1c23;--success:#3a9e5c;--success-soft:rgba(58,158,92,.12);
+  --bar-d:#2a2a34;--bar-m:#44444f;--shape-lt:#33333d;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:'Space Grotesk',sans-serif;min-height:100vh;line-height:1.6;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:radial-gradient(rgba(255,255,255,.022) 1px,transparent 1px);background-size:20px 20px;pointer-events:none;z-index:0}
+
+#app-root{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:24px}
+
+.pg{font-size:15px;color:var(--fg);opacity:.8;margin-bottom:8px;line-height:1.6}
+.pg span{color:var(--accent);font-weight:600}
+.pg-sub{font-size:13px;color:var(--muted);opacity:.6;margin-bottom:22px}
+
+/* State toggles */
+.state-toggles{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px;justify-content:center}
+.st-btn{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;padding:10px 18px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:8px}
+.st-btn:hover{border-color:var(--accent-border);color:var(--fg);background:var(--accent-soft)}
+.st-btn.on{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+
+/* Sub-toggles row */
+.sub-row{display:flex;gap:16px;margin-bottom:20px;flex-wrap:wrap;align-items:center;justify-content:center}
+.sub-item{display:flex;align-items:center;gap:8px}
+.sub-label{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px}
+.sub-toggle{width:36px;height:20px;border:1px solid var(--border);background:var(--bg-card);cursor:pointer;position:relative;transition:all .25s;flex-shrink:0}
+.sub-toggle::after{content:'';position:absolute;top:2px;left:2px;width:14px;height:14px;background:var(--accent);opacity:0;transition:opacity .2s}
+.sub-toggle.on::after{opacity:1}
+
+/* Preview */
+.prev{background:var(--bg-card);border:1px solid var(--border);position:relative;overflow:hidden;margin-bottom:18px;transition:border-color .3s;min-height:260px;display:flex;flex-direction:column}
+.prev::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.004) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.004) 1px,transparent 1px);background-size:14px 14px;pointer-events:none;z-index:0}
+
+/* Hero Background Simulation */
+.pv-hero{
+  position:absolute;inset:0;top:0;
+  background:linear-gradient(135deg, #1e1e26 0%, #0f0f12 100%);
+  z-index:0;transition:transform .6s cubic-bezier(.4,0,.2,1);
+}
+.pv-hero::after{
+  content:'MARKETING AUTOMATION';
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-size:48px;font-weight:900;opacity:0.03;white-space:nowrap;
+}
+.prev.is-scrolled .pv-hero{transform:translateY(-100px);opacity:0.5}
+
+/* Full-size navbar preview */
+.pv-nav{height:60px;background:transparent;display:flex;align-items:center;padding:0 24px;position:relative;z-index:10;transition:all .4s ease;border-bottom:1px solid rgba(255,255,255,0.05)}
+.pv-nav.scrolled{background:var(--surface);box-shadow:0 8px 30px rgba(0,0,0,0.8);border-color:var(--accent-border);height:54px}
+
+.pv-logo{font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:800;color:var(--accent);margin-right:32px;flex-shrink:0;transition:all .3s ease;letter-spacing:-0.5px}
+.pv-logo.hide{opacity:0;width:0;overflow:hidden;margin:0}
+
+.pv-links{display:flex;gap:24px;flex:1;transition:all .4s ease}
+.pv-link{font-family:'Space Grotesk',sans-serif;font-size:13px;color:var(--fg);cursor:pointer;position:relative;padding:4px 0;transition:all .2s;opacity:0.6}
+.pv-link:hover{color:var(--fg);opacity:1}
+.pv-link.active{color:var(--accent);opacity:1;font-weight:600}
+.pv-link.hide{opacity:0;width:0;overflow:hidden;position:absolute;pointer-events:none}
+
+.pv-btn{padding:8px 22px;background:var(--accent);color:#fff;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:700;cursor:default;flex-shrink:0;transition:all .3s;box-shadow:0 4px 12px rgba(232,140,46,0.2);text-transform:uppercase;letter-spacing:0.5px}
+.pv-btn.hide{opacity:0;width:0;padding:0;overflow:hidden;margin:0}
+
+.pv-hamburger{width:24px;height:24px;display:flex;flex-direction:column;justify-content:center;gap:4px;cursor:pointer;flex-shrink:0;opacity:0;pointer-events:none;transition:opacity .3s;position:relative;z-index:20}
+.pv-hamburger.show{opacity:1;pointer-events:auto}
+.pv-hamburger span{display:block;height:2px;width:100%;background:var(--fg);border-radius:1px;transition:all .3s ease}
+.pv-hamburger.open span:nth-child(1){transform:translateY(6px) rotate(45deg)}
+.pv-hamburger.open span:nth-child(2){opacity:0;transform:translateX(10px)}
+.pv-hamburger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg)}
+
+.pv-mobile-menu{background:var(--surface);border-bottom:1px solid var(--accent-border);max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1);z-index:9;box-shadow:0 10px 30px rgba(0,0,0,0.5)}
+.pv-mobile-menu.open{max-height:220px}
+.pv-mobile-link{padding:14px 24px;font-size:14px;font-weight:500;color:var(--fg);opacity:0.7;border-bottom:1px solid rgba(255,255,255,0.03);display:flex;align-items:center;gap:12px;transition:all .2s;cursor:pointer}
+.pv-mobile-link.active{color:var(--accent);opacity:1;background:var(--accent-soft)}
+.pv-mobile-link i{font-size:12px;width:16px;text-align:center;color:var(--accent)}
+
+.active-indicator{position:absolute;bottom:0;height:3px;width:40px;background:var(--accent);left:24px;opacity:0;transition:all .4s cubic-bezier(.4,0,.2,1);transform:scaleX(.5);box-shadow:0 0 10px var(--accent-soft)}
+.active-indicator.show{opacity:1;transform:scaleX(1)}
+
+.pv-page{padding:60px 24px 40px;position:relative;z-index:1;flex:1}
+.pv-page-title{font-size:24px;font-weight:800;margin-bottom:12px;letter-spacing:-0.5px}
+.pv-page-desc{font-size:14px;color:var(--muted);line-height:1.6;max-width:440px;margin-bottom:32px}
+.pv-page-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.pv-page-card{height:80px;background:var(--surface);border:1px solid var(--border);border-radius:4px;transition:transform .3s ease}
+.pv-page-card:hover{transform:translateY(-4px);border-color:var(--accent-border)}
+
+.fb{background:var(--surface);border:1px solid var(--border);padding:16px 20px;margin-bottom:12px;display:flex;align-items:flex-start;gap:12px;min-height:80px;border-left:4px solid var(--accent)}
+.fb-icon{font-size:14px;color:var(--accent);margin-top:3px;flex-shrink:0}
+.fb-text{font-size:14px;color:var(--fg);opacity:0.9;line-height:1.6}
+.fb-text b{color:var(--accent);font-weight:600}
+
+.fu{opacity:0;transform:translateY(20px);transition:opacity .6s ease,transform .6s ease}
+.fu.in{opacity:1;transform:translateY(0)}
+
+@media (max-width: 600px) {
+  .pv-page-cards { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div id="app-root">
+  <section class="fu" aria-label="Thực hành navbar">
+    <p class="pg"><span>Mô phỏng:</span> Tùy chỉnh các trạng thái để xem Navbar phản ứng.</p>
+    
+    <div class="state-toggles" id="stateToggles">
+      <button class="st-btn on" data-state="default"><i class="fa-solid fa-rotate-left"></i> Reset</button>
+      <button class="st-btn" data-state="scrolled"><i class="fa-solid fa-scroll"></i> Scrolled</button>
+      <button class="st-btn" data-state="mobile"><i class="fa-solid fa-mobile-button"></i> Mobile</button>
+      <button class="st-btn" data-state="active"><i class="fa-solid fa-check-double"></i> Active State</button>
+    </div>
+
+    <div class="sub-row">
+      <div class="sub-item">
+        <span class="sub-label">Logo</span>
+        <div class="sub-toggle on" id="togLogo" role="switch" aria-checked="true"></div>
+      </div>
+      <div class="sub-item">
+        <span class="sub-label">CTA Button</span>
+        <div class="sub-toggle on" id="togBtn" role="switch" aria-checked="true"></div>
+      </div>
+    </div>
+
+    <div class="prev" id="prevBox">
+      <div class="pv-hero" id="pvHero"></div>
+      <div class="pv-nav" id="pvNav">
+        <div class="pv-logo" id="pvLogo">MARKAI</div>
+        <div class="pv-links" id="pvLinks">
+          <div class="pv-link" data-link="0">Sản phẩm</div>
+          <div class="pv-link" data-link="1">Giải pháp</div>
+          <div class="pv-link" data-link="2">Bảng giá</div>
+        </div>
+        <div class="pv-btn" id="pvBtn">Dùng thử</div>
+        <div class="pv-hamburger" id="pvHamburger"><span></span><span></span><span></span></div>
+        <div class="active-indicator" id="pvActiveIndicator"></div>
+      </div>
+      <div class="pv-mobile-menu" id="pvMobileMenu">
+        <div class="pv-mobile-link" data-link="0"><i class="fa-solid fa-box"></i> Sản phẩm</div>
+        <div class="pv-mobile-link" data-link="1"><i class="fa-solid fa-lightbulb"></i> Giải pháp</div>
+        <div class="pv-mobile-link" data-link="2"><i class="fa-solid fa-tags"></i> Bảng giá</div>
+      </div>
+      <div class="pv-page">
+        <div class="pv-page-title">Trải nghiệm không giới hạn</div>
+        <div class="pv-page-desc">Khám phá sức mạnh của marketing tự động hóa với sự trợ giúp của AI thế hệ mới.</div>
+        <div class="pv-page-cards">
+          <div class="pv-page-card"></div><div class="pv-page-card"></div><div class="pv-page-card"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fb" id="feedback">
+      <i class="fa-solid fa-wand-magic-sparkles fb-icon"></i>
+      <div class="fb-text" id="fbText">Chọn một trạng thái để bắt đầu mô phỏng.</div>
+    </div>
+  </section>
+</div>
+
+<script>
+let states = {default:true,scrolled:false,mobile:false,active:false};
+let showLogo = true;
+let showBtn = true;
+let activeLink = -1;
+let hamburgerOpen = false;
+
+const stateToggles = document.getElementById('stateToggles');
+const pvNav = document.getElementById('pvNav');
+const pvLogo = document.getElementById('pvLogo');
+const pvLinks = document.getElementById('pvLinks');
+const pvBtn = document.getElementById('pvBtn');
+const pvHamburger = document.getElementById('pvHamburger');
+const pvMobileMenu = document.getElementById('pvMobileMenu');
+const pvActiveIndicator = document.getElementById('pvActiveIndicator');
+const togLogo = document.getElementById('togLogo');
+const togBtn = document.getElementById('togBtn');
+const fbText = document.getElementById('fbText');
+const prevBox = document.getElementById('prevBox');
+
+function updatePreview(){
+  const {default:isDefault,scrolled,mobile:isMobile,active} = states;
+
+  prevBox.classList.toggle('is-scrolled', scrolled && !isMobile);
+  pvNav.classList.toggle('scrolled', scrolled && !isMobile);
+
+  pvLinks.querySelectorAll('.pv-link').forEach((l,i)=>{
+    l.classList.toggle('hide',isMobile);
+    l.classList.toggle('active',active && i===activeLink && !isMobile);
+  });
+  
+  pvBtn.classList.toggle('hide', !showBtn || isMobile);
+  pvLogo.classList.toggle('hide', !showLogo);
+  pvHamburger.classList.toggle('show', isMobile);
+  pvHamburger.classList.toggle('open', hamburgerOpen);
+
+  pvMobileMenu.classList.toggle('open', isMobile && hamburgerOpen);
+  pvMobileMenu.querySelectorAll('.pv-mobile-link').forEach((l,i)=>{
+    l.classList.toggle('active', active && i===activeLink && isMobile);
+  });
+
+  if(active && activeLink >= 0 && !isMobile){
+    const link = pvLinks.querySelectorAll('.pv-link')[activeLink];
+    if(link){
+      const navRect = pvNav.getBoundingClientRect();
+      const linkRect = link.getBoundingClientRect();
+      pvActiveIndicator.style.left = (linkRect.left - navRect.left) + 'px';
+      pvActiveIndicator.style.width = linkRect.width + 'px';
+      pvActiveIndicator.classList.add('show');
+    }
+  } else {
+    pvActiveIndicator.classList.remove('show');
+  }
+
+  const parts = [];
+  if(isDefault) parts.push('<b>Mặc định:</b> Navbar trong suốt, hòa trộn với nội dung Hero.');
+  if(scrolled && !isMobile) parts.push('<b>Scrolled:</b> Nền đặc, đổ bóng đậm để tách khỏi nội dung khi cuộn.');
+  if(isMobile) parts.push('<b>Mobile:</b> Menu thu gọn vào Hamburger để tối ưu không gian nhỏ.');
+  if(active) parts.push('<b>Active:</b> Chỉ báo trực quan giúp người dùng định vị vị trí.');
+  
+  fbText.innerHTML = parts.length > 0 ? parts.join('<br>') : 'Thay đổi trạng thái để khám phá.';
+}
+
+stateToggles.querySelectorAll('.st-btn').forEach(b=>{
+  b.addEventListener('click',()=>{
+    const s=b.dataset.state;
+    if(s==='default'){
+      states={default:true,scrolled:false,mobile:false,active:false};
+      showLogo=true; showBtn=true; activeLink=-1; hamburgerOpen=false;
+      stateToggles.querySelectorAll('.st-btn').forEach(x=>x.classList.toggle('on', x.dataset.state==='default'));
+      togLogo.classList.add('on'); togBtn.classList.add('on');
+    } else {
+      states.default = false;
+      states[s]=!states[s];
+      stateToggles.querySelector('[data-state="default"]').classList.remove('on');
+      b.classList.toggle('on', states[s]);
+      
+      // Auto-toggle dependencies for clarity
+      if(s==='mobile' && states.mobile) {
+        hamburgerOpen = true; // Auto open for demo
+      }
+    }
+    updatePreview();
+  });
+});
+
+togLogo.addEventListener('click',()=>{
+  showLogo=!showLogo;
+  togLogo.classList.toggle('on',showLogo);
+  updatePreview();
+});
+togBtn.addEventListener('click',()=>{
+  showBtn=!showBtn;
+  togBtn.classList.toggle('on',showBtn);
+  updatePreview();
+});
+
+pvLinks.querySelectorAll('.pv-link').forEach((l,i)=>{
+  l.addEventListener('click',()=>{
+    activeLink = activeLink===i ? -1 : i;
+    states.active = activeLink >= 0;
+    stateToggles.querySelector('[data-state="active"]').classList.toggle('on', states.active);
+    updatePreview();
+  });
+});
+
+pvMobileMenu.querySelectorAll('.pv-mobile-link').forEach((l,i)=>{
+  l.addEventListener('click',()=>{
+    activeLink = activeLink===i ? -1 : i;
+    states.active = activeLink >= 0;
+    stateToggles.querySelector('[data-state="active"]').classList.toggle('on', states.active);
+    hamburgerOpen = false;
+    updatePreview();
+  });
+});
+
+pvHamburger.addEventListener('click',()=>{
+  hamburgerOpen = !hamburgerOpen;
+  updatePreview();
+});
+
+function initFU(){
+  document.querySelectorAll('.fu').forEach((el,i)=>{
+    setTimeout(()=>el.classList.add('in'),60+i*100);
+  });
+}
+
+updatePreview();
+initFU();
+</script>
+</body>
+</html>

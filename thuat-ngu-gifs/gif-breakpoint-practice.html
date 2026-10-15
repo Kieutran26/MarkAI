@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Breakpoint Practice — markAI</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;--adim:#8b3a1a;--card:#1c1a18;--calt:#242120;--border:#302c28;--bhi:#44403a}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 100%,16px 16px;display:flex;flex-direction:column;align-items:center;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:0;gap:0;overflow-x:hidden}
+
+/* ===== PRACTICE ===== */
+.pw{width:100%;background:var(--card);border:2px solid var(--border);padding:20px 24px}
+.pw-h{font-size:15px;font-weight:700;margin-bottom:2px}.pw-h span{color:var(--accent)}
+.pw-s{font-size:11px;color:var(--muted);margin-bottom:14px}
+
+.ppv{position:relative;height:180px;border:1px solid var(--border);background:var(--bg);background-image:linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);background-size:20px 20px;display:flex;align-items:center;justify-content:center;margin-bottom:12px;overflow:hidden}
+.ppb{height:150px;border:1px solid var(--border);background:var(--calt);transition:width .12s ease-out;overflow:hidden;display:flex;flex-direction:column}
+.ppn{height:20px;border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 6px;background:rgba(0,0,0,.18);flex-shrink:0}
+.ppnb{font-size:8px;font-weight:700;letter-spacing:1px}
+.ppnm{display:flex;flex-direction:column;gap:1.5px;margin-left:auto;padding:3px 4px}
+.ppnm i{display:block;width:10px;height:1.5px;background:var(--fg)}
+.ppnl{font-size:7px;color:var(--muted);margin-left:auto;display:none;letter-spacing:.3px}
+.ppb.pm .ppnm{display:flex}.ppb.pm .ppnl{display:none}
+.ppb.pf .ppnm{display:none}.ppb.pf .ppnl{display:inline}
+.ppg{flex:1;display:grid;gap:4px;padding:4px;align-content:start;transition:grid-template-columns .12s}
+.ppc{background:var(--calt);border:1px solid var(--border);display:flex;align-items:center;font-size:8px;font-weight:600;padding-left:5px;min-height:18px;overflow:hidden}
+.ppca{border-left:3px solid var(--accent)}
+.ppcb{border-left:3px solid #b89a2a}
+.ppcc{border-left:3px solid #4a8a5a}
+.ppcd{border-left:3px solid #4a5a7a}
+.ppg.s3 .ppcd{grid-column:1/-1}
+
+.bpf{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:700;color:var(--accent);opacity:0;pointer-events:none;z-index:10;text-shadow:0 0 24px rgba(212,113,42,.35);transition:opacity .15s}
+.bpf.show{opacity:1}
+
+.pwd{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.pw-vl{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;color:var(--fg);min-width:85px}
+.pw-zn{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;padding:3px 10px;border:1px solid}
+.pw-zn.zm{color:#c45a20;border-color:#7a3218;background:rgba(122,50,24,.12)}
+.pw-zn.zt{color:var(--accent);border-color:var(--adim);background:rgba(139,58,26,.12)}
+.pw-zn.zl{color:#5a9a6a;border-color:#2a4a3a;background:rgba(42,74,58,.12)}
+.pw-zn.zd{color:#6a7a9a;border-color:#2a3a4a;background:rgba(42,58,74,.12)}
+
+.psw{position:relative;margin-bottom:14px;padding:8px 2px 0}
+.psm{position:relative;height:12px;pointer-events:none}
+.psm span{position:absolute;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);transform:translateX(-50%);top:0}
+.psm span::after{content:'';position:absolute;top:100%;left:50%;width:1px;height:8px;background:var(--muted);opacity:.35}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;background:var(--border);outline:none;border:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;background:var(--accent);border:2px solid var(--bg);cursor:pointer}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;background:var(--accent);border:2px solid var(--bg);cursor:pointer;border-radius:0}
+
+.pfb{font-family:'JetBrains Mono',monospace;font-size:11px;min-height:18px;color:var(--muted);transition:color .2s;line-height:1.4}
+.pfb.w{color:var(--accent)}
+.pht{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);opacity:.65}
+
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media(max-width:520px){.pw{padding:16px}.pw-vl{font-size:18px;min-width:70px}}
+</style>
+</head>
+<body>
+
+<div class="pw">
+    <div class="pw-h">Thực hành — <span>Kéo qua Breakpoint</span></div>
+    <div class="pw-s">Kéo slider thay đổi viewport width — thấy layout đổi ngay tại ngưỡng</div>
+    <div class="ppv">
+        <div class="ppb pm" id="ppb" style="width:117px">
+            <div class="ppn"><span class="ppnb">BRAND</span><div class="ppnm"><i></i><i></i><i></i></div><span class="ppnl">Home · Features · About</span></div>
+            <div class="ppg" id="ppg" style="grid-template-columns:1fr">
+                <div class="ppc ppca">Analytics</div>
+                <div class="ppc ppcb">Builder</div>
+                <div class="ppc ppcc">Connect</div>
+                <div class="ppc ppcd">Report</div>
+            </div>
+        </div>
+        <div class="bpf" id="bpf"></div>
+    </div>
+    <div class="pwd">
+        <span class="pw-vl" id="pwVl">375px</span>
+        <span class="pw-zn zm" id="pwZn">MOBILE</span>
+    </div>
+    <div class="psw">
+        <div class="psm">
+            <span style="left:28%">768</span>
+            <span style="left:44%">1024</span>
+            <span style="left:70%">1440</span>
+        </div>
+        <input type="range" id="psl" min="320" max="1920" value="375">
+    </div>
+    <div class="pfb" id="pfb">Kéo slider sang phải — breakpoint đầu tiên ở 768px</div>
+    <div class="pht">Hint: Chú ý lúc vượt 768, 1024, 1440 — layout "nhảy" chứ không thay đổi từ từ</div>
+</div>
+
+<script>
+var psl=document.getElementById('psl');
+var ppb=document.getElementById('ppb');
+var ppg=document.getElementById('ppg');
+var pwVl=document.getElementById('pwVl');
+var pwZn=document.getElementById('pwZn');
+var pfb=document.getElementById('pfb');
+var bpf=document.getElementById('bpf');
+var MAX_PVW=600;
+
+var prevZone=-1,flashTm=null;
+
+function getZone(w){
+    if(w<768)return 0;if(w<1024)return 1;if(w<1440)return 2;return 3;
+}
+
+var ZONES=['MOBILE','TABLET','LAPTOP','DESKTOP'];
+var ZCLS=['zm','zt','zl','zd'];
+var BPS=[768,1024,1440];
+var COLS=[1,2,3,4];
+
+function flash(text){
+    clearTimeout(flashTm);
+    bpf.textContent=text;
+    bpf.classList.add('show');
+    flashTm=setTimeout(function(){bpf.classList.remove('show')},700);
+}
+
+function updatePractice(){
+    var w=+psl.value;
+    var zone=getZone(w);
+    var pvW=Math.max(60,Math.round(w/1920*MAX_PVW));
+
+    pwVl.textContent=w+'px';
+
+    /* Zone badge */
+    pwZn.textContent=ZONES[zone];
+    pwZn.className='pw-zn '+ZCLS[zone];
+
+    /* Browser width */
+    ppb.style.width=pvW+'px';
+
+    /* Nav type */
+    ppb.className='ppb '+(zone<2?'pm':'pf');
+
+    /* Grid columns */
+    var cols=COLS[zone];
+    ppg.style.gridTemplateColumns='repeat('+cols+',1fr)';
+    ppg.className='ppg'+(cols===3?' s3':'');
+
+    /* Detect breakpoint crossing */
+    if(zone!==prevZone&&prevZone!==-1){
+        flash(BPS[prevZone]+'px');
+        pfb.textContent='BREAKPOINT! '+BPS[prevZone]+'px — '+ZONES[prevZone]+' \u2192 '+ZONES[zone]+' ('+COLS[prevZone]+' \u2192 '+cols+' cột)';
+        pfb.className='pfb w';
+    }else if(prevZone===-1){
+        pfb.textContent='Kéo slider sang phải — breakpoint đầu tiên ở 768px';
+        pfb.className='pfb';
+    }else{
+        pfb.textContent=w+'px \u00B7 '+cols+' cột \u00B7 '+(zone<2?'hamburger':'full nav');
+        pfb.className='pfb';
+    }
+    prevZone=zone;
+}
+
+psl.addEventListener('input',updatePractice);
+updatePractice();
+</script>
+</body>
+</html>

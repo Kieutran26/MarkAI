@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Breadcrumb Demo — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f0f12;
+  --bgc: #16161b;
+  --bgi: #121217;
+  --bd: #282830;
+  --tx: #e8e4dc;
+  --txm: #707070;
+  --ac: #E88C2E;
+  --abg: rgba(232, 140, 46, 0.1);
+  --abg2: rgba(232, 140, 46, 0.2);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--tx);
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.g {
+  width: 100%;
+  max-width: 940px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 600px) {
+  .g { grid-template-columns: 1fr; }
+}
+
+.c {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Accent Bar */
+.c::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--ac);
+}
+
+/* Pulsating Indicator */
+.c::after {
+  content: '';
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 6px;
+  height: 6px;
+  background: var(--ac);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--ac);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0.3; transform: scale(1); }
+}
+
+.ch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.ch .n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ac);
+  background: var(--abg);
+  border: 1px solid var(--abg2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+.ch h2 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  text-transform: uppercase;
+}
+
+.st {
+  background: var(--bgi);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  flex: 1;
+  min-height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+}
+
+.ins {
+  margin-top: 14px;
+  font-size: 11.5px;
+  color: var(--txm);
+  line-height: 1.6;
+  padding-left: 12px;
+  border-left: 2px solid var(--ac);
+}
+
+.ins strong {
+  color: var(--ac);
+  font-weight: 600;
+}
+
+/* Breadcrumb Styles */
+.bc {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--txm);
+}
+
+.bc-item {
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  color: var(--tx);
+}
+
+.bc-item.active {
+  color: var(--ac);
+  font-weight: 600;
+}
+
+.bc-sep {
+  color: var(--bd);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+}
+
+.val {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--txm);
+  background: rgba(0,0,0,0.2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+/* Cell Specifics */
+.path-node {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--bd);
+  position: relative;
+}
+.path-node.active { background: var(--ac); box-shadow: 0 0 10px var(--ac); }
+.path-line {
+  height: 2px;
+  background: var(--bd);
+  width: 30px;
+}
+.path-line.active { background: var(--ac); }
+
+</style>
+</head>
+<body>
+
+<div class="g">
+  <!-- 01: Hierarchy Structure -->
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>Site Hierarchy</h2></div>
+    <div class="st">
+      <div class="bc" id="bc1">
+        <span class="bc-item">Home</span>
+        <span class="bc-sep">/</span>
+        <span class="bc-item">Products</span>
+        <span class="bc-sep">/</span>
+        <span class="bc-item active">Laptops</span>
+      </div>
+      <div class="val">Type: Path-based</div>
+    </div>
+    <p class="ins">Breadcrumb thể hiện <strong>cấu trúc phân cấp</strong> của website, giúp user hiểu được vị trí "cha-con" giữa các trang.</p>
+  </section>
+
+  <!-- 02: Navigation Path -->
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Dynamic Path</h2></div>
+    <div class="st">
+      <div class="bc" id="bc2">
+        <span class="bc-item">Search</span>
+        <span class="bc-sep">></span>
+        <span class="bc-item">Brand: Apple</span>
+      </div>
+      <div class="val">Type: Attribute-based</div>
+    </div>
+    <p class="ins">Dựa trên <strong>thuộc tính</strong> hoặc bộ lọc (filter), cho phép user quay lại kết quả tìm kiếm với các tiêu chí trước đó.</p>
+  </section>
+
+  <!-- 03: Interactive Feedback -->
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Current Context</h2></div>
+    <div class="st" style="flex-direction: column; gap: 20px;">
+      <div class="bc" id="bc3">
+        <span class="bc-item">Electronics</span>
+        <span class="bc-sep">/</span>
+        <span class="bc-item">Camera</span>
+      </div>
+      <div id="page-title" style="font-size: 18px; font-weight: 700; color: var(--tx);">DSLR Canon EOS</div>
+      <div class="val">Highlighting Current</div>
+    </div>
+    <p class="ins">Mục cuối cùng luôn là <strong>trang hiện tại</strong>, thường không có link và được bôi đậm để tạo sự khác biệt rõ rệt.</p>
+  </section>
+
+  <!-- 04: Responsive Design -->
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Collapsed State</h2></div>
+    <div class="st">
+      <div class="bc" id="bc4">
+        <span class="bc-item">Home</span>
+        <span class="bc-sep">/</span>
+        <span class="bc-item">...</span>
+        <span class="bc-sep">/</span>
+        <span class="bc-item active">Payment</span>
+      </div>
+      <div class="val">Responsive Pattern</div>
+    </div>
+    <p class="ins">Khi đường dẫn quá dài, ta <strong>thu gọn (collapse)</strong> các cấp ở giữa để giao diện gọn gàng, tránh làm rối mắt người dùng.</p>
+  </section>
+</div>
+
+<script>
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// Animation 01: Site Hierarchy
+(async function() {
+  const bc = document.getElementById('bc1');
+  const items = bc.querySelectorAll('.bc-item');
+  const seps = bc.querySelectorAll('.bc-sep');
+  while (true) {
+    items.forEach(el => { el.style.color = 'var(--txm)'; el.style.fontWeight = '400'; });
+    seps.forEach(el => { el.style.color = 'var(--bd)'; });
+    await wait(800);
+    
+    for (let i = 0; i < items.length; i++) {
+      items[i].style.color = i === items.length - 1 ? 'var(--ac)' : 'var(--tx)';
+      if (i === items.length - 1) items[i].style.fontWeight = '600';
+      if (i > 0) seps[i-1].style.color = 'var(--ac)';
+      await wait(1000);
+    }
+    await wait(2000);
+  }
+})();
+
+// Animation 02: Dynamic Path
+(async function() {
+  const bc = document.getElementById('bc2');
+  const steps = [
+    ['Search'],
+    ['Search', 'Brand: Apple'],
+    ['Search', 'Brand: Apple', 'MacBook Pro']
+  ];
+  while (true) {
+    for (const step of steps) {
+      let html = '';
+      step.forEach((text, i) => {
+        const isActive = i === step.length - 1;
+        html += `<span class="bc-item ${isActive ? 'active' : ''}">${text}</span>`;
+        if (i < step.length - 1) html += '<span class="bc-sep"> > </span>';
+      });
+      bc.innerHTML = html;
+      await wait(1500);
+    }
+    await wait(2000);
+  }
+})();
+
+// Animation 03: Current Context
+(async function() {
+  const title = document.getElementById('page-title');
+  const bc = document.getElementById('bc3');
+  const pages = [
+    { cat: 'Electronics / Camera', title: 'DSLR Canon EOS' },
+    { cat: 'Electronics / Audio', title: 'Sony WH-1000XM5' },
+    { cat: 'Fashion / Men', title: 'Leather Jacket' }
+  ];
+  let i = 0;
+  while (true) {
+    const p = pages[i];
+    title.style.opacity = '0';
+    bc.style.opacity = '0';
+    await wait(400);
+    
+    let bcHtml = '';
+    const parts = p.cat.split(' / ');
+    parts.forEach((part, j) => {
+      bcHtml += `<span class="bc-item">${part}</span>`;
+      if (j < parts.length - 1) bcHtml += '<span class="bc-sep"> / </span>';
+    });
+    bc.innerHTML = bcHtml;
+    title.textContent = p.title;
+    
+    title.style.opacity = '1';
+    bc.style.opacity = '1';
+    await wait(2500);
+    i = (i + 1) % pages.length;
+  }
+})();
+
+// Animation 04: Collapsed State
+(async function() {
+  const bc = document.getElementById('bc4');
+  const full = ['Home', 'Shop', 'Checkout', 'Shipping', 'Payment'];
+  while (true) {
+    // Show Full
+    let html = '';
+    full.forEach((text, i) => {
+      const isActive = i === full.length - 1;
+      html += `<span class="bc-item ${isActive ? 'active' : ''}">${text}</span>`;
+      if (i < full.length - 1) html += '<span class="bc-sep"> / </span>';
+    });
+    bc.innerHTML = html;
+    bc.style.fontSize = '11px';
+    await wait(2500);
+    
+    // Show Collapsed
+    bc.style.opacity = '0';
+    await wait(300);
+    bc.innerHTML = `
+      <span class="bc-item">Home</span>
+      <span class="bc-sep"> / </span>
+      <span class="bc-item">...</span>
+      <span class="bc-sep"> / </span>
+      <span class="bc-item active">Payment</span>
+    `;
+    bc.style.fontSize = '13px';
+    bc.style.opacity = '1';
+    await wait(2500);
+  }
+})();
+</script>
+</body>
+</html>

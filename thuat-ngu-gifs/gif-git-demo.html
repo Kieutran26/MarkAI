@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Git Demo — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #101010;
+  --bgc: #16161b;
+  --bgi: #0d0d11;
+  --bd: #2a2a2f;
+  --tx: #e0e0e0;
+  --txm: #707070;
+  --ac: #E88C2E;
+  --acl: #ffb05c;
+  --abg: rgba(232,140,46,0.1);
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Space Grotesk', sans-serif;
+}
+
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--sans);
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--tx);
+  min-height: 100vh;
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.g {
+  width: 100%;
+  max-width: 940px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+@media (max-width: 660px) {
+  .g {
+    grid-template-columns: 1fr;
+  }
+}
+
+.c {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.c::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--ac);
+}
+
+.c::after {
+  content: '';
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 6px;
+  height: 6px;
+  background: var(--ac);
+  border-radius: 50%;
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.1); }
+}
+
+.ch {
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ch .n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  border: 1px solid rgba(232, 140, 46, 0.4);
+  padding: 3px 8px;
+  color: var(--ac);
+  background: rgba(232, 140, 46, 0.05);
+  border-radius: 2px;
+  line-height: 1;
+}
+
+.ch h2 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  letter-spacing: -0.01em;
+}
+
+.st {
+  background: var(--bgi);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.ins {
+  margin-top: 16px;
+  font-size: 11.5px;
+  color: var(--txm);
+  line-height: 1.6;
+  padding-left: 12px;
+  border-left: 2px solid var(--ac);
+}
+
+.ins strong {
+  color: var(--ac);
+  font-weight: 600;
+}
+
+/* Git Visuals */
+.timeline {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  position: relative;
+}
+.timeline::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--bd);
+  z-index: 0;
+}
+.dot {
+  width: 12px;
+  height: 12px;
+  background: var(--bd);
+  border-radius: 50%;
+  z-index: 1;
+  transition: all 0.4s ease;
+  position: relative;
+}
+.dot.active {
+  background: var(--ac);
+  box-shadow: 0 0 10px var(--ac);
+}
+.dot::after {
+  content: attr(data-label);
+  position: absolute;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--txm);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.dot.active::after {
+  opacity: 1;
+}
+
+/* Branching Improved */
+.branch-container {
+  width: 200px;
+  height: 120px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.b-line {
+  position: absolute;
+  height: 2px;
+  background: var(--bd);
+  z-index: 0;
+}
+.b-line.main { width: 100%; top: 60%; left: 0; }
+.b-line.feature { 
+  width: 100px; 
+  top: 60%; 
+  left: 60px; 
+  transform-origin: left; 
+  transform: rotate(-30deg);
+  background: var(--ac);
+  opacity: 0;
+  transition: opacity 0.4s;
+}
+.b-line.feature.active { opacity: 1; }
+
+.b-dot {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: var(--bd);
+  border-radius: 50%;
+  z-index: 1;
+  transition: all 0.3s ease;
+}
+.b-dot.active { background: var(--ac); box-shadow: 0 0 8px var(--ac); }
+.b-dot.m1 { left: 20px; top: 60%; transform: translateY(-50%); }
+.b-dot.m2 { left: 60px; top: 60%; transform: translateY(-50%); }
+.b-dot.m3 { left: 100px; top: 60%; transform: translateY(-50%); }
+.b-dot.f1 { left: 100px; top: 37%; transform: translateY(-50%); opacity: 0; }
+.b-dot.f2 { left: 140px; top: 14%; transform: translateY(-50%); opacity: 0; }
+
+.b-label {
+  position: absolute;
+  font-family: var(--mono);
+  font-size: 8px;
+  color: var(--txm);
+  text-transform: uppercase;
+}
+.b-label.main { left: 0; top: 70%; }
+.b-label.feat { left: 80px; top: 10%; color: var(--ac); opacity: 0; }
+
+/* Staging */
+.staging-area {
+  display: flex;
+  gap: 15px;
+  align-items: flex-end;
+}
+.box {
+  width: 40px;
+  height: 60px;
+  border: 1px dashed var(--bd);
+  border-radius: 2px;
+  position: relative;
+  display: flex;
+  flex-direction: column-reverse;
+  padding: 4px;
+  gap: 4px;
+}
+.box::after {
+  content: attr(data-title);
+  position: absolute;
+  top: -18px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--mono);
+  font-size: 8px;
+  color: var(--txm);
+  white-space: nowrap;
+}
+.item {
+  width: 100%;
+  height: 8px;
+  background: var(--bd);
+  border-radius: 1px;
+  transition: all 0.4s ease;
+}
+.item.active {
+  background: var(--ac);
+}
+
+/* Sync Improved */
+.sync-wrap {
+  position: relative;
+  width: 160px;
+  height: 120px;
+}
+.cloud {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 24px;
+  z-index: 2;
+}
+.laptop {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 20px;
+  z-index: 2;
+}
+.packet {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: var(--ac);
+  border-radius: 50%;
+  left: 50%;
+  margin-left: -3px;
+  opacity: 0;
+  z-index: 1;
+}
+.sync-label {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--ac);
+  background: var(--bg);
+  padding: 2px 6px;
+  border: 1px solid var(--bd);
+  border-radius: 2px;
+  opacity: 0;
+  transition: opacity 0.3s;
+  top: 50%;
+  margin-top: -10px;
+}
+</style>
+</head>
+<body>
+
+<div class="g">
+  <!-- 01: Commits -->
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>Snapshots (Commits)</h2></div>
+    <div class="st">
+      <div class="timeline">
+        <div class="dot" data-label="v1" id="d1"></div>
+        <div class="dot" data-label="v2" id="d2"></div>
+        <div class="dot" data-label="v3" id="d3"></div>
+        <div class="dot" data-label="v4" id="d4"></div>
+      </div>
+    </div>
+    <p class="ins">Git lưu trữ lịch sử dưới dạng các <strong>Snapshots</strong> (điểm lưu), cho phép bạn quay lại bất kỳ trạng thái nào trong quá khứ.</p>
+  </section>
+
+  <!-- 02: Branching -->
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Parallel Branching</h2></div>
+    <div class="st">
+      <div class="branch-container">
+        <div class="b-label main">Main</div>
+        <div class="b-label feat" id="featLabel">Feature</div>
+        <div class="b-line main"></div>
+        <div class="b-line feature" id="featLine"></div>
+        <div class="b-dot m1 active"></div>
+        <div class="b-dot m2" id="m2"></div>
+        <div class="b-dot m3" id="m3"></div>
+        <div class="b-dot f1" id="f1"></div>
+        <div class="b-dot f2" id="f2"></div>
+      </div>
+    </div>
+    <p class="ins"><strong>Branching</strong> tạo ra các không gian làm việc độc lập, giúp bạn thử nghiệm tính năng mới mà không lo làm hỏng trang web chính.</p>
+  </section>
+
+  <!-- 03: Staging -->
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Staging Area</h2></div>
+    <div class="st">
+      <div class="staging-area">
+        <div class="box" data-title="Changes" id="boxChanges">
+          <div class="item" id="i1"></div>
+          <div class="item" id="i2"></div>
+        </div>
+        <div style="color: var(--bd); font-size: 14px;">→</div>
+        <div class="box" data-title="Staging" id="boxStaging"></div>
+        <div style="color: var(--bd); font-size: 14px;">→</div>
+        <div class="box" data-title="Repo" id="boxRepo"></div>
+      </div>
+    </div>
+    <p class="ins"><strong>Staging Area</strong> là "phòng chờ" nơi bạn chọn lọc các thay đổi cụ thể để chuẩn bị "đóng gói" (commit) chính thức.</p>
+  </section>
+
+  <!-- 04: Sync -->
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Cloud Sync (Push/Pull)</h2></div>
+    <div class="st">
+      <div class="sync-wrap">
+        <div class="cloud">☁️</div>
+        <div class="laptop">💻</div>
+        <div class="packet" id="packet"></div>
+        <div class="sync-label" id="syncLabel">PUSH</div>
+      </div>
+    </div>
+    <p class="ins">Git giúp cả team luôn đồng bộ mã nguồn qua các lệnh <strong>Push</strong> và <strong>Pull</strong>, đảm bảo mọi người đều có bản mới nhất.</p>
+  </section>
+</div>
+
+<script>
+const wait = ms => new Promise(res => setTimeout(res, ms));
+
+// Loop 1: Commits
+(async () => {
+  const dots = [1,2,3,4].map(i => document.getElementById(`d${i}`));
+  while(true) {
+    for(let d of dots) d.classList.remove('active');
+    await wait(800);
+    for(let d of dots) {
+      d.classList.add('active');
+      await wait(600);
+    }
+    await wait(2000);
+  }
+})();
+
+// Loop 2: Branching Improved
+(async () => {
+  const m2 = document.getElementById('m2');
+  const m3 = document.getElementById('m3');
+  const f1 = document.getElementById('f1');
+  const f2 = document.getElementById('f2');
+  const fL = document.getElementById('featLine');
+  const fLabel = document.getElementById('featLabel');
+
+  while(true) {
+    // Reset
+    m2.classList.remove('active'); m3.classList.remove('active');
+    f1.style.opacity = 0; f2.style.opacity = 0;
+    fL.classList.remove('active'); fLabel.style.opacity = 0;
+    await wait(1000);
+
+    // Main commit
+    m2.classList.add('active');
+    await wait(800);
+
+    // Branching out
+    fL.classList.add('active');
+    fLabel.style.opacity = 1;
+    await wait(600);
+
+    // Commits on branch
+    f1.style.opacity = 1; f1.classList.add('active');
+    await wait(800);
+    f2.style.opacity = 1; f2.classList.add('active');
+    await wait(1000);
+
+    // Main continues
+    m3.classList.add('active');
+    await wait(2000);
+  }
+})();
+
+// Loop 3: Staging
+(async () => {
+  const i1 = document.getElementById('i1');
+  const i2 = document.getElementById('i2');
+  const bS = document.getElementById('boxStaging');
+  const bR = document.getElementById('boxRepo');
+  const bC = document.getElementById('boxChanges');
+  
+  while(true) {
+    bS.innerHTML = ''; bR.innerHTML = '';
+    bC.appendChild(i1); bC.appendChild(i2);
+    i1.classList.remove('active'); i2.classList.remove('active');
+    await wait(1000);
+    
+    i1.classList.add('active');
+    bS.appendChild(i1);
+    await wait(800);
+    
+    i2.classList.add('active');
+    bS.appendChild(i2);
+    await wait(1000);
+    
+    bR.appendChild(i1);
+    bR.appendChild(i2);
+    await wait(2000);
+  }
+})();
+
+// Loop 4: Sync Improved
+(async () => {
+  const packet = document.getElementById('packet');
+  const label = document.getElementById('syncLabel');
+  
+  while(true) {
+    // PUSH
+    label.textContent = 'PUSH';
+    label.style.opacity = 1;
+    packet.style.bottom = '30px';
+    packet.style.opacity = 1;
+    packet.style.transition = 'all 1s cubic-bezier(0.4, 0, 0.2, 1)';
+    await wait(100);
+    packet.style.bottom = '80px';
+    await wait(1000);
+    packet.style.opacity = 0;
+    label.style.opacity = 0;
+    await wait(800);
+
+    // PULL
+    label.textContent = 'PULL';
+    label.style.opacity = 1;
+    packet.style.bottom = '80px';
+    packet.style.opacity = 1;
+    packet.style.transition = 'all 1s cubic-bezier(0.4, 0, 0.2, 1)';
+    await wait(100);
+    packet.style.bottom = '30px';
+    await wait(1000);
+    packet.style.opacity = 0;
+    label.style.opacity = 0;
+    await wait(1500);
+  }
+})();
+</script>
+</body>
+</html>

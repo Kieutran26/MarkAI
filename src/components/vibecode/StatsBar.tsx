@@ -2,10 +2,10 @@ import React from 'react';
 
 export default function StatsBar() {
   const stats = [
-    { v: '10', l: 'Bài học · lộ trình vibecode', c: '#141414' },
-    { v: '50+', l: 'Bài nhỏ · học từng phần', c: '#141414' },
-    { v: '100%', l: 'Miễn phí · mãi mãi', c: '#141414' },
-    { v: '0', l: 'Yêu cầu kiến thức code', c: '#E8772E' },
+    { v: '18+', l: 'Case thực chiến · làm xong trong 20p', c: '#E8772E' },
+    { v: '10', l: 'Chương bài học · từ A đến Z', c: '#141414' },
+    { v: '100%', l: 'Miễn phí · không bán khóa học', c: '#141414' },
+    { v: '0', l: 'Yêu cầu kiến thức lập trình', c: '#141414' },
   ];
 
   return (

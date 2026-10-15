@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Element — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f0f12;--bg-card:#16161b;--bg-el:#121217;--border:#282830;
+  --border-active:#E88C2E;--accent:#E88C2E;
+  --accent-glow:rgba(232,140,46,.18);--accent-soft:rgba(232,140,46,.07);
+  --cream:#EDE4D8;--text:#e8e4dc;--muted:#707070;
+  --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:20px 20px;pointer-events:none;z-index:0}
+
+.wrap{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:40px 16px 80px}
+
+.topbar{display:flex;align-items:center;gap:12px;padding-bottom:14px;border-bottom:1px solid var(--border);margin-bottom:32px}
+.badge{font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);background:var(--accent-soft);border:1px solid rgba(232,140,46,.2);padding:4px 10px}
+.ttl{font-size:20px;font-weight:700;color:#fff;letter-spacing:-.02em}
+
+.slbl{font-family:var(--mono);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.slbl::before{content:'';width:6px;height:6px;background:var(--accent)}
+
+/* ═══════════════════════════════════════
+   DEMO GRID (4 CELLS)
+   ═══════════════════════════════════════ */
+.g-demo {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin-bottom: 48px;
+}
+@media (max-width: 700px) { .g-demo { grid-template-columns: 1fr; } }
+
+.c-demo {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    position: relative;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+.c-demo::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--accent); }
+.c-demo::after { 
+    content: ''; position: absolute; top: 14px; right: 14px; width: 6px; height: 6px; 
+    background: var(--accent); border-radius: 50%; box-shadow: 0 0 8px var(--accent); animation: pulse 2s infinite; 
+}
+@keyframes pulse { 0% { opacity: 0.3; transform: scale(1); } 50% { opacity: 1; transform: scale(1.2); } 100% { opacity: 0.3; transform: scale(1); } }
+
+.ch { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+.ch .n { font-family: var(--mono); font-size: 11px; font-weight: 700; color: var(--accent); background: var(--accent-soft); border: 1px solid rgba(232,140,46,0.2); padding: 2px 6px; border-radius: 2px; }
+.ch h2 { font-size: 14px; font-weight: 600; text-transform: uppercase; }
+
+.st-demo { background: #121217; border: 1px solid var(--border); border-radius: 3px; height: 140px; display: flex; align-items: center; justify-content: center; overflow: hidden; padding: 15px; }
+.ins { margin-top: 14px; font-size: 11.5px; color: var(--muted); line-height: 1.6; padding-left: 12px; border-left: 2px solid var(--accent); }
+.ins strong { color: var(--accent); font-weight: 600; }
+
+/* ═══════════════════════════════════════
+   PRACTICE GRID (2 COLUMNS)
+   ═══════════════════════════════════════ */
+.pra-container {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 24px;
+    position: relative;
+}
+.pra-container::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px; background: var(--accent); }
+
+.pra-grid {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 32px;
+}
+@media (max-width: 800px) { .pra-grid { grid-template-columns: 1fr; } }
+
+.xray-wrap { display: flex; justify-content: center; align-items: center; background: var(--bg-el); border: 1px solid var(--border); border-radius: 2px; padding: 32px 16px; }
+.xray-card { width: 100%; max-width: 280px; background: var(--bg-card); border: 1px solid var(--border); padding: 16px; position: relative; }
+.xzone { position: relative; cursor: pointer; padding: 2px; margin: -2px; border: 1.5px dashed transparent; transition: all 0.25s; }
+.xzone:hover:not(.found) { border-color: rgba(232, 140, 46, 0.35); background: rgba(232, 140, 46, 0.03); }
+.xzone.found { border-color: var(--accent); background: var(--accent-soft); }
+.xzone-tag { position: absolute; top: -10px; right: 4px; font-family: var(--mono); font-size: 8px; font-weight: 700; text-transform: uppercase; color: var(--bg); background: var(--accent); padding: 1px 6px; opacity: 0; transform: translateY(3px); transition: all 0.25s; pointer-events: none; z-index: 5; }
+.xzone.found .xzone-tag { opacity: 1; transform: translateY(0); }
+
+/* X-Ray Content */
+.xr-badge { display: inline-block; font-family: var(--mono); font-size: 9px; font-weight: 700; color: var(--bg); background: var(--accent); padding: 2px 8px; }
+.xr-div { height: 1px; background: var(--border); margin: 10px 0; }
+.xr-h3 { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+.xr-p { font-size: 11px; color: var(--muted); line-height: 1.4; margin-bottom: 8px; }
+.xr-input { width: 100%; padding: 6px 9px; background: var(--bg-el); border: 1px solid var(--border); color: var(--text); font-family: var(--mono); font-size: 10px; margin-bottom: 8px; }
+.xr-prog { height: 5px; background: var(--border); margin-bottom: 8px; position: relative; }
+.xr-prog-fill { height: 100%; width: 60%; background: var(--accent); }
+.xr-btn { width: 100%; padding: 8px 0; background: var(--accent); color: #fff; border: none; font-size: 11px; font-weight: 600; text-align: center; }
+
+.pra-right { display: flex; flex-direction: column; gap: 20px; }
+.pra-goal { font-size: 13px; color: var(--text); line-height: 1.6; }
+.hint-box { font-size: 11px; color: var(--muted); line-height: 1.5; padding: 12px; background: var(--bg-el); border-left: 2px solid var(--border); }
+.hint-box span { color: var(--accent); font-weight: 600; }
+.xcounter { font-family: var(--mono); font-size: 12px; color: var(--muted); padding: 10px; background: var(--bg-el); border: 1px solid var(--border); text-align: center; }
+.xcounter span { color: var(--accent); font-weight: 700; }
+.xcheck { display: flex; flex-wrap: wrap; gap: 6px; }
+.xchip { font-family: var(--mono); font-size: 9px; font-weight: 600; color: var(--muted); background: var(--bg-el); border: 1px solid var(--border); padding: 4px 10px; transition: all 0.2s; }
+.xchip.found { color: #fff; border-color: var(--accent); background: var(--accent-soft); }
+.xdone { font-size: 12px; color: var(--accent); font-weight: 600; padding: 14px; border: 1px solid var(--accent); background: var(--accent-soft); display: none; line-height: 1.5; }
+.xdone.show { display: block; }
+.xreset { font-family: var(--mono); font-size: 10px; font-weight: 700; text-transform: uppercase; color: var(--muted); background: transparent; border: 1px solid var(--border); padding: 10px; cursor: pointer; margin-top: auto; }
+
+/* Demo Simulation specifics */
+.stack { display: flex; flex-direction: column; gap: 6px; width: 100%; max-width: 140px; }
+.tag-line { display: flex; align-items: center; gap: 8px; }
+.tag-name { font-family: var(--mono); font-size: 8px; color: var(--accent); opacity: 0.5; width: 40px; }
+.tag-bar { height: 6px; background: var(--border); flex: 1; border-radius: 1px; }
+.tag-bar.active { background: var(--accent); }
+.btn-el { padding: 6px 16px; background: var(--accent); color: #fff; font-size: 10px; font-weight: 600; transition: all 0.2s; }
+.btn-el.active { transform: scale(0.95); opacity: 0.8; }
+.attr-code { font-family: var(--mono); font-size: 10px; color: var(--muted); }
+.attr-key { color: var(--accent); }
+.box-mod { width: 50px; height: 50px; border: 1.5px solid var(--accent); transition: all 0.8s; position: relative; display: flex; align-items: center; justify-content: center; }
+.box-mod.active { width: 70px; height: 70px; padding: 10px; }
+.box-cnt { width: 20px; height: 20px; background: var(--accent); opacity: 0.3; }
+
+</style>
+</head>
+<body>
+
+<div class="wrap">
+    <div class="topbar">
+        <span class="badge">Design</span>
+        <span class="ttl">Element</span>
+    </div>
+
+    <!-- MÔ PHỎNG -->
+    <div class="slbl">Mô phỏng</div>
+    <div class="g-demo">
+        <div class="c-demo">
+            <div class="ch"><span class="n">01</span><h2>Cấu trúc</h2></div>
+            <div class="st-demo">
+                <div class="stack">
+                    <div class="tag-line"><span class="tag-name">h1</span><div class="tag-bar active"></div></div>
+                    <div class="tag-line"><span class="tag-name">p</span><div class="tag-bar" style="width:80%"></div></div>
+                    <div class="tag-line"><span class="tag-name">button</span><div class="tag-bar" style="width:40%"></div></div>
+                </div>
+            </div>
+            <p class="ins">Mỗi <strong>Element</strong> như h1, p có một <strong>vai trò riêng</strong> để trình duyệt hiểu.</p>
+        </div>
+        <div class="c-demo">
+            <div class="ch"><span class="n">02</span><h2>Tương tác</h2></div>
+            <div class="st-demo"><div class="btn-el" id="demo-btn">INTERACT</div></div>
+            <p class="ins"><strong>Interactive Elements</strong> phản hồi lại hành động (hover, click) của user.</p>
+        </div>
+        <div class="c-demo">
+            <div class="ch"><span class="n">03</span><h2>Thuộc tính</h2></div>
+            <div class="st-demo">
+                <div class="attr-code">&lt;div <span class="attr-key" id="demo-k">id</span>="<span id="demo-v">main</span>"&gt;</div>
+            </div>
+            <p class="ins"><strong>Attributes</strong> cung cấp thông tin bổ sung. <strong>ID</strong> là định danh duy nhất.</p>
+        </div>
+        <div class="c-demo">
+            <div class="ch"><span class="n">04</span><h2>Box Model</h2></div>
+            <div class="st-demo"><div class="box-mod" id="demo-box"><div class="box-cnt"></div></div></div>
+            <p class="ins">Mọi <strong>Element</strong> đều chiếm không gian thực thể với <strong>Padding</strong> và <strong>Margin</strong>.</p>
+        </div>
+    </div>
+
+    <!-- THỰC HÀNH -->
+    <div class="slbl">Thực hành</div>
+    <div class="pra-container">
+        <div class="pra-grid">
+            <div class="pra-left">
+                <div class="xray-wrap">
+                    <div class="xray-card" id="xcard">
+                        <div class="xzone" data-type="Badge"><span class="xzone-tag">Badge</span><span class="xr-badge">NEW</span></div>
+                        <div class="xzone" data-type="Divider"><span class="xzone-tag">Divider</span><div class="xr-div"></div></div>
+                        <div class="xzone" data-type="Heading"><span class="xzone-tag">Heading</span><div class="xr-h3">Sản phẩm X</div></div>
+                        <div class="xzone" data-type="Text"><span class="xzone-tag">Text</span><div class="xr-p">Mô tả ngắn gọn về sản phẩm.</div></div>
+                        <div class="xzone" data-type="Input"><span class="xzone-tag">Input</span><div class="xr-input">Số lượng: 1</div></div>
+                        <div class="xzone" data-type="Progress"><span class="xzone-tag">Progress</span><div class="xr-prog"><div class="xr-prog-fill"></div></div></div>
+                        <div class="xzone" data-type="Button"><span class="xzone-tag">Button</span><button class="xr-btn">Mua ngay</button></div>
+                    </div>
+                </div>
+            </div>
+            <div class="pra-right">
+                <p class="pra-goal">Click vào từng vùng trong card để nhận diện 7 loại element.</p>
+                <div class="hint-box"><span>Hint:</span> Rê chuột thấy viền nhạt là element ẩn. Click để xác nhận.</div>
+                <div class="xcounter" id="xcounter">Đã nhận diện: <span>0</span> / 7</div>
+                <div class="xcheck" id="xcheck"></div>
+                <div class="xdone" id="xdone">Tuyệt vời! Bạn đã nhận diện đủ 7 element cơ bản.</div>
+                <button class="xreset" id="xreset">BẮT ĐẦU LẠI</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Demo Loops
+    const bars = document.querySelectorAll('.tag-bar');
+    let bIdx = 0; setInterval(() => { bars.forEach((b,i) => b.classList.toggle('active', i===bIdx)); bIdx=(bIdx+1)%bars.length; }, 1200);
+    
+    const btn = document.getElementById('demo-btn');
+    setInterval(() => { btn.classList.add('active'); setTimeout(()=>btn.classList.remove('active'), 200); }, 2500);
+    
+    const dk = document.getElementById('demo-k'), dv = document.getElementById('demo-v');
+    const attrs = [{k:'id',v:'header'}, {k:'class',v:'main'}, {k:'hidden',v:'true'}];
+    let aIdx = 0; setInterval(() => { aIdx=(aIdx+1)%attrs.length; dk.textContent=attrs[aIdx].k; dv.textContent=attrs[aIdx].v; }, 3000);
+    
+    const box = document.getElementById('demo-box');
+    setInterval(() => { box.classList.toggle('active'); }, 2000);
+
+    // Practice Logic
+    const types = ['Badge', 'Divider', 'Heading', 'Text', 'Input', 'Progress', 'Button'];
+    const found = new Set();
+    const xcheck = document.getElementById('xcheck');
+    const xcounter = document.getElementById('xcounter');
+    const xdone = document.getElementById('xdone');
+    const xreset = document.getElementById('xreset');
+
+    types.forEach(t => {
+        const c = document.createElement('span'); c.className='xchip'; c.dataset.type=t;
+        c.innerHTML = `${t}<span style="opacity:0;margin-left:4px;color:var(--accent)">✓</span>`;
+        xcheck.appendChild(c);
+    });
+
+    document.querySelectorAll('.xzone').forEach(z => {
+        z.onclick = () => {
+            const t = z.dataset.type; if(found.has(t)) return;
+            found.add(t); z.classList.add('found');
+            const chip = xcheck.querySelector(`.xchip[data-type="${t}"]`);
+            if(chip) { chip.classList.add('found'); chip.querySelector('span').style.opacity='1'; }
+            xcounter.querySelector('span').textContent = found.size;
+            if(found.size === types.length) xdone.classList.add('show');
+        }
+    });
+
+    xreset.onclick = () => {
+        found.clear();
+        document.querySelectorAll('.xzone').forEach(z => z.classList.remove('found'));
+        document.querySelectorAll('.xchip').forEach(c => { c.classList.remove('found'); c.querySelector('span').style.opacity='0'; });
+        xcounter.querySelector('span').textContent = '0';
+        xdone.classList.remove('show');
+    };
+</script>
+
+</body>
+</html>

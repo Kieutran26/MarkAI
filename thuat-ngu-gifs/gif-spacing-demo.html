@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Spacing — Amber Brutalist 4-Cell Grid</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0c;
+      --card-bg: #16161b;
+      --amber: #E88C2E;
+      --gray: #707070;
+      --text: #ece8e1;
+      --border: #26262a;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Space Grotesk', sans-serif;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      max-width: 940px;
+      width: 100%;
+    }
+
+    @media (max-width: 640px) {
+      .grid-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 3px;
+      position: relative;
+      padding-top: 2px;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--amber);
+    }
+
+    .header {
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .num-box {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      border: 1px solid rgba(232, 140, 46, 0.4);
+      padding: 3px 8px;
+      color: var(--amber);
+      background: rgba(232, 140, 46, 0.05);
+      border-radius: 2px;
+      line-height: 1;
+    }
+
+    .title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+    }
+
+    .indicator {
+      width: 6px;
+      height: 6px;
+      background: var(--amber);
+      border-radius: 50%;
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      animation: blink 1.2s infinite;
+      box-shadow: 0 0 8px var(--amber);
+      z-index: 10;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .sim-area {
+      height: 180px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: rgba(0,0,0,0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ins {
+      padding: 12px 16px;
+      border-left: 2px solid var(--amber);
+      font-size: 11.5px;
+      color: var(--gray);
+      background: rgba(232, 140, 46, 0.03);
+      margin: 0 16px 16px 16px;
+      line-height: 1.5;
+    }
+
+    .ins strong {
+      color: var(--amber);
+      font-weight: 700;
+    }
+
+    /* Simulation Elements */
+    .label-code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--gray);
+      margin-top: 15px;
+      background: rgba(0,0,0,0.3);
+      padding: 2px 8px;
+      border-radius: 2px;
+      z-index: 5;
+    }
+
+    /* Cell 01: Padding */
+    .padding-box {
+      width: 140px;
+      border: 1px solid var(--amber);
+      background: rgba(232, 140, 46, 0.1);
+      display: flex;
+      flex-direction: column;
+      transition: padding 0.5s ease;
+    }
+    .content-line {
+      height: 8px;
+      background: var(--gray);
+      border-radius: 2px;
+      margin-bottom: 6px;
+      width: 100%;
+    }
+    .content-line:last-child { width: 60%; margin-bottom: 0; }
+
+    /* Cell 02: Margin */
+    .margin-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+    .margin-box {
+      width: 80px;
+      height: 40px;
+      background: var(--amber);
+      border-radius: 2px;
+    }
+    .margin-box.secondary {
+      background: var(--gray);
+      opacity: 0.5;
+      transition: margin-top 0.5s ease;
+    }
+
+    /* Cell 03: Gap */
+    .gap-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 40px);
+      transition: gap 0.5s ease;
+    }
+    .grid-item {
+      width: 40px;
+      height: 40px;
+      background: var(--amber);
+      border-radius: 2px;
+    }
+
+    /* Cell 04: Hierarchy */
+    .hierarchy-list {
+      display: flex;
+      flex-direction: column;
+      width: 120px;
+    }
+    .list-item {
+      height: 10px;
+      background: var(--gray);
+      border-radius: 1px;
+      width: 100%;
+      margin-bottom: 4px;
+      transition: margin-bottom 0.5s ease;
+    }
+    .list-item.group-end {
+      margin-bottom: 12px;
+    }
+    .list-item.accent {
+      background: var(--amber);
+      width: 70%;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="grid-container">
+    
+    <!-- Cell 01: Padding -->
+    <div class="card">
+      <div class="indicator"></div>
+      <div class="header">
+        <div class="num-box">01</div>
+        <div class="title">Padding (Internal)</div>
+      </div>
+      <div class="sim-area">
+        <div class="padding-box" id="padding-box">
+          <div class="content-line"></div>
+          <div class="content-line"></div>
+          <div class="content-line"></div>
+        </div>
+        <div class="label-code" id="label-01">padding: 8px;</div>
+      </div>
+      <div class="ins">
+        <strong>Padding</strong> là khoảng trống <strong>bên trong</strong> phần tử. Nó tạo ra "không gian thở" giữa nội dung và viền (border), giúp giao diện bớt ngột ngạt.
+      </div>
+    </div>
+
+    <!-- Cell 02: Margin -->
+    <div class="card">
+      <div class="indicator"></div>
+      <div class="header">
+        <div class="num-box">02</div>
+        <div class="title">Margin (External)</div>
+      </div>
+      <div class="sim-area">
+        <div class="margin-wrap">
+          <div class="margin-box"></div>
+          <div class="margin-box secondary" id="margin-box"></div>
+        </div>
+        <div class="label-code" id="label-02">margin-top: 12px;</div>
+      </div>
+      <div class="ins">
+        <strong>Margin</strong> tạo khoảng cách <strong>bên ngoài</strong> giữa các phần tử. Đây là công cụ chính để đẩy các khối nội dung ra xa nhau, tránh việc dính chùm.
+      </div>
+    </div>
+
+    <!-- Cell 03: Gap (Layout) -->
+    <div class="card">
+      <div class="indicator"></div>
+      <div class="header">
+        <div class="num-box">03</div>
+        <div class="title">Gap (Grid/Flex)</div>
+      </div>
+      <div class="sim-area">
+        <div class="gap-grid" id="gap-grid">
+          <div class="grid-item"></div>
+          <div class="grid-item"></div>
+          <div class="grid-item"></div>
+          <div class="grid-item"></div>
+        </div>
+        <div class="label-code" id="label-03">gap: 10px;</div>
+      </div>
+      <div class="ins">
+        <strong>Gap</strong> là cách hiện đại để kiểm soát khoảng cách giữa các phần tử trong <strong>Grid</strong> hoặc <strong>Flexbox</strong> mà không cần dùng margin lẻ tẻ.
+      </div>
+    </div>
+
+    <!-- Cell 04: Visual Hierarchy -->
+    <div class="card">
+      <div class="indicator"></div>
+      <div class="header">
+        <div class="num-box">04</div>
+        <div class="title">Visual Grouping</div>
+      </div>
+      <div class="sim-area">
+        <div class="hierarchy-list" id="hierarchy-list">
+          <div class="list-item accent"></div>
+          <div class="list-item item-link"></div>
+          <div class="list-item item-link group-end" id="group-break"></div>
+          <div class="list-item accent"></div>
+          <div class="list-item item-link"></div>
+        </div>
+        <div class="label-code" id="label-04">spacing: small / large;</div>
+      </div>
+      <div class="ins">
+        Khoảng cách giúp <strong>phân nhóm</strong> thông tin. Các thành phần <strong>gần nhau</strong> sẽ được não bộ hiểu là có liên quan mật thiết (Luật Gần gũi).
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Independent Animation Loops
+
+    // 01: Padding Loop
+    const paddingBox = document.getElementById('padding-box');
+    const label01 = document.getElementById('label-01');
+    const paddingValues = [4, 12, 24, 0];
+    let pStep = 0;
+
+    setInterval(() => {
+      pStep = (pStep + 1) % paddingValues.length;
+      const v = paddingValues[pStep];
+      paddingBox.style.padding = v + 'px';
+      label01.textContent = `padding: ${v}px;`;
+    }, 2000);
+
+    // 02: Margin Loop
+    const marginBox = document.getElementById('margin-box');
+    const label02 = document.getElementById('label-02');
+    const marginValues = [4, 16, 32, 0];
+    let mStep = 0;
+
+    setInterval(() => {
+      mStep = (mStep + 1) % marginValues.length;
+      const v = marginValues[mStep];
+      marginBox.style.marginTop = v + 'px';
+      label02.textContent = `margin-top: ${v}px;`;
+    }, 2200);
+
+    // 03: Gap Loop
+    const gapGrid = document.getElementById('gap-grid');
+    const label03 = document.getElementById('label-03');
+    const gapValues = [2, 12, 24, 0];
+    let gStep = 0;
+
+    setInterval(() => {
+      gStep = (gStep + 1) % gapValues.length;
+      const v = gapValues[gStep];
+      gapGrid.style.gap = v + 'px';
+      label03.textContent = `gap: ${v}px;`;
+    }, 2400);
+
+    // 04: Grouping Loop
+    const groupBreak = document.getElementById('group-break');
+    const label04 = document.getElementById('label-04');
+    const breakValues = [4, 12, 24, 36];
+    let hStep = 0;
+
+    setInterval(() => {
+      hStep = (hStep + 1) % breakValues.length;
+      const v = breakValues[hStep];
+      groupBreak.style.marginBottom = v + 'px';
+      label04.textContent = `group-spacing: ${v}px;`;
+    }, 2600);
+
+  </script>
+</body>
+</html>

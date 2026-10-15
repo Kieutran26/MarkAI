@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hierarchy Practice — Vibecode Glossary</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #101010;
+      --bgc: #181818;
+      --bgi: #131313;
+      --bd: #272727;
+      --tx: #e0e0e0;
+      --txm: #707070;
+      --txd: #3a3a3a;
+      --ac: #E88C2E;
+      --acl: #f5a65b;
+      --abg: rgba(232, 140, 46, .08);
+      --abg2: rgba(232, 140, 46, .18);
+      --rd: #ef4444;
+      --gn: #22c55e;
+      --gnb: rgba(34, 197, 94, .12);
+      --rdb: rgba(239, 68, 68, .1);
+      --rdb2: rgba(239, 68, 68, .18);
+      --bl: #3b82f6;
+      --blb: rgba(59, 130, 246, .12);
+    }
+
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box
+    }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background-color: var(--bg);
+      background-image:
+        linear-gradient(rgba(255, 255, 255, .018) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, .018) 1px, transparent 1px);
+      background-size: 20px 20px;
+      color: var(--tx);
+      min-height: 100vh;
+      padding: 20px 16px 48px;
+    }
+
+    .ch {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px
+    }
+
+    .ch .n {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--ac);
+      background: var(--abg);
+      border: 1px solid rgba(232, 140, 46, .2);
+      padding: 1px 6px;
+      border-radius: 2px
+    }
+
+    .ch h2 {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: -.3px
+    }
+
+    .pra {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--bgc);
+      border: 1px solid var(--bd);
+      border-radius: 3px;
+      padding: 22px
+    }
+
+    .pra .ch {
+      margin-bottom: 6px
+    }
+
+    .pra-goal {
+      font-size: 12.5px;
+      color: var(--txm);
+      margin-bottom: 18px;
+      line-height: 1.5
+    }
+
+    .pra-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px
+    }
+
+    @media(max-width:660px) {
+      .pra-grid {
+        grid-template-columns: 1fr
+      }
+    }
+
+    .cfg-l {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--txd);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      display: block;
+      margin-bottom: 8px
+    }
+
+    .pra-ed {
+      background: #151312;
+      border: 2px solid var(--bd);
+      border-radius: 3px;
+      overflow: hidden;
+      transition: border-color .3s
+    }
+
+    .pra-ed.state-size { border-color: var(--tx); }
+    .pra-ed.state-weight { border-color: var(--bl); }
+    .pra-ed.state-color { border-color: var(--ac); }
+    .pra-ed.state-spacing { border-color: var(--gn); }
+
+    .pra-ed-hd {
+      padding: 6px 12px;
+      background: rgba(255, 255, 255, .03);
+      border-bottom: 1px solid var(--bd);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px;
+      color: var(--txm);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .pra-ed-hd .st {
+      font-weight: 700;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      transition: color .3s;
+    }
+
+    .pra-ed-hd .st.state-size { color: var(--tx); }
+    .pra-ed-hd .st.state-weight { color: var(--bl); }
+    .pra-ed-hd .st.state-color { color: var(--ac); }
+    .pra-ed-hd .st.state-spacing { color: var(--gn); }
+
+    .pra-ed-body {
+      padding: 24px;
+      min-height: 180px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* MOCK CARD UI */
+    .mock-card {
+      background: #1c1a18;
+      border: 1px solid var(--bd);
+      border-radius: 6px;
+      padding: 16px;
+      width: 100%;
+      max-width: 320px;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .mc-title {
+      font-size: 14px;
+      font-weight: 400;
+      color: #999;
+      transition: all 0.3s;
+      line-height: 1.3;
+    }
+
+    .mc-desc {
+      font-size: 14px;
+      font-weight: 400;
+      color: #999;
+      transition: all 0.3s;
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+
+    .mc-meta {
+      font-size: 14px;
+      font-weight: 400;
+      color: #999;
+      transition: all 0.3s;
+      margin-top: 4px;
+    }
+
+    .mc-btn {
+      font-size: 14px;
+      font-weight: 400;
+      color: #999;
+      background: #2a2a2a;
+      padding: 6px 12px;
+      border-radius: 4px;
+      text-align: center;
+      transition: all 0.3s;
+      margin-top: 4px;
+      align-self: flex-start;
+      cursor: default;
+    }
+
+    /* STATES */
+    /* SIZE */
+    .state-size .mock-card .mc-title { font-size: 22px; color: #fff; }
+    .state-size .mock-card .mc-meta { font-size: 11px; }
+    
+    /* WEIGHT */
+    .state-weight .mock-card .mc-title { font-weight: 700; color: #fff; }
+    .state-weight .mock-card .mc-btn { font-weight: 600; color: #fff; }
+    
+    /* COLOR */
+    .state-color .mock-card .mc-btn { background: var(--ac); color: #000; font-weight: 600; }
+    .state-color .mock-card .mc-title { color: #fff; }
+    .state-color .mock-card .mc-meta { color: #555; }
+    
+    /* SPACING */
+    .state-spacing .mock-card .mc-desc { margin-top: 10px; }
+    .state-spacing .mock-card .mc-btn { margin-top: 24px; }
+
+    .pra-btns {
+      display: flex;
+      gap: 6px;
+      margin-top: 12px;
+      flex-wrap: wrap
+    }
+
+    .btn {
+      padding: 7px 12px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      border: 1px solid var(--bd);
+      background: var(--bgi);
+      color: var(--txm);
+      border-radius: 2px;
+      cursor: pointer;
+      transition: all .15s
+    }
+
+    .btn:hover:not(:disabled) {
+      border-color: var(--ac);
+      color: var(--acl);
+      background: var(--abg)
+    }
+
+    .btn:disabled {
+      opacity: .3;
+      cursor: default
+    }
+
+    .btn.rst {
+      border-color: rgba(239, 68, 68, .2);
+      color: var(--rd);
+      background: var(--rdb)
+    }
+
+    .btn.rst:hover:not(:disabled) {
+      border-color: var(--rd);
+      background: var(--rdb2)
+    }
+
+    .btn.active-size { border-color: var(--tx); color: var(--tx); background: rgba(255, 255, 255, .1); }
+    .btn.active-weight { border-color: var(--bl); color: var(--bl); background: var(--blb); }
+    .btn.active-color { border-color: var(--ac); color: var(--ac); background: var(--abg); }
+    .btn.active-spacing { border-color: var(--gn); color: var(--gn); background: var(--gnb); }
+
+    .btn-hint {
+      position: absolute;
+      bottom: calc(100% + 8px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--ac);
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8px;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 2px;
+      white-space: nowrap;
+      pointer-events: none;
+      animation: hintPulse 2s infinite;
+      z-index: 999;
+    }
+
+    .btn-hint::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 4px solid transparent;
+      border-right: 4px solid transparent;
+      border-top: 4px solid var(--ac);
+    }
+
+    @keyframes hintPulse {
+      0% { transform: translateX(-50%) scale(1); }
+      50% { transform: translateX(-50%) scale(1.05); }
+      100% { transform: translateX(-50%) scale(1); }
+    }
+
+    .hint {
+      font-size: 11px;
+      color: var(--txd);
+      line-height: 1.4;
+      padding: 8px 10px;
+      background: var(--bgi);
+      border-radius: 2px;
+      border-left: 2px solid var(--bd);
+      margin-top: 12px
+    }
+
+    .pr-box {
+      background: var(--bgi);
+      border: 1px solid var(--bd);
+      border-radius: 3px;
+      padding: 12px 14px;
+      margin-top: 14px;
+      min-height: 100px;
+    }
+
+    .pr-txt {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--acl);
+      line-height: 1.55;
+      word-break: break-word
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <section class="pra" aria-label="Thực hành">
+    <div class="ch"><span class="n">PRACTICE</span>
+      <h2>Phân cấp thị giác (Hierarchy)</h2>
+    </div>
+    <p class="pra-goal">Nếu mọi thứ đều nổi bật, thì không có gì nổi bật cả. Hãy chọn một công cụ phân cấp để xem cách viết prompt yêu cầu AI cải thiện thiết kế Card.</p>
+
+    <div class="pra-grid">
+      <div>
+        <span class="cfg-l">Giao diện xem trước (UI Preview)</span>
+        <div class="pra-ed" id="praEd">
+          <div class="pra-ed-hd">
+            <span id="praFile"><i class="fa-solid fa-eye"></i> Card Component</span>
+            <span class="st" id="praSt">FLAT</span>
+          </div>
+          <div class="pra-ed-body">
+            <div class="mock-card" id="mockCard">
+              <div class="mc-title">Hướng dẫn Vibecode</div>
+              <div class="mc-desc">Học cách sử dụng AI để xây dựng giao diện nhanh hơn.</div>
+              <div class="mc-meta">Tác giả: MarkAI &middot; 5 phút đọc</div>
+              <div class="mc-btn">Bắt đầu học</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="pra-btns" id="praBtns">
+          <div style="position: relative; display: inline-block;">
+            <div class="btn-hint" id="hintBadge">Click me!</div>
+            <button class="btn" data-ch="size">Kích thước (Size)</button>
+          </div>
+          <button class="btn" data-ch="weight">Độ đậm (Weight)</button>
+          <button class="btn" data-ch="color">Màu sắc (Color)</button>
+          <button class="btn" data-ch="spacing">Khoảng trắng (Spacing)</button>
+          <button class="btn rst" id="praRst" disabled>Reset</button>
+        </div>
+
+        <div class="hint">Trong Vibecode, thay vì bảo AI "làm cho đẹp lên", hãy dùng các từ khóa như font-size, font-weight, primary color, margin/padding để có kết quả chính xác nhất!</div>
+      </div>
+
+      <div>
+        <div class="pr-box">
+          <span class="cfg-l">Nói với AI</span>
+          <div class="pr-txt" id="praPr">Chọn một nút bên trái để xem prompt mẫu...</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      var $ed = document.getElementById('praEd');
+      var $st = document.getElementById('praSt');
+      var $pr = document.getElementById('praPr');
+      var $btns = document.querySelectorAll('#praBtns .btn[data-ch]');
+      var $rst = document.getElementById('praRst');
+      var $hintBadge = document.getElementById('hintBadge');
+
+      function resetView() {
+        $ed.className = 'pra-ed';
+        $st.className = 'st';
+        $st.textContent = 'FLAT (KHÔNG PHÂN CẤP)';
+        
+        $pr.innerHTML = 'Chọn một nút bên trái để xem cách UI thay đổi và prompt mẫu...';
+
+        $btns.forEach(function (b) { b.className = 'btn'; });
+        $rst.disabled = true;
+        if ($hintBadge) $hintBadge.style.display = 'block';
+      }
+
+      function setSolution(choice, clickedBtn) {
+        $btns.forEach(function (b) { b.className = 'btn'; });
+        $ed.className = 'pra-ed';
+        $st.className = 'st';
+
+        if ($hintBadge) $hintBadge.style.display = 'none';
+        $rst.disabled = false;
+
+        if (choice === 'size') {
+          clickedBtn.className = 'btn active-size';
+          $ed.classList.add('state-size');
+          $st.className = 'st state-size';
+          $st.textContent = 'BY SIZE';
+          $pr.innerHTML = '<strong>Prompt gợi ý:</strong><br><br>"Hãy tăng font-size của Tiêu đề card lên 22px để thu hút sự chú ý đầu tiên, đồng thời giảm font-size của phần Meta (ngày tháng) xuống 11px để không tranh giành sự tập trung."';
+        } else if (choice === 'weight') {
+          clickedBtn.className = 'btn active-weight';
+          $ed.classList.add('state-weight');
+          $st.className = 'st state-weight';
+          $st.textContent = 'BY WEIGHT';
+          $pr.innerHTML = '<strong>Prompt gợi ý:</strong><br><br>"Chữ trong card đang bị đều nhau quá. Hãy chỉnh font-weight của Tiêu đề thành 700 (Bold) và giữ phần mô tả là 400 (Regular) để phân cấp rõ ràng mà không cần tăng kích thước chữ."';
+        } else if (choice === 'color') {
+          clickedBtn.className = 'btn active-color';
+          $ed.classList.add('state-color');
+          $st.className = 'st state-color';
+          $st.textContent = 'BY COLOR';
+          $pr.innerHTML = '<strong>Prompt gợi ý:</strong><br><br>"Đổi màu nút \'Bắt đầu học\' thành màu Primary (Hổ phách) để dẫn dắt hành động người dùng. Phần tác giả thì dùng màu xám tối (Muted) để chìm vào nền."';
+        } else if (choice === 'spacing') {
+          clickedBtn.className = 'btn active-spacing';
+          $ed.classList.add('state-spacing');
+          $st.className = 'st state-spacing';
+          $st.textContent = 'BY SPACING';
+          $pr.innerHTML = '<strong>Prompt gợi ý:</strong><br><br>"Sử dụng khoảng trắng để phân nhóm thông tin: Đẩy nút bấm xuống cách 24px bằng margin-top để tách biệt hẳn ra khỏi phần nội dung văn bản ở trên."';
+        }
+      }
+
+      /* events */
+      $btns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          setSolution(this.getAttribute('data-ch'), this);
+        });
+      });
+      $rst.addEventListener('click', resetView);
+
+      /* init */
+      resetView();
+    })();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Button Group Demo — Vibecode Glossary</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f0f12;
+  --card-bg: #16161b;
+  --accent: #E88C2E;
+  --text: #e8e4dc;
+  --text-muted: #707070;
+  --border: #282830;
+  --font-main: 'Space Grotesk', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background-color: var(--bg);
+  color: var(--text);
+  font-family: var(--font-main);
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  width: 100%;
+  max-width: 940px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 600px) {
+  .container {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Card Style */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 280px;
+}
+
+/* Accent Bar */
+.card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: var(--accent);
+  z-index: 2;
+}
+
+/* Header */
+.card-header {
+  padding: 16px 16px 12px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-index {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  background: rgba(232, 140, 46, 0.1);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+.card-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: -0.01em;
+}
+
+/* Indicator */
+.indicator {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--accent);
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.3; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.1); }
+  100% { opacity: 0.3; transform: scale(0.9); }
+}
+
+/* Content Area */
+.card-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  min-height: 140px;
+}
+
+/* Note Section */
+.ins {
+  margin: 0 16px 16px;
+  padding-left: 12px;
+  border-left: 2px solid var(--accent);
+  font-size: 11.5px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.ins strong {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Button Group Components */
+.btn-group {
+  display: inline-flex;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+
+.btn-item {
+  background: #23232a;
+  border: none;
+  border-right: 1px solid var(--border);
+  color: #a0a0a8;
+  padding: 8px 16px;
+  font-family: var(--font-main);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: default;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-item:last-child {
+  border-right: none;
+}
+
+.btn-item.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+.btn-item.hover {
+  background: #2e2e38;
+  color: #fff;
+}
+
+.btn-item svg {
+  width: 14px;
+  height: 14px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+
+/* Simulation specific */
+.preview-text {
+  margin-top: 16px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--accent);
+  opacity: 0.8;
+}
+
+.tag-list {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.tag {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  background: #1e1e24;
+  color: var(--text-muted);
+  padding: 2px 6px;
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+
+.tag.active {
+  color: var(--accent);
+  border: 1px solid var(--accent);
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- Cell 1: Segmented -->
+  <div class="card">
+    <div class="indicator"></div>
+    <div class="card-header">
+      <span class="card-index">01</span>
+      <span class="card-title">Segmented Control</span>
+    </div>
+    <div class="card-content">
+      <div class="btn-group" id="group-1">
+        <div class="btn-item">Daily</div>
+        <div class="btn-item">Weekly</div>
+        <div class="btn-item">Monthly</div>
+      </div>
+      <div class="preview-text" id="preview-1">View: Daily</div>
+    </div>
+    <div class="ins">
+      Lựa chọn <strong>Mutually Exclusive</strong>: Chỉ một nút duy nhất được kích hoạt tại một thời điểm. Thường dùng để <strong>lọc dữ liệu</strong> hoặc chuyển đổi chế độ xem.
+    </div>
+  </div>
+
+  <!-- Cell 2: Multi-Toggle -->
+  <div class="card">
+    <div class="indicator"></div>
+    <div class="card-header">
+      <span class="card-index">02</span>
+      <span class="card-title">Multi-Toggle</span>
+    </div>
+    <div class="card-content">
+      <div class="btn-group" id="group-2">
+        <div class="btn-item" style="font-weight: 700; font-family: serif;">B</div>
+        <div class="btn-item" style="font-style: italic; font-family: serif;">I</div>
+        <div class="btn-item" style="text-decoration: underline; font-family: serif;">U</div>
+      </div>
+      <div class="tag-list" id="tags-2">
+        <span class="tag">BOLD</span>
+        <span class="tag">ITALIC</span>
+        <span class="tag">UNDERLINE</span>
+      </div>
+    </div>
+    <div class="ins">
+      Trạng thái <strong>Independent</strong>: Các nút hoạt động độc lập, cho phép chọn nhiều tùy chọn cùng lúc. Phổ biến trong các <strong>thanh công cụ</strong> soạn thảo văn bản.
+    </div>
+  </div>
+
+  <!-- Cell 3: Icon Groups -->
+  <div class="card">
+    <div class="indicator"></div>
+    <div class="card-header">
+      <span class="card-index">03</span>
+      <span class="card-title">Iconic Group</span>
+    </div>
+    <div class="card-content">
+      <div class="btn-group" id="group-3">
+        <div class="btn-item">
+          <svg viewBox="0 0 24 24"><path d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+        </div>
+        <div class="btn-item">
+          <svg viewBox="0 0 24 24"><path d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+        </div>
+        <div class="btn-item">
+          <svg viewBox="0 0 24 24"><path d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+        </div>
+      </div>
+      <div class="preview-text" id="preview-3">Action: Edit</div>
+    </div>
+    <div class="ins">
+      Tối ưu <strong>Diện tích</strong>: Sử dụng Icon thay cho Text để tiết kiệm không gian. Cần đảm bảo <strong>Tooltip</strong> hoặc nhãn ẩn để hỗ trợ khả năng tiếp cận.
+    </div>
+  </div>
+
+  <!-- Cell 4: Mixed Action -->
+  <div class="card">
+    <div class="indicator"></div>
+    <div class="card-header">
+      <span class="card-index">04</span>
+      <span class="card-title">Mixed Hierarchy</span>
+    </div>
+    <div class="card-content">
+      <div class="btn-group" id="group-4">
+        <div class="btn-item active" style="font-weight: 600;">Publish</div>
+        <div class="btn-item">Draft</div>
+        <div class="btn-item">
+          <svg viewBox="0 0 24 24"><path d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/></svg>
+        </div>
+      </div>
+      <div class="preview-text" id="preview-4">Status: Primary</div>
+    </div>
+    <div class="ins">
+      Phân cấp <strong>Visual Weight</strong>: Kết hợp các biến thể (Primary, Ghost) trong cùng một nhóm để dẫn dắt hành động <strong>ưu tiên</strong> của người dùng.
+    </div>
+  </div>
+</div>
+
+<script>
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+// Loop 1: Segmented
+async function loop1() {
+  const btns = document.querySelectorAll('#group-1 .btn-item');
+  const preview = document.getElementById('preview-1');
+  const texts = ['Daily', 'Weekly', 'Monthly'];
+  let current = 0;
+  
+  while(true) {
+    btns.forEach((b, i) => b.classList.toggle('active', i === current));
+    preview.textContent = `View: ${texts[current]}`;
+    current = (current + 1) % btns.length;
+    await sleep(2000);
+  }
+}
+
+// Loop 2: Multi-Toggle
+async function loop2() {
+  const btns = document.querySelectorAll('#group-2 .btn-item');
+  const tags = document.querySelectorAll('#tags-2 .tag');
+  
+  const scenarios = [
+    [true, false, false],
+    [true, true, false],
+    [false, true, false],
+    [false, true, true],
+    [true, false, true],
+    [false, false, false]
+  ];
+  
+  let step = 0;
+  while(true) {
+    const current = scenarios[step];
+    btns.forEach((b, i) => b.classList.toggle('active', current[i]));
+    tags.forEach((t, i) => t.classList.toggle('active', current[i]));
+    
+    step = (step + 1) % scenarios.length;
+    await sleep(1500);
+  }
+}
+
+// Loop 3: Icon Groups
+async function loop3() {
+  const btns = document.querySelectorAll('#group-3 .btn-item');
+  const preview = document.getElementById('preview-3');
+  const actions = ['Edit', 'Copy', 'Delete'];
+  
+  while(true) {
+    for(let i = 0; i < btns.length; i++) {
+      btns[i].classList.add('hover');
+      preview.textContent = `Action: ${actions[i]}`;
+      await sleep(1000);
+      btns[i].classList.remove('hover');
+      
+      if (i === 1) { // Simulate click on Copy
+        btns[i].classList.add('active');
+        preview.textContent = `Copied!`;
+        await sleep(800);
+        btns[i].classList.remove('active');
+      }
+    }
+  }
+}
+
+// Loop 4: Mixed Hierarchy
+async function loop4() {
+  const btns = document.querySelectorAll('#group-4 .btn-item');
+  const preview = document.getElementById('preview-4');
+  const info = ['Status: Primary', 'Status: Secondary', 'More Options'];
+  
+  while(true) {
+    // Pulse highlight
+    btns[0].style.transform = 'scale(1.05)';
+    preview.textContent = info[0];
+    await sleep(1200);
+    btns[0].style.transform = 'scale(1)';
+    
+    // Hover Draft
+    btns[1].classList.add('hover');
+    preview.textContent = info[1];
+    await sleep(1200);
+    btns[1].classList.remove('hover');
+    
+    // Hover More
+    btns[2].classList.add('hover');
+    preview.textContent = info[2];
+    await sleep(1200);
+    btns[2].classList.remove('hover');
+  }
+}
+
+// Start all loops independently
+loop1();
+loop2();
+loop3();
+loop4();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Breakpoint — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#111;--bg-card:#1A1A1A;--bg-el:#222;--border:#2C2C2C;
+  --border-active:#D4652A;--accent:#D4652A;
+  --accent-glow:rgba(212,101,42,.18);--accent-soft:rgba(212,101,42,.07);
+  --cream:#EDE4D8;--text:#D8D0C8;--muted:#777770;
+  --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:48px 48px;pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;inset:0;opacity:.025;pointer-events:none;z-index:0;
+  background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.wrap{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:20px 16px 52px}
+
+.topbar{display:flex;align-items:center;gap:12px;padding-bottom:14px;border-bottom:1px solid var(--border);margin-bottom:28px}
+.badge{font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);background:var(--accent-soft);border:1px solid rgba(212,101,42,.22);padding:4px 10px}
+.ttl{font-size:20px;font-weight:700;color:var(--cream);letter-spacing:-.02em}
+.slbl{font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.slbl::before{content:'';width:7px;height:7px;background:var(--accent)}
+
+.gif-box{border:1px solid var(--border);background:var(--bg-card);margin-bottom:36px;position:relative;overflow:hidden}
+.gif-tag{position:absolute;top:10px;right:10px;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:3px 8px;z-index:10;display:flex;align-items:center;gap:5px}
+.gif-tag .dot{width:5px;height:5px;background:var(--accent);animation:pdot 1.4s infinite}
+@keyframes pdot{0%,100%{opacity:1}50%{opacity:.25}}
+.gif-body{padding:24px 18px 18px}
+
+/* ── sim grid ── */
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.sp{border:1px solid var(--border);background:var(--bg);padding:12px 10px 10px;transition:border-color .5s,background .5s,opacity .5s}
+.sp.active{border-color:var(--border-active);background:var(--accent-soft)}
+.sp:not(.active){opacity:.5}
+.sh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:10px}
+.sn{font-family:var(--mono);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);transition:color .4s}
+.sp.active .sn{color:var(--accent)}
+
+/* mini device frame */
+.mdev{border:1px solid var(--border);background:var(--bg);margin-bottom:8px;overflow:hidden;transition:border-color .5s}
+.sp.active .mdev{border-color:rgba(212,101,42,.3)}
+.mdev-hd{display:flex;align-items:center;padding:4px 6px;border-bottom:1px solid var(--border);gap:4px;min-height:16px}
+.mdev-ham{display:flex;flex-direction:column;gap:1.5px;width:10px;flex-shrink:0}
+.mdev-ham span{width:100%;height:1.5px;background:var(--cream);display:block}
+.mdev-ham.hide{display:none}
+.mdev-brand{font-family:var(--mono);font-size:6px;font-weight:700;color:var(--cream);flex:1}
+.mdev-nav{display:flex;gap:4px;flex-shrink:0}
+.mdev-nav-i{font-family:var(--mono);font-size:5px;color:var(--muted);padding:1px 3px;border:1px solid var(--border)}
+.mdev-nav.hide{display:none}
+.mdev-body{padding:6px}
+.mdev-grid{display:grid;gap:3px;margin-bottom:4px}
+.mdev-g1{grid-template-columns:1fr}
+.mdev-g2{grid-template-columns:1fr 1fr}
+.mdev-g3{grid-template-columns:1fr 1fr 1fr}
+.mdev-g4{grid-template-columns:1fr 1fr 1fr 1fr}
+.mdev-cell{background:var(--bg-el);border:1px solid var(--border);min-height:12px}
+.mdev-cell-h{min-height:18px;background:var(--accent);opacity:.2}
+.mdev-cell-c{min-height:24px}
+
+/* meta */
+.smeta{display:flex;flex-direction:column;gap:2px}
+.sm-row{display:flex;justify-content:space-between;font-family:var(--mono);font-size:7px}
+.sm-k{color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.sm-v{font-weight:600;color:var(--cream)}
+.sm-v.accent{color:var(--accent)}
+.sp-desc{font-size:9px;color:var(--muted);line-height:1.35;margin-top:6px}
+
+.ibar{margin-top:12px;padding:10px 13px;background:var(--bg);border:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.55;min-height:38px;transition:opacity .3s}
+.ibar.fading{opacity:0}
+.ibar strong{color:var(--cream);font-weight:600}
+
+.ptrack{display:flex;gap:4px;padding:10px 18px 12px;border-top:1px solid var(--border)}
+.pseg{flex:1;height:3px;background:var(--border);transition:background .4s}
+.pseg.on{background:var(--accent)}
+.gctrl{display:flex;align-items:center;justify-content:space-between;padding:9px 18px;border-top:1px solid var(--border);background:var(--bg-card)}
+.gbtn{font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:5px 13px;cursor:pointer;transition:color .2s,border-color .2s}
+.gbtn:hover{color:var(--cream);border-color:var(--muted)}
+.gtmr{font-family:var(--mono);font-size:9px;color:var(--muted)}
+
+/* ═══ PRACTICE ═══ */
+.pbox{border:1px solid var(--border);background:var(--bg-card)}
+.phd{padding:18px 18px 14px;border-bottom:1px solid var(--border)}
+.pgoal{font-size:13px;color:var(--text);line-height:1.5;margin-bottom:5px}
+.phint{font-family:var(--mono);font-size:10px;color:var(--muted)}
+.phint span{color:var(--accent)}
+.pbd{padding:22px 18px}
+
+/* width slider */
+.ws-area{display:flex;align-items:center;gap:14px;margin-bottom:8px}
+.ws-lbl{font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);white-space:nowrap}
+.ws-wrap{flex:1;position:relative}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:4px;background:var(--border);outline:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;background:var(--accent);border:2px solid var(--bg);cursor:pointer}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;background:var(--accent);border:2px solid var(--bg);cursor:pointer;border-radius:0}
+.ws-val{font-family:var(--mono);font-size:16px;font-weight:700;color:var(--accent);min-width:72px;text-align:right}
+
+/* breakpoint zones bar */
+.bz-bar{display:flex;height:24px;margin-bottom:6px;border:1px solid var(--border);overflow:hidden}
+.bz-zone{display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);transition:background .25s,color .25s;position:relative;overflow:hidden}
+.bz-zone.hit{color:var(--cream)}
+.bz-m{flex:0 0 40%;background:var(--bg)}
+.bz-m.hit{background:rgba(212,101,42,.15)}
+.bz-t{flex:0 0 13.3%;background:var(--bg-el)}
+.bz-t.hit{background:rgba(212,101,42,.25)}
+.bz-l{flex:0 0 21.6%;background:var(--bg)}
+.bz-l.hit{background:rgba(212,101,42,.2)}
+.bz-d{flex:0 0 25.1%;background:var(--bg-card)}
+.bz-d.hit{background:rgba(212,101,42,.3)}
+.bz-labels{display:flex;font-family:var(--mono);font-size:8px;color:var(--muted);margin-bottom:16px}
+.bz-labels span{flex:1;text-align:center;padding:2px 0}
+.bz-labels span.ac{color:var(--accent);font-weight:700}
+
+/* practice preview */
+.ppv{border:1px solid var(--border);background:var(--bg);margin-bottom:16px;overflow:hidden}
+.ppv-frame{margin:16px auto;transition:max-width .35s ease;overflow:hidden}
+.ppv-hd{display:flex;align-items:center;padding:8px 12px;border-bottom:1px solid var(--border);gap:10px}
+.ppv-ham{display:flex;flex-direction:column;gap:2px;width:16px;flex-shrink:0;cursor:default}
+.ppv-ham span{width:100%;height:2px;background:var(--cream);display:block;transition:opacity .3s}
+.ppv-ham.hide{opacity:0;pointer-events:none}
+.ppv-brand{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--cream);flex:1}
+.ppv-nav{display:flex;gap:12px;flex-shrink:0;transition:opacity .3s,max-width .3s;overflow:hidden}
+.ppv-nav.hide{opacity:0;max-width:0;gap:0;pointer-events:none}
+.ppv-ni{font-family:var(--sans);font-size:11px;color:var(--muted);white-space:nowrap}
+.ppv-body{padding:12px}
+.ppv-grid{display:grid;gap:8px;transition:all .35s ease}
+.ppv-cell{background:var(--bg-el);border:1px solid var(--border);padding:10px 8px;transition:all .35s}
+.ppv-cell-h{min-height:50px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:11px;font-weight:700;color:var(--accent);opacity:.5}
+.ppv-cell-c{min-height:64px}
+.ppv-cell-t{font-family:var(--mono);font-size:9px;font-weight:700;color:var(--cream);margin-bottom:4px}
+.ppv-cell-d{font-size:9px;color:var(--muted);line-height:1.3}
+
+/* state badge */
+.state-row{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.state-badge{font-family:var(--mono);font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--bg);background:var(--accent);padding:5px 12px;transition:all .25s}
+.state-info{font-family:var(--mono);font-size:10px;color:var(--muted);line-height:1.4}
+.state-info span{color:var(--cream);font-weight:600}
+
+/* prompt */
+.p-prompt{border:1px solid var(--border);background:var(--bg);padding:12px 14px;display:flex;align-items:flex-start;gap:10px}
+.p-prompt-lbl{font-family:var(--mono);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);background:var(--accent-soft);border:1px solid rgba(212,101,42,.22);padding:3px 8px;white-space:nowrap;flex-shrink:0;margin-top:1px}
+.p-prompt-txt{font-family:var(--mono);font-size:12px;color:var(--cream);line-height:1.5;transition:opacity .25s}
+.p-prompt-txt.fading{opacity:0}
+
+.whybox{margin-top:28px;border:1px solid var(--border);background:var(--bg-card);padding:18px}
+.whybox p{font-size:13px;color:var(--muted);line-height:1.7}
+.whybox strong{color:var(--cream)}
+
+@media(max-width:768px){
+  .sg{grid-template-columns:repeat(2,1fr)}
+  .gif-body{padding:18px 12px 14px}
+  .pbd{padding:18px 12px}
+  .ttl{font-size:17px}
+  .ws-area{flex-wrap:wrap}
+  .ws-lbl{width:100%}
+  .bz-zone{font-size:6px}
+  .bz-labels{font-size:6px}
+}
+@media(max-width:420px){
+  .sg{gap:6px}.sp{padding:10px 8px 8px}
+  .wrap{padding:14px 10px 36px}
+  .ppv-frame{margin:10px}
+  .ppv-body{padding:8px}
+  .ppv-grid{gap:5px}
+  .ppv-cell{padding:6px 5px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <span class="badge">Design</span>
+    <span class="ttl">Breakpoint</span>
+  </div>
+
+  <!-- ═══ SIMULATION ═══ -->
+  <div class="slbl">Mô phỏng</div>
+  <div class="gif-box">
+    <div class="gif-tag"><span class="dot"></span>LOOP</div>
+    <div class="gif-body">
+      <div class="sg" id="sg"></div>
+      <div class="ibar" id="ibar"></div>
+    </div>
+    <div class="ptrack" id="ptrack"></div>
+    <div class="gctrl">
+      <button class="gbtn" id="togBtn">Pause</button>
+      <span class="gtmr">3.5s / state</span>
+      <button class="gbtn" id="rstBtn">Reset</button>
+    </div>
+  </div>
+
+  <!-- ═══ PRACTICE ═══ -->
+  <div class="slbl">Thực hành</div>
+  <div class="pbox">
+    <div class="phd">
+      <p class="pgoal">Kéo slider thay đổi width — quan sát layout "nhảy" tại đúng breakpoint.</p>
+      <p class="phint"><span>Hint:</span> Kéo chậm qua 768px, 1024px, 1440px để thấy moment layout chuyển đổi.</p>
+    </div>
+    <div class="pbd">
+      <div class="ws-area">
+        <span class="ws-lbl">Viewport</span>
+        <div class="ws-wrap">
+          <input type="range" id="wSld" min="320" max="1920" value="1440">
+        </div>
+        <span class="ws-val" id="wVal">1440px</span>
+      </div>
+      <div class="bz-bar" id="bzBar">
+        <div class="bz-zone bz-m" data-zone="mobile"><span>MOBILE</span></div>
+        <div class="bz-zone bz-t" data-zone="tablet"><span>TABLET</span></div>
+        <div class="bz-zone bz-l" data-zone="laptop"><span>LAPTOP</span></div>
+        <div class="bz-zone bz-d" data-zone="desktop"><span>DESKTOP</span></div>
+      </div>
+      <div class="bz-labels" id="bzLabels">
+        <span>0 — 767</span><span>768 — 1023</span><span>1024 — 1439</span><span>1440+</span>
+      </div>
+      <div class="state-row">
+        <span class="state-badge" id="stBadge">DESKTOP</span>
+        <span class="state-info" id="stInfo">Grid: <span>4 cột</span> · Nav: <span>top navigation</span></span>
+      </div>
+      <div class="ppv">
+        <div class="ppv-frame" id="ppvFrame" style="max-width:100%">
+          <div class="ppv-hd">
+            <div class="ppv-ham" id="ppHam"><span></span><span></span><span></span></div>
+            <span class="ppv-brand">BRAND</span>
+            <div class="ppv-nav" id="ppNav">
+              <span class="ppv-ni">Products</span>
+              <span class="ppv-ni">Features</span>
+              <span class="ppv-ni">Pricing</span>
+              <span class="ppv-ni">Docs</span>
+            </div>
+          </div>
+          <div class="ppv-body">
+            <div class="ppv-grid" id="ppGrid">
+              <div class="ppv-cell ppv-cell-h">HERO</div>
+              <div class="ppv-cell ppv-cell-c"><div class="ppv-cell-t">Feature A</div><div class="ppv-cell-d">Mô tả ngắn về tính năng A</div></div>
+              <div class="ppv-cell ppv-cell-c"><div class="ppv-cell-t">Feature B</div><div class="ppv-cell-d">Mô tả ngắn về tính năng B</div></div>
+              <div class="ppv-cell ppv-cell-c"><div class="ppv-cell-t">Feature C</div><div class="ppv-cell-d">Mô tả ngắn về tính năng C</div></div>
+              <div class="ppv-cell ppv-cell-c"><div class="ppv-cell-t">Feature D</div><div class="ppv-cell-d">Mô tả ngắn về tính năng D</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="p-prompt">
+        <span class="p-prompt-lbl">Prompt</span>
+        <span class="p-prompt-txt" id="pPrompt">Desktop (1440px+): 4 cột, top nav, full layout</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="whybox">
+    <p>Breakpoint = <strong>"cửa" nơi layout chuyển đổi</strong>. 0-767px layout A, từ 768px layout B, từ 1024px layout C... Khi bạn bảo AI <strong>"làm responsive"</strong>, nó cần biết breakpoint ở đâu. Khi báo lỗi <strong>"trên tablet bị lệch"</strong>, dev cần biết bạn đang nói khoảng 768-1023px chứ không phải "màn hình nhỏ nói chung".</p>
+  </div>
+
+</div>
+
+<script>
+/* ── sim data ── */
+var D=[
+  {name:'MOBILE',range:'0 — 767px',
+   ham:true,nav:false,grid:'mdev-g1',
+   layout:'1 cột',navtype:'Hamburger menu',device:'Điện thoại',
+   desc:'Mobile: 1 cột, hamburger menu. Tối giản nhất.',
+   ins:'<strong>0 — 767px = Mobile.</strong> Mọi thứ xếp thành 1 cột. Navigation ẩn vào hamburger. Đây là breakpoint nhỏ nhất — "nếu nó chạy được trên mobile, chạy được ở mọi nơi."'},
+  {name:'TABLET',range:'768 — 1023px',
+   ham:true,nav:false,grid:'mdev-g2',
+   layout:'2 cột',navtype:'Hamburger menu',device:'Máy tính bảng',
+   desc:'Tablet: 2 cột, vẫn hamburger. Nhiều hơn mobile một chút.',
+   ins:'<strong>768px = bước nhảy đầu tiên.</strong> Từ 1 cột → 2 cột. Navigation vẫn hamburger vì width chưa đủ để hiện hết nav links. Tablet là "transition zone" — không phải mobile, chưa phải desktop.'},
+  {name:'LAPTOP',range:'1024 — 1439px',
+   ham:false,nav:true,grid:'mdev-g3',
+   layout:'3 cột',navtype:'Top navigation',device:'Laptop nhỏ',
+   desc:'Laptop: 3 cột, nav hiện đầy đủ. Bắt đầu giống "web thật".',
+   ins:'<strong>1024px = hamburger biến mất, nav hiện ra.</strong> 3 cột content. Đây là điểm mà layout "chuyển từ mobile thinking sang desktop thinking". Hầu hết laptop hiện nay rơi vào vùng này.'},
+  {name:'DESKTOP',range:'1440px+',
+   ham:false,nav:true,grid:'mdev-g4',
+   layout:'4+ cột',navtype:'Top navigation',device:'Màn hình lớn',
+   desc:'Desktop: 4+ cột, full nav. Không giới hạn nữa.',
+   ins:'<strong>1440px+ = "sân chơi rộng".</strong> 4 cột, sidebar có thể xuất hiện, content nới rộng. Đây là breakpoint mà designer thường design trước — nhưng marketer cần nhớ: không phải ai cũng xem ở đây.'}
+];
+
+/* ── build sim panels ── */
+var sg=document.getElementById('sg');
+D.forEach(function(d,i){
+  var el=document.createElement('div');
+  el.className='sp';
+  el.dataset.i=i;
+
+  var hamCls=d.ham?'mdev-ham':'mdev-ham hide';
+  var navCls=d.nav?'mdev-nav':'mdev-nav hide';
+  var navHTML=d.nav?'<div class="'+navCls+'"><span class="mdev-nav-i">Products</span><span class="mdev-nav-i">Features</span><span class="mdev-nav-i">Pricing</span></div>':'<div class="'+navCls+'"></div>';
+
+  el.innerHTML=
+    '<div class="sh"><span class="sn">0'+(i+1)+' '+d.name+'</span><span class="ssub" style="font-family:var(--mono);font-size:8px;color:var(--accent);font-weight:700">'+d.range+'</span></div>'+
+    '<div class="mdev">'+
+      '<div class="mdev-hd"><div class="'+hamCls+'"><span></span><span></span><span></span></div><span class="mdev-brand">BRAND</span>'+navHTML+'</div>'+
+      '<div class="mdev-body"><div class="mdev-grid '+d.grid+'">'+
+        '<div class="mdev-cell mdev-cell-h"></div>'+
+        '<div class="mdev-cell mdev-cell-c"></div>'+
+        '<div class="mdev-cell mdev-cell-c"></div>'+
+        '<div class="mdev-cell mdev-cell-c"></div>'+
+        '<div class="mdev-cell mdev-cell-c"></div>'+
+      '</div></div>'+
+    '</div>'+
+    '<div class="smeta">'+
+      '<div class="sm-row"><span class="sm-k">Layout</span><span class="sm-v">'+d.layout+'</span></div>'+
+      '<div class="sm-row"><span class="sm-k">Nav</span><span class="sm-v">'+d.navtype+'</span></div>'+
+      '<div class="sm-row"><span class="sm-k">Device</span><span class="sm-v accent">'+d.device+'</span></div>'+
+    '</div>'+
+    '<p class="sp-desc">'+d.desc+'</p>';
+  sg.appendChild(el);
+});
+
+/* progress */
+var pt=document.getElementById('ptrack');
+for(var i=0;i<4;i++){var s=document.createElement('div');s.className='pseg';pt.appendChild(s)}
+
+/* ── animation ── */
+var cur=0,playing=true,timer=null;
+var ibar=document.getElementById('ibar');
+
+function setAct(idx){
+  cur=idx;
+  var ps=sg.querySelectorAll('.sp');
+  var ss=pt.querySelectorAll('.pseg');
+  for(var i=0;i<ps.length;i++){
+    ps[i].classList.toggle('active',i===idx);
+    ss[i].classList.toggle('on',i<=idx);
+  }
+  ibar.classList.add('fading');
+  setTimeout(function(){ibar.innerHTML=D[idx].ins;ibar.classList.remove('fading')},280);
+}
+function startLoop(){timer=setInterval(function(){setAct((cur+1)%4)},3500)}
+function stopLoop(){clearInterval(timer)}
+document.getElementById('togBtn').onclick=function(){
+  playing=!playing;
+  this.textContent=playing?'Pause':'Play';
+  playing?startLoop():stopLoop();
+};
+document.getElementById('rstBtn').onclick=function(){
+  stopLoop();cur=0;setAct(0);if(playing)startLoop();
+};
+setAct(0);startLoop();
+
+/* ═══ PRACTICE ═══ */
+var wSld=document.getElementById('wSld');
+var wVal=document.getElementById('wVal');
+var stBadge=document.getElementById('stBadge');
+var stInfo=document.getElementById('stInfo');
+var ppvFrame=document.getElementById('ppvFrame');
+var ppHam=document.getElementById('ppHam');
+var ppNav=document.getElementById('ppNav');
+var ppGrid=document.getElementById('ppGrid');
+var pPrompt=document.getElementById('pPrompt');
+var bzZones=document.querySelectorAll('.bz-zone');
+var bzLabelSpans=document.querySelectorAll('#bzLabels span');
+
+function getZone(w){
+  if(w<768) return {name:'MOBILE',cols:1,ham:true,nav:false,prompt:'Mobile (0-767px): 1 cột, hamburger menu, stacked layout'};
+  if(w<1024) return {name:'TABLET',cols:2,ham:true,nav:false,prompt:'Tablet (768-1023px): 2 cột, hamburger menu, compact grid'};
+  if(w<1440) return {name:'LAPTOP',cols:3,ham:false,nav:true,prompt:'Laptop (1024-1439px): 3 cột, top nav, standard layout'};
+  return {name:'DESKTOP',cols:4,ham:false,nav:true,prompt:'Desktop (1440px+): 4 cột, top nav, full layout'};
+}
+
+function updPractice(w){
+  w=parseInt(w);
+  wVal.textContent=w+'px';
+  var z=getZone(w);
+
+  /* zone bar */
+  bzZones.forEach(function(el){
+    var zn=el.dataset.zone;
+    var hit=(zn==='mobile'&&w<768)||(zn==='tablet'&&w>=768&&w<1024)||(zn==='laptop'&&w>=1024&&w<1440)||(zn==='desktop'&&w>=1440);
+    el.classList.toggle('hit',hit);
+  });
+  bzLabelSpans.forEach(function(el,i){
+    var ranges=[[0,768],[768,1024],[1024,1440],[1440,9999]];
+    el.classList.toggle('ac',w>=ranges[i][0]&&w<ranges[i][1]);
+  });
+
+  /* badge + info */
+  stBadge.textContent=z.name;
+  stInfo.innerHTML='Grid: <span>'+z.cols+' cột</span> · Nav: <span>'+(z.ham?'hamburger menu':'top navigation')+'</span>';
+
+  /* preview frame width — scale to fit */
+  var maxW=Math.min(w,ppvFrame.parentElement.clientWidth-32);
+  ppvFrame.style.maxWidth=maxW+'px';
+
+  /* hamburger vs nav */
+  ppHam.classList.toggle('hide',!z.ham);
+  ppNav.classList.toggle('hide',!z.nav);
+
+  /* grid columns */
+  var cols=z.cols;
+  if(cols===1) ppGrid.style.gridTemplateColumns='1fr';
+  else if(cols===2) ppGrid.style.gridTemplateColumns='1fr 1fr';
+  else if(cols===3) ppGrid.style.gridTemplateColumns='1fr 1fr 1fr';
+  else ppGrid.style.gridTemplateColumns='1fr 1fr 1fr 1fr';
+
+  /* hero span */
+  var heroCell=ppGrid.querySelector('.ppv-cell-h');
+  if(cols===1) heroCell.style.gridColumn='';
+  else if(cols===2) heroCell.style.gridColumn='1 / -1';
+  else if(cols===3) heroCell.style.gridColumn='1 / -1';
+  else heroCell.style.gridColumn='1 / -1';
+
+  /* prompt */
+  pPrompt.classList.add('fading');
+  setTimeout(function(){pPrompt.textContent=z.prompt;pPrompt.classList.remove('fading')},200);
+}
+
+wSld.oninput=function(){updPractice(wSld.value)};
+updPractice(1440);
+
+/* recalc on resize */
+window.addEventListener('resize',function(){updPractice(wSld.value)});
+</script>
+</body>
+</html>

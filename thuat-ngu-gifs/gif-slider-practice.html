@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Slider Strategy Lab — Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f0f12;
+  --bg-card: #16161b;
+  --bg-el: #1c1c23;
+  --fg: #e8e4dc;
+  --muted: #707070;
+  --accent: #E88C2E;
+  --accent-soft: rgba(232, 140, 46, 0.1);
+  --accent-border: rgba(232, 140, 46, 0.3);
+  --border: #282830;
+  --error: #ef4444;
+  --success: #22c55e;
+  --mono: 'JetBrains Mono', monospace;
+  --sans: 'Space Grotesk', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--sans);
+  background-color: var(--bg);
+  background-image: radial-gradient(circle at 2px 2px, rgba(255,255,255,0.02) 1px, transparent 0);
+  background-size: 24px 24px;
+  color: var(--fg);
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.pra-wrap {
+  width: 100%;
+  max-width: 900px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 28px;
+  position: relative;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+}
+
+.pra-wrap::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 3px;
+  background: var(--accent);
+}
+
+/* Header */
+.ch { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.ch .n {
+  font-family: var(--mono);
+  font-size: 11px; font-weight: 700;
+  color: var(--accent); background: var(--accent-soft);
+  padding: 2px 8px; border-radius: 2px;
+  border: 1px solid var(--accent-border);
+}
+.ch h2 { font-size: 16px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+
+.pra-goal { font-size: 13px; color: var(--muted); margin-bottom: 24px; line-height: 1.6; max-width: 600px; }
+
+/* Grid */
+.pra-grid { display: grid; grid-template-columns: 320px 1fr; gap: 28px; }
+@media (max-width: 800px) { .pra-grid { grid-template-columns: 1fr; } }
+
+/* Lab Controls */
+.controls { display: flex; flex-direction: column; gap: 20px; }
+.ctrl-item { display: flex; flex-direction: column; gap: 10px; }
+.ctrl-label { font-family: var(--mono); font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 1.5px; font-weight: 700; }
+
+.btn-group { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.btn-group.triple { grid-template-columns: 1fr 1fr 1fr; }
+
+.opt-btn {
+  font-family: var(--mono);
+  font-size: 9px;
+  padding: 8px 4px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+  border-radius: 2px;
+  text-transform: uppercase;
+}
+.opt-btn:hover { color: var(--fg); border-color: var(--muted); }
+.opt-btn.active { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); font-weight: 700; }
+
+/* Prompt Box */
+.prompt-box {
+  margin-top: 20px;
+  background: var(--bg);
+  border: 1px dashed var(--border);
+  padding: 16px;
+  border-radius: 4px;
+  position: relative;
+}
+.prompt-box::after {
+  content: 'PROMPT GENERATED';
+  position: absolute;
+  top: -8px; right: 12px;
+  font-family: var(--mono);
+  font-size: 8px; color: var(--muted);
+  background: var(--bg); padding: 0 6px;
+}
+.prompt-text {
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--accent);
+  line-height: 1.5;
+  white-space: pre-wrap;
+}
+
+/* Preview Area */
+.preview { display: flex; flex-direction: column; gap: 16px; position: sticky; top: 20px; }
+.mock-stage {
+  background: #000;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  height: 280px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  position: relative;
+  overflow: hidden;
+}
+.mock-stage::before {
+  content: 'INTERACTIVE PREVIEW';
+  position: absolute;
+  top: 12px; left: 16px;
+  font-family: var(--mono);
+  font-size: 8px; color: var(--muted);
+  letter-spacing: 2px;
+}
+
+/* Slider UI Component */
+.slider-comp {
+  width: 100%;
+  max-width: 260px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.s-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.s-title { font-family: var(--sans); font-size: 12px; color: var(--muted); font-weight: 500; }
+.s-value { font-family: var(--mono); font-size: 14px; color: var(--accent); font-weight: 700; }
+
+.s-track-area {
+  position: relative;
+  height: 24px;
+  display: flex;
+  align-items: center;
+}
+.s-track {
+  width: 100%;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  position: relative;
+}
+.s-fill {
+  position: absolute;
+  left: 0; top: 0; height: 100%;
+  background: var(--accent);
+  border-radius: 2px;
+  width: 50%;
+}
+.s-thumb {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 16px;
+  height: 16px;
+  background: var(--accent);
+  border: 2px solid #000;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+.s-thumb.range2 { left: 80%; }
+
+.s-ticks {
+  display: flex;
+  justify-content: space-between;
+  padding: 0 2px;
+}
+.s-tick {
+  width: 1px;
+  height: 4px;
+  background: var(--border);
+}
+.s-tick.active { background: var(--accent); }
+
+.s-labels {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--mono);
+  font-size: 9px;
+  color: var(--muted);
+}
+
+/* Feedback Box */
+.fb-box {
+  background: var(--bg-card);
+  border-left: 3px solid var(--border);
+  padding: 16px;
+  font-family: var(--mono);
+  font-size: 11px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.fb-box strong { color: var(--accent); font-weight: 700; }
+
+</style>
+</head>
+<body>
+
+<div class="pra-wrap">
+  <div class="ch"><span class="n">LAB</span><h2>Slider Strategy Builder</h2></div>
+  <p class="pra-goal">Thiết kế thanh trượt phù hợp cho từng ngữ cảnh ứng dụng. Lựa chọn các thông số để tạo ra AI Prompt chuẩn xác nhất.</p>
+
+  <div class="pra-grid">
+    <div class="controls">
+      <div class="ctrl-item">
+        <span class="ctrl-label">Ngữ cảnh (Scenario)</span>
+        <div class="btn-group triple" data-group="scenario">
+          <button class="opt-btn active" data-val="audio">Audio Player</button>
+          <button class="opt-btn" data-val="photo">Photo Editor</button>
+          <button class="opt-btn" data-val="price">Price Filter</button>
+        </div>
+      </div>
+
+      <div class="ctrl-item">
+        <span class="ctrl-label">Loại Slider (Type)</span>
+        <div class="btn-group triple" data-group="type">
+          <button class="opt-btn active" data-val="smooth">Smooth</button>
+          <button class="opt-btn" data-val="stepped">Stepped</button>
+          <button class="opt-btn" data-val="range">Range</button>
+        </div>
+      </div>
+
+      <div id="stepCtrl" class="ctrl-item" style="display: none;">
+        <span class="ctrl-label">Bước nhảy (Steps)</span>
+        <div class="btn-group triple" data-group="step">
+          <button class="opt-btn active" data-val="10">10 đơn vị</button>
+          <button class="opt-btn" data-val="25">25 đơn vị</button>
+          <button class="opt-btn" data-val="50">50 đơn vị</button>
+        </div>
+      </div>
+
+      <div class="ctrl-item">
+        <span class="ctrl-label">Nhãn hiển thị (Labeling)</span>
+        <div class="btn-group" data-group="label">
+          <button class="opt-btn active" data-val="value">Current Value</button>
+          <button class="opt-btn" data-val="minmax">Min / Max</button>
+        </div>
+      </div>
+
+      <div class="prompt-box">
+        <div class="prompt-text" id="promptText">...</div>
+      </div>
+    </div>
+
+    <div class="preview">
+      <div class="mock-stage">
+        <div class="slider-comp" id="previewComp">
+          <div class="s-header">
+            <span class="s-title" id="previewTitle">Volume Control</span>
+            <span class="s-value" id="previewVal">50</span>
+          </div>
+          <div class="s-track-area">
+            <div class="s-track">
+              <div class="s-fill" id="previewFill"></div>
+            </div>
+            <div class="s-thumb" id="thumb1"></div>
+            <div class="s-thumb range2" id="thumb2" style="display: none;"></div>
+          </div>
+          <div id="previewTicks" class="s-ticks" style="display: none;"></div>
+          <div class="s-labels" id="previewLabels" style="display: none;">
+            <span>0</span>
+            <span>100</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="fb-box" id="fbBox">
+        <strong>Expert Tip:</strong> Dùng <strong>Continuous Slider</strong> cho các thông số cần cảm nhận mượt mà (như volume). Dùng <strong>Stepped</strong> khi muốn giới hạn lựa chọn (như số lượng item).
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const state = {
+  scenario: 'audio',
+  type: 'smooth',
+  step: '10',
+  label: 'value',
+  val1: 50, // Value for thumb1 (0-100)
+  val2: 80  // Value for thumb2 (0-100)
+};
+
+const scenarios = {
+  audio: { title: 'Volume Control', prompt: 'nghe nhạc (chỉnh Volume)', unit: '' },
+  photo: { title: 'Brightness', prompt: 'chỉnh sửa ảnh (độ sáng Brightness)', unit: '' },
+  price: { title: 'Price Range', prompt: 'lọc giá sản phẩm (Price Range)', unit: '$' }
+};
+
+const pTitle = document.getElementById('previewTitle');
+const pVal = document.getElementById('previewVal');
+const pFill = document.getElementById('previewFill');
+const pTicks = document.getElementById('previewTicks');
+const pLabels = document.getElementById('previewLabels');
+const thumb1 = document.getElementById('thumb1');
+const thumb2 = document.getElementById('thumb2');
+const stepCtrl = document.getElementById('stepCtrl');
+const promptText = document.getElementById('promptText');
+const fbBox = document.getElementById('fbBox');
+const trackArea = document.querySelector('.s-track-area');
+
+function update(fromDrag = false) {
+  // Update Preview UI
+  pTitle.textContent = scenarios[state.scenario].title;
+  
+  // Type logic
+  if (state.type === 'stepped') {
+    stepCtrl.style.display = 'flex';
+    pTicks.style.display = 'flex';
+    pTicks.innerHTML = '';
+    const stepVal = parseInt(state.step);
+    
+    // Snap value if not from drag or if needed
+    if (!fromDrag) {
+      state.val1 = Math.round(state.val1 / stepVal) * stepVal;
+    }
+
+    for (let i = 0; i <= 100; i += stepVal) {
+      const t = document.createElement('div');
+      t.className = 's-tick' + (i <= state.val1 ? ' active' : '');
+      pTicks.appendChild(t);
+    }
+    thumb2.style.display = 'none';
+    pVal.textContent = state.val1;
+    thumb1.style.left = state.val1 + '%';
+    pFill.style.left = '0';
+    pFill.style.width = state.val1 + '%';
+  } else if (state.type === 'range') {
+    stepCtrl.style.display = 'none';
+    pTicks.style.display = 'none';
+    thumb2.style.display = 'block';
+    
+    // Ensure val1 < val2
+    if (state.val1 > state.val2) {
+      const temp = state.val1;
+      state.val1 = state.val2;
+      state.val2 = temp;
+    }
+
+    const unit = scenarios[state.scenario].unit;
+    pVal.textContent = `${unit}${state.val1} - ${unit}${state.val2}`;
+    
+    thumb1.style.left = state.val1 + '%';
+    thumb2.style.left = state.val2 + '%';
+    pFill.style.left = state.val1 + '%';
+    pFill.style.width = (state.val2 - state.val1) + '%';
+  } else {
+    stepCtrl.style.display = 'none';
+    pTicks.style.display = 'none';
+    thumb2.style.display = 'none';
+    pVal.textContent = state.val1;
+    thumb1.style.left = state.val1 + '%';
+    pFill.style.left = '0';
+    pFill.style.width = state.val1 + '%';
+  }
+
+  // Label logic
+  if (state.label === 'value') {
+    pVal.style.display = 'block';
+    pLabels.style.display = 'none';
+  } else {
+    pVal.style.display = 'none';
+    pLabels.style.display = 'flex';
+  }
+
+  // Generate Prompt
+  let prompt = `Tạo một Slider component cho ứng dụng ${scenarios[state.scenario].prompt}.
+Yêu cầu kỹ thuật:
+- Loại: ${state.type === 'smooth' ? 'Liên tục (Continuous)' : state.type === 'stepped' ? 'Nhảy bậc (Stepped) với bước nhảy ' + state.step : 'Chọn khoảng (Range Slider)'}.
+- Hiển thị: ${state.label === 'value' ? 'Hiện giá trị hiện tại' : 'Hiện mốc Min/Max ở hai đầu'}.
+- Style: Amber Brutalist (#E88C2E), nền tối, thumb có viền tương phản.
+- Framework: React + Tailwind CSS.`;
+
+  promptText.textContent = prompt;
+
+  // Feedback
+  if (state.scenario === 'price' && state.type !== 'range') {
+    fbBox.innerHTML = '💡 <strong>Gợi ý:</strong> Với lọc giá (Price Filter), dùng <strong>Range Slider</strong> (2 nút kéo) là lựa chọn chuẩn UX nhất để user chọn khoảng Min-Max.';
+  } else if (state.scenario === 'audio' && state.type === 'stepped') {
+    fbBox.innerHTML = '⚠️ <strong>Lưu ý:</strong> Chỉnh âm lượng bằng <strong>Stepped</strong> có thể gây cảm giác bị "giật" tiếng. <strong>Smooth</strong> thường được ưu tiên hơn.';
+  } else {
+    fbBox.innerHTML = '<strong>Expert Tip:</strong> Slider giúp giao diện sạch hơn so với việc dùng ô nhập số, nhưng đừng dùng slider nếu user cần nhập con số cực kỳ chính xác (như mã PIN).';
+  }
+}
+
+// Drag Interaction Logic
+let activeThumb = null;
+
+function handleStart(e) {
+  if (e.target.classList.contains('s-thumb')) {
+    activeThumb = e.target;
+    document.addEventListener('mousemove', handleMove);
+    document.addEventListener('mouseup', handleEnd);
+    document.addEventListener('touchmove', handleMove);
+    document.addEventListener('touchend', handleEnd);
+    e.preventDefault();
+  }
+}
+
+function handleMove(e) {
+  if (!activeThumb) return;
+  
+  const rect = trackArea.getBoundingClientRect();
+  const clientX = e.clientX || (e.touches && e.touches[0].clientX);
+  let pos = ((clientX - rect.left) / rect.width) * 100;
+  pos = Math.max(0, Math.min(100, pos));
+
+  if (state.type === 'stepped') {
+    const stepVal = parseInt(state.step);
+    pos = Math.round(pos / stepVal) * stepVal;
+  }
+
+  if (activeThumb.id === 'thumb1') {
+    state.val1 = Math.round(pos);
+    if (state.type === 'range' && state.val1 > state.val2) state.val1 = state.val2;
+  } else {
+    state.val2 = Math.round(pos);
+    if (state.val1 > state.val2) state.val2 = state.val1;
+  }
+
+  update(true);
+}
+
+function handleEnd() {
+  activeThumb = null;
+  document.removeEventListener('mousemove', handleMove);
+  document.removeEventListener('mouseup', handleEnd);
+  document.removeEventListener('touchmove', handleMove);
+  document.removeEventListener('touchend', handleEnd);
+}
+
+thumb1.addEventListener('mousedown', handleStart);
+thumb2.addEventListener('mousedown', handleStart);
+thumb1.addEventListener('touchstart', handleStart);
+thumb2.addEventListener('touchstart', handleStart);
+
+document.querySelectorAll('.opt-btn').forEach(btn => {
+  btn.onclick = function() {
+    const group = this.parentElement.dataset.group;
+    state[group] = this.dataset.val;
+    this.parentElement.querySelectorAll('.opt-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    update();
+  };
+});
+
+update();
+</script>
+
+</body>
+</html>

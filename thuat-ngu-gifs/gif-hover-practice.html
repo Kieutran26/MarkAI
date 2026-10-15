@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hover Strategy Lab — Amber Brutalist</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --amber: #E88C2E;
+            --bg: #0f0f12;
+            --card-bg: #16161b;
+            --border: #282830;
+            --text: #e8e4dc;
+            --muted: #707070;
+            --success: #4CAF50;
+            --warning: #FF9800;
+            --danger: #F44336;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            padding: 16px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .lab-container {
+            width: 100%;
+            max-width: 900px;
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 16px;
+        }
+
+        @media (max-width: 800px) {
+            .lab-container { grid-template-columns: 1fr; }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--amber);
+            z-index: 10;
+        }
+
+        .card-header {
+            padding: 12px 16px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255,255,255,0.02);
+        }
+
+        .card-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--amber);
+        }
+
+        /* --- Preview Area --- */
+        .preview-area {
+            height: 320px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background-image: radial-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 24px 24px;
+        }
+
+        /* Test Subjects */
+        .test-btn {
+            padding: 12px 32px;
+            background: transparent;
+            border: 1.5px solid var(--amber);
+            color: var(--amber);
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .test-card {
+            width: 200px;
+            padding: 20px;
+            background: #24242c;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .test-icon {
+            width: 64px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #24242c;
+            border-radius: 50%;
+            color: var(--muted);
+            cursor: pointer;
+        }
+
+        /* Strategy Panel */
+        .strategy-panel {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .config-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .config-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+
+        .option-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+        }
+
+        .option-btn {
+            background: #1a1a20;
+            border: 1px solid var(--border);
+            padding: 8px;
+            font-size: 11px;
+            color: var(--muted);
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s;
+        }
+
+        .option-btn:hover { border-color: var(--amber); }
+        .option-btn.active {
+            border-color: var(--amber);
+            background: rgba(232, 140, 46, 0.1);
+            color: var(--amber);
+        }
+
+        /* Audit Results */
+        .audit-results {
+            padding: 16px;
+            background: #0d0d10;
+            border-top: 1px solid var(--border);
+        }
+
+        .score-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+
+        .gauge-container {
+            height: 4px;
+            background: #222;
+            width: 100%;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        #score-gauge {
+            height: 100%;
+            width: 0%;
+            background: var(--danger);
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .feedback-box {
+            margin-top: 12px;
+            font-size: 11px;
+            line-height: 1.5;
+            color: var(--muted);
+            min-height: 33px;
+        }
+        .feedback-box span { color: var(--amber); }
+
+        .ins-box {
+            border-left: 2px solid var(--amber);
+            padding-left: 12px;
+            margin-top: 16px;
+            font-size: 11px;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        /* Dynamic Classes Applied via JS */
+        .hover-active-bg:hover { background: var(--amber) !important; color: #000 !important; }
+        .hover-active-shadow:hover { box-shadow: 0 10px 30px rgba(0,0,0,0.6) !important; border-color: var(--amber) !important; }
+        .hover-active-lift:hover { transform: translateY(-8px) !important; }
+        .hover-active-scale:hover { transform: scale(1.1) !important; }
+        .hover-active-color:hover { color: var(--amber) !important; border-color: var(--amber) !important; }
+
+    </style>
+</head>
+<body>
+
+<div class="lab-container">
+    <!-- Left: Preview -->
+    <div class="card">
+        <div class="card-header">
+            <div class="card-title">Strategy Lab: Hover UX Audit</div>
+            <div style="font-family: 'JetBrains Mono'; font-size: 9px; color: var(--muted);">v1.0.4</div>
+        </div>
+        
+        <div class="preview-area" id="preview-canvas">
+            <!-- Subject will be injected here -->
+            <button id="subject-btn" class="test-btn">HOVER ACTION</button>
+            <div id="subject-card" class="test-card" style="display:none;">
+                <div style="font-size: 24px; margin-bottom: 8px;">📦</div>
+                <div style="font-weight: 700; font-size: 14px;">Product Card</div>
+                <div style="font-size: 10px; color: var(--muted); margin-top: 4px;">Tactile Response Test</div>
+            </div>
+            <div id="subject-icon" class="test-icon" style="display:none;">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"></path><path d="M18 20V4"></path><path d="M6 20v-4"></path></svg>
+            </div>
+        </div>
+
+        <div class="audit-results">
+            <div class="score-header">
+                <span class="config-label">UX Feeling Score</span>
+                <span id="score-text" style="font-family: 'JetBrains Mono'; font-size: 11px; font-weight: 700;">0/100</span>
+            </div>
+            <div class="gauge-container">
+                <div id="score-gauge"></div>
+            </div>
+            <div class="feedback-box" id="feedback">
+                <span>Nhận xét:</span> Di chuột vào element để kiểm tra cảm giác tương tác.
+            </div>
+        </div>
+    </div>
+
+    <!-- Right: Controls -->
+    <div class="card">
+        <div class="strategy-panel">
+            <div class="config-group">
+                <span class="config-label">1. Element Type</span>
+                <div class="option-grid">
+                    <button class="option-btn active" data-type="target" data-val="button">Button</button>
+                    <button class="option-btn" data-type="target" data-val="card">Card</button>
+                    <button class="option-btn" data-type="target" data-val="icon">Icon</button>
+                </div>
+            </div>
+
+            <div class="config-group">
+                <span class="config-label">2. Response Strategy</span>
+                <div class="option-grid">
+                    <button class="option-btn active" data-type="effect" data-val="feedback">Feedback</button>
+                    <button class="option-btn" data-type="effect" data-val="elevation">Elevation</button>
+                    <button class="option-btn" data-type="effect" data-val="emphasis">Emphasis</button>
+                </div>
+            </div>
+
+            <div class="config-group">
+                <span class="config-label">3. Timing (Duration)</span>
+                <div class="option-grid">
+                    <button class="option-btn" data-type="speed" data-val="0">Instant (0s)</button>
+                    <button class="option-btn active" data-type="speed" data-val="0.2">Fast (0.2s)</button>
+                    <button class="option-btn" data-type="speed" data-val="0.6">Smooth (0.6s)</button>
+                    <button class="option-btn" data-type="speed" data-val="1.5">Slow (1.5s)</button>
+                </div>
+            </div>
+
+            <div class="config-group">
+                <span class="config-label">4. Easing Function</span>
+                <div class="option-grid">
+                    <button class="option-btn active" data-type="easing" data-val="ease-out">Ease Out</button>
+                    <button class="option-btn" data-type="easing" data-val="linear">Linear</button>
+                    <button class="option-btn" data-type="easing" data-val="cubic-bezier(0.34, 1.56, 0.64, 1)">Bounce</button>
+                </div>
+            </div>
+
+            <div class="ins-box">
+                <strong>Gợi ý:</strong> Hover không có transition (Instant) thường gây cảm giác <strong>giật cục</strong> và rẻ tiền. Transition quá lâu (>0.5s) khiến giao diện có vẻ <strong>lag</strong>. 0.2s Ease-Out là "tỷ lệ vàng" cho UX.
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const state = {
+        target: 'button',
+        effect: 'feedback',
+        speed: '0.2',
+        easing: 'ease-out'
+    };
+
+    const subjects = {
+        button: document.getElementById('subject-btn'),
+        card: document.getElementById('subject-card'),
+        icon: document.getElementById('subject-icon')
+    };
+
+    function updateLab() {
+        const scoreGauge = document.getElementById('score-gauge');
+        const scoreText = document.getElementById('score-text');
+        const feedback = document.getElementById('feedback');
+
+        // Hide all subjects
+        Object.values(subjects).forEach(s => s.style.display = 'none');
+        
+        // Show current subject
+        const el = subjects[state.target];
+        el.style.display = (state.target === 'icon') ? 'flex' : (state.target === 'button' ? 'block' : 'block');
+        
+        // Clean classes
+        el.className = state.target === 'button' ? 'test-btn' : (state.target === 'card' ? 'test-card' : 'test-icon');
+        
+        // Apply effect class
+        if (state.effect === 'feedback') {
+            if (state.target === 'button') el.classList.add('hover-active-bg');
+            else el.classList.add('hover-active-color');
+        } else if (state.effect === 'elevation') {
+            el.classList.add('hover-active-shadow');
+            el.classList.add('hover-active-lift');
+        } else if (state.effect === 'emphasis') {
+            el.classList.add('hover-active-scale');
+            if (state.target === 'icon') el.classList.add('hover-active-color');
+        }
+
+        // Apply Transition
+        el.style.transition = `all ${state.speed}s ${state.easing}`;
+
+        // Calculate Score
+        let score = 0;
+        let tips = "";
+
+        // Speed Score
+        if (state.speed === '0.2') score += 40;
+        else if (state.speed === '0') { score += 10; tips = "Phản hồi tức thì nhưng thiếu sự mượt mà (jarring)."; }
+        else if (state.speed === '0.6') { score += 25; tips = "Hơi chậm, có thể gây cảm giác nặng nề cho user chuyên nghiệp."; }
+        else { score += 5; tips = "Quá chậm! Tạo cảm giác giao diện bị lag và thiếu phản ứng."; }
+
+        // Easing Score
+        if (state.easing === 'ease-out') score += 30;
+        else if (state.easing === 'linear') { score += 15; tips += " Linear tạo cảm giác máy móc, thiếu tự nhiên."; }
+        else { score += 25; tips += " Hiệu ứng Bounce tạo cá tính nhưng nên dùng hạn chế."; }
+
+        // Strategy Match
+        if (state.target === 'card' && state.effect === 'elevation') score += 30;
+        else if (state.target === 'button' && state.effect === 'feedback') score += 30;
+        else if (state.target === 'icon' && state.effect === 'emphasis') score += 30;
+        else { score += 20; }
+
+        // Update UI
+        scoreText.textContent = `${score}/100`;
+        scoreGauge.style.width = `${score}%`;
+        
+        if (score < 50) {
+            scoreGauge.style.background = 'var(--danger)';
+            scoreText.style.color = 'var(--danger)';
+        } else if (score < 80) {
+            scoreGauge.style.background = 'var(--warning)';
+            scoreText.style.color = 'var(--warning)';
+        } else {
+            scoreGauge.style.background = 'var(--success)';
+            scoreText.style.color = 'var(--success)';
+        }
+
+        if (tips) {
+            feedback.innerHTML = `<span>Phân tích:</span> ${tips}`;
+        } else {
+            feedback.innerHTML = `<span>Tuyệt vời:</span> Sự kết hợp hoàn hảo giữa tốc độ và hiệu ứng thị giác.`;
+        }
+    }
+
+    // Event Listeners
+    document.querySelectorAll('.option-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const type = btn.dataset.type;
+            const val = btn.dataset.val;
+
+            state[type] = val;
+            
+            // UI Toggle
+            document.querySelectorAll(`.option-btn[data-type="${type}"]`).forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            updateLab();
+        });
+    });
+
+    // Initial State
+    updateLab();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Container Demo — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f0f12;
+  --bgc: #16161b;
+  --bgi: #121217;
+  --bd: #282830;
+  --tx: #e8e4dc;
+  --txm: #707070;
+  --ac: #E88C2E;
+  --abg: rgba(232, 140, 46, 0.1);
+  --abg2: rgba(232, 140, 46, 0.2);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--tx);
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.g {
+  width: 100%;
+  max-width: 940px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 600px) {
+  .g { grid-template-columns: 1fr; }
+}
+
+.c {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.c::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--ac);
+}
+
+.c::after {
+  content: '';
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 6px;
+  height: 6px;
+  background: var(--ac);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--ac);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0.3; transform: scale(1); }
+}
+
+.ch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.ch .n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ac);
+  background: var(--abg);
+  border: 1px solid var(--abg2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+.ch h2 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+}
+
+.st {
+  background: var(--bgi);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  flex: 1;
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ins {
+  margin-top: 14px;
+  font-size: 11.5px;
+  color: var(--txm);
+  line-height: 1.6;
+  padding-left: 12px;
+  border-left: 2px solid var(--ac);
+}
+
+.ins strong {
+  color: var(--ac);
+  font-weight: 600;
+}
+
+.val {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--txm);
+  background: rgba(0,0,0,0.2);
+  padding: 2px 6px;
+  border-radius: 2px;
+  z-index: 10;
+}
+
+/* Visuals */
+.viewport-sim {
+  width: 100%;
+  height: 120px;
+  border: 1px dashed var(--bd);
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.container-box {
+  background: var(--abg);
+  border: 1px solid var(--ac);
+  height: 60px;
+  transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--ac);
+}
+
+.padding-demo {
+  width: 140px;
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  position: relative;
+  transition: padding 0.5s ease;
+}
+.padding-demo .content {
+  background: var(--ac);
+  height: 40px;
+  width: 100%;
+  opacity: 0.8;
+}
+
+.struct-wrap {
+  width: 150px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.struct-item {
+  height: 20px;
+  background: var(--bd);
+  border: 1px solid var(--txm);
+  opacity: 0.5;
+  border-radius: 2px;
+}
+.struct-item.main { height: 40px; background: var(--abg); border-color: var(--ac); opacity: 1; }
+
+.grid-sim {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+  max-width: 160px;
+  transition: all 0.5s ease;
+}
+.grid-box {
+  height: 30px;
+  background: var(--ac);
+  border-radius: 2px;
+}
+
+</style>
+</head>
+<body>
+
+<div class="g">
+  <!-- 01: Width Limits -->
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>Giới hạn chiều rộng</h2></div>
+    <div class="st">
+      <div class="viewport-sim" id="vsim1">
+        <div class="container-box" id="c1">MAX-WIDTH</div>
+      </div>
+      <div class="val" id="val1">max-width: 80%</div>
+    </div>
+    <p class="ins"><strong>Container</strong> giới hạn chiều rộng nội dung, ngăn chặn việc dòng chữ quá dài gây khó đọc trên màn hình lớn.</p>
+  </section>
+
+  <!-- 02: Internal Spacing -->
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Vùng đệm nội khu</h2></div>
+    <div class="st">
+      <div class="padding-demo" id="p2">
+        <div class="content"></div>
+      </div>
+      <div class="val" id="val2">padding: 10px</div>
+    </div>
+    <p class="ins"><strong>Padding</strong> tạo khoảng trống an toàn, giữ cho nội dung không bị dính sát vào mép viền của <strong>Container</strong>.</p>
+  </section>
+
+  <!-- 03: Alignment & Structure -->
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Căn lề & Cấu trúc</h2></div>
+    <div class="st">
+      <div class="struct-wrap">
+        <div class="struct-item"></div>
+        <div class="struct-item main" id="s3"></div>
+        <div class="struct-item"></div>
+      </div>
+      <div class="val" id="val3">margin: 0 auto</div>
+    </div>
+    <p class="ins">Sử dụng <strong>margin auto</strong> giúp <strong>Container</strong> luôn nằm giữa trang web, tạo sự cân đối thị giác.</p>
+  </section>
+
+  <!-- 04: Fluid Response -->
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Đáp ứng linh hoạt</h2></div>
+    <div class="st">
+      <div class="grid-sim" id="g4" style="grid-template-columns: repeat(3, 1fr);">
+        <div class="grid-box"></div>
+        <div class="grid-box"></div>
+        <div class="grid-box"></div>
+      </div>
+      <div class="val" id="val4">Desktop View</div>
+    </div>
+    <p class="ins">Trên thiết kế <strong>Responsive</strong>, Container sẽ tự co lại hoặc chuyển sang dạng <strong>Fluid</strong> (100% width) trên Mobile.</p>
+  </section>
+</div>
+
+<script>
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// 01: Width Loop
+(async function() {
+  const c = document.getElementById('c1');
+  const v = document.getElementById('val1');
+  const sim = document.getElementById('vsim1');
+  
+  while (true) {
+    // Wide
+    c.style.width = '80%';
+    v.textContent = 'max-width: 80%';
+    await wait(2000);
+    
+    // Narrow
+    c.style.width = '40%';
+    v.textContent = 'max-width: 40%';
+    await wait(2000);
+
+    // Full
+    c.style.width = '100%';
+    v.textContent = 'width: 100%';
+    await wait(2000);
+  }
+})();
+
+// 02: Padding Loop
+(async function() {
+  const p = document.getElementById('p2');
+  const v = document.getElementById('val2');
+  
+  while (true) {
+    p.style.padding = '0px';
+    v.textContent = 'padding: 0px';
+    await wait(2000);
+    
+    p.style.padding = '10px';
+    v.textContent = 'padding: 10px';
+    await wait(2000);
+
+    p.style.padding = '24px';
+    v.textContent = 'padding: 24px';
+    await wait(2000);
+  }
+})();
+
+// 03: Alignment Loop
+(async function() {
+  const s = document.getElementById('s3');
+  const v = document.getElementById('val3');
+  
+  while (true) {
+    s.parentElement.style.alignItems = 'stretch';
+    v.textContent = 'margin: 0';
+    await wait(2000);
+    
+    s.parentElement.style.alignItems = 'center';
+    v.textContent = 'margin: 0 auto';
+    await wait(2000);
+  }
+})();
+
+// 04: Responsive Loop
+(async function() {
+  const g = document.getElementById('g4');
+  const v = document.getElementById('val4');
+  
+  while (true) {
+    g.style.gridTemplateColumns = 'repeat(3, 1fr)';
+    g.style.maxWidth = '160px';
+    v.textContent = 'Desktop: 3 Columns';
+    await wait(2000);
+    
+    g.style.gridTemplateColumns = '1fr';
+    g.style.maxWidth = '60px';
+    v.textContent = 'Mobile: 1 Column';
+    await wait(2000);
+  }
+})();
+</script>
+</body>
+</html>

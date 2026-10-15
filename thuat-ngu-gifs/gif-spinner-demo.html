@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spinner - Amber Brutalist 4-Cell Grid</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --amber: #E88C2E;
+            --bg: #0f0f12;
+            --card-bg: #16161b;
+            --border: #282830;
+            --text: #e8e4dc;
+            --muted: #707070;
+            --gap: 14px;
+            --ease: cubic-bezier(0.65, 0, 0.35, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--bg);
+            background-image: 
+                radial-gradient(ellipse at 25% 15%, rgba(232, 140, 46, 0.05) 0%, transparent 55%),
+                radial-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 16px 16px;
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: var(--gap);
+            width: 100%;
+            max-width: 940px;
+        }
+
+        @media (max-width: 600px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 3px;
+            position: relative;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+            height: 320px;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--amber);
+            z-index: 2;
+        }
+
+        .indicator {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 6px;
+            height: 6px;
+            background: var(--amber);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--amber);
+            animation: pulse 2s infinite;
+            z-index: 3;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 22px;
+        }
+
+        .num-box {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            font-weight: 700;
+            color: var(--amber);
+            background: rgba(232, 140, 46, 0.1);
+            border: 1px solid rgba(232, 140, 46, 0.2);
+            padding: 2px 5px;
+            border-radius: 2px;
+        }
+
+        .card-title {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: rgba(232, 228, 220, 0.9);
+        }
+
+        .sim-area {
+            height: 160px;
+            background: #0d0d10;
+            border: 1px solid rgba(255,255,255,0.03);
+            border-radius: 4px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 16px;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        .ins {
+            border-left: 2px solid var(--amber);
+            padding-left: 14px;
+            margin-top: auto;
+            color: var(--muted);
+            font-size: 11.5px;
+            line-height: 1.6;
+            padding-top: 8px;
+            padding-bottom: 8px;
+            display: block;
+        }
+
+        .ins strong {
+            color: var(--amber);
+            font-weight: 600;
+        }
+
+        /* --- Global Spinner Styles --- */
+        .spinner {
+            border-radius: 50%;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--amber);
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* --- Cell 1: Size Standard --- */
+        .size-grid {
+            display: flex;
+            align-items: flex-end;
+            gap: 24px;
+        }
+        .size-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        .size-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 8px;
+            color: var(--muted);
+        }
+
+        /* --- Cell 2: In-Element Context --- */
+        .context-box {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .demo-btn {
+            background: var(--amber);
+            color: #000;
+            border: none;
+            padding: 8px 16px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 600;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            border-radius: 2px;
+            width: 120px;
+            margin: 0 auto;
+        }
+        .demo-input {
+            background: #1a1a20;
+            border: 1px solid var(--border);
+            padding: 8px 12px;
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            color: var(--muted);
+            font-size: 11px;
+        }
+
+        /* --- Cell 3: Loading States --- */
+        .state-card {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+        }
+        .content-placeholder {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .line {
+            height: 8px;
+            background: #24242b;
+            border-radius: 2px;
+        }
+
+        /* --- Cell 4: Overlay Block --- */
+        .overlay-demo {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: #1a1a20;
+            border-radius: 2px;
+            overflow: hidden;
+            padding: 12px;
+        }
+        .overlay-layer {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            z-index: 10;
+        }
+        .overlay-text {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 9px;
+            color: var(--amber);
+            letter-spacing: 1px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="grid-container">
+        <!-- Cell 1: Visual Hierarchy -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">01</div>
+                <div class="card-title">Kích thước chuẩn</div>
+            </div>
+            <div class="sim-area">
+                <div class="size-grid">
+                    <div class="size-item">
+                        <div class="spinner" style="width: 16px; height: 16px; border-width: 2px;"></div>
+                        <div class="size-label">16px</div>
+                    </div>
+                    <div class="size-item">
+                        <div class="spinner" style="width: 24px; height: 24px; border-width: 2.5px;"></div>
+                        <div class="size-label">24px</div>
+                    </div>
+                    <div class="size-item">
+                        <div class="spinner" style="width: 32px; height: 32px; border-width: 3px;"></div>
+                        <div class="size-label">32px</div>
+                    </div>
+                    <div class="size-item">
+                        <div class="spinner" style="width: 48px; height: 48px; border-width: 4px;"></div>
+                        <div class="size-label">48px</div>
+                    </div>
+                </div>
+            </div>
+            <div class="ins">
+                Chọn <strong>kích thước</strong> phù hợp giúp duy trì <strong>Visual Hierarchy</strong>. Spinner quá lớn sẽ gây mất tập trung không cần thiết.
+            </div>
+        </div>
+
+        <!-- Cell 2: Contextual Placement -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">02</div>
+                <div class="card-title">Ngữ cảnh sử dụng</div>
+            </div>
+            <div class="sim-area">
+                <div class="context-box">
+                    <button class="demo-btn">
+                        <div class="spinner" style="width: 14px; height: 14px; border-width: 2px; border-top-color: #000; border-color: rgba(0,0,0,0.1);"></div>
+                        GỬI ĐI...
+                    </button>
+                    <div class="demo-input">
+                        <span>Đang kiểm tra email...</span>
+                        <div class="spinner" style="width: 14px; height: 14px; border-width: 2px;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="ins">
+                Spinner nên đặt <strong>trực tiếp</strong> bên cạnh hành động đang xử lý để người dùng biết <strong>chính xác</strong> phần nào đang tải.
+            </div>
+        </div>
+
+        <!-- Cell 3: Action States -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">03</div>
+                <div class="card-title">Trạng thái xử lý</div>
+            </div>
+            <div class="sim-area">
+                <div class="state-card" id="state-card">
+                    <div class="spinner" id="state-spinner" style="width: 28px; height: 28px; border-width: 3px;"></div>
+                    <div class="content-placeholder" id="state-content" style="display: none;">
+                        <div class="line" style="width: 100%;"></div>
+                        <div class="line" style="width: 85%;"></div>
+                        <div class="line" style="width: 40%;"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="ins">
+                Sử dụng spinner để thông báo <strong>tiến độ</strong> (Progress indication) thay vì để màn hình <strong>trống rỗng</strong> gây hoang mang.
+            </div>
+        </div>
+
+        <!-- Cell 4: Interaction Block -->
+        <div class="card">
+            <div class="indicator"></div>
+            <div class="card-header">
+                <div class="num-box">04</div>
+                <div class="card-title">Chặn tương tác</div>
+            </div>
+            <div class="sim-area">
+                <div class="overlay-demo">
+                    <div style="display: flex; flex-direction: column; gap: 6px;">
+                        <div class="line" style="width: 40%; background: #333;"></div>
+                        <div class="line" style="width: 100%; background: #333;"></div>
+                        <div class="line" style="width: 90%; background: #333;"></div>
+                    </div>
+                    <div class="overlay-layer" id="overlay-layer">
+                        <div class="spinner" style="width: 36px; height: 36px; border-width: 3.5px;"></div>
+                        <div class="overlay-text">SAVING...</div>
+                    </div>
+                </div>
+            </div>
+            <div class="ins">
+                Kết hợp với <strong>Overlay</strong> để chặn tương tác tạm thời, ngăn người dùng click <strong>trùng lặp</strong> trong khi chờ đợi.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const sleep = ms => new Promise(res => setTimeout(res, ms));
+
+        // Cell 3: Loading Sequence Loop
+        async function runSim3() {
+            const spinner = document.getElementById('state-spinner');
+            const content = document.getElementById('state-content');
+            while(true) {
+                spinner.style.display = 'block';
+                content.style.display = 'none';
+                await sleep(2500);
+                spinner.style.display = 'none';
+                content.style.display = 'flex';
+                await sleep(2000);
+            }
+        }
+
+        // Cell 4: Overlay Toggle Loop
+        async function runSim4() {
+            const overlay = document.getElementById('overlay-layer');
+            while(true) {
+                overlay.style.display = 'flex';
+                overlay.style.opacity = '1';
+                await sleep(3000);
+                overlay.style.opacity = '0';
+                await sleep(100);
+                overlay.style.display = 'none';
+                await sleep(2000);
+            }
+        }
+
+        runSim3();
+        runSim4();
+    </script>
+</body>
+</html>

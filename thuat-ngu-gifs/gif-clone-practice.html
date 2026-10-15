@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Clone GitHub Practice — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#131313;--card:#1c1c1c;--border:#2e2e2e;--fg:#e8ddd0;--muted:#6b6358;
+--accent:#E88C2E;--amber:#d4930d;--green:#6b9e78;--red:#c44;
+--mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);overflow-x:hidden}
+.grid-bg{position:fixed;inset:0;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
+.diag{position:fixed;inset:0;pointer-events:none;z-index:0;background:repeating-linear-gradient(45deg,transparent,transparent 96px,rgba(255,255,255,.012) 96px,rgba(255,255,255,.012) 97px)}
+.wrap{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:24px 16px 40px}
+
+/* ─── PRACTICE ─── */
+.practice{border:1px solid var(--border);background:var(--card);padding:clamp(16px,3vw,24px)}
+.pr-hdr{margin-bottom:16px}
+.pr-hdr h2{font-size:clamp(18px,3.5vw,24px);font-weight:700;margin-top:6px;line-height:1.2}
+.pr-goal{font-size:13px;color:var(--muted);margin-top:6px;line-height:1.4}
+.sb{display:flex;gap:4px;margin-bottom:14px}
+.sp{flex:1;height:6px;background:var(--border);transition:background .3s}
+.sp.dn{background:var(--green)}.sp.cr{background:var(--accent)}
+.ps{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
+@media(max-width:600px){.ps{grid-template-columns:1fr}}
+.term{background:#0a0a0a;border:1px solid var(--border);overflow:hidden}
+.tm-bar{display:flex;align-items:center;gap:6px;padding:7px 12px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.02)}
+.tm-d{width:8px;height:8px;border-radius:50%}.tm-d.r{background:#c44}.tm-d.y{background:var(--amber)}.tm-d.g{background:var(--green)}
+.tm-t{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:1px;margin-left:6px}
+.tm-b{padding:10px 12px;font-family:var(--mono);font-size:clamp(10px,1.4vw,12px);line-height:1.7;min-height:150px;overflow:hidden}
+.tl{opacity:0;transition:opacity .25s}.tl.vis{opacity:1}
+.tp{color:var(--accent)}.tc{color:var(--fg)}.to{color:var(--muted)}.tok{color:var(--green)}.tu{color:var(--amber)}
+.cur{display:inline-block;width:7px;height:1.1em;background:var(--accent);vertical-align:text-bottom;margin-left:1px;animation:bk .55s steps(1) infinite}
+@keyframes bk{50%{opacity:0}}
+.expl{border:1px solid var(--border);overflow:hidden;background:var(--card)}
+.ex-bar{padding:7px 12px;border-bottom:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:1px;display:flex;align-items:center;gap:6px}
+.ex-b{padding:6px 0;font-family:var(--mono);font-size:clamp(10px,1.4vw,12px);min-height:150px;overflow:hidden}
+.ei{padding:4px 12px;display:flex;align-items:center;gap:8px;opacity:0;transition:opacity .25s,transform .25s;transform:translateX(-8px)}
+.ei.vis{opacity:1;transform:none}.ei.ind{padding-left:28px}
+.ei-ic{width:14px;text-align:center;font-size:11px;flex-shrink:0}
+.ei-fd{color:var(--amber)}.ei-fl{color:var(--fg)}
+.ex-emp{padding:12px;color:var(--muted);font-style:italic;opacity:.5}
+.pv{border:1.5px solid var(--green);background:rgba(107,158,120,.05);padding:10px 14px;display:none;align-items:center;gap:10px;margin-bottom:14px;font-size:12px}
+.pv.show{display:flex}
+.pv-dot{width:7px;height:7px;border-radius:50%;background:var(--green);flex-shrink:0}
+.pv-url{font-family:var(--mono);color:var(--green);font-size:11px}
+.pa{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.pd{font-size:13px;color:var(--fg);line-height:1.4;flex:1;min-width:200px}
+.pn{font-family:var(--mono);font-size:11px;letter-spacing:1px;text-transform:uppercase;padding:8px 18px;border:1.5px solid var(--accent);background:none;color:var(--accent);cursor:pointer;transition:background .2s,color .2s;flex-shrink:0}
+.pn:hover{background:var(--accent);color:var(--bg)}
+.pn:disabled{opacity:.3;pointer-events:none}
+.pr-res{margin-top:14px;padding:12px 14px;border:1.5px solid var(--green);background:rgba(107,158,120,.06);display:none;align-items:center;gap:10px;font-size:13px;line-height:1.4}
+.pr-res.show{display:flex}
+.pr-res .ck{font-family:var(--mono);font-weight:700;color:var(--green);font-size:16px;flex-shrink:0}
+.pr-res .rd{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--accent);border:1px solid var(--accent);padding:3px 10px;cursor:pointer;background:none;flex-shrink:0;letter-spacing:1px;text-transform:uppercase;transition:background .2s}
+.pr-res .rd:hover{background:rgba(232,140,46,.1)}
+.pr-hint{margin-top:14px;font-size:12px;color:var(--muted);line-height:1.4;padding-left:12px;border-left:2px solid var(--border)}
+
+@media(max-width:640px){
+  .ps{grid-template-columns:1fr}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<div class="grid-bg"></div>
+<div class="diag"></div>
+<div class="wrap">
+
+  <section class="practice">
+    <div class="pr-hdr">
+      <h2>Thực hiện clone qua 4 bước</h2>
+      <p class="pr-goal">Click qua từng bước để thấy chuyện gì xảy ra trong terminal và file explorer.</p>
+    </div>
+    <div class="sb" id="sBar">
+      <div class="sp"></div><div class="sp"></div><div class="sp"></div><div class="sp"></div><div class="sp"></div>
+    </div>
+    <div class="pv" id="pvB">
+      <div class="pv-dot"></div>
+      <span class="pv-url">http://localhost:3000</span>
+      <span style="color:var(--muted);font-size:11px;margin-left:auto">Dev server chạy</span>
+    </div>
+    <div class="ps">
+      <div class="term">
+        <div class="tm-bar"><span class="tm-d r"></span><span class="tm-d y"></span><span class="tm-d g"></span><span class="tm-t">TERMINAL</span></div>
+        <div class="tm-b" id="tmB"></div>
+      </div>
+      <div class="expl">
+        <div class="ex-bar">▣ EXPLORER</div>
+        <div class="ex-b" id="exB"></div>
+      </div>
+    </div>
+    <div class="pa">
+      <div class="pd" id="pDsc">Bạn cần lấy code từ GitHub về máy để bắt đầu vibecode.</div>
+      <button class="pn" id="pNxt">Bắt đầu</button>
+    </div>
+    <div class="pr-res" id="pRes">
+      <span class="ck">✓</span>
+      <span>Clone xong, chạy được dev server. Bạn đã nắm quy trình cơ bản.</span>
+      <button class="rd" id="pRd">Làm lại</button>
+    </div>
+    <div class="pr-hint">Click "Bắt đầu" rồi đi từng bước. Để ý terminal output — đó là thứ bạn sẽ thấy thật khi clone.</div>
+  </section>
+</div>
+
+<script>
+/* ═══════════ Practice ═══════════ */
+let pSt=0,pTms=[];
+const tmB=document.getElementById('tmB'),exB=document.getElementById('exB');
+const pDsc=document.getElementById('pDsc'),pNxt=document.getElementById('pNxt');
+const sBar=document.getElementById('sBar'),pvB=document.getElementById('pvB'),pRes=document.getElementById('pRes');
+
+function pl(fn,ms){const id=setTimeout(fn,ms);pTms.push(id)}
+function pcl(){pTms.forEach(clearTimeout);pTms=[]}
+
+function addTL(h,d){pl(()=>{const e=document.createElement('div');e.className='tl';e.innerHTML=h;tmB.appendChild(e);requestAnimationFrame(()=>e.classList.add('vis'))},d)}
+function addEI(h,ind,d){pl(()=>{const em=exB.querySelector('.ex-emp');if(em)em.remove();const e=document.createElement('div');e.className='ei'+(ind?' ind':'');e.innerHTML=h;exB.appendChild(e);requestAnimationFrame(()=>e.classList.add('vis'))},d)}
+
+function upBar(){const ps=sBar.querySelectorAll('.sp');ps.forEach((p,i)=>{p.classList.remove('dn','cr');if(i<pSt)p.classList.add('dn');else if(i===pSt)p.classList.add('cr')})}
+
+function runS(s){
+  pcl();tmB.innerHTML='';exB.innerHTML='<div class="ex-emp">Chưa có project</div>';
+  pvB.classList.remove('show');pRes.classList.remove('show');
+  switch(s){
+    case 0:
+      addTL('<span class="tp">$ </span><span class="cur"></span>',100);
+      pDsc.textContent='Bạn cần lấy code từ GitHub về máy để bắt đầu vibecode.';
+      pNxt.textContent='Bắt đầu';pNxt.style.display='';break;
+    case 1:
+      addTL('<span class="to"># Copy URL từ trang GitHub</span>',100);
+      addTL('<span class="tu">https://github.com/brand/landing-page.git</span>',400);
+      addTL('<span class="tok">✓ URL copied</span>',900);
+      pDsc.textContent='Bước 1: Mở trang repo trên GitHub, nhấn nút "Code", copy URL.';
+      pNxt.textContent='Tiếp theo →';break;
+    case 2:
+      addTL('<span class="tp">$ </span><span class="tc">git clone https://github.com/brand/landing-page.git</span>',100);
+      addTL('<span class="to">Cloning into \'landing-page\'...</span>',500);
+      addTL('<span class="to">remote: Enumerating objects: 247, done.</span>',900);
+      addTL('<span class="to">remote: Counting objects: 100% (247/247)</span>',1200);
+      addEI('<span class="ei-ic ei-fd">▸</span><span class="ei-fd">landing-page/</span>',false,600);
+      pDsc.textContent='Bước 2: Dán URL vào terminal, gõ git clone. Toàn bộ project đang download.';
+      pNxt.textContent='Tiếp theo →';break;
+    case 3:
+      addTL('<span class="to">...done.</span>',100);
+      addTL('<span class="tok">✓ Clone hoàn tất</span>',300);
+      addEI('<span class="ei-ic ei-fd">▾</span><span class="ei-fd">landing-page/</span>',false,100);
+      addEI('<span class="ei-ic ei-fd">▸</span><span class="ei-fd">src/</span>',true,300);
+      addEI('<span class="ei-ic">■</span><span class="ei-fl">app.js</span>',true,500);
+      addEI('<span class="ei-ic">■</span><span class="ei-fl">index.html</span>',true,700);
+      addEI('<span class="ei-ic ei-fd">▸</span><span class="ei-fd">public/</span>',true,900);
+      addEI('<span class="ei-ic">■</span><span class="ei-fl">package.json</span>',false,1100);
+      addEI('<span class="ei-ic">■</span><span class="ei-fl">.gitignore</span>',false,1300);
+      addEI('<span class="ei-ic">■</span><span class="ei-fl">README.md</span>',false,1500);
+      pDsc.textContent='Bước 3: Toàn bộ project đã có trên máy — files, folders, cấu hình, history, tất cả.';
+      pNxt.textContent='Tiếp theo →';break;
+    case 4:
+      addTL('<span class="tp">$ </span><span class="tc">cd landing-page</span>',100);
+      addTL('<span class="tp">$ </span><span class="tc">npm run dev</span>',400);
+      addTL('<span class="to">  VITE v5.4.0  ready</span>',800);
+      addTL('<span class="tok">  ➜  Local:   http://localhost:3000/</span>',1100);
+      pl(()=>pvB.classList.add('show'),1400);
+      addEI('<span class="ei-ic ei-fd">▾</span><span class="ei-fd">landing-page/</span>',false,100);
+      addEI('<span class="ei-ic ei-fd">▸</span><span class="ei-fd">src/</span>',true,250);
+      addEI('<span class="ei-ic">■</span><span class="ei-fl">app.js</span>',true,350);
+      addEI('<span class="ei-ic">■</span><span class="ei-fl">index.html</span>',true,450);
+      addEI('<span class="ei-ic ei-fd">▸</span><span class="ei-fd">public/</span>',true,550);
+      addEI('<span class="ei-ic">■</span><span class="ei-fl">package.json</span>',false,650);
+      addEI('<span class="ei-ic">■</span><span class="ei-fl">.gitignore</span>',false,750);
+      addEI('<span class="ei-ic">■</span><span class="ei-fl">README.md</span>',false,850);
+      pDsc.textContent='Bước 4: Di chuyển vào folder, chạy dev server. Sẵn sàng vibecode.';
+      pNxt.style.display='none';
+      pl(()=>pRes.classList.add('show'),1600);break;
+  }
+  upBar();
+}
+
+pNxt.addEventListener('click',()=>{if(pSt<4){pSt++;runS(pSt)}});
+document.getElementById('pRd').addEventListener('click',()=>{pSt=0;runS(0)});
+runS(0);
+</script>
+</body>
+</html>

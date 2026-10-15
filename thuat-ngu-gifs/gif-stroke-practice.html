@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stroke Practice — markAI</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  :root{
+    --bg:#0f0f12;--bg-card:#16161b;--fg:#e8e4dc;--muted:#6e6e7a;
+    --accent:#e88c2e;--accent-soft:rgba(232,140,46,.12);
+    --accent-border:rgba(232,140,46,.3);--border:#282830;
+    --surface:#1c1c23;--success:#3a9e5c;--success-soft:rgba(58,158,92,.12);
+    --warning:#c49030;--warning-soft:rgba(196,144,48,.1);
+    --strk-fill:rgba(232,140,46,.06);
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{
+    background:var(--bg);color:var(--fg);
+    font-family:'Space Grotesk',sans-serif;line-height:1.6;
+    overflow-x:hidden;
+  }
+  body::before{
+    content:'';position:fixed;inset:0;
+    background-image:radial-gradient(rgba(255,255,255,.022) 1px,transparent 1px);
+    background-size:20px 20px;pointer-events:none;z-index:0;
+  }
+
+  #app-root{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:24px}
+
+  .pg{font-size:15px;color:var(--fg);opacity:.8;margin-bottom:22px;line-height:1.6}
+  .pg span{color:var(--accent);font-weight:600}
+
+  .ctx-r{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:26px}
+  .ctx-b{
+    font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:500;
+    padding:8px 14px;border:1px solid var(--border);background:transparent;
+    color:var(--muted);cursor:pointer;transition:all .25s;
+    display:flex;align-items:center;gap:8px;
+  }
+  .ctx-b:hover{border-color:var(--accent-border);color:var(--fg)}
+  .ctx-b.on{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+  .ctx-b .cd{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);opacity:.6}
+  .ctx-b.on .cd{opacity:1;color:var(--accent)}
+
+  .sl-sec{margin-bottom:28px}
+  .sl-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+  .sl-lbl{font-size:12px;color:var(--muted)}
+  .sl-val{
+    font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:600;
+    color:var(--accent);transition:color .3s;
+  }
+  .sl-val.ok{color:var(--success)}
+
+  .sl-wrap{position:relative;height:34px}
+  .sl-track{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);height:4px;background:var(--border);z-index:0}
+  .sl-zone{
+    position:absolute;top:50%;transform:translateY(-50%);
+    height:4px;background:var(--accent-soft);border:1px solid var(--accent-border);
+    z-index:1;pointer-events:none;transition:left .4s ease,width .4s ease,background .3s,border-color .3s;
+  }
+  .sl-zone.hit{background:var(--success-soft);border-color:rgba(58,158,92,.35)}
+
+  input[type=range]{
+    -webkit-appearance:none;appearance:none;
+    width:100%;height:34px;background:transparent;
+    outline:none;cursor:pointer;position:absolute;top:0;left:0;z-index:2;
+  }
+  input[type=range]::-webkit-slider-runnable-track{height:4px;background:transparent}
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;width:18px;height:18px;
+    background:var(--accent);border:2px solid var(--bg);margin-top:-7px;cursor:grab;
+    transition:box-shadow .2s,background .2s;
+  }
+  input[type=range]::-moz-range-track{height:4px;background:transparent;border:none}
+  input[type=range]::-moz-range-thumb{
+    width:18px;height:18px;background:var(--accent);
+    border:2px solid var(--bg);cursor:grab;border-radius:0;
+  }
+  input[type=range].ok::-webkit-slider-thumb{background:var(--success);box-shadow:0 0 14px rgba(58,158,92,.3)}
+  input[type=range]:focus-visible{outline:2px solid var(--accent);outline-offset:4px;border-radius:0}
+
+  .sl-ticks{display:flex;justify-content:space-between;padding:5px 0 0}
+  .sl-ticks span{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);opacity:.4}
+
+  .prev{
+    background:var(--bg-card);border:1px solid var(--border);
+    padding:40px 28px;margin-bottom:18px;min-height:220px;
+    transition:border-color .3s;position:relative;overflow:visible;
+  }
+  .prev::before{
+    content:'';position:absolute;inset:0;
+    background-image:linear-gradient(rgba(255,255,255,.007) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.007) 1px,transparent 1px);
+    background-size:16px 16px;pointer-events:none;z-index:0;
+  }
+  .prev.ok-b{border-color:rgba(58,158,92,.25)}
+  .prev-lbl{
+    position:absolute;top:10px;left:14px;z-index:2;
+    font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;
+    text-transform:uppercase;color:var(--muted);opacity:.4;
+  }
+
+  .prev-content{position:relative;z-index:1;display:flex;gap:40px;justify-content:center;align-items:center;flex-wrap:wrap}
+  
+  .sk-svg{overflow:visible}
+  .sk-shape{fill:var(--strk-fill);stroke:var(--accent);transition:stroke-width .15s ease}
+  
+  .prev-item{display:flex;flex-direction:column;align-items:center;gap:12px}
+  .prev-item-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);opacity:.5;letter-spacing:1px;text-transform:uppercase}
+
+  .fb{
+    display:inline-flex;align-items:center;gap:8px;
+    padding:8px 16px;font-size:13px;font-weight:500;
+    border:1px solid var(--border);background:var(--bg-card);transition:all .3s;
+  }
+  .fb.ok{border-color:rgba(58,158,92,.4);color:var(--success);background:var(--success-soft)}
+  .fb.no{border-color:rgba(196,144,48,.3);color:var(--warning);background:var(--warning-soft)}
+
+  .hint{font-size:12px;color:var(--muted);opacity:.5;margin-top:10px;display:flex;align-items:center;gap:6px}
+  .hint i{font-size:10px;color:var(--accent)}
+
+  @media(max-width:480px){
+    #app-root{padding:14px}
+    .prev{padding:32px 16px}
+    .ctx-b{padding:7px 10px;font-size:12px}
+  }
+</style>
+</head>
+<body>
+
+<div id="app-root">
+  <section aria-label="Thực hành stroke weight">
+    <p class="pg">
+      <span>Mục tiêu:</span> Điều chỉnh stroke-width phù hợp cho từng loại đối tượng vector.
+    </p>
+
+    <div class="ctx-r" id="ctxR"></div>
+
+    <div class="sl-sec">
+      <div class="sl-head">
+        <span class="sl-lbl">stroke-width</span>
+        <span class="sl-val" id="sV">1.5px</span>
+      </div>
+      <div class="sl-wrap">
+        <div class="sl-track"></div>
+        <div class="sl-zone" id="sZ"></div>
+        <input type="range" id="sR" min="0.5" max="6" step="0.5" value="1.5" aria-label="Điều chỉnh stroke-width">
+      </div>
+      <div class="sl-ticks">
+        <span>0.5</span><span>2</span><span>3.5</span><span>5</span><span>6</span>
+      </div>
+    </div>
+
+    <div class="ctx-r" id="cornerR" style="margin-bottom:20px"></div>
+
+    <div class="prev" id="prevBox">
+      <span class="prev-lbl" id="prevLbl">ICON</span>
+      <div class="prev-content" id="prevContent">
+        <div class="prev-item">
+          <svg width="60" height="60" class="sk-svg"><rect x="5" y="5" width="50" height="50" class="sk-shape" id="skRect"/></svg>
+          <div class="prev-item-label">Rectangle</div>
+        </div>
+        <div class="prev-item">
+          <svg width="60" height="60" class="sk-svg"><circle cx="30" cy="30" r="25" class="sk-shape" id="skCircle"/></svg>
+          <div class="prev-item-label">Circle</div>
+        </div>
+        <div class="prev-item">
+          <svg width="60" height="60" class="sk-svg"><polygon points="30,5 55,50 5,50" class="sk-shape" id="skTri"/></svg>
+          <div class="prev-item-label">Triangle</div>
+        </div>
+        <div class="prev-item">
+          <svg width="60" height="60" class="sk-svg">
+            <line x1="10" y1="10" x2="50" y2="50" stroke="var(--muted)" stroke-width="1" opacity="0.2"/>
+            <line x1="10" y1="10" x2="50" y2="50" class="sk-shape" id="skLine"/>
+          </svg>
+          <div class="prev-item-label">Line (Caps)</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ctx-r" id="capR" style="margin-bottom:20px"></div>
+
+    <div class="fb" id="fb">
+      <i class="fa-solid fa-circle-info"></i>
+      <span>Chọn loại đối tượng rồi kéo slider</span>
+    </div>
+    <p class="hint" id="hintE">
+      <i class="fa-solid fa-lightbulb"></i>
+      Mẹo: Tăng stroke-width > 3px để thấy rõ Corner (cho Rect/Tri) và Cap (cho Line).
+    </p>
+  </section>
+</div>
+
+<script>
+  const ctxs = [
+    { id:'icon', name:'Icon', desc:'Biểu tượng', range:[1, 2],
+      hint:'Icon thường dùng stroke từ 1.5px đến 2px để đảm bảo độ rõ nét trên màn hình nhỏ.' },
+    { id:'logo', name:'Logo', desc:'Thương hiệu', range:[2, 4],
+      hint:'Logo cần stroke dày hơn để tạo sự vững chãi và dễ nhận diện từ xa.' },
+    { id:'chart', name:'Chart', desc:'Biểu đồ', range:[0.5, 1.5],
+      hint:'Biểu đồ cần nét mảnh để không làm lu mờ dữ liệu và các điểm chi tiết.' },
+    { id:'illustration', name:'Illust', desc:'Minh họa', range:[1.5, 3],
+      hint:'Minh họa vector có thể kết hợp nhiều độ dày, nhưng 2px là mức trung bình an toàn.' }
+  ];
+
+  const corners = [
+    { id:'miter', name:'Miter', desc:'Nhọn' },
+    { id:'round', name:'Round', desc:'Bo tròn' },
+    { id:'bevel', name:'Bevel', desc:'Cắt vát' }
+  ];
+
+  const caps = [
+    { id:'butt', name:'Butt', desc:'Phẳng' },
+    { id:'round', name:'Round', desc:'Bo tròn' },
+    { id:'square', name:'Square', desc:'Dôi vuông' }
+  ];
+
+  const ctxR = document.getElementById('ctxR');
+  const cornerR = document.getElementById('cornerR');
+  const capR = document.getElementById('capR');
+  const sR = document.getElementById('sR');
+  const sV = document.getElementById('sV');
+  const sZ = document.getElementById('sZ');
+  const prevBox = document.getElementById('prevBox');
+  const prevLbl = document.getElementById('prevLbl');
+  const fb = document.getElementById('fb');
+  const hintE = document.getElementById('hintE');
+  
+  const shapes = [
+    document.getElementById('skRect'),
+    document.getElementById('skCircle'),
+    document.getElementById('skTri'),
+    document.getElementById('skLine')
+  ];
+
+  let curCtx = ctxs[0];
+  let curCorner = corners[0];
+  let curCap = caps[0];
+
+  function renderCtx() {
+    ctxR.innerHTML = ctxs.map((c, i) => `
+      <button class="ctx-b${i === 0 ? ' on' : ''}" data-id="${c.id}">
+        ${c.name}<span class="cd">${c.desc}</span>
+      </button>`).join('');
+    ctxR.querySelectorAll('.ctx-b').forEach(b => {
+      b.addEventListener('click', () => pickCtx(b.dataset.id));
+    });
+
+    cornerR.innerHTML = '<span style="font-family:\'JetBrains Mono\',monospace;font-size:10px;color:var(--muted);margin-right:10px;align-self:center">CORNER:</span>' + 
+      corners.map((c, i) => `
+      <button class="ctx-b${i === 0 ? ' on' : ''}" data-id="${c.id}" style="padding:6px 10px">
+        ${c.name}
+      </button>`).join('');
+    cornerR.querySelectorAll('button').forEach(b => {
+      b.addEventListener('click', () => pickCorner(b.dataset.id));
+    });
+
+    capR.innerHTML = '<span style="font-family:\'JetBrains Mono\',monospace;font-size:10px;color:var(--muted);margin-right:10px;align-self:center">LINE CAP:</span>' + 
+      caps.map((c, i) => `
+      <button class="ctx-b${i === 0 ? ' on' : ''}" data-id="${c.id}" style="padding:6px 10px">
+        ${c.name}
+      </button>`).join('');
+    capR.querySelectorAll('button').forEach(b => {
+      b.addEventListener('click', () => pickCap(b.dataset.id));
+    });
+  }
+
+  function pickCtx(id) {
+    curCtx = ctxs.find(c => c.id === id);
+    ctxR.querySelectorAll('.ctx-b').forEach(b => b.classList.toggle('on', b.dataset.id === id));
+    prevLbl.textContent = id.toUpperCase();
+    updateZone();
+    checkZone();
+    hintE.innerHTML = `<i class="fa-solid fa-arrow-up-right"></i> ${curCtx.hint}`;
+  }
+
+  function pickCorner(id) {
+    curCorner = corners.find(c => c.id === id);
+    cornerR.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.id === id));
+    checkZone();
+  }
+
+  function pickCap(id) {
+    curCap = caps.find(c => c.id === id);
+    capR.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.dataset.id === id));
+    checkZone();
+  }
+
+  function updateZone() {
+    const minVal = 0.5, maxVal = 6, span = maxVal - minVal;
+    const zl = curCtx.range[0], zh = curCtx.range[1];
+    sZ.style.left = ((zl - minVal) / span * 100) + '%';
+    sZ.style.width = ((zh - zl) / span * 100) + '%';
+    sZ.classList.remove('hit');
+  }
+
+  function checkZone() {
+    const v = parseFloat(sR.value);
+    const inZ = v >= curCtx.range[0] && v <= curCtx.range[1];
+    
+    sR.classList.toggle('ok', inZ);
+    sV.classList.toggle('ok', inZ);
+    sZ.classList.toggle('hit', inZ);
+    prevBox.classList.toggle('ok-b', inZ);
+
+    shapes.forEach(s => {
+      s.setAttribute('stroke-width', v);
+      s.setAttribute('stroke-linejoin', curCorner.id);
+      s.setAttribute('stroke-linecap', curCap.id);
+      s.setAttribute('stroke', inZ ? 'var(--success)' : 'var(--accent)');
+    });
+
+    if (inZ) {
+      fb.className = 'fb ok';
+      fb.innerHTML = `<i class="fa-solid fa-check"></i><span>Weight này rất hợp với ${curCtx.name.toLowerCase()}</span>`;
+    } else {
+      fb.className = 'fb no';
+      fb.innerHTML = `<i class="fa-solid fa-xmark"></i><span>Weight này có vẻ quá ${v < curCtx.range[0] ? 'mảnh' : 'đậm'} cho ${curCtx.name.toLowerCase()}</span>`;
+    }
+  }
+
+  sR.addEventListener('input', () => {
+    const v = sR.value;
+    sV.textContent = v + 'px';
+    checkZone();
+  });
+
+  renderCtx();
+  pickCtx('icon');
+  sR.value = 1.5;
+  sV.textContent = '1.5px';
+  checkZone();
+</script>
+</body>
+</html>

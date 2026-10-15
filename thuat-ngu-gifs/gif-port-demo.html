@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Port Demo — Amber Brutalist</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0c;
+      --card-bg: #16161b;
+      --amber: #E88C2E;
+      --gray: #707070;
+      --text: #e0e0e0;
+      --gap: 14px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      background: var(--bg); 
+      color: var(--text); 
+      font-family: 'Space Grotesk', sans-serif; 
+      display: flex; 
+      justify-content: center; 
+      padding: 40px 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--gap);
+      max-width: 940px;
+      width: 100%;
+    }
+
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 3px;
+      position: relative;
+      padding-top: 2px; /* For accent bar */
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #222;
+    }
+
+    .accent-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--amber);
+    }
+
+    .indicator {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 6px;
+      height: 6px;
+      background: var(--amber);
+      border-radius: 50%;
+      animation: blink 1.2s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(0.8); }
+    }
+
+    .card-header {
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .card-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      border: 1px solid rgba(232, 140, 46, 0.4);
+      padding: 3px 8px;
+      color: var(--amber);
+      background: rgba(232, 140, 46, 0.05);
+      border-radius: 2px;
+      line-height: 1;
+    }
+
+    .card-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+    }
+
+    .demo-area {
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #0d0d10;
+      margin: 0 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Port Visualization */
+    .server-box {
+      width: 120px;
+      height: 100px;
+      border: 1px solid #333;
+      background: rgba(255,255,255,0.02);
+      border-radius: 4px;
+      display: flex;
+      flex-direction: column;
+      padding: 8px;
+      gap: 6px;
+      position: relative;
+    }
+
+    .port-hole {
+      width: 100%;
+      height: 20px;
+      background: #1a1a20;
+      border: 1px solid #222;
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      color: #555;
+      position: relative;
+    }
+
+    .port-hole.active {
+      border-color: var(--amber);
+      color: var(--amber);
+      background: rgba(232, 140, 46, 0.05);
+    }
+
+    .traffic {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: var(--amber);
+      border-radius: 50%;
+      left: -40px;
+      top: 50%;
+      transform: translateY(-50%);
+      box-shadow: 0 0 10px var(--amber);
+    }
+
+    .port-label {
+      position: absolute;
+      bottom: 8px;
+      right: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--amber);
+      background: rgba(0,0,0,0.4);
+      padding: 2px 6px;
+      border-radius: 2px;
+    }
+
+    .ins {
+      padding: 12px 16px;
+      margin: 12px 16px 16px;
+      border-left: 2px solid var(--amber);
+      font-size: 11.5px;
+      color: var(--gray);
+      line-height: 1.5;
+    }
+
+    .ins strong {
+      color: var(--amber);
+      font-weight: 600;
+    }
+
+    /* Specific Styles for Scenes */
+    .mapping-flow {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .box-mini {
+      padding: 4px 8px;
+      border: 1px solid #333;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+    }
+
+    .arrow {
+      color: var(--amber);
+      font-weight: bold;
+    }
+
+    .port-list {
+      width: 100%;
+      padding: 0 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .port-item {
+      display: flex;
+      justify-content: space-between;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      padding: 4px 0;
+      border-bottom: 1px solid #1a1a20;
+    }
+
+    .port-val { color: var(--amber); }
+    .port-name { color: #888; }
+
+  </style>
+</head>
+<body>
+
+  <div class="grid">
+    <!-- Cell 01: Multi-door Concept -->
+    <div class="card">
+      <div class="accent-bar"></div>
+      <div class="indicator"></div>
+      <div class="card-header">
+        <span class="card-num">01</span>
+        <span class="card-title">Multiple Entry Doors</span>
+      </div>
+      <div class="demo-area">
+        <div class="server-box">
+          <div class="port-hole active" id="p1_1">PORT: 80</div>
+          <div class="port-hole" id="p1_2">PORT: 443</div>
+          <div class="port-hole" id="p1_3">PORT: 3000</div>
+        </div>
+        <div class="traffic" id="t1"></div>
+        <div class="port-label" id="lbl1">Service Selection</div>
+      </div>
+      <div class="ins">
+        Mỗi <strong>port</strong> (cổng) giống như một <strong>cánh cửa</strong> dẫn vào các dịch vụ khác nhau trên cùng một máy chủ.
+      </div>
+    </div>
+
+    <!-- Cell 02: Refused Connection -->
+    <div class="card">
+      <div class="accent-bar"></div>
+      <div class="indicator"></div>
+      <div class="card-header">
+        <span class="card-num">02</span>
+        <span class="card-title">Connection Refused</span>
+      </div>
+      <div class="demo-area">
+        <div class="server-box" style="border-style: dashed;">
+          <div class="port-hole" style="opacity: 0.3;">PORT: 80</div>
+          <div class="port-hole" id="p2_target" style="border-color: #c44;">CLOSED</div>
+          <div class="port-hole" style="opacity: 0.3;">PORT: 3000</div>
+        </div>
+        <div class="traffic" id="t2"></div>
+        <div class="port-label" id="lbl2" style="color: #c44;">Port: 5432</div>
+      </div>
+      <div class="ins">
+        Nếu bạn gõ sai số cổng, trình duyệt sẽ báo lỗi <strong>Connection Refused</strong> vì gõ nhầm cửa hoặc cửa đang đóng.
+      </div>
+    </div>
+
+    <!-- Cell 03: Port Mapping -->
+    <div class="card">
+      <div class="accent-bar"></div>
+      <div class="indicator"></div>
+      <div class="card-header">
+        <span class="card-num">03</span>
+        <span class="card-title">Port Mapping</span>
+      </div>
+      <div class="demo-area">
+        <div class="mapping-flow">
+          <div class="box-mini" id="m_ext">EXT: 8080</div>
+          <div class="arrow">→</div>
+          <div class="box-mini" id="m_int" style="border-color: var(--amber); color: var(--amber);">INT: 3000</div>
+        </div>
+        <div class="port-label">Traffic Routing</div>
+      </div>
+      <div class="ins">
+        <strong>Port Mapping</strong> giúp chuyển hướng truy cập từ cổng bên ngoài vào đúng cổng mà ứng dụng đang chạy bên trong.
+      </div>
+    </div>
+
+    <!-- Cell 04: Common Knowledge -->
+    <div class="card">
+      <div class="accent-bar"></div>
+      <div class="indicator"></div>
+      <div class="card-header">
+        <span class="card-num">04</span>
+        <span class="card-title">Common Ports</span>
+      </div>
+      <div class="demo-area">
+        <div class="port-list">
+          <div class="port-item"><span class="port-val">:80</span> <span class="port-name">HTTP</span></div>
+          <div class="port-item"><span class="port-val">:443</span> <span class="port-name">HTTPS</span></div>
+          <div class="port-item"><span class="port-val">:3000</span> <span class="port-name">Dev Server</span></div>
+          <div class="port-item"><span class="port-val">:5432</span> <span class="port-name">Postgres</span></div>
+        </div>
+        <div class="port-label">Standard Keys</div>
+      </div>
+      <div class="ins">
+        Ghi nhớ các <strong>Common Ports</strong> giúp bạn xác định nhanh lỗi nằm ở <strong>ứng dụng</strong> hay <strong>database</strong>.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Cell 01: Multi-door Loop
+    const t1 = document.getElementById('t1');
+    const p1s = [document.getElementById('p1_1'), document.getElementById('p1_2'), document.getElementById('p1_3')];
+    const lbl1 = document.getElementById('lbl1');
+    const ports1 = [80, 443, 3000];
+    let i1 = 0;
+
+    function anim1() {
+      const idx = i1 % 3;
+      p1s.forEach(p => p.classList.remove('active'));
+      t1.style.transition = 'none';
+      t1.style.left = '-40px';
+      t1.style.top = '50%';
+      t1.style.opacity = '1';
+      t1.style.background = 'var(--amber)';
+      
+      setTimeout(() => {
+        t1.style.transition = 'all 0.8s ease-in';
+        t1.style.left = '40px';
+        const rect = p1s[idx].getBoundingClientRect();
+        const areaRect = t1.parentElement.getBoundingClientRect();
+        t1.style.top = (rect.top - areaRect.top + 10) + 'px';
+        
+        setTimeout(() => {
+          p1s[idx].classList.add('active');
+          lbl1.textContent = `Accessing :${ports1[idx]}`;
+          t1.style.opacity = '0';
+          i1++;
+          setTimeout(anim1, 1500);
+        }, 800);
+      }, 100);
+    }
+    anim1();
+
+    // Cell 02: Refused Loop
+    const t2 = document.getElementById('t2');
+    const target2 = document.getElementById('p2_target');
+    
+    function anim2() {
+      t2.style.transition = 'none';
+      t2.style.left = '-40px';
+      t2.style.top = '50%';
+      t2.style.opacity = '1';
+      t2.style.background = 'var(--amber)';
+      
+      setTimeout(() => {
+        t2.style.transition = 'all 0.6s ease-in';
+        t2.style.left = '40px';
+        
+        setTimeout(() => {
+          t2.style.background = '#c44';
+          t2.style.transform = 'translateY(-50%) scale(1.5)';
+          setTimeout(() => {
+            t2.style.opacity = '0';
+            t2.style.transform = 'translateY(-50%) scale(1)';
+            setTimeout(anim2, 2000);
+          }, 300);
+        }, 600);
+      }, 100);
+    }
+    anim2();
+
+    // Cell 03: Mapping Loop
+    const mExt = document.getElementById('m_ext');
+    const mInt = document.getElementById('m_int');
+    const pairs = [
+      {e: '8080', i: '3000'},
+      {e: '5433', i: '5432'},
+      {e: '80', i: '80'}
+    ];
+    let i3 = 0;
+    setInterval(() => {
+      const p = pairs[i3 % pairs.length];
+      mExt.textContent = `EXT: ${p.e}`;
+      mInt.textContent = `INT: ${p.i}`;
+      i3++;
+    }, 2000);
+
+    // Cell 04: Highlight Loop
+    const pItems = document.querySelectorAll('.port-item');
+    let i4 = 0;
+    setInterval(() => {
+      pItems.forEach(item => item.style.background = 'transparent');
+      pItems[i4 % pItems.length].style.background = 'rgba(232, 140, 46, 0.1)';
+      i4++;
+    }, 1200);
+
+  </script>
+</body>
+</html>

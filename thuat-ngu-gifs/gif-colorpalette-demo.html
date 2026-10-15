@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Color Palette Demo — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f0f12;
+  --bgc: #16161b;
+  --bgi: #121217;
+  --bd: #282830;
+  --tx: #e8e4dc;
+  --txm: #707070;
+  --ac: #E88C2E;
+  --abg: rgba(232, 140, 46, 0.1);
+  --abg2: rgba(232, 140, 46, 0.2);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--tx);
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.g {
+  width: 100%;
+  max-width: 940px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 600px) {
+  .g { grid-template-columns: 1fr; }
+}
+
+.c {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.c::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--ac);
+}
+
+.c::after {
+  content: '';
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 6px;
+  height: 6px;
+  background: var(--ac);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--ac);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0.3; transform: scale(1); }
+}
+
+.ch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.ch .n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ac);
+  background: var(--abg);
+  border: 1px solid var(--abg2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+.ch h2 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+}
+
+.st {
+  background: var(--bgi);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  flex: 1;
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ins {
+  margin-top: 14px;
+  font-size: 11.5px;
+  color: var(--txm);
+  line-height: 1.6;
+  padding-left: 12px;
+  border-left: 2px solid var(--ac);
+}
+
+.ins strong {
+  color: var(--ac);
+  font-weight: 600;
+}
+
+.val {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--txm);
+  background: rgba(0,0,0,0.2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+/* Visuals for Color Palette */
+.swatches {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  justify-content: center;
+}
+.swatch {
+  width: 45px;
+  height: 80px;
+  border-radius: 4px;
+  border: 1px solid var(--bd);
+  transition: all 0.5s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 6px;
+}
+.swatch-hex {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 7px;
+  color: rgba(255,255,255,0.8);
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+.swatch:hover .swatch-hex { opacity: 1; }
+
+.status-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  width: 100%;
+}
+.status-card {
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid var(--bd);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  transition: all 0.4s;
+}
+.status-title { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
+.status-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+.neutral-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+.neutral-bar {
+  height: 24px;
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  font-size: 9px;
+  font-family: 'JetBrains Mono', monospace;
+  transition: all 0.3s;
+}
+
+.contrast-preview {
+  width: 100%;
+  height: 100px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.5s;
+  padding: 12px;
+  text-align: center;
+}
+.contrast-preview h3 { font-size: 16px; margin: 0; }
+.contrast-preview p { font-size: 10px; opacity: 0.8; }
+.badge-aa {
+  padding: 2px 6px;
+  background: #3a9e5c;
+  color: white;
+  border-radius: 10px;
+  font-size: 8px;
+  font-weight: 800;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+</style>
+</head>
+<body>
+
+<div class="g">
+  <!-- 01: Brand Palette -->
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>Bảng màu Thương hiệu</h2></div>
+    <div class="st">
+      <div class="swatches" id="brandSwatches">
+        <div class="swatch" style="background: #E88C2E;"><span class="swatch-hex">#E88C2E</span></div>
+        <div class="swatch" style="background: #BD6D1C;"><span class="swatch-hex">#BD6D1C</span></div>
+        <div class="swatch" style="background: #8A4B0D;"><span class="swatch-hex">#8A4B0D</span></div>
+        <div class="swatch" style="background: #F4C48E;"><span class="swatch-hex">#F4C48E</span></div>
+      </div>
+      <div class="val" id="v1">Primary: #E88C2E</div>
+    </div>
+    <p class="ins">Bảng màu <strong>Primary</strong> định danh thương hiệu, thường gồm màu chủ đạo và các biến thể đậm/nhạt để tạo chiều sâu.</p>
+  </section>
+
+  <!-- 02: Semantic Colors -->
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Màu sắc Chức năng</h2></div>
+    <div class="st">
+      <div class="status-grid">
+        <div class="status-card" id="sc-success">
+          <div style="display:flex; align-items:center; gap:6px;">
+            <div class="status-dot" style="background:#3a9e5c;"></div>
+            <span class="status-title">Success</span>
+          </div>
+        </div>
+        <div class="status-card" id="sc-error">
+          <div style="display:flex; align-items:center; gap:6px;">
+            <div class="status-dot" style="background:#c93b3b;"></div>
+            <span class="status-title">Error</span>
+          </div>
+        </div>
+        <div class="status-card" id="sc-warning">
+          <div style="display:flex; align-items:center; gap:6px;">
+            <div class="status-dot" style="background:#c49030;"></div>
+            <span class="status-title">Warning</span>
+          </div>
+        </div>
+        <div class="status-card" id="sc-info">
+          <div style="display:flex; align-items:center; gap:6px;">
+            <div class="status-dot" style="background:#3a829e;"></div>
+            <span class="status-title">Info</span>
+          </div>
+        </div>
+      </div>
+      <div class="val" id="v2">Semantic UI</div>
+    </div>
+    <p class="ins">Các màu <strong>Semantic</strong> truyền tải trạng thái: Xanh (Success), Vàng (Warning), Đỏ (Error) giúp nhận biết thông tin nhanh.</p>
+  </section>
+
+  <!-- 03: Neutral Scale -->
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Thang đo Trung tính</h2></div>
+    <div class="st">
+      <div class="neutral-stack" id="neutralStack">
+        <div class="neutral-bar" style="background:#F8F9FA; color:#212529;">Gray 100</div>
+        <div class="neutral-bar" style="background:#DEE2E6; color:#212529;">Gray 300</div>
+        <div class="neutral-bar" style="background:#ADB5BD; color:#212529;">Gray 500</div>
+        <div class="neutral-bar" style="background:#495057; color:#F8F9FA;">Gray 700</div>
+        <div class="neutral-bar" style="background:#212529; color:#F8F9FA;">Gray 900</div>
+      </div>
+      <div class="val" id="v3">Neutral Grays</div>
+    </div>
+    <p class="ins">Hệ màu <strong>Neutral</strong> (Grayscale) chiếm diện tích lớn nhất, dùng cho văn bản, đường kẻ và phân cấp không gian giao diện.</p>
+  </section>
+
+  <!-- 04: Contrast -->
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Độ tương phản</h2></div>
+    <div class="st">
+      <div class="contrast-preview" id="contrastBox">
+        <div class="badge-aa" id="badgeAA">WCAG AAA</div>
+        <h3 id="contrastTitle">Legibility Test</h3>
+        <p id="contrastText">High contrast ensures accessibility.</p>
+      </div>
+      <div class="val" id="v4">Ratio: 21:1</div>
+    </div>
+    <p class="ins">Đảm bảo <strong>Contrast Ratio</strong> giữa màu chữ và màu nền đạt chuẩn WCAG giúp nội dung dễ đọc cho mọi đối tượng.</p>
+  </section>
+</div>
+
+<script>
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// 01: Brand Palette Loop
+(async function() {
+  const palettes = [
+    { name: 'Amber Glow', colors: ['#E88C2E', '#BD6D1C', '#8A4B0D', '#F4C48E'] },
+    { name: 'Ocean Deep', colors: ['#0E7490', '#155E75', '#164E63', '#67E8F9'] },
+    { name: 'Forest Green', colors: ['#15803D', '#166534', '#14532D', '#86EFAC'] },
+    { name: 'Royal Purple', colors: ['#7E22CE', '#6B21A8', '#581C87', '#D8B4FE'] }
+  ];
+  const container = document.getElementById('brandSwatches');
+  const v = document.getElementById('v1');
+  
+  while (true) {
+    for (const p of palettes) {
+      v.textContent = `Theme: ${p.name}`;
+      const swatches = container.querySelectorAll('.swatch');
+      p.colors.forEach((c, i) => {
+        swatches[i].style.background = c;
+        swatches[i].querySelector('.swatch-hex').textContent = c;
+      });
+      await wait(3000);
+    }
+  }
+})();
+
+// 02: Semantic Loop
+(async function() {
+  const cards = [
+    { id: 'sc-success', bg: 'rgba(58, 158, 92, 0.15)', border: '#3a9e5c' },
+    { id: 'sc-error', bg: 'rgba(201, 59, 89, 0.15)', border: '#c93b3b' },
+    { id: 'sc-warning', bg: 'rgba(196, 144, 48, 0.15)', border: '#c49030' },
+    { id: 'sc-info', bg: 'rgba(58, 130, 158, 0.15)', border: '#3a829e' }
+  ];
+  
+  while (true) {
+    for (const card of cards) {
+      const el = document.getElementById(card.id);
+      el.style.background = card.bg;
+      el.style.borderColor = card.border;
+      el.style.transform = 'translateY(-4px)';
+      el.style.boxShadow = `0 4px 12px ${card.bg}`;
+      
+      await wait(1500);
+      
+      el.style.background = 'transparent';
+      el.style.borderColor = 'var(--bd)';
+      el.style.transform = 'translateY(0)';
+      el.style.boxShadow = 'none';
+      
+      await wait(500);
+    }
+  }
+})();
+
+// 03: Neutral Loop
+(async function() {
+  const stack = document.getElementById('neutralStack');
+  const v = document.getElementById('v3');
+  
+  while (true) {
+    // Dark Theme Grays
+    stack.innerHTML = `
+      <div class="neutral-bar" style="background:#121212; color:#ffffff; border:1px solid #333;">Surface: #121212</div>
+      <div class="neutral-bar" style="background:#1E1E1E; color:#ffffff;">Border: #1E1E1E</div>
+      <div class="neutral-bar" style="background:#2C2C2C; color:#ffffff;">Card: #2C2C2C</div>
+      <div class="neutral-bar" style="background:#757575; color:#ffffff;">Muted: #757575</div>
+      <div class="neutral-bar" style="background:#E0E0E0; color:#121212;">Text: #E0E0E0</div>
+    `;
+    v.textContent = 'Mode: Dark Theme';
+    await wait(3000);
+    
+    // Light Theme Grays
+    stack.innerHTML = `
+      <div class="neutral-bar" style="background:#FFFFFF; color:#000000; border:1px solid #ddd;">Surface: #FFFFFF</div>
+      <div class="neutral-bar" style="background:#F5F5F5; color:#000000;">Border: #F5F5F5</div>
+      <div class="neutral-bar" style="background:#E0E0E0; color:#000000;">Card: #E0E0E0</div>
+      <div class="neutral-bar" style="background:#9E9E9E; color:#000000;">Muted: #9E9E9E</div>
+      <div class="neutral-bar" style="background:#212121; color:#ffffff;">Text: #212121</div>
+    `;
+    v.textContent = 'Mode: Light Theme';
+    await wait(3000);
+  }
+})();
+
+// 04: Contrast Loop
+(async function() {
+  const box = document.getElementById('contrastBox');
+  const badge = document.getElementById('badgeAA');
+  const v = document.getElementById('v4');
+  
+  const tests = [
+    { bg: '#000000', fg: '#FFFFFF', ratio: '21:1', level: 'AAA', color: '#3a9e5c' },
+    { bg: '#FFFFFF', fg: '#000000', ratio: '21:1', level: 'AAA', color: '#3a9e5c' },
+    { bg: '#E88C2E', fg: '#000000', ratio: '6.4:1', level: 'AA', color: '#3a9e5c' },
+    { bg: '#E88C2E', fg: '#FFFFFF', ratio: '2.1:1', level: 'FAIL', color: '#c93b3b' },
+    { bg: '#16161b', fg: '#707070', ratio: '3.1:1', level: 'AA Large', color: '#c49030' }
+  ];
+  
+  while (true) {
+    for (const t of tests) {
+      box.style.background = t.bg;
+      box.style.color = t.fg;
+      badge.textContent = `WCAG ${t.level}`;
+      badge.style.background = t.color;
+      v.textContent = `Ratio: ${t.ratio}`;
+      await wait(2500);
+    }
+  }
+})();
+</script>
+</body>
+</html>

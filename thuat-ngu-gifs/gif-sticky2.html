@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sticky — Animated</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;--card:#1c1a18;--card-alt:#242120;--border:#302c28;--border-hi:#44403a}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);background-image:radial-gradient(ellipse at 25% 15%,rgba(212,113,42,.035) 0%,transparent 55%),radial-gradient(rgba(255,255,255,.018) 1px,transparent 1px);background-size:100% 100%,16px 16px;display:flex;flex-direction:column;align-items:center;min-height:100vh;font-family:'Space Grotesk',sans-serif;color:var(--fg);padding:12px;gap:16px}
+.aw{width:min(700px,100%)}
+.ab{width:700px;height:412px;background:var(--card);border:2px solid var(--border);transform-origin:top left;overflow:hidden}
+.hd{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;border-bottom:1px solid var(--border);background:rgba(255,255,255,.01)}
+.hd-t{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--accent);letter-spacing:2.5px}
+.hd-f{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)}
+.la{position:relative;width:100%;height:260px;background:linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);background-size:30px 30px;overflow:hidden}
+.fr{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;padding:0 20px;opacity:0;pointer-events:none;transition:opacity .3s}.fr.show{opacity:1;pointer-events:auto}
+
+/* Viewport */
+.vp{position:relative;width:100%;height:200px;overflow:hidden;border:1px solid var(--border);background:var(--bg)}
+.bc{height:14px;background:var(--card-alt);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 8px;gap:4px;flex-shrink:0}
+.bc-d{width:5px;height:5px;border-radius:50%;background:var(--border-hi)}
+
+/* Sticky elements */
+.sk{position:absolute;z-index:5;font-family:'Space Grotesk',sans-serif;transition:transform .8s cubic-bezier(.4,0,.2,1),top .8s cubic-bezier(.4,0,.2,1)}
+.sk-nav{top:14px;left:0;right:0;height:22px;background:var(--card-alt);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 10px;gap:10px}
+.sk-b{font-size:9px;font-weight:800;letter-spacing:1px;color:var(--accent)}
+.sk-l{font-size:8px;color:var(--muted)}
+.sk-hdr{top:14px;left:0;right:0;height:22px;background:var(--card-alt);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 10px;font-size:9px;font-weight:700;color:var(--muted);letter-spacing:2px;transition:transform .8s cubic-bezier(.4,0,.2,1)}
+.sk-sub{top:36px;left:0;right:0;height:18px;background:rgba(212,113,42,.1);border-bottom:1px solid rgba(212,113,42,.25);display:flex;align-items:center;padding:0 10px;gap:8px;font-size:8px;color:var(--accent);font-family:'JetBrains Mono',monospace;font-weight:600}
+.sk-sub.stuck{top:14px}
+.sk-side{top:14px;right:0;width:110px;bottom:0;background:var(--card-alt);border-left:1px solid var(--border);padding:8px 8px;display:flex;flex-direction:column;gap:6px;transition:transform .8s cubic-bezier(.4,0,.2,1)}
+.sk-side-t{font-family:'JetBrains Mono',monospace;font-size:7px;font-weight:700;color:var(--accent);letter-spacing:1.5px;margin-bottom:2px}
+.sk-side-i{font-size:8px;color:var(--muted);padding:3px 5px;border:1px solid var(--border);background:rgba(255,255,255,.01)}
+.sk-act{bottom:0;left:0;right:0;height:26px;background:var(--card-alt);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 10px;transition:transform .8s cubic-bezier(.4,0,.2,1)}
+.sk-act-l{font-size:8px;color:var(--muted)}
+.sk-act-b{padding:2px 10px;background:var(--accent);border:none;color:#fff;font-family:'Space Grotesk',sans-serif;font-size:8px;font-weight:600}
+
+/* Page (scrolls) */
+.pg{position:absolute;left:0;right:0;top:36px;transition:transform .8s cubic-bezier(.4,0,.2,1)}
+.pg-side{position:absolute;left:0;top:14px;right:110px;bottom:0;transition:transform .8s cubic-bezier(.4,0,.2,1)}
+.pg-act{position:absolute;left:0;right:0;top:14px;bottom:26px;transition:transform .8s cubic-bezier(.4,0,.2,1)}
+.pg-sub{position:absolute;left:0;right:0;top:54px;transition:transform .8s cubic-bezier(.4,0,.2,1)}
+
+/* Content blocks */
+.blk{background:var(--card-alt);border:1px solid var(--border);border-left:3px solid var(--border-hi);padding:4px 8px;margin:0 8px 4px;height:44px;display:flex;flex-direction:column;justify-content:center}
+.blk-h{border-left-color:var(--accent)}
+.blk-l{font-family:'JetBrains Mono',monospace;font-size:7px;color:var(--muted);letter-spacing:1px}
+.blk-t{font-size:9px;font-weight:600;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* Annotation */
+.ann{position:absolute;font-family:'JetBrains Mono',monospace;font-size:8px;font-weight:700;color:var(--accent);background:rgba(19,17,16,.9);border:1px solid var(--border);padding:2px 7px;z-index:10;opacity:0;transition:opacity .35s;pointer-events:none;letter-spacing:.5px}
+.ann.show{opacity:1}
+
+.inf{padding:11px 14px;border-top:1px solid var(--border)}
+.dn{font-size:17px;font-weight:800;line-height:1.15}
+.ds{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--accent);margin-top:2px}
+.dd{font-size:11px;color:var(--muted);margin-top:4px;line-height:1.4}
+.di{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--accent);margin-top:6px;padding-top:6px;border-top:1px dashed var(--border);opacity:.78}
+.pt{height:2px;background:var(--border)}.pf{height:100%;background:var(--accent);width:0%}
+.fdw{display:flex;gap:4px;justify-content:center;padding:8px 0}
+.fdd{width:22px;height:2px;background:var(--border);transition:background .3s}.fdd.on{background:var(--accent)}
+
+/* ===== PRACTICE ===== */
+.pw{width:min(700px,100%);background:var(--card);border:2px solid var(--border);padding:20px 24px}
+.pw-h{font-size:15px;font-weight:700;margin-bottom:2px}.pw-h span{color:var(--accent)}
+.pw-s{font-size:11px;color:var(--muted);margin-bottom:14px}
+
+.pp{position:relative;width:100%;height:200px;overflow:hidden;border:1px solid var(--border);background:var(--bg);margin-bottom:14px}
+.pp .bc{height:14px}
+.pp-label{position:absolute;bottom:4px;right:6px;font-family:'JetBrains Mono',monospace;font-size:8px;color:var(--muted);opacity:.4;z-index:12;pointer-events:none}
+
+.pp-sk{position:absolute;z-index:5;transition:transform .25s ease-out}
+.pp-nav{top:14px;left:0;right:0;height:20px;background:var(--card-alt);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 8px;gap:8px}
+.pp-nav-b{font-size:8px;font-weight:800;color:var(--accent);letter-spacing:1px}
+.pp-nav-l{font-size:7px;color:var(--muted)}
+.pp-sub{top:34px;left:0;right:0;height:16px;background:rgba(212,113,42,.08);border-bottom:1px solid rgba(212,113,42,.2);display:flex;align-items:center;padding:0 8px;gap:6px;font-family:'JetBrains Mono',monospace;font-size:7px;font-weight:600;color:var(--accent)}
+.pp-page{position:absolute;left:0;right:108px;top:50px;bottom:28px;transition:transform .25s ease-out}
+.pp-blk{background:var(--card-alt);border:1px solid var(--border);border-left:2px solid var(--border-hi);padding:3px 6px;margin:0 6px 3px;height:38px;display:flex;flex-direction:column;justify-content:center}
+.pp-blk-l{font-family:'JetBrains Mono',monospace;font-size:6px;color:var(--muted);letter-spacing:1px}
+.pp-blk-t{font-size:8px;font-weight:600;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pp-side{top:50px;right:0;width:108px;bottom:28px;background:var(--card-alt);border-left:1px solid var(--border);padding:6px;display:flex;flex-direction:column;gap:4px}
+.pp-side-t{font-family:'JetBrains Mono',monospace;font-size:6px;font-weight:700;color:var(--accent);letter-spacing:1.5px;margin-bottom:1px}
+.pp-side-i{font-size:7px;color:var(--muted);padding:2px 4px;border:1px solid var(--border)}
+.pp-act{bottom:0;left:0;right:0;height:24px;background:var(--card-alt);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 8px}
+.pp-act-l{font-size:7px;color:var(--muted)}
+.pp-act-b{padding:1px 8px;background:var(--accent);border:none;color:#fff;font-family:'Space Grotesk',sans-serif;font-size:7px;font-weight:600}
+
+.tgs{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px}
+.tgr{display:flex;justify-content:space-between;align-items:center}
+.tgl-l{font-size:11px}
+.tgl-s{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);min-width:24px;text-align:right;transition:color .2s}
+.tgl{width:34px;height:18px;border:2px solid var(--border);background:var(--card-alt);cursor:pointer;position:relative;transition:all .2s;flex-shrink:0}
+.tgl::after{content:'';position:absolute;width:10px;height:10px;background:var(--muted);top:2px;left:2px;transition:all .2s}
+.tgl.on{border-color:var(--accent);background:rgba(212,113,42,.15)}.tgl.on::after{background:var(--accent);left:18px}
+.tgl:hover{border-color:var(--border-hi)}
+
+.slr-c{margin-bottom:14px}
+.slr-r{display:flex;align-items:center;gap:10px}
+.slr-l{font-size:11px;min-width:50px}
+.slr-v{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--accent);min-width:40px;text-align:right}
+input[type=range]{flex:1;-webkit-appearance:none;appearance:none;height:4px;background:var(--border);outline:none;border:none;cursor:pointer}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;background:var(--accent);border:2px solid var(--bg);cursor:pointer}
+input[type=range]::-moz-range-thumb{width:14px;height:14px;background:var(--accent);border:2px solid var(--bg);cursor:pointer;border-radius:0}
+
+.pfb{font-family:'JetBrains Mono',monospace;font-size:11px;min-height:18px;color:var(--muted);transition:color .2s;line-height:1.4}.pfb.w{color:var(--accent)}
+.pht{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);margin-top:8px;padding-top:8px;border-top:1px dashed var(--border);opacity:.65}
+
+@media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media(max-width:520px){.pw{padding:16px}.tgs{grid-template-columns:1fr}.pp{height:170px}}
+</style>
+</head>
+<body>
+
+<div class="aw">
+<div class="ab" id="ab">
+  <div class="hd"><span class="hd-t">STICKY</span><span class="hd-f" id="hf">01 / 04</span></div>
+  <div class="la" id="la">
+
+    <!-- F0: Sticky Navbar -->
+    <div class="fr" id="f0">
+      <div class="vp">
+        <div class="bc"><span class="bc-d"></span><span class="bc-d"></span><span class="bc-d"></span></div>
+        <div class="sk sk-nav" id="sk0"><span class="sk-b">BRAND</span><span class="sk-l">Home</span><span class="sk-l">About</span><span class="sk-l">Contact</span></div>
+        <div class="pg" id="pg0">
+          <div class="blk blk-h"><span class="blk-l">HERO</span><span class="blk-t">Welcome to our platform</span></div>
+          <div class="blk"><span class="blk-l">FEATURE</span><span class="blk-t">Analytics Dashboard</span></div>
+          <div class="blk"><span class="blk-l">FEATURE</span><span class="blk-t">Team Collaboration</span></div>
+          <div class="blk"><span class="blk-l">FEATURE</span><span class="blk-t">API Integration</span></div>
+        </div>
+        <div class="ann" id="an0" style="right:6px;top:40px">STAYS</div>
+      </div>
+    </div>
+
+    <!-- F1: Sub-navigation -->
+    <div class="fr" id="f1">
+      <div class="vp">
+        <div class="bc"><span class="bc-d"></span><span class="bc-d"></span><span class="bc-d"></span></div>
+        <div class="sk sk-hdr" id="sk1h">MAIN HEADER</div>
+        <div class="sk sk-sub" id="sk1s">All &nbsp; Active &nbsp; Archived &nbsp; Drafts</div>
+        <div class="pg pg-sub" id="pg1">
+          <div class="blk"><span class="blk-l">ITEM</span><span class="blk-t">Project Alpha — In Progress</span></div>
+          <div class="blk"><span class="blk-l">ITEM</span><span class="blk-t">Campaign Q1 — Review</span></div>
+          <div class="blk"><span class="blk-l">ITEM</span><span class="blk-t">Blog Post — Draft</span></div>
+          <div class="blk"><span class="blk-l">ITEM</span><span class="blk-t">Landing Page — Published</span></div>
+        </div>
+        <div class="ann" id="an1" style="right:6px;top:36px">TAKES OVER</div>
+      </div>
+    </div>
+
+    <!-- F2: Sidebar -->
+    <div class="fr" id="f2">
+      <div class="vp">
+        <div class="bc"><span class="bc-d"></span><span class="bc-d"></span><span class="bc-d"></span></div>
+        <div class="sk sk-side" id="sk2">
+          <span class="sk-side-t">FILTERS</span>
+          <span class="sk-side-i">Category</span>
+          <span class="sk-side-i">Price Range</span>
+          <span class="sk-side-i">Rating</span>
+          <span class="sk-side-i">Availability</span>
+        </div>
+        <div class="pg pg-side" id="pg2">
+          <div class="blk blk-h" style="margin-right:4px"><span class="blk-l">PRODUCT</span><span class="blk-t">Wireless Headphones Pro</span></div>
+          <div class="blk" style="margin-right:4px"><span class="blk-l">PRODUCT</span><span class="blk-t">Mechanical Keyboard</span></div>
+          <div class="blk" style="margin-right:4px"><span class="blk-l">PRODUCT</span><span class="blk-t">USB-C Hub Adapter</span></div>
+          <div class="blk" style="margin-right:4px"><span class="blk-l">PRODUCT</span><span class="blk-t">4K Monitor Stand</span></div>
+        </div>
+        <div class="ann" id="an2" style="left:6px;bottom:10px">IN VIEW</div>
+      </div>
+    </div>
+
+    <!-- F3: Action Bar -->
+    <div class="fr" id="f3">
+      <div class="vp">
+        <div class="bc"><span class="bc-d"></span><span class="bc-d"></span><span class="bc-d"></span></div>
+        <div class="sk sk-act" id="sk3">
+          <span class="sk-act-l">3 changes unsaved</span>
+          <span class="sk-act-b">Save Changes</span>
+        </div>
+        <div class="pg pg-act" id="pg3">
+          <div class="blk blk-h"><span class="blk-l">FORM</span><span class="blk-t">Edit Campaign Settings</span></div>
+          <div class="blk"><span class="blk-l">FIELD</span><span class="blk-t">Campaign Name & Budget</span></div>
+          <div class="blk"><span class="blk-l">FIELD</span><span class="blk-t">Target Audience & Schedule</span></div>
+          <div class="blk"><span class="blk-l">FIELD</span><span class="blk-t">Creative Assets & Tracking</span></div>
+        </div>
+        <div class="ann" id="an3" style="right:6px;bottom:32px">ALWAYS HERE</div>
+      </div>
+    </div>
+
+  </div>
+  <div class="inf">
+    <div class="dn" id="dn">Sticky Navbar</div>
+    <div class="ds" id="ds">THANH ĐIỀU HƯỚNG DÍN</div>
+    <div class="dd" id="dd">Scroll xuống bao nhiêu — navbar vẫn ở trên, luôn có đường dẫn</div>
+    <div class="di" id="di">Khi nói "cho cái này sticky" → dev hiểu là element dính lại khi cuộn</div>
+  </div>
+  <div class="pt"><div class="pf" id="pf"></div></div>
+  <div class="fdw"><div class="fdd on" id="d0"></div><div class="fdd" id="d1"></div><div class="fdd" id="d2"></div><div class="fdd" id="d3"></div></div>
+</div>
+</div>
+
+<!-- ===== PRACTICE ===== -->
+<div class="pw">
+  <div class="pw-h">Thực hành — <span>Bật / tắt Sticky</span></div>
+  <div class="pw-s">Kéo thanh cuộn → bật/tắt sticky từng phần để thấy khác biệt</div>
+
+  <div class="pp" id="ppv">
+    <div class="bc"><span class="bc-d"></span><span class="bc-d"></span><span class="bc-d"></span></div>
+    <div class="pp-sk pp-nav" id="pNav"><span class="pp-nav-b">BRAND</span><span class="pp-nav-l">Home</span><span class="pp-nav-l">About</span></div>
+    <div class="pp-sk pp-sub" id="pSub">All &nbsp; Active &nbsp; Archived</div>
+    <div class="pp-page" id="pPage">
+      <div class="pp-blk"><span class="pp-blk-l">HERO</span><span class="pp-blk-t">Welcome section</span></div>
+      <div class="pp-blk"><span class="pp-blk-l">CARD</span><span class="pp-blk-t">Feature overview</span></div>
+      <div class="pp-blk"><span class="pp-blk-l">CARD</span><span class="pp-blk-t">Pricing details</span></div>
+      <div class="pp-blk"><span class="pp-blk-l">CARD</span><span class="pp-blk-t">Testimonials</span></div>
+      <div class="pp-blk"><span class="pp-blk-l">CARD</span><span class="pp-blk-t">Contact form</span></div>
+    </div>
+    <div class="pp-sk pp-side" id="pSide"><span class="pp-side-t">SIDEBAR</span><span class="pp-side-i">Filter A</span><span class="pp-side-i">Filter B</span><span class="pp-side-i">Filter C</span></div>
+    <div class="pp-sk pp-act" id="pAct"><span class="pp-act-l">2 items selected</span><span class="pp-act-b">Add to Cart</span></div>
+    <span class="pp-label">SCROLL →</span>
+  </div>
+
+  <div class="slr-c">
+    <div class="slr-r">
+      <span class="slr-l">Scroll</span>
+      <input type="range" id="pSlider" min="0" max="100" value="0">
+      <span class="slr-v" id="pSv">0px</span>
+    </div>
+  </div>
+
+  <div class="tgs">
+    <div class="tgr"><span class="tgl-l">Navbar</span><div class="tgl on" id="tNav"></div><span class="tgl-s" id="sNav">ON</span></div>
+    <div class="tgr"><span class="tgl-l">Sub-nav</span><div class="tgl on" id="tSub"></div><span class="tgl-s" id="sSub">ON</span></div>
+    <div class="tgr"><span class="tgl-l">Sidebar</span><div class="tgl on" id="tSide"></div><span class="tgl-s" id="sSide">ON</span></div>
+    <div class="tgr"><span class="tgl-l">Action bar</span><div class="tgl on" id="tAct"></div><span class="tgl-s" id="sAct">ON</span></div>
+  </div>
+
+  <div class="pfb" id="pfb">Tất cả sticky — mọi phần đều dính khi cuộn</div>
+  <div class="pht">Hint: Tắt hết sticky rồi kéo scroll → thấy mọi phần trôi đi. Bật lại từng cái để so sánh</div>
+</div>
+
+<script>
+/* ===== DATA ===== */
+const INFO=[
+  {nm:'Sticky Navbar',sz:'THANH ĐIỀU HƯỚNG DÍN',dc:'Scroll xuống bao nhiêu — navbar vẫn ở trên, luôn có đường dẫn',ins:'Khi nói "cho cái này sticky" → dev hiểu là element dính lại khi cuộn'},
+  {nm:'Sub-navigation',sz:'ĐIỀU HƯỚNG CẤP 2',dc:'Header chính scroll đi, sub-nav dính lại thay thế — user vẫn có tab điều hướng',ins:'Trang dài có phân tab → cần nói rõ "sticky sub-nav" thay vì chỉ "sticky header"'},
+  {nm:'Sidebar',sz:'THANH BÊN DÍN',dc:'Content bên trái cuộn thoải mái — sidebar phải luôn visible để filter/navigate',ins:'Báo "sidebar bị mất" khi scroll → dev cần biết là thiếu sticky, không phải thiếu element'},
+  {nm:'Action Bar',sz:'THANH HÀNH ĐỘNG DÍN',dc:'Nút Save/Submit/Cart luôn ở dưới — không cần scroll lên đầu hay xuống cuối',ins:'Form dài, table nhiều dòng → "sticky action bar" giúp user thao tác bất cứ lúc nào'}
+];
+
+const frs=[0,1,2,3].map(i=>document.getElementById('f'+i));
+const el={dn:document.getElementById('dn'),ds:document.getElementById('ds'),dd:document.getElementById('dd'),di:document.getElementById('di'),hf:document.getElementById('hf'),pf:document.getElementById('pf')};
+const dts=[0,1,2,3].map(i=>document.getElementById('d'+i));
+let cur=0,ft=null,pa=null,t0=0,ftimers=[];
+const DUR=3500;
+
+/* ===== ANIMATION ===== */
+function scrollFrame(fi){
+  ftimers.forEach(t=>clearTimeout(t));ftimers=[];
+  /* Reset */
+  const ann=document.getElementById('an'+fi);
+  ann.classList.remove('show');
+
+  if(fi===0){
+    const pg=document.getElementById('pg0');
+    pg.style.transform='translateY(0)';
+    ftimers.push(setTimeout(()=>{pg.style.transform='translateY(-72px)';},500));
+    ftimers.push(setTimeout(()=>{ann.classList.add('show')},1400));
+  }else if(fi===1){
+    const pg=document.getElementById('pg1');
+    const hdr=document.getElementById('sk1h');
+    const sub=document.getElementById('sk1s');
+    pg.style.transform='translateY(0)';hdr.style.transform='translateY(0)';
+    sub.classList.remove('stuck');sub.style.top='36px';
+    ftimers.push(setTimeout(()=>{
+      pg.style.transform='translateY(-72px)';hdr.style.transform='translateY(-72px)';
+      sub.classList.add('stuck');
+    },500));
+    ftimers.push(setTimeout(()=>{ann.classList.add('show')},1400));
+  }else if(fi===2){
+    const pg=document.getElementById('pg2');
+    pg.style.transform='translateY(0)';
+    ftimers.push(setTimeout(()=>{pg.style.transform='translateY(-72px)';},500));
+    ftimers.push(setTimeout(()=>{ann.classList.add('show')},1400));
+  }else{
+    const pg=document.getElementById('pg3');
+    pg.style.transform='translateY(0)';
+    ftimers.push(setTimeout(()=>{pg.style.transform='translateY(-72px)';},500));
+    ftimers.push(setTimeout(()=>{ann.classList.add('show')},1400));
+  }
+}
+
+function apply(i){
+  const s=INFO[i];el.dn.textContent=s.nm;el.ds.textContent=s.sz;el.dd.textContent=s.dc;el.di.textContent=s.ins;
+  el.hf.textContent='0'+(i+1)+' / 04';
+  dts.forEach((d,j)=>d.classList.toggle('on',j===i));
+  frs.forEach(f=>f.classList.remove('show'));
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    frs[i].classList.add('show');
+    scrollFrame(i);
+  }));
+}
+function startProg(){t0=performance.now();el.pf.style.transition='none';el.pf.style.width='0%';(function tk(n){const p=Math.min(100,(n-t0)/DUR*100);el.pf.style.width=p+'%';if(p<100)pa=requestAnimationFrame(tk)})(t0)}
+function next(){cur=(cur+1)%4;apply(cur);startProg()}
+function start(){apply(0);startProg();ft=setInterval(next,DUR)}
+function scale(){const w=document.querySelector('.aw'),b=document.getElementById('ab'),s=w.clientWidth/700;b.style.transform='scale('+s+')';w.style.height=Math.ceil(412*s)+'px'}
+
+/* ===== PRACTICE ===== */
+const pSlider=document.getElementById('pSlider');
+const pSv=document.getElementById('pSv');
+const pPage=document.getElementById('pPage');
+const pfb=document.getElementById('pfb');
+const MAX_SCROLL=80;
+
+const tgs=[
+  {tgl:document.getElementById('tNav'),st:document.getElementById('sNav'),el:document.getElementById('pNav'),on:true},
+  {tgl:document.getElementById('tSub'),st:document.getElementById('sSub'),el:document.getElementById('pSub'),on:true},
+  {tgl:document.getElementById('tSide'),st:document.getElementById('sSide'),el:document.getElementById('pSide'),on:true},
+  {tgl:document.getElementById('tAct'),st:document.getElementById('sAct'),el:document.getElementById('pAct'),on:true}
+];
+
+tgs.forEach(t=>{
+  t.tgl.addEventListener('click',()=>{
+    t.on=!t.on;
+    t.tgl.classList.toggle('on',t.on);
+    t.st.textContent=t.on?'ON':'OFF';
+    t.st.style.color=t.on?'var(--muted)':'var(--accent)';
+    updateP();
+  });
+});
+
+pSlider.addEventListener('input',updateP);
+
+function updateP(){
+  const sv=+pSlider.value;
+  const scrollY=sv/100*MAX_SCROLL;
+  pSv.textContent=Math.round(scrollY)+'px';
+  pPage.style.transform='translateY(-'+scrollY+'px)';
+
+  tgs.forEach(t=>{
+    if(t.on){t.el.style.transform='none';}
+    else{t.el.style.transform='translateY(-'+scrollY+'px)';}
+  });
+
+  /* Feedback */
+  const onNames=tgs.filter(t=>t.on).map(t=>t.tgl.parentElement.querySelector('.tgl-l').textContent);
+  const offNames=tgs.filter(t=>!t.on).map(t=>t.tgl.parentElement.querySelector('.tgl-l').textContent);
+
+  if(!offNames.length){pfb.textContent='Tất cả sticky — mọi phần đều dính khi cuộn';pfb.className='pfb';}
+  else if(!onNames.length){pfb.textContent='Không sticky — tất cả trôi theo scroll';pfb.className='pfb w';}
+  else{pfb.textContent=offNames.join(', ')+' trôi đi · '+onNames.join(', ')+' dính lại';pfb.className='pfb w';}
+}
+
+/* ===== INIT ===== */
+window.addEventListener('resize',scale);
+requestAnimationFrame(()=>requestAnimationFrame(scale));
+start();updateP();
+document.addEventListener('visibilitychange',()=>{
+  if(document.hidden){clearInterval(ft);cancelAnimationFrame(pa);ftimers.forEach(t=>clearTimeout(t));}
+  else{start();}
+});
+</script>
+</body>
+</html>

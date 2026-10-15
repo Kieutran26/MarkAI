@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dark Mode / Light Mode Demo — Amber Brutalist</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root {
+  --bg: #0f0f12;
+  --bgc: #16161b;
+  --bgi: #121217;
+  --bd: #282830;
+  --tx: #e8e4dc;
+  --txm: #707070;
+  --ac: #E88C2E;
+  --abg: rgba(232, 140, 46, 0.1);
+  --abg2: rgba(232, 140, 46, 0.2);
+  --err: #ef4444;
+  --gn: #22c55e;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--tx);
+  padding: 40px 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.g {
+  width: 100%;
+  max-width: 940px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 768px) {
+  .g { grid-template-columns: 1fr; }
+}
+
+.c {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 24px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.c::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--ac);
+}
+
+.c::after {
+  content: '';
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 6px;
+  height: 6px;
+  background: var(--ac);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--ac);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0.3; transform: scale(1); }
+}
+
+.ch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.ch .n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ac);
+  background: var(--abg);
+  border: 1px solid var(--abg2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+.ch h2 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  text-transform: uppercase;
+}
+
+.st {
+  background: var(--bgi);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  flex: 1;
+  min-height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ins {
+  margin-top: 16px;
+  font-size: 11.5px;
+  color: var(--txm);
+  line-height: 1.6;
+  padding-left: 12px;
+  border-left: 2px solid var(--ac);
+}
+
+.ins strong {
+  color: var(--ac);
+  font-weight: 600;
+}
+
+/* --- Simulation Components --- */
+.mock-ui {
+  width: 100%;
+  max-width: 240px;
+  background: #fff;
+  color: #1a1a1a;
+  border-radius: 6px;
+  padding: 16px;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.mock-ui.dark {
+  background: #1a1a1a;
+  color: #fff;
+}
+
+.mock-row {
+  height: 8px;
+  background: #eee;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+.mock-ui.dark .mock-row { background: #333; }
+
+.toggle-track {
+  width: 40px;
+  height: 20px;
+  background: #ccc;
+  border-radius: 10px;
+  position: relative;
+  transition: background 0.3s;
+}
+.toggle-track.on { background: var(--ac); }
+.toggle-thumb {
+  width: 16px;
+  height: 16px;
+  background: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.3s;
+}
+.toggle-track.on .toggle-thumb { transform: translateX(20px); }
+
+.contrast-badge {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  padding: 4px 8px;
+  background: var(--gn);
+  color: #fff;
+  border-radius: 2px;
+}
+
+.ambient-sensor {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  border: 2px dashed var(--ac);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+.sensor-wave {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border: 1px solid var(--ac);
+  border-radius: 50%;
+  animation: ripple 2s infinite;
+}
+@keyframes ripple {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+.palette-swatch {
+  width: 30px;
+  height: 30px;
+  border-radius: 4px;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+</style>
+</head>
+<body>
+
+<div class="g">
+  <!-- 01: Theme Toggle -->
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>Switching Mechanism</h2></div>
+    <div class="st">
+      <div style="display:flex; flex-direction:column; align-items:center; gap:15px">
+        <div id="toggle1" class="toggle-track">
+          <div class="toggle-thumb"></div>
+        </div>
+        <div id="ui1" class="mock-ui">
+          <div class="mock-row" style="width:60%; background:var(--ac)"></div>
+          <div class="mock-row" style="width:100%"></div>
+          <div class="mock-row" style="width:80%"></div>
+        </div>
+      </div>
+    </div>
+    <p class="ins">Cơ chế <strong>Toggle</strong> cho phép người dùng chủ động chuyển đổi giữa giao diện sáng và tối. Toàn bộ <strong>token màu</strong> của hệ thống sẽ được swap đồng loạt.</p>
+  </section>
+
+  <!-- 02: Contrast Balance -->
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Contrast Balance</h2></div>
+    <div class="st">
+      <div id="ui2" class="mock-ui dark" style="text-align:center">
+        <div style="font-size:18px; font-weight:700; margin-bottom:10px">Readability</div>
+        <p style="font-size:11px; opacity:0.7; margin-bottom:15px">Contrast ratio must meet WCAG AA standards.</p>
+        <div id="ratio2" class="contrast-badge">PASS: 7.2:1</div>
+      </div>
+    </div>
+    <p class="ins">Đảm bảo <strong>độ tương phản</strong> giữa chữ và nền. Trong chế độ tối, ta không dùng đen tuyệt đối (#000) để tránh hiện tượng <strong>eye fatigue</strong> khi đọc văn bản dài.</p>
+  </section>
+
+  <!-- 03: Ambient Context -->
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Ambient Context</h2></div>
+    <div class="st">
+      <div style="display:flex; flex-direction:column; align-items:center; gap:20px">
+        <div class="ambient-sensor">
+          <div class="sensor-wave"></div>
+          <i id="contextIcon" class="fa-solid fa-sun" style="font-size:20px; color:var(--ac)"></i>
+        </div>
+        <div id="ui3" class="mock-ui" style="height:60px; display:flex; align-items:center; justify-content:center">
+          <span id="ui3Label" style="font-family:'JetBrains Mono'; font-size:10px; font-weight:700">SYSTEM: LIGHT</span>
+        </div>
+      </div>
+    </div>
+    <p class="ins">Khả năng tự động thích ứng theo <strong>System Preference</strong> hoặc cảm biến ánh sáng. Giúp giao diện <strong>đồng bộ</strong> với môi trường sử dụng của người dùng.</p>
+  </section>
+
+  <!-- 04: Palette Inversion -->
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Accent Preservation</h2></div>
+    <div class="st">
+      <div style="display:grid; grid-template-columns: repeat(3, 1fr); gap:10px">
+        <div style="display:flex; flex-direction:column; align-items:center; gap:5px">
+          <div class="palette-swatch" style="background:#fff"></div>
+          <div class="palette-swatch" style="background:#1a1a1a"></div>
+          <span style="font-size:9px; color:var(--txm)">Surface</span>
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:5px">
+          <div class="palette-swatch" style="background:#f4f4f4"></div>
+          <div class="palette-swatch" style="background:#2d2d2d"></div>
+          <span style="font-size:9px; color:var(--txm)">Border</span>
+        </div>
+        <div style="display:flex; flex-direction:column; align-items:center; gap:5px">
+          <div class="palette-swatch" style="background:var(--ac)"></div>
+          <div class="palette-swatch" style="background:var(--ac)"></div>
+          <span style="font-size:9px; color:var(--ac); font-weight:700">Accent</span>
+        </div>
+      </div>
+    </div>
+    <p class="ins">Khi đảo ngược palette, các <strong>màu thương hiệu (Accent)</strong> thường được giữ nguyên hoặc điều chỉnh nhẹ sắc độ để duy trì tính <strong>nhận diện</strong> xuyên suốt.</p>
+  </section>
+</div>
+
+<script>
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// 01: Toggle Loop
+(async function() {
+  const toggle = document.getElementById('toggle1');
+  const ui = document.getElementById('ui1');
+  while (true) {
+    toggle.classList.add('on');
+    ui.classList.add('dark');
+    await wait(2000);
+    toggle.classList.remove('on');
+    ui.classList.remove('dark');
+    await wait(2000);
+  }
+})();
+
+// 02: Contrast Loop
+(async function() {
+  const ui = document.getElementById('ui2');
+  const ratio = document.getElementById('ratio2');
+  while (true) {
+    ui.classList.remove('dark');
+    ui.style.color = '#1a1a1a';
+    ratio.textContent = 'PASS: 12.5:1';
+    ratio.style.background = 'var(--gn)';
+    await wait(2500);
+    ui.classList.add('dark');
+    ui.style.color = '#fff';
+    ratio.textContent = 'PASS: 7.2:1';
+    ratio.style.background = 'var(--ac)';
+    await wait(2500);
+  }
+})();
+
+// 03: Ambient Loop
+(async function() {
+  const icon = document.getElementById('contextIcon');
+  const ui = document.getElementById('ui3');
+  const label = document.getElementById('ui3Label');
+  while (true) {
+    icon.className = 'fa-solid fa-sun';
+    ui.classList.remove('dark');
+    label.textContent = 'SYSTEM: LIGHT';
+    await wait(3000);
+    icon.className = 'fa-solid fa-moon';
+    ui.classList.add('dark');
+    label.textContent = 'SYSTEM: DARK';
+    await wait(3000);
+  }
+})();
+
+// 04: Palette Pulse (Just minor scale/glow to show activity)
+(async function() {
+  const accentSwatches = document.querySelectorAll('.palette-swatch[style*="var(--ac)"]');
+  while (true) {
+    accentSwatches.forEach(s => {
+      s.style.boxShadow = '0 0 10px var(--ac)';
+      s.style.transform = 'scale(1.05)';
+    });
+    await wait(1000);
+    accentSwatches.forEach(s => {
+      s.style.boxShadow = 'none';
+      s.style.transform = 'scale(1)';
+    });
+    await wait(1000);
+  }
+})();
+</script>
+</body>
+</html>

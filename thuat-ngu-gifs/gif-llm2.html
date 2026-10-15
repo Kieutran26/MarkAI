@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LLM — Animated Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#101010;--bgc:#181818;--bgi:#131313;
+  --bd:#272727;--tx:#e0e0e0;--txm:#707070;--txd:#3a3a3a;
+  --ac:#d97706;--acl:#f59e0b;
+  --abg:rgba(217,119,6,.08);--abg2:rgba(217,119,6,.18);
+  --rd:#ef4444;--gn:#22c55e;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Space Grotesk',sans-serif;
+  background-color:var(--bg);
+  background-image:
+    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:20px 20px;
+  color:var(--tx);min-height:100vh;padding:20px 16px 48px;
+}
+.mono{font-family:'JetBrains Mono',monospace}
+
+/* ── HEADER ── */
+.hd{max-width:900px;margin:0 auto 28px;display:flex;align-items:baseline;gap:14px;flex-wrap:wrap}
+.hd h1{font-size:32px;font-weight:700;letter-spacing:-1px;line-height:1}
+.hd .tag{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ac);border:1px solid var(--ac);padding:2px 8px;border-radius:2px}
+.hd .sub{width:100%;font-size:13px;color:var(--txm);margin-top:4px}
+
+/* ── GRID ── */
+.g{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:660px){.g{grid-template-columns:1fr}.hd h1{font-size:24px}}
+
+/* ── CARD ── */
+.c{background:var(--bgc);border:1px solid var(--bd);border-radius:3px;padding:18px;position:relative;overflow:hidden}
+.c::after{content:'';position:absolute;top:14px;right:14px;width:5px;height:5px;background:var(--ac);border-radius:50%;animation:dp 2.4s ease-in-out infinite}
+@keyframes dp{0%,100%{opacity:.3}50%{opacity:1}}
+.ch{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.ch .n{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--ac);background:var(--abg);border:1px solid rgba(217,119,6,.2);padding:1px 6px;border-radius:2px}
+.ch h2{font-size:14px;font-weight:600;letter-spacing:-.3px}
+
+/* ── STAGE ── */
+.st{background:var(--bgi);border:1px solid var(--bd);border-radius:3px;padding:28px 20px;display:flex;flex-direction:column;align-items:center;min-height:150px;position:relative}
+
+/* ── INSIGHT ── */
+.ins{margin-top:14px;font-size:11.5px;color:var(--txm);line-height:1.55;padding-left:12px;border-left:2px solid var(--bd)}
+.ins strong{color:var(--acl);font-weight:600}
+
+/* ═════════════════════════════════════════
+   01 — TOKEN HÓA  (8s)
+   ═══════════════════════════════════════ */
+.tok-row{display:flex;flex-wrap:wrap;gap:0;justify-content:center}
+.tok{
+  display:inline-block;padding:5px 2px;border-radius:2px;
+  background:transparent;border:1px solid transparent;
+  margin:0 -1px;font-size:14px;font-weight:500;
+  animation:ta 8s ease infinite;animation-delay:var(--d);
+}
+@keyframes ta{
+  0%,18%{background:transparent;border-color:transparent;margin:0 -1px}
+  28%,68%{background:var(--abg2);border-color:rgba(217,119,6,.25);margin:0 4px}
+  78%,100%{background:transparent;border-color:transparent;margin:0 -1px}
+}
+.tok-counter{margin-top:16px;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txd);height:16px}
+.tok-counter .tc2{color:var(--acl);font-weight:700}
+.tok-counter span{opacity:0;animation:tca 8s ease infinite}
+@keyframes tca{0%,22%{opacity:0}30%,66%{opacity:1}76%,100%{opacity:0}}
+
+/* ═══════════════════════════════════════
+   02 — DỰ ĐOÁN TỪNG TOKEN  (12s)
+   ═══════════════════════════════════════ */
+.gen-prompt{
+  font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--txm);
+  background:var(--abg);border:1px solid rgba(217,119,6,.12);
+  padding:6px 10px;border-radius:2px;width:100%;max-width:260px;
+  text-align:center;margin-bottom:20px;
+}
+.gen-output{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;min-height:50px;align-items:flex-end}
+.gen-tok{
+  display:flex;flex-direction:column;align-items:center;gap:4px;
+  opacity:0;animation:gt 12s ease infinite;animation-delay:var(--d);
+}
+.gen-text{font-size:14px;font-weight:600;white-space:nowrap}
+.gen-bar-wrap{width:50px;height:3px;background:var(--bd);border-radius:1px;overflow:hidden}
+.gen-bar{height:100%;background:var(--ac);border-radius:1px;transform:scaleX(0);transform-origin:left}
+@keyframes gt{
+  0%,7%{opacity:0;transform:translateY(6px)}
+  12%{opacity:1;transform:translateY(0)}
+  68%{opacity:1;transform:translateY(0)}
+  76%{opacity:0;transform:translateY(-3px)}
+  100%{opacity:0;transform:translateY(-3px)}
+}
+/* bar fill animation synced with token */
+.gen-tok .gen-bar{animation:gb 12s ease infinite;animation-delay:var(--d)}
+@keyframes gb{
+  0%,7%{transform:scaleX(0)}
+  14%{transform:scaleX(1)}
+  68%{transform:scaleX(1)}
+  76%{transform:scaleX(0)}
+  100%{transform:scaleX(0)}
+}
+.gen-prob{
+  font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--txd);
+  opacity:0;animation:gp 12s ease infinite;animation-delay:var(--d);
+}
+@keyframes gp{
+  0%,10%{opacity:0}15%{opacity:1}65%{opacity:1}72%{opacity:0}100%{opacity:0}
+}
+
+/* ═══════════════════════════════════════
+   03 — CONTEXT WINDOW  (14s)
+   ═══════════════════════════════════════ */
+.ctx-frame{
+  width:100%;max-width:300px;position:relative;
+  border:1px solid var(--bd);border-radius:2px;
+  padding:8px;overflow:hidden;margin-bottom:10px;
+  background:rgba(255,255,255,.015);
+}
+.ctx-row{display:flex;gap:3px;flex-wrap:nowrap}
+.ctx-seg{
+  padding:4px 6px;border-radius:2px;font-size:10px;white-space:nowrap;
+  font-family:'JetBrains Mono',monospace;font-weight:500;
+  opacity:0;flex-shrink:0;
+  animation:csi 14s ease infinite;animation-delay:var(--d);
+}
+@keyframes csi{
+  0%,2%{opacity:0;transform:scale(.8)}
+  6%{opacity:1;transform:scale(1);background:var(--abg2);color:var(--acl);border:1px solid rgba(217,119,6,.2)}
+  /* stays */
+}
+/* early tokens get pushed out */
+.ctx-early{animation-name:ceo}
+@keyframes ceo{
+  0%,2%{opacity:0;transform:scale(.8)}
+  6%{opacity:1;transform:scale(1);background:var(--abg2);color:var(--acl);border:1px solid rgba(217,119,6,.2)}
+  58%{opacity:1;transform:scale(1)}
+  68%{opacity:.15;transform:scale(.85);background:var(--bd);color:var(--txd);border-color:transparent}
+  90%{opacity:0;transform:scale(.7)}
+  100%{opacity:0;transform:scale(.7)}
+}
+/* normal tokens stay */
+.ctx-norm{animation-name:csn}
+@keyframes csn{
+  0%,2%{opacity:0;transform:scale(.8)}
+  6%{opacity:1;transform:scale(1);background:var(--abg2);color:var(--acl);border:1px solid rgba(217,119,6,.2)}
+  78%{opacity:1;transform:scale(1)}
+  90%{opacity:0;transform:scale(.8)}
+  100%{opacity:0;transform:scale(.8)}
+}
+/* overflow tokens flash red then fade */
+.ctx-over{animation-name:cso}
+@keyframes cso{
+  0%,2%{opacity:0;transform:scale(.8)}
+  6%{opacity:1;transform:scale(1);background:rgba(239,68,68,.15);color:var(--rd);border:1px solid rgba(239,68,68,.3)}
+  20%{opacity:1;transform:scale(1)}
+  40%{opacity:.2;transform:scale(.85);background:var(--bd);color:var(--txd);border-color:transparent}
+  55%{opacity:0;transform:scale(.7)}
+  100%{opacity:0;transform:scale(.7)}
+}
+.ctx-meter{width:100%;max-width:300px;display:flex;align-items:center;gap:8px}
+.ctx-bar-wrap{flex:1;height:4px;background:var(--bd);border-radius:1px;overflow:hidden}
+.ctx-bar{height:100%;width:0;background:var(--ac);border-radius:1px;animation:cbm 14s ease infinite}
+@keyframes cbm{0%{width:0;background:var(--ac)}55%{width:100%;background:var(--ac)}62%{width:100%;background:var(--rd)}85%{width:0}100%{width:0}}
+.ctx-pct{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txd);width:50px;text-align:right}
+.ctx-pct span{opacity:0;animation:cpa 14s ease infinite}
+.ctx-pct .cp1{animation-delay:0s;color:var(--txm)}
+.ctx-pct .cp2{animation-delay:4.5s;color:var(--ac)}
+.ctx-pct .cp3{animation-delay:8.5s;color:var(--rd);font-weight:700}
+@keyframes cpa{0%,3%{opacity:0}6%{opacity:1}18%{opacity:1}22%{opacity:0}100%{opacity:0}}
+
+/* ═══════════════════════════════════════
+   04 — NHIỆT ĐỘ  (12s)
+   ═══════════════════════════════════════ */
+.temp-prompt{
+  font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txm);
+  padding:5px 10px;background:var(--abg);border:1px solid rgba(217,119,6,.12);
+  border-radius:2px;margin-bottom:16px;text-align:center;width:100%;
+}
+.temp-rows{display:flex;flex-direction:column;gap:10px;width:100%}
+.temp-row{display:flex;align-items:center;gap:10px}
+.temp-label{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;width:40px;flex-shrink:0;text-align:right}
+.temp-row:nth-child(1) .temp-label{color:var(--ac)}
+.temp-row:nth-child(2) .temp-label{color:var(--acl)}
+.temp-row:nth-child(3) .temp-label{color:var(--rd)}
+.temp-out{flex:1;overflow:hidden;white-space:nowrap;font-size:12px;color:var(--tx);max-width:0;border-radius:2px}
+.temp-row:nth-child(1) .temp-out{animation:tr 12s ease infinite .6s}
+.temp-row:nth-child(2) .temp-out{animation:tr 12s ease infinite 3.2s}
+.temp-row:nth-child(3) .temp-out{animation:tr 12s ease infinite 5.8s}
+@keyframes tr{0%{max-width:0}20%{max-width:400px}72%{max-width:400px}86%{max-width:0}100%{max-width:0}}
+
+/* ═══════════════════════════════════════
+   PRACTICE — PROMPT LAB
+   ═══════════════════════════════════════ */
+.pra{max-width:900px;margin:24px auto 0;background:var(--bgc);border:1px solid var(--bd);border-radius:3px;padding:22px}
+.pra .ch{margin-bottom:6px}
+.pra-goal{font-size:12.5px;color:var(--txm);margin-bottom:18px;line-height:1.5}
+.pra-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:660px){.pra-grid{grid-template-columns:1fr}}
+
+.cfg{display:flex;flex-direction:column;gap:14px}
+.cfg-g{display:flex;flex-direction:column;gap:6px}
+.cfg-l{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txm);text-transform:uppercase;letter-spacing:.5px}
+.cfg-ta{background:var(--bgi);border:1px solid var(--bd);border-radius:2px;padding:10px;font-family:'Space Grotesk',sans-serif;font-size:13px;color:var(--tx);outline:none;resize:vertical;min-height:60px;transition:border-color .2s;line-height:1.5}
+.cfg-ta:focus{border-color:var(--ac)}
+.cfg-ta::placeholder{color:var(--txd)}
+
+/* presets */
+.presets{display:flex;gap:4px;flex-wrap:wrap}
+.pre-b{padding:5px 8px;font-family:'JetBrains Mono',monospace;font-size:10px;background:var(--bgi);border:1px solid var(--bd);color:var(--txm);cursor:pointer;border-radius:2px;transition:all .15s;white-space:nowrap}
+.pre-b:hover,.pre-b.on{background:var(--abg2);border-color:var(--ac);color:var(--acl)}
+
+/* slider */
+.slider-wrap{display:flex;align-items:center;gap:10px}
+.slider-val{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:700;color:var(--acl);width:36px;text-align:center}
+input[type=range]{-webkit-appearance:none;appearance:none;flex:1;height:4px;background:var(--bd);border-radius:2px;outline:none}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;background:var(--ac);border-radius:2px;cursor:pointer;border:none}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;background:var(--ac);border-radius:2px;cursor:pointer;border:none}
+.slider-labels{display:flex;justify-content:space-between;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--txd)}
+
+/* toggle */
+.tog{display:flex;align-items:center;gap:10px;cursor:pointer;user-select:none}
+.tog-t{width:36px;height:20px;background:var(--bd);border-radius:2px;position:relative;transition:background .2s;flex-shrink:0}
+.tog-t.on{background:var(--ac)}
+.tog-k{width:16px;height:16px;background:#fff;border-radius:2px;position:absolute;top:2px;left:2px;transition:left .2s}
+.tog-t.on .tog-k{left:18px}
+.tog-x{font-size:12px;color:var(--txm)}
+
+.hint{font-size:11px;color:var(--txd);line-height:1.4;padding:8px 10px;background:var(--bgi);border-radius:2px;border-left:2px solid var(--bd)}
+
+/* ── PREVIEW ── */
+.pv{display:flex;flex-direction:column;gap:14px}
+
+/* token view */
+.tok-view{
+  background:var(--bgi);border:1px solid var(--bd);border-radius:2px;
+  padding:10px;min-height:44px;display:flex;flex-wrap:wrap;gap:4px;align-items:center;
+}
+.tv-tok{
+  display:inline-block;padding:3px 6px;border-radius:2px;
+  background:var(--abg2);border:1px solid rgba(217,119,6,.18);
+  font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--acl);
+  animation:tvi .2s ease both;
+}
+@keyframes tvi{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:scale(1)}}
+.tv-count{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txd);margin-left:auto;white-space:nowrap}
+
+/* context meter */
+.ctx-m-wrap{display:flex;align-items:center;gap:8px}
+.ctx-m-bar{flex:1;height:4px;background:var(--bd);border-radius:1px;overflow:hidden}
+.ctx-m-fill{height:100%;background:var(--ac);border-radius:1px;transition:width .3s,background .3s}
+.ctx-m-txt{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txd);white-space:nowrap}
+
+/* output */
+.out-box{background:var(--bgi);border:1px solid var(--bd);border-radius:3px;padding:14px;min-height:100px;position:relative}
+.out-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--txd);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;transition:opacity .2s}
+.out-text{font-size:13px;line-height:1.6;color:var(--tx);min-height:40px}
+.out-text.typing::after{content:'|';color:var(--ac);animation:blink .6s step-end infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* prompt output */
+.pr-box{background:var(--bgi);border:1px solid var(--bd);border-radius:3px;padding:12px 14px}
+.pr-box .cfg-l{display:block;margin-bottom:8px}
+.pr-txt{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--acl);line-height:1.55;word-break:break-word}
+
+/* ── SUMMARY ── */
+.sum{max-width:900px;margin:20px auto 0;padding:16px 18px;border:1px solid var(--bd);border-radius:3px;background:var(--bgc);font-size:12.5px;color:var(--txm);line-height:1.6}
+.sum strong{color:var(--acl);font-weight:600}
+
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header class="hd">
+  <h1>LLM</h1>
+  <span class="tag">ai</span>
+  <p class="sub">Large Language Model — cách mô hình ngôn ngữ "đọc" và "viết" khi bạn vibecode</p>
+</header>
+
+<!-- ═══ 4 SIMULATION CARDS ═══ -->
+<div class="g">
+
+  <!-- ─── 01 TOKEN HÓA ─── -->
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>Token hóa</h2></div>
+    <div class="st">
+      <div class="tok-row">
+        <span class="tok" style="--d:0s">Viết</span>
+        <span class="tok" style="--d:.06s"> copy</span>
+        <span class="tok" style="--d:.12s"> cho</span>
+        <span class="tok" style="--d:.18s"> AI</span>
+        <span class="tok" style="--d:.24s"> chat</span>
+        <span class="tok" style="--d:.30s">bot</span>
+      </div>
+      <div class="tok-counter">
+        <span style="animation-delay:0s">24 ký tự</span>
+        <span class="tc2" style="animation-delay:.1s">→ 6 tokens</span>
+      </div>
+    </div>
+    <p class="ins">LLM không đọc theo chữ — nó cắt text thành <strong>token</strong>. 1 token có thể là 1 chữ, nửa chữ, hoặc 1 khoảng trắng. Token ≠ ký tự ≠ chữ.</p>
+  </section>
+
+  <!-- ─── 02 DỰ ĐOÁN TỪNG TOKEN ─── -->
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Dự đoán lần lượt</h2></div>
+    <div class="st">
+      <div class="gen-prompt">Slogan cho app fitness:</div>
+      <div class="gen-output">
+        <div class="gen-tok" style="--d:1s">
+          <span class="gen-prob">68%</span>
+          <span class="gen-text">Đẩy</span>
+          <div class="gen-bar-wrap"><div class="gen-bar" style="width:68%"></div></div>
+        </div>
+        <div class="gen-tok" style="--d:2s">
+          <span class="gen-prob">91%</span>
+          <span class="gen-text">giới</span>
+          <div class="gen-bar-wrap"><div class="gen-bar" style="width:91%"></div></div>
+        </div>
+        <div class="gen-tok" style="--d:3s">
+          <span class="gen-prob">85%</span>
+          <span class="gen-text">hạn</span>
+          <div class="gen-bar-wrap"><div class="gen-bar" style="width:85%"></div></div>
+        </div>
+        <div class="gen-tok" style="--d:4s">
+          <span class="gen-prob">79%</span>
+          <span class="gen-text">của</span>
+          <div class="gen-bar-wrap"><div class="gen-bar" style="width:79%"></div></div>
+        </div>
+        <div class="gen-tok" style="--d:5s">
+          <span class="gen-prob">72%</span>
+          <span class="gen-text">bạn</span>
+          <div class="gen-bar-wrap"><div class="gen-bar" style="width:72%"></div></div>
+        </div>
+        <div class="gen-tok" style="--d:6s">
+          <span class="gen-prob">94%</span>
+          <span class="gen-text">!</span>
+          <div class="gen-bar-wrap"><div class="gen-bar" style="width:94%"></div></div>
+        </div>
+      </div>
+    </div>
+    <p class="ins">LLM không "nghĩ rồi viết" — nó <strong>đoán token tiếp theo</strong>, lần lượt, dựa trên xác suất. Thanh nhỏ = nó cũng cân nhắc từ khác nhưng chọn từ này.</p>
+  </section>
+
+  <!-- ─── 03 CONTEXT WINDOW ─── -->
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Cửa sổ ngữ cảnh</h2></div>
+    <div class="st">
+      <div class="ctx-frame">
+        <div class="ctx-row">
+          <div class="ctx-seg ctx-early" style="--d:0s">System</div>
+          <div class="ctx-seg ctx-early" style="--d:.7s">User: Viết...</div>
+          <div class="ctx-seg ctx-early" style="--d:1.4s">AI: Chào...</div>
+          <div class="ctx-seg ctx-norm" style="--d:2.1s">User: Thêm...</div>
+          <div class="ctx-seg ctx-norm" style="--d:2.8s">AI: Dưới...</div>
+          <div class="ctx-seg ctx-norm" style="--d:3.5s">User: OK...</div>
+          <div class="ctx-seg ctx-norm" style="--d:4.2s">AI: Tổng...</div>
+          <div class="ctx-seg ctx-norm" style="--d:4.9s">User: Sửa...</div>
+          <div class="ctx-seg ctx-over" style="--d:5.6s">AI: Phiên...</div>
+          <div class="ctx-seg ctx-over" style="--d:6.3s">User: Thêm...</div>
+          <div class="ctx-seg ctx-over" style="--d:7s">AI: Đây...</div>
+        </div>
+      </div>
+      <div class="ctx-meter">
+        <div class="ctx-bar-wrap"><div class="ctx-bar"></div></div>
+        <div class="ctx-pct">
+          <span class="cp1">0 / 8K</span>
+          <span class="cp2">5K / 8K</span>
+          <span class="cp3">ĐẦY!</span>
+        </div>
+      </div>
+    </div>
+    <p class="ins">LLM có <strong>giới hạn "bộ nhớ ngắn"</strong> (context window). Gửi quá nhiều → token cũ bị đẩy ra. Trim prompt, xóa bớt history, hoặc dùng model cửa sổ lớn hơn.</p>
+  </section>
+
+  <!-- ─── 04 NHIỆT ĐỘ ─── -->
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Nhiệt độ</h2></div>
+    <div class="st">
+      <div class="temp-prompt">Prompt: "Slogan cho app fitness:"</div>
+      <div class="temp-rows">
+        <div class="temp-row">
+          <span class="temp-label">T=0.0</span>
+          <div class="temp-out">Đẩy giới hạn của bạn!</div>
+        </div>
+        <div class="temp-row">
+          <span class="temp-label">T=0.7</span>
+          <div class="temp-out">Vượt qua giới hạn, trở thành phiên bản tốt hơn của chính mình.</div>
+        </div>
+        <div class="temp-row">
+          <span class="temp-label">T=1.5</span>
+          <div class="temp-out">Cơ thể bạn là bản nháp đầu tiên — hãy xé nó lên và viết lại từ đầu.</div>
+        </div>
+      </div>
+    </div>
+    <p class="ins"><strong>Temperature</strong> = nấc sáng tạo. T thấp → nhất quán, lặp lại. T cao → bất ngờ, nhưng dễ đi lạc. Code cần T thấp, content cần T vừa.</p>
+  </section>
+</div>
+
+<!-- ═══ PRACTICE ═══ -->
+<section class="pra" aria-label="Thực hành">
+  <div class="ch"><span class="n">PRACTICE</span><h2>Prompt Lab</h2></div>
+  <p class="pra-goal">Gõ prompt, chỉnh nhiệt độ → thấy token hóa realtime và output mô phỏng thay đổi theo đúng logic LLM.</p>
+
+  <div class="pra-grid">
+    <!-- ── CONFIG ── -->
+    <div class="cfg">
+      <div class="cfg-g">
+        <label class="cfg-l" for="pInput">Prompt của bạn</label>
+        <textarea class="cfg-ta" id="pInput" placeholder="VD: Viết caption cho sản phẩm mỹ phẩm mới" rows="3"></textarea>
+      </div>
+      <div class="cfg-g">
+        <span class="cfg-l">Preset nhanh</span>
+        <div class="presets">
+          <button class="pre-b" data-p="Viết caption cho sản phẩm mỹ phẩm mới ra mắt">Caption mỹ phẩm</button>
+          <button class="pre-b" data-p="Tạo email chào hàng cho khách hàng B2B">Email B2B</button>
+          <button class="pre-b" data-p="Phân tích tại sao campaign này không đạt KPI">Phân tích campaign</button>
+        </div>
+      </div>
+      <div class="cfg-g">
+        <span class="cfg-l">Nhiệt độ</span>
+        <div class="slider-wrap">
+          <input type="range" id="tempSlider" min="0" max="20" value="7" step="1">
+          <span class="slider-val" id="tempVal">0.7</span>
+        </div>
+        <div class="slider-labels"><span>Nhất quán</span><span>Cân bằng</span><span>Sáng tạo</span></div>
+      </div>
+      <div class="cfg-g">
+        <div class="tog" id="sysToggle" role="switch" aria-checked="false" tabindex="0" aria-label="Bật system instruction">
+          <div class="tog-t" id="togTrack"><div class="tog-k"></div></div>
+          <span class="tog-x">Thêm system instruction</span>
+        </div>
+      </div>
+      <div class="hint">Thử: gõ prompt khác, kéo temperature từ 0 lên 2, bật system instruction — quan sát token count và output thay đổi.</div>
+    </div>
+
+    <!-- ── PREVIEW ── -->
+    <div class="pv">
+      <!-- Token view -->
+      <div class="cfg-g">
+        <span class="cfg-l">Token view — LLM "nhìn" thấy gì</span>
+        <div class="tok-view" id="tokView">
+          <span style="font-size:11px;color:var(--txd)">Gõ prompt để xem token...</span>
+        </div>
+      </div>
+
+      <!-- Context meter -->
+      <div class="cfg-g">
+        <span class="cfg-l">Context dùng</span>
+        <div class="ctx-m-wrap">
+          <div class="ctx-m-bar"><div class="ctx-m-fill" id="ctxFill" style="width:0"></div></div>
+          <span class="ctx-m-txt" id="ctxTxt">0 tokens</span>
+        </div>
+      </div>
+
+      <!-- Simulated output -->
+      <div class="cfg-g">
+        <span class="cfg-l">Output mô phỏng</span>
+        <div class="out-box">
+          <div class="out-label" id="outLabel">đang chờ prompt...</div>
+          <div class="out-text" id="outText"></div>
+        </div>
+      </div>
+
+      <!-- Generated prompt -->
+      <div class="pr-box">
+        <span class="cfg-l">Prompt cấu hình đầy đủ</span>
+        <div class="pr-txt" id="prTxt">Chọn prompt và chỉnh nhiệt độ để xem...</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SUMMARY ═══ -->
+<div class="sum">
+  <strong>LLM</strong> = Large Language Model, mô hình đoán token tiếp theo dựa trên hàng tỷ văn bản đã học. Ba thứ marketer cần nhớ: (1) nó tính theo token không phải chữ — prompt dài = tốn kém, (2) nó có giới hạn context window — quá dài là quên phần đầu, (3) temperature điều khiển mức sáng tạo — code cần thấp, content cần vừa. Khi vibecode, nói "dùng temperature 0.2, context window 8K" thay vì "cho nó thông minh lên" — dev hiểu ngay.
+</div>
+
+<script>
+(function(){
+  /* ── STATE ── */
+  var prompt = '';
+  var temp = 0.7;
+  var sysOn = false;
+  var typeTimer = null;
+  var debounceTimer = null;
+
+  /* ── REFS ── */
+  var $input = document.getElementById('pInput');
+  var $presets = document.querySelectorAll('.pre-b');
+  var $slider = document.getElementById('tempSlider');
+  var $tempVal = document.getElementById('tempVal');
+  var $toggle = document.getElementById('sysToggle');
+  var $track = document.getElementById('togTrack');
+  var $tokView = document.getElementById('tokView');
+  var $ctxFill = document.getElementById('ctxFill');
+  var $ctxTxt = document.getElementById('ctxTxt');
+  var $outLabel = document.getElementById('outLabel');
+  var $outText = document.getElementById('outText');
+  var $prTxt = document.getElementById('prTxt');
+
+  /* ── SIMULATED RESPONSE DATA ── */
+  var responses = {
+    'caption': {
+      low: 'Sản phẩm mới — da sáng mịn sau 7 ngày. Đặt hàng ngay.',
+      mid: 'Khám phá bí mật đằng sau làn da hoàn hảo. Sản phẩm mới không chỉ chăm sóc — nó đánh thức vẻ đẹp tiềm ẩn trong bạn.',
+      high: 'Da bạn không cần "sửa". Nó cần thức tỉnh. Một giọt sinh học từ sâu rừng Amazon đang chờ làm bạn ngạc nhiên về chính mình.'
+    },
+    'email': {
+      low: 'Kính gửi Quý khách, cảm ơn đã quan tâm đến giải pháp của chúng tôi. Xin liên hệ để nhận báo giá.',
+      mid: 'Chào anh/chị, sau khi tìm hiểu nhu cầu của doanh nghiệp, em tin giải pháp này sẽ giúp đội ngũ tiết kiệm 30% thời gian hàng tuần. Phía em xin phép đề xuất lịch demo tuần sau.',
+      high: 'Anh/chị có bao giờ nghĩ rằng công cụ đúng không phải là "mua" — mà là "đối tác"? Hãy để em kể câu chuyện một khách hàng đã đi từ hoài nghi đến tự động hóa hoàn toàn trong 21 ngày.'
+    },
+    'campaign': {
+      low: 'Campaign thất bại do: sai target audience, thông điệp không rõ, landing page không tối ưu.',
+      mid: 'Ba nguyên nhân chính: (1) Target quá rộng, không hit đúng pain point. (2) Creative không có hook trong 3 giây đầu. (3) Landing page không match với ad promise — tỷ lệ bounce 78%.',
+      high: 'Đừng tìm "lỗi". Tìm "câu chuyện mà data đang cố kể". Campaign này không thất bại — nó đang trả lời một câu hỏi mà chưa ai hỏi đúng cách. Hãy xem chart cuối cùng trước khi kết luận.'
+    },
+    'default': {
+      low: 'Dựa trên yêu cầu của bạn, đây là kết quả ngắn gọn và chính xác.',
+      mid: 'Từ góc độ bạn mô tả, tôi thấy một số điểm đáng chú ý cần phân tích thêm để đưa ra hướng đi phù hợp nhất.',
+      high: 'Câu hỏi này giống như hỏi "nước có mùi gì" — phụ thuộc vào ai uống, khi nào, và tại sao. Hãy để tôi kể theo một cách hoàn toàn khác...'
+    }
+  };
+
+  /* ── ROUGH TOKENIZER (educational approximation) ── */
+  function tokenize(text) {
+    if (!text.trim()) return [];
+    var words = text.split(/\s+/);
+    var tokens = [];
+    for (var i = 0; i < words.length; i++) {
+      var w = words[i];
+      if (w.length <= 4) {
+        tokens.push(w);
+      } else if (w.length <= 8) {
+        var m = Math.ceil(w.length * 0.6);
+        tokens.push(w.slice(0, m));
+        tokens.push(w.slice(m));
+      } else {
+        var t = Math.ceil(w.length / 3);
+        tokens.push(w.slice(0, t));
+        tokens.push(w.slice(t, t * 2));
+        tokens.push(w.slice(t * 2));
+      }
+    }
+    return tokens;
+  }
+
+  function esc(s) {
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+
+  /* ── MATCH PROMPT TO RESPONSE KEY ── */
+  function matchKey(text) {
+    var lower = text.toLowerCase();
+    if (/mỹ\s*phẩm|cosmetic|beauty|skincare|da\s*sáng/i.test(lower)) return 'caption';
+    if (/email|b2b|chào\s*hàng|khách\s*hàng|gửi/i.test(lower)) return 'email';
+    if (/campaign|kpi|thất\s*bại|phân\s*tích/i.test(lower)) return 'campaign';
+    return 'default';
+  }
+
+  function getTempZone(t) {
+    if (t <= 0.3) return 'low';
+    if (t <= 0.9) return 'mid';
+    return 'high';
+  }
+
+  /* ── RENDER TOKEN VIEW ── */
+  function renderTokens(text) {
+    var tokens = tokenize(text);
+    if (tokens.length === 0) {
+      $tokView.innerHTML = '<span style="font-size:11px;color:var(--txd)">Gõ prompt để xem token...</span>';
+      $ctxTxt.textContent = '0 tokens';
+      $ctxFill.style.width = '0';
+      $ctxFill.style.background = 'var(--ac)';
+      return tokens.length;
+    }
+    var html = '';
+    for (var i = 0; i < tokens.length; i++) {
+      html += '<span class="tv-tok" style="animation-delay:' + (i * 0.03) + 's">' + esc(tokens[i]) + '</span>';
+    }
+    html += '<span class="tv-count">≈ ' + tokens.length + ' tokens</span>';
+    $tokView.innerHTML = html;
+
+    /* context meter (simulated: prompt tokens + overhead) */
+    var total = tokens.length + (sysOn ? 45 : 0);
+    var maxCtx = 8000;
+    var pct = Math.min((total / maxCtx) * 100, 100);
+    $ctxFill.style.width = pct + '%';
+    if (pct > 80) {
+      $ctxFill.style.background = 'var(--rd)';
+    } else if (pct > 50) {
+      $ctxFill.style.background = 'var(--acl)';
+    } else {
+      $ctxFill.style.background = 'var(--ac)';
+    }
+    $ctxTxt.textContent = total + ' / 8K tokens';
+    return tokens.length;
+  }
+
+  /* ── TYPE OUTPUT ── */
+  function typeOutput(text) {
+    clearInterval(typeTimer);
+    $outLabel.textContent = 'đang tạo...';
+    $outLabel.style.opacity = '1';
+    $outText.textContent = '';
+    $outText.classList.add('typing');
+
+    setTimeout(function() {
+      $outLabel.textContent = sysOn ? 'output (có system)' : 'output';
+      var i = 0;
+      var speed = temp <= 0.3 ? 15 : temp <= 0.9 ? 22 : 30;
+      typeTimer = setInterval(function() {
+        if (i < text.length) {
+          $outText.textContent += text[i];
+          i++;
+        } else {
+          clearInterval(typeTimer);
+          $outText.classList.remove('typing');
+        }
+      }, speed);
+    }, 350);
+  }
+
+  /* ── RENDER PROMPT TEXT ── */
+  function renderPromptText() {
+    if (!prompt.trim()) {
+      $prTxt.textContent = 'Chọn prompt và chỉnh nhiệt độ để xem...';
+      return;
+    }
+    var sysStr = sysOn ? 'System: "Bạn là copywriter chuyên nghiệp, viết ngắn gọn, tập trung vào benefit." + ' : '';
+    var tempStr = 'temperature=' + temp.toFixed(1);
+    $prTxt.textContent = sysStr + 'Prompt: "' + prompt + '" | ' + tempStr;
+  }
+
+  /* ── FULL UPDATE ── */
+  function update() {
+    renderTokens(prompt);
+    renderPromptText();
+    if (!prompt.trim()) {
+      clearInterval(typeTimer);
+      $outLabel.textContent = 'đang chờ prompt...';
+      $outLabel.style.opacity = '1';
+      $outText.textContent = '';
+      $outText.classList.remove('typing');
+      return;
+    }
+    var key = matchKey(prompt);
+    var zone = getTempZone(temp);
+    var text = responses[key][zone];
+    typeOutput(text);
+  }
+
+  function debouncedUpdate() {
+    clearTimeout(debounceTimer);
+    renderTokens(prompt);
+    renderPromptText();
+    debounceTimer = setTimeout(function() {
+      if (prompt.trim()) {
+        var key = matchKey(prompt);
+        var zone = getTempZone(temp);
+        typeOutput(responses[key][zone]);
+      }
+    }, 500);
+  }
+
+  /* ── EVENT: INPUT ── */
+  $input.addEventListener('input', function() {
+    prompt = this.value;
+    /* clear preset active */
+    $presets.forEach(function(b){ b.classList.remove('on'); });
+    debouncedUpdate();
+  });
+
+  /* ── EVENT: PRESETS ── */
+  $presets.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      $presets.forEach(function(b){ b.classList.remove('on'); });
+      this.classList.add('on');
+      prompt = this.getAttribute('data-p');
+      $input.value = prompt;
+      update();
+    });
+  });
+
+  /* ── EVENT: TEMPERATURE ── */
+  $slider.addEventListener('input', function() {
+    temp = parseInt(this.value) / 10;
+    $tempVal.textContent = temp.toFixed(1);
+    if (temp > 1.2) {
+      $tempVal.style.color = 'var(--rd)';
+    } else if (temp > 0.5) {
+      $tempVal.style.color = 'var(--acl)';
+    } else {
+      $tempVal.style.color = 'var(--ac)';
+    }
+    debouncedUpdate();
+  });
+
+  /* ── EVENT: SYSTEM TOGGLE ── */
+  function toggleSys() {
+    sysOn = !sysOn;
+    $track.classList.toggle('on', sysOn);
+    $toggle.setAttribute('aria-checked', String(sysOn));
+    update();
+  }
+  $toggle.addEventListener('click', toggleSys);
+  $toggle.addEventListener('keydown', function(e) {
+    if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); toggleSys(); }
+  });
+
+  /* ── INIT ── */
+  $tempVal.style.color = 'var(--acl)';
+})();
+</script>
+</body>
+</html>

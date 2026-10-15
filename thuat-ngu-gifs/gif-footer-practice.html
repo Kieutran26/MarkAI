@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Footer Practice — markAI</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0f0f12;--bg-card:#16161b;--bg-el:#222;--border:#282830;
+  --border-active:#e88c2e;--accent:#e88c2e;
+  --accent-glow:rgba(232,140,46,.18);--accent-soft:rgba(232,140,46,.07);
+  --cream:#EDE4D8;--text:#D8D0C8;--muted:#777770;
+  --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);overflow-x:hidden;min-height:100vh}
+body::before{content:'';position:fixed;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:48px 48px;pointer-events:none;z-index:0}
+
+#app-root{position:relative;z-index:1;padding:20px 16px}
+
+/* practice box */
+.pbox{border:1px solid var(--border);background:var(--bg-card);padding:22px 18px}
+.pgoal{font-size:13px;color:var(--text);line-height:1.5;margin-bottom:18px}
+
+/* toggles */
+.tog-row{display:flex;gap:16px;margin-bottom:24px;flex-wrap:wrap}
+.tog{display:flex;align-items:center;gap:8px;cursor:pointer;user-select:none}
+.tog-track{width:36px;height:20px;background:var(--border);position:relative;transition:background .25s;flex-shrink:0}
+.tog-track.on{background:var(--accent)}
+.tog-knob{position:absolute;top:2px;left:2px;width:16px;height:16px;background:var(--cream);transition:left .25s}
+.tog-track.on .tog-knob{left:18px}
+.tog-lbl{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;transition:color .25s}
+.tog.on .tog-lbl{color:var(--accent)}
+
+/* practice footer */
+.pf-wrap{border:1px solid var(--border);background:var(--bg);overflow:hidden;margin-bottom:20px;transition:min-height .35s}
+.pf{border-top:2px solid var(--border);padding:24px;transition:padding .35s}
+.pf-top{display:flex;gap:32px;margin-bottom:20px}
+.pf-brand{flex-shrink:0;min-width:120px}
+.pf-brand-n{font-family:var(--mono);font-size:14px;font-weight:700;color:var(--cream);letter-spacing:.05em;margin-bottom:4px}
+.pf-brand-t{font-size:11px;color:var(--muted);line-height:1.4}
+.pf-cols{display:flex;gap:28px;flex:1;transition:all .3s}
+.pf-cols.hide{opacity:0;pointer-events:none}
+.pf-col{flex:1}
+.pf-col-h{font-family:var(--mono);font-size:10px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+.pf-col-i{font-size:11px;color:var(--muted);line-height:1.7}
+
+.pf-nl{display:flex;gap:10px;align-items:center;padding:12px 0;margin-bottom:16px;border-top:1px solid var(--border);transition:all .3s}
+.pf-nl.hide{opacity:0;pointer-events:none;margin:0;padding:0;border:none;height:0;overflow:hidden}
+.pf-nl-lbl{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--cream);text-transform:uppercase;letter-spacing:.06em}
+.pf-nl-in{flex:1;height:32px;background:var(--bg-el);border:1px solid var(--border);padding:0 10px;font-family:var(--mono);font-size:11px;color:var(--muted)}
+.pf-nl-btn{height:32px;padding:0 16px;background:var(--accent);border:none;font-family:var(--mono);font-size:10px;font-weight:600;color:#fff}
+
+.pf-soc{display:flex;gap:8px;margin-bottom:16px;transition:all .3s}
+.pf-soc.hide{opacity:0;pointer-events:none;margin:0;height:0;overflow:hidden}
+.pf-soc-i{width:20px;height:20px;border:1px solid var(--border);background:var(--bg-el);display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:8px;color:var(--muted)}
+
+.pf-legal{display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid var(--border);transition:opacity .3s}
+.pf-legal.hide{opacity:0;pointer-events:none}
+.pf-cp{font-family:var(--mono);font-size:10px;color:var(--muted)}
+.pf-links{display:flex;gap:16px}
+.pf-links a{font-family:var(--mono);font-size:10px;color:var(--muted);text-decoration:none}
+
+.pf-empty{padding:40px;text-align:center;font-size:12px;color:var(--muted);font-family:var(--mono);display:none}
+.pf-empty.show{display:block}
+
+/* prompt box */
+.p-prompt{border:1px solid var(--border);background:var(--bg);padding:14px;display:flex;align-items:flex-start;gap:12px}
+.p-prompt-lbl{font-family:var(--mono);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--accent);background:var(--accent-soft);border:1px solid rgba(232,140,46,0.2);padding:3px 8px;margin-top:1px}
+.p-prompt-txt{font-family:var(--mono);font-size:12px;color:var(--cream);line-height:1.5;transition:opacity .25s}
+.p-prompt-txt.fading{opacity:0}
+
+@media(max-width:768px){
+  .pf-top{flex-direction:column;gap:14px}
+  .pf-legal{flex-direction:column;gap:8px;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+<div id="app-root">
+    <div class="pbox">
+        <p class="pgoal">Bật/tắt từng section để thấy footer rebuild theo cấu hình — và đọc prompt tương đương.</p>
+        
+        <div class="tog-row">
+            <div class="tog" data-key="brand">
+                <div class="tog-track"><div class="tog-knob"></div></div>
+                <span class="tog-lbl">Brand</span>
+            </div>
+            <div class="tog" data-key="nav">
+                <div class="tog-track"><div class="tog-knob"></div></div>
+                <span class="tog-lbl">Nav Columns</span>
+            </div>
+            <div class="tog" data-key="nl">
+                <div class="tog-track"><div class="tog-knob"></div></div>
+                <span class="tog-lbl">Newsletter</span>
+            </div>
+            <div class="tog" data-key="soc">
+                <div class="tog-track"><div class="tog-knob"></div></div>
+                <span class="tog-lbl">Social Icons</span>
+            </div>
+            <div class="tog" data-key="legal">
+                <div class="tog-track"><div class="tog-knob"></div></div>
+                <span class="tog-lbl">Legal Bar</span>
+            </div>
+        </div>
+
+        <div class="pf-wrap">
+            <div class="pf" id="pf">
+                <div class="pf-top" id="pfTop">
+                    <div class="pf-brand" id="pfBrand">
+                        <div class="pf-brand-n">BRAND</div>
+                        <div class="pf-brand-t">Powerful infrastructure for modern teams.</div>
+                    </div>
+                    <div class="pf-cols" id="pfCols">
+                        <div class="pf-col"><div class="pf-col-h">Products</div><div class="pf-col-i">Features<br>Pricing</div></div>
+                        <div class="pf-col"><div class="pf-col-h">Company</div><div class="pf-col-i">About<br>Blog</div></div>
+                        <div class="pf-col"><div class="pf-col-h">Resources</div><div class="pf-col-i">Docs<br>Help</div></div>
+                    </div>
+                </div>
+                <div class="pf-nl" id="pfNl">
+                    <span class="pf-nl-lbl">Subscribe</span>
+                    <input class="pf-nl-in" value="you@email.com" readonly>
+                    <button class="pf-nl-btn">Join</button>
+                </div>
+                <div class="pf-soc" id="pfSoc">
+                    <div class="pf-soc-i">X</div><div class="pf-soc-i">G</div><div class="pf-soc-i">in</div><div class="pf-soc-i">yt</div>
+                </div>
+                <div class="pf-legal" id="pfLegal">
+                    <span class="pf-cp">&copy; 2025 Brand. All rights reserved.</span>
+                    <div class="pf-links"><a>Privacy</a><a>Terms</a></div>
+                </div>
+            </div>
+            <div class="pf-empty" id="pfEmpty">Footer trống — bật ít nhất 1 section</div>
+        </div>
+
+        <div class="p-prompt">
+            <span class="p-prompt-lbl">Prompt</span>
+            <span class="p-prompt-txt" id="pPrompt">Footer đầy đủ: brand, 3 cột nav, newsletter, social icons, legal bar</span>
+        </div>
+    </div>
+</div>
+
+<script>
+var state={brand:false,nav:false,nl:false,soc:false,legal:false};
+var els={
+  brand:document.getElementById('pfBrand'),
+  nav:document.getElementById('pfCols'),
+  nl:document.getElementById('pfNl'),
+  soc:document.getElementById('pfSoc'),
+  legal:document.getElementById('pfLegal'),
+  pfTop:document.getElementById('pfTop'),
+  pf:document.getElementById('pf'),
+  pfEmpty:document.getElementById('pfEmpty'),
+  pPrompt:document.getElementById('pPrompt')
+};
+
+function update(){
+  var count=0;
+  var parts=[];
+
+  els.brand.style.display=state.brand?'':'none';
+  if(state.brand){count++;parts.push('brand + tagline')}
+
+  if(!state.brand && !state.nav) els.pfTop.style.display='none';
+  else els.pfTop.style.display='flex';
+
+  els.nav.classList.toggle('hide',!state.nav);
+  if(state.nav){count++;parts.push('3 cột navigation')}
+
+  els.nl.classList.toggle('hide',!state.nl);
+  if(state.nl){count++;parts.push('newsletter signup')}
+
+  els.soc.classList.toggle('hide',!state.soc);
+  if(state.soc){count++;parts.push('social icons')}
+
+  els.legal.classList.toggle('hide',!state.legal);
+  if(state.legal){count++;parts.push('legal bar')}
+
+  var empty=count===0;
+  els.pfEmpty.classList.toggle('show',empty);
+  els.pf.style.display=empty?'none':'';
+
+  var txt;
+  if(empty) txt='Footer trống — không có section nào';
+  else if(count===5) txt='Footer đầy đủ: brand, 3 cột nav, newsletter, social icons, legal bar';
+  else txt='Footer: '+parts.join(', ');
+
+  els.pPrompt.classList.add('fading');
+  setTimeout(function(){
+    els.pPrompt.textContent=txt;
+    els.pPrompt.classList.remove('fading');
+  },200);
+}
+
+document.querySelectorAll('.tog').forEach(function(btn){
+  btn.onclick=function(){
+    var key=this.dataset.key;
+    state[key]=!state[key];
+    this.classList.toggle('on',state[key]);
+    this.querySelector('.tog-track').classList.toggle('on',state[key]);
+    update();
+  };
+});
+
+update();
+</script>
+</body>
+</html>

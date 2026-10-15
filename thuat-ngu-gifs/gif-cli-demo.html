@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CLI Demo — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f0f12;
+  --bgc: #16161b;
+  --bgi: #121217;
+  --bd: #282830;
+  --tx: #e8e4dc;
+  --txm: #707070;
+  --ac: #E88C2E;
+  --abg: rgba(232, 140, 46, 0.1);
+  --abg2: rgba(232, 140, 46, 0.2);
+  --term-prompt: #4ade80;
+  --term-cmd: #60a5fa;
+  --term-out: #9ca3af;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--tx);
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.g {
+  width: 100%;
+  max-width: 940px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 600px) {
+  .g { grid-template-columns: 1fr; }
+}
+
+.c {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Accent Bar */
+.c::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--ac);
+}
+
+/* Pulsating Indicator */
+.c::after {
+  content: '';
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 6px;
+  height: 6px;
+  background: var(--ac);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--ac);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0.3; transform: scale(1); }
+}
+
+.ch {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.ch .n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ac);
+  background: var(--abg);
+  border: 1px solid var(--abg2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+.ch h2 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  text-transform: uppercase;
+}
+
+.st {
+  background: var(--bgi);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  flex: 1;
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  padding: 12px;
+  position: relative;
+  overflow: hidden;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.ins {
+  margin-top: 14px;
+  font-size: 11.5px;
+  color: var(--txm);
+  line-height: 1.6;
+  padding-left: 12px;
+  border-left: 2px solid var(--ac);
+}
+
+.ins strong {
+  color: var(--ac);
+  font-weight: 600;
+}
+
+.val {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--txm);
+  background: rgba(0,0,0,0.2);
+  padding: 2px 6px;
+  border-radius: 2px;
+  z-index: 10;
+}
+
+/* Terminal Elements */
+.line {
+  margin-bottom: 2px;
+  white-space: pre-wrap;
+}
+.prompt { color: var(--term-prompt); }
+.cmd { color: var(--term-cmd); }
+.out { color: var(--term-out); }
+.cursor {
+  display: inline-block;
+  width: 6px;
+  height: 14px;
+  background: var(--tx);
+  vertical-align: middle;
+  animation: blink 1s step-end infinite;
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  50% { opacity: 0; }
+}
+
+/* Specific UI for htop */
+.bar-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+.bar-label { width: 40px; color: var(--tx); }
+.bar-bg {
+  flex: 1;
+  height: 8px;
+  background: #222;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.bar-fill {
+  height: 100%;
+  background: var(--ac);
+  transition: width 0.3s ease;
+}
+
+</style>
+</head>
+<body>
+
+<div class="g">
+  <!-- 01: Command Loop -->
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>Command Loop</h2></div>
+    <div class="st" id="st1">
+      <div id="term1"></div>
+      <div class="val">Type: Request/Response</div>
+    </div>
+    <p class="ins">CLI hoạt động theo cơ chế <strong>Request-Response</strong> qua văn bản: bạn gõ lệnh, máy tính thực thi và trả kết quả ngay lập tức.</p>
+  </section>
+
+  <!-- 02: Context -->
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Context</h2></div>
+    <div class="st" id="st2">
+      <div id="term2"></div>
+      <div class="val">Type: Directory Navigation</div>
+    </div>
+    <p class="ins">Hiểu về <strong>Current Directory</strong> giúp bạn biết AI đang làm việc ở đâu, tránh việc chạy lệnh sai chỗ dẫn đến lỗi "file not found".</p>
+  </section>
+
+  <!-- 03: Automation -->
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Automation</h2></div>
+    <div class="st" id="st3">
+      <div id="term3"></div>
+      <div class="val">Type: Script Runner</div>
+    </div>
+    <p class="ins">CLI là "trạm điều khiển" cho các <strong>Scripts</strong> tự động: từ khởi động server local đến đóng gói project để deploy.</p>
+  </section>
+
+  <!-- 04: Process Monitoring -->
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Performance</h2></div>
+    <div class="st" id="st4">
+      <div class="line out" style="margin-bottom: 10px;">SYSTEM MONITOR [v1.0.4]</div>
+      <div class="bar-container">
+        <span class="bar-label">CPU</span>
+        <div class="bar-bg"><div class="bar-fill" id="cpu-fill" style="width: 45%;"></div></div>
+        <span class="out" id="cpu-val" style="width: 30px;">45%</span>
+      </div>
+      <div class="bar-container">
+        <span class="bar-label">MEM</span>
+        <div class="bar-bg"><div class="bar-fill" id="mem-fill" style="width: 62%;"></div></div>
+        <span class="out" id="mem-val" style="width: 30px;">62%</span>
+      </div>
+      <div class="line out" style="margin-top: 10px; opacity: 0.7;">
+        PID   NAME         STATUS
+        842   node-dev     RUNNING
+        129   claudecode   ACTIVE
+      </div>
+      <div class="val">Type: Live Feedback</div>
+    </div>
+    <p class="ins">Giao diện dòng lệnh cung cấp <strong>Phản hồi trực tiếp</strong> về hiệu suất hệ thống, giúp bạn giám sát các tác vụ ngầm đang chạy.</p>
+  </section>
+</div>
+
+<script>
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+async function typeWriter(el, text, speed = 50) {
+  for (let i = 0; i < text.length; i++) {
+    el.innerHTML = text.substring(0, i + 1) + '<span class="cursor"></span>';
+    await wait(speed);
+  }
+  el.innerHTML = text; // Remove cursor when done
+}
+
+function addLine(container, text, type = 'out') {
+  const div = document.createElement('div');
+  div.className = 'line ' + type;
+  div.textContent = text;
+  container.appendChild(div);
+  if (container.children.length > 8) container.removeChild(container.firstChild);
+}
+
+// 01: Command Loop Animation
+(async function() {
+  const container = document.getElementById('term1');
+  while (true) {
+    container.innerHTML = '';
+    const l1 = document.createElement('div');
+    l1.className = 'line';
+    l1.innerHTML = '<span class="prompt">~/project $</span> <span class="cmd"></span>';
+    container.appendChild(l1);
+    const cmdEl = l1.querySelector('.cmd');
+    
+    await wait(1000);
+    await typeWriter(cmdEl, 'ping google.com -c 3');
+    await wait(500);
+    
+    addLine(container, 'PING google.com (142.250.190.46): 56 data bytes');
+    await wait(300);
+    addLine(container, '64 bytes from 142.250.190.46: icmp_seq=0 ttl=117 time=14.2 ms');
+    await wait(300);
+    addLine(container, '64 bytes from 142.250.190.46: icmp_seq=1 ttl=117 time=15.1 ms');
+    await wait(300);
+    addLine(container, '64 bytes from 142.250.190.46: icmp_seq=2 ttl=117 time=13.8 ms');
+    await wait(2000);
+  }
+})();
+
+// 02: Context Animation
+(async function() {
+  const container = document.getElementById('term2');
+  while (true) {
+    container.innerHTML = '';
+    
+    // pwd
+    const l1 = document.createElement('div');
+    l1.className = 'line';
+    l1.innerHTML = '<span class="prompt">~/project $</span> <span class="cmd"></span>';
+    container.appendChild(l1);
+    await wait(800);
+    await typeWriter(l1.querySelector('.cmd'), 'pwd');
+    await wait(400);
+    addLine(container, '/Users/vibecoder/projects/marketing-app');
+    
+    // ls
+    const l2 = document.createElement('div');
+    l2.className = 'line';
+    l2.innerHTML = '<span class="prompt">~/project $</span> <span class="cmd"></span>';
+    container.appendChild(l2);
+    await wait(800);
+    await typeWriter(l2.querySelector('.cmd'), 'ls -F');
+    await wait(400);
+    addLine(container, 'src/  public/  package.json  README.md');
+    
+    await wait(3000);
+  }
+})();
+
+// 03: Automation Animation
+(async function() {
+  const container = document.getElementById('term3');
+  while (true) {
+    container.innerHTML = '';
+    
+    const l1 = document.createElement('div');
+    l1.className = 'line';
+    l1.innerHTML = '<span class="prompt">~/project $</span> <span class="cmd"></span>';
+    container.appendChild(l1);
+    await wait(1200);
+    await typeWriter(l1.querySelector('.cmd'), 'npm run dev');
+    await wait(600);
+    
+    addLine(container, '> marketing-app@0.1.0 dev');
+    addLine(container, '> next dev');
+    await wait(800);
+    addLine(container, '▲ Next.js 14.1.0');
+    addLine(container, '- Local: http://localhost:3000');
+    addLine(container, '✓ Ready in 1.2s');
+    
+    await wait(4000);
+  }
+})();
+
+// 04: Performance Animation
+(async function() {
+  const cpuFill = document.getElementById('cpu-fill');
+  const cpuVal = document.getElementById('cpu-val');
+  const memFill = document.getElementById('mem-fill');
+  const memVal = document.getElementById('mem-val');
+  
+  while (true) {
+    const c = Math.floor(Math.random() * 30) + 20;
+    const m = Math.floor(Math.random() * 10) + 60;
+    
+    cpuFill.style.width = c + '%';
+    cpuVal.textContent = c + '%';
+    memFill.style.width = m + '%';
+    memVal.textContent = m + '%';
+    
+    await wait(1000 + Math.random() * 1000);
+  }
+})();
+</script>
+</body>
+</html>

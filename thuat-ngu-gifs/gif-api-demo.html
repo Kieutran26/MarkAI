@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>API Demo — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#101010;--bgc:#181818;--bgi:#131313;
+  --bd:#272727;--tx:#e0e0e0;--txm:#707070;--txd:#3a3a3a;
+  --ac:#E88C2E;--acl:#ffb05c;
+  --abg:rgba(232,140,46,.08);--abg2:rgba(232,140,46,.18);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Space Grotesk',sans-serif;
+  background-color:var(--bg);
+  background-image:
+    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:20px 20px;
+  color:var(--tx);min-height:100vh;padding:20px 16px 48px;
+}
+.g{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:660px){.g{grid-template-columns:1fr}}
+.c{background:var(--bgc);border:1px solid var(--bd);border-radius:3px;padding:18px;position:relative;overflow:hidden}
+.c::after{content:'';position:absolute;top:14px;right:14px;width:5px;height:5px;background:var(--ac);border-radius:50%;animation:dp 2.4s ease-in-out infinite}
+@keyframes dp{0%,100%{opacity:.3}50%{opacity:1}}
+.ch{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.ch .n{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--ac);background:var(--abg);border:1px solid rgba(232,140,46,.2);padding:1px 6px;border-radius:2px}
+.ch h2{font-size:14px;font-weight:600;letter-spacing:-.3px}
+.st{background:var(--bgi);border:1px solid var(--bd);border-radius:3px;padding:20px;display:flex;flex-direction:column;align-items:center;min-height:220px;position:relative;justify-content:center}
+.ins{margin-top:14px;font-size:11.5px;color:var(--txm);line-height:1.55;padding-left:12px;border-left:2px solid var(--bd)}
+.ins strong{color:var(--acl);font-weight:600}
+
+/* API Elements */
+.key-val{font-family:'JetBrains Mono',monospace;font-size:10px;background:#000;border:1px solid var(--bd);padding:8px 12px;border-radius:4px;width:100%;letter-spacing:1px;color:var(--txm);text-align:center}
+.key-val .chr{color:var(--ac);font-weight:700}
+
+.st-row{width:100%;display:flex;flex-direction:column;gap:10px}
+.st-item{background:var(--bg);border:1px solid var(--bd);padding:10px;border-radius:2px;display:flex;justify-content:space-between;align-items:center;font-family:'JetBrains Mono',monospace;font-size:9px}
+.st-item .tag{padding:2px 6px;background:var(--abg);color:var(--ac);border-radius:2px}
+
+.warn{background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.2);padding:10px;border-radius:2px;color:#ef4444;font-size:10px;display:flex;gap:8px;align-items:flex-start;width:100%}
+
+.toggle-group{width:100%;display:flex;flex-direction:column;gap:6px}
+.toggle-row{display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--bd)}
+.toggle-row:last-child{border-bottom:none}
+.toggle-l{font-size:11px;color:var(--txm)}
+.toggle-t{width:32px;height:16px;background:var(--txd);border-radius:10px;position:relative}
+.toggle-t.on{background:var(--ac)}
+.toggle-t::after{content:'';position:absolute;width:12px;height:12px;background:#fff;border-radius:50%;top:2px;left:2px;transition:all .2s}
+.toggle-t.on::after{left:18px}
+</style>
+</head>
+<body>
+
+<div class="g">
+  <!-- 01: View -->
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>View API Key</h2></div>
+    <div class="st">
+      <div class="key-val" id="k1">••••••••••••••••<span class="chr">B3D5</span></div>
+      <div style="margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--txm)">Created: May 2024</div>
+    </div>
+    <p class="ins">API key là <strong>mật mã</strong> để app của bạn nói chuyện với AI. Luôn được <strong>ẩn đi</strong> để tránh bị nhìn trộm.</p>
+  </section>
+
+  <!-- 02: Copy -->
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Copy & Secret</h2></div>
+    <div class="st">
+      <div class="key-val" id="k2" style="border-color:var(--ac);background:var(--abg)">sk-proj-aB3dE5...</div>
+      <div id="copy-msg" style="margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--ac);opacity:0;transition:opacity .3s">Copied to clipboard!</div>
+    </div>
+    <p class="ins">Copy key để dán vào <strong>.env</strong>. Tuyệt đối không gửi qua chat hoặc dán vào file <strong>public</strong>.</p>
+  </section>
+
+  <!-- 03: Regenerate -->
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Regenerate Key</h2></div>
+    <div class="st">
+      <div class="warn">
+        <span>⚠</span>
+        <span>Key cũ sẽ bị <strong>vô hiệu hóa</strong> ngay lập tức.</span>
+      </div>
+      <div class="key-val" style="text-decoration:line-through;opacity:0.4;margin-top:12px">old-key-v1-B3D5</div>
+      <div class="key-val" style="margin-top:6px;border-color:var(--ac)">new-key-v2-X7Y2</div>
+    </div>
+    <p class="ins">Dùng khi nghi ngờ <strong>rò rỉ</strong>. Mọi tool đang dùng key cũ sẽ lập tức <strong>ngừng hoạt động</strong>.</p>
+  </section>
+
+  <!-- 04: Restrict -->
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Restrict Access</h2></div>
+    <div class="st">
+      <div class="toggle-group">
+        <div class="toggle-row"><span class="toggle-l">Read Data</span><div class="toggle-t on"></div></div>
+        <div class="toggle-row"><span class="toggle-l">Write Data</span><div class="toggle-t"></div></div>
+        <div class="toggle-row"><span class="toggle-l">Delete Data</span><div class="toggle-t"></div></div>
+      </div>
+      <div style="margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--txm)">Allowed IP: <span style="color:var(--ac)">Office_IP</span></div>
+    </div>
+    <p class="ins">Giới hạn <strong>quyền hạn</strong> và <strong>IP</strong> giúp giảm thiểu rủi ro nếu chẳng may key bị lộ ra ngoài.</p>
+  </section>
+</div>
+
+<script>
+function wait(ms){return new Promise(function(r){setTimeout(r,ms)})}
+
+/* 01: Reveal */
+(async function(){
+    var k=document.getElementById('k1'),
+        raw='sk-proj-aB3dE5fG7hI9jK1mN3pQ5rS7tU',
+        masked='••••••••••••••••<span class="chr">B3D5</span>';
+    while(true){
+        await wait(2000);
+        k.innerHTML='<span class="chr">'+raw.substring(0,10)+'...</span>';
+        await wait(1500);
+        k.innerHTML=masked;
+    }
+})();
+
+/* 02: Copy */
+(async function(){
+    var msg=document.getElementById('copy-msg');
+    while(true){
+        await wait(2500);
+        msg.style.opacity=1;
+        await wait(1000);
+        msg.style.opacity=0;
+    }
+})();
+
+/* 04: Toggle Animation */
+(async function(){
+    var ts=document.querySelectorAll('.toggle-t');
+    while(true){
+        await wait(1500);
+        ts[1].classList.toggle('on');
+        await wait(1500);
+        ts[1].classList.toggle('on');
+    }
+})();
+</script>
+</body>
+</html>

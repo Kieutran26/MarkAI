@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SSL Certificate Demo - Amber Brutalist</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --amber: #E88C2E;
+      --bg: #0a0a0c;
+      --card-bg: #16161b;
+      --text-main: #e0e0e0;
+      --text-muted: #707070;
+      --accent-bar: #E88C2E;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: 'Space Grotesk', sans-serif;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+    }
+
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      width: 100%;
+      max-width: 940px;
+    }
+
+    @media (max-width: 600px) {
+      .demo-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 3px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid #25252a;
+    }
+
+    .accent-bar {
+      height: 2px;
+      background: var(--accent-bar);
+      width: 100%;
+    }
+
+    .card-header {
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid #25252a;
+    }
+
+    .num-box {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--amber);
+      background: rgba(232, 140, 46, 0.1);
+      padding: 2px 6px;
+      border: 1px solid rgba(232, 140, 46, 0.3);
+      border-radius: 2px;
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-main);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .indicator {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      width: 6px;
+      height: 6px;
+      background: var(--amber);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--amber);
+      animation: blink 1.5s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .simulation-area {
+      height: 160px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      background: rgba(0,0,0,0.2);
+      padding: 20px;
+    }
+
+    .ins {
+      padding: 12px 16px;
+      border-left: 2px solid var(--amber);
+      font-size: 11.5px;
+      color: var(--text-muted);
+      background: rgba(232, 140, 46, 0.02);
+      line-height: 1.5;
+    }
+
+    .ins strong {
+      color: var(--amber);
+      font-weight: 600;
+    }
+
+    /* Animation Styles */
+    .flow-container {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .node {
+      width: 40px;
+      height: 40px;
+      border: 1px solid #333;
+      border-radius: 4px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 18px;
+      background: #1a1a20;
+    }
+
+    .pipe {
+      flex: 1;
+      height: 2px;
+      background: #333;
+      position: relative;
+      max-width: 100px;
+    }
+
+    .packet {
+      position: absolute;
+      top: -10px;
+      left: 0;
+      padding: 2px 6px;
+      background: #222;
+      border: 1px solid #444;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      border-radius: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Encryption Loop */
+    .packet::after {
+      content: '';
+      animation: flowEnc 3s infinite linear;
+    }
+    @keyframes flowEnc {
+      0% { opacity: 0; transform: translateX(-20px); }
+      10% { opacity: 1; content: 'PASS'; }
+      30% { content: '123456'; }
+      50% { content: '$#@!&%'; color: var(--amber); }
+      70% { content: '*^%@#$'; color: var(--amber); }
+      90% { opacity: 1; transform: translateX(80px); }
+      100% { opacity: 0; transform: translateX(100px); }
+    }
+
+    /* Auth Loop */
+    .cert-seal {
+      font-size: 40px;
+      position: relative;
+      animation: pulseCert 2s infinite ease-in-out;
+    }
+    @keyframes pulseCert {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0px var(--amber)); }
+      50% { transform: scale(1.05); filter: drop-shadow(0 0 10px rgba(232, 140, 46, 0.4)); }
+    }
+
+    /* Integrity Loop */
+    .check-mark {
+      color: #4CAF50;
+      font-size: 24px;
+      animation: checkFade 2s infinite;
+    }
+    @keyframes checkFade {
+      0%, 100% { opacity: 0; transform: scale(0.8); }
+      50% { opacity: 1; transform: scale(1.1); }
+    }
+
+    /* Trust Loop */
+    .url-bar {
+      background: #000;
+      border: 1px solid #333;
+      border-radius: 20px;
+      padding: 6px 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+    }
+    .lock-icon { color: #4CAF50; animation: lockBlink 2s infinite; }
+    @keyframes lockBlink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .https-text { color: #4CAF50; font-weight: 600; }
+  </style>
+</head>
+<body>
+  <div class="demo-grid">
+    <!-- Cell 1: Encryption -->
+    <div class="card">
+      <div class="accent-bar"></div>
+      <div class="indicator"></div>
+      <div class="card-header">
+        <div class="num-box">01</div>
+        <div class="card-title">Mã hóa (Encryption)</div>
+      </div>
+      <div class="simulation-area">
+        <div class="flow-container">
+          <div class="node">👤</div>
+          <div class="pipe">
+            <div class="packet"></div>
+          </div>
+          <div class="node">🖥️</div>
+        </div>
+      </div>
+      <div class="ins">
+        SSL mã hóa dữ liệu thành các <strong>ký tự vô nghĩa</strong> trong khi truyền, khiến kẻ xấu không thể đọc trộm thông tin nhạy cảm.
+      </div>
+    </div>
+
+    <!-- Cell 2: Xác thực (Authentication) -->
+    <div class="card">
+      <div class="accent-bar"></div>
+      <div class="indicator"></div>
+      <div class="card-header">
+        <div class="num-box">02</div>
+        <div class="card-title">Xác thực danh tính</div>
+      </div>
+      <div class="simulation-area">
+        <div class="cert-seal">📜</div>
+        <div style="position: absolute; bottom: 30px; font-family: 'JetBrains Mono', sans-serif; font-size: 10px; color: #4CAF50;">VERIFIED BY CA</div>
+      </div>
+      <div class="ins">
+        Như một <strong>hộ chiếu số</strong>, SSL chứng minh website là "chính chủ", giúp người dùng tránh sập bẫy các trang web giả mạo.
+      </div>
+    </div>
+
+    <!-- Cell 3: Toàn vẹn dữ liệu -->
+    <div class="card">
+      <div class="accent-bar"></div>
+      <div class="indicator"></div>
+      <div class="card-header">
+        <div class="num-box">03</div>
+        <div class="card-title">Toàn vẹn dữ liệu</div>
+      </div>
+      <div class="simulation-area">
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 12px; background: #222; padding: 5px 10px; border-radius: 4px;">Data Package</div>
+          <div class="check-mark">✓ VALID</div>
+        </div>
+      </div>
+      <div class="ins">
+        Đảm bảo dữ liệu <strong>không bị thay đổi</strong> hoặc hư hỏng trong quá trình truyền tải từ trình duyệt đến máy chủ.
+      </div>
+    </div>
+
+    <!-- Cell 4: Nhận diện tin cậy -->
+    <div class="card">
+      <div class="accent-bar"></div>
+      <div class="indicator"></div>
+      <div class="card-header">
+        <div class="num-box">04</div>
+        <div class="card-title">Dấu hiệu nhận biết</div>
+      </div>
+      <div class="simulation-area">
+        <div class="url-bar">
+          <span class="lock-icon">🔒</span>
+          <span><span class="https-text">https</span>://yourbrand.com</span>
+        </div>
+      </div>
+      <div class="ins">
+        Biểu tượng <strong>ổ khóa xanh</strong> và giao thức <strong>HTTPS</strong> là bằng chứng trực quan nhất cho một kết nối an toàn.
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

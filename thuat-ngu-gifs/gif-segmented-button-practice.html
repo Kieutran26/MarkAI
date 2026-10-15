@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Segmented Button Practice — markAI</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#131110;--bg-card:#1c1a18;--bg-el:#242120;--border:#302c28;
+  --border-active:#E88C2E;--accent:#E88C2E;
+  --accent-glow:rgba(232,140,46,0.15);--accent-soft:rgba(232,140,46,0.05);
+  --fg:#e8e0d4;--muted:#706b64;
+  --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);overflow-x:hidden;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.01) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.01) 1px,transparent 1px);
+  background-size:20px 20px;pointer-events:none;z-index:0}
+
+#app-root{position:relative;z-index:1;padding:20px; display:flex; flex-direction:column; align-items:center; width:100%; max-width:940px; margin:0 auto;}
+
+.pg{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:20px; width:100%; text-align: left;}
+.pg span{color:var(--accent);font-weight:700}
+
+/* practice area */
+.practice-container{
+    width:100%;
+    background:var(--bg-card);
+    border:1px solid var(--border);
+    padding:24px;
+    display:flex;
+    flex-direction:column;
+    gap:24px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+    border-radius: 4px;
+}
+
+.preview-area{
+    height: 140px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    background: var(--bg-el);
+    border: 1px dashed var(--border);
+    border-radius: 4px;
+    gap: 16px;
+}
+
+.segmented-btn{
+    display: inline-flex;
+    border: 1px solid var(--border);
+    background: var(--bg);
+    padding: 2px;
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.segment{
+    border: none;
+    background: transparent;
+    color: var(--muted);
+    padding: 8px 16px;
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 4px;
+}
+
+.segment svg { width: 14px; height: 14px; stroke-width: 2.5; }
+
+.segment:hover:not(.active):not(:disabled){ color: var(--fg); background: rgba(255,255,255,0.05); }
+
+.segment.active{
+    background: var(--accent);
+    color: #000;
+}
+
+.segment:disabled{
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+/* Controls */
+.controls-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    width: 100%;
+}
+
+.ctrl-group{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.ctrl-label{
+    font-family: var(--mono);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.btn-group{
+    display: flex;
+    gap: 8px;
+}
+
+.btn-opt{
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-radius: 4px;
+}
+.btn-opt:hover{ border-color: var(--muted); color: var(--fg); }
+.btn-opt.active{ border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+
+.checkbox-row{
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+    padding: 8px 0;
+}
+.check-box{
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    border-radius: 3px;
+}
+.check-box.on{ background: var(--accent); border-color: var(--accent); }
+.check-box svg{ display: none; color: #000; stroke-width: 4; }
+.check-box.on svg{ display: block; }
+
+/* Prompt Area */
+.prompt-box{
+    width: 100%;
+    background: #000;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+}
+
+.prompt-box::before{
+    content: 'PROMPT GENERATOR';
+    position: absolute;
+    top: 0; right: 0;
+    font-family: var(--mono);
+    font-size: 8px;
+    color: var(--muted);
+    padding: 4px 8px;
+    background: var(--bg-el);
+    border-bottom-left-radius: 4px;
+}
+
+.prompt-content{
+    font-family: var(--mono);
+    font-size: 13px;
+    color: var(--fg);
+    line-height: 1.6;
+}
+
+.prompt-content span{ color: var(--accent); font-weight: 700; }
+
+.status-msg{
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--accent);
+    margin-top: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+.dot{ width: 4px; height: 4px; background: var(--accent); border-radius: 50%; animation: pulse 1s infinite; }
+@keyframes pulse{ 0%, 100%{ opacity: 0.3; } 50%{ opacity: 1; } }
+
+@media(max-width:480px){
+  .controls-grid{ grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<div id="app-root">
+    <p class="pg"><span>Thử thách:</span> Xây dựng Segmented Button cho bộ lọc nội dung. Tùy chỉnh số lượng segment, icon và xem cách AI hiểu yêu cầu của bạn qua <span>Prompt Builder</span>.</p>
+
+    <div class="practice-container">
+        <!-- Preview -->
+        <div class="preview-area">
+            <div class="ctrl-label" style="position:absolute; top:12px; left:12px;">Live Preview</div>
+            <div class="segmented-btn" id="previewBtn">
+                <!-- Segments injected by JS -->
+            </div>
+            <div id="selectionMsg" style="font-family:var(--mono); font-size:10px; color:var(--muted);">Select a segment to see interaction</div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls-grid">
+            <div class="ctrl-group">
+                <span class="ctrl-label">Segments Count</span>
+                <div class="btn-group">
+                    <button class="btn-opt" onclick="setCount(2)">2</button>
+                    <button class="btn-opt active" onclick="setCount(3)">3</button>
+                    <button class="btn-opt" onclick="setCount(4)">4</button>
+                    <button class="btn-opt" onclick="setCount(5)">5</button>
+                </div>
+            </div>
+
+            <div class="ctrl-group">
+                <span class="ctrl-label">Style Options</span>
+                <label class="checkbox-row" onclick="toggleOption('icons')">
+                    <div class="check-box" id="checkIcons"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></div>
+                    <span class="ctrl-label" style="letter-spacing:1px; font-size:9px;">Show Icons</span>
+                </label>
+                <label class="checkbox-row" onclick="toggleOption('disabled')">
+                    <div class="check-box" id="checkDisabled"><svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor"><polyline points="20 6 9 17 4 12"/></svg></div>
+                    <span class="ctrl-label" style="letter-spacing:1px; font-size:9px;">Disable One</span>
+                </label>
+            </div>
+
+            <div class="ctrl-group">
+                <span class="ctrl-label">Theme Mode</span>
+                <div class="btn-group">
+                    <button class="btn-opt active" onclick="setTheme('default')">Amber</button>
+                    <button class="btn-opt" onclick="setTheme('blue')">Blue</button>
+                    <button class="btn-opt" onclick="setTheme('green')">Green</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Prompt -->
+        <div class="prompt-box">
+            <div class="prompt-content" id="promptText">
+                "Tạo một <span>segmented button</span> gồm <span>3 tùy chọn</span>: 'Ngày', 'Tuần', 'Tháng'..."
+            </div>
+        </div>
+
+        <div class="status-msg">
+            <div class="dot"></div>
+            <span id="statusLabel">Ready for implementation</span>
+        </div>
+    </div>
+</div>
+
+<script>
+let count = 3;
+let hasIcons = false;
+let hasDisabled = false;
+let activeIdx = 0;
+let theme = 'default';
+
+const labels = ['Ngày', 'Tuần', 'Tháng', 'Năm', 'Quý'];
+const icons = [
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>',
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>',
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>',
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>',
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M15 3h6v6"></path><path d="M10 14L21 3"></path></svg>'
+];
+
+function render() {
+    const container = document.getElementById('previewBtn');
+    container.innerHTML = '';
+    
+    for (let i = 0; i < count; i++) {
+        const btn = document.createElement('button');
+        btn.className = `segment ${i === activeIdx ? 'active' : ''}`;
+        if (hasDisabled && i === count - 1) btn.disabled = true;
+        
+        let content = '';
+        if (hasIcons) content += icons[i % icons.length];
+        content += `<span>${labels[i]}</span>`;
+        
+        btn.innerHTML = content;
+        btn.onclick = () => {
+            activeIdx = i;
+            render();
+            document.getElementById('selectionMsg').textContent = `Active: ${labels[i]}`;
+        };
+        container.appendChild(btn);
+    }
+    
+    updatePrompt();
+}
+
+function setCount(c) {
+    count = c;
+    if (activeIdx >= count) activeIdx = 0;
+    document.querySelectorAll('.btn-opt').forEach((b, i) => {
+        if (i < 4) b.classList.toggle('active', [2,3,4,5][i] === c);
+    });
+    render();
+}
+
+function toggleOption(opt) {
+    if (opt === 'icons') {
+        hasIcons = !hasIcons;
+        document.getElementById('checkIcons').classList.toggle('on', hasIcons);
+    } else {
+        hasDisabled = !hasDisabled;
+        document.getElementById('checkDisabled').classList.toggle('on', hasDisabled);
+    }
+    render();
+}
+
+function setTheme(t) {
+    theme = t;
+    const colors = {
+        default: '#E88C2E',
+        blue: '#3B82F6',
+        green: '#10B981'
+    };
+    document.documentElement.style.setProperty('--accent', colors[t]);
+    document.documentElement.style.setProperty('--border-active', colors[t]);
+    document.documentElement.style.setProperty('--accent-glow', colors[t] + '26');
+    document.documentElement.style.setProperty('--accent-soft', colors[t] + '0D');
+    
+    document.querySelectorAll('.btn-group')[2].querySelectorAll('.btn-opt').forEach(b => {
+        b.classList.toggle('active', b.textContent.toLowerCase() === t || (t === 'default' && b.textContent === 'Amber'));
+    });
+    render();
+}
+
+function updatePrompt() {
+    const promptText = document.getElementById('promptText');
+    const segmentList = labels.slice(0, count).map(l => `'${l}'`).join(', ');
+    
+    let text = `"Tạo một <span>segmented button</span> gồm <span>${count} tùy chọn</span>: ${segmentList}. `;
+    
+    if (hasIcons) text += `Mỗi đoạn đi kèm <span>icon minh họa</span> tương ứng. `;
+    if (hasDisabled) text += `Vô hiệu hóa (<span>disabled</span>) tùy chọn '${labels[count-1]}'. `;
+    
+    text += `Khi người dùng click vào một đoạn, đoạn đó phải <span>active</span> và các đoạn khác tự động tắt. `;
+    
+    if (theme !== 'default') text += `Sử dụng tông màu <span>${theme}</span> cho trạng thái active."`;
+    else text += `Sử dụng tông màu <span>amber</span> đặc trưng."`;
+    
+    promptText.innerHTML = text;
+}
+
+// Initial render
+render();
+</script>
+</body>
+</html>

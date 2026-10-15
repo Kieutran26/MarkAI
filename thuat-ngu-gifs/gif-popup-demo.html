@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Popup Demo — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f0f12;
+  --bgc: #16161b;
+  --bgi: #121217;
+  --bd: #282830;
+  --tx: #e8e4dc;
+  --txm: #707070;
+  --ac: #E88C2E;
+  --abg: rgba(232, 140, 46, 0.1);
+  --abg2: rgba(232, 140, 46, 0.2);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--tx);
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+}
+
+.g {
+  width: 100%;
+  max-width: 940px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 600px) {
+  .g { grid-template-columns: 1fr; }
+}
+
+.c {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 20px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Accent Bar */
+.c::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--ac);
+}
+
+/* Pulsating Indicator */
+.c::after {
+  content: '';
+  position: absolute;
+  top: 14px; right: 14px;
+  width: 6px;
+  height: 6px;
+  background: var(--ac);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--ac);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+  100% { opacity: 0.3; transform: scale(1); }
+}
+
+.ch {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 20px;
+}
+
+.ch .n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ac);
+  background: var(--abg);
+  border: 1px solid var(--abg2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+.ch h2 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -0.2px;
+  text-transform: uppercase;
+}
+
+.st {
+  background: var(--bgi);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  flex: 1;
+  min-height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.ins {
+  margin-top: 14px;
+  font-size: 11.5px;
+  color: var(--txm);
+  line-height: 1.6;
+  padding-left: 12px;
+  border-left: 2px solid var(--ac);
+}
+
+.ins strong {
+  color: var(--ac);
+  font-weight: 600;
+}
+
+.val {
+  position: absolute;
+  bottom: 8px;
+  right: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  color: var(--txm);
+  background: rgba(0,0,0,0.2);
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+/* Popup Visuals */
+.browser-ui {
+  width: 100%;
+  height: 100px;
+  border: 1px solid var(--bd);
+  border-radius: 4px;
+  background: var(--bg);
+  position: relative;
+  overflow: hidden;
+}
+
+.browser-header {
+  height: 12px;
+  background: var(--bd);
+  display: flex;
+  align-items: center;
+  padding: 0 6px;
+  gap: 3px;
+}
+
+.dot { width: 4px; height: 4px; border-radius: 50%; background: var(--txm); opacity: 0.3; }
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  opacity: 0;
+  transition: opacity 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.popup-box {
+  width: 60px;
+  background: var(--bgc);
+  border: 1px solid var(--ac);
+  border-radius: 4px;
+  padding: 8px;
+  transform: scale(0.8);
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+.popup-line { height: 3px; width: 100%; background: var(--bd); border-radius: 1px; margin-bottom: 3px; }
+.popup-btn { height: 6px; width: 20px; background: var(--ac); border-radius: 1px; margin: 4px auto 0; }
+
+/* Exit Intent Specific */
+.cursor {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  fill: var(--tx);
+  pointer-events: none;
+  z-index: 10;
+  transition: all 1s linear;
+}
+
+/* Toast Specific */
+.toast-box {
+  position: absolute;
+  bottom: 8px;
+  right: -80px;
+  width: 70px;
+  background: var(--bgc);
+  border: 1px solid var(--ac);
+  border-radius: 3px;
+  padding: 6px;
+  font-size: 6px;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* Form Specific */
+.form-input { height: 8px; width: 100%; background: var(--bd); border-radius: 1px; margin-bottom: 4px; }
+
+</style>
+</head>
+<body>
+
+<div class="g">
+  <!-- 01: Modal Overlay -->
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>Modal Overlay</h2></div>
+    <div class="st">
+      <div class="browser-ui">
+        <div class="browser-header"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+        <div class="overlay" id="ov1">
+          <div class="popup-box" id="pb1">
+            <div class="popup-line" style="width: 80%"></div>
+            <div class="popup-line"></div>
+            <div class="popup-btn"></div>
+          </div>
+        </div>
+      </div>
+      <div class="val" id="val1">State: Idle</div>
+    </div>
+    <p class="ins"><strong>Overlay</strong> làm mờ nền để tập trung sự chú ý vào <strong>Popup</strong>, ngăn người dùng tương tác với nội dung bên dưới.</p>
+  </section>
+
+  <!-- 02: Exit Intent -->
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Exit Intent</h2></div>
+    <div class="st">
+      <div class="browser-ui" id="b2">
+        <div class="browser-header"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+        <svg class="cursor" id="cursor2" viewBox="0 0 24 24"><path d="M7,2l12,11.2l-5.8,0.5l3.3,7.3l-2.2,1l-3.2-7.4L7,19V2z"/></svg>
+        <div class="overlay" id="ov2">
+          <div class="popup-box" id="pb2">
+            <div class="popup-line" style="width: 90%; background: var(--ac)"></div>
+            <div class="popup-line"></div>
+            <div class="popup-btn"></div>
+          </div>
+        </div>
+      </div>
+      <div class="val" id="val2">Cursor: Inside</div>
+    </div>
+    <p class="ins"><strong>Exit Intent</strong> kích hoạt khi phát hiện người dùng sắp <strong>rời khỏi trang</strong> (di chuột lên thanh địa chỉ) để giữ chân khách.</p>
+  </section>
+
+  <!-- 03: Positioning -->
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Positioning</h2></div>
+    <div class="st">
+      <div class="browser-ui">
+        <div class="browser-header"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+        <div class="toast-box" id="toast3">
+          <div class="popup-line" style="width: 40%"></div>
+          <div class="popup-line"></div>
+        </div>
+        <div class="popup-box" id="pb3" style="position: absolute; top: 20px; left: 50%; transform: translateX(-50%) scale(0); opacity: 0; width: 80px;">
+           <div class="popup-line" style="height: 2px;"></div>
+        </div>
+      </div>
+      <div class="val" id="val3">Type: Toast</div>
+    </div>
+    <p class="ins">Popup không chỉ ở giữa. <strong>Toasts</strong> ở góc hoặc <strong>Banners</strong> ở trên cùng giúp truyền đạt tin nhắn ít gây phiền nhiễu hơn.</p>
+  </section>
+
+  <!-- 04: Conversion Form -->
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Lead Magnet</h2></div>
+    <div class="st">
+      <div class="browser-ui">
+        <div class="browser-header"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+        <div class="overlay" id="ov4" style="opacity: 1;">
+          <div class="popup-box" id="pb4" style="opacity: 1; transform: scale(1); width: 80px;">
+            <div class="popup-line" style="width: 70%; margin-bottom: 6px;"></div>
+            <div class="form-input" id="fi4"></div>
+            <div class="popup-btn" id="btn4"></div>
+          </div>
+        </div>
+      </div>
+      <div class="val" id="val4">Action: Waiting</div>
+    </div>
+    <p class="ins">Popup là công cụ <strong>tăng tỷ lệ chuyển đổi</strong> mạnh mẽ nhất bằng cách thu thập <strong>email</strong> hoặc thông tin liên hệ trực tiếp.</p>
+  </section>
+</div>
+
+<script>
+function wait(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// 01: Modal Overlay Animation
+(async function() {
+  const ov = document.getElementById('ov1');
+  const pb = document.getElementById('pb1');
+  const val = document.getElementById('val1');
+  while (true) {
+    await wait(1000);
+    ov.style.opacity = '1';
+    pb.style.opacity = '1';
+    pb.style.transform = 'scale(1)';
+    val.textContent = 'State: Active';
+    await wait(2500);
+    ov.style.opacity = '0';
+    pb.style.opacity = '0';
+    pb.style.transform = 'scale(0.8)';
+    val.textContent = 'State: Closing';
+    await wait(1000);
+    val.textContent = 'State: Idle';
+    await wait(1000);
+  }
+})();
+
+// 02: Exit Intent Animation
+(async function() {
+  const cursor = document.getElementById('cursor2');
+  const ov = document.getElementById('ov2');
+  const pb = document.getElementById('pb2');
+  const val = document.getElementById('val2');
+  
+  while (true) {
+    // Inside
+    cursor.style.left = '40%';
+    cursor.style.top = '60%';
+    val.textContent = 'Cursor: Inside';
+    ov.style.opacity = '0';
+    pb.style.opacity = '0';
+    pb.style.transform = 'scale(0.8)';
+    await wait(2000);
+    
+    // Leaving
+    cursor.style.left = '45%';
+    cursor.style.top = '-5px';
+    val.textContent = 'Cursor: Leaving...';
+    await wait(800);
+    
+    // Trigger
+    ov.style.opacity = '1';
+    pb.style.opacity = '1';
+    pb.style.transform = 'scale(1)';
+    val.textContent = 'Action: Exit Popup';
+    await wait(2500);
+  }
+})();
+
+// 03: Positioning Animation
+(async function() {
+  const toast = document.getElementById('toast3');
+  const banner = document.getElementById('pb3');
+  const val = document.getElementById('val3');
+  
+  while (true) {
+    // Toast
+    toast.style.right = '8px';
+    val.textContent = 'Type: Toast';
+    await wait(2500);
+    toast.style.right = '-80px';
+    await wait(500);
+    
+    // Banner
+    banner.style.opacity = '1';
+    banner.style.transform = 'translateX(-50%) scale(1)';
+    val.textContent = 'Type: Top Banner';
+    await wait(2500);
+    banner.style.opacity = '0';
+    banner.style.transform = 'translateX(-50%) scale(0)';
+    await wait(1000);
+  }
+})();
+
+// 04: Conversion Form Animation
+(async function() {
+  const input = document.getElementById('fi4');
+  const btn = document.getElementById('btn4');
+  const val = document.getElementById('val4');
+  
+  while (true) {
+    input.style.background = 'var(--bd)';
+    btn.style.background = 'var(--ac)';
+    val.textContent = 'Action: Waiting';
+    await wait(1500);
+    
+    // Typing
+    val.textContent = 'Action: Typing...';
+    input.style.background = 'var(--abg2)';
+    await wait(1500);
+    
+    // Success
+    val.textContent = 'Action: Success!';
+    btn.style.background = '#4CAF50';
+    await wait(2000);
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Padding Demo — Amber Brutalist</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0c;
+      --card-bg: #16161b;
+      --amber: #E88C2E;
+      --gray: #707070;
+      --text: #e0e0e0;
+      --gap: 14px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { 
+      background: var(--bg); 
+      color: var(--text); 
+      font-family: 'Space Grotesk', sans-serif; 
+      display: flex; 
+      justify-content: center; 
+      padding: 40px 20px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--gap);
+      max-width: 940px;
+      width: 100%;
+    }
+
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 3px;
+      position: relative;
+      padding-top: 2px; /* For accent bar */
+      display: flex;
+      flex-direction: column;
+      border: 1px solid #222;
+    }
+
+    .accent-bar {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--amber);
+    }
+
+    .indicator {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      width: 6px;
+      height: 6px;
+      background: var(--amber);
+      border-radius: 50%;
+      animation: blink 1.2s infinite;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.3; transform: scale(0.8); }
+    }
+
+    .card-header {
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .card-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      border: 1px solid rgba(232, 140, 46, 0.4);
+      padding: 3px 8px;
+      color: var(--amber);
+      background: rgba(232, 140, 46, 0.05);
+      border-radius: 2px;
+      line-height: 1;
+    }
+
+    .card-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 16px;
+      font-weight: 600;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+    }
+
+    .demo-area {
+      height: 160px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #0d0d10;
+      margin: 0 16px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Padding Visualization */
+    .target-box {
+      border: 1px dashed rgba(232, 140, 46, 0.4);
+      background: rgba(232, 140, 46, 0.05);
+      transition: padding 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+      display: inline-block;
+    }
+
+    .content-block {
+      width: 60px;
+      height: 30px;
+      background: var(--amber);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: #000;
+      font-weight: bold;
+    }
+
+    .ins {
+      padding: 12px 16px;
+      margin: 12px 16px 16px;
+      border-left: 2px solid var(--amber);
+      font-size: 11.5px;
+      color: var(--gray);
+      line-height: 1.5;
+    }
+
+    .ins strong {
+      color: var(--amber);
+      font-weight: 600;
+    }
+
+    .code-label {
+      position: absolute;
+      bottom: 8px;
+      right: 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: var(--amber);
+      background: rgba(0,0,0,0.4);
+      padding: 2px 6px;
+      border-radius: 2px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="grid">
+    <!-- Cell 01: Uniform Padding -->
+    <div class="card">
+      <div class="accent-bar"></div>
+      <div class="indicator"></div>
+      <div class="card-header">
+        <span class="card-num">01</span>
+        <span class="card-title">Uniform Padding</span>
+      </div>
+      <div class="demo-area">
+        <div class="target-box" id="box1">
+          <div class="content-block">TEXT</div>
+        </div>
+        <div class="code-label" id="code1">padding: 20px</div>
+      </div>
+      <div class="ins">
+        Khi giá trị là một số duy nhất, <strong>padding</strong> sẽ được áp dụng đều cho cả <strong>4 cạnh</strong> (Trên, Phải, Dưới, Trái).
+      </div>
+    </div>
+
+    <!-- Cell 02: Symmetric Padding -->
+    <div class="card">
+      <div class="accent-bar"></div>
+      <div class="indicator"></div>
+      <div class="card-header">
+        <span class="card-num">02</span>
+        <span class="card-title">Symmetric Padding</span>
+      </div>
+      <div class="demo-area">
+        <div class="target-box" id="box2">
+          <div class="content-block">NAV</div>
+        </div>
+        <div class="code-label" id="code2">padding: 10px 40px</div>
+      </div>
+      <div class="ins">
+        Dùng hai giá trị để tạo sự cân xứng: số đầu tiên cho <strong>Dọc (Top/Bottom)</strong> và số thứ hai cho <strong>Ngang (Left/Right)</strong>.
+      </div>
+    </div>
+
+    <!-- Cell 03: Individual Sides -->
+    <div class="card">
+      <div class="accent-bar"></div>
+      <div class="indicator"></div>
+      <div class="card-header">
+        <span class="card-num">03</span>
+        <span class="card-title">Directional Flow</span>
+      </div>
+      <div class="demo-area">
+        <div class="target-box" id="box3">
+          <div class="content-block">BOX</div>
+        </div>
+        <div class="code-label" id="code3">padding-top: 30px</div>
+      </div>
+      <div class="ins">
+        Bạn có thể điều chỉnh <strong>từng phía</strong> riêng biệt hoặc dùng cú pháp 4 số theo <strong>chiều kim đồng hồ</strong>: Trên → Phải → Dưới → Trái.
+      </div>
+    </div>
+
+    <!-- Cell 04: Visual Breathing Room -->
+    <div class="card">
+      <div class="accent-bar"></div>
+      <div class="indicator"></div>
+      <div class="card-header">
+        <span class="card-num">04</span>
+        <span class="card-title">Breathing Room</span>
+      </div>
+      <div class="demo-area">
+        <div class="target-box" id="box4" style="background: rgba(232,140,46,0.15); border-style: solid;">
+          <div class="content-block" style="background: transparent; color: var(--amber); border: 1px solid var(--amber);">SAFE</div>
+        </div>
+        <div class="code-label" id="code4">Internal Space</div>
+      </div>
+      <div class="ins">
+        Mục đích chính của padding là tạo <strong>khoảng trống nội bộ</strong>, ngăn nội dung dính sát vào viền, giúp thiết kế <strong>dễ thở</strong> hơn.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Cell 01: Uniform Loop
+    const box1 = document.getElementById('box1');
+    const code1 = document.getElementById('code1');
+    const values1 = [5, 20, 40, 10];
+    let i1 = 0;
+    setInterval(() => {
+      const v = values1[i1 % values1.length];
+      box1.style.padding = `${v}px`;
+      code1.textContent = `padding: ${v}px`;
+      i1++;
+    }, 1800);
+
+    // Cell 02: Symmetric Loop
+    const box2 = document.getElementById('box2');
+    const code2 = document.getElementById('code2');
+    const values2 = [
+      {v: '5px 40px', t: '5px 40px'},
+      {v: '30px 10px', t: '30px 10px'},
+      {v: '20px 20px', t: '20px 20px'}
+    ];
+    let i2 = 0;
+    setInterval(() => {
+      const v = values2[i2 % values2.length];
+      box2.style.padding = v.v;
+      code2.textContent = `padding: ${v.t}`;
+      i2++;
+    }, 2000);
+
+    // Cell 03: Individual Sides Loop
+    const box3 = document.getElementById('box3');
+    const code3 = document.getElementById('code3');
+    const values3 = [
+      {v: '30px 0 0 0', t: 'padding-top: 30px'},
+      {v: '0 30px 0 0', t: 'padding-right: 30px'},
+      {v: '0 0 30px 0', t: 'padding-bottom: 30px'},
+      {v: '0 0 0 30px', t: 'padding-left: 30px'}
+    ];
+    let i3 = 0;
+    setInterval(() => {
+      const v = values3[i3 % values3.length];
+      box3.style.padding = v.v;
+      code3.textContent = v.t;
+      i3++;
+    }, 1500);
+
+    // Cell 04: Breathing Room Loop
+    const box4 = document.getElementById('box4');
+    const code4 = document.getElementById('code4');
+    let state4 = true;
+    setInterval(() => {
+      if(state4) {
+        box4.style.padding = '0px';
+        code4.textContent = 'padding: 0 (Noisy)';
+      } else {
+        box4.style.padding = '24px';
+        code4.textContent = 'padding: 24px (Clean)';
+      }
+      state4 = !state4;
+    }, 2200);
+  </script>
+</body>
+</html>

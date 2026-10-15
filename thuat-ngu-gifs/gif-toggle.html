@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toggle — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#111;--bg-card:#1A1A1A;--bg-el:#222;--border:#2C2C2C;
+  --border-active:#D4652A;--accent:#D4652A;
+  --accent-glow:rgba(212,101,42,.18);--accent-soft:rgba(212,101,42,.07);
+  --cream:#EDE4D8;--text:#D8D0C8;--muted:#777770;
+  --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);height:auto;min-height:0;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;
+  background-image:linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:48px 48px;pointer-events:none;z-index:0}
+body::after{content:'';position:fixed;inset:0;opacity:.025;pointer-events:none;z-index:0;
+  background:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.7' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.wrap{position:relative;z-index:1;max-width:1080px;margin:0 auto;padding:24px 16px 40px}
+
+.topbar{display:flex;align-items:center;gap:12px;padding-bottom:14px;border-bottom:1px solid var(--border);margin-bottom:28px}
+.badge{font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);background:var(--accent-soft);border:1px solid rgba(212,101,42,.22);padding:4px 10px}
+.ttl{font-size:20px;font-weight:700;color:var(--cream);letter-spacing:-.02em}
+.slbl{font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.slbl::before{content:'';width:7px;height:7px;background:var(--accent)}
+
+/* ── gif box ── */
+.gif-box{border:1px solid var(--border);background:var(--bg-card);margin-bottom:36px;position:relative;overflow:hidden}
+.gif-tag{position:absolute;top:10px;right:10px;font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.08em;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:3px 8px;z-index:10;display:flex;align-items:center;gap:5px}
+.gif-tag .dot{width:5px;height:5px;background:var(--accent);animation:pdot 1.4s infinite}
+@keyframes pdot{0%,100%{opacity:1}50%{opacity:.25}}
+.gif-body{padding:24px 18px 18px}
+
+/* ── sim grid ── */
+.sg{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.sp{border:1px solid var(--border);background:var(--bg);padding:14px 10px 12px;transition:border-color .5s,background .5s,opacity .5s}
+.sp.active{border-color:var(--border-active);background:var(--accent-soft)}
+.sp:not(.active){opacity:.5}
+.sh{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px}
+.sn{font-family:var(--mono);font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);transition:color .4s}
+.sp.active .sn{color:var(--accent)}
+.ssub{font-family:var(--mono);font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+
+/* sim toggle component */
+.stg-wrap{display:flex;align-items:center;gap:10px;margin-bottom:14px}
+.stg-lbl{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--cream);letter-spacing:.03em}
+.stg{width:40px;height:22px;border-radius:20px;position:relative;cursor:default;flex-shrink:0;transition:background .4s,border-color .4s}
+.stg-off{background:var(--border)}
+.stg-on{background:var(--accent)}
+.stg-dis{background:#444;opacity:.5}
+.stg-focus{background:var(--accent);outline:2px dashed var(--accent);outline-offset:4px}
+.stg-knob{position:absolute;top:2px;left:2px;width:18px;height:18px;background:var(--cream);border-radius:50%;transition:left .4s cubic-bezier(.4,0,.2,1)}
+.stg-on .stg-knob,.stg-focus .stg-knob{left:20px}
+.stg-dis .stg-knob{background:#888}
+
+/* meta info */
+.stg-meta{display:flex;flex-direction:column;gap:3px}
+.stg-mi{display:flex;justify-content:space-between;font-family:var(--mono);font-size:8px}
+.stg-mk{color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.stg-mv{font-weight:600;transition:color .4s}
+.stg-mv.false{color:var(--muted)}
+.stg-mv.true{color:var(--accent)}
+.stg-mv.locked{color:#555}
+.sp-desc{font-size:9px;color:var(--muted);line-height:1.35;margin-top:8px}
+
+/* insight */
+.ibar{margin-top:12px;padding:10px 13px;background:var(--bg);border:1px solid var(--border);font-size:12px;color:var(--muted);line-height:1.55;min-height:38px;transition:opacity .3s}
+.ibar.fading{opacity:0}
+.ibar strong{color:var(--cream);font-weight:600}
+
+/* progress + controls */
+.ptrack{display:flex;gap:4px;padding:10px 18px 12px;border-top:1px solid var(--border)}
+.pseg{flex:1;height:3px;background:var(--border);transition:background .4s}
+.pseg.on{background:var(--accent)}
+.gctrl{display:flex;align-items:center;justify-content:space-between;padding:9px 18px;border-top:1px solid var(--border);background:var(--bg-card)}
+.gbtn{font-family:var(--mono);font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);background:var(--bg);border:1px solid var(--border);padding:5px 13px;cursor:pointer;transition:color .2s,border-color .2s}
+.gbtn:hover{color:var(--cream);border-color:var(--muted)}
+.gtmr{font-family:var(--mono);font-size:9px;color:var(--muted)}
+
+/* ═══ PRACTICE ═══ */
+.pbox{border:1px solid var(--border);background:var(--bg-card)}
+.phd{padding:18px 18px 14px;border-bottom:1px solid var(--border)}
+.pgoal{font-size:13px;color:var(--text);line-height:1.5;margin-bottom:5px}
+.phint{font-family:var(--mono);font-size:10px;color:var(--muted)}
+.phint span{color:var(--accent)}
+.pbd{padding:22px 18px}
+
+/* practice layout: left settings, right preview */
+.prl{display:flex;gap:20px;align-items:flex-start}
+.pr-left{flex:0 0 auto;min-width:220px}
+.pr-right{flex:1;min-width:0}
+
+/* setting rows */
+.sr{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border:1px solid var(--border);background:var(--bg);margin-bottom:6px;gap:10px;transition:border-color .2s}
+.sr:hover{border-color:#444}
+.sr-info{display:flex;flex-direction:column;gap:1px}
+.sr-name{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--cream)}
+.sr-desc{font-family:var(--mono);font-size:8px;color:var(--muted)}
+
+/* practice toggle */
+.ptg{width:40px;height:22px;border-radius:20px;position:relative;cursor:pointer;flex-shrink:0;transition:background .25s;user-select:none;touch-action:manipulation}
+.ptg.off{background:var(--border)}
+.ptg.on{background:var(--accent)}
+.ptg.dis{background:#444;opacity:.45;cursor:default}
+.ptg-knob{position:absolute;top:2px;left:2px;width:18px;height:18px;background:var(--cream);border-radius:50%;transition:left .25s cubic-bezier(.4,0,.2,1)}
+.ptg.on .ptg-knob{left:20px}
+.ptg.dis .ptg-knob{background:#888}
+
+/* preview panel */
+.pv-panel{border:1px solid var(--border);background:var(--bg);overflow:hidden}
+.pv-header{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.pv-dot{width:7px;height:7px}
+.pv-title{font-family:var(--mono);font-size:10px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.pv-body{padding:16px;min-height:180px;position:relative;transition:background .3s}
+
+/* preview: dark mode */
+.pv-body.dark{background:#0A0A0A}
+.pv-body.light{background:#F5F0E8}
+
+/* preview: content blocks */
+.pv-block{transition:opacity .3s,max-height .3s,margin .3s,background .3s;overflow:hidden}
+.pv-block.hide{opacity:0;max-height:0!important;margin:0!important;overflow:hidden}
+.pv-hero{padding:16px;border:1px solid var(--border);margin-bottom:12px;max-height:80px;transition:border-color .3s,background .3s}
+.pv-hero-t{font-family:var(--sans);font-size:16px;font-weight:700;margin-bottom:4px;transition:color .3s}
+.pv-hero-p{font-size:10px;line-height:1.4;transition:color .3s}
+.pv-cards{display:flex;gap:8px;margin-bottom:12px;max-height:64px;transition:opacity .3s}
+.pv-cards.hide{opacity:0;max-height:0;margin:0;overflow:hidden}
+.pv-card{flex:1;border:1px solid var(--border);padding:10px 8px;transition:border-color .3s,background .3s}
+.pv-card-t{font-family:var(--mono);font-size:8px;font-weight:700;margin-bottom:3px;transition:color .3s}
+.pv-card-d{font-size:7px;line-height:1.3;transition:color .3s}
+.pv-nav{display:flex;gap:6px;align-items:center;max-height:30px;transition:opacity .3s,max-height .3s}
+.pv-nav.hide{opacity:0;max-height:0;margin:0;overflow:hidden}
+.pv-nav-i{font-family:var(--mono);font-size:8px;padding:4px 10px;border:1px solid var(--border);transition:border-color .3s,color .3s}
+.pv-cta{font-family:var(--mono);font-size:8px;font-weight:600;padding:4px 12px;transition:background .3s,color .3s}
+
+/* colors for light/dark */
+.pv-body.dark .pv-hero{background:var(--bg-card);border-color:var(--border)}
+.pv-body.dark .pv-hero-t{color:var(--cream)}
+.pv-body.dark .pv-hero-p{color:var(--muted)}
+.pv-body.dark .pv-card{background:var(--bg-card);border-color:var(--border)}
+.pv-body.dark .pv-card-t{color:var(--cream)}
+.pv-body.dark .pv-card-d{color:var(--muted)}
+.pv-body.dark .pv-nav-i{border-color:var(--border);color:var(--muted)}
+.pv-body.dark .pv-cta{background:var(--accent);color:#fff}
+
+.pv-body.light .pv-hero{background:#fff;border-color:#ddd}
+.pv-body.light .pv-hero-t{color:#1a1a1a}
+.pv-body.light .pv-hero-p{color:#666}
+.pv-body.light .pv-card{background:#fff;border-color:#ddd}
+.pv-body.light .pv-card-t{color:#1a1a1a}
+.pv-body.light .pv-card-d{color:#666}
+.pv-body.light .pv-nav-i{border-color:#ccc;color:#555}
+.pv-body.light .pv-cta{background:var(--accent);color:#fff}
+
+/* value readout */
+.vr{margin-top:14px;border:1px solid var(--border);background:var(--bg);padding:10px 14px}
+.vr-title{font-family:var(--mono);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:8px}
+.vr-rows{display:flex;flex-direction:column;gap:4px}
+.vr-row{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:10px}
+.vr-k{color:var(--muted);min-width:100px}
+.vr-v{color:var(--cream);font-weight:600}
+.vr-v.on{color:var(--accent)}
+.vr-v.off{color:var(--muted)}
+.vr-v.locked{color:#555}
+
+/* prompt */
+.p-prompt{border:1px solid var(--border);background:var(--bg);padding:12px 14px;display:flex;align-items:flex-start;gap:10px;margin-top:14px}
+.p-prompt-lbl{font-family:var(--mono);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);background:var(--accent-soft);border:1px solid rgba(212,101,42,.22);padding:3px 8px;white-space:nowrap;flex-shrink:0;margin-top:1px}
+.p-prompt-txt{font-family:var(--mono);font-size:12px;color:var(--cream);line-height:1.5;transition:opacity .25s}
+.p-prompt-txt.fading{opacity:0}
+
+/* why */
+.whybox{margin-top:28px;border:1px solid var(--border);background:var(--bg-card);padding:18px}
+.whybox p{font-size:13px;color:var(--muted);line-height:1.7}
+.whybox strong{color:var(--cream)}
+
+@media(max-width:768px){
+  .sg{grid-template-columns:repeat(2,1fr)}
+  .gif-body{padding:18px 12px 14px}
+  .pbd{padding:18px 12px}
+  .ttl{font-size:17px}
+  .prl{flex-direction:column}
+  .pr-left{min-width:0;width:100%}
+}
+@media(max-width:420px){
+  .sg{gap:6px}.sp{padding:10px 8px 8px}
+  .stg{width:34px;height:18px}
+  .stg-knob{width:14px;height:14px}
+  .stg-on .stg-knob,.stg-focus .stg-knob{left:18px}
+  .wrap{padding:14px 10px 36px}
+  .ptg{width:34px;height:18px}
+  .ptg-knob{width:14px;height:14px}
+  .ptg.on .ptg-knob{left:18px}
+  .pv-cards{flex-direction:column}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="topbar">
+    <span class="badge">Design</span>
+    <span class="ttl">Toggle</span>
+  </div>
+
+  <!-- ═══ SIMULATION ═══ -->
+  <div class="slbl">Mô phỏng</div>
+  <div class="gif-box">
+    <div class="gif-tag"><span class="dot"></span>LOOP</div>
+    <div class="gif-body">
+      <div class="sg" id="sg"></div>
+      <div class="ibar" id="ibar"></div>
+    </div>
+    <div class="ptrack" id="ptrack"></div>
+    <div class="gctrl">
+      <button class="gbtn" id="togBtn">Pause</button>
+      <span class="gtmr">3.5s / state</span>
+      <button class="gbtn" id="rstBtn">Reset</button>
+    </div>
+  </div>
+
+  <!-- ═══ PRACTICE ═══ -->
+  <div class="slbl">Thực hành</div>
+  <div class="pbox">
+    <div class="phd">
+      <p class="pgoal">Bật/tắt từng toggle và quan sát preview thay đổi — hiểu toggle = điều khiển trạng thái UI.</p>
+      <p class="phint"><span>Hint:</span> Bật "Dark mode" rồi toggle các cái khác để thấy combo effect.</p>
+    </div>
+    <div class="pbd">
+      <div class="prl">
+        <div class="pr-left">
+          <div class="sr" id="srDark">
+            <div class="sr-info"><span class="sr-name">Dark mode</span><span class="sr-desc">theme chuyển đổi</span></div>
+            <div class="ptg on" data-key="dark"><div class="ptg-knob"></div></div>
+          </div>
+          <div class="sr" id="srHero">
+            <div class="sr-info"><span class="sr-name">Hero section</span><span class="sr-desc">banner chính</span></div>
+            <div class="ptg on" data-key="hero"><div class="ptg-knob"></div></div>
+          </div>
+          <div class="sr" id="srCards">
+            <div class="sr-info"><span class="sr-name">Feature cards</span><span class="sr-desc">3 cột features</span></div>
+            <div class="ptg on" data-key="cards"><div class="ptg-knob"></div></div>
+          </div>
+          <div class="sr" id="srNav">
+            <div class="sr-info"><span class="sr-name">Navigation</span><span class="sr-desc">nav links + CTA</span></div>
+            <div class="ptg on" data-key="nav"><div class="ptg-knob"></div></div>
+          </div>
+          <div class="sr" id="srMaint">
+            <div class="sr-info"><span class="sr-name">Maintenance</span><span class="sr-desc">khóa toàn bộ</span></div>
+            <div class="ptg" data-key="maint"><div class="ptg-knob"></div></div>
+          </div>
+          <!-- value readout -->
+          <div class="vr">
+            <div class="vr-title">Trạng thái</div>
+            <div class="vr-rows" id="vrRows"></div>
+          </div>
+        </div>
+        <div class="pr-right">
+          <div class="pv-panel">
+            <div class="pv-header">
+              <div class="pv-dot" style="background:var(--accent)"></div>
+              <div class="pv-dot" style="background:var(--muted)"></div>
+              <div class="pv-dot" style="background:var(--muted)"></div>
+              <span class="pv-title">Preview</span>
+            </div>
+            <div class="pv-body dark" id="pvBody">
+              <div class="pv-block pv-hero" id="pvHero">
+                <div class="pv-hero-t">Welcome to Product</div>
+                <div class="pv-hero-p">Build faster, ship smarter. The modern platform for teams.</div>
+              </div>
+              <div class="pv-block pv-cards" id="pvCards">
+                <div class="pv-card"><div class="pv-card-t">Fast</div><div class="pv-card-d">Build in minutes</div></div>
+                <div class="pv-card"><div class="pv-card-t">Secure</div><div class="pv-card-d">Enterprise-grade</div></div>
+                <div class="pv-card"><div class="pv-card-t">Scale</div><div class="pv-card-d">Grow unlimited</div></div>
+              </div>
+              <div class="pv-block pv-nav" id="pvNav">
+                <div class="pv-nav-i">Docs</div>
+                <div class="pv-nav-i">Pricing</div>
+                <div class="pv-cta">Get Started</div>
+              </div>
+              <!-- maintenance overlay -->
+              <div id="pvMaint" style="display:none;position:absolute;inset:0;background:rgba(17,17,17,.88);display:none;align-items:center;justify-content:center;flex-direction:column;gap:8px;z-index:5">
+                <div style="font-family:var(--mono);font-size:14px;font-weight:700;color:var(--accent);letter-spacing:.05em">MAINTENANCE</div>
+                <div style="font-size:11px;color:var(--muted)">Tất cả toggle bị khóa</div>
+              </div>
+            </div>
+          </div>
+          <div class="p-prompt">
+            <span class="p-prompt-lbl">Prompt</span>
+            <span class="p-prompt-txt" id="pPrompt">Dark mode on, hero visible, cards visible, nav visible</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="whybox">
+    <p>Toggle = <strong>nút on/off cho một trạng thái cụ thể</strong>. Không phải "nút bấm", không phải "checkbox" — nó trả về <strong>true/false</strong>. Khi bảo AI "thêm toggle dark mode", AI cần biết: default on hay off, toggle nào lock khi maintenance, toggle nào ảnh hưởng toggle khác. Hiểu toggle = mô tả logic trạng thái chính xác.</p>
+  </div>
+
+</div>
+
+<script>
+/* ── sim data: 4 toggle states ── */
+var D=[
+  {name:'DEFAULT',sub:'off',
+   cls:'stg-off',
+   state:'default',val:'false',valCls:'false',
+   desc:'Inactive — chờ user bật.',
+   ins:'<strong>Toggle OFF = trạng thái tắt.</strong> Knob bên trái, track xám. Giá trị: <strong>false</strong>. Đây là trạng thái chờ — không có gì xảy ra cho đến khi user bấm.'},
+  {name:'ACTIVE',sub:'on',
+   cls:'stg-on',
+   state:'active',val:'true',valCls:'true',
+   desc:'Enabled — tính năng đang bật.',
+   ins:'<strong>Toggle ON = trạng thái bật.</strong> Knob bên phải, track accent. Giá trị: <strong>true</strong>. Một lần bấm = đổi false → true. Đơn giản nhưng là cốt lõi của mọi feature flag.'},
+  {name:'DISABLED',sub:'locked',
+   cls:'stg-dis',
+   state:'disabled',val:'false',valCls:'locked',
+   desc:'Khóa — user không thể bấm.',
+   ins:'<strong>Toggle DISABLED = bị khóa.</strong> Nhìn thấy nhưng không tương tác được. Dùng khi: user thiếu quyền, feature chưa sẵn sàng, hoặc maintenance. Giá trị luôn <strong>false</strong>, không ai đổi được.'},
+  {name:'FOCUS',sub:'keyboard',
+   cls:'stg-focus',
+   state:'focus',val:'true',valCls:'true',
+   desc:'Border sáng = đang được chọn bằng bàn phím.',
+   ins:'<strong>Toggle FOCUS = đang được "chọn" bằng bàn phím.</strong> Border sáng bao quanh = user đang dùng Tab để navigate. Accessibility — nếu bạn bỏ focus state, user dùng bàn phím không biết mình đang ở đâu.'}
+];
+
+/* ── build sim panels ── */
+var sg=document.getElementById('sg');
+D.forEach(function(d,i){
+  var el=document.createElement('div');
+  el.className='sp';
+  el.dataset.i=i;
+  el.innerHTML=
+    '<div class="sh"><span class="sn">0'+(i+1)+' '+d.name+'</span><span class="ssub">'+d.sub+'</span></div>'+
+    '<div class="stg-wrap"><span class="stg-lbl">Label</span><div class="stg '+d.cls+'"><div class="stg-knob"></div></div></div>'+
+    '<div class="stg-meta">'+
+      '<div class="stg-mi"><span class="stg-mk">State</span><span class="stg-mv '+d.valCls+'">'+d.state+'</span></div>'+
+      '<div class="stg-mi"><span class="stg-mk">Value</span><span class="stg-mv '+d.valCls+'">'+d.val+'</span></div>'+
+      '<div class="stg-mi"><span class="stg-mk">Usage</span><span class="stg-mv" style="color:var(--muted);font-weight:400;text-align:right">'+d.desc+'</span></div>'+
+    '</div>';
+  sg.appendChild(el);
+});
+
+/* progress */
+var pt=document.getElementById('ptrack');
+for(var i=0;i<4;i++){var s=document.createElement('div');s.className='pseg';pt.appendChild(s)}
+
+/* ── animation ── */
+var cur=0,playing=true,timer=null;
+var ibar=document.getElementById('ibar');
+
+function setAct(idx){
+  cur=idx;
+  var ps=sg.querySelectorAll('.sp');
+  var ss=pt.querySelectorAll('.pseg');
+  for(var i=0;i<ps.length;i++){
+    ps[i].classList.toggle('active',i===idx);
+    ss[i].classList.toggle('on',i<=idx);
+  }
+  ibar.classList.add('fading');
+  setTimeout(function(){ibar.innerHTML=D[idx].ins;ibar.classList.remove('fading')},280);
+}
+function startLoop(){timer=setInterval(function(){setAct((cur+1)%4)},3500)}
+function stopLoop(){clearInterval(timer)}
+document.getElementById('togBtn').onclick=function(){
+  playing=!playing;
+  this.textContent=playing?'Pause':'Play';
+  playing?startLoop():stopLoop();
+};
+document.getElementById('rstBtn').onclick=function(){
+  stopLoop();cur=0;setAct(0);if(playing)startLoop();
+};
+setAct(0);startLoop();
+
+/* ═══ PRACTICE ═══ */
+var state={dark:true,hero:true,cards:true,nav:true,maint:false};
+var labels={dark:'Dark mode',hero:'Hero section',cards:'Feature cards',nav:'Navigation',maint:'Maintenance'};
+
+var pvBody=document.getElementById('pvBody');
+var pvHero=document.getElementById('pvHero');
+var pvCards=document.getElementById('pvCards');
+var pvNav=document.getElementById('pvNav');
+var pvMaint=document.getElementById('pvMaint');
+var vrRows=document.getElementById('vrRows');
+var pPrompt=document.getElementById('pPrompt');
+
+function updPreview(){
+  var locked=state.maint;
+  var count=0;
+  var parts=[];
+
+  /* dark mode */
+  pvBody.className='pv-body '+(state.dark?'dark':'light');
+  if(state.dark){count++;parts.push('dark mode on')}
+  else{parts.push('dark mode off')}
+
+  /* hero */
+  pvHero.classList.toggle('hide',!state.hero||locked);
+  if(state.hero&&!locked){count++;parts.push('hero visible')}
+
+  /* cards */
+  pvCards.classList.toggle('hide',!state.cards||locked);
+  if(state.cards&&!locked){count++;parts.push('cards visible')}
+
+  /* nav */
+  pvNav.classList.toggle('hide',!state.nav||locked);
+  if(state.nav&&!locked){count++;parts.push('nav visible')}
+
+  /* maintenance overlay */
+  pvMaint.style.display=locked?'flex':'none';
+
+  /* toggle disabled states */
+  var allTogs=document.querySelectorAll('.ptg');
+  allTogs.forEach(function(t){
+    var k=t.dataset.key;
+    if(k==='maint')return;
+    var isLocked=locked&&state[k];
+    /* if maint is on, lock all toggles that are currently ON */
+    t.classList.toggle('dis',isLocked);
+    if(isLocked){
+      t.classList.remove('off');
+      t.classList.add('on');
+    }
+  });
+  /* if maint off, ensure maint toggle itself is not disabled */
+  var maintTog=document.querySelector('.ptg[data-key="maint"]');
+
+  /* value readout */
+  vrRows.innerHTML='';
+  var keys=['dark','hero','cards','nav','maint'];
+  keys.forEach(function(k){
+    var isLocked=locked&&(k!=='maint')&&state[k];
+    var v=isLocked?'locked':(state[k]?'true':'false');
+    var vCls=isLocked?'locked':(state[k]?'on':'off');
+    vrRows.innerHTML+='<div class="vr-row"><span class="vr-k">'+labels[k]+'</span><span class="vr-v '+vCls+'">'+v+'</span></div>';
+  });
+
+  /* prompt */
+  var txt=parts.join(', ');
+  if(locked) txt+=", maintenance mode — các toggle on bị khóa";
+  pPrompt.classList.add('fading');
+  setTimeout(function(){pPrompt.textContent=txt;pPrompt.classList.remove('fading')},200);
+}
+
+/* bind toggles */
+document.querySelectorAll('.ptg').forEach(function(t){
+  t.addEventListener('click',function(){
+    var k=t.dataset.key;
+    /* don't allow toggle if disabled */
+    if(t.classList.contains('dis'))return;
+
+    if(k==='maint'){
+      /* turning on maintenance: lock all ON toggles */
+      state.maint=!state.maint;
+      t.classList.toggle('on',state.maint);
+      t.classList.toggle('off',!state.maint);
+    }else{
+      state[k]=!state[k];
+      t.classList.toggle('on',state[k]);
+      t.classList.toggle('off',!state[k]);
+    }
+    updPreview();
+  });
+});
+
+updPreview();
+</script>
+</body>
+</html>

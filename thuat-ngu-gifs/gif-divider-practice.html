@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Divider Audit — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root {
+    --bg: #0f0f12;
+    --bgc: #16161b;
+    --bgi: #121217;
+    --bd: #282830;
+    --tx: #e8e4dc;
+    --txm: #707070;
+    --txd: #3a3a3a;
+    --ac: #E88C2E;
+    --abg: rgba(232, 140, 46, 0.1);
+    --err: #ef4444;
+    --gn: #22c55e;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: 'Space Grotesk', sans-serif;
+    background-color: var(--bg);
+    background-image: 
+        linear-gradient(rgba(255, 255, 255, .015) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, .015) 1px, transparent 1px);
+    background-size: 20px 20px;
+    color: var(--tx);
+    padding: 24px 16px;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+}
+
+.pra {
+    width: 100%;
+    max-width: 940px;
+    background: var(--bgc);
+    border: 1px solid var(--bd);
+    border-radius: 3px;
+    padding: 32px;
+}
+
+.ch { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.ch .n {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px; font-weight: 700;
+    color: var(--ac); background: var(--abg);
+    padding: 2px 6px; border-radius: 2px;
+}
+.ch h2 { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+
+.pra-goal { font-size: 12.5px; color: var(--txm); margin-bottom: 24px; line-height: 1.5; }
+
+.pra-grid { display: grid; grid-template-columns: 1fr 320px; gap: 32px; }
+@media (max-width: 768px) { .pra-grid { grid-template-columns: 1fr; } }
+
+/* Audit Canvas */
+.canvas {
+    background: var(--bgi);
+    border: 1px solid var(--bd);
+    border-radius: 4px;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 0; /* Control gaps via elements */
+}
+
+.mock-h1 { font-size: 24px; font-weight: 800; color: var(--tx); margin-bottom: 4px; }
+.mock-p { font-size: 13px; color: var(--txm); line-height: 1.6; }
+.mock-sub { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--ac); text-transform: uppercase; margin-bottom: 16px; }
+
+/* Interactive Divider */
+.div-item {
+    height: 16px;
+    margin: 4px 0;
+    display: flex;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.div-line {
+    width: 100%;
+    height: 1px;
+    background: var(--bd);
+    transition: all 0.3s;
+}
+.div-item:hover .div-line { background: var(--ac); height: 2px; }
+.div-item.removed { height: 0; opacity: 0; margin: 0; overflow: hidden; pointer-events: none; }
+
+.div-tag {
+    position: absolute;
+    right: -10px;
+    top: 50%;
+    transform: translateY(-50%) translateX(100%);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 8px;
+    color: var(--txm);
+    opacity: 0;
+    transition: opacity 0.2s;
+    white-space: nowrap;
+}
+.div-item:hover .div-tag { opacity: 1; transform: translateY(-50%) translateX(10px); }
+
+/* Sidebar Tool */
+.tool-box {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.stat-card {
+    background: var(--bgi);
+    border: 1px solid var(--bd);
+    padding: 20px;
+    border-radius: 4px;
+}
+.stat-lbl { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--txd); text-transform: uppercase; margin-bottom: 12px; display: block; }
+.stat-val { font-size: 24px; font-weight: 700; color: var(--ac); }
+
+.feedback-box {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--bd);
+    padding: 16px;
+    border-radius: 4px;
+    font-size: 11px;
+    color: var(--txm);
+    line-height: 1.6;
+}
+.feedback-box em { color: var(--ac); font-style: normal; }
+
+.btn-reset {
+    background: transparent;
+    border: 1px solid var(--bd);
+    color: var(--txm);
+    padding: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 10px;
+    cursor: pointer;
+    border-radius: 2px;
+}
+.btn-reset:hover { border-color: var(--ac); color: var(--ac); }
+
+.success-screen {
+    position: absolute;
+    inset: 0;
+    background: var(--bg);
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s;
+}
+.success-screen.show { opacity: 1; pointer-events: auto; }
+
+</style>
+</head>
+<body>
+
+<section class="pra">
+    <div class="ch"><span class="n">PRACTICE</span><h2>Divider Audit: Thanh lọc Layout</h2></div>
+    <p class="pra-goal">Tìm và xóa những Divider "vô duyên" đang làm gãy sự gắn kết tự nhiên của thông tin. Click vào đường kẻ để xóa.</p>
+
+    <div class="pra-grid" style="position: relative;">
+        <!-- Canvas -->
+        <div class="canvas" id="canvas">
+            <div class="mock-sub">Sản phẩm mới</div>
+            <div class="mock-h1">Amber Brutalist UI Kit</div>
+            
+            <!-- Bad Divider 1 -->
+            <div class="div-item bad" onclick="audit(this, true)">
+                <div class="div-line"></div>
+                <span class="div-tag">REMOVE?</span>
+            </div>
+
+            <div class="mock-p">Bộ công cụ thiết kế dành riêng cho các dự án AI-first, tập trung vào hiệu năng và trải nghiệm người dùng tối ưu.</div>
+            
+            <!-- Correct Divider 1 -->
+            <div class="div-item good" onclick="audit(this, false)">
+                <div class="div-line"></div>
+                <span class="div-tag">STAY</span>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <div class="mock-sub">Tính năng cốt lõi</div>
+                <div class="mock-h1" style="font-size: 18px;">Dynamic Tokens</div>
+                
+                <!-- Bad Divider 2 -->
+                <div class="div-item bad" onclick="audit(this, true)">
+                    <div class="div-line"></div>
+                    <span class="div-tag">REMOVE?</span>
+                </div>
+
+                <div class="mock-p">Hệ thống token tự động thay đổi dựa trên ngữ cảnh thiết kế, giúp duy trì sự nhất quán tuyệt đối.</div>
+            </div>
+
+            <!-- Correct Divider 2 -->
+            <div class="div-item good" onclick="audit(this, false)">
+                <div class="div-line"></div>
+                <span class="div-tag">STAY</span>
+            </div>
+
+            <div style="margin-top: 20px; opacity: 0.5;">
+                <div class="mock-p">Footer Information &copy; 2026</div>
+                <!-- Bad Divider 3 -->
+                <div class="div-item bad" onclick="audit(this, true)">
+                    <div class="div-line"></div>
+                    <span class="div-tag">REMOVE?</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div class="tool-box">
+            <div class="stat-card">
+                <span class="stat-lbl">Lỗi thiết kế</span>
+                <div class="stat-val" id="errorCount">3</div>
+            </div>
+
+            <div class="feedback-box" id="feedback">
+                Click vào các divider để xóa. <em>Divider sai</em> thường nằm giữa các thành phần liên quan chặt chẽ (như Tiêu đề và Mô tả).
+            </div>
+
+            <button class="btn-reset" onclick="location.reload()">RESET CANVAS</button>
+        </div>
+
+        <!-- Success Screen -->
+        <div class="success-screen" id="success">
+            <h3 style="color: var(--ac); font-size: 24px; margin-bottom: 12px;">AUDIT COMPLETE</h3>
+            <p style="color: var(--txm); margin-bottom: 24px; font-size: 13px;">Bạn đã làm sạch layout thành công. <br>Bằng cách xóa các divider thừa, bạn đã áp dụng nguyên tắc <strong>Proximity</strong> (Sự gần gũi) trong thiết kế.</p>
+            <button onclick="location.reload()" style="background: var(--ac); border:none; padding: 12px 24px; border-radius: 2px; font-weight: 700; cursor:pointer; font-family: 'JetBrains Mono', monospace; font-size: 11px;">THỬ LẠI</button>
+        </div>
+    </div>
+</section>
+
+<script>
+let errorsRemaining = 3;
+
+function audit(el, isBad) {
+    if (el.classList.contains('removed')) return;
+
+    if (isBad) {
+        el.classList.add('removed');
+        errorsRemaining--;
+        updateUI(true);
+    } else {
+        showFeedback("Divider này <em>hợp lý</em>. Nó phân tách hai Section hoàn toàn khác nhau. Đừng xóa nó!");
+        el.style.transform = 'translateX(5px)';
+        setTimeout(() => el.style.transform = 'translateX(-5px)', 50);
+        setTimeout(() => el.style.transform = 'translateX(0)', 100);
+    }
+}
+
+function updateUI(isSuccess) {
+    const countEl = document.getElementById('errorCount');
+    countEl.innerText = errorsRemaining;
+    
+    if (errorsRemaining === 0) {
+        setTimeout(() => {
+            document.getElementById('success').classList.add('show');
+        }, 500);
+    } else {
+        showFeedback("Đúng rồi! Xóa divider đó giúp tiêu đề và mô tả <em>gắn kết</em> hơn.");
+    }
+}
+
+function showFeedback(msg) {
+    const fb = document.getElementById('feedback');
+    fb.innerHTML = msg;
+}
+</script>
+</body>
+</html>

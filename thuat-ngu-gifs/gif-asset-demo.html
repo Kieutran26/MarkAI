@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Asset Demo — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#101010;--bgc:#181818;--bgi:#131313;
+  --bd:#272727;--tx:#e0e0e0;--txm:#707070;--txd:#3a3a3a;
+  --ac:#E88C2E;--acl:#ffb05c;
+  --abg:rgba(232,140,46,.08);--abg2:rgba(232,140,46,.18);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Space Grotesk',sans-serif;
+  background-color:var(--bg);
+  background-image:
+    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:20px 20px;
+  color:var(--tx);min-height:100vh;padding:20px 16px 48px;
+}
+.g{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:660px){.g{grid-template-columns:1fr}}
+.c{background:var(--bgc);border:1px solid var(--bd);border-radius:3px;padding:18px;position:relative;overflow:hidden}
+.c::after{content:'';position:absolute;top:14px;right:14px;width:5px;height:5px;background:var(--ac);border-radius:50%;animation:dp 2.4s ease-in-out infinite}
+@keyframes dp{0%,100%{opacity:.3}50%{opacity:1}}
+.ch{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.ch .n{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--ac);background:var(--abg);border:1px solid rgba(232,140,46,.2);padding:1px 6px;border-radius:2px}
+.ch h2{font-size:14px;font-weight:600;letter-spacing:-.3px}
+.st{background:var(--bgi);border:1px solid var(--bd);border-radius:3px;padding:20px;display:flex;flex-direction:column;align-items:center;min-height:220px;position:relative;justify-content:center}
+.ins{margin-top:14px;font-size:11.5px;color:var(--txm);line-height:1.55;padding-left:12px;border-left:2px solid var(--bd)}
+.ins strong{color:var(--acl);font-weight:600}
+
+/* Asset Viz */
+.prev-box{width:100%;height:100px;background:var(--bg);border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;border-radius:2px;margin-bottom:12px}
+.f-info{width:100%;display:flex;flex-direction:column;gap:6px}
+.f-row{font-family:'JetBrains Mono',monospace;font-size:9px;display:flex;justify-content:space-between;padding:5px 8px;background:var(--bg);border:1px solid var(--bd);border-radius:2px;color:var(--txm)}
+.f-type{color:var(--ac);font-weight:700;margin-right:6px}
+
+/* Animation Styles */
+.img-grid{display:grid;grid-template-columns:repeat(3,24px);gap:4px}
+.img-item{width:24px;height:24px;background:var(--txd);border:1px solid var(--bd);animation:pulse 2s infinite ease-in-out}
+@keyframes pulse{0%,100%{opacity:0.6}50%{opacity:1}}
+
+.font-stack{display:flex;flex-direction:column;gap:4px;width:70%}
+.font-bar{height:10px;background:var(--txm);opacity:0.2;border-radius:1px}
+.font-bar:first-child{width:100%;background:var(--tx);opacity:0.8;height:14px}
+
+.wave-container{display:flex;align-items:center;gap:3px;height:36px}
+.wave-bar{width:3px;height:10px;background:var(--ac);animation:wave 1s ease-in-out infinite}
+@keyframes wave{0%,100%{height:10px}50%{height:30px}}
+
+.doc-lines{display:flex;flex-direction:column;gap:5px;width:60%}
+.doc-line{height:4px;background:var(--txd);border-radius:1px}
+</style>
+</head>
+<body>
+
+<div class="g">
+  <!-- 01: Images -->
+  <section class="c">
+    <div class="ch"><span class="n">01</span><h2>Image Assets</h2></div>
+    <div class="st">
+      <div class="prev-box">
+        <div class="img-grid">
+          <div class="img-item" style="animation-delay:0s"></div>
+          <div class="img-item" style="animation-delay:0.2s"></div>
+          <div class="img-item" style="animation-delay:0.4s"></div>
+          <div class="img-item" style="animation-delay:0.1s"></div>
+          <div class="img-item" style="animation-delay:0.3s"></div>
+          <div class="img-item" style="animation-delay:0.5s"></div>
+        </div>
+      </div>
+      <div class="f-info">
+        <div class="f-row"><span><span class="f-type">SVG</span> logo.svg</span><span>4KB</span></div>
+        <div class="f-row"><span><span class="f-type">WEBP</span> hero.webp</span><span>120KB</span></div>
+      </div>
+    </div>
+    <p class="ins">Ảnh logo, icon (<strong>SVG</strong>) và ảnh nền (<strong>WebP</strong>). SVG sắc nét ở mọi kích thước, WebP tối ưu dung lượng.</p>
+  </section>
+
+  <!-- 02: Fonts -->
+  <section class="c">
+    <div class="ch"><span class="n">02</span><h2>Font Assets</h2></div>
+    <div class="st">
+      <div class="prev-box">
+        <div class="font-stack">
+          <div class="font-bar"></div>
+          <div class="font-bar" style="width:70%"></div>
+          <div class="font-bar" style="width:85%"></div>
+        </div>
+      </div>
+      <div class="f-info">
+        <div class="f-row"><span><span class="f-type">WOFF2</span> Bold.woff2</span><span>22KB</span></div>
+        <div class="f-row"><span><span class="f-type">WOFF2</span> Medium.woff2</span><span>20KB</span></div>
+      </div>
+    </div>
+    <p class="ins">File <strong>WOFF2</strong> giúp web hiển thị đúng kiểu chữ thiết kế mà không làm chậm tốc độ tải trang.</p>
+  </section>
+
+  <!-- 03: Media -->
+  <section class="c">
+    <div class="ch"><span class="n">03</span><h2>Media Assets</h2></div>
+    <div class="st">
+      <div class="prev-box">
+        <div class="wave-container">
+          <div class="wave-bar" style="animation-delay:0s"></div>
+          <div class="wave-bar" style="animation-delay:0.1s"></div>
+          <div class="wave-bar" style="animation-delay:0.2s"></div>
+          <div class="wave-bar" style="animation-delay:0.3s"></div>
+          <div class="wave-bar" style="animation-delay:0.4s"></div>
+        </div>
+      </div>
+      <div class="f-info">
+        <div class="f-row"><span><span class="f-type">MP4</span> demo.mp4</span><span>1.2MB</span></div>
+        <div class="f-row"><span><span class="f-type">MP3</span> alert.mp3</span><span>45KB</span></div>
+      </div>
+    </div>
+    <p class="ins">Video và Audio. Cần được <strong>nén và tối ưu</strong> tốt để tránh làm treo trình duyệt khi người dùng tải trang.</p>
+  </section>
+
+  <!-- 04: Documents -->
+  <section class="c">
+    <div class="ch"><span class="n">04</span><h2>Document Assets</h2></div>
+    <div class="st">
+      <div class="prev-box">
+        <div class="doc-lines">
+          <div class="doc-line" style="width:100%"></div>
+          <div class="doc-line" style="width:80%"></div>
+          <div class="doc-line" style="width:90%"></div>
+        </div>
+      </div>
+      <div class="f-info">
+        <div class="f-row"><span><span class="f-type">PDF</span> guide.pdf</span><span>850KB</span></div>
+        <div class="f-row"><span><span class="f-type">JSON</span> data.json</span><span>12KB</span></div>
+      </div>
+    </div>
+    <p class="ins">Tài liệu hướng dẫn (<strong>PDF</strong>) hoặc dữ liệu cấu trúc (<strong>JSON</strong>) đi kèm theo ứng dụng của bạn.</p>
+  </section>
+</div>
+
+</body>
+</html>

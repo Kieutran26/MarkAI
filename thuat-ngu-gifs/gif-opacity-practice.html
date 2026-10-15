@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Opacity Practice — Vibecode Glossary</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #101010;
+  --bgc: #181818;
+  --bgi: #131313;
+  --bd: #272727;
+  --tx: #e0e0e0;
+  --txm: #707070;
+  --txd: #3a3a3a;
+  --ac: #E88C2E;
+  --acl: #f59e0b;
+  --abg: rgba(232, 140, 46, .08);
+  --abg2: rgba(232, 140, 46, .18);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, .018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, .018) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--tx);
+  padding: 20px 16px;
+}
+
+.pra {
+  max-width: 940px;
+  margin: 0 auto;
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 22px;
+}
+
+.ch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+.ch .n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--ac);
+  background: var(--abg);
+  border: 1px solid var(--abg2);
+  padding: 1px 6px;
+  border-radius: 2px;
+}
+
+.ch h2 {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -.3px;
+  text-transform: uppercase;
+}
+
+.pra-goal {
+  font-size: 12.5px;
+  color: var(--txm);
+  margin-bottom: 18px;
+  line-height: 1.5;
+}
+
+.pra-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+@media(max-width: 768px) {
+  .pra-grid { grid-template-columns: 1fr; }
+}
+
+/* Control Panel */
+.ctrl-group {
+  margin-bottom: 20px;
+}
+
+.ctrl-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--txd);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  margin-bottom: 10px;
+  display: block;
+}
+
+.btn-group {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.btn {
+  padding: 7px 12px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  border: 1px solid var(--bd);
+  background: var(--bgi);
+  color: var(--txm);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all .15s;
+}
+
+.btn:hover {
+  border-color: var(--ac);
+  color: var(--ac);
+}
+
+.btn.active {
+  background: var(--ac);
+  color: #fff;
+  border-color: var(--ac);
+}
+
+/* Preview Area */
+.preview-box {
+  background: #000;
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  min-height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+  background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&q=80&w=800');
+  background-size: cover;
+  background-position: center;
+}
+
+.overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: #000;
+  opacity: 0.4;
+  transition: opacity 0.4s;
+}
+
+.content-wrap {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  width: 100%;
+}
+
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+  transition: opacity 0.4s;
+}
+
+.subtitle {
+  font-size: 14px;
+  color: #fff;
+  opacity: 0.7;
+  margin-bottom: 20px;
+  transition: opacity 0.4s;
+}
+
+.cta-btn {
+  background: var(--ac);
+  color: #fff;
+  border: none;
+  padding: 10px 24px;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: 13px;
+  transition: opacity 0.4s;
+}
+
+/* Prompt Box */
+.pr-box {
+  background: var(--bgi);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 14px;
+  margin-top: 24px;
+}
+
+.pr-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  color: var(--txd);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.pr-txt {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--ac);
+  line-height: 1.6;
+}
+
+.hint {
+  font-size: 11px;
+  color: var(--txm);
+  margin-top: 12px;
+  line-height: 1.4;
+  font-style: italic;
+}
+
+</style>
+</head>
+<body>
+
+<section class="pra">
+  <div class="ch"><span class="n">PRACTICE</span><h2>Opacity Builder</h2></div>
+  <p class="pra-goal">Thực hành điều chỉnh độ trong suốt để tối ưu hiển thị. Chọn đối tượng và mức Opacity tương ứng để xem kết quả.</p>
+
+  <div class="pra-grid">
+    <!-- Controls -->
+    <div>
+      <div class="ctrl-group">
+        <span class="ctrl-label">Chọn đối tượng (Target)</span>
+        <div class="btn-group" id="targetBtns">
+          <button class="btn active" data-val="overlay">Lớp phủ nền (Overlay)</button>
+          <button class="btn" data-val="subtitle">Chữ phụ (Subtitle)</button>
+          <button class="btn" data-val="btn">Nút bấm (Disabled)</button>
+        </div>
+      </div>
+
+      <div class="ctrl-group">
+        <span class="ctrl-label">Mức Opacity (Value)</span>
+        <div class="btn-group" id="valBtns">
+          <button class="btn" data-val="0.1">0.1 (Gần như ẩn)</button>
+          <button class="btn active" data-val="0.4">0.4 (Mờ vừa)</button>
+          <button class="btn" data-val="0.7">0.7 (Mờ nhẹ)</button>
+          <button class="btn" data-val="1.0">1.0 (Đậm đặc)</button>
+        </div>
+      </div>
+
+      <div class="hint">Mẹo: Opacity thấp (0.4 - 0.7) giúp tạo phân cấp cho thông tin phụ, trong khi Overlay đậm (0.6+) giúp text trắng nổi bật trên ảnh nền phức tạp.</div>
+    </div>
+
+    <!-- Preview -->
+    <div>
+      <div class="preview-box" id="preview">
+        <div class="overlay" id="overlay"></div>
+        <div class="content-wrap">
+          <h3 class="title">Tương lai của AI</h3>
+          <p class="subtitle" id="subtitle">Khám phá sức mạnh của Vibecode</p>
+          <button class="cta-btn" id="ctaBtn">Bắt đầu ngay</button>
+        </div>
+      </div>
+
+      <div class="pr-box">
+        <span class="pr-label">Prompt cho AI</span>
+        <div class="pr-txt" id="promptText">
+          Giảm độ trong suốt của lớp phủ nền xuống 0.4 để làm nổi bật nội dung phía trên.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+const overlay = document.getElementById('overlay');
+const subtitle = document.getElementById('subtitle');
+const ctaBtn = document.getElementById('ctaBtn');
+const promptText = document.getElementById('promptText');
+
+const state = {
+  target: 'overlay',
+  value: '0.4'
+};
+
+function updatePreview() {
+  // Reset all to defaults first (for clean state)
+  overlay.style.opacity = "0.4";
+  subtitle.style.opacity = "0.7";
+  ctaBtn.style.opacity = "1.0";
+
+  // Apply active state
+  if (state.target === 'overlay') overlay.style.opacity = state.value;
+  if (state.target === 'subtitle') subtitle.style.opacity = state.value;
+  if (state.target === 'btn') ctaBtn.style.opacity = state.value;
+
+  // Update prompt
+  let targetTxt = '';
+  if(state.target === 'overlay') targetTxt = 'lớp phủ nền (overlay)';
+  if(state.target === 'subtitle') targetTxt = 'dòng chữ phụ (subtitle)';
+  if(state.target === 'btn') targetTxt = 'nút bấm (để giả lập trạng thái disabled)';
+
+  promptText.innerText = `Chỉnh opacity của ${targetTxt} thành ${state.value} để tối ưu hóa thị giác.`;
+}
+
+function setupBtns(groupId, stateKey) {
+  const btns = document.querySelectorAll(`#${groupId} .btn`);
+  btns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      btns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state[stateKey] = btn.dataset.val;
+      updatePreview();
+    });
+  });
+}
+
+setupBtns('targetBtns', 'target');
+setupBtns('valBtns', 'value');
+
+updatePreview();
+</script>
+
+</body>
+</html>

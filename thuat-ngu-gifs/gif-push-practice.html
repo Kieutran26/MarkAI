@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Push (GitHub) — Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#101010;--bgc:#181818;--bgi:#131313;
+  --bd:#272727;--tx:#e0e0e0;--txm:#707070;--txd:#3a3a3a;
+  --ac:#d97706;--acl:#f59e0b;
+  --abg:rgba(217,119,6,.08);--abg2:rgba(217,119,6,.18);
+  --rd:#ef4444;--gn:#22c55e;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Space Grotesk',sans-serif;
+  background-color:var(--bg);
+  background-image:
+    linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+  background-size:20px 20px;
+  color:var(--tx);min-height:100vh;padding:24px 16px 48px;
+}
+.ch{display:flex;align-items:center;gap:10px;margin-bottom:16px}
+.ch .n{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--ac);background:var(--abg);border:1px solid rgba(217,119,6,.2);padding:1px 6px;border-radius:2px}
+.ch h2{font-size:14px;font-weight:600;letter-spacing:-.3px}
+
+/* ── PRACTICE ── */
+.pra{max-width:900px;margin:0 auto;background:var(--bgc);border:1px solid var(--bd);border-radius:3px;padding:22px}
+.pra .ch{margin-bottom:6px}
+.pra-goal{font-size:12.5px;color:var(--txm);margin-bottom:18px;line-height:1.5}
+.pra-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+@media(max-width:660px){.pra-grid{grid-template-columns:1fr}}
+
+/* action buttons */
+.acts{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.ab{padding:7px 12px;font-family:'JetBrains Mono',monospace;font-size:10.5px;font-weight:500;border:1px solid var(--bd);background:var(--bgi);color:var(--txm);border-radius:2px;cursor:pointer;transition:all .15s;white-space:nowrap}
+.ab:hover:not(:disabled){border-color:var(--ac);color:var(--acl);background:var(--abg)}
+.ab:active:not(:disabled){transform:scale(.97)}
+.ab:disabled{opacity:.3;cursor:default}
+.ab.sim{border-style:dashed;border-color:rgba(217,119,6,.3);color:var(--acl)}
+.ab.sim:hover:not(:disabled){background:var(--abg);border-color:var(--ac)}
+.ab.rst{border-color:var(--txd);color:var(--txd)}
+.ab.rst:hover{border-color:var(--rd);color:var(--rd);background:rgba(239,68,68,.06)}
+
+/* log console */
+.log{background:var(--bg);border:1px solid var(--bd);border-radius:2px;padding:8px 10px;max-height:150px;overflow-y:auto;font-family:'JetBrains Mono',monospace;font-size:10px;line-height:1.7;color:var(--txd)}
+.log-e{opacity:0;animation:le .2s ease forwards}
+@keyframes le{from{opacity:0;transform:translateY(3px)}to{opacity:1;transform:translateY(0)}}
+.log-e .cmd{color:var(--txm)}
+.log-e .ok{color:var(--gn)}
+.log-e .err{color:var(--rd)}
+.log-e .warn{color:var(--acl)}
+
+/* preview panels */
+.pv-panels{display:flex;gap:10px}
+@media(max-width:480px){.pv-panels{flex-direction:column}}
+.pv-col{flex:1;display:flex;flex-direction:column;gap:6px}
+.pv-label{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--txd);text-transform:uppercase;letter-spacing:.5px;padding:0 2px}
+.pv-box{background:var(--bgi);border:1px solid var(--bd);border-radius:2px;padding:8px 10px;transition:border-color .3s,box-shadow .3s;min-height:80px}
+.pv-box.ok{border-color:var(--gn);box-shadow:0 0 12px rgba(34,197,94,.1)}
+.pv-box.err{border-color:var(--rd);box-shadow:0 0 12px rgba(239,68,68,.1)}
+.pv-box.sync{border-color:var(--ac);box-shadow:0 0 12px rgba(217,119,6,.1)}
+.pv-f{display:flex;align-items:center;gap:5px;font-size:10.5px;padding:2px 0}
+.pv-fd{width:6px;height:6px;border-radius:1px;flex-shrink:0}
+.pv-fv{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--txd);margin-left:auto}
+.pv-badge{font-family:'JetBrains Mono',monospace;font-size:8px;padding:1px 4px;border-radius:1px;font-weight:700}
+.pv-badge.mod{background:var(--abg2);color:var(--acl);border:1px solid rgba(217,119,6,.2)}
+.pv-badge.ahead{background:rgba(239,68,68,.1);color:var(--rd);border:1px solid rgba(239,68,68,.2)}
+
+/* prompt output */
+.pr-box{background:var(--bgi);border:1px solid var(--bd);border-radius:3px;padding:12px 14px;margin-top:14px}
+.pr-box .cfg-l{display:block;margin-bottom:8px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--txd);text-transform:uppercase;letter-spacing:.5px}
+.pr-txt{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--acl);line-height:1.55;word-break:break-word;min-height:16px}
+
+.hint{font-size:11px;color:var(--txd);line-height:1.4;padding:8px 10px;background:var(--bgi);border-radius:2px;border-left:2px solid var(--bd);margin-top:14px}
+.hint em{color:var(--acl);font-style:normal;font-weight:600}
+
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important}}
+.btn-hint {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ac);
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 2px;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: hintPulse 2s infinite;
+  z-index: 999;
+}
+.btn-hint::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid var(--ac);
+}
+@keyframes hintPulse {
+  0% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.05); }
+  100% { transform: translateX(-50%) scale(1); }
+}
+</style>
+</head>
+<body>
+
+<section class="pra" aria-label="Thực hành">
+  <div class="ch"><span class="n">PRACTICE</span><h2>Thử Push trực tiếp</h2></div>
+  <p class="pra-goal">Thao tác các bước để hiểu rõ: sửa → commit → push. Thử kích hoạt "colleague push" để thấy push bị reject.</p>
+
+  <div class="pra-grid">
+    <!-- ── LEFT: ACTIONS + LOG ── -->
+    <div>
+      <div class="acts">
+        <div style="position: relative; display: inline-block;">
+          <div class="btn-hint" id="hintBadge">Click me!</div>
+          <button class="ab" id="btnEdit">Sửa file</button>
+        </div>
+        <button class="ab" id="btnCommit" disabled>Commit</button>
+        <button class="ab" id="btnPush" disabled>Push</button>
+        <button class="ab" id="btnPull" disabled>Pull</button>
+        <button class="ab sim" id="btnSim">Colleague push</button>
+        <button class="ab rst" id="btnReset">Reset</button>
+      </div>
+      <div class="log" id="log"><span style="color:var(--txd)">// console</span></div>
+      <div class="hint">Thử: <em>Sửa → Commit → Push</em> thành công trước. Rồi <em>Colleague push → Push</em> để thấy reject.</div>
+    </div>
+
+    <!-- ── RIGHT: LOCAL vs REMOTE ── -->
+    <div>
+      <div class="pv-panels">
+        <div class="pv-col">
+          <span class="pv-label">Local</span>
+          <div class="pv-box" id="pvLocal"></div>
+        </div>
+        <div class="pv-col">
+          <span class="pv-label">GitHub</span>
+          <div class="pv-box" id="pvRemote"></div>
+        </div>
+      </div>
+      <div class="pr-box">
+        <span class="cfg-l">Nói với dev</span>
+        <div class="pr-txt" id="prTxt">Bắt đầu thao tác bên trái...</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  /* ── STATE ── */
+  var localVer = 2;
+  var remoteVer = 2;
+  var modified = false;
+  var files = [
+    {name:'index.html', color:'#f59e0b'},
+    {name:'style.css', color:'#22c55e'},
+    {name:'script.js', color:'#b45309'}
+  ];
+
+  /* ── REFS ── */
+  var $edit = document.getElementById('btnEdit');
+  var $commit = document.getElementById('btnCommit');
+  var $push = document.getElementById('btnPush');
+  var $pull = document.getElementById('btnPull');
+  var $sim = document.getElementById('btnSim');
+  var $reset = document.getElementById('btnReset');
+  var $log = document.getElementById('log');
+  var $local = document.getElementById('pvLocal');
+  var $remote = document.getElementById('pvRemote');
+  var $pr = document.getElementById('prTxt');
+  var $hintBadge = document.getElementById('hintBadge');
+
+  /* ── RENDER ── */
+  function render(){
+    /* local */
+    var lh = '';
+    for(var i = 0; i < files.length; i++){
+      var f = files[i];
+      var badge = '';
+      if(modified && i === 0) badge = '<span class="pv-badge mod">modified</span>';
+      lh += '<div class="pv-f"><span class="pv-fd" style="background:'+f.color+'"></span>'+esc(f.name);
+      if(i === 0) lh += '<span class="pv-fv">v'+localVer+'</span>';
+      else lh += '<span class="pv-fv">v'+localVer+'</span>';
+      lh += badge + '</div>';
+    }
+    $local.innerHTML = lh;
+
+    /* remote */
+    var rh = '';
+    for(var j = 0; j < files.length; j++){
+      var fr = files[j];
+      var ab = '';
+      if(remoteVer > localVer) ab = '<span class="pv-badge ahead">ahead</span>';
+      rh += '<div class="pv-f"><span class="pv-fd" style="background:'+fr.color+'"></span>'+esc(fr.name);
+      rh += '<span class="pv-fv">v'+remoteVer+'</span>';
+      if(j === 0) rh += ab;
+      rh += '</div>';
+    }
+    $remote.innerHTML = rh;
+
+    /* box states */
+    $local.className = 'pv-box';
+    $remote.className = 'pv-box';
+    if(remoteVer > localVer) $remote.classList.add('err');
+    else if(localVer === remoteVer && localVer > 2) { $local.classList.add('ok'); $remote.classList.add('ok'); }
+    else if(localVer > remoteVer) $local.classList.add('sync');
+
+    /* buttons */
+    $commit.disabled = !modified;
+    $push.disabled = modified || localVer <= remoteVer;
+    $pull.disabled = modified || remoteVer <= localVer;
+    $sim.disabled = remoteVer >= localVer + 3;
+  }
+
+  function esc(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  /* ── LOG ── */
+  function log(cmd, msg, type){
+    var el = document.createElement('div');
+    el.className = 'log-e';
+    var cls = type === 'ok' ? 'ok' : type === 'err' ? 'err' : type === 'warn' ? 'warn' : '';
+    el.innerHTML = '<span class="cmd">&gt; '+esc(cmd)+'</span><br><span class="'+cls+'">  '+esc(msg)+'</span>';
+    $log.appendChild(el);
+    $log.scrollTop = $log.scrollHeight;
+  }
+
+  /* ── PROMPT ── */
+  function prompt(txt){ $pr.textContent = txt; }
+
+  /* ── ACTIONS ── */
+  $edit.addEventListener('click', function(){
+    if($hintBadge) $hintBadge.style.display = 'none';
+    if(modified) return;
+    modified = true;
+    log('edit index.html', 'File modified (uncommitted)', 'warn');
+    prompt('Đã sửa index.html trên local, chưa commit.');
+    render();
+  });
+
+  $commit.addEventListener('click', function(){
+    if(!modified) return;
+    modified = false;
+    localVer++;
+    log('git commit -m "update hero section"', 'Committed v'+localVer+' (local only)', 'ok');
+    prompt('Đã commit v'+localVer+' trên local. Chưa push lên GitHub.');
+    render();
+  });
+
+  $push.addEventListener('click', function(){
+    if(modified){ log('git push', 'Error: có thay đổi chưa commit. Commit trước.', 'err'); prompt('Push thất bại: có thay đổi chưa commit.'); return; }
+    if(localVer <= remoteVer){ log('git push', 'Nothing to push — local và remote đồng bộ.', 'warn'); return; }
+    remoteVer = localVer;
+    log('git push', 'Pushed v'+remoteVer+' to GitHub', 'ok');
+    prompt('Đã push v'+remoteVer+' lên GitHub thành công. Code live.');
+    render();
+  });
+
+  $pull.addEventListener('click', function(){
+    if(modified){ log('git pull', 'Error: có thay đổi chưa commit. Commit hoặc stash trước.', 'err'); prompt('Pull thất bại: có thay đổi chưa commit.'); return; }
+    if(remoteVer <= localVer){ log('git pull', 'Already up to date.', 'warn'); return; }
+    localVer = remoteVer;
+    log('git pull', 'Updated local to v'+localVer+' from remote', 'ok');
+    prompt('Đã pull v'+localVer+' từ GitHub. Local đã đồng bộ.');
+    render();
+  });
+
+  $sim.addEventListener('click', function(){
+    remoteVer++;
+    log('(colleague) git push', 'Remote updated to v'+remoteVer+' — local v'+localVer+' is behind', 'warn');
+    prompt('Colleague vừa push v'+remoteVer+'. Local của mình vẫn v'+localVer+' — cần pull trước khi push.');
+    render();
+  });
+
+  $reset.addEventListener('click', function(){
+    localVer = 2; remoteVer = 2; modified = false;
+    $log.innerHTML = '<span style="color:var(--txd)">// console</span>';
+    prompt('Bắt đầu thao tác bên trái...');
+    render();
+  });
+
+  /* ── INIT ── */
+  render();
+})();
+</script>
+</body>
+</html>

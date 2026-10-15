@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snackbar — Amber Brutalist 4-Cell Grid</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Space+Grotesk:wght@600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0a0a0c;
+      --card-bg: #16161b;
+      --amber: #E88C2E;
+      --gray: #707070;
+      --text: #ece8e1;
+      --border: #26262a;
+      --success: #22c55e;
+      --error: #ef4444;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: 'Space Grotesk', sans-serif;
+      padding: 40px 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .grid-container {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+      max-width: 940px;
+      width: 100%;
+    }
+
+    @media (max-width: 640px) {
+      .grid-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 3px;
+      position: relative;
+      padding-top: 2px;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: var(--amber);
+    }
+
+    .header {
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .num-box {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      border: 1px solid rgba(232, 140, 46, 0.4);
+      padding: 3px 8px;
+      color: var(--amber);
+      background: rgba(232, 140, 46, 0.05);
+      border-radius: 2px;
+      line-height: 1;
+    }
+
+    .title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: #ffffff;
+      letter-spacing: -0.01em;
+    }
+
+    .indicator {
+      width: 6px;
+      height: 6px;
+      background: var(--amber);
+      border-radius: 50%;
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      animation: blink 1.2s infinite;
+      box-shadow: 0 0 8px var(--amber);
+      z-index: 10;
+    }
+
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    .sim-area {
+      height: 180px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 20px;
+      background: rgba(0,0,0,0.2);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .ins {
+      padding: 12px 16px;
+      border-left: 2px solid var(--amber);
+      font-size: 11.5px;
+      color: var(--gray);
+      background: rgba(232, 140, 46, 0.03);
+      margin: 0 16px 16px 16px;
+      line-height: 1.5;
+    }
+
+    .ins strong {
+      color: var(--amber);
+      font-weight: 700;
+    }
+
+    /* Snackbar Simulation Styles */
+    .mock-content {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      opacity: 0.3;
+    }
+    .line { height: 8px; background: #333; border-radius: 2px; }
+    .line.short { width: 40%; }
+    .line.mid { width: 70%; }
+
+    .snackbar-el {
+      position: absolute;
+      bottom: -60px;
+      width: calc(100% - 40px);
+      background: #2a2a30;
+      padding: 10px 16px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      z-index: 5;
+    }
+
+    .snackbar-el.active {
+      bottom: 20px;
+    }
+
+    .sb-text {
+      font-size: 11px;
+      color: #fff;
+    }
+
+    .sb-action {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      color: var(--amber);
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    .progress-track {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      height: 2px;
+      background: rgba(255,255,255,0.1);
+      width: 100%;
+    }
+    .progress-bar {
+      height: 100%;
+      background: var(--amber);
+      width: 100%;
+    }
+
+    .sb-success { border-left: 3px solid var(--success); }
+    .sb-error { border-left: 3px solid var(--error); }
+
+    .badge-logic {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      color: var(--gray);
+      background: rgba(0,0,0,0.4);
+      padding: 2px 6px;
+      border-radius: 2px;
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="grid-container">
+    
+    <!-- Cell 01: Auto-Hide -->
+    <div class="card">
+      <div class="indicator"></div>
+      <div class="header">
+        <div class="num-box">01</div>
+        <div class="title">Auto-Hide Lifecycle</div>
+      </div>
+      <div class="sim-area">
+        <div class="badge-logic" id="logic-01">IDLE</div>
+        <div class="mock-content">
+          <div class="line short"></div>
+          <div class="line"></div>
+          <div class="line mid"></div>
+        </div>
+        <div class="snackbar-el" id="sb-01">
+          <div class="sb-text">Đã lưu bản nháp thành công</div>
+          <div class="progress-track"><div class="progress-bar" id="pb-01"></div></div>
+        </div>
+      </div>
+      <div class="ins">
+        <strong>Auto-Hide</strong> snackbar tự biến mất sau một khoảng thời gian ngắn (4-10s), giúp người dùng không cần thao tác đóng thủ công. Phù hợp cho thông báo <strong>không critical</strong>.
+      </div>
+    </div>
+
+    <!-- Cell 02: Action Button -->
+    <div class="card">
+      <div class="indicator"></div>
+      <div class="header">
+        <div class="num-box">02</div>
+        <div class="title">Action & Interaction</div>
+      </div>
+      <div class="sim-area">
+        <div class="badge-logic" id="logic-02">READY</div>
+        <div class="mock-content">
+          <div class="line"></div>
+          <div class="line short"></div>
+          <div class="line mid"></div>
+        </div>
+        <div class="snackbar-el" id="sb-02">
+          <div class="sb-text">Đã xóa 1 mục khỏi danh sách</div>
+          <div class="sb-action">Hoàn tác</div>
+        </div>
+      </div>
+      <div class="ins">
+        Khác với Toast, Snackbar có thể chứa <strong>một nút hành động</strong> duy nhất. Điều này cực kỳ hữu ích để <strong>Undo (Hoàn tác)</strong> các thao tác lỡ tay mà không làm gián đoạn luồng làm việc.
+      </div>
+    </div>
+
+    <!-- Cell 03: Semantic States -->
+    <div class="card">
+      <div class="indicator"></div>
+      <div class="header">
+        <div class="num-box">03</div>
+        <div class="title">Semantic Feedback</div>
+      </div>
+      <div class="sim-area">
+        <div class="badge-logic" id="logic-03">SUCCESS</div>
+        <div class="mock-content">
+          <div class="line mid"></div>
+          <div class="line"></div>
+          <div class="line short"></div>
+        </div>
+        <div class="snackbar-el sb-success" id="sb-03">
+          <div class="sb-text" id="text-03">Giao dịch đã được xác nhận</div>
+        </div>
+      </div>
+      <div class="ins">
+        Sử dụng <strong>màu sắc chuẩn</strong> giúp người dùng nhận diện nhanh: Xanh cho <strong>Thành công</strong>, Đỏ cho <strong>Lỗi</strong>. Phản hồi thị giác nhanh giúp giảm tải nhận thức cho người dùng.
+      </div>
+    </div>
+
+    <!-- Cell 04: Placement & Stacking -->
+    <div class="card">
+      <div class="indicator"></div>
+      <div class="header">
+        <div class="num-box">04</div>
+        <div class="title">Placement & Priority</div>
+      </div>
+      <div class="sim-area">
+        <div class="badge-logic" id="logic-04">BOTTOM_CENTER</div>
+        <div class="mock-content">
+          <div class="line"></div>
+          <div class="line"></div>
+          <div class="line short"></div>
+        </div>
+        <div class="snackbar-el" id="sb-04" style="width: 80%; transform: translateX(0); left: 10%;">
+          <div class="sb-text">Đang tải tài liệu...</div>
+        </div>
+      </div>
+      <div class="ins">
+        Snackbar thường xuất hiện ở <strong>cạnh dưới</strong> màn hình. Quy tắc quan trọng là <strong>chỉ hiện một cái</strong> duy nhất tại một thời điểm để tránh gây nhiễu loạn thông tin cho người dùng.
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    // Independent Animation Loops
+
+    // 01: Auto-Hide Loop
+    const sb01 = document.getElementById('sb-01');
+    const pb01 = document.getElementById('pb-01');
+    const lg01 = document.getElementById('logic-01');
+    
+    function loop01() {
+      lg01.textContent = 'APPEARING';
+      sb01.classList.add('active');
+      pb01.style.width = '100%';
+      pb01.style.transition = 'none';
+      
+      setTimeout(() => {
+        lg01.textContent = 'WAITING';
+        pb01.style.transition = 'width 3s linear';
+        pb01.style.width = '0%';
+      }, 500);
+
+      setTimeout(() => {
+        lg01.textContent = 'DISMISSING';
+        sb01.classList.remove('active');
+      }, 3500);
+
+      setTimeout(() => {
+        lg01.textContent = 'IDLE';
+        setTimeout(loop01, 1500);
+      }, 4500);
+    }
+    loop01();
+
+    // 02: Action Button Loop
+    const sb02 = document.getElementById('sb-02');
+    const lg02 = document.getElementById('logic-02');
+
+    function loop02() {
+      lg02.textContent = 'USER_ACTION';
+      sb02.classList.add('active');
+      
+      setTimeout(() => {
+        lg02.textContent = 'WAIT_CLICK';
+      }, 1000);
+
+      setTimeout(() => {
+        lg02.textContent = 'CLICKED_UNDO';
+        sb02.classList.remove('active');
+        setTimeout(loop02, 2000);
+      }, 4000);
+    }
+    loop02();
+
+    // 03: Semantic States Loop
+    const sb03 = document.getElementById('sb-03');
+    const lg03 = document.getElementById('logic-03');
+    const tx03 = document.getElementById('text-03');
+    let isSuccess = true;
+
+    function loop03() {
+      isSuccess = !isSuccess;
+      if(isSuccess) {
+        lg03.textContent = 'SUCCESS_STATE';
+        tx03.textContent = 'Hồ sơ đã cập nhật';
+        sb03.className = 'snackbar-el sb-success active';
+      } else {
+        lg03.textContent = 'ERROR_STATE';
+        tx03.textContent = 'Lỗi kết nối máy chủ';
+        sb03.className = 'snackbar-el sb-error active';
+      }
+
+      setTimeout(() => {
+        sb03.classList.remove('active');
+        setTimeout(loop03, 1500);
+      }, 3000);
+    }
+    loop03();
+
+    // 04: Placement Loop
+    const sb04 = document.getElementById('sb-04');
+    const lg04 = document.getElementById('logic-04');
+
+    function loop04() {
+      lg04.textContent = 'SLIDE_UP';
+      sb04.classList.add('active');
+
+      setTimeout(() => {
+        lg04.textContent = 'PERSISTENT';
+      }, 1000);
+
+      setTimeout(() => {
+        lg04.textContent = 'SLIDE_DOWN';
+        sb04.classList.remove('active');
+        setTimeout(loop04, 2000);
+      }, 4500);
+    }
+    loop04();
+
+  </script>
+</body>
+</html>

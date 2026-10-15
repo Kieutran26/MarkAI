@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Color Palette — Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f0f12;
+  --bgc: #16161b;
+  --bgi: #121217;
+  --bd: #282830;
+  --tx: #e8e4dc;
+  --txm: #707070;
+  --ac: #E88C2E;
+  --abg: rgba(232, 140, 46, 0.1);
+  --success: #3a9e5c;
+  --error: #c93b3b;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  color: var(--tx);
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.pw {
+  width: 100%;
+  max-width: 940px;
+}
+
+.pw-h {
+  margin-bottom: 24px;
+  border-left: 2px solid var(--ac);
+  padding-left: 16px;
+}
+.pw-h h2 { font-size: 14px; font-weight: 700; color: var(--ac); text-transform: uppercase; letter-spacing: 1px; }
+.pw-h p { font-size: 12px; color: var(--txm); margin-top: 4px; }
+
+.main-card {
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+}
+
+.main-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: var(--ac);
+  z-index: 10;
+}
+
+.left-col {
+  flex: 1;
+  background: var(--bgi);
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border-right: 1px solid var(--bd);
+}
+
+.right-col {
+  width: 320px;
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* Mock UI */
+.mock-nav { height: 12px; width: 100%; background: #222; border-radius: 2px; }
+.mock-hero { 
+  height: 140px; 
+  width: 100%; 
+  background: #1a1a20; 
+  border: 1px dashed #333; 
+  border-radius: 4px; 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  justify-content: center;
+  gap: 14px;
+  padding: 20px;
+}
+.mock-title { height: 8px; width: 60%; background: #333; border-radius: 1px; }
+.mock-cta { 
+  padding: 8px 20px; 
+  border-radius: 4px; 
+  font-size: 10px; 
+  font-weight: 800; 
+  background: #333; 
+  color: transparent; 
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.mock-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.mock-card { 
+  padding: 12px; 
+  background: #1a1a20; 
+  border: 1px solid var(--bd); 
+  border-radius: 4px; 
+  display: flex; 
+  flex-direction: column; 
+  gap: 8px; 
+}
+.mock-dot { width: 8px; height: 8px; border-radius: 50%; background: #333; }
+.mock-line { height: 4px; width: 100%; background: #333; border-radius: 1px; }
+
+/* Palette Tool */
+.palette-tool {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+.color-item {
+  background: var(--bg);
+  border: 1px solid var(--bd);
+  padding: 16px 12px;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.color-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+.color-item:hover { border-color: var(--txm); }
+.color-item.active { border-color: var(--ac); background: var(--abg); }
+.color-label { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--txm); text-transform: uppercase; font-weight: 700; }
+.color-item.active .color-label { color: var(--ac); }
+
+.hint-box {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--bd);
+  padding: 14px;
+  border-radius: 3px;
+  font-size: 11px;
+  line-height: 1.5;
+  color: var(--txm);
+  min-height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.hint-box strong { color: var(--ac); }
+
+.success-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(15, 15, 18, 0.95);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s;
+  z-index: 20;
+  text-align: center;
+  padding: 32px;
+}
+.success-overlay.show { opacity: 1; pointer-events: auto; }
+
+.drop-zone { position: relative; }
+.drop-zone::after {
+  content: 'CLICK TO PAINT';
+  position: absolute;
+  inset: 0;
+  background: rgba(232, 140, 46, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 8px;
+  font-weight: 800;
+  opacity: 0;
+  transition: opacity 0.2s;
+  border-radius: inherit;
+  cursor: pointer;
+  pointer-events: none;
+}
+.drop-zone:hover::after { opacity: 1; }
+
+@media (max-width: 768px) {
+  .main-card { flex-direction: column; }
+  .right-col { width: 100%; }
+  .left-col { border-right: none; border-bottom: 1px solid var(--bd); padding: 24px; }
+}
+
+</style>
+</head>
+<body>
+
+<div class="pw">
+  <div class="pw-h">
+    <h2>Palette Painter</h2>
+    <p>Chọn vai trò màu ở bên phải, sau đó nhấn vào các vùng thiết kế ở bên trái để hoàn thiện UI.</p>
+  </div>
+
+  <div class="main-card">
+    <div class="left-col" id="canvas">
+      <div class="mock-nav"></div>
+      
+      <div class="mock-hero drop-zone" id="zone-brand" onclick="paint('brand')">
+        <div class="mock-title"></div>
+        <button class="mock-cta" id="paint-cta">MUA NGAY</button>
+      </div>
+
+      <div class="mock-grid">
+        <div class="mock-card drop-zone" id="zone-success" onclick="paint('success')">
+          <div class="mock-dot" id="paint-success"></div>
+          <div class="mock-line"></div>
+          <div class="mock-line" style="width: 70%"></div>
+        </div>
+        <div class="mock-card drop-zone" id="zone-error" onclick="paint('error')">
+          <div class="mock-dot" id="paint-error"></div>
+          <div class="mock-line"></div>
+          <div class="mock-line" style="width: 70%"></div>
+        </div>
+        <div class="mock-card drop-zone" id="zone-neutral" onclick="paint('neutral')">
+          <div class="mock-dot" id="paint-neutral"></div>
+          <div class="mock-line"></div>
+          <div class="mock-line" style="width: 70%"></div>
+        </div>
+      </div>
+
+      <div class="success-overlay" id="success-overlay">
+        <h3 style="color: var(--ac); font-size: 20px; font-weight: 800;">MISSION COMPLETE</h3>
+        <p style="font-size: 12px; color: var(--txm);">Bảng màu đã được áp dụng đúng vai trò hệ thống.</p>
+        <button onclick="location.reload()" style="margin-top: 10px; background: var(--ac); border:none; padding: 8px 16px; border-radius: 3px; color: white; font-weight: 700; cursor:pointer; font-family: 'JetBrains Mono', monospace; font-size: 10px;">CHƠI LẠI</button>
+      </div>
+    </div>
+
+    <div class="right-col">
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--txm); letter-spacing: 1px; margin-bottom: -10px;">PALETTE TOOLS</div>
+      
+      <div class="palette-tool">
+        <div class="color-item" id="tool-brand" onclick="selectTool('brand')">
+          <div class="color-circle" style="background: var(--ac);">🎨</div>
+          <span class="color-label">Brand</span>
+        </div>
+        <div class="color-item" id="tool-success" onclick="selectTool('success')">
+          <div class="color-circle" style="background: var(--success);">🎨</div>
+          <span class="color-label">Success</span>
+        </div>
+        <div class="color-item" id="tool-error" onclick="selectTool('error')">
+          <div class="color-circle" style="background: var(--error);">🎨</div>
+          <span class="color-label">Error</span>
+        </div>
+        <div class="color-item" id="tool-neutral" onclick="selectTool('neutral')">
+          <div class="color-circle" style="background: var(--txm);">🎨</div>
+          <span class="color-label">Neutral</span>
+        </div>
+      </div>
+
+      <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--txm); letter-spacing: 1px; margin-bottom: -10px;">INSTRUCTION</div>
+      <div class="hint-box" id="hint">Hãy chọn màu <strong>Brand Primary</strong> để sơn cho nút CTA chính.</div>
+    </div>
+  </div>
+</div>
+
+<script>
+let selectedTool = null;
+const progress = { brand: false, success: false, error: false, neutral: false };
+
+const hints = {
+  start: "Hãy chọn màu <strong>Brand Primary</strong> để sơn cho nút CTA chính.",
+  brand: "Tuyệt! Giờ hãy chọn màu <strong>Success</strong> cho thẻ 'Thành công'.",
+  success: "Chính xác! Tiếp tục với màu <strong>Error</strong> cho thẻ 'Cảnh báo lỗi'.",
+  error: "Sắp xong rồi! Dùng màu <strong>Neutral</strong> cho thẻ 'Thông tin phụ'.",
+  neutral: "Hoàn hảo! Bạn đã hoàn thành bản thiết kế.",
+  wrong: "Màu này <strong>không đúng vai trò</strong> cho vùng này. Hãy thử lại!"
+};
+
+function selectTool(type) {
+  selectedTool = type;
+  document.querySelectorAll('.color-item').forEach(el => el.classList.remove('active'));
+  document.getElementById(`tool-${type}`).classList.add('active');
+}
+
+function paint(zone) {
+  if (!selectedTool) return;
+  
+  const hintEl = document.getElementById('hint');
+  
+  if (selectedTool === zone) {
+    applyColor(zone);
+    progress[zone] = true;
+    checkProgress();
+  } else {
+    hintEl.innerHTML = hints.wrong;
+    hintEl.style.borderColor = 'var(--error)';
+    setTimeout(() => {
+      hintEl.style.borderColor = 'var(--bd)';
+      updateHint();
+    }, 1500);
+  }
+}
+
+function applyColor(zone) {
+  if (zone === 'brand') {
+    document.getElementById('paint-cta').style.background = 'var(--ac)';
+    document.getElementById('paint-cta').style.color = 'white';
+  } else if (zone === 'success') {
+    document.getElementById('paint-success').style.background = 'var(--success)';
+    document.getElementById('zone-success').style.borderColor = 'var(--success)';
+    document.getElementById('zone-success').style.background = 'rgba(58, 158, 92, 0.05)';
+  } else if (zone === 'error') {
+    document.getElementById('paint-error').style.background = 'var(--error)';
+    document.getElementById('zone-error').style.borderColor = 'var(--error)';
+    document.getElementById('zone-error').style.background = 'rgba(201, 59, 59, 0.05)';
+  } else if (zone === 'neutral') {
+    document.getElementById('paint-neutral').style.background = 'var(--txm)';
+    document.getElementById('zone-neutral').style.borderColor = '#333';
+  }
+}
+
+function updateHint() {
+  const hintEl = document.getElementById('hint');
+  if (!progress.brand) hintEl.innerHTML = hints.start;
+  else if (!progress.success) hintEl.innerHTML = hints.brand;
+  else if (!progress.error) hintEl.innerHTML = hints.success;
+  else if (!progress.neutral) hintEl.innerHTML = hints.error;
+  else hintEl.innerHTML = hints.neutral;
+}
+
+function checkProgress() {
+  updateHint();
+  if (Object.values(progress).every(v => v === true)) {
+    setTimeout(() => {
+      document.getElementById('success-overlay').classList.add('show');
+    }, 500);
+  }
+}
+</script>
+</body>
+</html>

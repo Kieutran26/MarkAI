@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Line Spacing Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+  :root{--bg:#0f0f12;--bg-card:#17171c;--fg:#e8e4dc;--muted:#6e6e7a;--accent:#e88c2e;--accent-soft:rgba(232,140,46,.13);--accent-border:rgba(232,140,46,.3);--border:#2a2a33;--success:#3a9e5c;--success-soft:rgba(58,158,92,.13);--warning:#c49030;--warning-soft:rgba(196,144,48,.1)}
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:var(--bg);color:var(--fg);font-family:'Space Grotesk',sans-serif}
+  .entry{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:24px}
+  .p-goal{font-size:15px;color:var(--fg);opacity:.8;margin-bottom:22px;line-height:1.6}
+  .p-goal span{color:var(--accent);font-weight:600}
+  .ctx-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:26px}
+  .ctx-btn{font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:500;padding:8px 14px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;transition:all .25s;display:flex;align-items:center;gap:8px}
+  .ctx-btn:hover{border-color:var(--accent-border);color:var(--fg)}
+  .ctx-btn.active{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+  .ctx-btn .ctx-d{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);opacity:.65}
+  .ctx-btn.active .ctx-d{opacity:1;color:var(--accent)}
+  .slider-sec{margin-bottom:28px}
+  .slider-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+  .slider-lbl{font-size:12px;color:var(--muted)}
+  .slider-val{font-family:'JetBrains Mono',monospace;font-size:18px;font-weight:600;color:var(--accent);transition:color .3s}
+  .slider-val.ok{color:var(--success)}
+  .slider-wrap{position:relative;height:34px}
+  .s-track{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);height:4px;background:var(--border);z-index:0}
+  .s-zone{position:absolute;top:50%;transform:translateY(-50%);height:4px;background:var(--accent-soft);border:1px solid var(--accent-border);z-index:1;pointer-events:none;transition:left .4s ease,width .4s ease,background .3s,border-color .3s}
+  .s-zone.hit{background:var(--success-soft);border-color:rgba(58,158,92,.35)}
+  input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:34px;background:transparent;outline:none;cursor:pointer;position:absolute;top:0;left:0;z-index:2}
+  input[type=range]::-webkit-slider-runnable-track{height:4px;background:transparent}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;background:var(--accent);border:2px solid var(--bg);margin-top:-7px;cursor:grab;transition:box-shadow .2s,background .2s}
+  input[type=range]::-moz-range-track{height:4px;background:transparent;border:none}
+  input[type=range]::-moz-range-thumb{width:18px;height:18px;background:var(--accent);border:2px solid var(--bg);cursor:grab;border-radius:0}
+  input[type=range].ok::-webkit-slider-thumb{background:var(--success);box-shadow:0 0 14px rgba(58,158,92,.3)}
+  .s-ticks{display:flex;justify-content:space-between;padding:5px 0 0}
+  .s-ticks span{font-family:'JetBrains Mono',monospace;font-size:9px;color:var(--muted);opacity:.45}
+  .preview{background:var(--bg-card);border:1px solid var(--border);padding:44px 28px;margin-bottom:18px;min-height:160px;display:flex;align-items:center;justify-content:center;text-align:center;transition:border-color .3s;position:relative;overflow:hidden}
+  .preview::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.008) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.008) 1px,transparent 1px);background-size:18px 18px;pointer-events:none}
+  .preview.ok-border{border-color:rgba(58,158,92,.25)}
+  .preview-inner{position:relative;width:100%;height:100%;display:flex;align-items:center;justify-content:center;padding-right:0}
+  .ruler-wrap{position:absolute;right:0;top:0;bottom:0;width:32px;pointer-events:none;z-index:10}
+  .ruler-bar{position:absolute;right:0;width:6px;border:1px solid var(--accent);background:rgba(232,140,46,.1);transition:height .12s ease,top .12s ease}
+  .ruler-val-tip{position:absolute;right:15px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;color:var(--accent);white-space:nowrap;transition:top .12s ease}
+  .prev-label{position:absolute;top:10px;left:14px;font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);opacity:.4}
+  .prev-text{font-weight:700;transition:line-height .12s ease;position:relative;z-index:1}
+  .prev-text.sz-h{font-size:clamp(22px,4vw,30px);text-transform:uppercase}
+  .prev-text.sz-b{font-size:15px;font-weight:400;max-width:520px;text-align:left}
+  .prev-text.sz-q{font-size:clamp(18px,4vw,24px);font-weight:400;font-style:italic;max-width:520px}
+  .prev-text.sz-c{font-size:12px;font-weight:400;opacity:.8;text-align:left;max-width:400px}
+  .fb{display:inline-flex;align-items:center;gap:8px;padding:8px 16px;font-size:13px;font-weight:500;border:1px solid var(--border);background:var(--bg-card);transition:all .3s}
+  .fb.ok{border-color:rgba(58,158,92,.4);color:var(--success);background:var(--success-soft)}
+  .fb.no{border-color:rgba(196,144,48,.3);color:var(--warning);background:var(--warning-soft)}
+  .hint{font-size:12px;color:var(--muted);opacity:.55;margin-top:10px;display:flex;align-items:center;gap:6px}
+  .hint i{font-size:10px;color:var(--accent)}
+</style>
+</head>
+<body>
+<div id="app-root">
+<div class="entry">
+  <section aria-label="Line spacing practice">
+    <p class="p-goal"><span>Mục tiêu:</span> Kéo slider vào vùng cam để tìm mức line spacing hợp với từng ngữ cảnh.</p>
+    <div class="ctx-row" id="ctxRow"></div>
+    <div class="slider-sec">
+      <div class="slider-head">
+        <span class="slider-lbl">line spacing</span>
+        <span class="slider-val" id="sVal">1.5</span>
+      </div>
+      <div class="slider-wrap">
+        <div class="s-track"></div>
+        <div class="s-zone" id="sZone"></div>
+        <input type="range" id="sSlider" min="0.8" max="3.0" step="0.1" value="1.5" aria-label="Điều chỉnh line spacing">
+      </div>
+      <div class="s-ticks"><span>0.8</span><span>1.5</span><span>2.0</span><span>2.5</span><span>3.0</span></div>
+    </div>
+    <div class="preview" id="prevBox">
+      <span class="prev-label" id="prevLbl">BODY</span>
+      <div class="preview-inner">
+        <div class="prev-text sz-b" id="prevText">Loading...</div>
+      </div>
+      <div class="ruler-wrap" id="rulerWrap"></div>
+    </div>
+    <div class="fb" id="fb"><i class="fa-solid fa-circle-info"></i><span>Chọn ngữ cảnh rồi kéo slider</span></div>
+    <p class="hint" id="hintEl"><i class="fa-solid fa-arrow-up-right"></i> Vùng cam trên slider là khoảng line spacing khuyến nghị cho ngữ cảnh hiện tại.</p>
+  </section>
+</div>
+</div>
+<script>
+  const ctxs=[
+    {id:'headline',name:'Headline',desc:'Tiêu đề lớn',range:[1.0,1.2],text:'CHỦ ĐỀ LỚN CỦA NĂM<br>VÀ NHỮNG XU HƯỚNG MỚI',sz:'sz-h',hint:'Headline cần line spacing chặt để tạo tác động thị giác mạnh.'},
+    {id:'body',name:'Body',desc:'Nội dung dài',range:[1.5,1.7],text:'Line spacing ảnh hưởng trực tiếp đến khả năng đọc hiểu. Khi các dòng quá gần nhau, mắt dễ bị nhảy dòng. Ngược lại, nếu quá thưa, đoạn văn bản sẽ rời rạc và khó theo dõi.',sz:'sz-b',hint:'Body văn bản dài thường đẹp nhất quanh 1.5 đến 1.6.'},
+    {id:'quote',name:'Quote',desc:'Trích dẫn',range:[1.8,2.2],text:'"Typography là nghệ thuật sắp xếp con chữ để ngôn ngữ trở nên sống động và rõ ràng."',sz:'sz-q',hint:'Quote cần sự thoáng để tạo nhịp đọc chậm và có chủ ý hơn.'},
+    {id:'caption',name:'Caption',desc:'Chú thích nhỏ',range:[1.3,1.5],text:'Lưu ý: số liệu được thống kê vào quý 3 năm 2024 tại khu vực Đông Nam Á và các nước lân cận.',sz:'sz-c',hint:'Chữ nhỏ nên giữ line spacing vừa phải để không chiếm quá nhiều chỗ.'}
+  ];
+  const ctxRowEl=document.getElementById('ctxRow');
+  const sSlider=document.getElementById('sSlider');
+  const sValEl=document.getElementById('sVal');
+  const sZoneEl=document.getElementById('sZone');
+  const prevText=document.getElementById('prevText');
+  const prevLbl=document.getElementById('prevLbl');
+  const prevBox=document.getElementById('prevBox');
+  const rulerWrap=document.getElementById('rulerWrap');
+  const fbEl=document.getElementById('fb');
+  const hintEl=document.getElementById('hintEl');
+  let curCtx=ctxs[1];
+
+  function renderCtx(){
+    ctxRowEl.innerHTML=ctxs.map(c=>`<button class="ctx-btn${c.id===curCtx.id?' active':''}" data-id="${c.id}">${c.name}<span class="ctx-d">${c.desc}</span></button>`).join('');
+    ctxRowEl.querySelectorAll('.ctx-btn').forEach(b=>b.addEventListener('click',()=>{pickCtx(b.dataset.id);updateRuler();}));
+  }
+
+  function pickCtx(id){
+    curCtx=ctxs.find(c=>c.id===id);
+    ctxRowEl.querySelectorAll('.ctx-btn').forEach(b=>b.classList.toggle('active',b.dataset.id===id));
+    prevText.innerHTML=curCtx.text;
+    prevText.className='prev-text '+curCtx.sz;
+    prevText.style.lineHeight=sSlider.value;
+    prevLbl.textContent=curCtx.id.toUpperCase();
+    updateZone();
+    checkZone();
+    hintEl.innerHTML=`<i class="fa-solid fa-arrow-up-right"></i> ${curCtx.hint}`;
+  }
+
+  function updateZone(){
+    const lo=0.8,hi=3.0,span=hi-lo;
+    sZoneEl.style.left=((curCtx.range[0]-lo)/span*100)+'%';
+    sZoneEl.style.width=((curCtx.range[1]-curCtx.range[0])/span*100)+'%';
+  }
+
+  function checkZone(){
+    const v=parseFloat(sSlider.value);
+    const inZ=v>=curCtx.range[0]&&v<=curCtx.range[1];
+    sSlider.classList.toggle('ok',inZ);
+    sValEl.classList.toggle('ok',inZ);
+    sZoneEl.classList.toggle('hit',inZ);
+    prevBox.classList.toggle('ok-border',inZ);
+    if(inZ){
+      fbEl.className='fb ok';
+      fbEl.innerHTML=`<i class="fa-solid fa-check"></i><span>Line spacing ${v} hợp với ${curCtx.name.toLowerCase()}</span>`;
+    }else{
+      fbEl.className='fb no';
+      fbEl.innerHTML=`<i class="fa-solid fa-xmark"></i><span>Mức này ${v<curCtx.range[0]?'quá khít':'quá thưa'} cho ${curCtx.name.toLowerCase()}</span>`;
+    }
+  }
+
+  function updateRuler(){
+    rulerWrap.innerHTML='';
+    const rect=prevText.getBoundingClientRect();
+    const parentRect=prevBox.getBoundingClientRect();
+    const style=window.getComputedStyle(prevText);
+    const lhPx=parseFloat(style.lineHeight);
+    const totalH=rect.height;
+    const numLines=Math.max(1,Math.round(totalH/lhPx));
+    for(let i=0;i<numLines;i++){
+      const bar=document.createElement('div');
+      bar.className='ruler-bar';
+      bar.style.height=(lhPx-2)+'px';
+      const topPos=rect.top-parentRect.top+i*lhPx+1;
+      bar.style.top=topPos+'px';
+      rulerWrap.appendChild(bar);
+      if(i===0){
+        const tip=document.createElement('div');
+        tip.className='ruler-val-tip';
+        tip.textContent=sSlider.value+'x';
+        tip.style.top=(topPos+(lhPx/2)-8)+'px';
+        rulerWrap.appendChild(tip);
+      }
+    }
+  }
+
+  sSlider.addEventListener('input',()=>{
+    sValEl.textContent=sSlider.value;
+    prevText.style.lineHeight=sSlider.value;
+    checkZone();
+    updateRuler();
+  });
+
+  renderCtx();
+  pickCtx('body');
+  const ro=new ResizeObserver(updateRuler);
+  ro.observe(prevText);
+  setTimeout(updateRuler,200);
+</script>
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>.gitignore Wizard — Vibecode Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0f0f12;
+  --bgc: #16161b;
+  --bgi: #121217;
+  --bd: #282830;
+  --tx: #e8e4dc;
+  --txm: #707070;
+  --txd: #3a3a3a;
+  --ac: #E88C2E;
+  --acl: #ffb05c;
+  --abg: rgba(232, 140, 46, 0.1);
+  --abg2: rgba(232, 140, 46, 0.2);
+  --gn: #22c55e;
+  --gnb: rgba(34, 197, 94, .12);
+  --rd: #ef4444;
+  --rdb: rgba(239, 68, 68, .1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: var(--bg);
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, .015) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, .015) 1px, transparent 1px);
+  background-size: 20px 20px;
+  color: var(--tx);
+  padding: 24px 16px;
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+}
+
+.pra {
+  width: 100%;
+  max-width: 940px;
+  background: var(--bgc);
+  border: 1px solid var(--bd);
+  border-radius: 3px;
+  padding: 32px;
+  position: relative;
+}
+
+.pra::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 2px;
+  background: var(--ac);
+}
+
+.ch { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.ch .n {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; font-weight: 700;
+  color: var(--ac); background: var(--abg);
+  padding: 2px 6px; border-radius: 2px;
+}
+.ch h2 { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; }
+
+.pra-goal { font-size: 12.5px; color: var(--txm); margin-bottom: 24px; line-height: 1.5; }
+
+.pra-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 32px; }
+@media (max-width: 768px) { .pra-grid { grid-template-columns: 1fr; } }
+
+/* Builder Side */
+.builder { display: flex; flex-direction: column; gap: 24px; }
+.b-section { display: flex; flex-direction: column; gap: 12px; }
+.b-label { font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--txd); text-transform: uppercase; letter-spacing: 1px; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  background: var(--bg);
+  border: 1px solid var(--bd);
+  color: var(--txm);
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+}
+.chip:hover { border-color: var(--ac); color: var(--tx); }
+.chip.active { background: var(--abg); border-color: var(--ac); color: var(--ac); }
+.chip .icon { font-size: 14px; opacity: 0.6; }
+.chip.active .icon { opacity: 1; }
+
+/* Preview Side */
+.preview { display: flex; flex-direction: column; gap: 20px; }
+.p-box { background: var(--bgi); border: 1px solid var(--bd); border-radius: 4px; overflow: hidden; }
+.p-header { padding: 10px 16px; border-bottom: 1px solid var(--bd); display: flex; justify-content: space-between; align-items: center; }
+.p-title { font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--txd); text-transform: uppercase; letter-spacing: 1px; }
+.p-content { padding: 16px; min-height: 120px; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--acl); line-height: 1.6; white-space: pre-wrap; }
+
+.prompt-box { background: #000; border: 1px solid #333; padding: 20px; border-radius: 4px; position: relative; }
+.prompt-box::before { content: 'Nói với AI (Prompt)'; position: absolute; top: -10px; left: 16px; background: #000; padding: 0 8px; font-family: 'JetBrains Mono', monospace; font-size: 9px; color: var(--ac); text-transform: uppercase; }
+.prompt-text { font-size: 13px; line-height: 1.6; color: var(--tx); }
+.prompt-text em { color: var(--ac); font-style: normal; font-weight: 600; }
+
+/* Badge Hint */
+.btn-hint {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ac);
+  color: #fff;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  padding: 2px 6px;
+  border-radius: 2px;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: pulseTop 2s infinite;
+  z-index: 999;
+  font-weight: 700;
+}
+.btn-hint::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid var(--ac);
+}
+@keyframes pulseTop {
+  0% { transform: translateX(-50%) scale(1); }
+  50% { transform: translateX(-50%) scale(1.05); }
+  100% { transform: translateX(-50%) scale(1); }
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  background: var(--rdb);
+  color: var(--rd);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  margin-top: 12px;
+}
+.status-badge.safe {
+  background: var(--gnb);
+  color: var(--gn);
+  border-color: rgba(34, 197, 94, 0.2);
+}
+</style>
+</head>
+<body>
+
+<section class="pra">
+  <div class="ch"><span class="n">PRACTICE</span><h2>.gitignore Prompt Builder</h2></div>
+  <p class="pra-goal">Chọn các loại file cần bảo vệ hoặc loại bỏ. Hệ thống sẽ tự tạo nội dung .gitignore chuẩn và Prompt để bạn yêu cầu AI thực hiện.</p>
+
+  <div class="pra-grid">
+    <!-- Left: Builder -->
+    <div class="builder">
+      <div class="b-section">
+        <span class="b-label">Ưu tiên hàng đầu (Bảo mật)</span>
+        <div class="chips">
+          <div class="chip" data-id="env" data-val=".env\n.env.local\n.env.production">
+            <div class="btn-hint" id="main-hint">Click me!</div>
+            <span class="icon">🔑</span> Mật khẩu & API Keys
+          </div>
+          <div class="chip" data-id="creds" data-val="credentials.json\n*.pem\n*.key">
+            <span class="icon">📜</span> Chứng chỉ bảo mật
+          </div>
+        </div>
+      </div>
+
+      <div class="b-section">
+        <span class="b-label">Tối ưu dung lượng (Thư viện)</span>
+        <div class="chips">
+          <div class="chip" data-id="deps" data-val="node_modules/\nvendor/\n.next/">
+            <span class="icon">📦</span> Thư viện cài đặt
+          </div>
+          <div class="chip" data-id="build" data-val="dist/\nbuild/\nout/">
+            <span class="icon">🚀</span> Thư mục Build
+          </div>
+        </div>
+      </div>
+
+      <div class="b-section">
+        <span class="b-label">Dọn dẹp rác (Hệ thống)</span>
+        <div class="chips">
+          <div class="chip" data-id="os" data-val=".DS_Store\nThumbs.db">
+            <span class="icon">💻</span> File ẩn hệ thống
+          </div>
+          <div class="chip" data-id="logs" data-val="*.log\nnpm-debug.log*">
+            <span class="icon">📑</span> Logs & Debug
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Preview -->
+    <div class="preview">
+      <div class="p-box">
+        <div class="p-header">
+          <span class="p-title">File: .gitignore</span>
+          <div id="safeBadge" class="status-badge">Chưa an toàn</div>
+        </div>
+        <div class="p-content" id="gitContent"># Hãy chọn các mục bên trái để bắt đầu...</div>
+      </div>
+
+      <div class="prompt-box">
+        <div class="prompt-text" id="promptText">
+          Vui lòng chọn ít nhất một mục để tạo prompt cho AI.
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+const chips = document.querySelectorAll('.chip');
+const gitContent = document.getElementById('gitContent');
+const promptText = document.getElementById('promptText');
+const safeBadge = document.getElementById('safeBadge');
+const hint = document.getElementById('main-hint');
+
+let activeItems = new Set();
+
+chips.forEach(chip => {
+  chip.addEventListener('click', () => {
+    if (hint) hint.style.display = 'none';
+    
+    const id = chip.getAttribute('data-id');
+    if (activeItems.has(id)) {
+      activeItems.delete(id);
+      chip.classList.remove('active');
+    } else {
+      activeItems.add(id);
+      chip.classList.add('active');
+    }
+    update();
+  });
+});
+
+function update() {
+  if (activeItems.size === 0) {
+    gitContent.textContent = "# Hãy chọn các mục bên trái để bắt đầu...";
+    promptText.textContent = "Vui lòng chọn ít nhất một mục để tạo prompt cho AI.";
+    safeBadge.textContent = "Chưa an toàn";
+    safeBadge.classList.remove('safe');
+    return;
+  }
+
+  let content = "# .gitignore configured via Vibecode\n\n";
+  let labels = [];
+  
+  chips.forEach(chip => {
+    if (activeItems.has(chip.getAttribute('data-id'))) {
+      content += chip.getAttribute('data-val') + "\n";
+      labels.push(chip.textContent.trim().split(' ').slice(1).join(' '));
+    }
+  });
+
+  gitContent.textContent = content;
+  
+  const labelStr = labels.join(', ');
+  promptText.innerHTML = `Hãy thiết lập file <em>.gitignore</em> để chặn các file: <em>${labelStr}</em>. Đảm bảo repo sạch sẽ và không lộ thông tin nhạy cảm.`;
+
+  // Status logic
+  if (activeItems.has('env') && activeItems.has('deps')) {
+    safeBadge.textContent = "An toàn & Tối ưu";
+    safeBadge.classList.add('safe');
+  } else if (activeItems.has('env')) {
+    safeBadge.textContent = "Đã bảo mật";
+    safeBadge.classList.add('safe');
+  } else {
+    safeBadge.textContent = "Cần chặn .env";
+    safeBadge.classList.remove('safe');
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Grid Demo — markAI</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#131110;--fg:#e8e0d4;--muted:#706b64;--accent:#d4712a;
+  --card:#1c1a18;--card-alt:#242120;--border:#302c28;
+  --c0:#d4712a;--c1:#b89a2a;--c2:#4a8a5a;
+  --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--sans);overflow:hidden;padding:0}
+
+/*
+  Height budget:
+  .hd    =  37px
+  .la    = 260px   ← visualization
+  .inf   = 110px   ← info
+  .prog  =   2px
+  .ctrls =  46px
+  TOTAL  = 455px
+*/
+.aw{width:100%;margin:0}
+.ab{width:700px;height:455px;background:var(--card);border:2px solid var(--border);
+    display:flex;flex-direction:column;transform-origin:top left}
+
+.hd{display:flex;align-items:center;justify-content:space-between;padding:9px 14px;
+    border-bottom:1px solid var(--border);background:rgba(255,255,255,.01);
+    flex-shrink:0;height:37px}
+.hd-t{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--accent);letter-spacing:2.5px}
+.hd-f{font-family:var(--mono);font-size:10px;color:var(--muted)}
+
+.la{position:relative;width:100%;height:260px;flex-shrink:0;overflow:hidden;
+    background:linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px),
+               linear-gradient(90deg,rgba(255,255,255,.012) 1px,transparent 1px);
+    background-size:30px 30px}
+
+.fr{position:absolute;inset:0;display:flex;flex-direction:column;
+    opacity:0;pointer-events:none;transition:opacity .35s}
+.fr.show{opacity:1;pointer-events:auto}
+
+.gp{display:flex;gap:8px;padding:10px 20px 0;flex-shrink:0}
+.gpm{font-family:var(--mono);font-size:8px;font-weight:700;color:var(--accent);
+     letter-spacing:1.5px;border:1px solid var(--border);padding:2px 7px;
+     opacity:0;transform:translateY(-4px);transition:opacity .3s,transform .3s}
+.fr.show .gpm{opacity:1;transform:translateY(0)}
+
+/*
+  .gv: badges ~30px, so remaining = 260-30 = 230px.
+  With padding 10+8 = 18px → 212px usable for grid content.
+*/
+.gv{position:relative;flex:1;min-height:0;padding:10px 20px 8px}
+
+.gl{position:absolute;top:10px;left:20px;right:20px;bottom:8px;
+    display:grid;pointer-events:none;opacity:0;transition:opacity .4s}
+.fr.show .gl{opacity:1}
+.glc{border-right:1px solid rgba(212,113,42,.15)}
+.glc:last-child{border-right:none}
+
+.gc{display:grid;position:relative;z-index:1;align-content:start}
+.gbi{background:rgba(36,33,32,.92);border:1px solid var(--border);
+     border-left:3px solid var(--c0);padding:5px 8px;
+     display:flex;flex-direction:column;justify-content:center;overflow:hidden;
+     opacity:0;transform:translateY(4px);transition:opacity .3s,transform .3s}
+.fr.show .gbi{opacity:1;transform:translateY(0)}
+.gbi.c1{border-left-color:var(--c1)}.gbi.c2{border-left-color:var(--c2)}
+.gb-s{font-family:var(--mono);font-size:7px;color:var(--muted);letter-spacing:.5px;opacity:.7}
+.gb-t{font-size:10px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-top:2px}
+
+.inf{height:110px;flex-shrink:0;padding:12px 14px;border-top:1px solid var(--border);
+     background:var(--card);overflow:hidden}
+.dn{font-size:16px;font-weight:800;line-height:1.2}
+.ds{font-family:var(--mono);font-size:10px;color:var(--accent);margin-top:3px}
+.dd{font-size:11px;color:var(--muted);margin-top:5px;line-height:1.5}
+.di{font-family:var(--mono);font-size:9px;color:var(--accent);margin-top:6px;
+    padding-top:6px;border-top:1px dashed var(--border);opacity:.78}
+
+.prog-bar{height:2px;background:var(--border);flex-shrink:0}
+.prog-fill{height:100%;background:var(--accent);width:0%}
+
+.ctrls{display:flex;align-items:center;justify-content:space-between;
+       padding:0 14px;background:var(--card-alt);border-top:1px solid var(--border);
+       flex-shrink:0;height:46px}
+.state-btns{display:flex;gap:6px}
+.s-btn{font-family:var(--mono);font-size:9px;font-weight:700;color:var(--muted);
+       background:var(--bg);border:1px solid var(--border);padding:5px 10px;
+       cursor:pointer;transition:all .2s;line-height:1}
+.s-btn:hover{color:var(--fg);border-color:var(--muted)}
+.s-btn.active{color:var(--accent);border-color:var(--accent);background:rgba(212,113,42,.08)}
+.pp{width:30px;height:30px;border-radius:50%;background:var(--accent);border:none;
+    display:flex;align-items:center;justify-content:center;cursor:pointer;
+    color:var(--bg);transition:transform .18s}
+.pp:hover{transform:scale(1.12)}
+.pp svg{width:13px;height:13px;fill:currentColor}
+
+#app-root{width:100%;overflow:hidden}
+</style>
+</head>
+<body>
+<div id="app-root">
+  <div class="aw">
+    <div class="ab" id="ab">
+      <div class="hd">
+        <span class="hd-t">GRID SYSTEM</span>
+        <span class="hd-f" id="hf">01 / 03</span>
+      </div>
+      <div class="la">
+        <div class="fr" id="f0"></div>
+        <div class="fr" id="f1"></div>
+        <div class="fr" id="f2"></div>
+      </div>
+      <div class="inf">
+        <div class="dn" id="dn">12 Columns</div>
+        <div class="ds" id="ds">KHUNG CHUẨN</div>
+        <div class="dd" id="dd">Chia chiều ngang thành 12 cột đều — content chiếm bao nhiêu cột = bề rộng tương đối</div>
+        <div class="di" id="di">Khi nói "chiếm 2/3 chiều rộng" → dev hiểu là span 8/12</div>
+      </div>
+      <div class="prog-bar"><div class="prog-fill" id="pf"></div></div>
+      <div class="ctrls">
+        <div class="state-btns">
+          <button class="s-btn active" data-i="0">12 COL</button>
+          <button class="s-btn" data-i="1">16 COL</button>
+          <button class="s-btn" data-i="2">8 COL</button>
+        </div>
+        <button class="pp" id="ppBtn">
+          <svg viewBox="0 0 24 24" id="piPlay" style="display:none"><path d="M8 5v14l11-7z"/></svg>
+          <svg viewBox="0 0 24 24" id="piPause"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const COLORS=['c0','c1','c2'];
+const TOTAL=3;
+
+const INFO=[
+  {nm:'12 Columns',sz:'KHUNG CHUẨN',
+   dc:'Chia chiều ngang thành 12 cột đều — content chiếm bao nhiêu cột = bề rộng tương đối',
+   ins:'Khi nói "chiếm 2/3 chiều rộng" → dev hiểu là span 8/12'},
+  {nm:'16 Columns',sz:'CHI TIẾT HƠN',
+   dc:'Cột nhiều hơn → kiểm soát vị trí chi tiết hơn, phù hợp layout phức tạp',
+   ins:'Bootstrap dùng 12, Material dùng 12, một số design system dùng 16'},
+  {nm:'8 Columns',sz:'ĐƠN GIẢN HƠN',
+   dc:'Ít cột hơn → dễ quản lý, phù hợp content-heavy page như blog',
+   ins:'Không phải lúc nào cũng cần 12 cột — blog thường chỉ cần 6-8'}
+];
+
+/*
+  Usable height inside .gv ≈ 212px.
+  All frames: row heights + gaps must be ≤ 200px (safe margin).
+
+  Frame 0 — 12 cols, gap 14:  row1:34 + 14 + row2:46 = 94px ✓
+  Frame 1 — 16 cols, gap 10:  row1:34 + 10 + row2:50 = 94px ✓
+  Frame 2 —  8 cols, gap 12:  row1:34 + 12 + row2:48 + 12 + row3:48 = 154px ✓
+*/
+const FRAMES=[
+  {params:['12 COLUMNS','GAP 14PX'],cols:12,gap:14,items:[
+    {s:8,t:'Build better products',h:34,c:0},
+    {s:4,t:'Subtitle',h:34,c:1},
+    {s:4,t:'Card A',h:46,c:0},
+    {s:4,t:'Card B',h:46,c:1},
+    {s:4,t:'Card C',h:46,c:2}
+  ]},
+  {params:['16 COLUMNS','GAP 10PX'],cols:16,gap:10,items:[
+    {s:10,t:'Powerful features for your workflow',h:34,c:0},
+    {s:6,t:'Quick Stat',h:34,c:1},
+    {s:5,t:'Performance',h:50,c:1},
+    {s:5,t:'Security',h:50,c:2},
+    {s:6,t:'Collaboration',h:50,c:0}
+  ]},
+  {params:['8 COLUMNS','GAP 12PX'],cols:8,gap:12,items:[
+    {s:8,t:'Design insights and resources',h:34,c:0},
+    {s:5,t:'Article preview with description',h:48,c:1},
+    {s:3,t:'Sidebar',h:110,c:2},
+    {s:5,t:'Another article preview',h:48,c:1}
+  ]}
+];
+
+function renderFrame(fi){
+  const fr=document.getElementById('f'+fi);
+  const d=FRAMES[fi];
+  let html='<div class="gp">';
+  d.params.forEach(p=>{html+='<span class="gpm">'+p+'</span>'});
+  html+='</div><div class="gv">';
+  html+='<div class="gl" style="grid-template-columns:repeat('+d.cols+',1fr);gap:'+d.gap+'px">';
+  for(let i=0;i<d.cols;i++) html+='<div class="glc"></div>';
+  html+='</div>';
+  html+='<div class="gc" style="grid-template-columns:repeat('+d.cols+',1fr);gap:'+d.gap+'px">';
+  d.items.forEach((it,idx)=>{
+    const dl=0.1+idx*0.07;
+    const cls=COLORS[it.c]||'';
+    html+='<div class="gbi '+cls+'" style="grid-column:span '+it.s+';height:'+it.h+'px;transition-delay:'+dl+'s">';
+    html+='<span class="gb-s">span '+it.s+'</span><span class="gb-t">'+it.t+'</span></div>';
+  });
+  html+='</div></div>';
+  fr.innerHTML=html;
+  fr.querySelectorAll('.gpm').forEach((e,i)=>{e.style.transitionDelay=(0.04+i*0.07)+'s'});
+}
+
+const frs=[0,1,2].map(i=>document.getElementById('f'+i));
+const el={dn:document.getElementById('dn'),ds:document.getElementById('ds'),
+          dd:document.getElementById('dd'),di:document.getElementById('di'),
+          hf:document.getElementById('hf'),pf:document.getElementById('pf')};
+const btns=document.querySelectorAll('.s-btn');
+const ppBtn=document.getElementById('ppBtn');
+const piPlay=document.getElementById('piPlay');
+const piPause=document.getElementById('piPause');
+const TOTAL_H=455;
+let cur=0,isPlaying=true,startTime=Date.now(),DUR=3800;
+
+function apply(i){
+  cur=i;
+  const s=INFO[i];
+  el.dn.textContent=s.nm;el.ds.textContent=s.sz;
+  el.dd.textContent=s.dc;el.di.textContent=s.ins;
+  el.hf.textContent='0'+(i+1)+' / 0'+TOTAL;
+  btns.forEach((b,j)=>b.classList.toggle('active',j===i));
+  frs.forEach((f,j)=>f.classList.toggle('show',j===i));
+  startTime=Date.now();
+}
+
+function tick(){
+  if(!isPlaying)return;
+  const elapsed=Date.now()-startTime;
+  const pct=Math.min(100,(elapsed/DUR)*100);
+  el.pf.style.width=pct+'%';
+  if(elapsed>=DUR){cur=(cur+1)%TOTAL;apply(cur);}
+  requestAnimationFrame(tick);
+}
+
+function togglePlay(){
+  isPlaying=!isPlaying;
+  piPlay.style.display=isPlaying?'none':'block';
+  piPause.style.display=isPlaying?'block':'none';
+  if(isPlaying){
+    startTime=Date.now()-(parseFloat(el.pf.style.width)||0)/100*DUR;
+    requestAnimationFrame(tick);
+  }
+}
+
+function scale(){
+  const wr=document.querySelector('.aw'),bx=document.getElementById('ab');
+  const s=wr.clientWidth/700;
+  bx.style.transform='scale('+s+')';
+  wr.style.height=Math.ceil(TOTAL_H*s)+'px';
+}
+
+btns.forEach(btn=>{
+  btn.onclick=()=>{
+    const i=parseInt(btn.dataset.i);
+    apply(i);
+    if(isPlaying)togglePlay();
+    el.pf.style.width='0%';
+  };
+});
+ppBtn.onclick=togglePlay;
+
+FRAMES.forEach((_,i)=>renderFrame(i));
+apply(0);
+window.addEventListener('resize',scale);
+requestAnimationFrame(()=>requestAnimationFrame(scale));
+requestAnimationFrame(tick);
+</script>
+</body>
+</html>

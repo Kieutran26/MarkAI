@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boolean Practice — Vibecode Glossary</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root{
+            --bg:#141413;--bg-card:#1c1c1a;--fg:#e8e0d4;--muted:#6e6a63;
+            --accent:#d97706;--accent-dim:rgba(217,119,6,.12);
+            --accent-glow:rgba(217,119,6,.25);--border:#2e2c28;--border-hi:#3e3b35;
+            --slate:#33312d;--cream:#f5f0e8;--green:#22c55e;--red:#ef4444;
+            --mono:'JetBrains Mono',monospace;--sans:'Space Grotesk',sans-serif;
+        }
+        *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+        body{
+            background:var(--bg);color:var(--fg);font-family:var(--sans);
+            -webkit-font-smoothing:antialiased;
+            background-image:
+                linear-gradient(rgba(255,255,255,.018) 1px,transparent 1px),
+                linear-gradient(90deg,rgba(255,255,255,.018) 1px,transparent 1px);
+            background-size:20px 20px;
+            padding:12px 16px;
+        }
+        
+        .cd{
+            background:var(--bg-card);border:1px solid var(--border);position:relative;
+            width:100%;max-width:920px;margin:0 auto;overflow:hidden;
+        }
+        .cd-l{font-family:var(--mono);font-size:9px;color:var(--accent);text-transform:uppercase;letter-spacing:2px;padding:14px 14px 2px}
+        .cd-t{font-size:15px;font-weight:700;color:var(--cream);padding:2px 14px 10px}        .cd-d{padding:24px 18px;position:relative;display:flex;flex-direction:column;gap:20px}
+        
+        /* Two Column Layout */
+        .practice-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 20px;
+            align-items: stretch;
+        }
+
+        @media (max-width: 650px) {
+            .practice-grid { grid-template-columns: 1fr; }
+        }
+
+        /* Lock Visualization (Left) */
+        .lock-stage {
+            background: rgba(0,0,0,0.2);
+            border: 1px dashed var(--border-hi);
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            padding: 30px;
+            min-height: 200px;
+        }
+
+        .gate{
+            font-size: 48px;
+            color: var(--muted);
+            transition: all 0.4s var(--ease);
+        }
+        .gate.unlocked{
+            color: var(--accent);
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 15px var(--accent-glow));
+        }
+        .msg{
+            text-align: center;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: var(--mono);
+            letter-spacing: 0.5px;
+            height: 20px;
+            color: var(--muted);
+            text-transform: uppercase;
+        }
+        .msg.ok{color: var(--accent)}
+
+        /* Puzzle UI (Right) */
+        .puzzle-box{
+            border: 1px solid var(--border);
+            background: var(--bg);
+            padding: 20px;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .puzzle-title{
+            font-family: var(--mono);
+            font-size: 9px;
+            color: var(--muted);
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 8px;
+        }
+        
+        .row{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px}
+        .lbl{font-size:12px;color:var(--fg); font-weight: 500;}
+        .tg{
+            width:34px;height:18px;background:var(--slate);border-radius:20px;
+            padding:2px;position:relative;cursor:pointer;transition:background .2s;
+        }
+        .tg.on{background:var(--accent)}
+        .tg-knob{
+            width:14px;height:14px;background:var(--fg);border-radius:50%;
+            transition:transform .2s;
+        }
+        .tg.on .tg-knob{transform:translateX(16px)}
+
+        /* Logic View (Bottom) */
+        .logic-view{
+            background: #111;
+            padding: 20px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-family: var(--mono);
+            font-size: 11px;
+            line-height: 1.8;
+            color: var(--muted);
+        }
+        .keyword{color:var(--accent);font-weight:700}
+        .var{color:var(--muted); transition: all 0.3s; padding: 0 4px; border-radius: 2px;}
+        .var.true{color:var(--accent); background: var(--accent-dim); font-weight: 700;}
+        .var.false{color: var(--muted)}
+        .then { color: #c678dd; }
+
+        .hint{
+            font-size: 10px;
+            color: var(--muted);
+            font-style: italic;
+            margin-top: 5px;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+
+<section class="cd">
+    <div class="cd-l">Thực hành logic</div>
+    <h2 class="cd-t">Bẻ khóa Logic Boolean</h2>
+    <div class="cd-d">
+        
+        <div class="practice-grid">
+            <!-- Left: Lock -->
+            <div class="lock-stage">
+                <div class="msg" id="mainMsg">Hệ thống đang khóa</div>
+                <div class="gate" id="gate"><i class="fas fa-lock"></i></div>
+            </div>
+
+            <!-- Right: Control Panel -->
+            <div class="puzzle-box">
+                <div class="puzzle-title">Bảng điều khiển</div>
+                <div class="row">
+                    <div class="lbl">Vân tay khớp</div>
+                    <div class="tg" id="t1"><div class="tg-knob"></div></div>
+                </div>
+                <div class="row">
+                    <div class="lbl">Mã PIN đúng</div>
+                    <div class="tg" id="t2"><div class="tg-knob"></div></div>
+                </div>
+                <div class="row" style="margin-bottom:0">
+                    <div class="lbl">Hệ thống báo động OFF</div>
+                    <div class="tg" id="t3"><div class="tg-knob"></div></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="logic-view">
+            <div><span class="keyword">IF</span> (</div>
+            <div style="padding-left:20px">
+                (<span class="var" id="v1">fingerprint</span> <span class="keyword">OR</span> <span class="var" id="v2">pinCode</span>)
+                <span class="keyword">AND</span>
+                <span class="var" id="v3">isAlarmOff</span>
+            </div>
+            <div>) <span class="then">THEN</span> <span class="keyword">UNLOCK</span></div>
+        </div>
+
+        <div class="hint">Gợi ý: Cần (Vân tay HOẶC Mã PIN) VÀ Hệ thống báo động phải TẮT.</div>
+    </div>
+</section>
+
+<script>
+    const states = { t1: false, t2: false, t3: false };
+    const tgs = document.querySelectorAll('.tg');
+    const gate = document.getElementById('gate');
+    const msg = document.getElementById('mainMsg');
+
+    function update() {
+        // Update Logic View
+        document.getElementById('v1').className = 'var ' + (states.t1 ? 'true' : 'false');
+        document.getElementById('v1').textContent = states.t1 ? 'true' : 'fingerprint';
+        
+        document.getElementById('v2').className = 'var ' + (states.t2 ? 'true' : 'false');
+        document.getElementById('v2').textContent = states.t2 ? 'true' : 'pinCode';
+        
+        document.getElementById('v3').className = 'var ' + (states.t3 ? 'true' : 'false');
+        document.getElementById('v3').textContent = states.t3 ? 'true' : 'isAlarmOff';
+
+        // Check Logic
+        const canUnlock = (states.t1 || states.t2) && states.t3;
+
+        if (canUnlock) {
+            gate.className = 'gate unlocked';
+            gate.innerHTML = '<i class="fas fa-lock-open"></i>';
+            msg.textContent = 'MỞ KHÓA THÀNH CÔNG!';
+            msg.className = 'msg ok';
+        } else {
+            gate.className = 'gate';
+            gate.innerHTML = '<i class="fas fa-lock"></i>';
+            msg.textContent = 'Hệ thống đang khóa';
+            msg.className = 'msg';
+        }
+    }
+
+    tgs.forEach(tg => {
+        tg.addEventListener('click', () => {
+            const id = tg.id;
+            states[id] = !states[id];
+            tg.classList.toggle('on', states[id]);
+            update();
+        });
+    });
+
+    update();
+</script>
+</body>
+</html>
